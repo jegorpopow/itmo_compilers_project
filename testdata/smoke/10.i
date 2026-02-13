@@ -38,5 +38,3 @@ routine reverse(l : linked_list) : linked_list is
 
   return result;
 end;
-
-
