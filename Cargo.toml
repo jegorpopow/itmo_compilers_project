@@ -1,0 +1,100 @@
+[workspace]
+resolver = "2"
+members = ["compiler/"]
+
+[workspace.package]
+version = "0.0.0"
+edition = "2024"
+rust-version = "1.88"
+authors = [
+  "Pavel Grigorenko <GrigorenkoPV@niuitmo.ru>",
+  "Jegor Popow <juicedogegor@gmail.com>",
+  "Andrew Vlasenkov <andrew.vlasenkov70@gmail.com>",
+]
+publish = false
+
+[profile.release]
+opt-level = 3
+lto = "fat"
+panic = "abort"
+
+########################## LINT SETTINGS ##########################
+
+[workspace.lints.rust]
+absolute-paths-not-starting-with-crate = "warn"
+deprecated-in-future = "warn"
+elided-lifetimes-in-paths = "warn"
+let-underscore-drop = "warn"
+macro-use-extern-crate = "warn"
+meta-variable-misuse = "warn"
+missing-abi = "deny"
+missing-copy-implementations = "warn"
+missing-debug-implementations = "warn"
+non-local-definitions = "warn"
+single-use-lifetimes = "warn"
+trivial-casts = "warn"
+trivial-numeric-casts = "warn"
+unit-bindings = "warn"
+unnameable-types = "warn"
+unreachable-pub = "warn"
+unsafe_op_in_unsafe_fn = "deny"
+unused-crate-dependencies = "warn"
+unused-extern-crates = "warn"
+unused-import-braces = "warn"
+unused-lifetimes = "warn"
+unused-macro-rules = "warn"
+unused-qualifications = "warn"
+unused-results = "warn"
+
+[workspace.lints.clippy.pedantic]
+level = "warn"
+priority = -1
+
+[workspace.lints.clippy]
+allow_attributes = "allow"
+assertions_on_result_states = "warn"
+clone_on_ref_ptr = "warn"
+create_dir = "warn"
+default_trait_access = "allow"
+default_union_representation = "deny"
+empty_drop = "deny"
+empty_enum_variants_with_brackets = "warn"
+empty_structs_with_brackets = "warn"
+error_impl_error = "deny"
+exit = "deny"
+filetype_is_file = "warn"
+format_push_string = "deny"
+get_unwrap = "deny"
+host_endian_bytes = "deny"
+implicit_clone = "deny"
+inline_asm_x86_att_syntax = "deny"
+iter_over_hash_type = "warn"
+let_underscore_must_use = "warn"
+let_underscore_untyped = "deny"
+lossy_float_literal = "deny"
+map_err_ignore = "warn"
+missing_assert_message = "warn"
+missing_errors_doc = "allow"
+mixed_read_write_in_expression = "deny"
+multiple_crate_versions = "warn"
+negative_feature_names = "warn"
+panic = "warn"
+rc_buffer = "deny"
+rc_mutex = "deny"
+redundant_feature_names = "warn"
+redundant_type_annotations = "warn"
+rest_pat_in_fully_bound_structs = "warn"
+same_name_method = "warn"
+semicolon_if_nothing_returned = "allow"
+semicolon_inside_block = "warn"
+std_instead_of_core = "warn"
+string_add = "warn"
+string_lit_chars_any = "warn"
+string_slice = "warn"
+tests_outside_test_module = "deny"
+undocumented_unsafe_blocks = "deny"
+unwrap_used = "warn"
+upper_case_acronyms = "allow"
+verbose_file_reads = "warn"
+wildcard_dependencies = "warn"
+wildcard_enum_match_arm = "deny"
