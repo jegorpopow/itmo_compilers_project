@@ -33,7 +33,8 @@ enum BinaryOperator {
 }
 
 enum Bytecode {
-    Load { loc: Location },                      // push to stack
+    /// push to stack
+    Load { loc: Location },                      
     Store { loc: Location },                     // pop from stack
     Dup,                                         // Duplicate stack top,
     Drop,                                        // Drops the stack top
