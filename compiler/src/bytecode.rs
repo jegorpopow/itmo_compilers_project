@@ -105,7 +105,7 @@ struct Header {
 }
 
 trait Encodable {
-    fn encode(self: &Self) -> Vec<u8>;
+    fn encode(&self) -> Vec<u8>;
 }
 
 impl Encodable for Vec<Bytecode> {
