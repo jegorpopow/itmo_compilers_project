@@ -1,5 +1,5 @@
+///  Variable location and id
 enum Location {
-    // Variable location
     Global(usize),
     Local(usize),
     Argument(usize),
@@ -33,28 +33,85 @@ enum BinaryOperator {
 }
 
 enum Bytecode {
+    /// push int / bool onto stack    
+    IntConst {
+        value: i64,
+    },
+    /// push real onto stack
+    RealConst {
+        value: f64,
+    },
     /// push to stack
-    Load { loc: Location },                      
-    Store { loc: Location },                     // pop from stack
-    Dup,                                         // Duplicate stack top,
-    Drop,                                        // Drops the stack top
-    BinOp { op: BinaryOperator },                // Apply operator to stack top
-    StoreAddress,              // pop address from stack, pop and write refernced value
-    LoadAddress,               // pop address from stack, read and push refernced value
-    AllocRecord { size: u64 }, // Allocate record
-    AllocArray { element_size: u64, size: u64 }, // Allocate array
-    ArraySize,                 // pop array ref from stack, push its size
-    GetIndex,                  // pop array ref and index from stack, push element
-    GetField { field_offset: u64 }, // pop record ref from stack, push its field value
-    Label { id: u64 },         // No-op
-    Jump { label: u64 },       // Non-conditional jump
-    JumpZero { label: u64 },   // Condiditional jump
-    JumpNotZero { label: u64 }, // Conditional jump
-    IntToBool,                 // BoolToInt is no-op, since int and bool have similar reprsentation
-    RealToInt,
-    IntToReal,
-    Call { function_label: u64 },
-    Ret, // returns the stack top value from function
+    Load {
+        loc: Location,
+    },
+    /// pop from stack                 
+    Store {
+        loc: Location,
+    },
+    /// push address to stack
+    AddresOf {
+        loc: Location,
+    },
+    /// duplicate stack top                   
+    Dup,
+    /// drop stack top                                     
+    Drop,
+    /// apply binary operator to stack top                                   
+    BinOp {
+        op: BinaryOperator,
+    },
+    /// pop address from stack, pop and write refernced value               
+    StoreAddress,
+    /// pop address from stack, read and push refernced value             
+    LoadAddress,
+    /// allocate a record, push a reference to stack              
+    AllocRecord {
+        size: u64,
+    }, // TODO: add TypeId ?
+    /// allocate an array, push a reference to stack    
+    AllocArray {
+        element_size: u64,
+        size: u64,
+    }, // TODO: add TypeId ?
+    /// pop array ref from stack, push its size
+    ArraySize, // TODO: add built-in function call
+    /// pop array ref and index from stack, push element               
+    GetIndex,
+    /// pop record ref from stack, push its field value                  
+    GetField {
+        field_offset: u64,
+    },
+    /// no-op
+    Label {
+        id: u64,
+    },
+    /// non-conditional jump         
+    Jump {
+        label: u64,
+    },
+    /// condiditional jump    
+    JumpZero {
+        label: u64,
+    },
+    /// conditional jump
+    JumpNotZero {
+        label: u64,
+    },
+    /// enter function
+    Enter {
+        arguments_count: u64,
+        local_count: u64,
+    },
+    /// leave function, the stack top is a return value
+    Ret,
+    /// call specified function
+    Call {
+        function_label: u64,
+    },
+    IntToBool, // All of it may be just a built-in call
+    RealToInt, // All of it may be just a built-in call
+    IntToReal, // All of it may be just a built-in call
 }
 
 struct TypeId(u32);
@@ -106,7 +163,15 @@ struct Header {
 }
 
 trait Encodable {
-    fn encode(&self) -> Vec<u8>;
+    fn encode(&self) -> Vec<u8> {
+        let mut result = Vec::new();
+        self.enocode_inline(&mut result);
+        result
+    }
+
+    fn enocode_inline(&self, buffer: &mut Vec<u8>) {
+        buffer.extend(self.encode())
+    }
 }
 
 impl Encodable for Vec<Bytecode> {
