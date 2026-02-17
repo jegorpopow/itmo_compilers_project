@@ -1,0 +1,41 @@
+use std::hash::Hash;
+
+#[derive(PartialEq, Eq, Hash)]
+pub enum Keyword {
+    Var,
+    Type,
+    Routine,
+    Array,
+    Record,
+    Integer,
+    Real,
+    Boolean,
+    Is,
+    End,
+    If,
+    Then,
+    Else,
+    In,
+    While,
+    For,
+    Loop,
+    Reverse,
+}
+
+#[derive(PartialEq, Eq, Hash)]
+pub enum Lexem {
+    Identifier(String),
+    IntegerLiteral(String),
+    RealLiteral(String),
+    BoolLiteral(String),
+    Operator(String),
+    Comment(String),
+    Keyword(Keyword),
+    LeftBracket,
+    RightBracket,
+    LeftParenthes,
+    RightParenthes,
+    RightArrow,
+    Assignment,
+    RangeSymbol,
+}

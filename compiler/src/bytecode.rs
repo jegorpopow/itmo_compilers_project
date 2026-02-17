@@ -32,6 +32,8 @@ enum BinaryOperator {
     BoolOr,
 }
 
+struct TypeId(u32);
+
 enum Bytecode {
     /// push int / bool onto stack    
     IntConst {
@@ -109,12 +111,18 @@ enum Bytecode {
     Call {
         function_label: u64,
     },
+    /// Print a value of spe
+    Print {
+        type_id: TypeId,
+    },
+    /// Terminate program
+    Panic {
+        code: u64,
+    },
     IntToBool, // All of it may be just a built-in call
     RealToInt, // All of it may be just a built-in call
     IntToReal, // All of it may be just a built-in call
 }
-
-struct TypeId(u32);
 
 struct RecordRTTI {
     id: TypeId,
