@@ -33,3 +33,7 @@ routine countdown (n: int) is
     print i;
   end;
 end;
+
+routine main() is
+  countdown(5);
+end;
