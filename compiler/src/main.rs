@@ -1,7 +1,7 @@
 mod ast;
 mod bytecode;
-mod types;
 mod lexem;
+mod types;
 
 fn main() {
     println!("Hello, world!");

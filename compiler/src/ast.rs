@@ -1,6 +1,8 @@
-use std::hash::{Hash, Hasher};
 use std::rc::Rc;
 
+use derive_where::derive_where;
+
+#[derive(Debug, Hash, PartialEq, Eq)]
 pub enum BinaryOperator {
     And,
     Or,
@@ -18,26 +20,33 @@ pub enum BinaryOperator {
     Sub,
 }
 
+#[derive(Debug, Hash, PartialEq, Eq)]
 pub struct Identifier {
     name: String,
     id: Option<usize>,
 }
 
+#[derive(Debug, Hash, PartialEq, Eq)]
 pub struct IntegerLiteral {
     repr: String,
     value: i64, // Encloses sign and negation
 }
 
+#[derive(Debug)]
+#[derive_where(Hash, Eq, PartialEq)]
 pub struct RealLiteral {
     repr: String,
+    #[derive_where(skip(EqHashOrd))]
     value: f64, // Encloses sign
 }
 
+#[derive(Debug, Hash, PartialEq, Eq)]
 pub enum BoolLiteral {
     True,
     False,
 }
 
+#[derive(Debug, Hash, PartialEq, Eq)]
 pub enum LvalueExpression {
     Identifier(Identifier),
     Member {
@@ -50,6 +59,7 @@ pub enum LvalueExpression {
     },
 }
 
+#[derive(Debug, Hash, PartialEq, Eq)]
 pub enum Expression {
     LvalueToRvalue(Rc<LvalueExpression>),
     IntegerLiteral(IntegerLiteral),
@@ -68,20 +78,6 @@ pub enum Expression {
     RealToInt(Rc<Expression>),
     IntToBool(Rc<Expression>), // It cannot be expressed as value != 0, since it shoould panic on value out of [0:1]
 }
-
-impl Hash for Expression {
-    fn hash<H: Hasher>(&self, state: &mut H) {
-        unimplemented!("Can it be done with derivings?")
-    }
-}
-
-impl PartialEq for Expression {
-    fn eq(&self, other: &Self) -> bool {
-        unimplemented!("Can it be done with derivings?")
-    }
-}
-
-impl Eq for Expression {}
 
 pub struct SimpleDeclaration {}
 

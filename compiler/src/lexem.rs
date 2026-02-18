@@ -1,5 +1,3 @@
-use std::hash::Hash;
-
 #[derive(PartialEq, Eq, Hash)]
 pub enum Keyword {
     Var,

@@ -1,22 +1,24 @@
 use crate::ast::{Expression, Identifier};
-use std::collections::HashMap;
-use std::hash::{Hash, Hasher};
 use std::rc::Rc;
 
+#[derive(Debug, Hash, PartialEq, Eq)]
 struct FieldDescription {
     name: Identifier,
     t: Rc<Type>,
 }
 
+#[derive(Debug, Hash, PartialEq, Eq)]
 struct RecordDeclaration {
     fields: Vec<FieldDescription>,
 }
 
+#[derive(Debug, Hash, PartialEq, Eq)]
 struct ArrayDescription {
     t: Rc<Type>,
     length: Option<usize>,
 }
 
+#[derive(Debug, Hash, PartialEq, Eq)]
 enum Type {
     Int,
     Real,
@@ -25,20 +27,6 @@ enum Type {
     Record(RecordDeclaration),
     Array(ArrayDescription),
 }
-
-impl Hash for Type {
-    fn hash<H: Hasher>(&self, state: &mut H) {
-        unimplemented!("Can it be done with derivings?")
-    }
-}
-
-impl PartialEq for Type {
-    fn eq(&self, other: &Self) -> bool {
-        unimplemented!("Can it be done with derivings?")
-    }
-}
-
-impl Eq for Type {}
 
 fn is_primtive(t: &Type) -> bool {
     match &t {
@@ -56,19 +44,19 @@ fn infer(expr: &Expression) -> Result<Rc<Type>, TypeInferenceError> {
         Expression::IntegerLiteral(_) => Ok(Rc::new(Type::Int)),
         Expression::RealLiteral(_) => Ok(Rc::new(Type::Real)),
         Expression::BoolLiteral(_) => Ok(Rc::new(Type::Bool)),
-        Expression::Call { callee, args } => unimplemented!("No context lookup yet"),
-        Expression::LvalueToRvalue(inner) => unimplemented!("No context lookup yet"),
-        Expression::Binop { op, lhs, rhs } => unimplemented!("Tricky type conversions"),
-        Expression::BoolToInt(inner) => ensure(expr, &Type::Bool).map(|_| Rc::new(Type::Int)),
-        Expression::RealToInt(inner) => ensure(expr, &Type::Real).map(|_| Rc::new(Type::Int)),
-        Expression::IntToBool(inner) => ensure(expr, &Type::Int).map(|_| Rc::new(Type::Bool)),
+        Expression::Call { callee, args } => todo!("No context lookup yet"),
+        Expression::LvalueToRvalue(inner) => todo!("No context lookup yet"),
+        Expression::Binop { op, lhs, rhs } => todo!("Tricky type conversions"),
+        Expression::BoolToInt(inner) => ensure(expr, &Type::Bool).map(|()| Rc::new(Type::Int)),
+        Expression::RealToInt(inner) => ensure(expr, &Type::Real).map(|()| Rc::new(Type::Int)),
+        Expression::IntToBool(inner) => ensure(expr, &Type::Int).map(|()| Rc::new(Type::Bool)),
     }
 }
 
 fn ensure(expr: &Expression, t: &Type) -> Result<(), TypeInferenceError> {
-    unimplemented!("woof");
+    todo!()
 }
 
-fn convert(expr: Rc<Expression>, source_type: &Type, dest_type: &Type) -> Rc<Expression> {
-    unimplemented!("meow");
+fn convert(expr: &Expression, source_type: &Type, dest_type: &Type) -> Rc<Expression> {
+    todo!()
 }

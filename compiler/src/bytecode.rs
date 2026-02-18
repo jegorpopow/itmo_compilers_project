@@ -35,7 +35,7 @@ enum BinaryOperator {
 struct TypeId(u32);
 
 enum Bytecode {
-    /// push int / bool onto stack    
+    /// push int / bool onto stack
     IntConst {
         value: i64,
     },
@@ -47,7 +47,7 @@ enum Bytecode {
     Load {
         loc: Location,
     },
-    /// pop from stack                 
+    /// pop from stack
     Store {
         loc: Location,
     },
@@ -55,32 +55,32 @@ enum Bytecode {
     AddresOf {
         loc: Location,
     },
-    /// duplicate stack top                   
+    /// duplicate stack top
     Dup,
-    /// drop stack top                                     
+    /// drop stack top
     Drop,
-    /// apply binary operator to stack top                                   
+    /// apply binary operator to stack top
     BinOp {
         op: BinaryOperator,
     },
-    /// pop address from stack, pop and write refernced value               
+    /// pop address from stack, pop and write referenced value
     StoreAddress,
-    /// pop address from stack, read and push refernced value             
+    /// pop address from stack, read and push referenced value
     LoadAddress,
-    /// allocate a record, push a reference to stack              
+    /// allocate a record, push a reference to stack
     AllocRecord {
         size: u64,
     }, // TODO: add TypeId ?
-    /// allocate an array, push a reference to stack    
+    /// allocate an array, push a reference to stack
     AllocArray {
         element_size: u64,
         size: u64,
     }, // TODO: add TypeId ?
     /// pop array ref from stack, push its size
     ArraySize, // TODO: add built-in function call
-    /// pop array ref and index from stack, push element               
+    /// pop array ref and index from stack, push element
     GetIndex,
-    /// pop record ref from stack, push its field value                  
+    /// pop record ref from stack, push its field value
     GetField {
         field_offset: u64,
     },
@@ -88,11 +88,11 @@ enum Bytecode {
     Label {
         id: u64,
     },
-    /// non-conditional jump         
+    /// non-conditional jump
     Jump {
         label: u64,
     },
-    /// condiditional jump    
+    /// conditional jump
     JumpZero {
         label: u64,
     },
@@ -184,24 +184,24 @@ trait Encodable {
 
 impl Encodable for Vec<Bytecode> {
     fn encode(&self) -> Vec<u8> {
-        unimplemented!("meow")
+        todo!()
     }
 }
 
 impl Encodable for RTTI {
     fn encode(&self) -> Vec<u8> {
-        unimplemented!("meow")
+        todo!()
     }
 }
 
 impl Encodable for FunctionTable {
     fn encode(&self) -> Vec<u8> {
-        unimplemented!("meow")
+        todo!()
     }
 }
 
 impl Encodable for Header {
     fn encode(&self) -> Vec<u8> {
-        unimplemented!("meow")
+        todo!()
     }
 }
