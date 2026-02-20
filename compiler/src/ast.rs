@@ -1,6 +1,9 @@
 use std::rc::Rc;
 
-enum BinaryOperator {
+use derive_where::derive_where;
+
+#[derive(Debug, Hash, PartialEq, Eq)]
+pub enum BinaryOperator {
     And,
     Or,
     Xor,
@@ -17,26 +20,34 @@ enum BinaryOperator {
     Sub,
 }
 
-struct Identifier {
+#[derive(Debug, Hash, PartialEq, Eq)]
+pub struct Identifier {
     name: String,
+    id: Option<usize>,
 }
 
-struct IntegerLiteral {
+#[derive(Debug, Hash, PartialEq, Eq)]
+pub struct IntegerLiteral {
     repr: String,
     value: i64, // Encloses sign and negation
 }
 
-struct RealLiteral {
+#[derive(Debug)]
+#[derive_where(Hash, Eq, PartialEq)]
+pub struct RealLiteral {
     repr: String,
+    #[derive_where(skip(EqHashOrd))]
     value: f64, // Encloses sign
 }
 
-enum BoolLiteral {
+#[derive(Debug, Hash, PartialEq, Eq)]
+pub enum BoolLiteral {
     True,
     False,
 }
 
-enum LvalueExpression {
+#[derive(Debug, Hash, PartialEq, Eq)]
+pub enum LvalueExpression {
     Identifier(Identifier),
     Member {
         lhs: Rc<LvalueExpression>,
@@ -48,7 +59,8 @@ enum LvalueExpression {
     },
 }
 
-enum Expression {
+#[derive(Debug, Hash, PartialEq, Eq)]
+pub enum Expression {
     LvalueToRvalue(Rc<LvalueExpression>),
     IntegerLiteral(IntegerLiteral),
     RealLiteral(RealLiteral),
@@ -67,87 +79,23 @@ enum Expression {
     IntToBool(Rc<Expression>), // It cannot be expressed as value != 0, since it shoould panic on value out of [0:1]
 }
 
-struct FieldDeclaration {
-    name: Identifier,
-    t: Rc<Type>,
+pub struct SimpleDeclaration {}
+
+pub enum BlockElement {
+    Stmt(Rc<Statement>),
+    Decl(Rc<SimpleDeclaration>),
 }
 
-struct RecordDeclaration {
-    fields: Vec<FieldDeclaration>,
-}
-
-struct ArrayDeclaration {
-    t: Rc<Type>,
-    length: Option<usize>,
-}
-
-enum Type {
-    Int,
-    Real,
-    Bool,
-    Alias(String),
-    Record(RecordDeclaration),
-    Array(ArrayDeclaration),
-}
-
-fn is_primtive(t: &Type) -> bool {
-    match t {
-        Type::Int | Type::Real | Type::Bool => true,
-        _ => false,
-    }
-}
-
-struct TypeInferenceError {
-    reason: String,
-}
-
-struct TypeCoercionError {
-    reason: String,
-}
-
-fn infer(expr: &Expression) -> Result<Rc<Type>, TypeInferenceError> {
-    match expr {
-        Expression::IntegerLiteral(_) => Ok(Rc::new(Type::Int)),
-        Expression::RealLiteral(_) => Ok(Rc::new(Type::Real)),
-        Expression::BoolLiteral(_) => Ok(Rc::new(Type::Bool)),
-        Expression::Call { callee, args } => unimplemented!("No context lookup yet"),
-        Expression::LvalueToRvalue(inner) => unimplemented!("No context lookup yet"),
-        Expression::Binop { op, lhs, rhs } => unimplemented!("Tricky type conversions"),
-        Expression::BoolToInt(inner) => Ok(Rc::new(Type::Int)), // Type correctness will probably be checked elsewhere
-        Expression::RealToInt(inner) => Ok(Rc::new(Type::Int)),
-        Expression::IntToBool(inner) => Ok(Rc::new(Type::Bool)),
-    }
-}
-
-fn coerce(
-    expr: Rc<Expression>,
-    source_type: &Type,
-    dest_type: &Type,
-) -> Result<Rc<Expression>, TypeCoercionError> {
-    unimplemented!("meow");
-}
-
-fn typecheck(expr: &Expression) -> Option<TypeInferenceError> {
-    unimplemented!("woof");
-}
-
-struct SimpleDeclaration {}
-
-enum BlockElement {
-    stmt(Rc<Statement>),
-    decl(Rc<SimpleDeclaration>),
-}
-
-struct Block {
+pub struct Block {
     elements: Vec<BlockElement>,
 }
 
-enum LoopOrder {
+pub enum LoopOrder {
     Direct,
     Reversed,
 }
 
-enum Statement {
+pub enum Statement {
     Assignment {
         lhs: Identifier,
         rhs: Rc<Expression>,
