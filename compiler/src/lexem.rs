@@ -36,7 +36,7 @@ pub enum Lexem {
     RightArrow,
     Assignment,
     RangeSymbol,
-    Dot, 
-    Comma, 
+    Dot,
+    Comma,
     Semicolon,
 }

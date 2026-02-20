@@ -1,3 +1,5 @@
+#![allow(unused, unreachable_pub)]
+
 mod ast;
 mod bytecode;
 mod lexem;
