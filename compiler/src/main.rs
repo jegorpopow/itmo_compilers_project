@@ -2,7 +2,7 @@
 
 mod ast;
 mod bytecode;
-mod lexem;
+mod tokens;
 mod types;
 
 fn main() {
