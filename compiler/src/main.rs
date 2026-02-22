@@ -1,11 +1,11 @@
 #![allow(unused, unreachable_pub)]
 
-use ::std::env;
-use std::error::Error;
+use core::error::Error;
+use std::env;
 use std::fs;
 use std::process::ExitCode;
 
-use crate::lexer::tokenise;
+use crate::lexer::tokenize;
 use crate::tokens::dump_tokens;
 
 mod ast;
@@ -24,8 +24,8 @@ fn main() -> ExitCode {
         return ExitCode::from(1);
     }
 
-    let source: String = fs::read_to_string(args[1].clone()).unwrap();
-    let tokens = tokenise(&source).unwrap();
+    let source: String = fs::read_to_string(&args[1]).unwrap();
+    let tokens = tokenize(&source).unwrap();
     println!("{}", dump_tokens(&tokens));
-    return ExitCode::SUCCESS;
+    ExitCode::SUCCESS
 }

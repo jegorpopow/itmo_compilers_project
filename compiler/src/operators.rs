@@ -1,6 +1,4 @@
-use std::fmt;
-
-#[derive(PartialEq, Eq, Hash, fmt::Debug, Clone)]
+#[derive(PartialEq, Eq, Hash, Debug, Clone)]
 pub enum SyntacticOperator {
     Add,
     Sub, // Either binary or unary one
@@ -19,7 +17,7 @@ pub enum SyntacticOperator {
     Neg,
 }
 
-#[derive(PartialEq, Eq, Hash, fmt::Debug, Clone)]
+#[derive(PartialEq, Eq, Hash, Debug, Clone)]
 pub enum SemanticBinaryOperator {
     RealAdd,
     RealSub,
@@ -47,7 +45,7 @@ pub enum SemanticBinaryOperator {
     BoolOr,
 }
 
-#[derive(PartialEq, Eq, Hash, fmt::Debug, Clone)]
+#[derive(PartialEq, Eq, Hash, Debug, Clone)]
 pub enum SemanticUnaryOperator {
     IntNeg,
     RealNeg,

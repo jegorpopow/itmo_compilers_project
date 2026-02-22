@@ -28,7 +28,7 @@ enum Type {
     Array(ArrayDescription),
 }
 
-fn is_primtive(t: &Type) -> bool {
+fn is_primitive(t: &Type) -> bool {
     match &t {
         Type::Int | Type::Real | Type::Bool => true,
         _ => false,

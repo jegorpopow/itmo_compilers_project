@@ -1,18 +1,17 @@
+use core::ptr;
 use std::collections::HashMap;
-use std::ptr;
 
 use crate::operators::SyntacticOperator;
 use crate::tokens::*;
 
-trait ImmutableIterator<'a>: Sized + Clone
-{
-    fn from_index(string: &'a String, n: usize) -> Self;
+trait ImmutableIterator<'a>: Sized + Clone {
+    fn from_index(string: &'a str, n: usize) -> Self;
     fn slice_to_string(start: &Self, end: &Self) -> String;
     fn is_end(&self) -> bool;
     fn next(&self) -> Option<(char, Self)>;
 
-    fn from_beginning(string: &'a String) -> Self {
-        return Self::from_index(string, 0);
+    fn from_beginning(string: &'a str) -> Self {
+        Self::from_index(string, 0)
     }
 
     fn lookup(&self) -> Option<char> {
@@ -47,7 +46,7 @@ trait ImmutableIterator<'a>: Sized + Clone
 
     fn take_while(&self, predicate: impl Fn(char) -> bool) -> (String, Self) {
         let mut copy = self.clone();
-        let mut result: String = String::new();
+        let mut result = String::new();
 
         while let Some((ch, rest)) = copy.next() {
             if !predicate(ch) {
@@ -63,7 +62,7 @@ trait ImmutableIterator<'a>: Sized + Clone
         let mut expected = value.chars();
         let mut copy = self.clone();
 
-        while let Some(expected_char) = expected.next() {
+        for expected_char in expected {
             if let Some((ch, rest)) = copy.next() {
                 if ch != expected_char {
                     return None;
@@ -86,15 +85,15 @@ struct IndexIterator<'a> {
 }
 
 impl<'a> ImmutableIterator<'a> for IndexIterator<'a> {
-    fn from_index(string: &'a String, n: usize) -> IndexIterator<'a> {
-        return IndexIterator {
+    fn from_index(string: &'a str, n: usize) -> IndexIterator<'a> {
+        IndexIterator {
             underlying: string,
             index: string.char_indices().nth(n).map(|(idx, _)| idx).unwrap(),
-        };
+        }
     }
 
     fn slice_to_string(start: &IndexIterator<'_>, end: &IndexIterator<'_>) -> String {
-        assert!(ptr::eq(start.underlying, end.underlying));
+        assert_eq!(start.underlying.as_ptr(), end.underlying.as_ptr());
         start.underlying[start.index..end.index].to_owned()
     }
 
@@ -133,7 +132,7 @@ fn iterators_to_extent(start: &IndexIterator<'_>, end: &IndexIterator<'_>) -> Ex
 }
 
 /// Processes all the identifier-like lexemes (identifiers, keywords, bool literals and some operators)
-fn possible_identifier_value(lexeme: &String) -> TokenValue {
+fn possible_identifier_value(lexeme: &str) -> TokenValue {
     static KNOWN_TOKENS: std::sync::LazyLock<HashMap<&str, TokenValue>> =
         std::sync::LazyLock::new(|| {
             [
@@ -170,16 +169,16 @@ fn possible_identifier_value(lexeme: &String) -> TokenValue {
         });
 
     // TODO: add more cases (NaN, Infinity, ...)
-    match KNOWN_TOKENS.get(lexeme.as_str()) {
+    match KNOWN_TOKENS.get(lexeme) {
         Some(token_value) => token_value.clone(),
         None => TokenValue::Identifier(Identifier {
-            name: lexeme.clone(),
+            name: lexeme.to_owned(),
         }),
     }
 }
 
-fn known_symbolic_tokens<'a>(start: IndexIterator<'a>) -> Option<(TokenValue, IndexIterator<'a>)> {
-    static KNOWN_TOKENS: &'static [(&'static str, TokenValue)] = &[
+fn known_symbolic_tokens(start: IndexIterator<'_>) -> Option<(TokenValue, IndexIterator<'_>)> {
+    static KNOWN_TOKENS: &[(&str, TokenValue)] = &[
         (":=", TokenValue::Assignment),
         ("..", TokenValue::RangeSymbol),
         ("/=", TokenValue::Operator(SyntacticOperator::Neq)),
@@ -204,7 +203,7 @@ fn known_symbolic_tokens<'a>(start: IndexIterator<'a>) -> Option<(TokenValue, In
     ];
 
     for (pattern, token) in KNOWN_TOKENS {
-        if let Some(end) = start.stars_with(*pattern) {
+        if let Some(end) = start.stars_with(pattern) {
             return Some((token.clone(), end));
         }
     }
@@ -212,13 +211,13 @@ fn known_symbolic_tokens<'a>(start: IndexIterator<'a>) -> Option<(TokenValue, In
     None
 }
 
-fn real_literal_from_represntation(float_str: &str) -> TokenValue {
+fn real_literal_from_representation(float_str: &str) -> TokenValue {
     TokenValue::RealLiteral(RealLiteral {
         value: float_str.parse().unwrap(),
     })
 }
 
-fn integer_literal_from_represntation(int_str: &str) -> TokenValue {
+fn integer_literal_from_representation(int_str: &str) -> TokenValue {
     TokenValue::IntegerLiteral(IntegerLiteral {
         value: int_str.parse().unwrap(),
     })
@@ -230,7 +229,7 @@ pub struct LexerError {
     pub reason: String,
 }
 
-pub fn tokenise(source: &String) -> Result<Vec<Token>, LexerError> {
+pub fn tokenize(source: &str) -> Result<Vec<Token>, LexerError> {
     let mut begin = IndexIterator::from_beginning(source);
     let mut result = Vec::new();
 
@@ -261,7 +260,7 @@ pub fn tokenise(source: &String) -> Result<Vec<Token>, LexerError> {
                 let rest = rest.skip_n(1).unwrap();
                 let (_, end) = begin.take_while(|ch| ch.is_ascii_digit());
                 let representation = ImmutableIterator::slice_to_string(&begin, &end);
-                let token_value = real_literal_from_represntation(&representation);
+                let token_value = real_literal_from_representation(&representation);
                 result.push(Token {
                     extent: iterators_to_extent(&begin, &end),
                     lexeme: representation,
@@ -270,7 +269,7 @@ pub fn tokenise(source: &String) -> Result<Vec<Token>, LexerError> {
                 begin = end;
             } else {
                 let representation = ImmutableIterator::slice_to_string(&begin, &rest);
-                let token_value = integer_literal_from_represntation(&representation);
+                let token_value = integer_literal_from_representation(&representation);
                 result.push(Token {
                     extent: iterators_to_extent(&begin, &rest),
                     lexeme: representation,
@@ -284,14 +283,14 @@ pub fn tokenise(source: &String) -> Result<Vec<Token>, LexerError> {
                 None => {
                     return Err(LexerError {
                         position: begin.index + 1,
-                        reason: "Dot can not be the last character of programm".to_owned(),
+                        reason: "Dot can not be the last character of program".to_owned(),
                     });
                 }
                 Some((second_char, rest)) => {
                     if second_char.is_ascii_digit() {
                         let (_, end) = rest.take_while(|ch| ch.is_ascii_digit());
                         let representation = ImmutableIterator::slice_to_string(&begin, &end);
-                        let token_value = real_literal_from_represntation(&representation);
+                        let token_value = real_literal_from_representation(&representation);
                         result.push(Token {
                             extent: iterators_to_extent(&begin, &end),
                             lexeme: representation,
@@ -309,7 +308,7 @@ pub fn tokenise(source: &String) -> Result<Vec<Token>, LexerError> {
                     }
                 }
             }
-        } else if let Some((token_value, end)) = known_symbolic_tokens(begin.clone()) {
+        } else if let Some((token_value, end)) = known_symbolic_tokens(begin) {
             result.push(Token {
                 extent: iterators_to_extent(&begin, &end),
                 lexeme: ImmutableIterator::slice_to_string(&begin, &end),
@@ -319,7 +318,7 @@ pub fn tokenise(source: &String) -> Result<Vec<Token>, LexerError> {
         } else {
             return Err(LexerError {
                 position: begin.index,
-                reason: format!("Unexpected symbol `{}`", first_char),
+                reason: format!("Unexpected symbol `{first_char}`"),
             });
         }
     }

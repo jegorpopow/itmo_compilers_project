@@ -55,7 +55,7 @@ pub struct Comment {
 impl Comment {
     fn shortened(&self) -> String {
         if self.value.len() <= 40 {
-            self.value.to_owned()
+            self.value.clone()
         } else {
             self.value[0..40].to_owned() + " ..."
         }
@@ -88,17 +88,17 @@ impl fmt::Display for TokenValue {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
             TokenValue::Identifier(identifier) => write!(f, "IDENTIFIER({})", identifier.name),
-            TokenValue::Keyword(keyword) => write!(f, "KEYWORD({:?})", keyword),
-            TokenValue::IntegerLiteral(integer_literal) => {
-                write!(f, "INTEGER LITERAL({})", integer_literal.value)
+            TokenValue::Keyword(keyword) => write!(f, "KEYWORD({keyword:?})"),
+            TokenValue::IntegerLiteral(IntegerLiteral { value }) => {
+                write!(f, "INTEGER LITERAL({value})")
             }
-            TokenValue::RealLiteral(real_literal) => {
-                write!(f, "REAL LITERAL({})", real_literal.value)
+            TokenValue::RealLiteral(RealLiteral { value }) => {
+                write!(f, "REAL LITERAL({value})")
             }
-            TokenValue::BoolLiteral(bool_literal) => {
-                write!(f, "BOOLEAN LITERAL({})", bool_literal.value)
+            TokenValue::BoolLiteral(BoolLiteral { value }) => {
+                write!(f, "BOOLEAN LITERAL({value})")
             }
-            TokenValue::Operator(operator) => write!(f, "OPERATOR({:?})", operator),
+            TokenValue::Operator(operator) => write!(f, "OPERATOR({operator:?})",),
             TokenValue::Comment(comment) => write!(f, "COMMENT({})", comment.shortened()),
             TokenValue::LeftBracket => write!(f, "LEFT BRACKET"),
             TokenValue::RightBracket => write!(f, "RIGHT BRACKET"),
@@ -123,7 +123,8 @@ pub struct Extent {
 
 impl fmt::Display for Extent {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{}:{}", self.start, self.end)
+        let &Self { start, end } = self;
+        write!(f, "{start}:{end}")
     }
 }
 
@@ -135,14 +136,19 @@ pub struct Token {
 
 impl fmt::Display for Token {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "`{}` @ {} is {}", self.lexeme, self.extent, self.value)
+        let Self {
+            extent,
+            lexeme,
+            value,
+        } = self;
+        write!(f, "`{lexeme}` @ {extent} is {value}")
     }
 }
 
-pub fn dump_tokens(tokens: &Vec<Token>) -> String {
+pub fn dump_tokens(tokens: &[Token]) -> String {
     tokens
         .iter()
-        .map(|token| token.to_string())
+        .map(ToString::to_string)
         .collect::<Vec<String>>()
         .join("\n")
 }
