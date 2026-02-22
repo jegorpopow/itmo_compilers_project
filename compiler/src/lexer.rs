@@ -6,6 +6,9 @@ use phf::phf_map;
 use crate::operators::SyntacticOperator;
 use crate::tokens::*;
 
+#[cfg(test)]
+mod tests;
+
 trait ImmutableIterator<'a>: Sized + Clone {
     fn from_index(string: &'a str, n: usize) -> Self;
     fn slice_to_string(start: &Self, end: &Self) -> String;
