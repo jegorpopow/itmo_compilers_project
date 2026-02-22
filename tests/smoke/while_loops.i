@@ -1,4 +1,4 @@
-routine collatz(n : int) : int is
+routine collatz(n : integer) : integer is
   var steps is 0;
 
   while n /= 1 loop 

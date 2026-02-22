@@ -1,4 +1,4 @@
-routine add_one(n : int) : int is
+routine add_one(n : integer) : integer is
   return n + 1;
 end;
 

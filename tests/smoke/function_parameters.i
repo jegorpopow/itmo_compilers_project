@@ -1,4 +1,4 @@
-routine a_plus_b (a : int, b : int) is
+routine a_plus_b (a : integer, b : integer) is
   print a + b;
 end;
 

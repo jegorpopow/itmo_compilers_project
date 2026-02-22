@@ -144,9 +144,6 @@ fn possible_identifier_value(lexeme: &str) -> TokenValue {
         "routine" => TokenValue::Keyword(Keyword::Routine),
         "array" => TokenValue::Keyword(Keyword::Array),
         "record" => TokenValue::Keyword(Keyword::Record),
-        "integer" => TokenValue::Keyword(Keyword::Integer),
-        "real" => TokenValue::Keyword(Keyword::Real),
-        "boolean" => TokenValue::Keyword(Keyword::Boolean),
         "is" => TokenValue::Keyword(Keyword::Is),
         "end" => TokenValue::Keyword(Keyword::End),
         "if" => TokenValue::Keyword(Keyword::If),
@@ -163,6 +160,10 @@ fn possible_identifier_value(lexeme: &str) -> TokenValue {
         "not" => TokenValue::Operator(SyntacticOperator::Neg),
         "true" => TokenValue::BoolLiteral(BoolLiteral { value: true }),
         "false" => TokenValue::BoolLiteral(BoolLiteral { value: false }),
+        "integer" => TokenValue::BuiltinTypename(BuiltinTypename::Integer),
+        "real" => TokenValue::BuiltinTypename(BuiltinTypename::Real),
+        "boolean" => TokenValue::BuiltinTypename(BuiltinTypename::Boolean),
+        "NaN" => TokenValue::RealLiteral(RealLiteral { value: f64::NAN }),
     };
 
     // TODO: add more cases (NaN, Infinity, ...)
