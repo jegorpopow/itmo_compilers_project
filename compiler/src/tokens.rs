@@ -139,6 +139,10 @@ impl fmt::Display for Token {
     }
 }
 
-pub fn dump_tokens(tokens : &Vec<Token>) -> String {
-    tokens.iter().map(|token| token.to_string()).collect::<Vec<String>>().join("\n")
+pub fn dump_tokens(tokens: &Vec<Token>) -> String {
+    tokens
+        .iter()
+        .map(|token| token.to_string())
+        .collect::<Vec<String>>()
+        .join("\n")
 }

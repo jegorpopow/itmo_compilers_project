@@ -53,4 +53,3 @@ pub enum SemanticUnaryOperator {
     RealNeg,
     BoolNeg,
 }
-
