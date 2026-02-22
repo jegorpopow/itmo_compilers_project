@@ -81,7 +81,7 @@ trait ImmutableIterator<'a>: Sized + Clone
 // TODO: rewrite with Chars<'a> and its .clone() method
 #[derive(Clone, Copy)]
 struct IndexIterator<'a> {
-    underlying: &'a String,
+    underlying: &'a str,
     index: usize,
 }
 
