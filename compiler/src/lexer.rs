@@ -4,10 +4,7 @@ use std::ptr;
 use crate::operators::SyntacticOperator;
 use crate::tokens::*;
 
-trait ImmutableIterator<'a>
-where
-    Self: Sized,
-    Self: Clone,
+trait ImmutableIterator<'a>: Sized + Clone
 {
     fn from_index(string: &'a String, n: usize) -> Self;
     fn slice_to_string(start: &Self, end: &Self) -> String;
