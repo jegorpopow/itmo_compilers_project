@@ -1,6 +1,8 @@
 use core::ptr;
 use std::collections::HashMap;
 
+use phf::phf_map;
+
 use crate::operators::SyntacticOperator;
 use crate::tokens::*;
 
@@ -133,40 +135,32 @@ fn iterators_to_extent(start: &IndexIterator<'_>, end: &IndexIterator<'_>) -> Ex
 
 /// Processes all the identifier-like lexemes (identifiers, keywords, bool literals and some operators)
 fn possible_identifier_value(lexeme: &str) -> TokenValue {
-    static KNOWN_TOKENS: std::sync::LazyLock<HashMap<&str, TokenValue>> =
-        std::sync::LazyLock::new(|| {
-            [
-                ("var", TokenValue::Keyword(Keyword::Var)),
-                ("type", TokenValue::Keyword(Keyword::Type)),
-                ("routine", TokenValue::Keyword(Keyword::Routine)),
-                ("array", TokenValue::Keyword(Keyword::Array)),
-                ("record", TokenValue::Keyword(Keyword::Record)),
-                ("integer", TokenValue::Keyword(Keyword::Integer)),
-                ("real", TokenValue::Keyword(Keyword::Real)),
-                ("boolean", TokenValue::Keyword(Keyword::Boolean)),
-                ("is", TokenValue::Keyword(Keyword::Is)),
-                ("end", TokenValue::Keyword(Keyword::End)),
-                ("if", TokenValue::Keyword(Keyword::If)),
-                ("then", TokenValue::Keyword(Keyword::Then)),
-                ("else", TokenValue::Keyword(Keyword::Else)),
-                ("in", TokenValue::Keyword(Keyword::In)),
-                ("while", TokenValue::Keyword(Keyword::While)),
-                ("for", TokenValue::Keyword(Keyword::For)),
-                ("loop", TokenValue::Keyword(Keyword::Loop)),
-                ("reverse", TokenValue::Keyword(Keyword::Reverse)),
-                ("and", TokenValue::Operator(SyntacticOperator::And)),
-                ("or", TokenValue::Operator(SyntacticOperator::Or)),
-                ("xor", TokenValue::Operator(SyntacticOperator::Xor)),
-                ("not", TokenValue::Operator(SyntacticOperator::Neg)),
-                ("true", TokenValue::BoolLiteral(BoolLiteral { value: true })),
-                (
-                    "false",
-                    TokenValue::BoolLiteral(BoolLiteral { value: false }),
-                ),
-            ]
-            .into_iter()
-            .collect::<HashMap<&str, TokenValue>>()
-        });
+    static KNOWN_TOKENS: phf::Map<&str, TokenValue> = phf_map! {
+        "var" => TokenValue::Keyword(Keyword::Var),
+        "type" => TokenValue::Keyword(Keyword::Type),
+        "routine" => TokenValue::Keyword(Keyword::Routine),
+        "array" => TokenValue::Keyword(Keyword::Array),
+        "record" => TokenValue::Keyword(Keyword::Record),
+        "integer" => TokenValue::Keyword(Keyword::Integer),
+        "real" => TokenValue::Keyword(Keyword::Real),
+        "boolean" => TokenValue::Keyword(Keyword::Boolean),
+        "is" => TokenValue::Keyword(Keyword::Is),
+        "end" => TokenValue::Keyword(Keyword::End),
+        "if" => TokenValue::Keyword(Keyword::If),
+        "then" => TokenValue::Keyword(Keyword::Then),
+        "else" => TokenValue::Keyword(Keyword::Else),
+        "in" => TokenValue::Keyword(Keyword::In),
+        "while" => TokenValue::Keyword(Keyword::While),
+        "for" => TokenValue::Keyword(Keyword::For),
+        "loop" => TokenValue::Keyword(Keyword::Loop),
+        "reverse" => TokenValue::Keyword(Keyword::Reverse),
+        "and" => TokenValue::Operator(SyntacticOperator::And),
+        "or" => TokenValue::Operator(SyntacticOperator::Or),
+        "xor" => TokenValue::Operator(SyntacticOperator::Xor),
+        "not" => TokenValue::Operator(SyntacticOperator::Neg),
+        "true" => TokenValue::BoolLiteral(BoolLiteral { value: true }),
+        "false" => TokenValue::BoolLiteral(BoolLiteral { value: false }),
+    };
 
     // TODO: add more cases (NaN, Infinity, ...)
     match KNOWN_TOKENS.get(lexeme) {
