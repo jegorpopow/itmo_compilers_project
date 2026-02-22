@@ -1,35 +1,10 @@
+use crate::operators::{SemanticBinaryOperator, SemanticUnaryOperator};
+
 ///  Variable location and id
 enum Location {
     Global(usize),
     Local(usize),
     Argument(usize),
-}
-
-enum BinaryOperator {
-    RealAdd,
-    RealSub,
-    RealMul,
-    RealDiv,
-    RealLe,
-    RealLg,
-    RealGt,
-    RealGe,
-    RealEq,
-    RealNeq,
-    IntAdd,
-    IntSub,
-    IntMul,
-    IntDiv,
-    IntMod,
-    IntLe,
-    IntLg,
-    IntGt,
-    IntGe,
-    IntEq,
-    IntNeq,
-    BoolAnd,
-    BoolXor,
-    BoolOr,
 }
 
 struct TypeId(u32);
@@ -61,7 +36,10 @@ enum Bytecode {
     Drop,
     /// apply binary operator to stack top
     BinOp {
-        op: BinaryOperator,
+        op: SemanticBinaryOperator,
+    },
+    UnOp {
+        op: SemanticUnaryOperator,
     },
     /// pop address from stack, pop and write referenced value
     StoreAddress,
