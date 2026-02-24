@@ -1,5 +1,5 @@
 routine main() is
-  var i : int;
+  var i : integer;
   var r : real;
   var b : boolean;
   

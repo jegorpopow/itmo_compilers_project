@@ -2,12 +2,12 @@ OK
 `type` @ 0:4 is KEYWORD(Type)
 `kilometers` @ 5:15 is IDENTIFIER(kilometers)
 `is` @ 16:18 is KEYWORD(Is)
-`real` @ 19:23 is KEYWORD(Real)
+`real` @ 19:23 is TYPENAME(Real)
 `;` @ 23:24 is SEMICOLON
 `type` @ 25:29 is KEYWORD(Type)
 `miles` @ 30:35 is IDENTIFIER(miles)
 `is` @ 36:38 is KEYWORD(Is)
-`real` @ 39:43 is KEYWORD(Real)
+`real` @ 39:43 is TYPENAME(Real)
 `;` @ 43:44 is SEMICOLON
 `routine` @ 47:54 is KEYWORD(Routine)
 `meow` @ 55:59 is IDENTIFIER(meow)
@@ -32,9 +32,7 @@ OK
 `:` @ 128:129 is COLON
 `kilometers` @ 130:140 is IDENTIFIER(kilometers)
 `is` @ 141:143 is KEYWORD(Is)
-`10` @ 144:146 is REAL LITERAL(10)
-`.` @ 146:147 is DOT
-`0` @ 147:148 is INTEGER LITERAL(0)
+`10.0` @ 144:148 is REAL LITERAL(10)
 `;` @ 148:149 is SEMICOLON
 `var` @ 152:155 is KEYWORD(Var)
 `result` @ 156:162 is IDENTIFIER(result)

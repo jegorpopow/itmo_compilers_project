@@ -6,12 +6,12 @@ OK
 `var` @ 24:27 is KEYWORD(Var)
 `x` @ 28:29 is IDENTIFIER(x)
 `is` @ 30:32 is KEYWORD(Is)
-`real` @ 33:37 is KEYWORD(Real)
+`real` @ 33:37 is TYPENAME(Real)
 `;` @ 37:38 is SEMICOLON
 `car` @ 41:44 is IDENTIFIER(car)
 `y` @ 45:46 is IDENTIFIER(y)
 `is` @ 47:49 is KEYWORD(Is)
-`real` @ 50:54 is KEYWORD(Real)
+`real` @ 50:54 is TYPENAME(Real)
 `;` @ 54:55 is SEMICOLON
 `end` @ 56:59 is KEYWORD(End)
 `;` @ 59:60 is SEMICOLON
@@ -29,24 +29,22 @@ OK
 `var` @ 104:107 is KEYWORD(Var)
 `EPS` @ 108:111 is IDENTIFIER(EPS)
 `=` @ 112:113 is OPERATOR(Eq)
-`0` @ 114:115 is REAL LITERAL(0)
-`.` @ 115:116 is DOT
-`0000001` @ 116:123 is INTEGER LITERAL(1)
+`0.0000001` @ 114:123 is REAL LITERAL(0.0000001)
 `;` @ 123:124 is SEMICOLON
 `routine` @ 126:133 is KEYWORD(Routine)
 `approximately_eq` @ 134:150 is IDENTIFIER(approximately_eq)
 `(` @ 150:151 is LEFT PARENTHESIS
 `a` @ 151:152 is IDENTIFIER(a)
 `:` @ 153:154 is COLON
-`real` @ 155:159 is KEYWORD(Real)
+`real` @ 155:159 is TYPENAME(Real)
 `,` @ 159:160 is COMMA
 `b` @ 161:162 is IDENTIFIER(b)
 `:` @ 163:164 is COLON
-`real` @ 165:169 is KEYWORD(Real)
+`real` @ 165:169 is TYPENAME(Real)
 `,` @ 169:170 is COMMA
 `eps` @ 171:174 is IDENTIFIER(eps)
 `:` @ 175:176 is COLON
-`real` @ 177:181 is KEYWORD(Real)
+`real` @ 177:181 is TYPENAME(Real)
 `)` @ 181:182 is RIGHT PARENTHESIS
 `=` @ 183:184 is OPERATOR(Eq)
 `>` @ 184:185 is OPERATOR(Gt)
@@ -78,7 +76,7 @@ OK
 `point` @ 262:267 is IDENTIFIER(point)
 `)` @ 267:268 is RIGHT PARENTHESIS
 `:` @ 269:270 is COLON
-`real` @ 271:275 is KEYWORD(Real)
+`real` @ 271:275 is TYPENAME(Real)
 `is` @ 276:278 is KEYWORD(Is)
 `return` @ 282:288 is IDENTIFIER(return)
 `(` @ 289:290 is LEFT PARENTHESIS
@@ -281,9 +279,7 @@ OK
 `.` @ 801:802 is DOT
 `x` @ 802:803 is IDENTIFIER(x)
 `:=` @ 804:806 is ASSIGNMENT OPERATOR
-`0` @ 807:808 is REAL LITERAL(0)
-`.` @ 808:809 is DOT
-`0` @ 809:810 is INTEGER LITERAL(0)
+`0.0` @ 807:810 is REAL LITERAL(0)
 `;` @ 810:811 is SEMICOLON
 `t` @ 814:815 is IDENTIFIER(t)
 `[` @ 815:816 is LEFT BRACKET
@@ -292,9 +288,7 @@ OK
 `.` @ 818:819 is DOT
 `y` @ 819:820 is IDENTIFIER(y)
 `:=` @ 821:823 is ASSIGNMENT OPERATOR
-`0` @ 824:825 is REAL LITERAL(0)
-`.` @ 825:826 is DOT
-`0` @ 826:827 is INTEGER LITERAL(0)
+`0.0` @ 824:827 is REAL LITERAL(0)
 `;` @ 827:828 is SEMICOLON
 `t` @ 831:832 is IDENTIFIER(t)
 `[` @ 832:833 is LEFT BRACKET
@@ -303,9 +297,7 @@ OK
 `.` @ 835:836 is DOT
 `x` @ 836:837 is IDENTIFIER(x)
 `:=` @ 838:840 is ASSIGNMENT OPERATOR
-`3` @ 841:842 is REAL LITERAL(3)
-`.` @ 842:843 is DOT
-`0` @ 843:844 is INTEGER LITERAL(0)
+`3.0` @ 841:844 is REAL LITERAL(3)
 `;` @ 844:845 is SEMICOLON
 `t` @ 848:849 is IDENTIFIER(t)
 `[` @ 849:850 is LEFT BRACKET
@@ -314,9 +306,7 @@ OK
 `.` @ 852:853 is DOT
 `y` @ 853:854 is IDENTIFIER(y)
 `:=` @ 855:857 is ASSIGNMENT OPERATOR
-`0` @ 858:859 is REAL LITERAL(0)
-`.` @ 859:860 is DOT
-`0` @ 860:861 is INTEGER LITERAL(0)
+`0.0` @ 858:861 is REAL LITERAL(0)
 `;` @ 861:862 is SEMICOLON
 `t` @ 865:866 is IDENTIFIER(t)
 `[` @ 866:867 is LEFT BRACKET
@@ -325,9 +315,7 @@ OK
 `.` @ 869:870 is DOT
 `x` @ 870:871 is IDENTIFIER(x)
 `:=` @ 872:874 is ASSIGNMENT OPERATOR
-`0` @ 875:876 is REAL LITERAL(0)
-`.` @ 876:877 is DOT
-`0` @ 877:878 is INTEGER LITERAL(0)
+`0.0` @ 875:878 is REAL LITERAL(0)
 `;` @ 878:879 is SEMICOLON
 `t` @ 882:883 is IDENTIFIER(t)
 `[` @ 883:884 is LEFT BRACKET
@@ -336,9 +324,7 @@ OK
 `.` @ 886:887 is DOT
 `y` @ 887:888 is IDENTIFIER(y)
 `:=` @ 889:891 is ASSIGNMENT OPERATOR
-`4` @ 892:893 is REAL LITERAL(4)
-`.` @ 893:894 is DOT
-`0` @ 894:895 is INTEGER LITERAL(0)
+`4.0` @ 892:895 is REAL LITERAL(4)
 `;` @ 895:896 is SEMICOLON
 `print` @ 899:904 is IDENTIFIER(print)
 `is_right` @ 905:913 is IDENTIFIER(is_right)

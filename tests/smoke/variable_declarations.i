@@ -1,6 +1,6 @@
-var a : int is 0;
+var a : integer is 0;
 var b is 1.5;
-var c is int;
+var c is integer;
 
 
 routine main () is

@@ -7,12 +7,12 @@ OK
 `var` @ 44:47 is KEYWORD(Var)
 `x` @ 48:49 is IDENTIFIER(x)
 `is` @ 50:52 is KEYWORD(Is)
-`real` @ 53:57 is KEYWORD(Real)
+`real` @ 53:57 is TYPENAME(Real)
 `;` @ 57:58 is SEMICOLON
 `car` @ 61:64 is IDENTIFIER(car)
 `y` @ 65:66 is IDENTIFIER(y)
 `is` @ 67:69 is KEYWORD(Is)
-`real` @ 70:74 is KEYWORD(Real)
+`real` @ 70:74 is TYPENAME(Real)
 `;` @ 74:75 is SEMICOLON
 `end` @ 76:79 is KEYWORD(End)
 `;` @ 79:80 is SEMICOLON
@@ -21,11 +21,11 @@ OK
 `(` @ 99:100 is LEFT PARENTHESIS
 `x` @ 100:101 is IDENTIFIER(x)
 `:` @ 102:103 is COLON
-`real` @ 104:108 is KEYWORD(Real)
+`real` @ 104:108 is TYPENAME(Real)
 `,` @ 108:109 is COMMA
 `y` @ 110:111 is IDENTIFIER(y)
 `:` @ 112:113 is COLON
-`real` @ 114:118 is KEYWORD(Real)
+`real` @ 114:118 is TYPENAME(Real)
 `)` @ 118:119 is RIGHT PARENTHESIS
 `:` @ 120:121 is COLON
 `point` @ 122:127 is IDENTIFIER(point)
@@ -64,7 +64,7 @@ OK
 `point` @ 255:260 is IDENTIFIER(point)
 `)` @ 260:261 is RIGHT PARENTHESIS
 `:` @ 262:263 is COLON
-`real` @ 264:268 is KEYWORD(Real)
+`real` @ 264:268 is TYPENAME(Real)
 `is` @ 269:271 is KEYWORD(Is)
 `return` @ 275:281 is IDENTIFIER(return)
 `(` @ 282:283 is LEFT PARENTHESIS
@@ -159,13 +159,9 @@ OK
 `is` @ 472:474 is KEYWORD(Is)
 `point_of` @ 475:483 is IDENTIFIER(point_of)
 `(` @ 483:484 is LEFT PARENTHESIS
-`0` @ 484:485 is REAL LITERAL(0)
-`.` @ 485:486 is DOT
-`0` @ 486:487 is INTEGER LITERAL(0)
+`0.0` @ 484:487 is REAL LITERAL(0)
 `,` @ 487:488 is COMMA
-`0` @ 489:490 is REAL LITERAL(0)
-`.` @ 490:491 is DOT
-`0` @ 491:492 is INTEGER LITERAL(0)
+`0.0` @ 489:492 is REAL LITERAL(0)
 `)` @ 492:493 is RIGHT PARENTHESIS
 `;` @ 493:494 is SEMICOLON
 `var` @ 497:500 is KEYWORD(Var)
@@ -173,13 +169,9 @@ OK
 `is` @ 504:506 is KEYWORD(Is)
 `point_of` @ 507:515 is IDENTIFIER(point_of)
 `(` @ 515:516 is LEFT PARENTHESIS
-`3` @ 516:517 is REAL LITERAL(3)
-`.` @ 517:518 is DOT
-`0` @ 518:519 is INTEGER LITERAL(0)
+`3.0` @ 516:519 is REAL LITERAL(3)
 `,` @ 519:520 is COMMA
-`4` @ 521:522 is REAL LITERAL(4)
-`.` @ 522:523 is DOT
-`0` @ 523:524 is INTEGER LITERAL(0)
+`4.0` @ 521:524 is REAL LITERAL(4)
 `)` @ 524:525 is RIGHT PARENTHESIS
 `;` @ 525:526 is SEMICOLON
 `var` @ 529:532 is KEYWORD(Var)

@@ -1,9 +1,9 @@
 type linked_list is record 
-  var data : int;
+  var data : integer;
   var tail : linked_list
 end;
 
-routine linked_list_of(data: int, tail : linked_list) : linked_list is 
+routine linked_list_of(data: integer, tail : linked_list) : linked_list is 
   var result : linked_list;
   result.data := data;
   result.tail := tail; 
@@ -12,13 +12,13 @@ end;
 
 var EMPTY : linked_list;
 
-routine singleton(data: int) => linked_list_of(data, EMPTY);
+routine singleton(data: integer) => linked_list_of(data, EMPTY);
 
 routine empty() => EMPTY;
 
 routine is_empty(l : linked_list) => l = EMPTY;
 
-routine length(l : linked_list ) : int is 
+routine length(l : linked_list ) : integer is 
   var result is 0;
   while is_empty(l) /= true loop
     result := result + 1;

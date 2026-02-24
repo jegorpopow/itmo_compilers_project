@@ -1,4 +1,4 @@
-use core::ptr;
+use core::{num, ptr};
 use std::collections::HashMap;
 
 use phf::phf_map;
@@ -60,7 +60,7 @@ trait ImmutableIterator<'a>: Sized + Clone {
             result.push(ch);
             copy = rest;
         }
-        (result, copy)
+        (Self::slice_to_string(self, &copy), copy)
     }
 
     fn stars_with(&self, value: &str) -> Option<Self> {
@@ -144,9 +144,6 @@ fn possible_identifier_value(lexeme: &str) -> TokenValue {
         "routine" => TokenValue::Keyword(Keyword::Routine),
         "array" => TokenValue::Keyword(Keyword::Array),
         "record" => TokenValue::Keyword(Keyword::Record),
-        "integer" => TokenValue::Keyword(Keyword::Integer),
-        "real" => TokenValue::Keyword(Keyword::Real),
-        "boolean" => TokenValue::Keyword(Keyword::Boolean),
         "is" => TokenValue::Keyword(Keyword::Is),
         "end" => TokenValue::Keyword(Keyword::End),
         "if" => TokenValue::Keyword(Keyword::If),
@@ -163,6 +160,10 @@ fn possible_identifier_value(lexeme: &str) -> TokenValue {
         "not" => TokenValue::Operator(SyntacticOperator::Neg),
         "true" => TokenValue::BoolLiteral(BoolLiteral { value: true }),
         "false" => TokenValue::BoolLiteral(BoolLiteral { value: false }),
+        "integer" => TokenValue::BuiltinTypename(BuiltinTypename::Integer),
+        "real" => TokenValue::BuiltinTypename(BuiltinTypename::Real),
+        "boolean" => TokenValue::BuiltinTypename(BuiltinTypename::Boolean),
+        "NaN" => TokenValue::RealLiteral(RealLiteral { value: f64::NAN }),
     };
 
     // TODO: add more cases (NaN, Infinity, ...)
@@ -209,15 +210,77 @@ fn known_symbolic_tokens(start: IndexIterator<'_>) -> Option<(TokenValue, IndexI
 }
 
 fn real_literal_from_representation(float_str: &str) -> TokenValue {
+    // TODO: process parsing error
     TokenValue::RealLiteral(RealLiteral {
         value: float_str.parse().unwrap(),
     })
 }
 
 fn integer_literal_from_representation(int_str: &str) -> TokenValue {
+    // TODO: process parsing error
     TokenValue::IntegerLiteral(IntegerLiteral {
         value: int_str.parse().unwrap(),
     })
+}
+
+fn should_expect_sign(prev: bool, token: &TokenValue) -> bool {
+    match token {
+        TokenValue::Comment(_) => prev,
+
+        TokenValue::Assignment
+        | TokenValue::LeftParenthesis
+        | TokenValue::RightBracket
+        | TokenValue::Operator(_)
+        | TokenValue::Semicolon
+        | TokenValue::RangeSymbol
+        | TokenValue::Comma
+        | TokenValue::RightArrow
+        | TokenValue::Keyword(_) => true,
+
+        TokenValue::Identifier(_)
+        | TokenValue::IntegerLiteral(_)
+        | TokenValue::RealLiteral(_)
+        | TokenValue::BoolLiteral(_)
+        | TokenValue::BuiltinTypename(_)
+        | TokenValue::LeftBracket
+        | TokenValue::RightParenthesis
+        | TokenValue::Dot
+        | TokenValue::Colon => false,
+    }
+}
+
+fn numerical_tokens(
+    expect_sign: bool,
+    begin: IndexIterator<'_>,
+) -> Option<(TokenValue, IndexIterator<'_>)> {
+    let mut start = begin.clone();
+
+    // Numerical literal may start with a sign
+    if expect_sign && start.lookup().is_some_and(|ch| ch == '-' || ch == '+') {
+        start = start.skip_n(1).unwrap();
+    }
+
+    let (before_point, start) = start.take_while(|ch| ch.is_ascii_digit());
+
+    if start.lookup().is_some_and(|ch| ch == '.') {
+        let start = start.skip_n(1).unwrap();
+        let (after_point, rest) = start.take_while(|ch| ch.is_ascii_digit());
+        if after_point.len() == 0 {
+            None
+        } else {
+            let representation = ImmutableIterator::slice_to_string(&begin, &rest);
+            let token_value = real_literal_from_representation(&representation);
+            Some((token_value, rest))
+        }
+    } else {
+        if before_point.len() == 0 {
+            None
+        } else {
+            let representation = ImmutableIterator::slice_to_string(&begin, &start);
+            let token_value = integer_literal_from_representation(&representation);
+            Some((token_value, start))
+        }
+    }
 }
 
 #[derive(Debug)]
@@ -229,6 +292,7 @@ pub struct LexerError {
 pub fn tokenize(source: &str) -> Result<Vec<Token>, LexerError> {
     let mut begin = IndexIterator::from_beginning(source);
     let mut result = Vec::new();
+    let mut expects_sign = true;
 
     while let Some(first_char) = begin.lookup() {
         if (first_char.is_whitespace()) {
@@ -249,62 +313,13 @@ pub fn tokenize(source: &str) -> Result<Vec<Token>, LexerError> {
                 value: possible_identifier_value(&possible_identifier),
             });
             begin = end;
-        } else if first_char.is_ascii_digit() {
-            // Either real or integer literal
-            let (digits, rest) = begin.take_while(|ch| ch.is_ascii_digit());
-
-            if let Some('.') = rest.lookup() {
-                let rest = rest.skip_n(1).unwrap();
-                let (_, end) = begin.take_while(|ch| ch.is_ascii_digit());
-                let representation = ImmutableIterator::slice_to_string(&begin, &end);
-                let token_value = real_literal_from_representation(&representation);
-                result.push(Token {
-                    extent: iterators_to_extent(&begin, &end),
-                    lexeme: representation,
-                    value: token_value,
-                });
-                begin = end;
-            } else {
-                let representation = ImmutableIterator::slice_to_string(&begin, &rest);
-                let token_value = integer_literal_from_representation(&representation);
-                result.push(Token {
-                    extent: iterators_to_extent(&begin, &rest),
-                    lexeme: representation,
-                    value: token_value,
-                });
-                begin = rest;
-            }
-        } else if first_char == '.' {
-            // Either member access or float literal
-            match begin.next() {
-                None => {
-                    return Err(LexerError {
-                        position: begin.index + 1,
-                        reason: "Dot can not be the last character of program".to_owned(),
-                    });
-                }
-                Some((second_char, rest)) => {
-                    if second_char.is_ascii_digit() {
-                        let (_, end) = rest.take_while(|ch| ch.is_ascii_digit());
-                        let representation = ImmutableIterator::slice_to_string(&begin, &end);
-                        let token_value = real_literal_from_representation(&representation);
-                        result.push(Token {
-                            extent: iterators_to_extent(&begin, &end),
-                            lexeme: representation,
-                            value: token_value,
-                        });
-                        begin = end;
-                    } else {
-                        let end = begin.skip_n(1).unwrap();
-                        result.push(Token {
-                            extent: iterators_to_extent(&begin, &end),
-                            lexeme: ImmutableIterator::slice_to_string(&begin, &end),
-                            value: TokenValue::Dot,
-                        });
-                        begin = end;
-                    }
-                }
-            }
+        } else if let Some((numerical_token, end)) = numerical_tokens(expects_sign, begin) {
+            result.push(Token {
+                extent: iterators_to_extent(&begin, &end),
+                lexeme: ImmutableIterator::slice_to_string(&begin, &end),
+                value: numerical_token,
+            });
+            begin = end;
         } else if let Some((token_value, end)) = known_symbolic_tokens(begin) {
             result.push(Token {
                 extent: iterators_to_extent(&begin, &end),
@@ -318,6 +333,9 @@ pub fn tokenize(source: &str) -> Result<Vec<Token>, LexerError> {
                 reason: format!("Unexpected symbol `{first_char}`"),
             });
         }
+
+        expects_sign = should_exprect_sign(expects_sign, &result.last().unwrap().value);
     }
+
     Ok(result)
 }

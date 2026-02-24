@@ -1,4 +1,4 @@
-routine echo (data : int) : int is
+routine echo (data : integer) : integer is
   print data;
   return data;
 end;

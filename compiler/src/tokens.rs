@@ -11,9 +11,6 @@ pub enum Keyword {
     Routine,
     Array,
     Record,
-    Integer,
-    Real,
-    Boolean,
     Is,
     End,
     If,
@@ -48,6 +45,13 @@ pub struct BoolLiteral {
 }
 
 #[derive(PartialEq, Eq, Hash, fmt::Debug, Clone)]
+pub enum BuiltinTypename {
+    Integer,
+    Real,
+    Boolean,
+}
+
+#[derive(PartialEq, Eq, Hash, fmt::Debug, Clone)]
 pub struct Comment {
     pub value: String,
 }
@@ -69,6 +73,7 @@ pub enum TokenValue {
     IntegerLiteral(IntegerLiteral),
     RealLiteral(RealLiteral),
     BoolLiteral(BoolLiteral),
+    BuiltinTypename(BuiltinTypename),
     Operator(SyntacticOperator),
     Comment(Comment),
     LeftBracket,
@@ -98,7 +103,10 @@ impl fmt::Display for TokenValue {
             TokenValue::BoolLiteral(BoolLiteral { value }) => {
                 write!(f, "BOOLEAN LITERAL({value})")
             }
-            TokenValue::Operator(operator) => write!(f, "OPERATOR({operator:?})",),
+            TokenValue::BuiltinTypename(builtin_typename) => {
+                write!(f, "TYPENAME({:?})", builtin_typename)
+            }
+            TokenValue::Operator(operator) => write!(f, "OPERATOR({:?})", operator),
             TokenValue::Comment(comment) => write!(f, "COMMENT({})", comment.shortened()),
             TokenValue::LeftBracket => write!(f, "LEFT BRACKET"),
             TokenValue::RightBracket => write!(f, "RIGHT BRACKET"),
