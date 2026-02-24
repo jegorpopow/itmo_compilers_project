@@ -33,6 +33,10 @@ macro_rules! tests {
     };
 }
 
+// If the tests are failing because of outdates expected output, run
+// ```shell
+// UPDATE_EXPECT=1 cargo test
+// ```
 tests![
     arithmetic_operations => "arithmetic_operations",
     arrays_and_records => "arrays_and_records",
