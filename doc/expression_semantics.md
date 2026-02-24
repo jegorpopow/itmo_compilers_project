@@ -6,24 +6,26 @@ This document clarifies unclear points in the language specification regarding e
 
 ### Conversions in Assignments
 
-According to the specification, type conversions occur during assignments. The conversion rules are:
-
 **To `integer`:**
-- `integer` ← `integer`: direct value copying
-- `integer` ← `real`: **rounding to nearest integer** (not truncation)
-- `integer` ← `boolean`: `true` → `1`, `false` → `0`
+- `integer` ← `integer`: direct copy.
+- `integer` ← `real`: **round to nearest integer** (not truncation).
+  - If the value is ±INF, the result is `INT_MIN` or `INT_MAX` (implementation-defined).
+  - If the value is NaN, conversion is a **runtime error**.
+- `integer` ← `boolean`: `true` → `1`, `false` → `0`.
 
 **To `real`:**
-- `real` ← `real`: direct value copying
-- `real` ← `integer`: direct value copying (no conversion)
-- `real` ← `boolean`: `true` → `1.0`, `false` → `0.0`
+- `real` ← `real`: direct copy.
+- `real` ← `integer`:
+  - In Rust there is no `From<i64> for f64`: f64 can represent integers only in **−2⁵³ … 2⁵³** exactly; outside that range conversion is lossy.
+  - We take `integer` = i64, `real` = f64. Conversion rounds to the nearest representable value (as Rust’s `n as f64`). Use `as f64` in the implementation.
+- `real` ← `boolean`: `true` → `1.0`, `false` → `0.0`.
 
 **To `boolean`:**
-- `boolean` ← `boolean`: direct value copying
-- `boolean` ← `integer`: `1` → `true`, `0` → `false`; **runtime error** for other values
-- `boolean` ← `real`: **illegal** (assignment error)
+- `boolean` ← `boolean`: direct copy.
+- `boolean` ← `integer`: `1` → `true`, `0` → `false`; **runtime error** for any other value.
+- `boolean` ← `real`: **illegal** (compile-time error).
 
-**Note:** The same conversion rules apply when passing arguments to routines, as parameter passing has the same semantics as assignment.
+**Note:** The same conversion rules apply to argument passing.
 
 ### Implicit Conversions in Arithmetic
 
@@ -35,7 +37,7 @@ When mixing `integer` and `real` in arithmetic operations, `integer` is automati
 - `real * int` → `real`
 - etc.
 
-The result type is always `real` when mixing types.
+If one of operands of mixed-type is of boolean type, expression is ill-formed.
 
 ## Logical Operators
 
@@ -59,7 +61,7 @@ The `and` and `or` operators use **lazy evaluation** (short-circuit semantics):
 
 The `not` operator is defined in the grammar as part of `Primary`, but its semantics are not fully specified. This section clarifies its behavior as an extension to the specification and treats `not` as a logical operator.
 
-**Syntax:** The `not` operator can be applied to literals and expressions:
+**Syntax:** The `not` operator is allowed on any expression, not only on literals. At **typecheck**, the compiler rejects programs where `not` (and similarly `and`, `or`, or `xor`) is applied to a non-`boolean` expression.
 ```
 Primary : [ Sign | not ] IntegerLiteral | [ Sign ] RealLiteral | true | false | ModifiablePrimary | RoutineCall
 ```
@@ -71,23 +73,15 @@ Primary : [ Sign | not ] IntegerLiteral | [ Sign ] RealLiteral | true | false | 
   - `not false` → `true`
   - Result type: `boolean`
 
-- **`not integer`**: Converts integer to boolean, negates, converts back to integer
-  - Conversion rule: `0` → `false`, any non-zero value → `true`
-  - `not 0` → `1` (false → true → 1)
-  - `not 1` → `0` (true → false → 0)
-  - `not 5` → `0` (non-zero treated as true, negated to false → 0)
-  - `not -3` → `0` (non-zero treated as true, negated to false → 0)
-  - Result type: `integer`
+- **`not integer`**: **Type error** (compile-time rejection). Only `boolean` is allowed; no conversion from integer.
 
-- **`not real`**: Not supported (would require boolean conversion which is illegal for `real`)
+- **`not real`**: **Type error** (compile-time rejection).
 
 **Important notes:**
 
-1. The `not` operator on integers uses a **permissive conversion** where any non-zero integer is treated as `true`. This differs from the strict assignment conversion rule (`boolean` ← `integer`) which only accepts `0` or `1` and causes a runtime error for other values.
+1. A single, strict conversion/typing strategy is used: `not`, `and`, `or`, and `xor` accept only `boolean` operands. No implicit conversions (e.g. integer truthiness) are performed—Rust-like rather than C/C++-style.
 
-2. The `not` operator can be applied to expressions, not just literals, as it appears in the `Primary` grammar rule which includes `ModifiablePrimary` and `RoutineCall`.
-
-3. Although it is syntactically unary, semantically `not` belongs to logical operators.
+2. Although it is syntactically unary, semantically `not` belongs to logical operators.
 
 ## Reference Equality
 
@@ -191,28 +185,23 @@ Primary : [ Sign | not ] IntegerLiteral | [ Sign ] RealLiteral | true | false | 
 
 ## Floating-Point Edge Cases
 
-**Division by zero for `real`:**
-- `real / 0.0` causes a **runtime error** (not infinity)
-- The language does not support IEEE-754 infinity or NaN values
+`real` follows IEEE-754; values can be finite, ±INF, or NaN. Conversion of ±INF and NaN to integer is defined in "Conversions in Assignments" above.
 
-**Real-to-integer conversion:**
-- Uses **rounding to nearest integer** (as specified in assignment conversions)
-- `3.7` → `4`, `3.2` → `3`, `-2.5` → `-2` or `-3` (implementation-defined for exactly `.5`)
+**Division by zero for `real`:**
+- `real / 0.0` yields **+INF or −INF** depending on the sign of the dividend (IEEE-754).
+
+**Real arithmetic overflow:**
+- Operations that exceed the representable range yield **±INF** (IEEE-754).
 
 ## Conditions and Truthiness
 
 **Boolean conditions:**
-- In `if Expression then` and `while Expression loop`, the expression must evaluate to a type that can be used as a condition.
+- In `if Expression then` and `while Expression loop`, the expression must evaluate to **`boolean` type only**. Only genuine boolean values are allowed; this keeps conditions explicit and easier to read (Rust-like).
 
 **Type rules for conditions:**
-- **`boolean`**: Direct use (`true`/`false`)
-- **`integer`**: Treated as boolean (C-like truthiness)
-  - `0` → `false`
-  - Any non-zero value → `true`
-  - Example: `if 5 then ...` is valid and executes the `then` branch
-- **`real`**: Cannot be used as condition (type error)
-
-**Note:** This truthiness rule applies only to control flow conditions (`if`, `while`). For assignments, the strict conversion rule applies (`boolean` ← `integer` only accepts `0` or `1`).
+- **`boolean`**: Allowed
+- **`integer`**: **Type error** (compile-time rejection)
+- **`real`**: **Type error** (compile-time rejection)
 
 ## Function Call Semantics
 
@@ -221,7 +210,7 @@ Primary : [ Sign | not ] IntegerLiteral | [ Sign ] RealLiteral | true | false | 
 - A routine call without a return type is only valid as a **statement** (discards any implicit return value).
 
 **Return value requirement:**
-- If a function (routine with return type) does not execute a `return` statement before reaching the end of its body, the behavior is **undefined** or causes a runtime error (implementation-defined).
+- If a function (routine with return type) does not execute a `return` statement before reaching the end of its body, this is a **compile-time error**. The compiler must reject such programs (similar to Java).
 
 **Function calls in expressions:**
 - Function calls can appear in any expression position:
@@ -238,9 +227,11 @@ The following cause **runtime errors** that terminate program execution:
 - **Modulo by zero**: `int % 0`
 - **Invalid `boolean` ← `integer` conversion**: integer value not in `{0, 1}`
 - **Illegal assignment**: `boolean` ← `real`
-- **Array index out of bounds**: accessing `arr[i]` where `i < 0` or `i > arr.length`
+- **Array index out of bounds**: accessing `arr[i]` where `i <= 0` or `i > arr.length` (arrays are indexed starting from 1)
 - **Null reference access**: accessing members or indices of an uninitialized reference (if applicable)
-- **Function without return**: function with return type reaches end without `return` (implementation-defined)
+
+**Compile-time errors:**
+- **Function without return**: function with return type that reaches end of body without a `return` statement (rejected at compile time, like Java)
 
 **Error model:**
 - When a runtime error occurs during expression evaluation, the program **terminates immediately**.
@@ -269,8 +260,10 @@ The following cause **runtime errors** that terminate program execution:
 - `f(5)` (contains function call)
 - `arr[1]` (contains array access)
 
+**Note:** Constancy of an expression is orthogonal to typing. For example, `array[3.14]` is a **type error** (array index must be of integer type), not a constexpr issue.
+
 ## Notes
 
-- **Type aliases**: When a type alias is declared (e.g., `type kilometers is real`), it creates a distinct type that is incompatible with its underlying type for assignments. Both sides of an assignment must have the same type name.
+- **Type aliases**: TBD ZUEV OTVET' PLZ
 - **Array length**: Arrays may have a `.length` field accessible via dotted notation (implementation detail).
 
