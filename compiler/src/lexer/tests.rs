@@ -52,4 +52,5 @@ tests![
     type_conversions => "type_conversions",
     variable_declarations => "variable_declarations",
     while_loops => "while_loops",
+    parse_minus => "parse_minus",
 ];
