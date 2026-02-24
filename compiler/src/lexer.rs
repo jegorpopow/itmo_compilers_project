@@ -223,19 +223,29 @@ fn integer_literal_from_representation(int_str: &str) -> TokenValue {
     })
 }
 
-fn should_exprect_sign(prev: bool, token: &TokenValue) -> bool {
+fn should_expect_sign(prev: bool, token: &TokenValue) -> bool {
     match token {
-        TokenValue::Assignment => true,
-        TokenValue::LeftParenthesis => true,
-        TokenValue::RightBracket => true,
-        TokenValue::Operator(_) => true,
-        TokenValue::Semicolon => true,
-        TokenValue::RangeSymbol => true,
-        TokenValue::Comma => true,
-        TokenValue::RightArrow => true,
         TokenValue::Comment(_) => prev,
-        TokenValue::Keyword(_) => true,
-        _ => false,
+
+        TokenValue::Assignment
+        | TokenValue::LeftParenthesis
+        | TokenValue::RightBracket
+        | TokenValue::Operator(_)
+        | TokenValue::Semicolon
+        | TokenValue::RangeSymbol
+        | TokenValue::Comma
+        | TokenValue::RightArrow
+        | TokenValue::Keyword(_) => true,
+
+        TokenValue::Identifier(_)
+        | TokenValue::IntegerLiteral(_)
+        | TokenValue::RealLiteral(_)
+        | TokenValue::BoolLiteral(_)
+        | TokenValue::BuiltinTypename(_)
+        | TokenValue::LeftBracket
+        | TokenValue::RightParenthesis
+        | TokenValue::Dot
+        | TokenValue::Colon => false,
     }
 }
 
