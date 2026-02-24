@@ -67,7 +67,7 @@ impl Comment {
 }
 
 #[derive(PartialEq, Clone)]
-pub enum TokenValue {
+pub enum TokenKind {
     Identifier(Identifier),
     Keyword(Keyword),
     IntegerLiteral(IntegerLiteral),
@@ -89,36 +89,36 @@ pub enum TokenValue {
     Colon,
 }
 
-impl fmt::Display for TokenValue {
+impl fmt::Display for TokenKind {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
-            TokenValue::Identifier(identifier) => write!(f, "IDENTIFIER({})", identifier.name),
-            TokenValue::Keyword(keyword) => write!(f, "KEYWORD({keyword:?})"),
-            TokenValue::IntegerLiteral(IntegerLiteral { value }) => {
+            TokenKind::Identifier(identifier) => write!(f, "IDENTIFIER({})", identifier.name),
+            TokenKind::Keyword(keyword) => write!(f, "KEYWORD({keyword:?})"),
+            TokenKind::IntegerLiteral(IntegerLiteral { value }) => {
                 write!(f, "INTEGER LITERAL({value})")
             }
-            TokenValue::RealLiteral(RealLiteral { value }) => {
+            TokenKind::RealLiteral(RealLiteral { value }) => {
                 write!(f, "REAL LITERAL({value})")
             }
-            TokenValue::BoolLiteral(BoolLiteral { value }) => {
+            TokenKind::BoolLiteral(BoolLiteral { value }) => {
                 write!(f, "BOOLEAN LITERAL({value})")
             }
-            TokenValue::BuiltinTypename(builtin_typename) => {
+            TokenKind::BuiltinTypename(builtin_typename) => {
                 write!(f, "TYPENAME({:?})", builtin_typename)
             }
-            TokenValue::Operator(operator) => write!(f, "OPERATOR({:?})", operator),
-            TokenValue::Comment(comment) => write!(f, "COMMENT({})", comment.shortened()),
-            TokenValue::LeftBracket => write!(f, "LEFT BRACKET"),
-            TokenValue::RightBracket => write!(f, "RIGHT BRACKET"),
-            TokenValue::LeftParenthesis => write!(f, "LEFT PARENTHESIS"),
-            TokenValue::RightParenthesis => write!(f, "RIGHT PARENTHESIS"),
-            TokenValue::RightArrow => write!(f, "FUNCTION ARROW"),
-            TokenValue::Assignment => write!(f, "ASSIGNMENT OPERATOR"),
-            TokenValue::RangeSymbol => write!(f, "RANGE"),
-            TokenValue::Dot => write!(f, "DOT"),
-            TokenValue::Comma => write!(f, "COMMA"),
-            TokenValue::Semicolon => write!(f, "SEMICOLON"),
-            TokenValue::Colon => write!(f, "COLON"),
+            TokenKind::Operator(operator) => write!(f, "OPERATOR({:?})", operator),
+            TokenKind::Comment(comment) => write!(f, "COMMENT({})", comment.shortened()),
+            TokenKind::LeftBracket => write!(f, "LEFT BRACKET"),
+            TokenKind::RightBracket => write!(f, "RIGHT BRACKET"),
+            TokenKind::LeftParenthesis => write!(f, "LEFT PARENTHESIS"),
+            TokenKind::RightParenthesis => write!(f, "RIGHT PARENTHESIS"),
+            TokenKind::RightArrow => write!(f, "FUNCTION ARROW"),
+            TokenKind::Assignment => write!(f, "ASSIGNMENT OPERATOR"),
+            TokenKind::RangeSymbol => write!(f, "RANGE"),
+            TokenKind::Dot => write!(f, "DOT"),
+            TokenKind::Comma => write!(f, "COMMA"),
+            TokenKind::Semicolon => write!(f, "SEMICOLON"),
+            TokenKind::Colon => write!(f, "COLON"),
         }
     }
 }
@@ -139,7 +139,7 @@ impl fmt::Display for Extent {
 pub struct Token {
     pub extent: Extent,
     pub lexeme: String,
-    pub value: TokenValue,
+    pub kind: TokenKind,
 }
 
 impl fmt::Display for Token {
@@ -147,9 +147,9 @@ impl fmt::Display for Token {
         let Self {
             extent,
             lexeme,
-            value,
+            kind,
         } = self;
-        write!(f, "`{lexeme}` @ {extent} is {value}")
+        write!(f, "`{lexeme}` @ {extent} is {kind}")
     }
 }
 

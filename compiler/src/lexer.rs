@@ -137,67 +137,67 @@ fn iterators_to_extent(start: &IndexIterator<'_>, end: &IndexIterator<'_>) -> Ex
 }
 
 /// Processes all the identifier-like lexemes (identifiers, keywords, bool literals and some operators)
-fn possible_identifier_value(lexeme: &str) -> TokenValue {
-    static KNOWN_TOKENS: phf::Map<&str, TokenValue> = phf_map! {
-        "var" => TokenValue::Keyword(Keyword::Var),
-        "type" => TokenValue::Keyword(Keyword::Type),
-        "routine" => TokenValue::Keyword(Keyword::Routine),
-        "array" => TokenValue::Keyword(Keyword::Array),
-        "record" => TokenValue::Keyword(Keyword::Record),
-        "is" => TokenValue::Keyword(Keyword::Is),
-        "end" => TokenValue::Keyword(Keyword::End),
-        "if" => TokenValue::Keyword(Keyword::If),
-        "then" => TokenValue::Keyword(Keyword::Then),
-        "else" => TokenValue::Keyword(Keyword::Else),
-        "in" => TokenValue::Keyword(Keyword::In),
-        "while" => TokenValue::Keyword(Keyword::While),
-        "for" => TokenValue::Keyword(Keyword::For),
-        "loop" => TokenValue::Keyword(Keyword::Loop),
-        "reverse" => TokenValue::Keyword(Keyword::Reverse),
-        "and" => TokenValue::Operator(SyntacticOperator::And),
-        "or" => TokenValue::Operator(SyntacticOperator::Or),
-        "xor" => TokenValue::Operator(SyntacticOperator::Xor),
-        "not" => TokenValue::Operator(SyntacticOperator::Neg),
-        "true" => TokenValue::BoolLiteral(BoolLiteral { value: true }),
-        "false" => TokenValue::BoolLiteral(BoolLiteral { value: false }),
-        "integer" => TokenValue::BuiltinTypename(BuiltinTypename::Integer),
-        "real" => TokenValue::BuiltinTypename(BuiltinTypename::Real),
-        "boolean" => TokenValue::BuiltinTypename(BuiltinTypename::Boolean),
-        "NaN" => TokenValue::RealLiteral(RealLiteral { value: f64::NAN }),
+fn possible_identifier_value(lexeme: &str) -> TokenKind {
+    static KNOWN_TOKENS: phf::Map<&str, TokenKind> = phf_map! {
+        "var" => TokenKind::Keyword(Keyword::Var),
+        "type" => TokenKind::Keyword(Keyword::Type),
+        "routine" => TokenKind::Keyword(Keyword::Routine),
+        "array" => TokenKind::Keyword(Keyword::Array),
+        "record" => TokenKind::Keyword(Keyword::Record),
+        "is" => TokenKind::Keyword(Keyword::Is),
+        "end" => TokenKind::Keyword(Keyword::End),
+        "if" => TokenKind::Keyword(Keyword::If),
+        "then" => TokenKind::Keyword(Keyword::Then),
+        "else" => TokenKind::Keyword(Keyword::Else),
+        "in" => TokenKind::Keyword(Keyword::In),
+        "while" => TokenKind::Keyword(Keyword::While),
+        "for" => TokenKind::Keyword(Keyword::For),
+        "loop" => TokenKind::Keyword(Keyword::Loop),
+        "reverse" => TokenKind::Keyword(Keyword::Reverse),
+        "and" => TokenKind::Operator(SyntacticOperator::And),
+        "or" => TokenKind::Operator(SyntacticOperator::Or),
+        "xor" => TokenKind::Operator(SyntacticOperator::Xor),
+        "not" => TokenKind::Operator(SyntacticOperator::Neg),
+        "true" => TokenKind::BoolLiteral(BoolLiteral { value: true }),
+        "false" => TokenKind::BoolLiteral(BoolLiteral { value: false }),
+        "integer" => TokenKind::BuiltinTypename(BuiltinTypename::Integer),
+        "real" => TokenKind::BuiltinTypename(BuiltinTypename::Real),
+        "boolean" => TokenKind::BuiltinTypename(BuiltinTypename::Boolean),
+        "NaN" => TokenKind::RealLiteral(RealLiteral { value: f64::NAN }),
     };
 
     // TODO: add more cases (NaN, Infinity, ...)
     match KNOWN_TOKENS.get(lexeme) {
         Some(token_value) => token_value.clone(),
-        None => TokenValue::Identifier(Identifier {
+        None => TokenKind::Identifier(Identifier {
             name: lexeme.to_owned(),
         }),
     }
 }
 
-fn known_symbolic_tokens(start: IndexIterator<'_>) -> Option<(TokenValue, IndexIterator<'_>)> {
-    static KNOWN_TOKENS: &[(&str, TokenValue)] = &[
-        (":=", TokenValue::Assignment),
-        ("..", TokenValue::RangeSymbol),
-        ("/=", TokenValue::Operator(SyntacticOperator::Neq)),
-        ("<=", TokenValue::Operator(SyntacticOperator::Le)),
-        (">=", TokenValue::Operator(SyntacticOperator::Ge)),
-        ("(", TokenValue::LeftParenthesis),
-        (")", TokenValue::RightParenthesis),
-        ("[", TokenValue::LeftBracket),
-        ("]", TokenValue::RightBracket),
-        (",", TokenValue::Comma),
-        (".", TokenValue::Dot),
-        (";", TokenValue::Semicolon),
-        (":", TokenValue::Colon),
-        ("+", TokenValue::Operator(SyntacticOperator::Add)),
-        ("-", TokenValue::Operator(SyntacticOperator::Sub)),
-        ("*", TokenValue::Operator(SyntacticOperator::Mul)),
-        ("/", TokenValue::Operator(SyntacticOperator::Div)),
-        ("%", TokenValue::Operator(SyntacticOperator::Mod)),
-        ("=", TokenValue::Operator(SyntacticOperator::Eq)),
-        ("<", TokenValue::Operator(SyntacticOperator::Lt)),
-        (">", TokenValue::Operator(SyntacticOperator::Gt)),
+fn known_symbolic_tokens(start: IndexIterator<'_>) -> Option<(TokenKind, IndexIterator<'_>)> {
+    static KNOWN_TOKENS: &[(&str, TokenKind)] = &[
+        (":=", TokenKind::Assignment),
+        ("..", TokenKind::RangeSymbol),
+        ("/=", TokenKind::Operator(SyntacticOperator::Neq)),
+        ("<=", TokenKind::Operator(SyntacticOperator::Le)),
+        (">=", TokenKind::Operator(SyntacticOperator::Ge)),
+        ("(", TokenKind::LeftParenthesis),
+        (")", TokenKind::RightParenthesis),
+        ("[", TokenKind::LeftBracket),
+        ("]", TokenKind::RightBracket),
+        (",", TokenKind::Comma),
+        (".", TokenKind::Dot),
+        (";", TokenKind::Semicolon),
+        (":", TokenKind::Colon),
+        ("+", TokenKind::Operator(SyntacticOperator::Add)),
+        ("-", TokenKind::Operator(SyntacticOperator::Sub)),
+        ("*", TokenKind::Operator(SyntacticOperator::Mul)),
+        ("/", TokenKind::Operator(SyntacticOperator::Div)),
+        ("%", TokenKind::Operator(SyntacticOperator::Mod)),
+        ("=", TokenKind::Operator(SyntacticOperator::Eq)),
+        ("<", TokenKind::Operator(SyntacticOperator::Lt)),
+        (">", TokenKind::Operator(SyntacticOperator::Gt)),
     ];
 
     for (pattern, token) in KNOWN_TOKENS {
@@ -209,50 +209,50 @@ fn known_symbolic_tokens(start: IndexIterator<'_>) -> Option<(TokenValue, IndexI
     None
 }
 
-fn real_literal_from_representation(float_str: &str) -> TokenValue {
+fn real_literal_from_representation(float_str: &str) -> TokenKind {
     // TODO: process parsing error
-    TokenValue::RealLiteral(RealLiteral {
+    TokenKind::RealLiteral(RealLiteral {
         value: float_str.parse().unwrap(),
     })
 }
 
-fn integer_literal_from_representation(int_str: &str) -> TokenValue {
+fn integer_literal_from_representation(int_str: &str) -> TokenKind {
     // TODO: process parsing error
-    TokenValue::IntegerLiteral(IntegerLiteral {
+    TokenKind::IntegerLiteral(IntegerLiteral {
         value: int_str.parse().unwrap(),
     })
 }
 
-fn should_expect_sign(prev: bool, token: &TokenValue) -> bool {
+fn should_expect_sign(prev: bool, token: &TokenKind) -> bool {
     match token {
-        TokenValue::Comment(_) => prev,
+        TokenKind::Comment(_) => prev,
 
-        TokenValue::Assignment
-        | TokenValue::LeftParenthesis
-        | TokenValue::RightBracket
-        | TokenValue::Operator(_)
-        | TokenValue::Semicolon
-        | TokenValue::RangeSymbol
-        | TokenValue::Comma
-        | TokenValue::RightArrow
-        | TokenValue::Keyword(_) => true,
+        TokenKind::Assignment
+        | TokenKind::LeftParenthesis
+        | TokenKind::RightBracket
+        | TokenKind::Operator(_)
+        | TokenKind::Semicolon
+        | TokenKind::RangeSymbol
+        | TokenKind::Comma
+        | TokenKind::RightArrow
+        | TokenKind::Keyword(_) => true,
 
-        TokenValue::Identifier(_)
-        | TokenValue::IntegerLiteral(_)
-        | TokenValue::RealLiteral(_)
-        | TokenValue::BoolLiteral(_)
-        | TokenValue::BuiltinTypename(_)
-        | TokenValue::LeftBracket
-        | TokenValue::RightParenthesis
-        | TokenValue::Dot
-        | TokenValue::Colon => false,
+        TokenKind::Identifier(_)
+        | TokenKind::IntegerLiteral(_)
+        | TokenKind::RealLiteral(_)
+        | TokenKind::BoolLiteral(_)
+        | TokenKind::BuiltinTypename(_)
+        | TokenKind::LeftBracket
+        | TokenKind::RightParenthesis
+        | TokenKind::Dot
+        | TokenKind::Colon => false,
     }
 }
 
 fn numerical_tokens(
     expect_sign: bool,
     begin: IndexIterator<'_>,
-) -> Option<(TokenValue, IndexIterator<'_>)> {
+) -> Option<(TokenKind, IndexIterator<'_>)> {
     let mut start = begin.clone();
 
     // Numerical literal may start with a sign
@@ -302,7 +302,7 @@ pub fn tokenize(source: &str) -> Result<Vec<Token>, LexerError> {
             result.push(Token {
                 extent: iterators_to_extent(&begin, &end),
                 lexeme: ImmutableIterator::slice_to_string(&begin, &end),
-                value: TokenValue::Comment(Comment { value: comment }),
+                kind: TokenKind::Comment(Comment { value: comment }),
             });
             begin = end;
         } else if is_identifier_start(first_char) {
@@ -310,21 +310,21 @@ pub fn tokenize(source: &str) -> Result<Vec<Token>, LexerError> {
             result.push(Token {
                 extent: iterators_to_extent(&begin, &end),
                 lexeme: ImmutableIterator::slice_to_string(&begin, &end),
-                value: possible_identifier_value(&possible_identifier),
+                kind: possible_identifier_value(&possible_identifier),
             });
             begin = end;
         } else if let Some((numerical_token, end)) = numerical_tokens(expects_sign, begin) {
             result.push(Token {
                 extent: iterators_to_extent(&begin, &end),
                 lexeme: ImmutableIterator::slice_to_string(&begin, &end),
-                value: numerical_token,
+                kind: numerical_token,
             });
             begin = end;
         } else if let Some((token_value, end)) = known_symbolic_tokens(begin) {
             result.push(Token {
                 extent: iterators_to_extent(&begin, &end),
                 lexeme: ImmutableIterator::slice_to_string(&begin, &end),
-                value: token_value,
+                kind: token_value,
             });
             begin = end;
         } else {
@@ -334,7 +334,7 @@ pub fn tokenize(source: &str) -> Result<Vec<Token>, LexerError> {
             });
         }
 
-        expects_sign = should_expect_sign(expects_sign, &result.last().unwrap().value);
+        expects_sign = should_expect_sign(expects_sign, &result.last().unwrap().kind);
     }
 
     Ok(result)
