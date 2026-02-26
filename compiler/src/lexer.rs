@@ -94,7 +94,7 @@ trait ImmutableIterator<'a>: Sized + Clone {
 struct IndexIterator<'a> {
     underlying: &'a str,
     index: usize,
-    position : Position,
+    position: Position,
 }
 
 impl<'a> ImmutableIterator<'a> for IndexIterator<'a> {
@@ -102,7 +102,7 @@ impl<'a> ImmutableIterator<'a> for IndexIterator<'a> {
         IndexIterator {
             underlying: string,
             index: string.char_indices().nth(n).map(|(idx, _)| idx).unwrap(),
-            position: Position::begin()
+            position: Position::begin(),
         }
     }
 
@@ -122,7 +122,7 @@ impl<'a> ImmutableIterator<'a> for IndexIterator<'a> {
                 IndexIterator {
                     underlying: self.underlying,
                     index: self.index + ch.len_utf8(),
-                    position: self.position.advance(ch == '\n')
+                    position: self.position.advance(ch == '\n'),
                 },
             )
         })
