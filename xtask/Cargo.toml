@@ -1,0 +1,14 @@
+[package]
+name = "xtask"
+authors = ["Pavel Grigorenko <GrigorenkoPV@niuitmo.ru>"]
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+publish.workspace = true
+
+[lints]
+workspace = true
+
+[dependencies]
+anyhow = { version = "1.0.102", features = ["backtrace"] }
+culpa = "1.0.2"
