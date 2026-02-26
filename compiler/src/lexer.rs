@@ -341,49 +341,40 @@ pub fn tokenize(source: &str) -> LexerResult<Vec<Token<'_>>> {
     while let Some(first_char) = begin.lookup() {
         if first_char.is_whitespace() {
             begin = begin.skip(char::is_whitespace);
-        } else if let Some(comment_start) = begin.stars_with("--") {
-            let (kind, end) = comment_start.take_while_map(
-                |ch| ch != '\n',
-                |value| TokenKind::Comment(Comment { value }),
-            );
-            result.push(Token {
-                extent: iterators_to_extent(&begin, &end),
-                lexeme: ImmutableIterator::slice_to_str(&begin, &end),
-                kind,
-            });
-            begin = end;
-        } else if is_identifier_start(first_char) {
-            let (kind, end) =
-                begin.take_while_map(is_identifier_continue, possible_identifier_value);
-            result.push(Token {
-                extent: iterators_to_extent(&begin, &end),
-                lexeme: ImmutableIterator::slice_to_str(&begin, &end),
-                kind,
-            });
-            begin = end;
-        } else if let Some(res) = numerical_tokens(expects_sign, &begin) {
-            let (kind, end) = res?;
-            result.push(Token {
-                extent: iterators_to_extent(&begin, &end),
-                lexeme: ImmutableIterator::slice_to_str(&begin, &end),
-                kind,
-            });
-            begin = end;
-        } else if let Some((kind, end)) = known_symbolic_tokens(&begin) {
-            result.push(Token {
-                extent: iterators_to_extent(&begin, &end),
-                lexeme: ImmutableIterator::slice_to_str(&begin, &end),
-                kind,
-            });
-            begin = end;
-        } else {
-            return Err(LexerError {
-                position: begin.index,
-                reason: format!("Unexpected symbol `{first_char}`"),
-            });
+            continue;
         }
 
-        expects_sign = should_expect_sign(expects_sign, &result.last().unwrap().kind);
+        let (kind, end) = begin
+            .stars_with("--")
+            .map(|comment_start| {
+                comment_start.take_while_map(
+                    |ch| ch != '\n',
+                    |comment| TokenKind::Comment(Comment { value: comment }),
+                )
+            })
+            .or_else(|| {
+                is_identifier_start(first_char).then(|| {
+                    begin.take_while_map(is_identifier_continue, possible_identifier_value)
+                })
+            })
+            // FIXME(GrigorenkoPV): is there a clearer way?
+            .map(Ok)
+            .or_else(|| numerical_tokens(expects_sign, &begin))
+            .transpose()?
+            // end FIXME
+            .or_else(|| known_symbolic_tokens(&begin))
+            .ok_or_else(|| LexerError {
+                position: begin.index,
+                reason: format!("Unexpected symbol `{first_char}`"),
+            })?;
+
+        expects_sign = should_expect_sign(expects_sign, &kind);
+        result.push(Token {
+            extent: iterators_to_extent(&begin, &end),
+            lexeme: ImmutableIterator::slice_to_str(&begin, &end),
+            kind,
+        });
+        begin = end;
     }
 
     Ok(result)
