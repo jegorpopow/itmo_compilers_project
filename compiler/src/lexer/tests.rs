@@ -1,20 +1,15 @@
 use crate::{
-    lexer::{LexerError, tokenize},
+    lexer::tokenize,
     tokens::Token,
 };
 
-fn print_result(result: &Result<Vec<Token<'_>>, LexerError>) -> String {
-    match result {
-        Ok(tokens) => {
-            let mut result = "OK\n".to_string();
-            for token in tokens {
-                use core::fmt::Write;
-                writeln!(&mut result, "{token}").expect("Writing to a string won't fail");
-            }
-            result
-        }
-        Err(e) => format!("ERROR\n{e}\n"),
+fn print_result(tokens: &Vec<Token<'_>>) -> String {
+    let mut result = "OK\n".to_string();
+    for token in tokens {
+        use core::fmt::Write;
+        writeln!(&mut result, "{token}").expect("Writing to a string won't fail");
     }
+    result
 }
 
 macro_rules! tests {

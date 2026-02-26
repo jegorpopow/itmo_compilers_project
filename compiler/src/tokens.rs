@@ -56,6 +56,11 @@ pub struct Comment<'a> {
     pub value: &'a str,
 }
 
+#[derive(PartialEq, Eq, Hash, fmt::Debug, Clone)]
+pub struct InvalidToken {
+    pub problem: String,
+}
+
 impl fmt::Display for Comment<'_> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         const MAX_LEN: usize = 40;
@@ -80,6 +85,7 @@ pub enum TokenKind<'a> {
     BuiltinTypename(BuiltinTypename),
     Operator(SyntacticOperator),
     Comment(Comment<'a>),
+    Invalid(InvalidToken),
     LeftBracket,
     RightBracket,
     LeftParenthesis,
@@ -112,6 +118,7 @@ impl fmt::Display for TokenKind<'_> {
             }
             TokenKind::Operator(operator) => write!(f, "OPERATOR({operator:?})"),
             TokenKind::Comment(comment) => write!(f, "COMMENT({comment})"),
+            TokenKind::Invalid(InvalidToken { problem }) => write!(f, "invalid, since {problem}"),
             TokenKind::LeftBracket => write!(f, "LEFT BRACKET"),
             TokenKind::RightBracket => write!(f, "RIGHT BRACKET"),
             TokenKind::LeftParenthesis => write!(f, "LEFT PARENTHESIS"),
