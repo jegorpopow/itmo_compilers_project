@@ -44,19 +44,19 @@ fn infer(expr: &Expression) -> Result<Rc<Type>, TypeInferenceError> {
         Expression::IntegerLiteral(_) => Ok(Rc::new(Type::Int)),
         Expression::RealLiteral(_) => Ok(Rc::new(Type::Real)),
         Expression::BoolLiteral(_) => Ok(Rc::new(Type::Bool)),
-        Expression::Call { callee, args } => todo!("No context lookup yet"),
-        Expression::LvalueToRvalue(inner) => todo!("No context lookup yet"),
-        Expression::Binop { op, lhs, rhs } => todo!("Tricky type conversions"),
-        Expression::BoolToInt(inner) => ensure(expr, &Type::Bool).map(|()| Rc::new(Type::Int)),
-        Expression::RealToInt(inner) => ensure(expr, &Type::Real).map(|()| Rc::new(Type::Int)),
-        Expression::IntToBool(inner) => ensure(expr, &Type::Int).map(|()| Rc::new(Type::Bool)),
+        Expression::Call { .. } => todo!("No context lookup yet"),
+        Expression::LvalueToRvalue(..) => todo!("No context lookup yet"),
+        Expression::Binop { .. } => todo!("Tricky type conversions"),
+        Expression::BoolToInt(inner) => ensure(inner, &Type::Bool).map(|()| Rc::new(Type::Int)),
+        Expression::RealToInt(inner) => ensure(inner, &Type::Real).map(|()| Rc::new(Type::Int)),
+        Expression::IntToBool(inner) => ensure(inner, &Type::Int).map(|()| Rc::new(Type::Bool)),
     }
 }
 
 fn ensure(expr: &Expression, t: &Type) -> Result<(), TypeInferenceError> {
-    todo!()
+    todo!("Check if {expr:?} : {t:?}")
 }
 
 fn convert(expr: &Expression, source_type: &Type, dest_type: &Type) -> Rc<Expression> {
-    todo!()
+    todo!("Convert {expr:?} from {source_type:?} to {dest_type:?}")
 }

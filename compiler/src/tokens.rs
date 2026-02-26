@@ -1,4 +1,4 @@
-use std::fmt;
+use core::fmt;
 
 use crate::operators::SyntacticOperator;
 
@@ -25,8 +25,8 @@ pub enum Keyword {
 }
 
 #[derive(PartialEq, Eq, Hash, fmt::Debug, Clone)]
-pub struct Identifier {
-    pub name: String,
+pub struct Identifier<'a> {
+    pub name: &'a str,
 }
 
 #[derive(PartialEq, Eq, Hash, fmt::Debug, Clone)]
@@ -52,30 +52,34 @@ pub enum BuiltinTypename {
 }
 
 #[derive(PartialEq, Eq, Hash, fmt::Debug, Clone)]
-pub struct Comment {
-    pub value: String,
+pub struct Comment<'a> {
+    pub value: &'a str,
 }
 
-impl Comment {
-    fn shortened(&self) -> String {
-        if self.value.len() <= 40 {
-            self.value.clone()
+impl fmt::Display for Comment<'_> {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        const MAX_LEN: usize = 40;
+
+        let Self { value } = self;
+        let comment: &str = value;
+        if comment.len() <= MAX_LEN {
+            write!(f, "{comment}")
         } else {
-            self.value[0..40].to_owned() + " ..."
+            write!(f, "{} …", &comment[..comment.floor_char_boundary(MAX_LEN)])
         }
     }
 }
 
 #[derive(PartialEq, Clone)]
-pub enum TokenKind {
-    Identifier(Identifier),
+pub enum TokenKind<'a> {
+    Identifier(Identifier<'a>),
     Keyword(Keyword),
     IntegerLiteral(IntegerLiteral),
     RealLiteral(RealLiteral),
     BoolLiteral(BoolLiteral),
     BuiltinTypename(BuiltinTypename),
     Operator(SyntacticOperator),
-    Comment(Comment),
+    Comment(Comment<'a>),
     LeftBracket,
     RightBracket,
     LeftParenthesis,
@@ -89,7 +93,7 @@ pub enum TokenKind {
     Colon,
 }
 
-impl fmt::Display for TokenKind {
+impl fmt::Display for TokenKind<'_> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
             TokenKind::Identifier(identifier) => write!(f, "IDENTIFIER({})", identifier.name),
@@ -107,7 +111,7 @@ impl fmt::Display for TokenKind {
                 write!(f, "TYPENAME({builtin_typename:?})")
             }
             TokenKind::Operator(operator) => write!(f, "OPERATOR({operator:?})"),
-            TokenKind::Comment(comment) => write!(f, "COMMENT({})", comment.shortened()),
+            TokenKind::Comment(comment) => write!(f, "COMMENT({comment})"),
             TokenKind::LeftBracket => write!(f, "LEFT BRACKET"),
             TokenKind::RightBracket => write!(f, "RIGHT BRACKET"),
             TokenKind::LeftParenthesis => write!(f, "LEFT PARENTHESIS"),
@@ -136,13 +140,13 @@ impl fmt::Display for Extent {
     }
 }
 
-pub struct Token {
+pub struct Token<'a> {
     pub extent: Extent,
-    pub lexeme: String,
-    pub kind: TokenKind,
+    pub lexeme: &'a str,
+    pub kind: TokenKind<'a>,
 }
 
-impl fmt::Display for Token {
+impl fmt::Display for Token<'_> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         let Self {
             extent,
@@ -151,12 +155,4 @@ impl fmt::Display for Token {
         } = self;
         write!(f, "`{lexeme}` @ {extent} is {kind}")
     }
-}
-
-pub fn dump_tokens(tokens: &[Token]) -> String {
-    tokens
-        .iter()
-        .map(ToString::to_string)
-        .collect::<Vec<String>>()
-        .join("\n")
 }
