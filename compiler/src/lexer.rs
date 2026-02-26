@@ -1,5 +1,4 @@
-use core::{num, ptr};
-use std::collections::HashMap;
+use core::fmt;
 
 use phf::phf_map;
 
@@ -38,7 +37,7 @@ trait ImmutableIterator<'a>: Sized + Clone {
     fn skip_n(&self, n: usize) -> Option<Self> {
         let mut copy = self.clone();
 
-        for i in 0..n {
+        for _ in 0..n {
             if let Some((_, next)) = copy.next() {
                 copy = next;
             } else {
@@ -64,7 +63,7 @@ trait ImmutableIterator<'a>: Sized + Clone {
     }
 
     fn stars_with(&self, value: &str) -> Option<Self> {
-        let mut expected = value.chars();
+        let expected = value.chars();
         let mut copy = self.clone();
 
         for expected_char in expected {
@@ -83,21 +82,21 @@ trait ImmutableIterator<'a>: Sized + Clone {
 }
 
 // TODO: rewrite with Chars<'a> and its .clone() method
-#[derive(Clone, Copy)]
+#[derive(Clone)]
 struct IndexIterator<'a> {
     underlying: &'a str,
     index: usize,
 }
 
 impl<'a> ImmutableIterator<'a> for IndexIterator<'a> {
-    fn from_index(string: &'a str, n: usize) -> IndexIterator<'a> {
+    fn from_index(string: &'a str, n: usize) -> Self {
         IndexIterator {
             underlying: string,
             index: string.char_indices().nth(n).map(|(idx, _)| idx).unwrap(),
         }
     }
 
-    fn slice_to_string(start: &IndexIterator<'_>, end: &IndexIterator<'_>) -> String {
+    fn slice_to_string(start: &Self, end: &Self) -> String {
         assert_eq!(start.underlying.as_ptr(), end.underlying.as_ptr());
         start.underlying[start.index..end.index].to_owned()
     }
@@ -106,7 +105,7 @@ impl<'a> ImmutableIterator<'a> for IndexIterator<'a> {
         self.index >= self.underlying.len()
     }
 
-    fn next(&self) -> Option<(char, IndexIterator<'a>)> {
+    fn next(&self) -> Option<(char, Self)> {
         self.underlying[self.index..].chars().next().map(|ch| {
             (
                 ch,
@@ -119,6 +118,7 @@ impl<'a> ImmutableIterator<'a> for IndexIterator<'a> {
     }
 }
 
+#[allow(clippy::tests_outside_test_module)]
 #[test]
 fn identifier_start_is_identifier_continue() {
     for c in char::MIN..=char::MAX {
@@ -188,7 +188,7 @@ fn possible_identifier_value(lexeme: &str) -> TokenKind {
     }
 }
 
-fn known_symbolic_tokens(start: IndexIterator<'_>) -> Option<(TokenKind, IndexIterator<'_>)> {
+fn known_symbolic_tokens<'a>(start: &IndexIterator<'a>) -> Option<(TokenKind, IndexIterator<'a>)> {
     static KNOWN_TOKENS: &[(&str, TokenKind)] = &[
         (":=", TokenKind::Assignment),
         ("..", TokenKind::RangeSymbol),
@@ -222,18 +222,39 @@ fn known_symbolic_tokens(start: IndexIterator<'_>) -> Option<(TokenKind, IndexIt
     None
 }
 
-fn real_literal_from_representation(float_str: &str) -> TokenKind {
-    // TODO: process parsing error
-    TokenKind::RealLiteral(RealLiteral {
-        value: float_str.parse().unwrap(),
-    })
+#[derive(Debug)]
+pub struct LexerError {
+    pub position: usize,
+    pub reason: String,
 }
 
-fn integer_literal_from_representation(int_str: &str) -> TokenKind {
-    // TODO: process parsing error
-    TokenKind::IntegerLiteral(IntegerLiteral {
-        value: int_str.parse().unwrap(),
-    })
+impl fmt::Display for LexerError {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        let Self { position, reason } = self;
+        write!(f, "Lexing error byte offset {position}: {reason}")
+    }
+}
+
+impl core::error::Error for LexerError {}
+
+type LexerResult<T> = Result<T, LexerError>;
+
+fn real_literal_from_representation(s: &str, position: usize) -> LexerResult<TokenKind> {
+    Ok(TokenKind::RealLiteral(RealLiteral {
+        value: s.parse().map_err(|e| LexerError {
+            position,
+            reason: format!("Malformed float {s:?}: {e}"),
+        })?,
+    }))
+}
+
+fn integer_literal_from_representation(s: &str, position: usize) -> LexerResult<TokenKind> {
+    Ok(TokenKind::IntegerLiteral(IntegerLiteral {
+        value: s.parse().map_err(|e| LexerError {
+            position,
+            reason: format!("Malformed int {s:?}: {e}"),
+        })?,
+    }))
 }
 
 fn should_expect_sign(prev: bool, token: &TokenKind) -> bool {
@@ -262,10 +283,10 @@ fn should_expect_sign(prev: bool, token: &TokenKind) -> bool {
     }
 }
 
-fn numerical_tokens(
+fn numerical_tokens<'a>(
     expect_sign: bool,
-    begin: IndexIterator<'_>,
-) -> Option<(TokenKind, IndexIterator<'_>)> {
+    begin: &IndexIterator<'a>,
+) -> Option<LexerResult<(TokenKind, IndexIterator<'a>)>> {
     let mut start = begin.clone();
 
     // Numerical literal may start with a sign
@@ -281,32 +302,34 @@ fn numerical_tokens(
         if after_point.is_empty() {
             None
         } else {
-            let representation = ImmutableIterator::slice_to_string(&begin, &rest);
-            let token_value = real_literal_from_representation(&representation);
-            Some((token_value, rest))
+            Some(
+                real_literal_from_representation(
+                    &ImmutableIterator::slice_to_string(begin, &rest),
+                    begin.index,
+                )
+                .map(|token_value| (token_value, rest)),
+            )
         }
     } else if before_point.is_empty() {
         None
     } else {
-        let representation = ImmutableIterator::slice_to_string(&begin, &start);
-        let token_value = integer_literal_from_representation(&representation);
-        Some((token_value, start))
+        Some(
+            integer_literal_from_representation(
+                &ImmutableIterator::slice_to_string(begin, &start),
+                begin.index,
+            )
+            .map(|token_value| (token_value, start)),
+        )
     }
 }
 
-#[derive(Debug)]
-pub struct LexerError {
-    pub position: usize,
-    pub reason: String,
-}
-
-pub fn tokenize(source: &str) -> Result<Vec<Token>, LexerError> {
+pub fn tokenize(source: &str) -> LexerResult<Vec<Token>> {
     let mut begin = IndexIterator::from_beginning(source);
     let mut result = Vec::new();
     let mut expects_sign = true;
 
     while let Some(first_char) = begin.lookup() {
-        if (first_char.is_whitespace()) {
+        if first_char.is_whitespace() {
             begin = begin.skip(char::is_whitespace);
         } else if let Some(comment_start) = begin.stars_with("--") {
             let (comment, end) = comment_start.take_while(|ch| ch != '\n');
@@ -324,14 +347,15 @@ pub fn tokenize(source: &str) -> Result<Vec<Token>, LexerError> {
                 kind: possible_identifier_value(&possible_identifier),
             });
             begin = end;
-        } else if let Some((numerical_token, end)) = numerical_tokens(expects_sign, begin) {
+        } else if let Some(res) = numerical_tokens(expects_sign, &begin) {
+            let (numerical_token, end) = res?;
             result.push(Token {
                 extent: iterators_to_extent(&begin, &end),
                 lexeme: ImmutableIterator::slice_to_string(&begin, &end),
                 kind: numerical_token,
             });
             begin = end;
-        } else if let Some((token_value, end)) = known_symbolic_tokens(begin) {
+        } else if let Some((token_value, end)) = known_symbolic_tokens(&begin) {
             result.push(Token {
                 extent: iterators_to_extent(&begin, &end),
                 lexeme: ImmutableIterator::slice_to_string(&begin, &end),

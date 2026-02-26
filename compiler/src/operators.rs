@@ -46,6 +46,7 @@ pub enum SemanticBinaryOperator {
 }
 
 #[derive(PartialEq, Eq, Hash, Debug, Clone)]
+#[expect(clippy::enum_variant_names, reason = "TODO")]
 pub enum SemanticUnaryOperator {
     IntNeg,
     RealNeg,

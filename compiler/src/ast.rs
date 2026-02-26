@@ -78,7 +78,7 @@ pub enum Expression {
     RealToInt(Rc<Expression>),
     IntToBool(Rc<Expression>), // It cannot be expressed as value != 0, since it shoould panic on value out of [0:1]
 }
-
+#[expect(clippy::empty_structs_with_brackets, reason = "WIP")]
 pub struct SimpleDeclaration {
     // TODO
 }

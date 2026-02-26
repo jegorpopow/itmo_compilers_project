@@ -1,5 +1,3 @@
-use expect_test::expect_file;
-
 use crate::{
     lexer::{LexerError, tokenize},
     tokens::Token,
@@ -15,7 +13,7 @@ fn print_result(result: &Result<Vec<Token>, LexerError>) -> String {
             }
             result
         }
-        Err(e) => format!("ERROR\n{e:?}\n"),
+        Err(e) => format!("ERROR\n{e}\n"),
     }
 }
 

@@ -56,12 +56,16 @@ pub struct Comment {
     pub value: String,
 }
 
-impl Comment {
-    fn shortened(&self) -> String {
-        if self.value.len() <= 40 {
-            self.value.clone()
+impl fmt::Display for Comment {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        const MAX_LEN: usize = 40;
+
+        let Self { value } = self;
+        let comment: &str = value;
+        if comment.len() <= MAX_LEN {
+            write!(f, "{comment}")
         } else {
-            self.value[0..40].to_owned() + " ..."
+            write!(f, "{} …", &comment[..comment.floor_char_boundary(MAX_LEN)])
         }
     }
 }
@@ -107,7 +111,7 @@ impl fmt::Display for TokenKind {
                 write!(f, "TYPENAME({builtin_typename:?})")
             }
             TokenKind::Operator(operator) => write!(f, "OPERATOR({operator:?})"),
-            TokenKind::Comment(comment) => write!(f, "COMMENT({})", comment.shortened()),
+            TokenKind::Comment(comment) => write!(f, "COMMENT({comment})"),
             TokenKind::LeftBracket => write!(f, "LEFT BRACKET"),
             TokenKind::RightBracket => write!(f, "RIGHT BRACKET"),
             TokenKind::LeftParenthesis => write!(f, "LEFT PARENTHESIS"),
@@ -151,12 +155,4 @@ impl fmt::Display for Token {
         } = self;
         write!(f, "`{lexeme}` @ {extent} is {kind}")
     }
-}
-
-pub fn dump_tokens(tokens: &[Token]) -> String {
-    tokens
-        .iter()
-        .map(ToString::to_string)
-        .collect::<Vec<String>>()
-        .join("\n")
 }
