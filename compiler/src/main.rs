@@ -4,7 +4,7 @@ use std::env;
 use std::fs;
 use std::process::ExitCode;
 
-use crate::lexer::tokenize;
+use crate::lexer::Lexer;
 
 mod ast;
 mod bytecode;
@@ -24,7 +24,7 @@ fn main() -> ExitCode {
     }
 
     let source: String = fs::read_to_string(&args[1]).unwrap();
-    for token in tokenize(&source) {
+    for token in Lexer::from(source.as_str()) {
         println!("{token}")
     }
     ExitCode::SUCCESS

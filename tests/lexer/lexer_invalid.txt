@@ -1,0 +1,12 @@
+"routine" @ 1:0-1:7 is KEYWORD(Routine)
+"main" @ 1:8-1:12 is IDENTIFIER(main)
+"(" @ 1:12-1:13 is LEFT PARENTHESIS
+")" @ 1:13-1:14 is RIGHT PARENTHESIS
+"is" @ 1:15-1:17 is KEYWORD(Is)
+"var" @ 2:2-2:5 is KEYWORD(Var)
+"🐈" @ 2:6-2:7 is INVALID(Unexpected symbol `🐈`)
+"is" @ 2:8-2:10 is KEYWORD(Is)
+"123456789012345678901234567890" @ 2:11-2:41 is INVALID(Malformed integer "123456789012345678901234567890": number too large to fit in target type)
+";" @ 2:41-2:42 is SEMICOLON
+"end" @ 3:0-3:3 is KEYWORD(End)
+";" @ 3:3-3:4 is SEMICOLON

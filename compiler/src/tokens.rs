@@ -102,7 +102,7 @@ pub enum TokenKind<'a> {
 impl fmt::Display for TokenKind<'_> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
-            TokenKind::Identifier(identifier) => write!(f, "IDENTIFIER({})", identifier.name),
+            TokenKind::Identifier(Identifier { name }) => write!(f, "IDENTIFIER({name})"),
             TokenKind::Keyword(keyword) => write!(f, "KEYWORD({keyword:?})"),
             TokenKind::IntegerLiteral(IntegerLiteral { value }) => {
                 write!(f, "INTEGER LITERAL({value})")
@@ -118,7 +118,7 @@ impl fmt::Display for TokenKind<'_> {
             }
             TokenKind::Operator(operator) => write!(f, "OPERATOR({operator:?})"),
             TokenKind::Comment(comment) => write!(f, "COMMENT({comment})"),
-            TokenKind::Invalid(InvalidToken { problem }) => write!(f, "invalid, since {problem}"),
+            TokenKind::Invalid(InvalidToken { problem }) => write!(f, "INVALID({problem})"),
             TokenKind::LeftBracket => write!(f, "LEFT BRACKET"),
             TokenKind::RightBracket => write!(f, "RIGHT BRACKET"),
             TokenKind::LeftParenthesis => write!(f, "LEFT PARENTHESIS"),
@@ -146,7 +146,8 @@ impl Position {
     pub fn begin() -> Self {
         Position { line: 1, column: 0 }
     }
-    pub fn advance(&self, is_newline: bool) -> Position {
+
+    pub fn advance(self, is_newline: bool) -> Self {
         if is_newline {
             Position {
                 line: self.line + 1,
@@ -193,6 +194,6 @@ impl fmt::Display for Token<'_> {
             lexeme,
             kind,
         } = self;
-        write!(f, "`{lexeme}` @ {extent} is {kind}")
+        write!(f, "{lexeme:?} @ {extent} is {kind}")
     }
 }

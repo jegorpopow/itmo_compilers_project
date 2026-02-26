@@ -1,8 +1,8 @@
-use crate::{lexer::tokenize, tokens::Token};
+use crate::lexer::Lexer;
 
-fn print_result(tokens: &Vec<Token<'_>>) -> String {
+fn lex(src: &str) -> String {
     let mut result = String::new();
-    for token in tokens {
+    for token in Lexer::from(src) {
         use core::fmt::Write;
         writeln!(&mut result, "{token}").expect("Writing to a string won't fail");
     }
@@ -23,7 +23,7 @@ macro_rules! tests {
                     env!("CARGO_MANIFEST_DIR"),
                     "/../tests/lexer/",
                     $file ,".txt"
-                )].assert_eq(&print_result(&tokenize(src)))
+                )].assert_eq(&lex(src))
             }
         )+
     };
@@ -45,6 +45,7 @@ tests![
     function_return => "function_return",
     identifiers => "identifiers",
     invalid => "invalid",
+    lexer_invalid => "lexer_invalid",
     logical_operators => "logical_operators",
     nested_control => "nested_control",
     operator_precedence => "operator_precedence",
