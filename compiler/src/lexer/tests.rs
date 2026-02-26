@@ -33,7 +33,7 @@ macro_rules! tests {
 // ```shell
 // UPDATE_EXPECT=1 cargo test
 // ```
-tests![
+tests! [
     arithmetic_operations => "arithmetic_operations",
     arrays_and_records => "arrays_and_records",
     comparison_operators => "comparison_operators",

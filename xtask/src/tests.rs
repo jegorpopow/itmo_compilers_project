@@ -3,6 +3,11 @@ use super::*;
 use anyhow::bail;
 
 #[throws]
+fn test_sources() -> TestDirContents {
+    list_tests(tests_dir()?.join("src")).context("Failed to get a list test sources")?
+}
+
+#[throws]
 fn check_has_all_tests(actual: &TestDirContents, expected: &TestDirContents) {
     let missing: Vec<_> = expected.names.difference(&actual.names).collect();
     if !missing.is_empty() {
@@ -35,9 +40,12 @@ fn all_files_are_used() {
 #[test]
 #[throws]
 fn lexer_has_all_test_cases() {
-    let lexer_tests_file = workspace_root()?.join("compiler/src/lexer/tests.rs");
-    let actual = fs::read_to_string(&lexer_tests_file).with_context(|| {
-        format!("Failed to read the file with lexer tests ({lexer_tests_file:?})")
+    let path = lexer_tests_file()?;
+    let actual = fs::read_to_string(&path).with_context(|| {
+        format!(
+            "Failed to read the file with lexer tests ({})",
+            path.display()
+        )
     })?;
     let expected = lexer_tests()?;
     #[expect(
@@ -45,9 +53,11 @@ fn lexer_has_all_test_cases() {
         reason = "Do we really care about order of errors?"
     )]
     for name in &expected.names {
-        ensure!(
+        assert!(
             actual.contains(&*format!(" => {name:?},")),
-            "Test case {name:?} is missing in {lexer_tests_file:?} (expected because {:?} exists)",
+            "Test case {name:?} is missing in {} (expected because {:?} exists).\n\
+            !!!! Consider running `cargo x update-lexer-tests`. !!!!",
+            path.display(),
             expected.name_to_path(name)
         )
     }
