@@ -1,335 +1,335 @@
-`type` @ 1:0-1:4 is KEYWORD(Type)
-`point` @ 1:5-1:10 is IDENTIFIER(point)
-`is` @ 1:11-1:13 is KEYWORD(Is)
-`record` @ 1:14-1:20 is KEYWORD(Record)
-`var` @ 2:2-2:5 is KEYWORD(Var)
-`x` @ 2:6-2:7 is IDENTIFIER(x)
-`is` @ 2:8-2:10 is KEYWORD(Is)
-`real` @ 2:11-2:15 is TYPENAME(Real)
-`;` @ 2:15-2:16 is SEMICOLON
-`car` @ 3:2-3:5 is IDENTIFIER(car)
-`y` @ 3:6-3:7 is IDENTIFIER(y)
-`is` @ 3:8-3:10 is KEYWORD(Is)
-`real` @ 3:11-3:15 is TYPENAME(Real)
-`;` @ 3:15-3:16 is SEMICOLON
-`end` @ 4:0-4:3 is KEYWORD(End)
-`;` @ 4:3-4:4 is SEMICOLON
-`type` @ 6:0-6:4 is KEYWORD(Type)
-`triangle` @ 6:5-6:13 is IDENTIFIER(triangle)
-`is` @ 6:14-6:16 is KEYWORD(Is)
-`array` @ 6:17-6:22 is KEYWORD(Array)
-`[` @ 6:23-6:24 is LEFT BRACKET
-`1` @ 6:24-6:25 is INTEGER LITERAL(1)
-`+` @ 6:26-6:27 is OPERATOR(Add)
-`2` @ 6:28-6:29 is INTEGER LITERAL(2)
-`]` @ 6:29-6:30 is RIGHT BRACKET
-`point` @ 6:31-6:36 is IDENTIFIER(point)
-`;` @ 6:36-6:37 is SEMICOLON
-`var` @ 8:0-8:3 is KEYWORD(Var)
-`EPS` @ 8:4-8:7 is IDENTIFIER(EPS)
-`=` @ 8:8-8:9 is OPERATOR(Eq)
-`0.0000001` @ 8:10-8:19 is REAL LITERAL(0.0000001)
-`;` @ 8:19-8:20 is SEMICOLON
-`routine` @ 10:0-10:7 is KEYWORD(Routine)
-`approximately_eq` @ 10:8-10:24 is IDENTIFIER(approximately_eq)
-`(` @ 10:24-10:25 is LEFT PARENTHESIS
-`a` @ 10:25-10:26 is IDENTIFIER(a)
-`:` @ 10:27-10:28 is COLON
-`real` @ 10:29-10:33 is TYPENAME(Real)
-`,` @ 10:33-10:34 is COMMA
-`b` @ 10:35-10:36 is IDENTIFIER(b)
-`:` @ 10:37-10:38 is COLON
-`real` @ 10:39-10:43 is TYPENAME(Real)
-`,` @ 10:43-10:44 is COMMA
-`eps` @ 10:45-10:48 is IDENTIFIER(eps)
-`:` @ 10:49-10:50 is COLON
-`real` @ 10:51-10:55 is TYPENAME(Real)
-`)` @ 10:55-10:56 is RIGHT PARENTHESIS
-`=` @ 10:57-10:58 is OPERATOR(Eq)
-`>` @ 10:58-10:59 is OPERATOR(Gt)
-`(` @ 10:60-10:61 is LEFT PARENTHESIS
-`a` @ 10:61-10:62 is IDENTIFIER(a)
-`-` @ 10:63-10:64 is OPERATOR(Sub)
-`b` @ 10:65-10:66 is IDENTIFIER(b)
-`)` @ 10:66-10:67 is RIGHT PARENTHESIS
-`*` @ 10:68-10:69 is OPERATOR(Mul)
-`(` @ 10:70-10:71 is LEFT PARENTHESIS
-`a` @ 10:71-10:72 is IDENTIFIER(a)
-`-` @ 10:73-10:74 is OPERATOR(Sub)
-`b` @ 10:75-10:76 is IDENTIFIER(b)
-`)` @ 10:76-10:77 is RIGHT PARENTHESIS
-`<` @ 10:78-10:79 is OPERATOR(Lt)
-`eps` @ 10:80-10:83 is IDENTIFIER(eps)
-`*` @ 10:84-10:85 is OPERATOR(Mul)
-`eps` @ 10:86-10:89 is IDENTIFIER(eps)
-`;` @ 10:89-10:90 is SEMICOLON
-`routine` @ 12:0-12:7 is KEYWORD(Routine)
-`squared_distance` @ 12:8-12:24 is IDENTIFIER(squared_distance)
-`(` @ 12:24-12:25 is LEFT PARENTHESIS
-`from` @ 12:25-12:29 is IDENTIFIER(from)
-`:` @ 12:30-12:31 is COLON
-`point` @ 12:32-12:37 is IDENTIFIER(point)
-`,` @ 12:37-12:38 is COMMA
-`to` @ 12:39-12:41 is IDENTIFIER(to)
-`:` @ 12:42-12:43 is COLON
-`point` @ 12:44-12:49 is IDENTIFIER(point)
-`)` @ 12:49-12:50 is RIGHT PARENTHESIS
-`:` @ 12:51-12:52 is COLON
-`real` @ 12:53-12:57 is TYPENAME(Real)
-`is` @ 12:58-12:60 is KEYWORD(Is)
-`return` @ 13:2-13:8 is IDENTIFIER(return)
-`(` @ 13:9-13:10 is LEFT PARENTHESIS
-`from` @ 13:10-13:14 is IDENTIFIER(from)
-`.` @ 13:14-13:15 is DOT
-`x` @ 13:15-13:16 is IDENTIFIER(x)
-`-` @ 13:17-13:18 is OPERATOR(Sub)
-`to` @ 13:19-13:21 is IDENTIFIER(to)
-`.` @ 13:21-13:22 is DOT
-`x` @ 13:22-13:23 is IDENTIFIER(x)
-`)` @ 13:23-13:24 is RIGHT PARENTHESIS
-`*` @ 13:25-13:26 is OPERATOR(Mul)
-`(` @ 13:27-13:28 is LEFT PARENTHESIS
-`from` @ 13:28-13:32 is IDENTIFIER(from)
-`.` @ 13:32-13:33 is DOT
-`x` @ 13:33-13:34 is IDENTIFIER(x)
-`-` @ 13:35-13:36 is OPERATOR(Sub)
-`to` @ 13:37-13:39 is IDENTIFIER(to)
-`.` @ 13:39-13:40 is DOT
-`x` @ 13:40-13:41 is IDENTIFIER(x)
-`)` @ 13:41-13:42 is RIGHT PARENTHESIS
-`+` @ 13:43-13:44 is OPERATOR(Add)
-`(` @ 13:45-13:46 is LEFT PARENTHESIS
-`from` @ 13:46-13:50 is IDENTIFIER(from)
-`.` @ 13:50-13:51 is DOT
-`y` @ 13:51-13:52 is IDENTIFIER(y)
-`-` @ 13:53-13:54 is OPERATOR(Sub)
-`to` @ 13:55-13:57 is IDENTIFIER(to)
-`.` @ 13:57-13:58 is DOT
-`y` @ 13:58-13:59 is IDENTIFIER(y)
-`)` @ 13:59-13:60 is RIGHT PARENTHESIS
-`*` @ 13:61-13:62 is OPERATOR(Mul)
-`(` @ 13:63-13:64 is LEFT PARENTHESIS
-`from` @ 13:64-13:68 is IDENTIFIER(from)
-`.` @ 13:68-13:69 is DOT
-`y` @ 13:69-13:70 is IDENTIFIER(y)
-`-` @ 13:71-13:72 is OPERATOR(Sub)
-`to` @ 13:73-13:75 is IDENTIFIER(to)
-`.` @ 13:75-13:76 is DOT
-`y` @ 13:76-13:77 is IDENTIFIER(y)
-`)` @ 13:77-13:78 is RIGHT PARENTHESIS
-`;` @ 13:78-13:79 is SEMICOLON
-`end` @ 14:0-14:3 is KEYWORD(End)
-`;` @ 14:3-14:4 is SEMICOLON
-`routine` @ 16:0-16:7 is KEYWORD(Routine)
-`is_right` @ 16:8-16:16 is IDENTIFIER(is_right)
-`(` @ 16:16-16:17 is LEFT PARENTHESIS
-`t` @ 16:17-16:18 is IDENTIFIER(t)
-`:` @ 16:19-16:20 is COLON
-`triangle` @ 16:21-16:29 is IDENTIFIER(triangle)
-`)` @ 16:29-16:30 is RIGHT PARENTHESIS
-`=` @ 16:31-16:32 is OPERATOR(Eq)
-`>` @ 16:32-16:33 is OPERATOR(Gt)
-`approximately_eq` @ 17:5-17:21 is IDENTIFIER(approximately_eq)
-`(` @ 17:21-17:22 is LEFT PARENTHESIS
-`squared_distance` @ 17:22-17:38 is IDENTIFIER(squared_distance)
-`(` @ 17:38-17:39 is LEFT PARENTHESIS
-`t` @ 17:39-17:40 is IDENTIFIER(t)
-`[` @ 17:40-17:41 is LEFT BRACKET
-`1` @ 17:41-17:42 is INTEGER LITERAL(1)
-`]` @ 17:42-17:43 is RIGHT BRACKET
-`,` @ 17:43-17:44 is COMMA
-`t` @ 17:45-17:46 is IDENTIFIER(t)
-`[` @ 17:46-17:47 is LEFT BRACKET
-`2` @ 17:47-17:48 is INTEGER LITERAL(2)
-`]` @ 17:48-17:49 is RIGHT BRACKET
-`)` @ 17:49-17:50 is RIGHT PARENTHESIS
-`+` @ 17:51-17:52 is OPERATOR(Add)
-`squared_distance` @ 17:53-17:69 is IDENTIFIER(squared_distance)
-`(` @ 17:69-17:70 is LEFT PARENTHESIS
-`t` @ 17:70-17:71 is IDENTIFIER(t)
-`[` @ 17:71-17:72 is LEFT BRACKET
-`2` @ 17:72-17:73 is INTEGER LITERAL(2)
-`]` @ 17:73-17:74 is RIGHT BRACKET
-`,` @ 17:74-17:75 is COMMA
-`t` @ 17:76-17:77 is IDENTIFIER(t)
-`[` @ 17:77-17:78 is LEFT BRACKET
-`3` @ 17:78-17:79 is INTEGER LITERAL(3)
-`]` @ 17:79-17:80 is RIGHT BRACKET
-`)` @ 17:80-17:81 is RIGHT PARENTHESIS
-`,` @ 17:81-17:82 is COMMA
-`squared_distance` @ 17:83-17:99 is IDENTIFIER(squared_distance)
-`(` @ 17:99-17:100 is LEFT PARENTHESIS
-`t` @ 17:100-17:101 is IDENTIFIER(t)
-`[` @ 17:101-17:102 is LEFT BRACKET
-`1` @ 17:102-17:103 is INTEGER LITERAL(1)
-`]` @ 17:103-17:104 is RIGHT BRACKET
-`,` @ 17:104-17:105 is COMMA
-`t` @ 17:106-17:107 is IDENTIFIER(t)
-`[` @ 17:107-17:108 is LEFT BRACKET
-`3` @ 17:108-17:109 is INTEGER LITERAL(3)
-`]` @ 17:109-17:110 is RIGHT BRACKET
-`)` @ 17:110-17:111 is RIGHT PARENTHESIS
-`,` @ 17:111-17:112 is COMMA
-`EPS` @ 17:113-17:116 is IDENTIFIER(EPS)
-`)` @ 17:116-17:117 is RIGHT PARENTHESIS
-`or` @ 18:2-18:4 is OPERATOR(Or)
-`approximately_eq` @ 18:5-18:21 is IDENTIFIER(approximately_eq)
-`(` @ 18:21-18:22 is LEFT PARENTHESIS
-`squared_distance` @ 18:22-18:38 is IDENTIFIER(squared_distance)
-`(` @ 18:38-18:39 is LEFT PARENTHESIS
-`t` @ 18:39-18:40 is IDENTIFIER(t)
-`[` @ 18:40-18:41 is LEFT BRACKET
-`1` @ 18:41-18:42 is INTEGER LITERAL(1)
-`]` @ 18:42-18:43 is RIGHT BRACKET
-`,` @ 18:43-18:44 is COMMA
-`t` @ 18:45-18:46 is IDENTIFIER(t)
-`[` @ 18:46-18:47 is LEFT BRACKET
-`3` @ 18:47-18:48 is INTEGER LITERAL(3)
-`]` @ 18:48-18:49 is RIGHT BRACKET
-`)` @ 18:49-18:50 is RIGHT PARENTHESIS
-`+` @ 18:51-18:52 is OPERATOR(Add)
-`squared_distance` @ 18:53-18:69 is IDENTIFIER(squared_distance)
-`(` @ 18:69-18:70 is LEFT PARENTHESIS
-`t` @ 18:70-18:71 is IDENTIFIER(t)
-`[` @ 18:71-18:72 is LEFT BRACKET
-`1` @ 18:72-18:73 is INTEGER LITERAL(1)
-`]` @ 18:73-18:74 is RIGHT BRACKET
-`,` @ 18:74-18:75 is COMMA
-`t` @ 18:76-18:77 is IDENTIFIER(t)
-`[` @ 18:77-18:78 is LEFT BRACKET
-`2` @ 18:78-18:79 is INTEGER LITERAL(2)
-`]` @ 18:79-18:80 is RIGHT BRACKET
-`)` @ 18:80-18:81 is RIGHT PARENTHESIS
-`,` @ 18:81-18:82 is COMMA
-`squared_distance` @ 18:83-18:99 is IDENTIFIER(squared_distance)
-`(` @ 18:99-18:100 is LEFT PARENTHESIS
-`t` @ 18:100-18:101 is IDENTIFIER(t)
-`[` @ 18:101-18:102 is LEFT BRACKET
-`2` @ 18:102-18:103 is INTEGER LITERAL(2)
-`]` @ 18:103-18:104 is RIGHT BRACKET
-`,` @ 18:104-18:105 is COMMA
-`t` @ 18:106-18:107 is IDENTIFIER(t)
-`[` @ 18:107-18:108 is LEFT BRACKET
-`3` @ 18:108-18:109 is INTEGER LITERAL(3)
-`]` @ 18:109-18:110 is RIGHT BRACKET
-`)` @ 18:110-18:111 is RIGHT PARENTHESIS
-`,` @ 18:111-18:112 is COMMA
-`EPS` @ 18:113-18:116 is IDENTIFIER(EPS)
-`)` @ 18:116-18:117 is RIGHT PARENTHESIS
-`or` @ 19:2-19:4 is OPERATOR(Or)
-`approximately_eq` @ 19:5-19:21 is IDENTIFIER(approximately_eq)
-`(` @ 19:21-19:22 is LEFT PARENTHESIS
-`squared_distance` @ 19:22-19:38 is IDENTIFIER(squared_distance)
-`(` @ 19:38-19:39 is LEFT PARENTHESIS
-`t` @ 19:39-19:40 is IDENTIFIER(t)
-`[` @ 19:40-19:41 is LEFT BRACKET
-`3` @ 19:41-19:42 is INTEGER LITERAL(3)
-`]` @ 19:42-19:43 is RIGHT BRACKET
-`,` @ 19:43-19:44 is COMMA
-`t` @ 19:45-19:46 is IDENTIFIER(t)
-`[` @ 19:46-19:47 is LEFT BRACKET
-`1` @ 19:47-19:48 is INTEGER LITERAL(1)
-`]` @ 19:48-19:49 is RIGHT BRACKET
-`)` @ 19:49-19:50 is RIGHT PARENTHESIS
-`+` @ 19:51-19:52 is OPERATOR(Add)
-`squared_distance` @ 19:53-19:69 is IDENTIFIER(squared_distance)
-`(` @ 19:69-19:70 is LEFT PARENTHESIS
-`t` @ 19:70-19:71 is IDENTIFIER(t)
-`[` @ 19:71-19:72 is LEFT BRACKET
-`3` @ 19:72-19:73 is INTEGER LITERAL(3)
-`]` @ 19:73-19:74 is RIGHT BRACKET
-`,` @ 19:74-19:75 is COMMA
-`t` @ 19:76-19:77 is IDENTIFIER(t)
-`[` @ 19:77-19:78 is LEFT BRACKET
-`2` @ 19:78-19:79 is INTEGER LITERAL(2)
-`]` @ 19:79-19:80 is RIGHT BRACKET
-`)` @ 19:80-19:81 is RIGHT PARENTHESIS
-`,` @ 19:81-19:82 is COMMA
-`squared_distance` @ 19:83-19:99 is IDENTIFIER(squared_distance)
-`(` @ 19:99-19:100 is LEFT PARENTHESIS
-`t` @ 19:100-19:101 is IDENTIFIER(t)
-`[` @ 19:101-19:102 is LEFT BRACKET
-`1` @ 19:102-19:103 is INTEGER LITERAL(1)
-`]` @ 19:103-19:104 is RIGHT BRACKET
-`,` @ 19:104-19:105 is COMMA
-`t` @ 19:106-19:107 is IDENTIFIER(t)
-`[` @ 19:107-19:108 is LEFT BRACKET
-`2` @ 19:108-19:109 is INTEGER LITERAL(2)
-`]` @ 19:109-19:110 is RIGHT BRACKET
-`)` @ 19:110-19:111 is RIGHT PARENTHESIS
-`,` @ 19:111-19:112 is COMMA
-`EPS` @ 19:113-19:116 is IDENTIFIER(EPS)
-`)` @ 19:116-19:117 is RIGHT PARENTHESIS
-`;` @ 19:117-19:118 is SEMICOLON
-`routine` @ 21:0-21:7 is KEYWORD(Routine)
-`main` @ 21:8-21:12 is IDENTIFIER(main)
-`(` @ 21:12-21:13 is LEFT PARENTHESIS
-`)` @ 21:13-21:14 is RIGHT PARENTHESIS
-`is` @ 21:15-21:17 is KEYWORD(Is)
-`var` @ 22:2-22:5 is KEYWORD(Var)
-`t` @ 22:6-22:7 is IDENTIFIER(t)
-`:` @ 22:8-22:9 is COLON
-`triangle` @ 22:10-22:18 is IDENTIFIER(triangle)
-`;` @ 22:18-22:19 is SEMICOLON
-`t` @ 23:2-23:3 is IDENTIFIER(t)
-`[` @ 23:3-23:4 is LEFT BRACKET
-`1` @ 23:4-23:5 is INTEGER LITERAL(1)
-`]` @ 23:5-23:6 is RIGHT BRACKET
-`.` @ 23:6-23:7 is DOT
-`x` @ 23:7-23:8 is IDENTIFIER(x)
-`:=` @ 23:9-23:11 is ASSIGNMENT OPERATOR
-`0.0` @ 23:12-23:15 is REAL LITERAL(0)
-`;` @ 23:15-23:16 is SEMICOLON
-`t` @ 24:2-24:3 is IDENTIFIER(t)
-`[` @ 24:3-24:4 is LEFT BRACKET
-`1` @ 24:4-24:5 is INTEGER LITERAL(1)
-`]` @ 24:5-24:6 is RIGHT BRACKET
-`.` @ 24:6-24:7 is DOT
-`y` @ 24:7-24:8 is IDENTIFIER(y)
-`:=` @ 24:9-24:11 is ASSIGNMENT OPERATOR
-`0.0` @ 24:12-24:15 is REAL LITERAL(0)
-`;` @ 24:15-24:16 is SEMICOLON
-`t` @ 25:2-25:3 is IDENTIFIER(t)
-`[` @ 25:3-25:4 is LEFT BRACKET
-`2` @ 25:4-25:5 is INTEGER LITERAL(2)
-`]` @ 25:5-25:6 is RIGHT BRACKET
-`.` @ 25:6-25:7 is DOT
-`x` @ 25:7-25:8 is IDENTIFIER(x)
-`:=` @ 25:9-25:11 is ASSIGNMENT OPERATOR
-`3.0` @ 25:12-25:15 is REAL LITERAL(3)
-`;` @ 25:15-25:16 is SEMICOLON
-`t` @ 26:2-26:3 is IDENTIFIER(t)
-`[` @ 26:3-26:4 is LEFT BRACKET
-`2` @ 26:4-26:5 is INTEGER LITERAL(2)
-`]` @ 26:5-26:6 is RIGHT BRACKET
-`.` @ 26:6-26:7 is DOT
-`y` @ 26:7-26:8 is IDENTIFIER(y)
-`:=` @ 26:9-26:11 is ASSIGNMENT OPERATOR
-`0.0` @ 26:12-26:15 is REAL LITERAL(0)
-`;` @ 26:15-26:16 is SEMICOLON
-`t` @ 27:2-27:3 is IDENTIFIER(t)
-`[` @ 27:3-27:4 is LEFT BRACKET
-`3` @ 27:4-27:5 is INTEGER LITERAL(3)
-`]` @ 27:5-27:6 is RIGHT BRACKET
-`.` @ 27:6-27:7 is DOT
-`x` @ 27:7-27:8 is IDENTIFIER(x)
-`:=` @ 27:9-27:11 is ASSIGNMENT OPERATOR
-`0.0` @ 27:12-27:15 is REAL LITERAL(0)
-`;` @ 27:15-27:16 is SEMICOLON
-`t` @ 28:2-28:3 is IDENTIFIER(t)
-`[` @ 28:3-28:4 is LEFT BRACKET
-`3` @ 28:4-28:5 is INTEGER LITERAL(3)
-`]` @ 28:5-28:6 is RIGHT BRACKET
-`.` @ 28:6-28:7 is DOT
-`y` @ 28:7-28:8 is IDENTIFIER(y)
-`:=` @ 28:9-28:11 is ASSIGNMENT OPERATOR
-`4.0` @ 28:12-28:15 is REAL LITERAL(4)
-`;` @ 28:15-28:16 is SEMICOLON
-`print` @ 29:2-29:7 is IDENTIFIER(print)
-`is_right` @ 29:8-29:16 is IDENTIFIER(is_right)
-`(` @ 29:16-29:17 is LEFT PARENTHESIS
-`t` @ 29:17-29:18 is IDENTIFIER(t)
-`)` @ 29:18-29:19 is RIGHT PARENTHESIS
-`;` @ 29:19-29:20 is SEMICOLON
-`end` @ 30:0-30:3 is KEYWORD(End)
-`;` @ 30:3-30:4 is SEMICOLON
+"type" @ 1:0-1:4 is KEYWORD(Type)
+"point" @ 1:5-1:10 is IDENTIFIER(point)
+"is" @ 1:11-1:13 is KEYWORD(Is)
+"record" @ 1:14-1:20 is KEYWORD(Record)
+"var" @ 2:2-2:5 is KEYWORD(Var)
+"x" @ 2:6-2:7 is IDENTIFIER(x)
+"is" @ 2:8-2:10 is KEYWORD(Is)
+"real" @ 2:11-2:15 is TYPENAME(Real)
+";" @ 2:15-2:16 is SEMICOLON
+"car" @ 3:2-3:5 is IDENTIFIER(car)
+"y" @ 3:6-3:7 is IDENTIFIER(y)
+"is" @ 3:8-3:10 is KEYWORD(Is)
+"real" @ 3:11-3:15 is TYPENAME(Real)
+";" @ 3:15-3:16 is SEMICOLON
+"end" @ 4:0-4:3 is KEYWORD(End)
+";" @ 4:3-4:4 is SEMICOLON
+"type" @ 6:0-6:4 is KEYWORD(Type)
+"triangle" @ 6:5-6:13 is IDENTIFIER(triangle)
+"is" @ 6:14-6:16 is KEYWORD(Is)
+"array" @ 6:17-6:22 is KEYWORD(Array)
+"[" @ 6:23-6:24 is LEFT BRACKET
+"1" @ 6:24-6:25 is INTEGER LITERAL(1)
+"+" @ 6:26-6:27 is OPERATOR(Add)
+"2" @ 6:28-6:29 is INTEGER LITERAL(2)
+"]" @ 6:29-6:30 is RIGHT BRACKET
+"point" @ 6:31-6:36 is IDENTIFIER(point)
+";" @ 6:36-6:37 is SEMICOLON
+"var" @ 8:0-8:3 is KEYWORD(Var)
+"EPS" @ 8:4-8:7 is IDENTIFIER(EPS)
+"=" @ 8:8-8:9 is OPERATOR(Eq)
+"0.0000001" @ 8:10-8:19 is REAL LITERAL(0.0000001)
+";" @ 8:19-8:20 is SEMICOLON
+"routine" @ 10:0-10:7 is KEYWORD(Routine)
+"approximately_eq" @ 10:8-10:24 is IDENTIFIER(approximately_eq)
+"(" @ 10:24-10:25 is LEFT PARENTHESIS
+"a" @ 10:25-10:26 is IDENTIFIER(a)
+":" @ 10:27-10:28 is COLON
+"real" @ 10:29-10:33 is TYPENAME(Real)
+"," @ 10:33-10:34 is COMMA
+"b" @ 10:35-10:36 is IDENTIFIER(b)
+":" @ 10:37-10:38 is COLON
+"real" @ 10:39-10:43 is TYPENAME(Real)
+"," @ 10:43-10:44 is COMMA
+"eps" @ 10:45-10:48 is IDENTIFIER(eps)
+":" @ 10:49-10:50 is COLON
+"real" @ 10:51-10:55 is TYPENAME(Real)
+")" @ 10:55-10:56 is RIGHT PARENTHESIS
+"=" @ 10:57-10:58 is OPERATOR(Eq)
+">" @ 10:58-10:59 is OPERATOR(Gt)
+"(" @ 10:60-10:61 is LEFT PARENTHESIS
+"a" @ 10:61-10:62 is IDENTIFIER(a)
+"-" @ 10:63-10:64 is OPERATOR(Sub)
+"b" @ 10:65-10:66 is IDENTIFIER(b)
+")" @ 10:66-10:67 is RIGHT PARENTHESIS
+"*" @ 10:68-10:69 is OPERATOR(Mul)
+"(" @ 10:70-10:71 is LEFT PARENTHESIS
+"a" @ 10:71-10:72 is IDENTIFIER(a)
+"-" @ 10:73-10:74 is OPERATOR(Sub)
+"b" @ 10:75-10:76 is IDENTIFIER(b)
+")" @ 10:76-10:77 is RIGHT PARENTHESIS
+"<" @ 10:78-10:79 is OPERATOR(Lt)
+"eps" @ 10:80-10:83 is IDENTIFIER(eps)
+"*" @ 10:84-10:85 is OPERATOR(Mul)
+"eps" @ 10:86-10:89 is IDENTIFIER(eps)
+";" @ 10:89-10:90 is SEMICOLON
+"routine" @ 12:0-12:7 is KEYWORD(Routine)
+"squared_distance" @ 12:8-12:24 is IDENTIFIER(squared_distance)
+"(" @ 12:24-12:25 is LEFT PARENTHESIS
+"from" @ 12:25-12:29 is IDENTIFIER(from)
+":" @ 12:30-12:31 is COLON
+"point" @ 12:32-12:37 is IDENTIFIER(point)
+"," @ 12:37-12:38 is COMMA
+"to" @ 12:39-12:41 is IDENTIFIER(to)
+":" @ 12:42-12:43 is COLON
+"point" @ 12:44-12:49 is IDENTIFIER(point)
+")" @ 12:49-12:50 is RIGHT PARENTHESIS
+":" @ 12:51-12:52 is COLON
+"real" @ 12:53-12:57 is TYPENAME(Real)
+"is" @ 12:58-12:60 is KEYWORD(Is)
+"return" @ 13:2-13:8 is IDENTIFIER(return)
+"(" @ 13:9-13:10 is LEFT PARENTHESIS
+"from" @ 13:10-13:14 is IDENTIFIER(from)
+"." @ 13:14-13:15 is DOT
+"x" @ 13:15-13:16 is IDENTIFIER(x)
+"-" @ 13:17-13:18 is OPERATOR(Sub)
+"to" @ 13:19-13:21 is IDENTIFIER(to)
+"." @ 13:21-13:22 is DOT
+"x" @ 13:22-13:23 is IDENTIFIER(x)
+")" @ 13:23-13:24 is RIGHT PARENTHESIS
+"*" @ 13:25-13:26 is OPERATOR(Mul)
+"(" @ 13:27-13:28 is LEFT PARENTHESIS
+"from" @ 13:28-13:32 is IDENTIFIER(from)
+"." @ 13:32-13:33 is DOT
+"x" @ 13:33-13:34 is IDENTIFIER(x)
+"-" @ 13:35-13:36 is OPERATOR(Sub)
+"to" @ 13:37-13:39 is IDENTIFIER(to)
+"." @ 13:39-13:40 is DOT
+"x" @ 13:40-13:41 is IDENTIFIER(x)
+")" @ 13:41-13:42 is RIGHT PARENTHESIS
+"+" @ 13:43-13:44 is OPERATOR(Add)
+"(" @ 13:45-13:46 is LEFT PARENTHESIS
+"from" @ 13:46-13:50 is IDENTIFIER(from)
+"." @ 13:50-13:51 is DOT
+"y" @ 13:51-13:52 is IDENTIFIER(y)
+"-" @ 13:53-13:54 is OPERATOR(Sub)
+"to" @ 13:55-13:57 is IDENTIFIER(to)
+"." @ 13:57-13:58 is DOT
+"y" @ 13:58-13:59 is IDENTIFIER(y)
+")" @ 13:59-13:60 is RIGHT PARENTHESIS
+"*" @ 13:61-13:62 is OPERATOR(Mul)
+"(" @ 13:63-13:64 is LEFT PARENTHESIS
+"from" @ 13:64-13:68 is IDENTIFIER(from)
+"." @ 13:68-13:69 is DOT
+"y" @ 13:69-13:70 is IDENTIFIER(y)
+"-" @ 13:71-13:72 is OPERATOR(Sub)
+"to" @ 13:73-13:75 is IDENTIFIER(to)
+"." @ 13:75-13:76 is DOT
+"y" @ 13:76-13:77 is IDENTIFIER(y)
+")" @ 13:77-13:78 is RIGHT PARENTHESIS
+";" @ 13:78-13:79 is SEMICOLON
+"end" @ 14:0-14:3 is KEYWORD(End)
+";" @ 14:3-14:4 is SEMICOLON
+"routine" @ 16:0-16:7 is KEYWORD(Routine)
+"is_right" @ 16:8-16:16 is IDENTIFIER(is_right)
+"(" @ 16:16-16:17 is LEFT PARENTHESIS
+"t" @ 16:17-16:18 is IDENTIFIER(t)
+":" @ 16:19-16:20 is COLON
+"triangle" @ 16:21-16:29 is IDENTIFIER(triangle)
+")" @ 16:29-16:30 is RIGHT PARENTHESIS
+"=" @ 16:31-16:32 is OPERATOR(Eq)
+">" @ 16:32-16:33 is OPERATOR(Gt)
+"approximately_eq" @ 17:5-17:21 is IDENTIFIER(approximately_eq)
+"(" @ 17:21-17:22 is LEFT PARENTHESIS
+"squared_distance" @ 17:22-17:38 is IDENTIFIER(squared_distance)
+"(" @ 17:38-17:39 is LEFT PARENTHESIS
+"t" @ 17:39-17:40 is IDENTIFIER(t)
+"[" @ 17:40-17:41 is LEFT BRACKET
+"1" @ 17:41-17:42 is INTEGER LITERAL(1)
+"]" @ 17:42-17:43 is RIGHT BRACKET
+"," @ 17:43-17:44 is COMMA
+"t" @ 17:45-17:46 is IDENTIFIER(t)
+"[" @ 17:46-17:47 is LEFT BRACKET
+"2" @ 17:47-17:48 is INTEGER LITERAL(2)
+"]" @ 17:48-17:49 is RIGHT BRACKET
+")" @ 17:49-17:50 is RIGHT PARENTHESIS
+"+" @ 17:51-17:52 is OPERATOR(Add)
+"squared_distance" @ 17:53-17:69 is IDENTIFIER(squared_distance)
+"(" @ 17:69-17:70 is LEFT PARENTHESIS
+"t" @ 17:70-17:71 is IDENTIFIER(t)
+"[" @ 17:71-17:72 is LEFT BRACKET
+"2" @ 17:72-17:73 is INTEGER LITERAL(2)
+"]" @ 17:73-17:74 is RIGHT BRACKET
+"," @ 17:74-17:75 is COMMA
+"t" @ 17:76-17:77 is IDENTIFIER(t)
+"[" @ 17:77-17:78 is LEFT BRACKET
+"3" @ 17:78-17:79 is INTEGER LITERAL(3)
+"]" @ 17:79-17:80 is RIGHT BRACKET
+")" @ 17:80-17:81 is RIGHT PARENTHESIS
+"," @ 17:81-17:82 is COMMA
+"squared_distance" @ 17:83-17:99 is IDENTIFIER(squared_distance)
+"(" @ 17:99-17:100 is LEFT PARENTHESIS
+"t" @ 17:100-17:101 is IDENTIFIER(t)
+"[" @ 17:101-17:102 is LEFT BRACKET
+"1" @ 17:102-17:103 is INTEGER LITERAL(1)
+"]" @ 17:103-17:104 is RIGHT BRACKET
+"," @ 17:104-17:105 is COMMA
+"t" @ 17:106-17:107 is IDENTIFIER(t)
+"[" @ 17:107-17:108 is LEFT BRACKET
+"3" @ 17:108-17:109 is INTEGER LITERAL(3)
+"]" @ 17:109-17:110 is RIGHT BRACKET
+")" @ 17:110-17:111 is RIGHT PARENTHESIS
+"," @ 17:111-17:112 is COMMA
+"EPS" @ 17:113-17:116 is IDENTIFIER(EPS)
+")" @ 17:116-17:117 is RIGHT PARENTHESIS
+"or" @ 18:2-18:4 is OPERATOR(Or)
+"approximately_eq" @ 18:5-18:21 is IDENTIFIER(approximately_eq)
+"(" @ 18:21-18:22 is LEFT PARENTHESIS
+"squared_distance" @ 18:22-18:38 is IDENTIFIER(squared_distance)
+"(" @ 18:38-18:39 is LEFT PARENTHESIS
+"t" @ 18:39-18:40 is IDENTIFIER(t)
+"[" @ 18:40-18:41 is LEFT BRACKET
+"1" @ 18:41-18:42 is INTEGER LITERAL(1)
+"]" @ 18:42-18:43 is RIGHT BRACKET
+"," @ 18:43-18:44 is COMMA
+"t" @ 18:45-18:46 is IDENTIFIER(t)
+"[" @ 18:46-18:47 is LEFT BRACKET
+"3" @ 18:47-18:48 is INTEGER LITERAL(3)
+"]" @ 18:48-18:49 is RIGHT BRACKET
+")" @ 18:49-18:50 is RIGHT PARENTHESIS
+"+" @ 18:51-18:52 is OPERATOR(Add)
+"squared_distance" @ 18:53-18:69 is IDENTIFIER(squared_distance)
+"(" @ 18:69-18:70 is LEFT PARENTHESIS
+"t" @ 18:70-18:71 is IDENTIFIER(t)
+"[" @ 18:71-18:72 is LEFT BRACKET
+"1" @ 18:72-18:73 is INTEGER LITERAL(1)
+"]" @ 18:73-18:74 is RIGHT BRACKET
+"," @ 18:74-18:75 is COMMA
+"t" @ 18:76-18:77 is IDENTIFIER(t)
+"[" @ 18:77-18:78 is LEFT BRACKET
+"2" @ 18:78-18:79 is INTEGER LITERAL(2)
+"]" @ 18:79-18:80 is RIGHT BRACKET
+")" @ 18:80-18:81 is RIGHT PARENTHESIS
+"," @ 18:81-18:82 is COMMA
+"squared_distance" @ 18:83-18:99 is IDENTIFIER(squared_distance)
+"(" @ 18:99-18:100 is LEFT PARENTHESIS
+"t" @ 18:100-18:101 is IDENTIFIER(t)
+"[" @ 18:101-18:102 is LEFT BRACKET
+"2" @ 18:102-18:103 is INTEGER LITERAL(2)
+"]" @ 18:103-18:104 is RIGHT BRACKET
+"," @ 18:104-18:105 is COMMA
+"t" @ 18:106-18:107 is IDENTIFIER(t)
+"[" @ 18:107-18:108 is LEFT BRACKET
+"3" @ 18:108-18:109 is INTEGER LITERAL(3)
+"]" @ 18:109-18:110 is RIGHT BRACKET
+")" @ 18:110-18:111 is RIGHT PARENTHESIS
+"," @ 18:111-18:112 is COMMA
+"EPS" @ 18:113-18:116 is IDENTIFIER(EPS)
+")" @ 18:116-18:117 is RIGHT PARENTHESIS
+"or" @ 19:2-19:4 is OPERATOR(Or)
+"approximately_eq" @ 19:5-19:21 is IDENTIFIER(approximately_eq)
+"(" @ 19:21-19:22 is LEFT PARENTHESIS
+"squared_distance" @ 19:22-19:38 is IDENTIFIER(squared_distance)
+"(" @ 19:38-19:39 is LEFT PARENTHESIS
+"t" @ 19:39-19:40 is IDENTIFIER(t)
+"[" @ 19:40-19:41 is LEFT BRACKET
+"3" @ 19:41-19:42 is INTEGER LITERAL(3)
+"]" @ 19:42-19:43 is RIGHT BRACKET
+"," @ 19:43-19:44 is COMMA
+"t" @ 19:45-19:46 is IDENTIFIER(t)
+"[" @ 19:46-19:47 is LEFT BRACKET
+"1" @ 19:47-19:48 is INTEGER LITERAL(1)
+"]" @ 19:48-19:49 is RIGHT BRACKET
+")" @ 19:49-19:50 is RIGHT PARENTHESIS
+"+" @ 19:51-19:52 is OPERATOR(Add)
+"squared_distance" @ 19:53-19:69 is IDENTIFIER(squared_distance)
+"(" @ 19:69-19:70 is LEFT PARENTHESIS
+"t" @ 19:70-19:71 is IDENTIFIER(t)
+"[" @ 19:71-19:72 is LEFT BRACKET
+"3" @ 19:72-19:73 is INTEGER LITERAL(3)
+"]" @ 19:73-19:74 is RIGHT BRACKET
+"," @ 19:74-19:75 is COMMA
+"t" @ 19:76-19:77 is IDENTIFIER(t)
+"[" @ 19:77-19:78 is LEFT BRACKET
+"2" @ 19:78-19:79 is INTEGER LITERAL(2)
+"]" @ 19:79-19:80 is RIGHT BRACKET
+")" @ 19:80-19:81 is RIGHT PARENTHESIS
+"," @ 19:81-19:82 is COMMA
+"squared_distance" @ 19:83-19:99 is IDENTIFIER(squared_distance)
+"(" @ 19:99-19:100 is LEFT PARENTHESIS
+"t" @ 19:100-19:101 is IDENTIFIER(t)
+"[" @ 19:101-19:102 is LEFT BRACKET
+"1" @ 19:102-19:103 is INTEGER LITERAL(1)
+"]" @ 19:103-19:104 is RIGHT BRACKET
+"," @ 19:104-19:105 is COMMA
+"t" @ 19:106-19:107 is IDENTIFIER(t)
+"[" @ 19:107-19:108 is LEFT BRACKET
+"2" @ 19:108-19:109 is INTEGER LITERAL(2)
+"]" @ 19:109-19:110 is RIGHT BRACKET
+")" @ 19:110-19:111 is RIGHT PARENTHESIS
+"," @ 19:111-19:112 is COMMA
+"EPS" @ 19:113-19:116 is IDENTIFIER(EPS)
+")" @ 19:116-19:117 is RIGHT PARENTHESIS
+";" @ 19:117-19:118 is SEMICOLON
+"routine" @ 21:0-21:7 is KEYWORD(Routine)
+"main" @ 21:8-21:12 is IDENTIFIER(main)
+"(" @ 21:12-21:13 is LEFT PARENTHESIS
+")" @ 21:13-21:14 is RIGHT PARENTHESIS
+"is" @ 21:15-21:17 is KEYWORD(Is)
+"var" @ 22:2-22:5 is KEYWORD(Var)
+"t" @ 22:6-22:7 is IDENTIFIER(t)
+":" @ 22:8-22:9 is COLON
+"triangle" @ 22:10-22:18 is IDENTIFIER(triangle)
+";" @ 22:18-22:19 is SEMICOLON
+"t" @ 23:2-23:3 is IDENTIFIER(t)
+"[" @ 23:3-23:4 is LEFT BRACKET
+"1" @ 23:4-23:5 is INTEGER LITERAL(1)
+"]" @ 23:5-23:6 is RIGHT BRACKET
+"." @ 23:6-23:7 is DOT
+"x" @ 23:7-23:8 is IDENTIFIER(x)
+":=" @ 23:9-23:11 is ASSIGNMENT OPERATOR
+"0.0" @ 23:12-23:15 is REAL LITERAL(0)
+";" @ 23:15-23:16 is SEMICOLON
+"t" @ 24:2-24:3 is IDENTIFIER(t)
+"[" @ 24:3-24:4 is LEFT BRACKET
+"1" @ 24:4-24:5 is INTEGER LITERAL(1)
+"]" @ 24:5-24:6 is RIGHT BRACKET
+"." @ 24:6-24:7 is DOT
+"y" @ 24:7-24:8 is IDENTIFIER(y)
+":=" @ 24:9-24:11 is ASSIGNMENT OPERATOR
+"0.0" @ 24:12-24:15 is REAL LITERAL(0)
+";" @ 24:15-24:16 is SEMICOLON
+"t" @ 25:2-25:3 is IDENTIFIER(t)
+"[" @ 25:3-25:4 is LEFT BRACKET
+"2" @ 25:4-25:5 is INTEGER LITERAL(2)
+"]" @ 25:5-25:6 is RIGHT BRACKET
+"." @ 25:6-25:7 is DOT
+"x" @ 25:7-25:8 is IDENTIFIER(x)
+":=" @ 25:9-25:11 is ASSIGNMENT OPERATOR
+"3.0" @ 25:12-25:15 is REAL LITERAL(3)
+";" @ 25:15-25:16 is SEMICOLON
+"t" @ 26:2-26:3 is IDENTIFIER(t)
+"[" @ 26:3-26:4 is LEFT BRACKET
+"2" @ 26:4-26:5 is INTEGER LITERAL(2)
+"]" @ 26:5-26:6 is RIGHT BRACKET
+"." @ 26:6-26:7 is DOT
+"y" @ 26:7-26:8 is IDENTIFIER(y)
+":=" @ 26:9-26:11 is ASSIGNMENT OPERATOR
+"0.0" @ 26:12-26:15 is REAL LITERAL(0)
+";" @ 26:15-26:16 is SEMICOLON
+"t" @ 27:2-27:3 is IDENTIFIER(t)
+"[" @ 27:3-27:4 is LEFT BRACKET
+"3" @ 27:4-27:5 is INTEGER LITERAL(3)
+"]" @ 27:5-27:6 is RIGHT BRACKET
+"." @ 27:6-27:7 is DOT
+"x" @ 27:7-27:8 is IDENTIFIER(x)
+":=" @ 27:9-27:11 is ASSIGNMENT OPERATOR
+"0.0" @ 27:12-27:15 is REAL LITERAL(0)
+";" @ 27:15-27:16 is SEMICOLON
+"t" @ 28:2-28:3 is IDENTIFIER(t)
+"[" @ 28:3-28:4 is LEFT BRACKET
+"3" @ 28:4-28:5 is INTEGER LITERAL(3)
+"]" @ 28:5-28:6 is RIGHT BRACKET
+"." @ 28:6-28:7 is DOT
+"y" @ 28:7-28:8 is IDENTIFIER(y)
+":=" @ 28:9-28:11 is ASSIGNMENT OPERATOR
+"4.0" @ 28:12-28:15 is REAL LITERAL(4)
+";" @ 28:15-28:16 is SEMICOLON
+"print" @ 29:2-29:7 is IDENTIFIER(print)
+"is_right" @ 29:8-29:16 is IDENTIFIER(is_right)
+"(" @ 29:16-29:17 is LEFT PARENTHESIS
+"t" @ 29:17-29:18 is IDENTIFIER(t)
+")" @ 29:18-29:19 is RIGHT PARENTHESIS
+";" @ 29:19-29:20 is SEMICOLON
+"end" @ 30:0-30:3 is KEYWORD(End)
+";" @ 30:3-30:4 is SEMICOLON

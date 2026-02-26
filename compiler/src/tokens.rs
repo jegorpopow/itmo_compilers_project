@@ -194,6 +194,6 @@ impl fmt::Display for Token<'_> {
             lexeme,
             kind,
         } = self;
-        write!(f, "`{lexeme}` @ {extent} is {kind}")
+        write!(f, "{lexeme:?} @ {extent} is {kind}")
     }
 }
