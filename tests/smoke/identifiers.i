@@ -7,6 +7,8 @@ routine main() is
   var 变量 is 5;
   var 고양이 is 6;
   var pequeño_pingüino is 7;
+  var 'no_strings is 8;
+  var _ is 9;
   α := кошка + ねこ;
   print α;
   print π;
@@ -14,4 +16,5 @@ routine main() is
   print 变量;
   print 고양이;
   print pequeño_pingüino;
+  print 'no_strings;
 end;

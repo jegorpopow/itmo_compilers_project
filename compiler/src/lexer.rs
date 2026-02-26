@@ -129,12 +129,17 @@ fn identifier_start_is_identifier_continue() {
     }
 }
 
-fn is_identifier_start(ch: char) -> bool {
-    ch.is_alphabetic() || ch == '_'
+/// Unicode does not like `'` or `_`. We do.
+const fn extra_ident_char(c: char) -> bool {
+    matches!(c, '\'' | '_')
 }
 
-fn is_identifier_continue(ch: char) -> bool {
-    ch.is_alphanumeric() || ch == '_' || ch == '\''
+fn is_identifier_start(c: char) -> bool {
+    ::unicode_ident::is_xid_start(c) | extra_ident_char(c)
+}
+
+fn is_identifier_continue(c: char) -> bool {
+    ::unicode_ident::is_xid_continue(c) | extra_ident_char(c)
 }
 
 fn iterators_to_extent(start: &IndexIterator<'_>, end: &IndexIterator<'_>) -> Extent {
