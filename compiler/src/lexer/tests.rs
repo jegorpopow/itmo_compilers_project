@@ -1,7 +1,4 @@
-use crate::{
-    lexer::tokenize,
-    tokens::Token,
-};
+use crate::{lexer::tokenize, tokens::Token};
 
 fn print_result(tokens: &Vec<Token<'_>>) -> String {
     let mut result = "OK\n".to_string();
