@@ -24,7 +24,7 @@ fn main() -> ExitCode {
     }
 
     let source: String = fs::read_to_string(&args[1]).unwrap();
-    for token in tokenize(&source).unwrap() {
+    for token in tokenize(&source) {
         println!("{token}")
     }
     ExitCode::SUCCESS

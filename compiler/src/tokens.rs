@@ -56,6 +56,11 @@ pub struct Comment<'a> {
     pub value: &'a str,
 }
 
+#[derive(PartialEq, Eq, Hash, fmt::Debug, Clone)]
+pub struct InvalidToken {
+    pub problem: String,
+}
+
 impl fmt::Display for Comment<'_> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         const MAX_LEN: usize = 40;
@@ -80,6 +85,7 @@ pub enum TokenKind<'a> {
     BuiltinTypename(BuiltinTypename),
     Operator(SyntacticOperator),
     Comment(Comment<'a>),
+    Invalid(InvalidToken),
     LeftBracket,
     RightBracket,
     LeftParenthesis,
@@ -112,6 +118,7 @@ impl fmt::Display for TokenKind<'_> {
             }
             TokenKind::Operator(operator) => write!(f, "OPERATOR({operator:?})"),
             TokenKind::Comment(comment) => write!(f, "COMMENT({comment})"),
+            TokenKind::Invalid(InvalidToken { problem }) => write!(f, "invalid, since {problem}"),
             TokenKind::LeftBracket => write!(f, "LEFT BRACKET"),
             TokenKind::RightBracket => write!(f, "RIGHT BRACKET"),
             TokenKind::LeftParenthesis => write!(f, "LEFT PARENTHESIS"),
@@ -128,15 +135,48 @@ impl fmt::Display for TokenKind<'_> {
 }
 
 // Token description
+
+#[derive(Clone, Copy)]
+pub struct Position {
+    pub line: usize,
+    pub column: usize,
+}
+
+impl Position {
+    pub fn begin() -> Self {
+        Position { line: 1, column: 0 }
+    }
+    pub fn advance(&self, is_newline: bool) -> Position {
+        if is_newline {
+            Position {
+                line: self.line + 1,
+                column: 0,
+            }
+        } else {
+            Position {
+                line: self.line,
+                column: self.column + 1,
+            }
+        }
+    }
+}
+
+impl fmt::Display for Position {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        let &Self { line, column } = self;
+        write!(f, "{line}:{column}")
+    }
+}
+
 pub struct Extent {
-    pub start: usize,
-    pub end: usize,
+    pub start: Position,
+    pub end: Position,
 }
 
 impl fmt::Display for Extent {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         let &Self { start, end } = self;
-        write!(f, "{start}:{end}")
+        write!(f, "{start}-{end}")
     }
 }
 

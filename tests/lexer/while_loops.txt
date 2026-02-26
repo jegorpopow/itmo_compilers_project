@@ -1,71 +1,70 @@
-OK
-`routine` @ 0:7 is KEYWORD(Routine)
-`collatz` @ 8:15 is IDENTIFIER(collatz)
-`(` @ 15:16 is LEFT PARENTHESIS
-`n` @ 16:17 is IDENTIFIER(n)
-`:` @ 18:19 is COLON
-`integer` @ 20:27 is TYPENAME(Integer)
-`)` @ 27:28 is RIGHT PARENTHESIS
-`:` @ 29:30 is COLON
-`integer` @ 31:38 is TYPENAME(Integer)
-`is` @ 39:41 is KEYWORD(Is)
-`var` @ 44:47 is KEYWORD(Var)
-`steps` @ 48:53 is IDENTIFIER(steps)
-`is` @ 54:56 is KEYWORD(Is)
-`0` @ 57:58 is INTEGER LITERAL(0)
-`;` @ 58:59 is SEMICOLON
-`while` @ 63:68 is KEYWORD(While)
-`n` @ 69:70 is IDENTIFIER(n)
-`/=` @ 71:73 is OPERATOR(Neq)
-`1` @ 74:75 is INTEGER LITERAL(1)
-`loop` @ 76:80 is KEYWORD(Loop)
-`if` @ 86:88 is KEYWORD(If)
-`n` @ 89:90 is IDENTIFIER(n)
-`%` @ 91:92 is OPERATOR(Mod)
-`2` @ 93:94 is INTEGER LITERAL(2)
-`=` @ 95:96 is OPERATOR(Eq)
-`0` @ 97:98 is INTEGER LITERAL(0)
-`then` @ 99:103 is KEYWORD(Then)
-`n` @ 111:112 is IDENTIFIER(n)
-`:=` @ 113:115 is ASSIGNMENT OPERATOR
-`n` @ 116:117 is IDENTIFIER(n)
-`/` @ 118:119 is OPERATOR(Div)
-`2` @ 120:121 is INTEGER LITERAL(2)
-`;` @ 121:122 is SEMICOLON
-`else` @ 127:131 is KEYWORD(Else)
-`n` @ 139:140 is IDENTIFIER(n)
-`:=` @ 141:143 is ASSIGNMENT OPERATOR
-`3` @ 144:145 is INTEGER LITERAL(3)
-`*` @ 146:147 is OPERATOR(Mul)
-`n` @ 148:149 is IDENTIFIER(n)
-`+` @ 150:151 is OPERATOR(Add)
-`1` @ 152:153 is INTEGER LITERAL(1)
-`;` @ 153:154 is SEMICOLON
-`end` @ 159:162 is KEYWORD(End)
-`;` @ 162:163 is SEMICOLON
-`steps` @ 168:173 is IDENTIFIER(steps)
-`:=` @ 174:176 is ASSIGNMENT OPERATOR
-`steps` @ 177:182 is IDENTIFIER(steps)
-`+` @ 183:184 is OPERATOR(Add)
-`1` @ 185:186 is INTEGER LITERAL(1)
-`;` @ 186:187 is SEMICOLON
-`end` @ 190:193 is KEYWORD(End)
-`;` @ 193:194 is SEMICOLON
-`return` @ 199:205 is IDENTIFIER(return)
-`steps` @ 206:211 is IDENTIFIER(steps)
-`;` @ 211:212 is SEMICOLON
-`end` @ 213:216 is KEYWORD(End)
-`;` @ 216:217 is SEMICOLON
-`routine` @ 219:226 is KEYWORD(Routine)
-`main` @ 227:231 is IDENTIFIER(main)
-`(` @ 231:232 is LEFT PARENTHESIS
-`)` @ 232:233 is RIGHT PARENTHESIS
-`is` @ 234:236 is KEYWORD(Is)
-`print` @ 239:244 is IDENTIFIER(print)
-`collatz` @ 245:252 is IDENTIFIER(collatz)
-`(` @ 252:253 is LEFT PARENTHESIS
-`7` @ 253:254 is INTEGER LITERAL(7)
-`)` @ 254:255 is RIGHT PARENTHESIS
-`;` @ 255:256 is SEMICOLON
-`end` @ 257:260 is KEYWORD(End)
-`;` @ 260:261 is SEMICOLON
+`routine` @ 1:0-1:7 is KEYWORD(Routine)
+`collatz` @ 1:8-1:15 is IDENTIFIER(collatz)
+`(` @ 1:15-1:16 is LEFT PARENTHESIS
+`n` @ 1:16-1:17 is IDENTIFIER(n)
+`:` @ 1:18-1:19 is COLON
+`integer` @ 1:20-1:27 is TYPENAME(Integer)
+`)` @ 1:27-1:28 is RIGHT PARENTHESIS
+`:` @ 1:29-1:30 is COLON
+`integer` @ 1:31-1:38 is TYPENAME(Integer)
+`is` @ 1:39-1:41 is KEYWORD(Is)
+`var` @ 2:2-2:5 is KEYWORD(Var)
+`steps` @ 2:6-2:11 is IDENTIFIER(steps)
+`is` @ 2:12-2:14 is KEYWORD(Is)
+`0` @ 2:15-2:16 is INTEGER LITERAL(0)
+`;` @ 2:16-2:17 is SEMICOLON
+`while` @ 4:2-4:7 is KEYWORD(While)
+`n` @ 4:8-4:9 is IDENTIFIER(n)
+`/=` @ 4:10-4:12 is OPERATOR(Neq)
+`1` @ 4:13-4:14 is INTEGER LITERAL(1)
+`loop` @ 4:15-4:19 is KEYWORD(Loop)
+`if` @ 5:4-5:6 is KEYWORD(If)
+`n` @ 5:7-5:8 is IDENTIFIER(n)
+`%` @ 5:9-5:10 is OPERATOR(Mod)
+`2` @ 5:11-5:12 is INTEGER LITERAL(2)
+`=` @ 5:13-5:14 is OPERATOR(Eq)
+`0` @ 5:15-5:16 is INTEGER LITERAL(0)
+`then` @ 5:17-5:21 is KEYWORD(Then)
+`n` @ 6:6-6:7 is IDENTIFIER(n)
+`:=` @ 6:8-6:10 is ASSIGNMENT OPERATOR
+`n` @ 6:11-6:12 is IDENTIFIER(n)
+`/` @ 6:13-6:14 is OPERATOR(Div)
+`2` @ 6:15-6:16 is INTEGER LITERAL(2)
+`;` @ 6:16-6:17 is SEMICOLON
+`else` @ 7:4-7:8 is KEYWORD(Else)
+`n` @ 8:6-8:7 is IDENTIFIER(n)
+`:=` @ 8:8-8:10 is ASSIGNMENT OPERATOR
+`3` @ 8:11-8:12 is INTEGER LITERAL(3)
+`*` @ 8:13-8:14 is OPERATOR(Mul)
+`n` @ 8:15-8:16 is IDENTIFIER(n)
+`+` @ 8:17-8:18 is OPERATOR(Add)
+`1` @ 8:19-8:20 is INTEGER LITERAL(1)
+`;` @ 8:20-8:21 is SEMICOLON
+`end` @ 9:4-9:7 is KEYWORD(End)
+`;` @ 9:7-9:8 is SEMICOLON
+`steps` @ 10:4-10:9 is IDENTIFIER(steps)
+`:=` @ 10:10-10:12 is ASSIGNMENT OPERATOR
+`steps` @ 10:13-10:18 is IDENTIFIER(steps)
+`+` @ 10:19-10:20 is OPERATOR(Add)
+`1` @ 10:21-10:22 is INTEGER LITERAL(1)
+`;` @ 10:22-10:23 is SEMICOLON
+`end` @ 11:2-11:5 is KEYWORD(End)
+`;` @ 11:5-11:6 is SEMICOLON
+`return` @ 13:2-13:8 is IDENTIFIER(return)
+`steps` @ 13:9-13:14 is IDENTIFIER(steps)
+`;` @ 13:14-13:15 is SEMICOLON
+`end` @ 14:0-14:3 is KEYWORD(End)
+`;` @ 14:3-14:4 is SEMICOLON
+`routine` @ 16:0-16:7 is KEYWORD(Routine)
+`main` @ 16:8-16:12 is IDENTIFIER(main)
+`(` @ 16:12-16:13 is LEFT PARENTHESIS
+`)` @ 16:13-16:14 is RIGHT PARENTHESIS
+`is` @ 16:15-16:17 is KEYWORD(Is)
+`print` @ 17:2-17:7 is IDENTIFIER(print)
+`collatz` @ 17:8-17:15 is IDENTIFIER(collatz)
+`(` @ 17:15-17:16 is LEFT PARENTHESIS
+`7` @ 17:16-17:17 is INTEGER LITERAL(7)
+`)` @ 17:17-17:18 is RIGHT PARENTHESIS
+`;` @ 17:18-17:19 is SEMICOLON
+`end` @ 18:0-18:3 is KEYWORD(End)
+`;` @ 18:3-18:4 is SEMICOLON

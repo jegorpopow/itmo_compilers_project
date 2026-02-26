@@ -1,6 +1,6 @@
 #[derive(PartialEq, Eq, Hash, Debug, Clone)]
 pub enum SyntacticOperator {
-    Add,
+    Add, // Either binary or unary one
     Sub, // Either binary or unary one
     Mul,
     Div,

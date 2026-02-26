@@ -1,5 +1,3 @@
-use core::fmt;
-
 use phf::phf_map;
 
 use crate::operators::SyntacticOperator;
@@ -96,6 +94,7 @@ trait ImmutableIterator<'a>: Sized + Clone {
 struct IndexIterator<'a> {
     underlying: &'a str,
     index: usize,
+    position: Position,
 }
 
 impl<'a> ImmutableIterator<'a> for IndexIterator<'a> {
@@ -103,6 +102,7 @@ impl<'a> ImmutableIterator<'a> for IndexIterator<'a> {
         IndexIterator {
             underlying: string,
             index: string.char_indices().nth(n).map(|(idx, _)| idx).unwrap(),
+            position: Position::begin(),
         }
     }
 
@@ -122,6 +122,7 @@ impl<'a> ImmutableIterator<'a> for IndexIterator<'a> {
                 IndexIterator {
                     underlying: self.underlying,
                     index: self.index + ch.len_utf8(),
+                    position: self.position.advance(ch == '\n'),
                 },
             )
         })
@@ -154,13 +155,13 @@ fn is_identifier_continue(c: char) -> bool {
 
 fn iterators_to_extent(start: &IndexIterator<'_>, end: &IndexIterator<'_>) -> Extent {
     Extent {
-        start: start.index,
-        end: end.index,
+        start: start.position,
+        end: end.position,
     }
 }
 
 /// Processes all the identifier-like lexemes (identifiers, keywords, bool literals and some operators)
-fn possible_identifier_value(lexeme: &str) -> TokenKind<'_> {
+fn name_disambigation(lexeme: &str) -> TokenKind<'_> {
     static KNOWN_TOKENS: phf::Map<&str, TokenKind<'static>> = phf_map! {
         "var" => TokenKind::Keyword(Keyword::Var),
         "type" => TokenKind::Keyword(Keyword::Type),
@@ -194,6 +195,13 @@ fn possible_identifier_value(lexeme: &str) -> TokenKind<'_> {
         Some(token_value) => token_value.clone(),
         None => TokenKind::Identifier(Identifier { name: lexeme }),
     }
+}
+
+fn nominal_tokens<'a>(begin: &IndexIterator<'a>) -> Option<(TokenKind<'a>, IndexIterator<'a>)> {
+    begin
+        .lookup()
+        .is_some_and(is_identifier_start)
+        .then(|| begin.take_while_map(is_identifier_continue, name_disambigation))
 }
 
 fn known_symbolic_tokens<'a>(
@@ -232,39 +240,22 @@ fn known_symbolic_tokens<'a>(
     None
 }
 
-#[derive(Debug)]
-pub struct LexerError {
-    pub position: usize,
-    pub reason: String,
-}
-
-impl fmt::Display for LexerError {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        let Self { position, reason } = self;
-        write!(f, "Lexing error byte offset {position}: {reason}")
+fn real_literal_from_representation(s: &str) -> TokenKind<'_> {
+    match s.parse::<f64>() {
+        Ok(value) => TokenKind::RealLiteral(RealLiteral { value }),
+        Err(e) => TokenKind::Invalid(InvalidToken {
+            problem: format!("Malformed float {s:?}: {e}"),
+        }),
     }
 }
 
-impl core::error::Error for LexerError {}
-
-type LexerResult<T> = Result<T, LexerError>;
-
-fn real_literal_from_representation(s: &str, position: usize) -> LexerResult<TokenKind<'_>> {
-    Ok(TokenKind::RealLiteral(RealLiteral {
-        value: s.parse().map_err(|e| LexerError {
-            position,
-            reason: format!("Malformed float {s:?}: {e}"),
-        })?,
-    }))
-}
-
-fn integer_literal_from_representation(s: &str, position: usize) -> LexerResult<TokenKind<'_>> {
-    Ok(TokenKind::IntegerLiteral(IntegerLiteral {
-        value: s.parse().map_err(|e| LexerError {
-            position,
-            reason: format!("Malformed int {s:?}: {e}"),
-        })?,
-    }))
+fn integer_literal_from_representation(s: &str) -> TokenKind<'_> {
+    match s.parse::<i64>() {
+        Ok(value) => TokenKind::IntegerLiteral(IntegerLiteral { value }),
+        Err(e) => TokenKind::Invalid(InvalidToken {
+            problem: format!("Malformed integer {s:?}: {e}"),
+        }),
+    }
 }
 
 fn should_expect_sign(prev: bool, token: &TokenKind<'_>) -> bool {
@@ -289,6 +280,7 @@ fn should_expect_sign(prev: bool, token: &TokenKind<'_>) -> bool {
         | TokenKind::LeftBracket
         | TokenKind::RightParenthesis
         | TokenKind::Dot
+        | TokenKind::Invalid(_)
         | TokenKind::Colon => false,
     }
 }
@@ -296,44 +288,46 @@ fn should_expect_sign(prev: bool, token: &TokenKind<'_>) -> bool {
 fn numerical_tokens<'a>(
     expect_sign: bool,
     begin: &IndexIterator<'a>,
-) -> Option<LexerResult<(TokenKind<'a>, IndexIterator<'a>)>> {
-    let mut start = begin.clone();
-
-    // Numerical literal may start with a sign
-    if expect_sign && start.lookup().is_some_and(|ch| ch == '-' || ch == '+') {
-        start = start.skip_n(1).unwrap();
-    }
-
-    let (before_point, start) = start.take_while(|ch| ch.is_ascii_digit());
-
-    if start.lookup().is_some_and(|ch| ch == '.') {
-        let start = start.skip_n(1).unwrap();
-        let (after_point, rest) = start.take_while(|ch| ch.is_ascii_digit());
-        if after_point.is_empty() {
-            None
-        } else {
-            Some(
-                real_literal_from_representation(
-                    ImmutableIterator::slice_to_str(begin, &rest),
-                    begin.index,
-                )
-                .map(|token_value| (token_value, rest)),
-            )
-        }
-    } else if before_point.is_empty() {
-        None
+) -> Option<(TokenKind<'a>, IndexIterator<'a>)> {
+    let start_digits = if expect_sign && let Some(('-' | '+', it)) = begin.next() {
+        it
     } else {
-        Some(
-            integer_literal_from_representation(
-                ImmutableIterator::slice_to_str(begin, &start),
-                begin.index,
+        begin.clone()
+    };
+
+    let (whole_part, tail) = start_digits.take_while(|ch| ch.is_ascii_digit());
+
+    if let Some(('.', start_frac)) = tail.next() {
+        let (frac_part, rest) = start_frac.take_while(|ch| ch.is_ascii_digit());
+
+        (!frac_part.is_empty())
+            .then(|| {
+                (
+                    real_literal_from_representation(ImmutableIterator::slice_to_str(begin, &rest)),
+                    rest,
+                )
+            })
+            .or_else(|| {
+                (!whole_part.is_empty()).then(|| {
+                    (
+                        integer_literal_from_representation(ImmutableIterator::slice_to_str(
+                            begin, &tail,
+                        )),
+                        tail,
+                    )
+                })
+            })
+    } else {
+        (!whole_part.is_empty()).then(|| {
+            (
+                integer_literal_from_representation(ImmutableIterator::slice_to_str(begin, &tail)),
+                tail,
             )
-            .map(|token_value| (token_value, start)),
-        )
+        })
     }
 }
 
-pub fn tokenize(source: &str) -> LexerResult<Vec<Token<'_>>> {
+pub fn tokenize(source: &str) -> Vec<Token<'_>> {
     let mut begin = IndexIterator::from_beginning(source);
     let mut result = Vec::new();
     let mut expects_sign = true;
@@ -352,21 +346,17 @@ pub fn tokenize(source: &str) -> LexerResult<Vec<Token<'_>>> {
                     |comment| TokenKind::Comment(Comment { value: comment }),
                 )
             })
-            .or_else(|| {
-                is_identifier_start(first_char).then(|| {
-                    begin.take_while_map(is_identifier_continue, possible_identifier_value)
-                })
-            })
-            // FIXME(GrigorenkoPV): is there a clearer way?
-            .map(Ok)
+            .or_else(|| nominal_tokens(&begin))
             .or_else(|| numerical_tokens(expects_sign, &begin))
-            .transpose()?
-            // end FIXME
             .or_else(|| known_symbolic_tokens(&begin))
-            .ok_or_else(|| LexerError {
-                position: begin.index,
-                reason: format!("Unexpected symbol `{first_char}`"),
-            })?;
+            .unwrap_or((
+                TokenKind::Invalid(InvalidToken {
+                    problem: format!("Unexpected symbol `{first_char}`"),
+                }),
+                begin.skip_n(1).unwrap(),
+            ));
+
+        println!("{kind}, {}", end.index);
 
         expects_sign = should_expect_sign(expects_sign, &kind);
         result.push(Token {
@@ -377,5 +367,5 @@ pub fn tokenize(source: &str) -> LexerResult<Vec<Token<'_>>> {
         begin = end;
     }
 
-    Ok(result)
+    result
 }
