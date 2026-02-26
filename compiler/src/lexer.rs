@@ -334,7 +334,7 @@ pub fn tokenize(source: &str) -> Result<Vec<Token>, LexerError> {
             });
         }
 
-        expects_sign = should_exprect_sign(expects_sign, &result.last().unwrap().value);
+        expects_sign = should_expect_sign(expects_sign, &result.last().unwrap().value);
     }
 
     Ok(result)
