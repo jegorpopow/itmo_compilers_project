@@ -3,7 +3,7 @@ use crate::{
     tokens::Token,
 };
 
-fn print_result(result: &Result<Vec<Token>, LexerError>) -> String {
+fn print_result(result: &Result<Vec<Token<'_>>, LexerError>) -> String {
     match result {
         Ok(tokens) => {
             let mut result = "OK\n".to_string();

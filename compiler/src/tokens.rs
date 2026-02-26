@@ -1,4 +1,4 @@
-use std::fmt;
+use core::fmt;
 
 use crate::operators::SyntacticOperator;
 
@@ -25,8 +25,8 @@ pub enum Keyword {
 }
 
 #[derive(PartialEq, Eq, Hash, fmt::Debug, Clone)]
-pub struct Identifier {
-    pub name: String,
+pub struct Identifier<'a> {
+    pub name: &'a str,
 }
 
 #[derive(PartialEq, Eq, Hash, fmt::Debug, Clone)]
@@ -52,11 +52,11 @@ pub enum BuiltinTypename {
 }
 
 #[derive(PartialEq, Eq, Hash, fmt::Debug, Clone)]
-pub struct Comment {
-    pub value: String,
+pub struct Comment<'a> {
+    pub value: &'a str,
 }
 
-impl fmt::Display for Comment {
+impl fmt::Display for Comment<'_> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         const MAX_LEN: usize = 40;
 
@@ -71,15 +71,15 @@ impl fmt::Display for Comment {
 }
 
 #[derive(PartialEq, Clone)]
-pub enum TokenKind {
-    Identifier(Identifier),
+pub enum TokenKind<'a> {
+    Identifier(Identifier<'a>),
     Keyword(Keyword),
     IntegerLiteral(IntegerLiteral),
     RealLiteral(RealLiteral),
     BoolLiteral(BoolLiteral),
     BuiltinTypename(BuiltinTypename),
     Operator(SyntacticOperator),
-    Comment(Comment),
+    Comment(Comment<'a>),
     LeftBracket,
     RightBracket,
     LeftParenthesis,
@@ -93,7 +93,7 @@ pub enum TokenKind {
     Colon,
 }
 
-impl fmt::Display for TokenKind {
+impl fmt::Display for TokenKind<'_> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
             TokenKind::Identifier(identifier) => write!(f, "IDENTIFIER({})", identifier.name),
@@ -140,13 +140,13 @@ impl fmt::Display for Extent {
     }
 }
 
-pub struct Token {
+pub struct Token<'a> {
     pub extent: Extent,
-    pub lexeme: String,
-    pub kind: TokenKind,
+    pub lexeme: &'a str,
+    pub kind: TokenKind<'a>,
 }
 
-impl fmt::Display for Token {
+impl fmt::Display for Token<'_> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         let Self {
             extent,
