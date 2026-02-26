@@ -105,7 +105,7 @@ impl fmt::Display for TestCase<'_> {
 }
 
 #[throws]
-fn main() {
+fn update_lexer_tests() {
     let tests = lexer_tests()?;
     debug_assert_eq!(tests.extension, "txt");
     println!(
@@ -124,7 +124,10 @@ fn main() {
     test_cases.sort_by(|a, b| a.ident.cmp(&b.ident));
 
     for case in &test_cases {
-        println!("\tfrom {}:\n\t\t{case},", tests.name_to_path(case.name).display())
+        println!(
+            "\tfrom {}:\n\t\t{case},",
+            tests.name_to_path(case.name).display()
+        )
     }
 
     let path = lexer_tests_file()?;
@@ -146,4 +149,15 @@ fn main() {
     s.push_str(remainder);
 
     fs::write(&path, s).with_context(|| format!("Failed to write back to {}", path.display()))?
+}
+
+mod cli;
+
+#[throws]
+fn main() {
+    match cli::Task::parse() {
+        cli::Task::UpdateLexerTests => {
+            update_lexer_tests().context("Failed to update lexer test cases")?
+        }
+    }
 }

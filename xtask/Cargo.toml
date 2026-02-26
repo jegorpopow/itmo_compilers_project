@@ -12,3 +12,19 @@ workspace = true
 [dependencies]
 anyhow = { version = "1.0.102", features = ["backtrace"] }
 culpa = "1.0.2"
+
+[dependencies.clap]
+version = "4.5.60"
+default-features = false
+features = [
+    "color",
+    "error-context",
+    "help",
+    "std",
+    "suggestions",
+    "usage",
+    "cargo",
+    "deprecated",
+    "derive",
+    "unicode",
+]
