@@ -22,9 +22,15 @@ macro_rules! tests {
         $(
             #[test]
             fn $name() {
-                let src = include_str!(concat!("../../../tests/smoke/", $file, ".i"));
+                let src = include_str!(concat!(
+                    env!("CARGO_MANIFEST_DIR"),
+                    "/../tests/smoke/",
+                    $file, ".i"
+                ));
                 ::expect_test::expect_file![concat!(
-                    "../../../tests/smoke/", $file ,".lexed"
+                    env!("CARGO_MANIFEST_DIR"),
+                    "/../tests/smoke/",
+                    $file ,".lexed"
                 )].assert_eq(&print_result(&tokenize(src)))
             }
         )+
