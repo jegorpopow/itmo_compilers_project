@@ -108,7 +108,7 @@ impl<'a> ImmutableIterator<'a> for IndexIterator<'a> {
     }
 }
 
-#[allow(clippy::tests_outside_test_module)]
+#[expect(clippy::tests_outside_test_module, reason = "better fits here")]
 #[test]
 fn identifier_start_is_identifier_continue() {
     for c in char::MIN..=char::MAX {
