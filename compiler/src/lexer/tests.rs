@@ -1,7 +1,7 @@
 use crate::{lexer::tokenize, tokens::Token};
 
 fn print_result(tokens: &Vec<Token<'_>>) -> String {
-    let mut result = "OK\n".to_string();
+    let mut result = String::new();
     for token in tokens {
         use core::fmt::Write;
         writeln!(&mut result, "{token}").expect("Writing to a string won't fail");
