@@ -265,21 +265,19 @@ fn numerical_tokens(
     if start.lookup().is_some_and(|ch| ch == '.') {
         let start = start.skip_n(1).unwrap();
         let (after_point, rest) = start.take_while(|ch| ch.is_ascii_digit());
-        if after_point.len() == 0 {
+        if after_point.is_empty() {
             None
         } else {
             let representation = ImmutableIterator::slice_to_string(&begin, &rest);
             let token_value = real_literal_from_representation(&representation);
             Some((token_value, rest))
         }
+    } else if before_point.is_empty() {
+        None
     } else {
-        if before_point.len() == 0 {
-            None
-        } else {
-            let representation = ImmutableIterator::slice_to_string(&begin, &start);
-            let token_value = integer_literal_from_representation(&representation);
-            Some((token_value, start))
-        }
+        let representation = ImmutableIterator::slice_to_string(&begin, &start);
+        let token_value = integer_literal_from_representation(&representation);
+        Some((token_value, start))
     }
 }
 

@@ -79,7 +79,9 @@ pub enum Expression {
     IntToBool(Rc<Expression>), // It cannot be expressed as value != 0, since it shoould panic on value out of [0:1]
 }
 
-pub struct SimpleDeclaration {}
+pub struct SimpleDeclaration {
+    // TODO
+}
 
 pub enum BlockElement {
     Stmt(Rc<Statement>),

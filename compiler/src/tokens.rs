@@ -104,9 +104,9 @@ impl fmt::Display for TokenKind {
                 write!(f, "BOOLEAN LITERAL({value})")
             }
             TokenKind::BuiltinTypename(builtin_typename) => {
-                write!(f, "TYPENAME({:?})", builtin_typename)
+                write!(f, "TYPENAME({builtin_typename:?})")
             }
-            TokenKind::Operator(operator) => write!(f, "OPERATOR({:?})", operator),
+            TokenKind::Operator(operator) => write!(f, "OPERATOR({operator:?})"),
             TokenKind::Comment(comment) => write!(f, "COMMENT({})", comment.shortened()),
             TokenKind::LeftBracket => write!(f, "LEFT BRACKET"),
             TokenKind::RightBracket => write!(f, "RIGHT BRACKET"),

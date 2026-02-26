@@ -31,7 +31,7 @@ enum Type {
 fn is_primitive(t: &Type) -> bool {
     match &t {
         Type::Int | Type::Real | Type::Bool => true,
-        _ => false,
+        Type::Alias(_) | Type::Record(_) | Type::Array(_) => false,
     }
 }
 
