@@ -118,7 +118,7 @@ impl fmt::Display for TokenKind<'_> {
             }
             TokenKind::Operator(operator) => write!(f, "OPERATOR({operator:?})"),
             TokenKind::Comment(comment) => write!(f, "COMMENT({comment})"),
-            TokenKind::Invalid(InvalidToken { problem }) => write!(f, "invalid, since {problem}"),
+            TokenKind::Invalid(InvalidToken { problem }) => write!(f, "INVALID({problem}"),
             TokenKind::LeftBracket => write!(f, "LEFT BRACKET"),
             TokenKind::RightBracket => write!(f, "RIGHT BRACKET"),
             TokenKind::LeftParenthesis => write!(f, "LEFT PARENTHESIS"),
