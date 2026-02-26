@@ -144,7 +144,7 @@ pub struct Position {
 
 impl Position {
     pub fn begin() -> Self {
-        return Position { line: 1, column: 0 };
+        Position { line: 1, column: 0 }
     }
     pub fn advance(&self, is_newline: bool) -> Position {
         if is_newline {
