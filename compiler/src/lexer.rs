@@ -6,19 +6,10 @@ use crate::tokens::*;
 #[cfg(test)]
 mod tests;
 
-trait ImmutableIterator<'a>: Sized + Clone {
-    fn from_index(string: &'a str, n: usize) -> Self;
+trait ImmutableIterator<'a>: Sized + Clone + From<&'a str> {
     fn slice_to_str(start: &Self, end: &Self) -> &'a str;
     fn is_end(&self) -> bool;
     fn next(&self) -> Option<(char, Self)>;
-
-    fn from_beginning(string: &'a str) -> Self {
-        Self::from_index(string, 0)
-    }
-
-    fn lookup(&self) -> Option<char> {
-        self.next().map(|(ch, _)| ch)
-    }
 
     fn skip(&self, predicate: impl Fn(char) -> bool) -> Self {
         let mut copy = self.clone();
@@ -30,20 +21,6 @@ trait ImmutableIterator<'a>: Sized + Clone {
             copy = rest;
         }
         copy
-    }
-
-    fn skip_n(&self, n: usize) -> Option<Self> {
-        let mut copy = self.clone();
-
-        for _ in 0..n {
-            if let Some((_, next)) = copy.next() {
-                copy = next;
-            } else {
-                return None;
-            }
-        }
-
-        Some(copy)
     }
 
     fn take_while(&self, predicate: impl Fn(char) -> bool) -> (&'a str, Self) {
@@ -97,15 +74,17 @@ struct IndexIterator<'a> {
     position: Position,
 }
 
-impl<'a> ImmutableIterator<'a> for IndexIterator<'a> {
-    fn from_index(string: &'a str, n: usize) -> Self {
-        IndexIterator {
-            underlying: string,
-            index: string.char_indices().nth(n).map(|(idx, _)| idx).unwrap(),
+impl<'a> From<&'a str> for IndexIterator<'a> {
+    fn from(s: &'a str) -> Self {
+        Self {
+            underlying: s,
+            index: 0,
             position: Position::begin(),
         }
     }
+}
 
+impl<'a> ImmutableIterator<'a> for IndexIterator<'a> {
     fn slice_to_str(start: &Self, end: &Self) -> &'a str {
         assert_eq!(start.underlying.as_ptr(), end.underlying.as_ptr());
         &start.underlying[start.index..end.index]
@@ -161,7 +140,7 @@ fn iterators_to_extent(start: &IndexIterator<'_>, end: &IndexIterator<'_>) -> Ex
 }
 
 /// Processes all the identifier-like lexemes (identifiers, keywords, bool literals and some operators)
-fn name_disambigation(lexeme: &str) -> TokenKind<'_> {
+fn name_disambiguation(lexeme: &str) -> TokenKind<'_> {
     static KNOWN_TOKENS: phf::Map<&str, TokenKind<'static>> = phf_map! {
         "var" => TokenKind::Keyword(Keyword::Var),
         "type" => TokenKind::Keyword(Keyword::Type),
@@ -195,13 +174,6 @@ fn name_disambigation(lexeme: &str) -> TokenKind<'_> {
         Some(token_value) => token_value.clone(),
         None => TokenKind::Identifier(Identifier { name: lexeme }),
     }
-}
-
-fn nominal_tokens<'a>(begin: &IndexIterator<'a>) -> Option<(TokenKind<'a>, IndexIterator<'a>)> {
-    begin
-        .lookup()
-        .is_some_and(is_identifier_start)
-        .then(|| begin.take_while_map(is_identifier_continue, name_disambigation))
 }
 
 fn known_symbolic_tokens<'a>(
@@ -258,38 +230,11 @@ fn integer_literal_from_representation(s: &str) -> TokenKind<'_> {
     }
 }
 
-fn should_expect_sign(prev: bool, token: &TokenKind<'_>) -> bool {
-    match token {
-        TokenKind::Comment(_) => prev,
-
-        TokenKind::Assignment
-        | TokenKind::LeftParenthesis
-        | TokenKind::RightBracket
-        | TokenKind::Operator(_)
-        | TokenKind::Semicolon
-        | TokenKind::RangeSymbol
-        | TokenKind::Comma
-        | TokenKind::RightArrow
-        | TokenKind::Keyword(_) => true,
-
-        TokenKind::Identifier(_)
-        | TokenKind::IntegerLiteral(_)
-        | TokenKind::RealLiteral(_)
-        | TokenKind::BoolLiteral(_)
-        | TokenKind::BuiltinTypename(_)
-        | TokenKind::LeftBracket
-        | TokenKind::RightParenthesis
-        | TokenKind::Dot
-        | TokenKind::Invalid(_)
-        | TokenKind::Colon => false,
-    }
-}
-
 fn numerical_tokens<'a>(
-    expect_sign: bool,
+    allow_sign: bool,
     begin: &IndexIterator<'a>,
 ) -> Option<(TokenKind<'a>, IndexIterator<'a>)> {
-    let start_digits = if expect_sign && let Some(('-' | '+', it)) = begin.next() {
+    let start_digits = if allow_sign && let Some(('-' | '+', it)) = begin.next() {
         it
     } else {
         begin.clone()
@@ -327,17 +272,55 @@ fn numerical_tokens<'a>(
     }
 }
 
-pub fn tokenize(source: &str) -> Vec<Token<'_>> {
-    let mut begin = IndexIterator::from_beginning(source);
-    let mut result = Vec::new();
-    let mut expects_sign = true;
+pub struct Lexer<'src> {
+    pos: IndexIterator<'src>,
+    allow_sign: bool,
+}
 
-    while let Some(first_char) = begin.lookup() {
-        if first_char.is_whitespace() {
-            begin = begin.skip(char::is_whitespace);
-            continue;
+impl<'src> From<&'src str> for Lexer<'src> {
+    fn from(src: &'src str) -> Self {
+        Self {
+            pos: IndexIterator::from(src),
+            allow_sign: true,
         }
+    }
+}
 
+impl Lexer<'_> {
+    fn update_allow_sign(&mut self, token: &TokenKind<'_>) {
+        self.allow_sign = match token {
+            TokenKind::Comment(_) => return,
+
+            TokenKind::Assignment
+            | TokenKind::LeftParenthesis
+            | TokenKind::RightBracket
+            | TokenKind::Operator(_)
+            | TokenKind::Semicolon
+            | TokenKind::RangeSymbol
+            | TokenKind::Comma
+            | TokenKind::RightArrow
+            | TokenKind::Keyword(_) => true,
+
+            TokenKind::Identifier(_)
+            | TokenKind::IntegerLiteral(_)
+            | TokenKind::RealLiteral(_)
+            | TokenKind::BoolLiteral(_)
+            | TokenKind::BuiltinTypename(_)
+            | TokenKind::LeftBracket
+            | TokenKind::RightParenthesis
+            | TokenKind::Dot
+            | TokenKind::Invalid(_)
+            | TokenKind::Colon => false,
+        }
+    }
+}
+
+impl<'src> Iterator for Lexer<'src> {
+    type Item = Token<'src>;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        let begin = self.pos.skip(char::is_whitespace);
+        let (first_char, rest) = begin.next()?;
         let (kind, end) = begin
             .stars_with("--")
             .map(|comment_start| {
@@ -346,26 +329,25 @@ pub fn tokenize(source: &str) -> Vec<Token<'_>> {
                     |comment| TokenKind::Comment(Comment { value: comment }),
                 )
             })
-            .or_else(|| nominal_tokens(&begin))
-            .or_else(|| numerical_tokens(expects_sign, &begin))
+            .or_else(|| {
+                is_identifier_start(first_char)
+                    .then(|| begin.take_while_map(is_identifier_continue, name_disambiguation))
+            })
+            .or_else(|| numerical_tokens(self.allow_sign, &begin))
             .or_else(|| known_symbolic_tokens(&begin))
             .unwrap_or((
                 TokenKind::Invalid(InvalidToken {
                     problem: format!("Unexpected symbol `{first_char}`"),
                 }),
-                begin.skip_n(1).unwrap(),
+                rest,
             ));
-
-        println!("{kind}, {}", end.index);
-
-        expects_sign = should_expect_sign(expects_sign, &kind);
-        result.push(Token {
+        self.update_allow_sign(&kind);
+        let token = Token {
             extent: iterators_to_extent(&begin, &end),
             lexeme: ImmutableIterator::slice_to_str(&begin, &end),
             kind,
-        });
-        begin = end;
+        };
+        self.pos = end;
+        Some(token)
     }
-
-    result
 }

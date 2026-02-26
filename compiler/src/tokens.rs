@@ -102,7 +102,7 @@ pub enum TokenKind<'a> {
 impl fmt::Display for TokenKind<'_> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
-            TokenKind::Identifier(identifier) => write!(f, "IDENTIFIER({})", identifier.name),
+            TokenKind::Identifier(Identifier { name }) => write!(f, "IDENTIFIER({name})"),
             TokenKind::Keyword(keyword) => write!(f, "KEYWORD({keyword:?})"),
             TokenKind::IntegerLiteral(IntegerLiteral { value }) => {
                 write!(f, "INTEGER LITERAL({value})")
@@ -146,7 +146,8 @@ impl Position {
     pub fn begin() -> Self {
         Position { line: 1, column: 0 }
     }
-    pub fn advance(&self, is_newline: bool) -> Position {
+
+    pub fn advance(self, is_newline: bool) -> Self {
         if is_newline {
             Position {
                 line: self.line + 1,
