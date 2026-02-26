@@ -304,7 +304,7 @@ pub fn tokenize(source: &str) -> Result<Vec<Token>, LexerError> {
         if (first_char.is_whitespace()) {
             begin = begin.skip(char::is_whitespace);
         } else if let Some(comment_start) = begin.stars_with("--") {
-            let (comment, end) = begin.take_while(|ch| ch != '\n');
+            let (comment, end) = comment_start.take_while(|ch| ch != '\n');
             result.push(Token {
                 extent: iterators_to_extent(&begin, &end),
                 lexeme: ImmutableIterator::slice_to_string(&begin, &end),
