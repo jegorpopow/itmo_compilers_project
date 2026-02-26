@@ -6,19 +6,10 @@ use crate::tokens::*;
 #[cfg(test)]
 mod tests;
 
-trait ImmutableIterator<'a>: Sized + Clone {
-    fn from_index(string: &'a str, n: usize) -> Self;
+trait ImmutableIterator<'a>: Sized + Clone + From<&'a str> {
     fn slice_to_str(start: &Self, end: &Self) -> &'a str;
     fn is_end(&self) -> bool;
     fn next(&self) -> Option<(char, Self)>;
-
-    fn from_beginning(string: &'a str) -> Self {
-        Self::from_index(string, 0)
-    }
-
-    fn lookup(&self) -> Option<char> {
-        self.next().map(|(ch, _)| ch)
-    }
 
     fn skip(&self, predicate: impl Fn(char) -> bool) -> Self {
         let mut copy = self.clone();
@@ -97,15 +88,17 @@ struct IndexIterator<'a> {
     position: Position,
 }
 
-impl<'a> ImmutableIterator<'a> for IndexIterator<'a> {
-    fn from_index(string: &'a str, n: usize) -> Self {
-        IndexIterator {
-            underlying: string,
-            index: string.char_indices().nth(n).map(|(idx, _)| idx).unwrap(),
+impl<'a> From<&'a str> for IndexIterator<'a> {
+    fn from(s: &'a str) -> Self {
+        Self {
+            underlying: s,
+            index: 0,
             position: Position::begin(),
         }
     }
+}
 
+impl<'a> ImmutableIterator<'a> for IndexIterator<'a> {
     fn slice_to_str(start: &Self, end: &Self) -> &'a str {
         assert_eq!(start.underlying.as_ptr(), end.underlying.as_ptr());
         &start.underlying[start.index..end.index]
@@ -161,7 +154,7 @@ fn iterators_to_extent(start: &IndexIterator<'_>, end: &IndexIterator<'_>) -> Ex
 }
 
 /// Processes all the identifier-like lexemes (identifiers, keywords, bool literals and some operators)
-fn name_disambigation(lexeme: &str) -> TokenKind<'_> {
+fn name_disambiguation(lexeme: &str) -> TokenKind<'_> {
     static KNOWN_TOKENS: phf::Map<&str, TokenKind<'static>> = phf_map! {
         "var" => TokenKind::Keyword(Keyword::Var),
         "type" => TokenKind::Keyword(Keyword::Type),
@@ -198,10 +191,13 @@ fn name_disambigation(lexeme: &str) -> TokenKind<'_> {
 }
 
 fn nominal_tokens<'a>(begin: &IndexIterator<'a>) -> Option<(TokenKind<'a>, IndexIterator<'a>)> {
-    begin
-        .lookup()
-        .is_some_and(is_identifier_start)
-        .then(|| begin.take_while_map(is_identifier_continue, name_disambigation))
+    if let Some((c, _)) = begin.next()
+        && is_identifier_start(c)
+    {
+        Some(begin.take_while_map(is_identifier_continue, name_disambiguation))
+    } else {
+        None
+    }
 }
 
 fn known_symbolic_tokens<'a>(
@@ -328,11 +324,11 @@ fn numerical_tokens<'a>(
 }
 
 pub fn tokenize(source: &str) -> Vec<Token<'_>> {
-    let mut begin = IndexIterator::from_beginning(source);
+    let mut begin = IndexIterator::from(source);
     let mut result = Vec::new();
     let mut expects_sign = true;
 
-    while let Some(first_char) = begin.lookup() {
+    while let Some((first_char, rest)) = begin.next() {
         if first_char.is_whitespace() {
             begin = begin.skip(char::is_whitespace);
             continue;
@@ -353,7 +349,7 @@ pub fn tokenize(source: &str) -> Vec<Token<'_>> {
                 TokenKind::Invalid(InvalidToken {
                     problem: format!("Unexpected symbol `{first_char}`"),
                 }),
-                begin.skip_n(1).unwrap(),
+                rest,
             ));
 
         println!("{kind}, {}", end.index);
