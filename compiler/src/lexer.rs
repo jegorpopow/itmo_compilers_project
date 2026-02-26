@@ -62,6 +62,15 @@ trait ImmutableIterator<'a>: Sized + Clone {
         (Self::slice_to_string(self, &copy), copy)
     }
 
+    fn take_while_map<T>(
+        &self,
+        predicate: impl Fn(char) -> bool,
+        map: impl FnOnce(String) -> T,
+    ) -> (T, Self) {
+        let (s, it) = self.take_while(predicate);
+        (map(s), it)
+    }
+
     fn stars_with(&self, value: &str) -> Option<Self> {
         let expected = value.chars();
         let mut copy = self.clone();
@@ -150,7 +159,7 @@ fn iterators_to_extent(start: &IndexIterator<'_>, end: &IndexIterator<'_>) -> Ex
 }
 
 /// Processes all the identifier-like lexemes (identifiers, keywords, bool literals and some operators)
-fn possible_identifier_value(lexeme: &str) -> TokenKind {
+fn possible_identifier_value(lexeme: String) -> TokenKind {
     static KNOWN_TOKENS: phf::Map<&str, TokenKind> = phf_map! {
         "var" => TokenKind::Keyword(Keyword::Var),
         "type" => TokenKind::Keyword(Keyword::Type),
@@ -180,11 +189,9 @@ fn possible_identifier_value(lexeme: &str) -> TokenKind {
     };
 
     // TODO: add more cases (NaN, Infinity, ...)
-    match KNOWN_TOKENS.get(lexeme) {
+    match KNOWN_TOKENS.get(&lexeme) {
         Some(token_value) => token_value.clone(),
-        None => TokenKind::Identifier(Identifier {
-            name: lexeme.to_owned(),
-        }),
+        None => TokenKind::Identifier(Identifier { name: lexeme }),
     }
 }
 
@@ -332,34 +339,38 @@ pub fn tokenize(source: &str) -> LexerResult<Vec<Token>> {
         if first_char.is_whitespace() {
             begin = begin.skip(char::is_whitespace);
         } else if let Some(comment_start) = begin.stars_with("--") {
-            let (comment, end) = comment_start.take_while(|ch| ch != '\n');
+            let (kind, end) = comment_start.take_while_map(
+                |ch| ch != '\n',
+                |value| TokenKind::Comment(Comment { value }),
+            );
             result.push(Token {
                 extent: iterators_to_extent(&begin, &end),
                 lexeme: ImmutableIterator::slice_to_string(&begin, &end),
-                kind: TokenKind::Comment(Comment { value: comment }),
+                kind,
             });
             begin = end;
         } else if is_identifier_start(first_char) {
-            let (possible_identifier, end) = begin.take_while(is_identifier_continue);
+            let (kind, end) =
+                begin.take_while_map(is_identifier_continue, possible_identifier_value);
             result.push(Token {
                 extent: iterators_to_extent(&begin, &end),
                 lexeme: ImmutableIterator::slice_to_string(&begin, &end),
-                kind: possible_identifier_value(&possible_identifier),
+                kind,
             });
             begin = end;
         } else if let Some(res) = numerical_tokens(expects_sign, &begin) {
-            let (numerical_token, end) = res?;
+            let (kind, end) = res?;
             result.push(Token {
                 extent: iterators_to_extent(&begin, &end),
                 lexeme: ImmutableIterator::slice_to_string(&begin, &end),
-                kind: numerical_token,
+                kind,
             });
             begin = end;
-        } else if let Some((token_value, end)) = known_symbolic_tokens(&begin) {
+        } else if let Some((kind, end)) = known_symbolic_tokens(&begin) {
             result.push(Token {
                 extent: iterators_to_extent(&begin, &end),
                 lexeme: ImmutableIterator::slice_to_string(&begin, &end),
-                kind: token_value,
+                kind,
             });
             begin = end;
         } else {
