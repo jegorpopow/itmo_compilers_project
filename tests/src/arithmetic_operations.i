@@ -28,4 +28,3 @@ routine main() is
   print -a;
   print -x;
 end;
-

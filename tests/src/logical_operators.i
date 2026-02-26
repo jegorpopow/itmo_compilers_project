@@ -21,4 +21,3 @@ routine main() is
   print not x;
   print not y;
 end;
-

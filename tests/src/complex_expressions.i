@@ -25,4 +25,3 @@ routine main() is
   print a + 1.5;
   print 2.0 * b;
 end;
-

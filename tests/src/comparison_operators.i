@@ -25,4 +25,3 @@ routine main() is
   print true = false;
   print true /= false;
 end;
-
