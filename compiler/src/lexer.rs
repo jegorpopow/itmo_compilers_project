@@ -119,7 +119,15 @@ impl<'a> ImmutableIterator<'a> for IndexIterator<'a> {
     }
 }
 
-// Assume forall(x) is_identifier_start(x) -> is_identifier_continue(x)
+#[test]
+fn identifier_start_is_identifier_continue() {
+    for c in char::MIN..=char::MAX {
+        assert!(
+            is_identifier_start(c) <= is_identifier_continue(c),
+            "Identifier start should be identifier continue: {c:?}"
+        )
+    }
+}
 
 fn is_identifier_start(ch: char) -> bool {
     ch.is_alphabetic() || ch == '_'
