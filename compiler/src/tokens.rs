@@ -135,15 +135,48 @@ impl fmt::Display for TokenKind<'_> {
 }
 
 // Token description
+
+#[derive(Clone, Copy)]
+pub struct Position {
+    pub line: usize,
+    pub column: usize,
+}
+
+impl Position {
+    pub fn begin() -> Self {
+        return Position { line: 1, column: 0 };
+    }
+    pub fn advance(&self, is_newline: bool) -> Position {
+        if is_newline {
+            Position {
+                line: self.line + 1,
+                column: 0,
+            }
+        } else {
+            Position {
+                line: self.line,
+                column: self.column + 1,
+            }
+        }
+    }
+}
+
+impl fmt::Display for Position {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        let &Self { line, column } = self;
+        write!(f, "{line}:{column}")
+    }
+}
+
 pub struct Extent {
-    pub start: usize,
-    pub end: usize,
+    pub start: Position,
+    pub end: Position,
 }
 
 impl fmt::Display for Extent {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         let &Self { start, end } = self;
-        write!(f, "{start}:{end}")
+        write!(f, "{start}-{end}")
     }
 }
 
