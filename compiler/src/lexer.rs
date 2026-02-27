@@ -179,8 +179,7 @@ fn name_disambiguation(lexeme: &str) -> TokenKind<'_> {
 fn nominal_token<'a>(start: &IndexIterator<'a>) -> Option<(TokenKind<'a>, IndexIterator<'a>)> {
     start
         .next()
-        .map(|(ch, _)| ch)
-        .is_some_and(is_identifier_start)
+        .is_some_and(|(ch, _)| is_identifier_start(ch))
         .then(|| start.take_while_map(is_identifier_continue, name_disambiguation))
 }
 
@@ -193,9 +192,7 @@ fn comment_token<'a>(start: &IndexIterator<'a>) -> Option<(TokenKind<'a>, IndexI
     })
 }
 
-fn symbolic_token<'a>(
-    start: &IndexIterator<'a>,
-) -> Option<(TokenKind<'a>, IndexIterator<'a>)> {
+fn symbolic_token<'a>(start: &IndexIterator<'a>) -> Option<(TokenKind<'a>, IndexIterator<'a>)> {
     static KNOWN_TOKENS: &[(&str, TokenKind<'static>)] = &[
         (":=", TokenKind::Assignment),
         ("..", TokenKind::RangeSymbol),
