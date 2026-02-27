@@ -1,3 +1,5 @@
+#![expect(dead_code, reason = "WIP")]
+
 use std::rc::Rc;
 
 use derive_where::derive_where;

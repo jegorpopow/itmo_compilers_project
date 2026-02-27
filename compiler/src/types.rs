@@ -1,3 +1,5 @@
+#![expect(dead_code, reason = "WIP")]
+
 use crate::ast::{Expression, Identifier};
 use std::rc::Rc;
 

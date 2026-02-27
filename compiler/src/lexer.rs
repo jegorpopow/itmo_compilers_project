@@ -8,7 +8,6 @@ mod tests;
 
 trait ImmutableIterator<'a>: Sized + Clone + From<&'a str> {
     fn slice_to_str(start: &Self, end: &Self) -> &'a str;
-    fn is_end(&self) -> bool;
     fn next(&self) -> Option<(char, Self)>;
 
     fn skip(&self, predicate: impl Fn(char) -> bool) -> Self {
@@ -90,10 +89,6 @@ impl<'a> ImmutableIterator<'a> for IndexIterator<'a> {
         &start.underlying[start.index..end.index]
     }
 
-    fn is_end(&self) -> bool {
-        self.index >= self.underlying.len()
-    }
-
     fn next(&self) -> Option<(char, Self)> {
         self.underlying[self.index..].chars().next().map(|ch| {
             (
@@ -157,6 +152,7 @@ fn name_disambiguation(lexeme: &str) -> TokenKind<'_> {
         "for" => TokenKind::Keyword(Keyword::For),
         "loop" => TokenKind::Keyword(Keyword::Loop),
         "reverse" => TokenKind::Keyword(Keyword::Reverse),
+        "print" => TokenKind::Keyword(Keyword::Print),
         "and" => TokenKind::Operator(SyntacticOperator::And),
         "or" => TokenKind::Operator(SyntacticOperator::Or),
         "xor" => TokenKind::Operator(SyntacticOperator::Xor),
@@ -199,6 +195,7 @@ fn symbolic_token<'a>(start: &IndexIterator<'a>) -> Option<(TokenKind<'a>, Index
         ("/=", TokenKind::Operator(SyntacticOperator::Neq)),
         ("<=", TokenKind::Operator(SyntacticOperator::Le)),
         (">=", TokenKind::Operator(SyntacticOperator::Ge)),
+        ("=>", TokenKind::RightArrow),
         ("(", TokenKind::LeftParenthesis),
         (")", TokenKind::RightParenthesis),
         ("[", TokenKind::LeftBracket),

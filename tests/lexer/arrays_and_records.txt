@@ -45,8 +45,7 @@
 ":" @ 10:49-10:50 is COLON
 "real" @ 10:51-10:55 is TYPENAME(Real)
 ")" @ 10:55-10:56 is RIGHT PARENTHESIS
-"=" @ 10:57-10:58 is OPERATOR(Eq)
-">" @ 10:58-10:59 is OPERATOR(Gt)
+"=>" @ 10:57-10:59 is FUNCTION ARROW
 "(" @ 10:60-10:61 is LEFT PARENTHESIS
 "a" @ 10:61-10:62 is IDENTIFIER(a)
 "-" @ 10:63-10:64 is OPERATOR(Sub)
@@ -127,8 +126,7 @@
 ":" @ 16:19-16:20 is COLON
 "triangle" @ 16:21-16:29 is IDENTIFIER(triangle)
 ")" @ 16:29-16:30 is RIGHT PARENTHESIS
-"=" @ 16:31-16:32 is OPERATOR(Eq)
-">" @ 16:32-16:33 is OPERATOR(Gt)
+"=>" @ 16:31-16:33 is FUNCTION ARROW
 "approximately_eq" @ 17:5-17:21 is IDENTIFIER(approximately_eq)
 "(" @ 17:21-17:22 is LEFT PARENTHESIS
 "squared_distance" @ 17:22-17:38 is IDENTIFIER(squared_distance)
@@ -325,7 +323,7 @@
 ":=" @ 28:9-28:11 is ASSIGNMENT OPERATOR
 "4.0" @ 28:12-28:15 is REAL LITERAL(4)
 ";" @ 28:15-28:16 is SEMICOLON
-"print" @ 29:2-29:7 is IDENTIFIER(print)
+"print" @ 29:2-29:7 is KEYWORD(Print)
 "is_right" @ 29:8-29:16 is IDENTIFIER(is_right)
 "(" @ 29:16-29:17 is LEFT PARENTHESIS
 "t" @ 29:17-29:18 is IDENTIFIER(t)

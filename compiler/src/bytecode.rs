@@ -1,3 +1,5 @@
+#![expect(dead_code, reason = "WIP")]
+
 use crate::operators::{SemanticBinaryOperator, SemanticUnaryOperator};
 
 ///  Variable location and id
