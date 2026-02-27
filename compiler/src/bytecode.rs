@@ -89,7 +89,7 @@ enum Bytecode {
     Call {
         function_label: u64,
     },
-    /// Print a stack top and drop it 
+    /// Print a stack top and drop it
     Print {
         type_id: TypeId,
     },
