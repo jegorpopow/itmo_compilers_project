@@ -176,9 +176,23 @@ fn name_disambiguation(lexeme: &str) -> TokenKind<'_> {
     }
 }
 
-fn known_symbolic_tokens<'a>(
-    start: &IndexIterator<'a>,
-) -> Option<(TokenKind<'a>, IndexIterator<'a>)> {
+fn nominal_token<'a>(start: &IndexIterator<'a>) -> Option<(TokenKind<'a>, IndexIterator<'a>)> {
+    start
+        .next()
+        .is_some_and(|(ch, _)| is_identifier_start(ch))
+        .then(|| start.take_while_map(is_identifier_continue, name_disambiguation))
+}
+
+fn comment_token<'a>(start: &IndexIterator<'a>) -> Option<(TokenKind<'a>, IndexIterator<'a>)> {
+    start.stars_with("--").map(|comment_start| {
+        comment_start.take_while_map(
+            |ch| ch != '\n',
+            |comment| TokenKind::Comment(Comment { value: comment }),
+        )
+    })
+}
+
+fn symbolic_token<'a>(start: &IndexIterator<'a>) -> Option<(TokenKind<'a>, IndexIterator<'a>)> {
     static KNOWN_TOKENS: &[(&str, TokenKind<'static>)] = &[
         (":=", TokenKind::Assignment),
         ("..", TokenKind::RangeSymbol),
@@ -230,7 +244,7 @@ fn integer_literal_from_representation(s: &str) -> TokenKind<'_> {
     }
 }
 
-fn numerical_tokens<'a>(
+fn numeric_token<'a>(
     allow_sign: bool,
     begin: &IndexIterator<'a>,
 ) -> Option<(TokenKind<'a>, IndexIterator<'a>)> {
@@ -321,20 +335,10 @@ impl<'src> Iterator for Lexer<'src> {
     fn next(&mut self) -> Option<Self::Item> {
         let begin = self.pos.skip(char::is_whitespace);
         let (first_char, rest) = begin.next()?;
-        let (kind, end) = begin
-            .stars_with("--")
-            .map(|comment_start| {
-                comment_start.take_while_map(
-                    |ch| ch != '\n',
-                    |comment| TokenKind::Comment(Comment { value: comment }),
-                )
-            })
-            .or_else(|| {
-                is_identifier_start(first_char)
-                    .then(|| begin.take_while_map(is_identifier_continue, name_disambiguation))
-            })
-            .or_else(|| numerical_tokens(self.allow_sign, &begin))
-            .or_else(|| known_symbolic_tokens(&begin))
+        let (kind, end) = comment_token(&begin)
+            .or_else(|| nominal_token(&begin))
+            .or_else(|| numeric_token(self.allow_sign, &begin))
+            .or_else(|| symbolic_token(&begin))
             .unwrap_or((
                 TokenKind::Invalid(InvalidToken {
                     problem: format!("Unexpected symbol `{first_char}`"),
