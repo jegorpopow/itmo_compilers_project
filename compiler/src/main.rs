@@ -1,4 +1,4 @@
-#![expect(dead_code, unreachable_pub, reason = "WIP")]
+#![expect(unreachable_pub, reason = "WIP")]
 
 use std::env;
 use std::fs;
