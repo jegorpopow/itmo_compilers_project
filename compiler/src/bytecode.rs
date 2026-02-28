@@ -34,6 +34,8 @@ enum Bytecode {
     Dup,
     /// drop stack top
     Drop,
+    /// swaps top and second elements of stack
+    Swap,
     /// apply binary operator to stack top
     BinOp {
         op: SemanticBinaryOperator,
@@ -81,7 +83,8 @@ enum Bytecode {
     },
     /// enter function
     Enter {
-        args: u64,
+        args: u16,
+        locals: u16,
     },
     /// leave function, the stack top is a return value
     Ret,
