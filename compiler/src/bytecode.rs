@@ -28,14 +28,16 @@ enum Bytecode {
     Store {
         loc: Location,
     },
-    /// push address to stack
-    AddresOf {
+    /// push address of variable to stack
+    AddressOf {
         loc: Location,
     },
     /// duplicate stack top
     Dup,
     /// drop stack top
     Drop,
+    /// swaps top and second elements of stack
+    Swap,
     /// apply binary operator to stack top
     BinOp {
         op: SemanticBinaryOperator,
@@ -49,19 +51,20 @@ enum Bytecode {
     LoadAddress,
     /// allocate a record, push a reference to stack
     AllocRecord {
+        type_id: TypeId,
         size: u64,
-    }, // TODO: add TypeId ?
+    },
     /// allocate an array, push a reference to stack
     AllocArray {
-        element_size: u64,
+        type_id: TypeId,
         size: u64,
     }, // TODO: add TypeId ?
     /// pop array ref from stack, push its size
     ArraySize, // TODO: add built-in function call
-    /// pop array ref and index from stack, push element
-    GetIndex,
-    /// pop record ref from stack, push its field value
-    GetField {
+    /// pop array ref and index from stack, push address of array[index]
+    ElementAddress,
+    /// pop record ref from stack, push its field address
+    FieldAddress {
         field_offset: u64,
     },
     /// no-op
@@ -82,8 +85,8 @@ enum Bytecode {
     },
     /// enter function
     Enter {
-        arguments_count: u64,
-        local_count: u64,
+        args: u16,
+        locals: u16,
     },
     /// leave function, the stack top is a return value
     Ret,
@@ -91,7 +94,7 @@ enum Bytecode {
     Call {
         function_label: u64,
     },
-    /// Print a value of spe
+    /// Print a stack top and drop it
     Print {
         type_id: TypeId,
     },
