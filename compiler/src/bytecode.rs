@@ -3,15 +3,25 @@
 use crate::operators::{SemanticBinaryOperator, SemanticUnaryOperator};
 
 ///  Variable location and id
-enum Location {
-    Global(usize),
-    Local(usize),
-    Argument(usize),
+pub(crate) enum Location {
+    Global(u16),
+    Local(u16),
+    Argument(u16),
 }
 
-struct TypeId(u32);
+impl Location {
+    fn encode(self) -> (u8, [u8; 2]) {
+        match self {
+            Self::Global(v) => (0, v.to_le_bytes()),
+            Self::Local(v) => (1, v.to_le_bytes()),
+            Self::Argument(v) => (2, v.to_le_bytes()),
+        }
+    }
+}
 
-enum Bytecode {
+pub(crate) struct TypeId(u32);
+
+pub(crate) enum Instruction {
     /// push int / bool onto stack
     IntConst {
         value: i64,
@@ -83,11 +93,6 @@ enum Bytecode {
     JumpNotZero {
         label: u64,
     },
-    /// enter function
-    Enter {
-        args: u16,
-        locals: u16,
-    },
     /// leave function, the stack top is a return value
     Ret,
     /// call specified function
@@ -105,6 +110,196 @@ enum Bytecode {
     IntToBool, // All of it may be just a built-in call
     RealToInt, // All of it may be just a built-in call
     IntToReal, // All of it may be just a built-in call
+}
+
+impl Instruction {
+    pub fn encode(self) -> [u8; 16] {
+        Bytecode::from(self).into()
+    }
+}
+
+#[derive(Default)]
+#[repr(C, align(8))]
+struct Bytecode {
+    opcode: u8,
+    subopcode: u8,
+    arg16: [u8; 2],
+    arg32: [u8; 4],
+    arg64: [u8; 8],
+}
+
+fn into_halves<const H: usize, const N: usize>(s: &mut [u8; N]) -> [&mut [u8; H]; 2] {
+    const { assert!(2 * H == N) }
+    let ([first_half, second_half], []) = s.as_chunks_mut::<H>() else {
+        unreachable!()
+    };
+    [first_half, second_half]
+}
+
+impl From<Bytecode> for [u8; 16] {
+    fn from(bytecode: Bytecode) -> Self {
+        // TODO: all of this is just a convoluted memcpy, lmao
+
+        const { assert!(size_of::<Self>() == size_of::<Bytecode>()) };
+
+        let mut result = [0u8; 16];
+        let [h, s64to128] = into_halves::<8, _>(&mut result);
+        let [h, s32to64] = into_halves::<4, _>(h);
+        let [h, s16to32] = into_halves::<2, _>(h);
+        let [[s0to8], [s8to16]] = into_halves::<1, _>(h);
+        let Bytecode {
+            opcode,
+            subopcode,
+            arg16,
+            arg32,
+            arg64,
+        } = bytecode;
+        *s0to8 = opcode;
+        *s8to16 = subopcode;
+        *s16to32 = arg16;
+        *s32to64 = arg32;
+        *s64to128 = arg64;
+        result
+    }
+}
+
+impl From<Instruction> for Bytecode {
+    #[expect(clippy::too_many_lines, reason = "it's THE giant switch")]
+    fn from(inst: Instruction) -> Self {
+        let zero = Bytecode::default();
+        match inst {
+            Instruction::Drop => Bytecode { opcode: 1, ..zero },
+            Instruction::Dup => Bytecode { opcode: 2, ..zero },
+            Instruction::Swap => Bytecode { opcode: 3, ..zero },
+
+            Instruction::BinOp { op } => Bytecode {
+                opcode: 4,
+                subopcode: op as u8,
+                ..zero
+            },
+            Instruction::UnOp { op } => Bytecode {
+                opcode: 5,
+                subopcode: op as u8,
+                ..zero
+            },
+
+            Instruction::IntToBool => Bytecode { opcode: 6, ..zero },
+            Instruction::RealToInt => Bytecode { opcode: 7, ..zero },
+            Instruction::IntToReal => Bytecode { opcode: 8, ..zero },
+
+            Instruction::IntConst { value } => Bytecode {
+                opcode: 9,
+                arg64: value.to_le_bytes(),
+                ..zero
+            },
+            Instruction::RealConst { value } => Bytecode {
+                opcode: 10,
+                arg64: value.to_le_bytes(),
+                ..zero
+            },
+
+            Instruction::Load { loc } => {
+                let (subopcode, arg16) = loc.encode();
+                Bytecode {
+                    opcode: 11,
+                    subopcode,
+                    arg16,
+                    ..zero
+                }
+            }
+            Instruction::Store { loc } => {
+                let (subopcode, arg16) = loc.encode();
+                Bytecode {
+                    opcode: 12,
+                    subopcode,
+                    arg16,
+                    ..zero
+                }
+            }
+            Instruction::AddressOf { loc } => {
+                let (subopcode, arg16) = loc.encode();
+                Bytecode {
+                    opcode: 13,
+                    subopcode,
+                    arg16,
+                    ..zero
+                }
+            }
+
+            Instruction::StoreAddress => Bytecode { opcode: 14, ..zero },
+            Instruction::LoadAddress => Bytecode { opcode: 15, ..zero },
+
+            Instruction::AllocRecord {
+                type_id: TypeId(type_id),
+                size,
+            } => Bytecode {
+                opcode: 16,
+                arg32: type_id.to_le_bytes(),
+                arg64: size.to_le_bytes(),
+                ..zero
+            },
+            Instruction::AllocArray {
+                type_id: TypeId(type_id),
+                size,
+            } => Bytecode {
+                opcode: 17,
+                arg32: type_id.to_le_bytes(),
+                arg64: size.to_le_bytes(),
+                ..zero
+            },
+
+            Instruction::ArraySize => Bytecode { opcode: 18, ..zero },
+            Instruction::ElementAddress => Bytecode { opcode: 19, ..zero },
+            Instruction::FieldAddress { field_offset } => Bytecode {
+                opcode: 20,
+                arg64: field_offset.to_le_bytes(),
+                ..zero
+            },
+
+            Instruction::Label { id } => Bytecode {
+                opcode: 21,
+                arg64: id.to_le_bytes(),
+                ..zero
+            },
+            Instruction::Jump { label } => Bytecode {
+                opcode: 21,
+                arg64: label.to_le_bytes(),
+                ..zero
+            },
+            Instruction::JumpZero { label } => Bytecode {
+                opcode: 23,
+                subopcode: 0,
+                arg64: label.to_le_bytes(),
+                ..zero
+            },
+            Instruction::JumpNotZero { label } => Bytecode {
+                opcode: 23,
+                subopcode: 1,
+                arg64: label.to_le_bytes(),
+                ..zero
+            },
+
+            Instruction::Call { function_label } => Bytecode {
+                opcode: 24,
+                arg64: function_label.to_le_bytes(),
+                ..zero
+            },
+            Instruction::Ret => Bytecode { opcode: 25, ..zero },
+
+            Instruction::Print {
+                type_id: TypeId(type_id),
+            } => Bytecode {
+                opcode: 26,
+                arg32: type_id.to_le_bytes(),
+                ..zero
+            },
+            Instruction::Panic { code } => Bytecode {
+                opcode: 27,
+                arg64: code.to_le_bytes(),
+                ..zero
+            },
+        }
+    }
 }
 
 struct RecordRTTI {
@@ -151,40 +346,4 @@ struct Header {
     rtti_span: MemorySpan,
     function_count: u32,
     global_count: u32,
-}
-
-trait Encodable {
-    fn encode(&self) -> Vec<u8> {
-        let mut result = Vec::new();
-        self.enocode_inline(&mut result);
-        result
-    }
-
-    fn enocode_inline(&self, buffer: &mut Vec<u8>) {
-        buffer.extend(self.encode())
-    }
-}
-
-impl Encodable for Vec<Bytecode> {
-    fn encode(&self) -> Vec<u8> {
-        todo!()
-    }
-}
-
-impl Encodable for RTTI {
-    fn encode(&self) -> Vec<u8> {
-        todo!()
-    }
-}
-
-impl Encodable for FunctionTable {
-    fn encode(&self) -> Vec<u8> {
-        todo!()
-    }
-}
-
-impl Encodable for Header {
-    fn encode(&self) -> Vec<u8> {
-        todo!()
-    }
 }

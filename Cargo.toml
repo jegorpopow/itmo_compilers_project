@@ -53,6 +53,7 @@ priority = -1
 [workspace.lints.clippy]
 allow_attributes = "warn"
 allow_attributes_without_reason = "deny"
+as_underscore = "warn"
 assertions_on_result_states = "warn"
 clone_on_ref_ptr = "warn"
 create_dir = "warn"
@@ -66,7 +67,6 @@ exit = "deny"
 filetype_is_file = "warn"
 format_push_string = "deny"
 get_unwrap = "deny"
-host_endian_bytes = "deny"
 implicit_clone = "deny"
 inline_asm_x86_att_syntax = "deny"
 iter_over_hash_type = "warn"
@@ -99,3 +99,7 @@ verbose_file_reads = "warn"
 wildcard_dependencies = "warn"
 wildcard_enum_match_arm = "deny"
 wildcard_imports = "allow"
+
+big_endian_bytes = "deny"
+host_endian_bytes = "deny"
+
