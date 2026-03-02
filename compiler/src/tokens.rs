@@ -22,6 +22,9 @@ pub enum Keyword {
     Loop,
     Reverse,
     Print,
+    New,
+    Null,
+    Where,
 }
 
 #[derive(PartialEq, Eq, Hash, fmt::Debug, Clone)]
@@ -91,6 +94,7 @@ pub enum TokenKind<'a> {
     LeftParenthesis,
     RightParenthesis,
     RightArrow,
+    Cast,
     Assignment,
     RangeSymbol,
     Dot,
@@ -130,6 +134,7 @@ impl fmt::Display for TokenKind<'_> {
             TokenKind::Comma => write!(f, "COMMA"),
             TokenKind::Semicolon => write!(f, "SEMICOLON"),
             TokenKind::Colon => write!(f, "COLON"),
+            TokenKind::Cast => write!(f, "CAST"),
         }
     }
 }

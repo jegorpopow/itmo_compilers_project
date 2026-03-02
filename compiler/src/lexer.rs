@@ -153,6 +153,9 @@ fn name_disambiguation(lexeme: &str) -> TokenKind<'_> {
         "loop" => TokenKind::Keyword(Keyword::Loop),
         "reverse" => TokenKind::Keyword(Keyword::Reverse),
         "print" => TokenKind::Keyword(Keyword::Print),
+        "where" => TokenKind::Keyword(Keyword::Where),
+        "null" => TokenKind::Keyword(Keyword::Null),
+        "new" => TokenKind::Keyword(Keyword::New),
         "and" => TokenKind::Operator(SyntacticOperator::And),
         "or" => TokenKind::Operator(SyntacticOperator::Or),
         "xor" => TokenKind::Operator(SyntacticOperator::Xor),
@@ -191,6 +194,7 @@ fn comment_token<'a>(start: &IndexIterator<'a>) -> Option<(TokenKind<'a>, IndexI
 fn symbolic_token<'a>(start: &IndexIterator<'a>) -> Option<(TokenKind<'a>, IndexIterator<'a>)> {
     static KNOWN_TOKENS: &[(&str, TokenKind<'static>)] = &[
         (":=", TokenKind::Assignment),
+        ("::", TokenKind::Cast),
         ("..", TokenKind::RangeSymbol),
         ("/=", TokenKind::Operator(SyntacticOperator::Neq)),
         ("<=", TokenKind::Operator(SyntacticOperator::Le)),
@@ -321,6 +325,7 @@ impl Lexer<'_> {
             | TokenKind::RightParenthesis
             | TokenKind::Dot
             | TokenKind::Invalid(_)
+            | TokenKind::Cast
             | TokenKind::Colon => false,
         }
     }
