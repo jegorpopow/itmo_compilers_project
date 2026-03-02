@@ -4,6 +4,7 @@ on:
     types: [opened, edited, synchronize, reopened]
 
 permissions:
+  contents: read # The repo is private
   pull-requests: read # We are checking Pull Requests, duh
 
 concurrency:
