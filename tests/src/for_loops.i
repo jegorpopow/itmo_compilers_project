@@ -41,7 +41,7 @@ routine count (n : integer) is
 end;
 
 routine main() is
-  var arr : array [5] integer; 
+  var arr : array [5] integer = new array [5] integer;
   arr[1] = 3;
   arr[2] = 5;
   arr[3] = 1;

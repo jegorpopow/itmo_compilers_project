@@ -3,12 +3,7 @@ type point is record -- reprsents a point
   car y is real;
 end;
 
-routine point_of (x : real, y : real) : point is 
-  var result : point;
-  result.x := x;
-  result.y := y;
-  return result;
-end;
+routine point_of (x : real, y : real) => new point where x is x; y is y end;
 
 routine squared_distance(from : point, to : point) : real is 
   return (from.x - to.x) * (from.x - to.x) + (from.y - to.y) * (from.y - to.y); 

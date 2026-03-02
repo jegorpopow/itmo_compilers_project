@@ -19,7 +19,7 @@ routine is_right(t : triangle) =>
   or approximately_eq(squared_distance(t[3], t[1]) + squared_distance(t[3], t[2]), squared_distance(t[1], t[2]), EPS);
 
 routine main() is
-  var t : triangle;
+  var t : triangle is new triangle;
   t[1].x := 0.0;
   t[1].y := 0.0;
   t[2].x := 3.0;
