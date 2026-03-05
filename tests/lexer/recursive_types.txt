@@ -4,22 +4,23 @@
 "record" @ 1:20-1:26 is KEYWORD(Record)
 "var" @ 2:2-2:5 is KEYWORD(Var)
 "data" @ 2:6-2:10 is IDENTIFIER(data)
-":" @ 2:11-2:12 is COLON
-"integer" @ 2:13-2:20 is TYPENAME(Integer)
-";" @ 2:20-2:21 is SEMICOLON
+"is" @ 2:11-2:13 is KEYWORD(Is)
+"integer" @ 2:14-2:21 is TYPENAME(Integer)
+";" @ 2:21-2:22 is SEMICOLON
 "var" @ 3:2-3:5 is KEYWORD(Var)
 "tail" @ 3:6-3:10 is IDENTIFIER(tail)
-":" @ 3:11-3:12 is COLON
-"linked_list" @ 3:13-3:24 is IDENTIFIER(linked_list)
+"is" @ 3:11-3:13 is KEYWORD(Is)
+"linked_list" @ 3:14-3:25 is IDENTIFIER(linked_list)
+";" @ 3:25-3:26 is SEMICOLON
 "end" @ 4:0-4:3 is KEYWORD(End)
 ";" @ 4:3-4:4 is SEMICOLON
 "var" @ 6:0-6:3 is KEYWORD(Var)
 "EMPTY" @ 6:4-6:9 is IDENTIFIER(EMPTY)
 ":" @ 6:10-6:11 is COLON
 "linked_list" @ 6:12-6:23 is IDENTIFIER(linked_list)
-"=" @ 6:24-6:25 is OPERATOR(Eq)
-"null" @ 6:26-6:30 is KEYWORD(Null)
-";" @ 6:30-6:31 is SEMICOLON
+"is" @ 6:24-6:26 is KEYWORD(Is)
+"null" @ 6:27-6:31 is KEYWORD(Null)
+";" @ 6:31-6:32 is SEMICOLON
 "routine" @ 8:0-8:7 is KEYWORD(Routine)
 "singleton" @ 8:8-8:17 is IDENTIFIER(singleton)
 "(" @ 8:17-8:18 is LEFT PARENTHESIS
@@ -38,8 +39,9 @@
 "tail" @ 8:72-8:76 is IDENTIFIER(tail)
 "is" @ 8:77-8:79 is KEYWORD(Is)
 "EMPTY" @ 8:80-8:85 is IDENTIFIER(EMPTY)
-"end" @ 8:86-8:89 is KEYWORD(End)
-";" @ 8:89-8:90 is SEMICOLON
+";" @ 8:85-8:86 is SEMICOLON
+"end" @ 8:87-8:90 is KEYWORD(End)
+";" @ 8:90-8:91 is SEMICOLON
 "routine" @ 10:0-10:7 is KEYWORD(Routine)
 "empty" @ 10:8-10:13 is IDENTIFIER(empty)
 "(" @ 10:13-10:14 is LEFT PARENTHESIS
@@ -94,22 +96,20 @@
 "tail" @ 18:11-18:15 is IDENTIFIER(tail)
 ";" @ 18:15-18:16 is SEMICOLON
 "end" @ 19:2-19:5 is KEYWORD(End)
-";" @ 19:5-19:6 is SEMICOLON
-"return" @ 21:2-21:8 is IDENTIFIER(return)
+"return" @ 21:2-21:8 is KEYWORD(Return)
 "result" @ 21:9-21:15 is IDENTIFIER(result)
 ";" @ 21:15-21:16 is SEMICOLON
 "end" @ 22:0-22:3 is KEYWORD(End)
-";" @ 22:3-22:4 is SEMICOLON
 "routine" @ 24:0-24:7 is KEYWORD(Routine)
-"reverse" @ 24:8-24:15 is KEYWORD(Reverse)
-"(" @ 24:15-24:16 is LEFT PARENTHESIS
-"l" @ 24:16-24:17 is IDENTIFIER(l)
-":" @ 24:18-24:19 is COLON
-"linked_list" @ 24:20-24:31 is IDENTIFIER(linked_list)
-")" @ 24:31-24:32 is RIGHT PARENTHESIS
-":" @ 24:33-24:34 is COLON
-"linked_list" @ 24:35-24:46 is IDENTIFIER(linked_list)
-"is" @ 24:47-24:49 is KEYWORD(Is)
+"reverse_list" @ 24:8-24:20 is IDENTIFIER(reverse_list)
+"(" @ 24:20-24:21 is LEFT PARENTHESIS
+"l" @ 24:21-24:22 is IDENTIFIER(l)
+":" @ 24:23-24:24 is COLON
+"linked_list" @ 24:25-24:36 is IDENTIFIER(linked_list)
+")" @ 24:36-24:37 is RIGHT PARENTHESIS
+":" @ 24:38-24:39 is COLON
+"linked_list" @ 24:40-24:51 is IDENTIFIER(linked_list)
+"is" @ 24:52-24:54 is KEYWORD(Is)
 "var" @ 25:2-25:5 is KEYWORD(Var)
 "result" @ 25:6-25:12 is IDENTIFIER(result)
 "is" @ 25:13-25:15 is KEYWORD(Is)
@@ -138,8 +138,9 @@
 "tail" @ 28:52-28:56 is IDENTIFIER(tail)
 "is" @ 28:57-28:59 is KEYWORD(Is)
 "result" @ 28:60-28:66 is IDENTIFIER(result)
-"end" @ 28:67-28:70 is KEYWORD(End)
-";" @ 28:70-28:71 is SEMICOLON
+";" @ 28:66-28:67 is SEMICOLON
+"end" @ 28:68-28:71 is KEYWORD(End)
+";" @ 28:71-28:72 is SEMICOLON
 "l" @ 29:4-29:5 is IDENTIFIER(l)
 ":=" @ 29:6-29:8 is ASSIGNMENT OPERATOR
 "l" @ 29:9-29:10 is IDENTIFIER(l)
@@ -147,12 +148,10 @@
 "tail" @ 29:11-29:15 is IDENTIFIER(tail)
 ";" @ 29:15-29:16 is SEMICOLON
 "end" @ 30:2-30:5 is KEYWORD(End)
-";" @ 30:5-30:6 is SEMICOLON
-"return" @ 32:2-32:8 is IDENTIFIER(return)
+"return" @ 32:2-32:8 is KEYWORD(Return)
 "result" @ 32:9-32:15 is IDENTIFIER(result)
 ";" @ 32:15-32:16 is SEMICOLON
 "end" @ 33:0-33:3 is KEYWORD(End)
-";" @ 33:3-33:4 is SEMICOLON
 "routine" @ 35:0-35:7 is KEYWORD(Routine)
 "main" @ 35:8-35:12 is IDENTIFIER(main)
 "(" @ 35:12-35:13 is LEFT PARENTHESIS
@@ -173,4 +172,3 @@
 ")" @ 37:19-37:20 is RIGHT PARENTHESIS
 ";" @ 37:20-37:21 is SEMICOLON
 "end" @ 38:0-38:3 is KEYWORD(End)
-";" @ 38:3-38:4 is SEMICOLON

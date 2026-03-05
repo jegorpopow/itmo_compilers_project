@@ -17,6 +17,7 @@ pub enum Keyword {
     If,
     Then,
     Else,
+    Return,
     In,
     While,
     For,

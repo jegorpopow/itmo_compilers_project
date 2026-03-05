@@ -20,4 +20,4 @@ routine main() is
   print not b;
   print not x;
   print not y;
-end;
+end

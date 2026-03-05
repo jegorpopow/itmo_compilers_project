@@ -5,15 +5,18 @@ use std::fs;
 use std::process::ExitCode;
 
 use crate::lexer::Lexer;
+use crate::parser::{ParsingError, parse_programm};
+use crate::tokens::Token;
 
 mod source_positions;
 
-mod parse_tree;
-mod operators;
+mod ast;
 mod identifier;
-mod tokens;
 mod lexer;
+mod operators;
+mod parse_tree;
 mod parser;
+mod tokens;
 
 mod bytecode;
 
@@ -28,8 +31,21 @@ fn main() -> ExitCode {
     }
 
     let source: String = fs::read_to_string(&args[1]).unwrap();
-    for token in Lexer::from(source.as_str()) {
+    let tokens: Vec<Token<'_>> = Lexer::from(source.as_str()).collect();
+    for token in &tokens {
         println!("{token}")
     }
+
+    match parse_programm(tokens.as_slice()) {
+        Ok((decls, _)) => {
+            for decl in decls {
+                println!("{:?}", decl)
+            }
+        }
+        Err(ParsingError { what, position }) => {
+            println!("Error:\n\treason:{what}\n\tposition: {position}")
+        }
+    }
+
     ExitCode::SUCCESS
 }

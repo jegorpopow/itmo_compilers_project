@@ -153,6 +153,7 @@ fn name_disambiguation(lexeme: &str) -> TokenKind<'_> {
         "for" => TokenKind::Keyword(Keyword::For),
         "loop" => TokenKind::Keyword(Keyword::Loop),
         "reverse" => TokenKind::Keyword(Keyword::Reverse),
+        "return"  => TokenKind::Keyword(Keyword::Return),
         "print" => TokenKind::Keyword(Keyword::Print),
         "where" => TokenKind::Keyword(Keyword::Where),
         "null" => TokenKind::Keyword(Keyword::Null),

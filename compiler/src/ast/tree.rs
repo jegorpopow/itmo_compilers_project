@@ -2,11 +2,11 @@
 
 use std::rc::Rc;
 
-use derive_where::derive_where;
+use crate::ast::types::Type;
+use crate::identifier::{Identifier, RawIdentifier};
 
-use crate::identifier::RawIdentifier;
-use crate::operators::SyntacticOperator;
-use crate::parse_tree::types::Type;
+use compiler::operators::{SemanticBinaryOperator, SemanticUnaryOperator};
+use derive_where::derive_where;
 
 #[derive(Debug)]
 #[derive_where(Hash, Eq, PartialEq)]
@@ -32,7 +32,7 @@ pub enum BoolLiteral {
 
 #[derive(Debug, Hash, PartialEq, Eq)]
 pub enum LvalueExpression {
-    Identifier(RawIdentifier),
+    Identifier(Identifier),
     Member {
         lhs: Rc<LvalueExpression>,
         member_name: RawIdentifier,
@@ -50,16 +50,16 @@ pub enum Expression {
     RealLiteral(RealLiteral),
     BoolLiteral(BoolLiteral),
     Call {
-        callee: RawIdentifier,
+        callee: Identifier,
         args: Vec<Rc<Expression>>,
     },
     Binop {
-        op: SyntacticOperator,
+        op: SemanticBinaryOperator,
         lhs: Rc<Expression>,
         rhs: Rc<Expression>,
     },
     Unop {
-        op: SyntacticOperator,
+        op: SemanticUnaryOperator,
         operand: Rc<Expression>,
     },
     Cast {
@@ -68,21 +68,25 @@ pub enum Expression {
     },
     New {
         t: Rc<Type>,
-        fields: Option<Vec<(RawIdentifier, Rc<Expression>)>>,
+        fields: Option<Vec<(Identifier, Rc<Expression>)>>,
     },
     Null,
+    IntToBool(Rc<Type>),
+    BoolToInt(Rc<Type>),
+    RealToInt(Rc<Type>),
+    IntToReal(Rc<Type>),
 }
 
 #[derive(Debug, Hash, Clone)]
 pub struct VarDecl {
-    pub name: RawIdentifier,
-    pub t: Option<Rc<Type>>,
+    pub name: Identifier,
+    pub t: Rc<Type>,
     pub initialiser: Option<Rc<Expression>>,
 }
 
 #[derive(Debug, Hash, Clone)]
 pub struct TypeDecl {
-    pub name: RawIdentifier,
+    pub name: Identifier,
     pub t: Rc<Type>,
 }
 
@@ -94,9 +98,9 @@ pub enum RoutineBody {
 
 #[derive(Debug, Clone)]
 pub struct RoutineDecl {
-    pub name: RawIdentifier,
+    pub name: Identifier,
     pub arguments: Vec<(RawIdentifier, Rc<Type>)>,
-    pub return_type: Option<Rc<Type>>,
+    pub return_type: Rc<Type>,
     pub body: Option<RoutineBody>,
 }
 
@@ -133,7 +137,7 @@ pub enum Statement {
         on_false: Option<Block>,
     },
     For {
-        counter: RawIdentifier,
+        counter: Identifier,
         from: Rc<Expression>,
         to: Option<Rc<Expression>>,
         order: LoopOrder,

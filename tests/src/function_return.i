@@ -1,8 +1,8 @@
 routine echo (data : integer) : integer is
   print data;
   return data;
-end;
+end
 
 routine main() is
   print echo(42);
-end;
+end

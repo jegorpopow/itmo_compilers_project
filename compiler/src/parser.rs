@@ -4,13 +4,15 @@ use std::rc::Rc;
 use crate::identifier::RawIdentifier;
 use crate::operators::SyntacticOperator;
 use crate::parse_tree::tree::{
-    BoolLiteral, Expression, IntegerLiteral, LvalueExpression, RealLiteral,
+    Block, BlockElem, BoolLiteral, Declaration, Expression, IntegerLiteral, LoopOrder,
+    LvalueExpression, RealLiteral, RoutineBody, RoutineDecl, Statement, TypeDecl, VarDecl,
 };
 use crate::parse_tree::types::{ArrayDescription, FieldDescription, RecordDescription, Type};
 use crate::source_positions::{Extent, Position};
 use crate::tokens::{
-    self, BoolLiteral as TokenBoolLiteral, Identifier, IntegerLiteral as TokenIntegerLiteral,
-    InvalidToken, RealLiteral as TokenRealLiteral, Token, TokenIssue, TokenKind,
+    self, BoolLiteral as TokenBoolLiteral, Identifier as TokenIdentifier,
+    IntegerLiteral as TokenIntegerLiteral, InvalidToken, RealLiteral as TokenRealLiteral, Token,
+    TokenIssue, TokenKind,
 };
 
 trait TokenIterator<'a, 'b: 'a>: Clone + Copy {
@@ -144,7 +146,7 @@ impl Parser {
         match i.current() {
             Some(token) => {
                 if let Token {
-                    kind: TokenKind::Identifier(Identifier { name }),
+                    kind: TokenKind::Identifier(TokenIdentifier { name }),
                     ..
                 } = token
                 {
@@ -349,6 +351,22 @@ impl Parser {
         Ok((result, i))
     }
 
+    fn parse_all<'a, 'b: 'a, T>(
+        &mut self,
+        mut parser: impl ParsingFunction<'a, 'b, T>,
+        mut i: IndexedIterator<'a, 'b>,
+    ) -> ParsingResult<'a, 'b, Vec<T>> {
+        let mut result = Vec::new();
+
+        while i.current().is_some() {
+            let (parsed, next) = parser(self, i)?;
+            result.push(parsed);
+            i = next;
+        }
+
+        Ok((result, i))
+    }
+
     fn parse_one_of<'a, 'b: 'a, T>(
         &mut self,
         mut l: impl ParsingFunction<'a, 'b, T>,
@@ -473,8 +491,16 @@ impl Parser {
         self.parse_known_kind(&TokenKind::Semicolon, i)
     }
 
+    fn parse_assn<'a, 'b: 'a>(&mut self, i: IndexedIterator<'a, 'b>) -> ParsingResult<'a, 'b, ()> {
+        self.parse_known_kind(&TokenKind::Assignment, i)
+    }
+
     fn parse_comma<'a, 'b: 'a>(&mut self, i: IndexedIterator<'a, 'b>) -> ParsingResult<'a, 'b, ()> {
         self.parse_known_kind(&TokenKind::Comma, i)
+    }
+
+    fn parse_colon<'a, 'b: 'a>(&mut self, i: IndexedIterator<'a, 'b>) -> ParsingResult<'a, 'b, ()> {
+        self.parse_known_kind(&TokenKind::Colon, i)
     }
 
     fn parse_kw_end<'a, 'b: 'a>(
@@ -484,11 +510,22 @@ impl Parser {
         self.parse_known_kind(&TokenKind::Keyword(tokens::Keyword::End), i)
     }
 
+    fn parse_kw_loop<'a, 'b: 'a>(
+        &mut self,
+        i: IndexedIterator<'a, 'b>,
+    ) -> ParsingResult<'a, 'b, ()> {
+        self.parse_known_kind(&TokenKind::Keyword(tokens::Keyword::Loop), i)
+    }
+
     fn parse_kw_where<'a, 'b: 'a>(
         &mut self,
         i: IndexedIterator<'a, 'b>,
     ) -> ParsingResult<'a, 'b, ()> {
         self.parse_known_kind(&TokenKind::Keyword(tokens::Keyword::Where), i)
+    }
+
+    fn parse_kw_is<'a, 'b: 'a>(&mut self, i: IndexedIterator<'a, 'b>) -> ParsingResult<'a, 'b, ()> {
+        self.parse_known_kind(&TokenKind::Keyword(tokens::Keyword::Is), i)
     }
 
     fn parse_left_bracket<'a, 'b: 'a>(
@@ -545,14 +582,15 @@ impl Parser {
         )
     }
 
-    fn parse_is_claim<'a, 'b: 'a, T, U>(
+    fn parse_def<'a, 'b: 'a, T, U>(
         &mut self,
         mut l: impl ParsingFunction<'a, 'b, T>,
+        mut rep: impl ParsingFunction<'a, 'b, ()>,
         mut r: impl ParsingFunction<'a, 'b, U>,
         i: IndexedIterator<'a, 'b>,
     ) -> ParsingResult<'a, 'b, (T, U)> {
         let (lhs, next) = l(self, i)?;
-        let (_, next) = self.parse_known_kind(&TokenKind::Keyword(tokens::Keyword::Is), next)?;
+        let (_, next) = rep(self, next)?;
         let (rhs, end) = r(self, next)?;
         Ok(((lhs, rhs), end))
     }
@@ -561,8 +599,9 @@ impl Parser {
         &mut self,
         i: IndexedIterator<'a, 'b>,
     ) -> ParsingResult<'a, 'b, FieldDescription> {
-        let (ident, next) = self.parse_identifier(i)?;
-        let (_, next) = self.parse_known_kind(&TokenKind::Colon, next)?;
+        let (_, next) = self.parse_known_kind(&TokenKind::Keyword(tokens::Keyword::Var), i)?;
+        let (ident, next) = self.parse_identifier(next)?;
+        let (_, next) = self.parse_kw_is(next)?;
         let (t, next) = self.parse_type(next)?;
 
         Ok((FieldDescription { name: ident, t }, next))
@@ -748,8 +787,9 @@ impl Parser {
                                     |ctx, i| {
                                         ctx.parse_before(
                                             |ctx, i| {
-                                                ctx.parse_is_claim(
+                                                ctx.parse_def(
                                                     Self::parse_identifier,
+                                                    Self::parse_kw_is,
                                                     Self::parse_expr,
                                                     i,
                                                 )
@@ -870,4 +910,381 @@ impl Parser {
             i,
         )
     }
+
+    pub fn parse_var_decl<'a, 'b: 'a>(
+        &mut self,
+        i: IndexedIterator<'a, 'b>,
+    ) -> ParsingResult<'a, 'b, VarDecl> {
+        let (_, next) = self.parse_known_kind(&TokenKind::Keyword(tokens::Keyword::Var), i)?;
+        let (name, next) = self.parse_identifier(next)?;
+        let (t, next) = self.try_parse(
+            |ctx, i| ctx.parse_after(Self::parse_colon, Self::parse_type, i),
+            next,
+        )?;
+        let (initialiser, next) = self.try_parse(
+            |ctx, i| ctx.parse_after(Self::parse_kw_is, Self::parse_expr, i),
+            next,
+        )?;
+        let (_, next) = self.parse_semicolon(next)?;
+
+        Ok((
+            VarDecl {
+                name,
+                t,
+                initialiser,
+            },
+            next,
+        ))
+    }
+    pub fn parse_type_decl<'a, 'b: 'a>(
+        &mut self,
+        i: IndexedIterator<'a, 'b>,
+    ) -> ParsingResult<'a, 'b, TypeDecl> {
+        let (_, next) = self.parse_known_kind(&TokenKind::Keyword(tokens::Keyword::Type), i)?;
+        let (name, next) = self.parse_identifier(next)?;
+        let (t, next) = self.parse_after(Self::parse_kw_is, Self::parse_type, next)?;
+        let (_, next) = self.parse_semicolon(next)?;
+
+        Ok((TypeDecl { name, t }, next))
+    }
+
+    fn parse_assignment<'a, 'b: 'a>(
+        &mut self,
+        i: IndexedIterator<'a, 'b>,
+    ) -> ParsingResult<'a, 'b, Statement> {
+        let (lhs, next) = self.parse_lvalue_expr(i)?;
+        let (_, next) = self.parse_assn(next)?;
+        let (rhs, next) = self.parse_expr(next)?;
+        let (_, next) = self.parse_semicolon(next)?;
+
+        Ok((Statement::Assignment { lhs, rhs }, next))
+    }
+
+    pub fn parse_statement<'a, 'b: 'a>(
+        &mut self,
+        i: IndexedIterator<'a, 'b>,
+    ) -> ParsingResult<'a, 'b, Statement> {
+        match i.current() {
+            Some(Token {
+                kind: TokenKind::Keyword(tokens::Keyword::If),
+                ..
+            }) => {
+                let next = self.next(i);
+                let (condition, next) = self.parse_expr(next)?;
+                let (_, next) =
+                    self.parse_known_kind(&TokenKind::Keyword(tokens::Keyword::Then), next)?;
+                let (on_true, next) = self.parse_block(next)?;
+                let (on_false, next) = self.try_parse(
+                    |ctx, i| {
+                        ctx.parse_after(
+                            |ctx, i| {
+                                ctx.parse_known_kind(&TokenKind::Keyword(tokens::Keyword::Else), i)
+                            },
+                            Self::parse_block,
+                            i,
+                        )
+                    },
+                    next,
+                )?;
+
+                let (_, next) = self.parse_kw_end(next)?;
+
+                Ok((
+                    Statement::If {
+                        condition,
+                        on_true,
+                        on_false,
+                    },
+                    next,
+                ))
+            }
+
+            Some(Token {
+                kind: TokenKind::Keyword(tokens::Keyword::While),
+                ..
+            }) => {
+                let next = self.next(i);
+                let (condition, next) = self.parse_expr(next)?;
+
+                let (body, next) = self.parse_between(
+                    Self::parse_kw_loop,
+                    Self::parse_block,
+                    Self::parse_kw_end,
+                    next,
+                )?;
+
+                Ok((Statement::While { condition, body }, next))
+            }
+
+            Some(Token {
+                kind: TokenKind::Keyword(tokens::Keyword::Print),
+                ..
+            }) => {
+                let next = self.next(i);
+                let (expr, next) = self.parse_expr(next)?;
+                let (_, next) = self.parse_semicolon(next)?;
+
+                Ok((Statement::Print { value: expr }, next))
+            }
+
+            Some(Token {
+                kind: TokenKind::Keyword(tokens::Keyword::Return),
+                ..
+            }) => {
+                let next = self.next(i);
+                let (expr, next) = self.parse_expr(next)?;
+                let (_, next) = self.parse_semicolon(next)?;
+
+                Ok((Statement::Return { value: expr }, next))
+            }
+
+            Some(Token {
+                kind: TokenKind::Keyword(tokens::Keyword::For),
+                ..
+            }) => {
+                let next = self.next(i);
+                let (counter, next) = self.parse_identifier(next)?;
+
+                let (_, next) =
+                    self.parse_known_kind(&TokenKind::Keyword(tokens::Keyword::In), next)?;
+
+                let (from, next) = self.parse_expr(next)?;
+
+                let (_, next) = self.parse_known_kind(&TokenKind::RangeSymbol, next)?;
+                let (to, next) = self.try_parse(Self::parse_expr, next)?;
+                let (order, next) = self.try_parse(
+                    |ctx, i| ctx.parse_known_kind(&TokenKind::Keyword(tokens::Keyword::Reverse), i),
+                    next,
+                )?;
+
+                let order = order.map_or(LoopOrder::Direct, |()| LoopOrder::Reversed);
+
+                let (body, next) = self.parse_between(
+                    Self::parse_kw_loop,
+                    Self::parse_block,
+                    Self::parse_kw_end,
+                    next,
+                )?;
+
+                Ok((
+                    Statement::For {
+                        counter,
+                        from,
+                        to,
+                        order,
+                        body,
+                    },
+                    next,
+                ))
+            }
+
+            Some(Token {
+                kind: TokenKind::Identifier(_),
+                ..
+            }) => self.parse_one_of(
+                Self::parse_assignment,
+                |ctx, i| {
+                    ctx.parse_before(|ctx, i| ctx.parse_call(i), Self::parse_semicolon, i)
+                        .map(|(call_expr, next)| (Statement::Expr(call_expr), next))
+                },
+                i,
+            ),
+
+            Some(token) => Err(ParsingError {
+                what: format!("Statement expected, {} found", token),
+                position: i.position(),
+            }),
+
+            None => Err(ParsingError {
+                what: "Statement expected, EOF found".to_owned(),
+                position: i.position(),
+            }),
+        }
+    }
+
+    pub fn parse_block_elem<'a, 'b: 'a>(
+        &mut self,
+        i: IndexedIterator<'a, 'b>,
+    ) -> ParsingResult<'a, 'b, BlockElem> {
+        match i.current() {
+            Some(Token {
+                kind: TokenKind::Keyword(tokens::Keyword::Var),
+                ..
+            }) => self
+                .parse_var_decl(i)
+                .map(|(decl, next)| (BlockElem::VarDecl(decl), next)),
+
+            Some(Token {
+                kind: TokenKind::Keyword(tokens::Keyword::Type),
+                ..
+            }) => self
+                .parse_type_decl(i)
+                .map(|(decl, next)| (BlockElem::TypeDecl(decl), next)),
+
+            Some(_) => self
+                .parse_statement(i)
+                .map(|(stmt, next)| (BlockElem::Stmt(stmt), next)),
+
+            None => Err(ParsingError {
+                what: "Statement or declaration expected, EOF found".to_owned(),
+                position: i.position(),
+            }),
+        }
+    }
+
+    pub fn parse_block<'a, 'b: 'a>(
+        &mut self,
+        i: IndexedIterator<'a, 'b>,
+    ) -> ParsingResult<'a, 'b, Block> {
+        self.parse_many(Self::parse_block_elem, i)
+            .map(|(elems, next)| (Block(elems), next))
+    }
+
+    pub fn parse_routine_decl<'a, 'b: 'a>(
+        &mut self,
+        i: IndexedIterator<'a, 'b>,
+    ) -> ParsingResult<'a, 'b, RoutineDecl> {
+        let (_, next) = self.parse_known_kind(&TokenKind::Keyword(tokens::Keyword::Routine), i)?;
+        let (name, next) = self.parse_identifier(next)?;
+        // println!("before parsing return type : {}", next.current().unwrap());
+
+        // println!(
+        //     "After parsing return type : {}\ntype is {:?}",
+        //     next.current().unwrap(),
+        //     return_type
+        // );
+
+        let (args, next) = self.parse_in_parentheses(
+            |ctx, i| {
+                ctx.parse_many_sep_by(
+                    |ctx, i| {
+                        ctx.parse_def(
+                            Self::parse_identifier,
+                            Self::parse_colon,
+                            Self::parse_type,
+                            i,
+                        )
+                    },
+                    Self::parse_comma,
+                    i,
+                )
+            },
+            next,
+        )?;
+
+        let (return_type, next) = self.try_parse(
+            |ctx, i| ctx.parse_after(Self::parse_colon, Self::parse_type, i),
+            next,
+        )?;
+
+        match next.current() {
+            Some(Token {
+                kind: TokenKind::RightArrow,
+                ..
+            }) => {
+                let next = self.next(next);
+                let (expr, next) =
+                    self.parse_before(Self::parse_expr, Self::parse_semicolon, next)?;
+                Ok((
+                    RoutineDecl {
+                        name,
+                        arguments: args,
+                        return_type,
+                        body: Some(RoutineBody::Expression(expr)),
+                    },
+                    next,
+                ))
+            }
+
+            Some(Token {
+                kind: TokenKind::Keyword(tokens::Keyword::Is),
+                ..
+            }) => {
+                let (body, next) = self.parse_between(
+                    Self::parse_kw_is,
+                    Self::parse_block,
+                    Self::parse_kw_end,
+                    next,
+                )?;
+
+                Ok((
+                    RoutineDecl {
+                        name,
+                        arguments: args,
+                        return_type,
+                        body: Some(RoutineBody::Block(body)),
+                    },
+                    next,
+                ))
+            }
+
+            Some(Token {
+                kind: TokenKind::Semicolon,
+                ..
+            }) => Ok((
+                RoutineDecl {
+                    name,
+                    arguments: args,
+                    return_type,
+                    body: None,
+                },
+                self.next(next),
+            )),
+            Some(t) => Err(ParsingError {
+                what: format!("Function body or `;` expexted, {} found", t),
+                position: next.position(),
+            }),
+            None => Err(ParsingError {
+                what: "Function body or `;` expexted, EOF found".to_owned(),
+                position: next.position(),
+            }),
+        }
+    }
+
+    pub fn parse_declaration<'a, 'b: 'a>(
+        &mut self,
+        i: IndexedIterator<'a, 'b>,
+    ) -> ParsingResult<'a, 'b, Declaration> {
+        match i.current() {
+            Some(Token {
+                kind: TokenKind::Keyword(tokens::Keyword::Var),
+                ..
+            }) => self
+                .parse_var_decl(i)
+                .map(|(decl, next)| (Declaration::Var(decl), next)),
+
+            Some(Token {
+                kind: TokenKind::Keyword(tokens::Keyword::Type),
+                ..
+            }) => self
+                .parse_type_decl(i)
+                .map(|(decl, next)| (Declaration::Type(decl), next)),
+
+            Some(Token {
+                kind: TokenKind::Keyword(tokens::Keyword::Routine),
+                ..
+            }) => self
+                .parse_routine_decl(i)
+                .map(|(decl, next)| (Declaration::Routine(decl), next)),
+
+            Some(t) => Err(ParsingError {
+                what: format!("Declaration expected, {} found", t),
+                position: i.position(),
+            }),
+            None => Err(ParsingError {
+                what: "Declaration expexted, EOF found".to_owned(),
+                position: i.position(),
+            }),
+        }
+    }
+}
+
+pub fn parse_programm(
+    tokens: &[Token<'_>],
+) -> PureParsingResult<(Vec<Declaration>, Vec<ParsingError>)> {
+    let mut parser = Parser::new();
+    let start = parser.skip_unused(IndexedIterator::from(tokens));
+    let (decls, _) = parser.parse_all(Parser::parse_declaration, start)?;
+
+    Ok((decls, parser.recovered_errors))
 }

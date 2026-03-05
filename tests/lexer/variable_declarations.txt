@@ -12,9 +12,9 @@
 ";" @ 2:12-2:13 is SEMICOLON
 "var" @ 3:0-3:3 is KEYWORD(Var)
 "c" @ 3:4-3:5 is IDENTIFIER(c)
-"is" @ 3:6-3:8 is KEYWORD(Is)
-"integer" @ 3:9-3:16 is TYPENAME(Integer)
-";" @ 3:16-3:17 is SEMICOLON
+":" @ 3:6-3:7 is COLON
+"integer" @ 3:8-3:15 is TYPENAME(Integer)
+";" @ 3:15-3:16 is SEMICOLON
 "routine" @ 6:0-6:7 is KEYWORD(Routine)
 "main" @ 6:8-6:12 is IDENTIFIER(main)
 "(" @ 6:13-6:14 is LEFT PARENTHESIS
@@ -47,4 +47,3 @@
 "b" @ 16:8-16:9 is IDENTIFIER(b)
 ";" @ 16:9-16:10 is SEMICOLON
 "end" @ 17:0-17:3 is KEYWORD(End)
-";" @ 17:3-17:4 is SEMICOLON

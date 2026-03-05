@@ -6,6 +6,7 @@ routine main() is
   var e is 1;
   var f is 1;
   var g is 1;
+
   if a = 1 then
     print 1;
     if b = 1 then
@@ -15,17 +16,17 @@ routine main() is
       else
         if d = 1 then
           print 0;
-        end;
-      end;
+        end
+      end
     else
       if e = 1 then
         print 0;
       else
         if f = 1 then
           print 0;
-        end;
-      end;
-    end;
+        end
+      end
+    end
     if d = 1 then
       print 4;
       if e = 1 then
@@ -36,29 +37,29 @@ routine main() is
             print 7;
           else
             print 0;
-          end;
+          end
         else
           print 0;
-        end;
+        end
       else
         print 0;
-      end;
+      end
     else
       if b = 1 then
         print 0;
       else
         if c = 1 then
           print 0;
-        end;
-      end;
-    end;
+        end
+      end
+    end
   else
     if e = 1 then
       print 0;
     else
       if g = 1 then
         print 0;
-      end;
-    end;
-  end;
-end;
+      end
+    end
+  end
+end

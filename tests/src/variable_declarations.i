@@ -1,6 +1,6 @@
 var a : integer is 0;
 var b is 1.5;
-var c is integer;
+var c : integer;
 
 
 routine main () is
@@ -14,4 +14,4 @@ routine main () is
   print local;
   print a; 
   print b;
-end;
+end

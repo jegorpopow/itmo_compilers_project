@@ -6,13 +6,13 @@ routine collatz(n : integer) : integer is
       n := n / 2;
     else 
       n := 3 * n + 1;
-    end;
+    end
     steps := steps + 1;
-  end; 
+  end
 
   return steps;
-end;
+end
 
 routine main() is
   print collatz(7);
-end;
+end
