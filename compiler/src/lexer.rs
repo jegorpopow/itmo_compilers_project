@@ -1,6 +1,7 @@
 use phf::phf_map;
 
 use crate::operators::SyntacticOperator;
+use crate::source_positions::{Extent, Position};
 use crate::tokens::*;
 
 #[cfg(test)]
@@ -66,7 +67,7 @@ trait ImmutableIterator<'a>: Sized + Clone + From<&'a str> {
 }
 
 // TODO: rewrite with Chars<'a> and its .clone() method
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 struct IndexIterator<'a> {
     underlying: &'a str,
     index: usize,
@@ -168,7 +169,6 @@ fn name_disambiguation(lexeme: &str) -> TokenKind<'_> {
         "NaN" => TokenKind::RealLiteral(RealLiteral { value: f64::NAN }),
     };
 
-    // TODO: add more cases (NaN, Infinity, ...)
     match KNOWN_TOKENS.get(lexeme) {
         Some(token_value) => token_value.clone(),
         None => TokenKind::Identifier(Identifier { name: lexeme }),
@@ -232,6 +232,7 @@ fn real_literal_from_representation(s: &str) -> TokenKind<'_> {
         Ok(value) => TokenKind::RealLiteral(RealLiteral { value }),
         Err(e) => TokenKind::Invalid(InvalidToken {
             problem: format!("Malformed float {s:?}: {e}"),
+            code: TokenIssue::MalformedReal,
         }),
     }
 }
@@ -241,6 +242,7 @@ fn integer_literal_from_representation(s: &str) -> TokenKind<'_> {
         Ok(value) => TokenKind::IntegerLiteral(IntegerLiteral { value }),
         Err(e) => TokenKind::Invalid(InvalidToken {
             problem: format!("Malformed integer {s:?}: {e}"),
+            code: TokenIssue::MalformedInteger,
         }),
     }
 }
@@ -287,6 +289,7 @@ fn numeric_token<'a>(
     }
 }
 
+#[derive(Debug)]
 pub struct Lexer<'src> {
     pos: IndexIterator<'src>,
     allow_sign: bool,
@@ -344,6 +347,7 @@ impl<'src> Iterator for Lexer<'src> {
             .unwrap_or((
                 TokenKind::Invalid(InvalidToken {
                     problem: format!("Unexpected symbol `{first_char}`"),
+                    code: TokenIssue::Unexpected,
                 }),
                 rest,
             ));

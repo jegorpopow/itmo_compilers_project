@@ -1,6 +1,6 @@
-#![expect(dead_code, reason = "WIP")]
+#![allow(dead_code, reason = "WIP")]
 
-#[derive(PartialEq, Eq, Hash, Debug, Clone)]
+#[derive(PartialEq, Eq, Hash, Debug, Clone, Copy)]
 pub enum SyntacticOperator {
     Add, // Either binary or unary one
     Sub, // Either binary or unary one
@@ -19,7 +19,7 @@ pub enum SyntacticOperator {
     Neg,
 }
 
-#[derive(PartialEq, Eq, Hash, Debug, Clone)]
+#[derive(PartialEq, Eq, Hash, Debug, Clone, Copy)]
 #[repr(u8)]
 pub enum SemanticBinaryOperator {
     RealAdd = 0,
@@ -48,7 +48,7 @@ pub enum SemanticBinaryOperator {
     BoolOr = 23,
 }
 
-#[derive(PartialEq, Eq, Hash, Debug, Clone)]
+#[derive(PartialEq, Eq, Hash, Debug, Clone, Copy)]
 #[expect(clippy::enum_variant_names, reason = "Negation is the only unary op")]
 #[repr(u8)]
 pub enum SemanticUnaryOperator {

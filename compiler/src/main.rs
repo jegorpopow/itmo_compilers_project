@@ -6,12 +6,16 @@ use std::process::ExitCode;
 
 use crate::lexer::Lexer;
 
-mod ast;
-mod bytecode;
-mod lexer;
+mod source_positions;
+
+mod parse_tree;
 mod operators;
+mod identifier;
 mod tokens;
-mod types;
+mod lexer;
+mod parser;
+
+mod bytecode;
 
 // TODO: create a Driver module
 
