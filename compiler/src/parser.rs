@@ -1,11 +1,12 @@
 #![expect(dead_code, reason = "WIP")]
+#![allow(clippy::unnecessary_wraps)]
 use std::rc::Rc;
 
 use crate::identifier::RawIdentifier;
 use crate::operators::SyntacticOperator;
 use crate::parse_tree::tree::{
     Block, BlockElem, BoolLiteral, Declaration, Expression, IntegerLiteral, LoopOrder,
-    LvalueExpression, RealLiteral, RoutineBody, RoutineDecl, Statement, TypeDecl, VarDecl,
+    LvalueExpression, Program, RealLiteral, RoutineBody, RoutineDecl, Statement, TypeDecl, VarDecl,
 };
 use crate::parse_tree::types::{ArrayDescription, FieldDescription, RecordDescription, Type};
 use crate::source_positions::{Extent, Position};
@@ -20,7 +21,7 @@ trait TokenIterator<'a, 'b: 'a>: Clone + Copy {
     fn position(&self) -> Position;
     fn next(&self) -> Self;
     fn has_value(&self) -> bool {
-        return self.current().is_some();
+        self.current().is_some()
     }
 }
 
@@ -36,7 +37,7 @@ impl<'a, 'b> From<&'a [Token<'b>]> for IndexedIterator<'a, 'b> {
         IndexedIterator {
             underlying: value,
             index: 0,
-            pos: if value.len() == 0 {
+            pos: if value.is_empty() {
                 Position { line: 0, column: 0 }
             } else {
                 value[0].extent.start
@@ -93,7 +94,14 @@ impl<'a, 'b: 'a, T, F> ParsingFunction<'a, 'b, T> for F where
 
 type OperatorsPrecedense = Vec<SyntacticOperator>;
 
+impl Default for Parser {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl Parser {
+    #[must_use]
     pub fn new() -> Self {
         Parser {
             recovered_errors: vec![],
@@ -122,7 +130,7 @@ impl Parser {
                     extent: Extent { start, .. },
                     ..
                 } => {
-                    self.report_recovered(problem.clone(), start.clone());
+                    self.report_recovered(problem.clone(), *start);
                 }
                 Token {
                     kind: TokenKind::Comment(_),
@@ -158,7 +166,7 @@ impl Parser {
                     ))
                 } else {
                     Err(ParsingError {
-                        what: format!("Identifier expected, {} found", token),
+                        what: format!("Identifier expected, {token} found"),
                         position: i.position(),
                     })
                 }
@@ -199,7 +207,7 @@ impl Parser {
                 } = token
                 {
                     self.recovered_errors.push(ParsingError {
-                        position: start.clone(),
+                        position: *start,
                         what: problem.clone(),
                     });
 
@@ -212,7 +220,7 @@ impl Parser {
                     ))
                 } else {
                     Err(ParsingError {
-                        what: format!("Real literal expected, {} found", token),
+                        what: format!("Real literal expected, {token} found"),
                         position: i.position(),
                     })
                 }
@@ -253,7 +261,7 @@ impl Parser {
                 } = token
                 {
                     self.recovered_errors.push(ParsingError {
-                        position: start.clone(),
+                        position: *start,
                         what: problem.clone(),
                     });
 
@@ -266,7 +274,7 @@ impl Parser {
                     ))
                 } else {
                     Err(ParsingError {
-                        what: format!("Integer literal expected, {} found", token),
+                        what: format!("Integer literal expected, {token} found"),
                         position: i.position(),
                     })
                 }
@@ -299,7 +307,7 @@ impl Parser {
                     ))
                 } else {
                     Err(ParsingError {
-                        what: format!("Bool literal expected, {} found", token),
+                        what: format!("Bool literal expected, {token} found"),
                         position: i.position(),
                     })
                 }
@@ -419,7 +427,7 @@ impl Parser {
         i: IndexedIterator<'a, 'b>,
     ) -> ParsingResult<'a, 'b, T> {
         let (res, next) = parser(self, i)?;
-        let (_, next) = right(self, next)?;
+        let ((), next) = right(self, next)?;
         Ok((res, next))
     }
 
@@ -429,7 +437,7 @@ impl Parser {
         mut parser: impl ParsingFunction<'a, 'b, T>,
         i: IndexedIterator<'a, 'b>,
     ) -> ParsingResult<'a, 'b, T> {
-        let (_, next) = left(self, i)?;
+        let ((), next) = left(self, i)?;
         parser(self, next)
     }
 
@@ -440,9 +448,9 @@ impl Parser {
         mut right: impl ParsingFunction<'a, 'b, ()>,
         i: IndexedIterator<'a, 'b>,
     ) -> ParsingResult<'a, 'b, T> {
-        let (_, next) = left(self, i)?;
+        let ((), next) = left(self, i)?;
         let (res, next) = parser(self, next)?;
-        let (_, next) = right(self, next)?;
+        let ((), next) = right(self, next)?;
         Ok((res, next))
     }
 
@@ -590,7 +598,7 @@ impl Parser {
         i: IndexedIterator<'a, 'b>,
     ) -> ParsingResult<'a, 'b, (T, U)> {
         let (lhs, next) = l(self, i)?;
-        let (_, next) = rep(self, next)?;
+        let ((), next) = rep(self, next)?;
         let (rhs, end) = r(self, next)?;
         Ok(((lhs, rhs), end))
     }
@@ -599,9 +607,9 @@ impl Parser {
         &mut self,
         i: IndexedIterator<'a, 'b>,
     ) -> ParsingResult<'a, 'b, FieldDescription> {
-        let (_, next) = self.parse_known_kind(&TokenKind::Keyword(tokens::Keyword::Var), i)?;
+        let ((), next) = self.parse_known_kind(&TokenKind::Keyword(tokens::Keyword::Var), i)?;
         let (ident, next) = self.parse_identifier(next)?;
-        let (_, next) = self.parse_kw_is(next)?;
+        let ((), next) = self.parse_kw_is(next)?;
         let (t, next) = self.parse_type(next)?;
 
         Ok((FieldDescription { name: ident, t }, next))
@@ -611,13 +619,13 @@ impl Parser {
         &mut self,
         i: IndexedIterator<'a, 'b>,
     ) -> ParsingResult<'a, 'b, RecordDescription> {
-        let (_, next) = self.parse_known_kind(&TokenKind::Keyword(tokens::Keyword::Record), i)?;
+        let ((), next) = self.parse_known_kind(&TokenKind::Keyword(tokens::Keyword::Record), i)?;
         let (fields, next) = self.parse_many(
             |ctx, i| ctx.parse_before(Self::parse_field_description, Self::parse_semicolon, i),
             next,
         )?;
 
-        let (_, next) = self.parse_known_kind(&TokenKind::Keyword(tokens::Keyword::End), next)?;
+        let ((), next) = self.parse_known_kind(&TokenKind::Keyword(tokens::Keyword::End), next)?;
         Ok((RecordDescription { fields }, next))
     }
 
@@ -625,7 +633,7 @@ impl Parser {
         &mut self,
         i: IndexedIterator<'a, 'b>,
     ) -> ParsingResult<'a, 'b, ArrayDescription> {
-        let (_, next) = self.parse_known_kind(&TokenKind::Keyword(tokens::Keyword::Array), i)?;
+        let ((), next) = self.parse_known_kind(&TokenKind::Keyword(tokens::Keyword::Array), i)?;
         let (length, next) =
             self.parse_in_brackets(|ctx, i| ctx.try_parse(Self::parse_expr, i), next)?;
         let (element_type, next) = self.parse_type(next)?;
@@ -673,7 +681,7 @@ impl Parser {
                 self.parse_record_desc(i)
                     .map(|(rec_desc, i)| (Rc::new(Type::Record(rec_desc)), i))
             })
-            .map_err(|_| ParsingError {
+            .map_err(|_err| ParsingError {
                 what: "Type exptected, but not found".to_owned(),
                 position: i.position(),
             })
@@ -749,8 +757,7 @@ impl Parser {
                     result = Rc::new(LvalueExpression::Index { lhs: result, index });
                     next = rest;
                 }
-                Some(_) => break,
-                None => break,
+                _ => break,
             }
         }
 
@@ -905,7 +912,7 @@ impl Parser {
         ];
 
         self.parse_operators(
-            OPERATORS_PRECEDENCE_TABLE.iter().map(|line| *line),
+            OPERATORS_PRECEDENCE_TABLE.iter().copied(),
             Self::parse_atom,
             i,
         )
@@ -915,7 +922,7 @@ impl Parser {
         &mut self,
         i: IndexedIterator<'a, 'b>,
     ) -> ParsingResult<'a, 'b, VarDecl> {
-        let (_, next) = self.parse_known_kind(&TokenKind::Keyword(tokens::Keyword::Var), i)?;
+        let ((), next) = self.parse_known_kind(&TokenKind::Keyword(tokens::Keyword::Var), i)?;
         let (name, next) = self.parse_identifier(next)?;
         let (t, next) = self.try_parse(
             |ctx, i| ctx.parse_after(Self::parse_colon, Self::parse_type, i),
@@ -925,7 +932,7 @@ impl Parser {
             |ctx, i| ctx.parse_after(Self::parse_kw_is, Self::parse_expr, i),
             next,
         )?;
-        let (_, next) = self.parse_semicolon(next)?;
+        let ((), next) = self.parse_semicolon(next)?;
 
         Ok((
             VarDecl {
@@ -940,10 +947,10 @@ impl Parser {
         &mut self,
         i: IndexedIterator<'a, 'b>,
     ) -> ParsingResult<'a, 'b, TypeDecl> {
-        let (_, next) = self.parse_known_kind(&TokenKind::Keyword(tokens::Keyword::Type), i)?;
+        let ((), next) = self.parse_known_kind(&TokenKind::Keyword(tokens::Keyword::Type), i)?;
         let (name, next) = self.parse_identifier(next)?;
         let (t, next) = self.parse_after(Self::parse_kw_is, Self::parse_type, next)?;
-        let (_, next) = self.parse_semicolon(next)?;
+        let ((), next) = self.parse_semicolon(next)?;
 
         Ok((TypeDecl { name, t }, next))
     }
@@ -953,9 +960,9 @@ impl Parser {
         i: IndexedIterator<'a, 'b>,
     ) -> ParsingResult<'a, 'b, Statement> {
         let (lhs, next) = self.parse_lvalue_expr(i)?;
-        let (_, next) = self.parse_assn(next)?;
+        let ((), next) = self.parse_assn(next)?;
         let (rhs, next) = self.parse_expr(next)?;
-        let (_, next) = self.parse_semicolon(next)?;
+        let ((), next) = self.parse_semicolon(next)?;
 
         Ok((Statement::Assignment { lhs, rhs }, next))
     }
@@ -971,7 +978,7 @@ impl Parser {
             }) => {
                 let next = self.next(i);
                 let (condition, next) = self.parse_expr(next)?;
-                let (_, next) =
+                let ((), next) =
                     self.parse_known_kind(&TokenKind::Keyword(tokens::Keyword::Then), next)?;
                 let (on_true, next) = self.parse_block(next)?;
                 let (on_false, next) = self.try_parse(
@@ -987,7 +994,7 @@ impl Parser {
                     next,
                 )?;
 
-                let (_, next) = self.parse_kw_end(next)?;
+                let ((), next) = self.parse_kw_end(next)?;
 
                 Ok((
                     Statement::If {
@@ -1022,7 +1029,7 @@ impl Parser {
             }) => {
                 let next = self.next(i);
                 let (expr, next) = self.parse_expr(next)?;
-                let (_, next) = self.parse_semicolon(next)?;
+                let ((), next) = self.parse_semicolon(next)?;
 
                 Ok((Statement::Print { value: expr }, next))
             }
@@ -1033,7 +1040,7 @@ impl Parser {
             }) => {
                 let next = self.next(i);
                 let (expr, next) = self.parse_expr(next)?;
-                let (_, next) = self.parse_semicolon(next)?;
+                let ((), next) = self.parse_semicolon(next)?;
 
                 Ok((Statement::Return { value: expr }, next))
             }
@@ -1045,12 +1052,12 @@ impl Parser {
                 let next = self.next(i);
                 let (counter, next) = self.parse_identifier(next)?;
 
-                let (_, next) =
+                let ((), next) =
                     self.parse_known_kind(&TokenKind::Keyword(tokens::Keyword::In), next)?;
 
                 let (from, next) = self.parse_expr(next)?;
 
-                let (_, next) = self.parse_known_kind(&TokenKind::RangeSymbol, next)?;
+                let ((), next) = self.parse_known_kind(&TokenKind::RangeSymbol, next)?;
                 let (to, next) = self.try_parse(Self::parse_expr, next)?;
                 let (order, next) = self.try_parse(
                     |ctx, i| ctx.parse_known_kind(&TokenKind::Keyword(tokens::Keyword::Reverse), i),
@@ -1084,14 +1091,14 @@ impl Parser {
             }) => self.parse_one_of(
                 Self::parse_assignment,
                 |ctx, i| {
-                    ctx.parse_before(|ctx, i| ctx.parse_call(i), Self::parse_semicolon, i)
+                    ctx.parse_before(Self::parse_call, Self::parse_semicolon, i)
                         .map(|(call_expr, next)| (Statement::Expr(call_expr), next))
                 },
                 i,
             ),
 
             Some(token) => Err(ParsingError {
-                what: format!("Statement expected, {} found", token),
+                what: format!("Statement expected, {token} found"),
                 position: i.position(),
             }),
 
@@ -1144,7 +1151,7 @@ impl Parser {
         &mut self,
         i: IndexedIterator<'a, 'b>,
     ) -> ParsingResult<'a, 'b, RoutineDecl> {
-        let (_, next) = self.parse_known_kind(&TokenKind::Keyword(tokens::Keyword::Routine), i)?;
+        let ((), next) = self.parse_known_kind(&TokenKind::Keyword(tokens::Keyword::Routine), i)?;
         let (name, next) = self.parse_identifier(next)?;
         // println!("before parsing return type : {}", next.current().unwrap());
 
@@ -1231,7 +1238,7 @@ impl Parser {
                 self.next(next),
             )),
             Some(t) => Err(ParsingError {
-                what: format!("Function body or `;` expexted, {} found", t),
+                what: format!("Function body or `;` expexted, {t} found"),
                 position: next.position(),
             }),
             None => Err(ParsingError {
@@ -1268,7 +1275,7 @@ impl Parser {
                 .map(|(decl, next)| (Declaration::Routine(decl), next)),
 
             Some(t) => Err(ParsingError {
-                what: format!("Declaration expected, {} found", t),
+                what: format!("Declaration expected, {t} found"),
                 position: i.position(),
             }),
             None => Err(ParsingError {
@@ -1279,12 +1286,10 @@ impl Parser {
     }
 }
 
-pub fn parse_programm(
-    tokens: &[Token<'_>],
-) -> PureParsingResult<(Vec<Declaration>, Vec<ParsingError>)> {
+pub fn parse_programm(tokens: &[Token<'_>]) -> PureParsingResult<(Program, Vec<ParsingError>)> {
     let mut parser = Parser::new();
     let start = parser.skip_unused(IndexedIterator::from(tokens));
     let (decls, _) = parser.parse_all(Parser::parse_declaration, start)?;
 
-    Ok((decls, parser.recovered_errors))
+    Ok((Program(decls), parser.recovered_errors))
 }

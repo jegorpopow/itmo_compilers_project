@@ -3,6 +3,7 @@
 use crate::operators::{SemanticBinaryOperator, SemanticUnaryOperator};
 
 ///  Variable location and id
+#[derive(Debug, Clone, Copy, Hash)]
 pub(crate) enum Location {
     Global(u16),
     Local(u16),

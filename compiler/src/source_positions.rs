@@ -7,11 +7,13 @@ pub struct Position {
 }
 
 impl Position {
+    #[must_use] 
     pub fn begin() -> Self {
         Position { line: 1, column: 0 }
     }
 
-    pub fn advance(self, is_newline: bool) -> Self {
+    #[must_use]
+    pub fn advance(&self, is_newline: bool) -> Self {
         if is_newline {
             Position {
                 line: self.line + 1,

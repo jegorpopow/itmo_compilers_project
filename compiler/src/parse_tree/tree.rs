@@ -153,3 +153,17 @@ pub enum Declaration {
     Type(TypeDecl),
     Routine(RoutineDecl),
 }
+
+impl Declaration {
+    #[must_use]
+    pub fn name(&self) -> &RawIdentifier {
+        match self {
+            Declaration::Var(var_decl) => &var_decl.name,
+            Declaration::Type(type_decl) => &type_decl.name,
+            Declaration::Routine(routine_decl) => &routine_decl.name,
+        }
+    }
+}
+
+#[derive(Debug)]
+pub struct Program(pub Vec<Declaration>);

@@ -4,6 +4,7 @@ use std::env;
 use std::fs;
 use std::process::ExitCode;
 
+use crate::ast::convert::convert;
 use crate::lexer::Lexer;
 use crate::parser::{ParsingError, parse_programm};
 use crate::tokens::Token;
@@ -37,13 +38,32 @@ fn main() -> ExitCode {
     }
 
     match parse_programm(tokens.as_slice()) {
-        Ok((decls, _)) => {
-            for decl in decls {
-                println!("{:?}", decl)
+        Ok((program, errs)) => {
+            println!("Following errors occured:");
+
+            for ParsingError { what, position } in errs {
+                println!("\t{what} @ {position}");
+            }
+
+            for decl in &program.0 {
+                println!("{decl:?}");
+            }
+
+            match convert(&program) {
+                Ok((program, _)) => {
+                    for decl in &program.0 {
+                        println!("{decl:?}");
+                    }
+                }
+                Err(err) => {
+                    println!("TypeCheck failed:");
+                    println!("Error:\n\t{:?}", err.what);
+                }
             }
         }
         Err(ParsingError { what, position }) => {
-            println!("Error:\n\treason:{what}\n\tposition: {position}")
+            println!("Error:\n\treason:{what}\n\tposition: {position}");
+            return ExitCode::FAILURE;
         }
     }
 

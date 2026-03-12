@@ -27,7 +27,7 @@ pub enum SemanticBinaryOperator {
     RealMul = 2,
     RealDiv = 3,
     RealLe = 4,
-    RealLg = 5,
+    RealLt = 5,
     RealGt = 6,
     RealGe = 7,
     RealEq = 8,
@@ -38,7 +38,7 @@ pub enum SemanticBinaryOperator {
     IntDiv = 13,
     IntMod = 14,
     IntLe = 15,
-    IntLg = 16,
+    IntLt = 16,
     IntGt = 17,
     IntGe = 18,
     IntEq = 19,
@@ -49,7 +49,6 @@ pub enum SemanticBinaryOperator {
 }
 
 #[derive(PartialEq, Eq, Hash, Debug, Clone, Copy)]
-#[expect(clippy::enum_variant_names, reason = "Negation is the only unary op")]
 #[repr(u8)]
 pub enum SemanticUnaryOperator {
     IntNeg = 24,
