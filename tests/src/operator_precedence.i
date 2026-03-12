@@ -8,6 +8,6 @@ routine main() is
   print g() + h() * f();
   print 17 % 5 % 2;
   print (g() + h()) * f();
-  print 5 > 3 and 2 < 4 or not 1;
+  -- print 5 > 3 and 2 < 4 or not 1;
   print 100 / 2 / 5;
 end

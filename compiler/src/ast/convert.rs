@@ -1,7 +1,9 @@
 #![allow(dead_code)]
 
 use crate::ast;
+use crate::ast::types::infer_binary_operator_type;
 use crate::bytecode::Location;
+use crate::operators::{SemanticUnaryOperator, SyntacticOperator};
 use crate::parse_tree as pt;
 
 use crate::ast::error::{AnalysisError, AnalysisResult};
@@ -241,7 +243,8 @@ impl Converter {
                 let (converted_lhs, lhs_t) = self.convert_lvalue_expr(lhs)?;
                 let (converted_index, rhs_t) = self.convert_expr(index)?;
                 drop(rhs_t.ensure_is(ast::types::Type::Int)?);
-                let resulting_type = lhs_t.get_element_type()?;
+                let effective_lhs_type = self.ident_table.get_effective_type(&lhs_t)?;
+                let resulting_type = effective_lhs_type.get_element_type()?;
 
                 Ok((
                     Rc::new(ast::tree::LvalueExpression::Index {
@@ -276,14 +279,14 @@ impl Converter {
                     repr: real_literal.repr.clone(),
                     value: real_literal.value,
                 })),
-                Rc::new(ast::types::Type::Int),
+                Rc::new(ast::types::Type::Real),
             )),
             pt::tree::Expression::BoolLiteral(bool_literal) => Ok((
                 Rc::new(ast::tree::Expression::BoolLiteral(match bool_literal {
                     pt::tree::BoolLiteral::True => ast::tree::BoolLiteral::True,
                     pt::tree::BoolLiteral::False => ast::tree::BoolLiteral::False,
                 })),
-                Rc::new(ast::types::Type::Int),
+                Rc::new(ast::types::Type::Bool),
             )),
             pt::tree::Expression::Call { callee, args } => {
                 let ast::tree::RoutineDecl {
@@ -324,15 +327,91 @@ impl Converter {
                     ))
                 }
             }
-            pt::tree::Expression::Binop {
-                op: _op,
-                lhs: _lhs,
-                rhs: _rhs,
-            } => todo!(),
-            pt::tree::Expression::Unop {
-                op: _op,
-                operand: _operand,
-            } => todo!(),
+            pt::tree::Expression::Binop { op, lhs, rhs } => {
+                let (converted_lhs, lhs_type) = self.convert_expr(lhs)?;
+                let (converted_rhs, rhs_type) = self.convert_expr(rhs)?;
+                let (result_type, semantic_op) =
+                    infer_binary_operator_type(&lhs_type, &rhs_type, *op)?;
+
+                let actual_lhs = cast_to(converted_lhs, &lhs_type, &result_type)?;
+                let actual_rhs = cast_to(converted_rhs, &rhs_type, &result_type)?;
+
+                Ok((
+                    Rc::new(ast::tree::Expression::Binop {
+                        op: semantic_op,
+                        lhs: actual_lhs,
+                        rhs: actual_rhs,
+                    }),
+                    result_type,
+                ))
+            }
+            pt::tree::Expression::Unop { op, operand } => {
+                let (converted_operand, operand_type) = self.convert_expr(operand)?;
+
+                match op {
+                    SyntacticOperator::Neg => match &*operand_type {
+                        ast::types::Type::Bool => Ok((
+                            Rc::new(ast::tree::Expression::Unop {
+                                op: SemanticUnaryOperator::BoolNeg,
+                                operand: converted_operand,
+                            }),
+                            Rc::new(ast::types::Type::Bool),
+                        )),
+                        ast::types::Type::Int
+                        | ast::types::Type::Real
+                        | ast::types::Type::Alias(_)
+                        | ast::types::Type::Record(_)
+                        | ast::types::Type::Array(_)
+                        | ast::types::Type::Null
+                        | ast::types::Type::Unit => Err(AnalysisError {
+                            what: format!(
+                                "Logical negation operator can not be applied to non-boolean {operand_type:?} value"
+                            ),
+                        }),
+                    },
+                    SyntacticOperator::Sub => match &*operand_type {
+                        ast::types::Type::Int => Ok((
+                            Rc::new(ast::tree::Expression::Unop {
+                                op: SemanticUnaryOperator::IntNeg,
+                                operand: converted_operand,
+                            }),
+                            Rc::new(ast::types::Type::Int),
+                        )),
+                        ast::types::Type::Real => Ok((
+                            Rc::new(ast::tree::Expression::Unop {
+                                op: SemanticUnaryOperator::RealNeg,
+                                operand: converted_operand,
+                            }),
+                            Rc::new(ast::types::Type::Real),
+                        )),
+                        ast::types::Type::Bool
+                        | ast::types::Type::Alias(_)
+                        | ast::types::Type::Record(_)
+                        | ast::types::Type::Array(_)
+                        | ast::types::Type::Null
+                        | ast::types::Type::Unit => Err(AnalysisError {
+                            what: format!(
+                                "Arithmetical negation operator can not be applied to non-scalar type {operand_type:?} value"
+                            ),
+                        }),
+                    },
+                    SyntacticOperator::Add
+                    | SyntacticOperator::Mul
+                    | SyntacticOperator::Div
+                    | SyntacticOperator::Mod
+                    | SyntacticOperator::Eq
+                    | SyntacticOperator::Neq
+                    | SyntacticOperator::Lt
+                    | SyntacticOperator::Le
+                    | SyntacticOperator::Gt
+                    | SyntacticOperator::Ge
+                    | SyntacticOperator::And
+                    | SyntacticOperator::Or
+                    | SyntacticOperator::Xor => Err(AnalysisError {
+                        what: format!("Operator {op:?} can not be applied as unary"),
+                    }),
+                }
+            }
             pt::tree::Expression::Cast { operand, target } => {
                 let (converted_operand, operand_type) = self.convert_expr(operand)?;
                 let converted_target_type = self.convert_type(target)?;

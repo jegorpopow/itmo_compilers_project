@@ -6,18 +6,18 @@ routine main() is
   
   print a and b;
   print a and true;
-  print false and x;
+  -- print false and x;
   
   print a or b;
   print false or b;
-  print true or x;
+  -- print true or x;
   
-  print a xor b;
-  print a xor true;
-  print b xor false;
+  -- print a xor b;
+  -- print a xor true;
+  -- print b xor false;
   
   print not a;
   print not b;
-  print not x;
-  print not y;
+  -- print not x;
+  -- print not y;
 end

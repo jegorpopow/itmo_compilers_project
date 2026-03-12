@@ -11,7 +11,7 @@ use crate::ast::types::Type;
 use crate::bytecode::Location;
 use crate::identifier::{Identifier, RawIdentifier};
 
-use compiler::operators::{SemanticBinaryOperator, SemanticUnaryOperator};
+use crate::operators::{SemanticBinaryOperator, SemanticUnaryOperator};
 use derive_where::derive_where;
 
 #[derive(Debug)]
@@ -267,6 +267,11 @@ impl Expression {
                     let lhs = lhs.as_ref().try_constexpr_evaluate()?.as_bool()?;
                     let rhs = rhs.as_ref().try_constexpr_evaluate()?.as_bool()?;
                     Ok(EvaluatedValue::Bool(lhs && rhs))
+                }
+                SemanticBinaryOperator::BoolEq => {
+                    let lhs = lhs.as_ref().try_constexpr_evaluate()?.as_bool()?;
+                    let rhs = rhs.as_ref().try_constexpr_evaluate()?.as_bool()?;
+                    Ok(EvaluatedValue::Bool(lhs == rhs))
                 }
                 SemanticBinaryOperator::BoolXor => {
                     let lhs = lhs.as_ref().try_constexpr_evaluate()?.as_bool()?;
@@ -538,7 +543,7 @@ pub fn cast_to(
             Type::Alias(_) | Type::Record(_) | Type::Array(_) | Type::Null | Type::Unit => {
                 Err(AnalysisError {
                     what: format!(
-                        "There is no implicit conversion fro {own_type:?} to {target_type:?}"
+                        "There is no implicit conversion from {own_type:?} to {target_type:?}"
                     ),
                 })
             }
@@ -546,16 +551,16 @@ pub fn cast_to(
         Type::Real => match &**own_type {
             Type::Real => Ok(expr),
             Type::Int => Ok(Rc::new(Expression::IntToReal(expr))),
-            Type::Bool
-            | Type::Alias(_)
-            | Type::Record(_)
-            | Type::Array(_)
-            | Type::Null
-            | Type::Unit => Err(AnalysisError {
-                what: format!(
-                    "There is no implicit conversion fro {own_type:?} to {target_type:?}"
-                ),
-            }),
+            Type::Bool => Ok(Rc::new(Expression::BoolToInt(Rc::new(
+                Expression::IntToReal(expr),
+            )))),
+            Type::Alias(_) | Type::Record(_) | Type::Array(_) | Type::Null | Type::Unit => {
+                Err(AnalysisError {
+                    what: format!(
+                        "There is no implicit conversion from {own_type:?} to {target_type:?}"
+                    ),
+                })
+            }
         },
 
         Type::Bool => match &**own_type {
@@ -567,7 +572,7 @@ pub fn cast_to(
             Type::Alias(_) | Type::Record(_) | Type::Array(_) | Type::Null | Type::Unit => {
                 Err(AnalysisError {
                     what: format!(
-                        "There is no implicit conversion fro {own_type:?} to {target_type:?}"
+                        "There is no implicit conversion from {own_type:?} to {target_type:?}"
                     ),
                 })
             }
@@ -578,7 +583,7 @@ pub fn cast_to(
             } else {
                 Err(AnalysisError {
                     what: format!(
-                        "There is no implicit conversion fro {own_type:?} to {target_type:?}"
+                        "There is no implicit conversion from {own_type:?} to {target_type:?}"
                     ),
                 })
             }

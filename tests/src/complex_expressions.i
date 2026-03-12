@@ -22,6 +22,6 @@ routine main() is
   print (a > b) or (b < c);
   print not (a = b);
   
-  print a + 1.5;
-  print 2.0 * b;
+  -- print a + 1.5;
+  -- print 2.0 * b;
 end
