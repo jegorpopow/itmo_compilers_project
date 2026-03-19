@@ -162,9 +162,7 @@ impl Converter {
                     })
                 } else if existing_decl.is_full() && decl.is_full() {
                     Err(AnalysisError {
-                        what: format!(
-                            "Conflicting declarations of routine {routine_name:?}"
-                        ),
+                        what: format!("Conflicting declarations of routine {routine_name:?}"),
                     })
                 } else if existing_decl.is_forward() && decl.is_full() {
                     self.rebind_decl(&ident, ast::tree::Decl::Routine(decl));
