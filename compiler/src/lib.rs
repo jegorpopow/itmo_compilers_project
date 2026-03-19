@@ -1,4 +1,5 @@
 pub mod identifier;
+pub mod loop_order;
 pub mod lexer;
 pub mod operators;
 pub mod parse_tree;

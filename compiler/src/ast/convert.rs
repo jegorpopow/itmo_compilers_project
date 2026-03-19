@@ -7,7 +7,7 @@ use crate::operators::{SemanticUnaryOperator, SyntacticOperator};
 use crate::parse_tree as pt;
 
 use crate::ast::error::{AnalysisError, AnalysisResult};
-use crate::ast::tree::{IdentifierTable, cast_to};
+use crate::ast::tree::{IdentifierTable, OptionalDecl, cast_to};
 use crate::identifier::{Identifier, RawIdentifier};
 
 use std::collections::HashMap;
@@ -110,6 +110,10 @@ impl Converter {
         ident
     }
 
+    pub fn rebind_decl(&mut self, ident: &Identifier, new_decl: ast::tree::Decl) {
+        self.ident_table.rebind(ident, new_decl);
+    }
+
     pub fn bind_local_decl(&mut self, name: &RawIdentifier, decl: ast::tree::Decl) -> Identifier {
         assert!(
             self.current_scope.len() > 1,
@@ -138,6 +142,47 @@ impl Converter {
         }
     }
 
+    pub fn bind_routine(
+        &mut self,
+        routine_name: &RawIdentifier,
+        decl: ast::tree::RoutineDecl,
+    ) -> AnalysisResult<Identifier> {
+        let existing_binding = self.lookup(routine_name).cloned();
+
+        match existing_binding {
+            Ok(ast::tree::Binding {
+                name: ident,
+                decl: ast::tree::Decl::Routine(existing_decl),
+            }) => {
+                if existing_decl.signature() != decl.signature() {
+                    Err(AnalysisError {
+                        what: format!(
+                            "Conflicting signature for declarations of routine {routine_name:?}"
+                        ),
+                    })
+                } else {
+                    if existing_decl.is_full() && decl.is_full() {
+                        Err(AnalysisError {
+                            what: format!(
+                                "Conflicting signature for declarations of routine {routine_name:?}"
+                            ),
+                        })
+                    } else if existing_decl.is_forward() && decl.is_full() {
+                        self.rebind_decl(&ident, ast::tree::Decl::Routine(decl));
+                        Ok(ident)
+                    } else {
+                        Ok(ident)
+                    }
+                }
+            }
+            Ok(ast::tree::Binding { .. }) | Err(_) => {
+                // function just shadows previous global variable with the same name
+                let ident = self.bind_global_decl(routine_name, ast::tree::Decl::Routine(decl));
+                Ok(ident)
+            }
+        }
+    }
+
     fn lookup<'a>(&'a self, name: &RawIdentifier) -> AnalysisResult<&'a ast::tree::Binding> {
         self.current_scope
             .iter()
@@ -145,7 +190,7 @@ impl Converter {
             .find_map(|scope_block| scope_block.lookup(name))
             .map(|id| self.ident_table.get_binding_by_id(id))
             .ok_or(AnalysisError {
-                what: format!("Unknown name {name:?}"),
+                what: format!("Unknown name `{name}`"),
             })
     }
 
@@ -262,9 +307,34 @@ impl Converter {
         tree: &Rc<pt::tree::Expression>,
     ) -> AnalysisResult<(Rc<ast::tree::Expression>, Rc<ast::types::Type>)> {
         match &**tree {
-            pt::tree::Expression::LvalueToRvalue(lvalue_expression) => self
-                .convert_lvalue_expr(lvalue_expression)
-                .map(|(lvalue, t)| (Rc::new(ast::tree::Expression::LvalueToRvalue(lvalue)), t)),
+            pt::tree::Expression::LvalueToRvalue(lvalue_expression) => match &**lvalue_expression {
+                pt::tree::LvalueExpression::Member { lhs, member_name }
+                    if member_name.name == "length" =>
+                {
+                    let (lhs, lhs_type) = self.convert_lvalue_expr(lhs)?;
+
+                    if lhs_type.get_element_type().is_ok() {
+                        // Length of array
+                        Ok((
+                            Rc::new(ast::tree::Expression::LenghtOf {
+                                arr: Rc::new(ast::tree::Expression::LvalueToRvalue(lhs)),
+                            }),
+                            Rc::new(ast::types::Type::Int),
+                        ))
+                    } else {
+                        // Just field named `length`
+                        self.convert_lvalue_expr(lvalue_expression)
+                            .map(|(lvalue, t)| {
+                                (Rc::new(ast::tree::Expression::LvalueToRvalue(lvalue)), t)
+                            })
+                    }
+                }
+                pt::tree::LvalueExpression::Member { .. }
+                | pt::tree::LvalueExpression::Index { .. }
+                | pt::tree::LvalueExpression::Identifier(_) => self
+                    .convert_lvalue_expr(lvalue_expression)
+                    .map(|(lvalue, t)| (Rc::new(ast::tree::Expression::LvalueToRvalue(lvalue)), t)),
+            },
             pt::tree::Expression::IntegerLiteral(integer_literal) => Ok((
                 Rc::new(ast::tree::Expression::IntegerLiteral(
                     ast::tree::IntegerLiteral {
@@ -289,11 +359,11 @@ impl Converter {
                 Rc::new(ast::types::Type::Bool),
             )),
             pt::tree::Expression::Call { callee, args } => {
-                let ast::tree::RoutineDecl {
-                    arguments: formal_args,
+                let ast::tree::RoutineSignature {
+                    args: formal_args,
                     return_type,
                     ..
-                } = self.lookup(callee)?.ensure_is_routine()?;
+                } = self.lookup(callee)?.ensure_is_routine()?.signature();
                 let arguments_types = formal_args
                     .iter()
                     .map(|(_, arg_type)| Rc::clone(arg_type))
@@ -309,7 +379,7 @@ impl Converter {
                 if arguments_types.len() != converted_expressions.len() {
                     Err(AnalysisError {
                         what: format!(
-                            "routine {callee:?} expexts {} arguments, but got {}",
+                            "routine `{callee}` expexts {} arguments, but got {}",
                             arguments_types.len(),
                             converted_expressions.len()
                         ),
@@ -330,11 +400,11 @@ impl Converter {
             pt::tree::Expression::Binop { op, lhs, rhs } => {
                 let (converted_lhs, lhs_type) = self.convert_expr(lhs)?;
                 let (converted_rhs, rhs_type) = self.convert_expr(rhs)?;
-                let (result_type, semantic_op) =
+                let (result_type, operand_type, semantic_op) =
                     infer_binary_operator_type(&lhs_type, &rhs_type, *op)?;
 
-                let actual_lhs = cast_to(converted_lhs, &lhs_type, &result_type)?;
-                let actual_rhs = cast_to(converted_rhs, &rhs_type, &result_type)?;
+                let actual_lhs = cast_to(converted_lhs, &lhs_type, &operand_type)?;
+                let actual_rhs = cast_to(converted_rhs, &rhs_type, &operand_type)?;
 
                 Ok((
                     Rc::new(ast::tree::Expression::Binop {
@@ -561,13 +631,58 @@ impl Converter {
                 })
             }
             pt::tree::Statement::For {
-                counter: _counter,
-                from: _from,
-                to: _to,
-                order: _order,
-                body: _body,
+                counter,
+                from,
+                to,
+                order,
+                body,
             } => {
-                todo!("For loop processing")
+                self.enter_block(); // For counter is in it's own block 
+
+                let counter_loc = self.get_fresh_local_location();
+
+                let stmt = match to {
+                    None => {
+                        let (array_expr, array_type) = self.convert_expr(from)?;
+                        let element_type = array_type.get_element_type()?;
+                        let counter_decl = ast::tree::Decl::Var(ast::tree::VarDecl {
+                            t: Rc::clone(&element_type),
+                            initialiser: None,
+                            relative_location: counter_loc,
+                        });
+
+                        let counter_ident = self.bind_local_decl(counter, counter_decl);
+                        let body = self.convert_block(body)?;
+                        ast::tree::Statement::ForEach {
+                            counter: counter_ident,
+                            collection: array_expr,
+                            order: *order,
+                            body,
+                        }
+                    }
+                    Some(to) => {
+                        let (lower_bound, lower_bound_type) = self.convert_expr(from)?;
+                        let (upper_bound, upper_bound_type) = self.convert_expr(to)?;
+                        let int_type = Rc::new(ast::types::Type::Int);
+                        let counter_decl = ast::tree::Decl::Var(ast::tree::VarDecl {
+                            t: Rc::clone(&int_type),
+                            initialiser: None,
+                            relative_location: counter_loc,
+                        });
+                        let counter_ident = self.bind_local_decl(counter, counter_decl);
+                        let body = self.convert_block(body)?;
+                        ast::tree::Statement::For {
+                            counter: counter_ident,
+                            lower_bound: cast_to(lower_bound, &lower_bound_type, &int_type)?,
+                            upper_bound: cast_to(upper_bound, &upper_bound_type, &int_type)?,
+                            order: *order,
+                            body,
+                        }
+                    }
+                };
+
+                self.leave_block();
+                Ok(stmt)
             }
             pt::tree::Statement::Print { value } => {
                 let (expr, _) = self.convert_expr(value)?;
@@ -675,13 +790,23 @@ impl Converter {
                 })
             }
             pt::tree::Declaration::Type(pt::tree::TypeDecl { name, t }) => {
+                // Binding forward declaration of type for possible recursive usage
+                let ident: Identifier = self.bind_decl(
+                    is_global,
+                    name,
+                    ast::tree::Decl::Type(ast::tree::TypeDecl::Forward {
+                        alias: name.clone(),
+                    }),
+                );
+
                 let converted_type = self.convert_type(t)?;
                 let effective_type = self.ident_table.get_effective_type(&converted_type)?;
-                let type_decl = ast::tree::Decl::Type(ast::tree::TypeDecl {
+                let type_decl = ast::tree::Decl::Type(ast::tree::TypeDecl::Full {
                     prescribed: converted_type,
                     effective: effective_type,
                 });
-                let ident = self.bind_decl(is_global, name, type_decl.clone());
+                // Overriding forward declaration with full one
+                self.rebind_decl(&ident, type_decl.clone());
                 Ok(ast::tree::Binding {
                     name: ident,
                     decl: type_decl,
@@ -694,38 +819,64 @@ impl Converter {
                 body,
             }) => {
                 if !is_global {
-                    Err(AnalysisError {
+                    return Err(AnalysisError {
                         what: "Local routines declarations is not supported".to_string(),
+                    });
+                }
+                let converted_arguments_types = arguments
+                    .iter()
+                    .map(|(name, arg_type)| {
+                        self.convert_type(arg_type)
+                            .map(|conerted_arg_type| (name.clone(), conerted_arg_type))
                     })
-                } else {
-                    let converted_arguments = arguments
-                        .iter()
-                        .map(|(name, arg_type)| {
-                            self.convert_type(arg_type)
-                                .map(|conerted_arg_type| (name.clone(), conerted_arg_type))
-                        })
-                        .collect::<AnalysisResult<Vec<(RawIdentifier, Rc<ast::types::Type>)>>>()?;
+                    .collect::<AnalysisResult<Vec<(RawIdentifier, Rc<ast::types::Type>)>>>()?;
 
-                    let args_decls = converted_arguments
-                        .iter()
-                        .enumerate()
-                        .map(|(index, (name, t))| {
-                            (
-                                name.clone(),
-                                ast::tree::Decl::Var(ast::tree::VarDecl {
-                                    t: Rc::clone(t),
-                                    initialiser: None,
-                                    relative_location: Location::Argument(
-                                        u16::try_from(index)
-                                            .expect("Too many arguments for function"),
-                                    ),
-                                }),
-                            )
-                        })
-                        .collect::<Vec<(RawIdentifier, ast::tree::Decl)>>();
+                match body {
+                    None => {
+                        let return_type = match &return_type {
+                            Some(t) => self.convert_type(t)?,
+                            None => Rc::new(ast::types::Type::Unit),
+                        };
 
-                    let routine_decl = ast::tree::Decl::Routine(match body {
-                        Some(body) => match (return_type, body) {
+                        let signature = ast::tree::RoutineSignature {
+                            args: converted_arguments_types,
+                            return_type,
+                        };
+
+                        let ident = self.bind_routine(
+                            name,
+                            ast::tree::RoutineDecl::Forward {
+                                signature: signature.clone(),
+                            },
+                        )?;
+
+                        Ok(ast::tree::Binding {
+                            name: ident,
+                            decl: ast::tree::Decl::Routine(ast::tree::RoutineDecl::Forward {
+                                signature,
+                            }),
+                        })
+                    }
+                    Some(body) => {
+                        let args_decls = converted_arguments_types
+                            .iter()
+                            .enumerate()
+                            .map(|(index, (name, t))| {
+                                (
+                                    name.clone(),
+                                    ast::tree::Decl::Var(ast::tree::VarDecl {
+                                        t: Rc::clone(t),
+                                        initialiser: None,
+                                        relative_location: Location::Argument(
+                                            u16::try_from(index)
+                                                .expect("Too many arguments for function"),
+                                        ),
+                                    }),
+                                )
+                            })
+                            .collect::<Vec<(RawIdentifier, ast::tree::Decl)>>();
+
+                        match (return_type, body) {
                             (return_type, pt::tree::RoutineBody::Block(block)) => {
                                 let converted_return_type = return_type
                                     .as_ref()
@@ -733,9 +884,23 @@ impl Converter {
                                         self.convert_type(t)
                                     })?;
 
+                                // Firstly, create a forward declaration for possible recursive use
+                                let signature = ast::tree::RoutineSignature {
+                                    args: converted_arguments_types.clone(),
+                                    return_type: Rc::clone(&converted_return_type),
+                                };
+
+                                let ident = self.bind_routine(
+                                    name,
+                                    ast::tree::RoutineDecl::Forward {
+                                        signature: signature.clone(),
+                                    },
+                                )?;
+
+                                // Memorise that routine for type-check of return statement
                                 self.current_routine = Some(RoutinePrototype {
                                     name: name.clone(),
-                                    args: converted_arguments
+                                    args: converted_arguments_types
                                         .iter()
                                         .map(|(_, t)| t)
                                         .cloned()
@@ -743,66 +908,111 @@ impl Converter {
                                         .clone(),
                                     return_type: Rc::clone(&converted_return_type),
                                 });
+
+                                // create a function scope
                                 self.enter_block();
 
-                                for (name, arg_decl) in &args_decls {
-                                    drop(self.bind_local_decl(name, arg_decl.clone()));
-                                }
+                                let args_bindings = args_decls
+                                    .iter()
+                                    .map(|(raw_name, decl)| {
+                                        let arg_ident =
+                                            self.bind_local_decl(&raw_name, decl.clone());
+                                        ast::tree::Binding {
+                                            name: arg_ident,
+                                            decl: decl.clone(),
+                                        }
+                                    })
+                                    .collect::<Vec<ast::tree::Binding>>();
+
                                 let converted_body = self.convert_block(block)?;
 
                                 self.leave_block();
                                 self.current_routine = None;
 
-                                Ok(ast::tree::RoutineDecl {
-                                    arguments: converted_arguments,
-                                    return_type: converted_return_type,
-                                    body: Some(ast::tree::RoutineBody::Block(converted_body)),
+                                Ok(ast::tree::Binding {
+                                    name: ident,
+                                    decl: ast::tree::Decl::Routine(ast::tree::RoutineDecl::Full {
+                                        signature,
+                                        args_bindings,
+                                        body: ast::tree::RoutineBody::Block(converted_body),
+                                    }),
                                 })
                             }
                             (None, pt::tree::RoutineBody::Expression(expression)) => {
+                                // No recursive calls for expression function
                                 self.enter_block();
-                                for (name, arg_decl) in &args_decls {
-                                    drop(self.bind_local_decl(name, arg_decl.clone()));
-                                }
+
+                                let args_bindings = args_decls
+                                    .iter()
+                                    .map(|(raw_name, decl)| {
+                                        let arg_ident =
+                                            self.bind_local_decl(&raw_name, decl.clone());
+                                        ast::tree::Binding {
+                                            name: arg_ident,
+                                            decl: decl.clone(),
+                                        }
+                                    })
+                                    .collect::<Vec<ast::tree::Binding>>();
+
                                 let (expr, t) = self.convert_expr(expression)?;
                                 self.leave_block(); // If we met an error we do not need recover
-                                Ok(ast::tree::RoutineDecl {
-                                    arguments: converted_arguments,
+
+                                let signature = ast::tree::RoutineSignature {
+                                    args: converted_arguments_types,
                                     return_type: t,
-                                    body: Some(ast::tree::RoutineBody::Expression(expr)),
+                                };
+
+                                let decl = ast::tree::RoutineDecl::Full {
+                                    signature,
+                                    args_bindings,
+                                    body: ast::tree::RoutineBody::Expression(expr),
+                                };
+
+                                let ident = self.bind_routine(name, decl.clone())?;
+                                Ok(ast::tree::Binding {
+                                    name: ident,
+                                    decl: ast::tree::Decl::Routine(decl),
                                 })
                             }
                             (Some(return_type), pt::tree::RoutineBody::Expression(expression)) => {
                                 let converted_return_type = self.convert_type(return_type)?;
-                                self.enter_block();
-                                for (name, arg_decl) in &args_decls {
-                                    drop(self.bind_local_decl(name, arg_decl.clone()));
-                                }
+
+                                let args_bindings = args_decls
+                                    .iter()
+                                    .map(|(raw_name, decl)| {
+                                        let arg_ident =
+                                            self.bind_local_decl(&raw_name, decl.clone());
+                                        ast::tree::Binding {
+                                            name: arg_ident,
+                                            decl: decl.clone(),
+                                        }
+                                    })
+                                    .collect::<Vec<ast::tree::Binding>>();
+
                                 let (expr, t) = self.convert_expr(expression)?;
                                 self.leave_block(); // If we met an error we do not need recover
 
-                                if *converted_return_type == *t {
-                                    Ok(ast::tree::RoutineDecl {
-                                        arguments: converted_arguments,
-                                        return_type: t,
-                                        body: Some(ast::tree::RoutineBody::Expression(expr)),
-                                    })
-                                } else {
-                                    Err(AnalysisError {
-                                        what: format!("Return type mismatch for function {name:?}"),
-                                    })
-                                }
+                                let expr = cast_to(expr, &t, &converted_return_type)?;
+
+                                let signature = ast::tree::RoutineSignature {
+                                    args: converted_arguments_types,
+                                    return_type: converted_return_type,
+                                };
+
+                                let decl = ast::tree::RoutineDecl::Full {
+                                    signature,
+                                    args_bindings,
+                                    body: ast::tree::RoutineBody::Expression(expr),
+                                };
+
+                                let ident = self.bind_routine(name, decl.clone())?;
+                                Ok(ast::tree::Binding {
+                                    name: ident,
+                                    decl: ast::tree::Decl::Routine(decl),
+                                })
                             }
-                        },
-                        None => todo!("What shall we do with forward declarations ???"),
-                    }?);
-
-                    let ident = self.bind_global_decl(name, routine_decl.clone());
-
-                    Ok(ast::tree::Binding {
-                        name: ident,
-                        decl: routine_decl,
-                    })
+                        }
+                    }
                 }
             }
         }

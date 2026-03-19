@@ -11,15 +11,19 @@ use crate::tokens::Token;
 
 mod source_positions;
 
-mod ast;
+mod loop_order;
 mod identifier;
-mod lexer;
 mod operators;
-mod parse_tree;
-mod parser;
-mod tokens;
 
 mod bytecode;
+
+mod tokens;
+
+mod ast;
+mod parse_tree;
+
+mod lexer;
+mod parser;
 
 // TODO: create a Driver module
 

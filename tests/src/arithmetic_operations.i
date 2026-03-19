@@ -20,10 +20,10 @@ routine main() is
   print x * y;
   print x / y;
   
-  -- print a + x;
-  -- print x + b;
-  -- print a * y;
-  -- print y - a;
+  print a + x;
+  print x + b;
+  print a * y;
+  print y - a;
   
   print -a;
   print -x;

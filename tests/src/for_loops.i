@@ -3,7 +3,7 @@ routine bubble_sort (a : array [] integer, length : integer);
 
 routine sort_and_print_reversed_array(a : array [] integer) is
   bubble_sort(a, a.length);
-  for elem in a ..  reversed loop 
+  for elem in a ..  reverse loop 
     print elem;
   end
 end
@@ -17,7 +17,7 @@ routine array_length (a : array [] integer) : integer is
 end
 
 routine bubble_sort (a : array [] integer, length : integer) is 
-  for i in 1 .. n loop
+  for i in 1 .. length loop
     for j in 2 .. i loop 
       if a[j - 1] > a[j] then
         var t is a[j];
@@ -48,7 +48,7 @@ routine main() is
   arr[3] := 1;
   arr[4] := 2;
   arr[5] := 4;
-  sort_and_print_reversed_array(arr, arr.length);
+  sort_and_print_reversed_array(arr);
   count(3);
   countdown(5);
 end

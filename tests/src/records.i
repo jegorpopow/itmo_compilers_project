@@ -9,7 +9,7 @@ routine squared_distance(from : point, to : point) : real is
   return (from.x - to.x) * (from.x - to.x) + (from.y - to.y) * (from.y - to.y); 
 end
 
-routine middle(a : point, b : point) => point_of((a.x + b.x) / 2.0, (a.y + b.y) / 2.0);
+routine middle(a : point, b : point) => point_of((a.x + b.x) / 2, (a.y + b.y) / 2);
 
 routine main() is
   var p1 is point_of(0.0, 0.0);

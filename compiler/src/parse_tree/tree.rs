@@ -7,6 +7,7 @@ use derive_where::derive_where;
 use crate::identifier::RawIdentifier;
 use crate::operators::SyntacticOperator;
 use crate::parse_tree::types::Type;
+use crate::loop_order::LoopOrder;
 
 #[derive(Debug)]
 #[derive_where(Hash, Eq, PartialEq)]
@@ -98,12 +99,6 @@ pub struct RoutineDecl {
     pub arguments: Vec<(RawIdentifier, Rc<Type>)>,
     pub return_type: Option<Rc<Type>>,
     pub body: Option<RoutineBody>,
-}
-
-#[derive(Debug, Clone, Copy)]
-pub enum LoopOrder {
-    Direct,
-    Reversed,
 }
 
 #[derive(Debug, Clone)]

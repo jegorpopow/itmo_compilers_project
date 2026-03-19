@@ -13,6 +13,7 @@ routine is_empty(l : linked_list) => l = EMPTY;
 
 routine length(l : linked_list ) : integer is 
   var result is 0;
+
   while not is_empty(l) loop
     result := result + 1;
     l := l.tail;

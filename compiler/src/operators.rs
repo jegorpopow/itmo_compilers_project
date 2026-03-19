@@ -20,6 +20,14 @@ pub enum SyntacticOperator {
 }
 
 impl SyntacticOperator {
+    pub fn to_semantic_compare(self) -> Option<SemanticBinaryOperator> {
+        match self {
+            SyntacticOperator::Eq => Some(SemanticBinaryOperator::Eq),
+            SyntacticOperator::Neq => Some(SemanticBinaryOperator::Neq),
+            _ => None,
+        }
+    }
+
     pub fn to_real_binary_semantic(self) -> Option<SemanticBinaryOperator> {
         match self {
             SyntacticOperator::Add => Some(SemanticBinaryOperator::RealAdd),
@@ -27,8 +35,8 @@ impl SyntacticOperator {
             SyntacticOperator::Mul => Some(SemanticBinaryOperator::RealMul),
             SyntacticOperator::Div => Some(SemanticBinaryOperator::RealDiv),
             SyntacticOperator::Mod => None,
-            SyntacticOperator::Eq => Some(SemanticBinaryOperator::RealEq),
-            SyntacticOperator::Neq => Some(SemanticBinaryOperator::RealNeq),
+            SyntacticOperator::Eq => Some(SemanticBinaryOperator::Eq),
+            SyntacticOperator::Neq => Some(SemanticBinaryOperator::Neq),
             SyntacticOperator::Lt => Some(SemanticBinaryOperator::RealLt),
             SyntacticOperator::Le => Some(SemanticBinaryOperator::RealLe),
             SyntacticOperator::Gt => Some(SemanticBinaryOperator::RealGt),
@@ -47,8 +55,8 @@ impl SyntacticOperator {
             SyntacticOperator::Mul => Some(SemanticBinaryOperator::IntMul),
             SyntacticOperator::Div => Some(SemanticBinaryOperator::IntDiv),
             SyntacticOperator::Mod => Some(SemanticBinaryOperator::IntMod),
-            SyntacticOperator::Eq => Some(SemanticBinaryOperator::IntEq),
-            SyntacticOperator::Neq => Some(SemanticBinaryOperator::IntNeq),
+            SyntacticOperator::Eq => Some(SemanticBinaryOperator::Eq),
+            SyntacticOperator::Neq => Some(SemanticBinaryOperator::Neq),
             SyntacticOperator::Lt => Some(SemanticBinaryOperator::IntLt),
             SyntacticOperator::Le => Some(SemanticBinaryOperator::IntLe),
             SyntacticOperator::Gt => Some(SemanticBinaryOperator::IntGt),
@@ -71,7 +79,7 @@ impl SyntacticOperator {
             | SyntacticOperator::Le
             | SyntacticOperator::Gt
             | SyntacticOperator::Ge => None,
-            SyntacticOperator::Eq => Some(SemanticBinaryOperator::BoolEq),
+            SyntacticOperator::Eq => Some(SemanticBinaryOperator::Eq),
             SyntacticOperator::Neq => Some(SemanticBinaryOperator::BoolXor),
             SyntacticOperator::And => Some(SemanticBinaryOperator::BoolAnd),
             SyntacticOperator::Or => Some(SemanticBinaryOperator::BoolOr),
@@ -92,8 +100,8 @@ pub enum SemanticBinaryOperator {
     RealLt = 5,
     RealGt = 6,
     RealGe = 7,
-    RealEq = 8,
-    RealNeq = 9,
+    Eq = 8,
+    Neq = 9,
     IntAdd = 10,
     IntSub = 11,
     IntMul = 12,
@@ -103,12 +111,9 @@ pub enum SemanticBinaryOperator {
     IntLt = 16,
     IntGt = 17,
     IntGe = 18,
-    IntEq = 19,
-    IntNeq = 20,
     BoolAnd = 21,
     BoolXor = 22,
     BoolOr = 23,
-    BoolEq = 24,
 }
 
 #[derive(PartialEq, Eq, Hash, Debug, Clone, Copy)]

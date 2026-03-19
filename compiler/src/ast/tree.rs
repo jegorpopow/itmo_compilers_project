@@ -7,9 +7,10 @@
 use std::rc::Rc;
 
 use crate::ast::error::{AnalysisError, AnalysisResult};
-use crate::ast::types::Type;
+use crate::ast::types::{ArrayDescription, Type};
 use crate::bytecode::Location;
 use crate::identifier::{Identifier, RawIdentifier};
+use crate::loop_order::LoopOrder;
 
 use crate::operators::{SemanticBinaryOperator, SemanticUnaryOperator};
 use derive_where::derive_where;
@@ -85,6 +86,9 @@ pub enum Expression {
         t: Rc<Type>,
         fields: Option<Vec<(RawIdentifier, Rc<Expression>)>>,
     },
+    LenghtOf {
+        arr: Rc<Expression>,
+    },
     Null,
     IntToBool(Rc<Expression>),
     BoolToInt(Rc<Expression>),
@@ -92,7 +96,7 @@ pub enum Expression {
     IntToReal(Rc<Expression>),
 }
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub enum EvaluatedValue {
     Int(i64),
     Real(f64),
@@ -198,16 +202,8 @@ impl Expression {
                     let rhs = rhs.as_ref().try_constexpr_evaluate()?.as_real()?;
                     Ok(EvaluatedValue::Bool(lhs >= rhs))
                 }
-                SemanticBinaryOperator::RealEq => {
-                    let lhs = lhs.as_ref().try_constexpr_evaluate()?.as_real()?;
-                    let rhs = rhs.as_ref().try_constexpr_evaluate()?.as_real()?;
-                    Ok(EvaluatedValue::Bool(lhs == rhs))
-                }
-                SemanticBinaryOperator::RealNeq => {
-                    let lhs = lhs.as_ref().try_constexpr_evaluate()?.as_real()?;
-                    let rhs = rhs.as_ref().try_constexpr_evaluate()?.as_real()?;
-                    Ok(EvaluatedValue::Bool(lhs != rhs))
-                }
+                SemanticBinaryOperator::Eq => Ok(EvaluatedValue::Bool(lhs == rhs)),
+                SemanticBinaryOperator::Neq => Ok(EvaluatedValue::Bool(lhs != rhs)),
                 SemanticBinaryOperator::IntAdd => {
                     let lhs = lhs.as_ref().try_constexpr_evaluate()?.as_int()?;
                     let rhs = rhs.as_ref().try_constexpr_evaluate()?.as_int()?;
@@ -253,25 +249,10 @@ impl Expression {
                     let rhs = rhs.as_ref().try_constexpr_evaluate()?.as_int()?;
                     Ok(EvaluatedValue::Bool(lhs >= rhs))
                 }
-                SemanticBinaryOperator::IntEq => {
-                    let lhs = lhs.as_ref().try_constexpr_evaluate()?.as_int()?;
-                    let rhs = rhs.as_ref().try_constexpr_evaluate()?.as_int()?;
-                    Ok(EvaluatedValue::Bool(lhs == rhs))
-                }
-                SemanticBinaryOperator::IntNeq => {
-                    let lhs = lhs.as_ref().try_constexpr_evaluate()?.as_int()?;
-                    let rhs = rhs.as_ref().try_constexpr_evaluate()?.as_int()?;
-                    Ok(EvaluatedValue::Bool(lhs != rhs))
-                }
                 SemanticBinaryOperator::BoolAnd => {
                     let lhs = lhs.as_ref().try_constexpr_evaluate()?.as_bool()?;
                     let rhs = rhs.as_ref().try_constexpr_evaluate()?.as_bool()?;
                     Ok(EvaluatedValue::Bool(lhs && rhs))
-                }
-                SemanticBinaryOperator::BoolEq => {
-                    let lhs = lhs.as_ref().try_constexpr_evaluate()?.as_bool()?;
-                    let rhs = rhs.as_ref().try_constexpr_evaluate()?.as_bool()?;
-                    Ok(EvaluatedValue::Bool(lhs == rhs))
                 }
                 SemanticBinaryOperator::BoolXor => {
                     let lhs = lhs.as_ref().try_constexpr_evaluate()?.as_bool()?;
@@ -313,6 +294,7 @@ impl Expression {
             Expression::Call { .. }
             | Expression::Cast { .. }
             | Expression::New { .. }
+            | Expression::LenghtOf { .. }
             | Expression::Null
             | Expression::LvalueToRvalue(_) => Err(AnalysisError {
                 what: format!(
@@ -330,29 +312,81 @@ pub struct VarDecl {
     pub relative_location: Location,
 }
 
+pub trait OptionalDecl {
+    fn is_full(&self) -> bool;
+    fn is_forward(&self) -> bool {
+        !self.is_full()
+    }
+}
+
 #[derive(Debug, Hash, Clone)]
-pub struct TypeDecl {
-    pub prescribed: Rc<Type>,
-    pub effective: Rc<Type>,
+pub enum TypeDecl {
+    Full {
+        prescribed: Rc<Type>,
+        effective: Rc<Type>,
+    },
+    Forward {
+        alias: RawIdentifier,
+    },
+}
+
+impl OptionalDecl for TypeDecl {
+    fn is_full(&self) -> bool {
+        matches!(self, TypeDecl::Full { .. })
+    }
+}
+
+impl TypeDecl {
+    pub fn get_effective(&self) -> AnalysisResult<Rc<Type>> {
+        match self {
+            TypeDecl::Full {
+                prescribed: _,
+                effective,
+            } => Ok(Rc::clone(effective)),
+            TypeDecl::Forward { alias } => Err(AnalysisError {
+                what: format!("Trying to get a effective type of forward declared type {alias:?}"),
+            }),
+        }
+    }
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct RoutineSignature {
+    pub args: Vec<(RawIdentifier, Rc<Type>)>,
+    pub return_type: Rc<Type>,
 }
 
 #[derive(Debug, Clone)]
-pub struct RoutineDecl {
-    pub arguments: Vec<(RawIdentifier, Rc<Type>)>,
-    pub return_type: Rc<Type>,
-    pub body: Option<RoutineBody>,
+pub enum RoutineDecl {
+    Full {
+        signature: RoutineSignature,
+        args_bindings: Vec<Binding>,
+        body: RoutineBody,
+    },
+    Forward {
+        signature: RoutineSignature,
+    },
+}
+
+impl OptionalDecl for RoutineDecl {
+    fn is_full(&self) -> bool {
+        matches!(self, RoutineDecl::Full { .. })
+    }
+}
+
+impl RoutineDecl {
+    pub fn signature(&self) -> &RoutineSignature {
+        match self {
+            RoutineDecl::Full { signature, .. } => signature,
+            RoutineDecl::Forward { signature } => signature,
+        }
+    }
 }
 
 #[derive(Debug, Clone)]
 pub enum RoutineBody {
     Block(Block),
     Expression(Rc<Expression>),
-}
-
-#[derive(Debug, Clone, Copy)]
-pub enum LoopOrder {
-    Direct,
-    Reversed,
 }
 
 #[derive(Debug, Clone)]
@@ -412,8 +446,14 @@ pub enum Statement {
     },
     For {
         counter: Identifier,
-        from: Rc<Expression>,
-        to: Option<Rc<Expression>>,
+        lower_bound: Rc<Expression>,
+        upper_bound: Rc<Expression>,
+        order: LoopOrder,
+        body: Block,
+    },
+    ForEach {
+        counter: Identifier,
+        collection: Rc<Expression>,
         order: LoopOrder,
         body: Block,
     },
@@ -505,6 +545,11 @@ impl IdentifierTable {
         identifier
     }
 
+    pub fn rebind(&mut self, ident: &Identifier, new_decl: Decl) {
+        assert!(ident.id < self.bindings.len());
+        self.bindings[ident.id].decl = new_decl;
+    }
+
     pub fn get_binding(&self, ident: &Identifier) -> &Binding {
         &self.bindings[ident.id]
     }
@@ -518,7 +563,7 @@ impl IdentifierTable {
             Type::Alias(identifier) => self
                 .get_binding(identifier)
                 .ensure_is_type()
-                .map(|type_decl| Rc::clone(&type_decl.effective)),
+                .and_then(|type_decl| type_decl.get_effective()),
             Type::Int
             | Type::Real
             | Type::Bool
@@ -530,6 +575,7 @@ impl IdentifierTable {
     }
 }
 
+// FIXME: add target effective type
 pub fn cast_to(
     expr: Rc<Expression>,
     own_type: &Rc<Type>,
@@ -543,7 +589,7 @@ pub fn cast_to(
             Type::Alias(_) | Type::Record(_) | Type::Array(_) | Type::Null | Type::Unit => {
                 Err(AnalysisError {
                     what: format!(
-                        "There is no implicit conversion from {own_type:?} to {target_type:?}"
+                        "There is no implicit conversion from `{own_type}` to `{target_type}`"
                     ),
                 })
             }
@@ -557,7 +603,7 @@ pub fn cast_to(
             Type::Alias(_) | Type::Record(_) | Type::Array(_) | Type::Null | Type::Unit => {
                 Err(AnalysisError {
                     what: format!(
-                        "There is no implicit conversion from {own_type:?} to {target_type:?}"
+                        "There is no implicit conversion from `{own_type}` to `{target_type}`"
                     ),
                 })
             }
@@ -572,18 +618,30 @@ pub fn cast_to(
             Type::Alias(_) | Type::Record(_) | Type::Array(_) | Type::Null | Type::Unit => {
                 Err(AnalysisError {
                     what: format!(
-                        "There is no implicit conversion from {own_type:?} to {target_type:?}"
+                        "There is no implicit conversion from `{own_type}` to `{target_type}`"
                     ),
                 })
             }
         },
+
+        Type::Array(ArrayDescription { t, length: None }) => {
+            let element_type = own_type.get_element_type()?;
+            if element_type == *t {
+                Ok(expr)
+            } else {
+                Err(AnalysisError {
+                    what: format!("Array of {element_type} is casted to array of {t} type"),
+                })
+            }
+        }
+
         Type::Alias(_) | Type::Record(_) | Type::Array(_) | Type::Null | Type::Unit => {
-            if *own_type == *target_type {
+            if *own_type == *target_type || **own_type == Type::Null {
                 Ok(expr)
             } else {
                 Err(AnalysisError {
                     what: format!(
-                        "There is no implicit conversion from {own_type:?} to {target_type:?}"
+                        "There is no implicit conversion from `{own_type}` to `{target_type}`"
                     ),
                 })
             }

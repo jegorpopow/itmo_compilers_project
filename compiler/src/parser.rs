@@ -4,8 +4,9 @@ use std::rc::Rc;
 
 use crate::identifier::RawIdentifier;
 use crate::operators::SyntacticOperator;
+use crate::loop_order::LoopOrder;
 use crate::parse_tree::tree::{
-    Block, BlockElem, BoolLiteral, Declaration, Expression, IntegerLiteral, LoopOrder,
+    Block, BlockElem, BoolLiteral, Declaration, Expression, IntegerLiteral,
     LvalueExpression, Program, RealLiteral, RoutineBody, RoutineDecl, Statement, TypeDecl, VarDecl,
 };
 use crate::parse_tree::types::{ArrayDescription, FieldDescription, RecordDescription, Type};
