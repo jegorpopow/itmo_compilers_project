@@ -160,19 +160,17 @@ impl Converter {
                             "Conflicting signature for declarations of routine {routine_name:?}"
                         ),
                     })
+                } else if existing_decl.is_full() && decl.is_full() {
+                    Err(AnalysisError {
+                        what: format!(
+                            "Conflicting declarations of routine {routine_name:?}"
+                        ),
+                    })
+                } else if existing_decl.is_forward() && decl.is_full() {
+                    self.rebind_decl(&ident, ast::tree::Decl::Routine(decl));
+                    Ok(ident)
                 } else {
-                    if existing_decl.is_full() && decl.is_full() {
-                        Err(AnalysisError {
-                            what: format!(
-                                "Conflicting signature for declarations of routine {routine_name:?}"
-                            ),
-                        })
-                    } else if existing_decl.is_forward() && decl.is_full() {
-                        self.rebind_decl(&ident, ast::tree::Decl::Routine(decl));
-                        Ok(ident)
-                    } else {
-                        Ok(ident)
-                    }
+                    Ok(ident)
                 }
             }
             Ok(ast::tree::Binding { .. }) | Err(_) => {
@@ -362,7 +360,6 @@ impl Converter {
                 let ast::tree::RoutineSignature {
                     args: formal_args,
                     return_type,
-                    ..
                 } = self.lookup(callee)?.ensure_is_routine()?.signature();
                 let arguments_types = formal_args
                     .iter()
@@ -791,7 +788,7 @@ impl Converter {
             }
             pt::tree::Declaration::Type(pt::tree::TypeDecl { name, t }) => {
                 // Binding forward declaration of type for possible recursive usage
-                let ident: Identifier = self.bind_decl(
+                let ident = self.bind_decl(
                     is_global,
                     name,
                     ast::tree::Decl::Type(ast::tree::TypeDecl::Forward {
@@ -916,7 +913,7 @@ impl Converter {
                                     .iter()
                                     .map(|(raw_name, decl)| {
                                         let arg_ident =
-                                            self.bind_local_decl(&raw_name, decl.clone());
+                                            self.bind_local_decl(raw_name, decl.clone());
                                         ast::tree::Binding {
                                             name: arg_ident,
                                             decl: decl.clone(),
@@ -946,7 +943,7 @@ impl Converter {
                                     .iter()
                                     .map(|(raw_name, decl)| {
                                         let arg_ident =
-                                            self.bind_local_decl(&raw_name, decl.clone());
+                                            self.bind_local_decl(raw_name, decl.clone());
                                         ast::tree::Binding {
                                             name: arg_ident,
                                             decl: decl.clone(),
@@ -981,7 +978,7 @@ impl Converter {
                                     .iter()
                                     .map(|(raw_name, decl)| {
                                         let arg_ident =
-                                            self.bind_local_decl(&raw_name, decl.clone());
+                                            self.bind_local_decl(raw_name, decl.clone());
                                         ast::tree::Binding {
                                             name: arg_ident,
                                             decl: decl.clone(),

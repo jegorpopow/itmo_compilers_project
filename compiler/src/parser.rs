@@ -219,7 +219,6 @@ impl Parser {
     }
 
     ///  parses with `left`, parses with `parser` and drops former value
-
     fn parse_after<'a, 'b: 'a, T>(
         &mut self,
         mut left: impl ParsingFunction<'a, 'b, ()>,

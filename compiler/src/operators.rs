@@ -20,14 +20,28 @@ pub enum SyntacticOperator {
 }
 
 impl SyntacticOperator {
+    #[must_use]
     pub fn to_semantic_compare(self) -> Option<SemanticBinaryOperator> {
         match self {
             SyntacticOperator::Eq => Some(SemanticBinaryOperator::Eq),
             SyntacticOperator::Neq => Some(SemanticBinaryOperator::Neq),
-            _ => None,
+            SyntacticOperator::Add
+            | SyntacticOperator::Sub
+            | SyntacticOperator::Mul
+            | SyntacticOperator::Div
+            | SyntacticOperator::Mod
+            | SyntacticOperator::Lt
+            | SyntacticOperator::Le
+            | SyntacticOperator::Gt
+            | SyntacticOperator::Ge
+            | SyntacticOperator::And
+            | SyntacticOperator::Or
+            | SyntacticOperator::Xor
+            | SyntacticOperator::Neg => None,
         }
     }
 
+    #[must_use]
     pub fn to_real_binary_semantic(self) -> Option<SemanticBinaryOperator> {
         match self {
             SyntacticOperator::Add => Some(SemanticBinaryOperator::RealAdd),
@@ -48,6 +62,7 @@ impl SyntacticOperator {
         }
     }
 
+    #[must_use]
     pub fn to_integer_binary_semantic(self) -> Option<SemanticBinaryOperator> {
         match self {
             SyntacticOperator::Add => Some(SemanticBinaryOperator::IntAdd),
@@ -68,6 +83,7 @@ impl SyntacticOperator {
         }
     }
 
+    #[must_use]
     pub fn to_boolean_binary_semantic(self) -> Option<SemanticBinaryOperator> {
         match self {
             SyntacticOperator::Add

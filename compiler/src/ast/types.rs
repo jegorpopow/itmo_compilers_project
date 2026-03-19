@@ -66,7 +66,7 @@ impl Display for Type {
             Type::Int => write!(f, "integer"),
             Type::Real => write!(f, "real"),
             Type::Bool => write!(f, "bool"),
-            Type::Alias(identifier) => write!(f, "{}", identifier),
+            Type::Alias(identifier) => write!(f, "{identifier}"),
             Type::Record(record_description) => {
                 write!(f, "record")?;
 
@@ -78,12 +78,10 @@ impl Display for Type {
             }
             Type::Array(array_description) => {
                 write!(f, "array [")?;
-                match array_description.length {
-                    Some(l) => {
-                        write!(f, "{}", l)?;
-                    }
-                    None => (),
-                };
+
+                if let Some(l) = array_description.length {
+                    write!(f, "{l}")?;
+                }
                 write!(f, "] {}", array_description.t)
             }
             Type::Null => write!(f, "null type"),

@@ -563,7 +563,7 @@ impl IdentifierTable {
             Type::Alias(identifier) => self
                 .get_binding(identifier)
                 .ensure_is_type()
-                .and_then(|type_decl| type_decl.get_effective()),
+                .and_then(TypeDecl::get_effective),
             Type::Int
             | Type::Real
             | Type::Bool
