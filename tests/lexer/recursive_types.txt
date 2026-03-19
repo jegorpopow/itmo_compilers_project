@@ -4,22 +4,23 @@
 "record" @ 1:20-1:26 is KEYWORD(Record)
 "var" @ 2:2-2:5 is KEYWORD(Var)
 "data" @ 2:6-2:10 is IDENTIFIER(data)
-":" @ 2:11-2:12 is COLON
-"integer" @ 2:13-2:20 is TYPENAME(Integer)
-";" @ 2:20-2:21 is SEMICOLON
+"is" @ 2:11-2:13 is KEYWORD(Is)
+"integer" @ 2:14-2:21 is TYPENAME(Integer)
+";" @ 2:21-2:22 is SEMICOLON
 "var" @ 3:2-3:5 is KEYWORD(Var)
 "tail" @ 3:6-3:10 is IDENTIFIER(tail)
-":" @ 3:11-3:12 is COLON
-"linked_list" @ 3:13-3:24 is IDENTIFIER(linked_list)
+"is" @ 3:11-3:13 is KEYWORD(Is)
+"linked_list" @ 3:14-3:25 is IDENTIFIER(linked_list)
+";" @ 3:25-3:26 is SEMICOLON
 "end" @ 4:0-4:3 is KEYWORD(End)
 ";" @ 4:3-4:4 is SEMICOLON
 "var" @ 6:0-6:3 is KEYWORD(Var)
 "EMPTY" @ 6:4-6:9 is IDENTIFIER(EMPTY)
 ":" @ 6:10-6:11 is COLON
 "linked_list" @ 6:12-6:23 is IDENTIFIER(linked_list)
-"=" @ 6:24-6:25 is OPERATOR(Eq)
-"null" @ 6:26-6:30 is KEYWORD(Null)
-";" @ 6:30-6:31 is SEMICOLON
+"is" @ 6:24-6:26 is KEYWORD(Is)
+"null" @ 6:27-6:31 is KEYWORD(Null)
+";" @ 6:31-6:32 is SEMICOLON
 "routine" @ 8:0-8:7 is KEYWORD(Routine)
 "singleton" @ 8:8-8:17 is IDENTIFIER(singleton)
 "(" @ 8:17-8:18 is LEFT PARENTHESIS
@@ -38,8 +39,9 @@
 "tail" @ 8:72-8:76 is IDENTIFIER(tail)
 "is" @ 8:77-8:79 is KEYWORD(Is)
 "EMPTY" @ 8:80-8:85 is IDENTIFIER(EMPTY)
-"end" @ 8:86-8:89 is KEYWORD(End)
-";" @ 8:89-8:90 is SEMICOLON
+";" @ 8:85-8:86 is SEMICOLON
+"end" @ 8:87-8:90 is KEYWORD(End)
+";" @ 8:90-8:91 is SEMICOLON
 "routine" @ 10:0-10:7 is KEYWORD(Routine)
 "empty" @ 10:8-10:13 is IDENTIFIER(empty)
 "(" @ 10:13-10:14 is LEFT PARENTHESIS
@@ -74,103 +76,99 @@
 "is" @ 15:13-15:15 is KEYWORD(Is)
 "0" @ 15:16-15:17 is INTEGER LITERAL(0)
 ";" @ 15:17-15:18 is SEMICOLON
-"while" @ 16:2-16:7 is KEYWORD(While)
-"not" @ 16:8-16:11 is OPERATOR(Neg)
-"is_empty" @ 16:12-16:20 is IDENTIFIER(is_empty)
-"(" @ 16:20-16:21 is LEFT PARENTHESIS
-"l" @ 16:21-16:22 is IDENTIFIER(l)
-")" @ 16:22-16:23 is RIGHT PARENTHESIS
-"loop" @ 16:24-16:28 is KEYWORD(Loop)
-"result" @ 17:4-17:10 is IDENTIFIER(result)
-":=" @ 17:11-17:13 is ASSIGNMENT OPERATOR
-"result" @ 17:14-17:20 is IDENTIFIER(result)
-"+" @ 17:21-17:22 is OPERATOR(Add)
-"1" @ 17:23-17:24 is INTEGER LITERAL(1)
-";" @ 17:24-17:25 is SEMICOLON
-"l" @ 18:4-18:5 is IDENTIFIER(l)
-":=" @ 18:6-18:8 is ASSIGNMENT OPERATOR
-"l" @ 18:9-18:10 is IDENTIFIER(l)
-"." @ 18:10-18:11 is DOT
-"tail" @ 18:11-18:15 is IDENTIFIER(tail)
-";" @ 18:15-18:16 is SEMICOLON
-"end" @ 19:2-19:5 is KEYWORD(End)
-";" @ 19:5-19:6 is SEMICOLON
-"return" @ 21:2-21:8 is IDENTIFIER(return)
-"result" @ 21:9-21:15 is IDENTIFIER(result)
-";" @ 21:15-21:16 is SEMICOLON
-"end" @ 22:0-22:3 is KEYWORD(End)
-";" @ 22:3-22:4 is SEMICOLON
-"routine" @ 24:0-24:7 is KEYWORD(Routine)
-"reverse" @ 24:8-24:15 is KEYWORD(Reverse)
-"(" @ 24:15-24:16 is LEFT PARENTHESIS
-"l" @ 24:16-24:17 is IDENTIFIER(l)
-":" @ 24:18-24:19 is COLON
-"linked_list" @ 24:20-24:31 is IDENTIFIER(linked_list)
-")" @ 24:31-24:32 is RIGHT PARENTHESIS
-":" @ 24:33-24:34 is COLON
-"linked_list" @ 24:35-24:46 is IDENTIFIER(linked_list)
-"is" @ 24:47-24:49 is KEYWORD(Is)
-"var" @ 25:2-25:5 is KEYWORD(Var)
-"result" @ 25:6-25:12 is IDENTIFIER(result)
-"is" @ 25:13-25:15 is KEYWORD(Is)
-"empty" @ 25:16-25:21 is IDENTIFIER(empty)
-"(" @ 25:21-25:22 is LEFT PARENTHESIS
-")" @ 25:22-25:23 is RIGHT PARENTHESIS
-";" @ 25:23-25:24 is SEMICOLON
-"while" @ 27:2-27:7 is KEYWORD(While)
-"not" @ 27:8-27:11 is OPERATOR(Neg)
-"is_empty" @ 27:12-27:20 is IDENTIFIER(is_empty)
-"(" @ 27:20-27:21 is LEFT PARENTHESIS
-"l" @ 27:21-27:22 is IDENTIFIER(l)
-")" @ 27:22-27:23 is RIGHT PARENTHESIS
-"loop" @ 27:24-27:28 is KEYWORD(Loop)
-"result" @ 28:4-28:10 is IDENTIFIER(result)
-":=" @ 28:11-28:13 is ASSIGNMENT OPERATOR
-"new" @ 28:14-28:17 is KEYWORD(New)
-"linked_list" @ 28:18-28:29 is IDENTIFIER(linked_list)
-"where" @ 28:30-28:35 is KEYWORD(Where)
-"data" @ 28:36-28:40 is IDENTIFIER(data)
-"is" @ 28:41-28:43 is KEYWORD(Is)
-"l" @ 28:44-28:45 is IDENTIFIER(l)
-"." @ 28:45-28:46 is DOT
-"data" @ 28:46-28:50 is IDENTIFIER(data)
-";" @ 28:50-28:51 is SEMICOLON
-"tail" @ 28:52-28:56 is IDENTIFIER(tail)
-"is" @ 28:57-28:59 is KEYWORD(Is)
-"result" @ 28:60-28:66 is IDENTIFIER(result)
-"end" @ 28:67-28:70 is KEYWORD(End)
-";" @ 28:70-28:71 is SEMICOLON
-"l" @ 29:4-29:5 is IDENTIFIER(l)
-":=" @ 29:6-29:8 is ASSIGNMENT OPERATOR
-"l" @ 29:9-29:10 is IDENTIFIER(l)
-"." @ 29:10-29:11 is DOT
-"tail" @ 29:11-29:15 is IDENTIFIER(tail)
-";" @ 29:15-29:16 is SEMICOLON
-"end" @ 30:2-30:5 is KEYWORD(End)
-";" @ 30:5-30:6 is SEMICOLON
-"return" @ 32:2-32:8 is IDENTIFIER(return)
-"result" @ 32:9-32:15 is IDENTIFIER(result)
-";" @ 32:15-32:16 is SEMICOLON
-"end" @ 33:0-33:3 is KEYWORD(End)
-";" @ 33:3-33:4 is SEMICOLON
-"routine" @ 35:0-35:7 is KEYWORD(Routine)
-"main" @ 35:8-35:12 is IDENTIFIER(main)
-"(" @ 35:12-35:13 is LEFT PARENTHESIS
-")" @ 35:13-35:14 is RIGHT PARENTHESIS
-"is" @ 35:15-35:17 is KEYWORD(Is)
-"var" @ 36:2-36:5 is KEYWORD(Var)
-"list" @ 36:6-36:10 is IDENTIFIER(list)
-"is" @ 36:11-36:13 is KEYWORD(Is)
-"singleton" @ 36:14-36:23 is IDENTIFIER(singleton)
-"(" @ 36:23-36:24 is LEFT PARENTHESIS
-"1" @ 36:24-36:25 is INTEGER LITERAL(1)
-")" @ 36:25-36:26 is RIGHT PARENTHESIS
-";" @ 36:26-36:27 is SEMICOLON
-"print" @ 37:2-37:7 is KEYWORD(Print)
-"length" @ 37:8-37:14 is IDENTIFIER(length)
-"(" @ 37:14-37:15 is LEFT PARENTHESIS
-"list" @ 37:15-37:19 is IDENTIFIER(list)
-")" @ 37:19-37:20 is RIGHT PARENTHESIS
-";" @ 37:20-37:21 is SEMICOLON
-"end" @ 38:0-38:3 is KEYWORD(End)
-";" @ 38:3-38:4 is SEMICOLON
+"while" @ 17:2-17:7 is KEYWORD(While)
+"not" @ 17:8-17:11 is OPERATOR(Neg)
+"is_empty" @ 17:12-17:20 is IDENTIFIER(is_empty)
+"(" @ 17:20-17:21 is LEFT PARENTHESIS
+"l" @ 17:21-17:22 is IDENTIFIER(l)
+")" @ 17:22-17:23 is RIGHT PARENTHESIS
+"loop" @ 17:24-17:28 is KEYWORD(Loop)
+"result" @ 18:4-18:10 is IDENTIFIER(result)
+":=" @ 18:11-18:13 is ASSIGNMENT OPERATOR
+"result" @ 18:14-18:20 is IDENTIFIER(result)
+"+" @ 18:21-18:22 is OPERATOR(Add)
+"1" @ 18:23-18:24 is INTEGER LITERAL(1)
+";" @ 18:24-18:25 is SEMICOLON
+"l" @ 19:4-19:5 is IDENTIFIER(l)
+":=" @ 19:6-19:8 is ASSIGNMENT OPERATOR
+"l" @ 19:9-19:10 is IDENTIFIER(l)
+"." @ 19:10-19:11 is DOT
+"tail" @ 19:11-19:15 is IDENTIFIER(tail)
+";" @ 19:15-19:16 is SEMICOLON
+"end" @ 20:2-20:5 is KEYWORD(End)
+"return" @ 22:2-22:8 is KEYWORD(Return)
+"result" @ 22:9-22:15 is IDENTIFIER(result)
+";" @ 22:15-22:16 is SEMICOLON
+"end" @ 23:0-23:3 is KEYWORD(End)
+"routine" @ 25:0-25:7 is KEYWORD(Routine)
+"reverse_list" @ 25:8-25:20 is IDENTIFIER(reverse_list)
+"(" @ 25:20-25:21 is LEFT PARENTHESIS
+"l" @ 25:21-25:22 is IDENTIFIER(l)
+":" @ 25:23-25:24 is COLON
+"linked_list" @ 25:25-25:36 is IDENTIFIER(linked_list)
+")" @ 25:36-25:37 is RIGHT PARENTHESIS
+":" @ 25:38-25:39 is COLON
+"linked_list" @ 25:40-25:51 is IDENTIFIER(linked_list)
+"is" @ 25:52-25:54 is KEYWORD(Is)
+"var" @ 26:2-26:5 is KEYWORD(Var)
+"result" @ 26:6-26:12 is IDENTIFIER(result)
+"is" @ 26:13-26:15 is KEYWORD(Is)
+"empty" @ 26:16-26:21 is IDENTIFIER(empty)
+"(" @ 26:21-26:22 is LEFT PARENTHESIS
+")" @ 26:22-26:23 is RIGHT PARENTHESIS
+";" @ 26:23-26:24 is SEMICOLON
+"while" @ 28:2-28:7 is KEYWORD(While)
+"not" @ 28:8-28:11 is OPERATOR(Neg)
+"is_empty" @ 28:12-28:20 is IDENTIFIER(is_empty)
+"(" @ 28:20-28:21 is LEFT PARENTHESIS
+"l" @ 28:21-28:22 is IDENTIFIER(l)
+")" @ 28:22-28:23 is RIGHT PARENTHESIS
+"loop" @ 28:24-28:28 is KEYWORD(Loop)
+"result" @ 29:4-29:10 is IDENTIFIER(result)
+":=" @ 29:11-29:13 is ASSIGNMENT OPERATOR
+"new" @ 29:14-29:17 is KEYWORD(New)
+"linked_list" @ 29:18-29:29 is IDENTIFIER(linked_list)
+"where" @ 29:30-29:35 is KEYWORD(Where)
+"data" @ 29:36-29:40 is IDENTIFIER(data)
+"is" @ 29:41-29:43 is KEYWORD(Is)
+"l" @ 29:44-29:45 is IDENTIFIER(l)
+"." @ 29:45-29:46 is DOT
+"data" @ 29:46-29:50 is IDENTIFIER(data)
+";" @ 29:50-29:51 is SEMICOLON
+"tail" @ 29:52-29:56 is IDENTIFIER(tail)
+"is" @ 29:57-29:59 is KEYWORD(Is)
+"result" @ 29:60-29:66 is IDENTIFIER(result)
+";" @ 29:66-29:67 is SEMICOLON
+"end" @ 29:68-29:71 is KEYWORD(End)
+";" @ 29:71-29:72 is SEMICOLON
+"l" @ 30:4-30:5 is IDENTIFIER(l)
+":=" @ 30:6-30:8 is ASSIGNMENT OPERATOR
+"l" @ 30:9-30:10 is IDENTIFIER(l)
+"." @ 30:10-30:11 is DOT
+"tail" @ 30:11-30:15 is IDENTIFIER(tail)
+";" @ 30:15-30:16 is SEMICOLON
+"end" @ 31:2-31:5 is KEYWORD(End)
+"return" @ 33:2-33:8 is KEYWORD(Return)
+"result" @ 33:9-33:15 is IDENTIFIER(result)
+";" @ 33:15-33:16 is SEMICOLON
+"end" @ 34:0-34:3 is KEYWORD(End)
+"routine" @ 36:0-36:7 is KEYWORD(Routine)
+"main" @ 36:8-36:12 is IDENTIFIER(main)
+"(" @ 36:12-36:13 is LEFT PARENTHESIS
+")" @ 36:13-36:14 is RIGHT PARENTHESIS
+"is" @ 36:15-36:17 is KEYWORD(Is)
+"var" @ 37:2-37:5 is KEYWORD(Var)
+"list" @ 37:6-37:10 is IDENTIFIER(list)
+"is" @ 37:11-37:13 is KEYWORD(Is)
+"singleton" @ 37:14-37:23 is IDENTIFIER(singleton)
+"(" @ 37:23-37:24 is LEFT PARENTHESIS
+"1" @ 37:24-37:25 is INTEGER LITERAL(1)
+")" @ 37:25-37:26 is RIGHT PARENTHESIS
+";" @ 37:26-37:27 is SEMICOLON
+"print" @ 38:2-38:7 is KEYWORD(Print)
+"length" @ 38:8-38:14 is IDENTIFIER(length)
+"(" @ 38:14-38:15 is LEFT PARENTHESIS
+"list" @ 38:15-38:19 is IDENTIFIER(list)
+")" @ 38:19-38:20 is RIGHT PARENTHESIS
+";" @ 38:20-38:21 is SEMICOLON
+"end" @ 39:0-39:3 is KEYWORD(End)

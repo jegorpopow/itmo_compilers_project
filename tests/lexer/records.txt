@@ -8,7 +8,7 @@
 "is" @ 2:8-2:10 is KEYWORD(Is)
 "real" @ 2:11-2:15 is TYPENAME(Real)
 ";" @ 2:15-2:16 is SEMICOLON
-"car" @ 3:2-3:5 is IDENTIFIER(car)
+"var" @ 3:2-3:5 is KEYWORD(Var)
 "y" @ 3:6-3:7 is IDENTIFIER(y)
 "is" @ 3:8-3:10 is KEYWORD(Is)
 "real" @ 3:11-3:15 is TYPENAME(Real)
@@ -37,8 +37,9 @@
 "y" @ 6:65-6:66 is IDENTIFIER(y)
 "is" @ 6:67-6:69 is KEYWORD(Is)
 "y" @ 6:70-6:71 is IDENTIFIER(y)
-"end" @ 6:72-6:75 is KEYWORD(End)
-";" @ 6:75-6:76 is SEMICOLON
+";" @ 6:71-6:72 is SEMICOLON
+"end" @ 6:73-6:76 is KEYWORD(End)
+";" @ 6:76-6:77 is SEMICOLON
 "routine" @ 8:0-8:7 is KEYWORD(Routine)
 "squared_distance" @ 8:8-8:24 is IDENTIFIER(squared_distance)
 "(" @ 8:24-8:25 is LEFT PARENTHESIS
@@ -53,7 +54,7 @@
 ":" @ 8:51-8:52 is COLON
 "real" @ 8:53-8:57 is TYPENAME(Real)
 "is" @ 8:58-8:60 is KEYWORD(Is)
-"return" @ 9:2-9:8 is IDENTIFIER(return)
+"return" @ 9:2-9:8 is KEYWORD(Return)
 "(" @ 9:9-9:10 is LEFT PARENTHESIS
 "from" @ 9:10-9:14 is IDENTIFIER(from)
 "." @ 9:14-9:15 is DOT
@@ -95,7 +96,6 @@
 ")" @ 9:77-9:78 is RIGHT PARENTHESIS
 ";" @ 9:78-9:79 is SEMICOLON
 "end" @ 10:0-10:3 is KEYWORD(End)
-";" @ 10:3-10:4 is SEMICOLON
 "routine" @ 12:0-12:7 is KEYWORD(Routine)
 "middle" @ 12:8-12:14 is IDENTIFIER(middle)
 "(" @ 12:14-12:15 is LEFT PARENTHESIS
@@ -179,4 +179,3 @@
 ")" @ 18:31-18:32 is RIGHT PARENTHESIS
 ";" @ 18:32-18:33 is SEMICOLON
 "end" @ 19:0-19:3 is KEYWORD(End)
-";" @ 19:3-19:4 is SEMICOLON

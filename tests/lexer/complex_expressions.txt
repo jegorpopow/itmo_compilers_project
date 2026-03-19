@@ -8,13 +8,12 @@
 ":" @ 1:29-1:30 is COLON
 "integer" @ 1:31-1:38 is TYPENAME(Integer)
 "is" @ 1:39-1:41 is KEYWORD(Is)
-"return" @ 2:2-2:8 is IDENTIFIER(return)
+"return" @ 2:2-2:8 is KEYWORD(Return)
 "n" @ 2:9-2:10 is IDENTIFIER(n)
 "+" @ 2:11-2:12 is OPERATOR(Add)
 "1" @ 2:13-2:14 is INTEGER LITERAL(1)
 ";" @ 2:14-2:15 is SEMICOLON
 "end" @ 3:0-3:3 is KEYWORD(End)
-";" @ 3:3-3:4 is SEMICOLON
 "routine" @ 5:0-5:7 is KEYWORD(Routine)
 "main" @ 5:8-5:12 is IDENTIFIER(main)
 "(" @ 5:12-5:13 is LEFT PARENTHESIS
@@ -143,15 +142,6 @@
 "b" @ 23:17-23:18 is IDENTIFIER(b)
 ")" @ 23:18-23:19 is RIGHT PARENTHESIS
 ";" @ 23:19-23:20 is SEMICOLON
-"print" @ 25:2-25:7 is KEYWORD(Print)
-"a" @ 25:8-25:9 is IDENTIFIER(a)
-"+" @ 25:10-25:11 is OPERATOR(Add)
-"1.5" @ 25:12-25:15 is REAL LITERAL(1.5)
-";" @ 25:15-25:16 is SEMICOLON
-"print" @ 26:2-26:7 is KEYWORD(Print)
-"2.0" @ 26:8-26:11 is REAL LITERAL(2)
-"*" @ 26:12-26:13 is OPERATOR(Mul)
-"b" @ 26:14-26:15 is IDENTIFIER(b)
-";" @ 26:15-26:16 is SEMICOLON
+"-- print a + 1.5;" @ 25:2-25:19 is COMMENT( print a + 1.5;)
+"-- print 2.0 * b;" @ 26:2-26:19 is COMMENT( print 2.0 * b;)
 "end" @ 27:0-27:3 is KEYWORD(End)
-";" @ 27:3-27:4 is SEMICOLON

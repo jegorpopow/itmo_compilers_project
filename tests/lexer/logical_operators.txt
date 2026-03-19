@@ -33,11 +33,7 @@
 "and" @ 8:10-8:13 is OPERATOR(And)
 "true" @ 8:14-8:18 is BOOLEAN LITERAL(true)
 ";" @ 8:18-8:19 is SEMICOLON
-"print" @ 9:2-9:7 is KEYWORD(Print)
-"false" @ 9:8-9:13 is BOOLEAN LITERAL(false)
-"and" @ 9:14-9:17 is OPERATOR(And)
-"x" @ 9:18-9:19 is IDENTIFIER(x)
-";" @ 9:19-9:20 is SEMICOLON
+"-- print false and x;" @ 9:2-9:23 is COMMENT( print false and x;)
 "print" @ 11:2-11:7 is KEYWORD(Print)
 "a" @ 11:8-11:9 is IDENTIFIER(a)
 "or" @ 11:10-11:12 is OPERATOR(Or)
@@ -48,26 +44,10 @@
 "or" @ 12:14-12:16 is OPERATOR(Or)
 "b" @ 12:17-12:18 is IDENTIFIER(b)
 ";" @ 12:18-12:19 is SEMICOLON
-"print" @ 13:2-13:7 is KEYWORD(Print)
-"true" @ 13:8-13:12 is BOOLEAN LITERAL(true)
-"or" @ 13:13-13:15 is OPERATOR(Or)
-"x" @ 13:16-13:17 is IDENTIFIER(x)
-";" @ 13:17-13:18 is SEMICOLON
-"print" @ 15:2-15:7 is KEYWORD(Print)
-"a" @ 15:8-15:9 is IDENTIFIER(a)
-"xor" @ 15:10-15:13 is OPERATOR(Xor)
-"b" @ 15:14-15:15 is IDENTIFIER(b)
-";" @ 15:15-15:16 is SEMICOLON
-"print" @ 16:2-16:7 is KEYWORD(Print)
-"a" @ 16:8-16:9 is IDENTIFIER(a)
-"xor" @ 16:10-16:13 is OPERATOR(Xor)
-"true" @ 16:14-16:18 is BOOLEAN LITERAL(true)
-";" @ 16:18-16:19 is SEMICOLON
-"print" @ 17:2-17:7 is KEYWORD(Print)
-"b" @ 17:8-17:9 is IDENTIFIER(b)
-"xor" @ 17:10-17:13 is OPERATOR(Xor)
-"false" @ 17:14-17:19 is BOOLEAN LITERAL(false)
-";" @ 17:19-17:20 is SEMICOLON
+"-- print true or x;" @ 13:2-13:21 is COMMENT( print true or x;)
+"-- print a xor b;" @ 15:2-15:19 is COMMENT( print a xor b;)
+"-- print a xor true;" @ 16:2-16:22 is COMMENT( print a xor true;)
+"-- print b xor false;" @ 17:2-17:23 is COMMENT( print b xor false;)
 "print" @ 19:2-19:7 is KEYWORD(Print)
 "not" @ 19:8-19:11 is OPERATOR(Neg)
 "a" @ 19:12-19:13 is IDENTIFIER(a)
@@ -76,13 +56,6 @@
 "not" @ 20:8-20:11 is OPERATOR(Neg)
 "b" @ 20:12-20:13 is IDENTIFIER(b)
 ";" @ 20:13-20:14 is SEMICOLON
-"print" @ 21:2-21:7 is KEYWORD(Print)
-"not" @ 21:8-21:11 is OPERATOR(Neg)
-"x" @ 21:12-21:13 is IDENTIFIER(x)
-";" @ 21:13-21:14 is SEMICOLON
-"print" @ 22:2-22:7 is KEYWORD(Print)
-"not" @ 22:8-22:11 is OPERATOR(Neg)
-"y" @ 22:12-22:13 is IDENTIFIER(y)
-";" @ 22:13-22:14 is SEMICOLON
+"-- print not x;" @ 21:2-21:17 is COMMENT( print not x;)
+"-- print not y;" @ 22:2-22:17 is COMMENT( print not y;)
 "end" @ 23:0-23:3 is KEYWORD(End)
-";" @ 23:3-23:4 is SEMICOLON

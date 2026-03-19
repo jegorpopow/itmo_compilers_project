@@ -52,6 +52,7 @@ tests! [
     parse_minus => "parse_minus",
     real_literals => "real_literals",
     records => "records",
+    recursive_functions => "recursive_function",
     recursive_types => "recursive_types",
     shadow => "shadow",
     type_aliases => "type_aliases",

@@ -4,14 +4,26 @@ use std::env;
 use std::fs;
 use std::process::ExitCode;
 
+use crate::ast::convert::convert;
 use crate::lexer::Lexer;
+use crate::parser::{ParsingError, parse_programm};
+use crate::tokens::Token;
+
+mod source_positions;
+
+mod identifier;
+mod loop_order;
+mod operators;
+
+mod bytecode;
+
+mod tokens;
 
 mod ast;
-mod bytecode;
+mod parse_tree;
+
 mod lexer;
-mod operators;
-mod tokens;
-mod types;
+mod parser;
 
 // TODO: create a Driver module
 
@@ -24,8 +36,40 @@ fn main() -> ExitCode {
     }
 
     let source: String = fs::read_to_string(&args[1]).unwrap();
-    for token in Lexer::from(source.as_str()) {
+    let tokens: Vec<Token<'_>> = Lexer::from(source.as_str()).collect();
+    for token in &tokens {
         println!("{token}")
     }
+
+    match parse_programm(tokens.as_slice()) {
+        Ok((program, errs)) => {
+            println!("Following errors occured:");
+
+            for ParsingError { what, position } in errs {
+                println!("\t{what} @ {position}");
+            }
+
+            for decl in &program.0 {
+                println!("{decl:?}");
+            }
+
+            match convert(&program) {
+                Ok((program, _)) => {
+                    for decl in &program.0 {
+                        println!("{decl:?}");
+                    }
+                }
+                Err(err) => {
+                    println!("TypeCheck failed:");
+                    println!("Error:\n\t{:?}", err.what);
+                }
+            }
+        }
+        Err(ParsingError { what, position }) => {
+            println!("Error:\n\treason:{what}\n\tposition: {position}");
+            return ExitCode::FAILURE;
+        }
+    }
+
     ExitCode::SUCCESS
 }

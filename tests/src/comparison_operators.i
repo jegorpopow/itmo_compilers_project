@@ -18,10 +18,10 @@ routine main() is
   print x = y;
   print x /= y;
   
-  print a < y;
-  print a = y;
-  print x < b;
+  -- print a < y;
+  -- print a = y;
+  -- print x < b;
   
   print true = false;
   print true /= false;
-end;
+end

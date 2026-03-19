@@ -15,13 +15,13 @@ routine main() is
             print w;
             print v;
             v := v + 1;
-          end;
+          end
           w := w + 1;
-        end;
+        end
         k := k + 1;
-      end;
+      end
       j := j + 1;
-    end;
+    end
     i := i + 1;
-  end;
-end;
+  end
+end

@@ -83,21 +83,9 @@
 "/=" @ 19:10-19:12 is OPERATOR(Neq)
 "y" @ 19:13-19:14 is IDENTIFIER(y)
 ";" @ 19:14-19:15 is SEMICOLON
-"print" @ 21:2-21:7 is KEYWORD(Print)
-"a" @ 21:8-21:9 is IDENTIFIER(a)
-"<" @ 21:10-21:11 is OPERATOR(Lt)
-"y" @ 21:12-21:13 is IDENTIFIER(y)
-";" @ 21:13-21:14 is SEMICOLON
-"print" @ 22:2-22:7 is KEYWORD(Print)
-"a" @ 22:8-22:9 is IDENTIFIER(a)
-"=" @ 22:10-22:11 is OPERATOR(Eq)
-"y" @ 22:12-22:13 is IDENTIFIER(y)
-";" @ 22:13-22:14 is SEMICOLON
-"print" @ 23:2-23:7 is KEYWORD(Print)
-"x" @ 23:8-23:9 is IDENTIFIER(x)
-"<" @ 23:10-23:11 is OPERATOR(Lt)
-"b" @ 23:12-23:13 is IDENTIFIER(b)
-";" @ 23:13-23:14 is SEMICOLON
+"-- print a < y;" @ 21:2-21:17 is COMMENT( print a < y;)
+"-- print a = y;" @ 22:2-22:17 is COMMENT( print a = y;)
+"-- print x < b;" @ 23:2-23:17 is COMMENT( print x < b;)
 "print" @ 25:2-25:7 is KEYWORD(Print)
 "true" @ 25:8-25:12 is BOOLEAN LITERAL(true)
 "=" @ 25:13-25:14 is OPERATOR(Eq)
@@ -109,4 +97,3 @@
 "false" @ 26:16-26:21 is BOOLEAN LITERAL(false)
 ";" @ 26:21-26:22 is SEMICOLON
 "end" @ 27:0-27:3 is KEYWORD(End)
-";" @ 27:3-27:4 is SEMICOLON

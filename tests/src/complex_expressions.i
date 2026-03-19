@@ -1,6 +1,6 @@
 routine add_one(n : integer) : integer is
   return n + 1;
-end;
+end
 
 routine main() is
   var a is 2;
@@ -22,6 +22,6 @@ routine main() is
   print (a > b) or (b < c);
   print not (a = b);
   
-  print a + 1.5;
-  print 2.0 * b;
-end;
+  -- print a + 1.5;
+  -- print 2.0 * b;
+end
