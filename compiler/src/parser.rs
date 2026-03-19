@@ -3,11 +3,11 @@
 use std::rc::Rc;
 
 use crate::identifier::RawIdentifier;
-use crate::operators::SyntacticOperator;
 use crate::loop_order::LoopOrder;
+use crate::operators::SyntacticOperator;
 use crate::parse_tree::tree::{
-    Block, BlockElem, BoolLiteral, Declaration, Expression, IntegerLiteral,
-    LvalueExpression, Program, RealLiteral, RoutineBody, RoutineDecl, Statement, TypeDecl, VarDecl,
+    Block, BlockElem, BoolLiteral, Declaration, Expression, IntegerLiteral, LvalueExpression,
+    Program, RealLiteral, RoutineBody, RoutineDecl, Statement, TypeDecl, VarDecl,
 };
 use crate::parse_tree::types::{ArrayDescription, FieldDescription, RecordDescription, Type};
 use crate::source_positions::{Extent, Position};
@@ -144,9 +144,161 @@ impl Parser {
         }
         i
     }
+
     fn next<'a, 'b: 'a>(&mut self, i: IndexedIterator<'a, 'b>) -> IndexedIterator<'a, 'b> {
         self.skip_unused(i.next())
     }
+
+    // Parsing combinators
+
+    /// Parses with `parser` until it fails
+    fn parse_many<'a, 'b: 'a, T>(
+        &mut self,
+        mut parser: impl ParsingFunction<'a, 'b, T>,
+        mut i: IndexedIterator<'a, 'b>,
+    ) -> ParsingResult<'a, 'b, Vec<T>> {
+        let mut result = Vec::new();
+
+        while let Ok((parsed, next)) = parser(self, i) {
+            result.push(parsed);
+            i = next;
+        }
+
+        Ok((result, i))
+    }
+
+    /// Parses with `parser` till the end
+    fn parse_all<'a, 'b: 'a, T>(
+        &mut self,
+        mut parser: impl ParsingFunction<'a, 'b, T>,
+        mut i: IndexedIterator<'a, 'b>,
+    ) -> ParsingResult<'a, 'b, Vec<T>> {
+        let mut result = Vec::new();
+
+        while i.current().is_some() {
+            let (parsed, next) = parser(self, i)?;
+            result.push(parsed);
+            i = next;
+        }
+
+        Ok((result, i))
+    }
+
+    /// Parses one of two alternatives
+    fn parse_one_of<'a, 'b: 'a, T>(
+        &mut self,
+        mut l: impl ParsingFunction<'a, 'b, T>,
+        mut r: impl ParsingFunction<'a, 'b, T>,
+        i: IndexedIterator<'a, 'b>,
+    ) -> ParsingResult<'a, 'b, T> {
+        match l(self, i) {
+            Ok(val) => Ok(val),
+            Err(first_err) => match r(self, i) {
+                res @ Ok(_) => res,
+                Err(second_err) => Err(ParsingError {
+                    what: format!(
+                        "Following parses failed\n{}\n{}",
+                        first_err.what, second_err.what
+                    ),
+                    position: first_err.position,
+                }),
+            },
+        }
+    }
+
+    /// Parses with `parser`, parses with `right` and drops latter value
+    fn parse_before<'a, 'b: 'a, T>(
+        &mut self,
+        mut parser: impl ParsingFunction<'a, 'b, T>,
+        mut right: impl ParsingFunction<'a, 'b, ()>,
+        i: IndexedIterator<'a, 'b>,
+    ) -> ParsingResult<'a, 'b, T> {
+        let (res, next) = parser(self, i)?;
+        let ((), next) = right(self, next)?;
+        Ok((res, next))
+    }
+
+    ///  parses with `left`, parses with `parser` and drops former value
+
+    fn parse_after<'a, 'b: 'a, T>(
+        &mut self,
+        mut left: impl ParsingFunction<'a, 'b, ()>,
+        mut parser: impl ParsingFunction<'a, 'b, T>,
+        i: IndexedIterator<'a, 'b>,
+    ) -> ParsingResult<'a, 'b, T> {
+        let ((), next) = left(self, i)?;
+        parser(self, next)
+    }
+
+    /// parse_after and parse_before combined
+    fn parse_between<'a, 'b: 'a, T>(
+        &mut self,
+        mut left: impl ParsingFunction<'a, 'b, ()>,
+        mut parser: impl ParsingFunction<'a, 'b, T>,
+        mut right: impl ParsingFunction<'a, 'b, ()>,
+        i: IndexedIterator<'a, 'b>,
+    ) -> ParsingResult<'a, 'b, T> {
+        let ((), next) = left(self, i)?;
+        let (res, next) = parser(self, next)?;
+        let ((), next) = right(self, next)?;
+        Ok((res, next))
+    }
+
+    /// Parses with `parser`, successfully return None on failure
+    fn try_parse<'a, 'b: 'a, T>(
+        &mut self,
+        mut parser: impl ParsingFunction<'a, 'b, T>,
+        i: IndexedIterator<'a, 'b>,
+    ) -> ParsingResult<'a, 'b, Option<T>> {
+        parser(self, i)
+            .map(|(val, i)| (Some(val), i))
+            .or_else(|_| Ok((None, i)))
+    }
+
+    /// Parse a list of `parser` values, separated by `sep`
+    fn parse_many_sep_by<'a, 'b: 'a, T>(
+        &mut self,
+        mut parser: impl ParsingFunction<'a, 'b, T>,
+        mut sep: impl ParsingFunction<'a, 'b, ()>,
+        i: IndexedIterator<'a, 'b>,
+    ) -> ParsingResult<'a, 'b, Vec<T>> {
+        let mut result = Vec::new();
+        let first = parser(self, i);
+
+        match first {
+            Ok((first_parsed, rest)) => {
+                result.push(first_parsed);
+
+                let mut next = rest;
+
+                while let Ok(((), rest)) = sep(self, next) {
+                    next = rest;
+                    let (elem, rest) = parser(self, next)?;
+                    next = rest;
+                    result.push(elem);
+                }
+
+                Ok((result, next))
+            }
+            Err(_) => Ok((Vec::new(), i)),
+        }
+    }
+
+    /// Parsers `l`, `rep`, `r`, drops the valuse in centre
+    fn parse_def<'a, 'b: 'a, T, U>(
+        &mut self,
+        mut l: impl ParsingFunction<'a, 'b, T>,
+        mut rep: impl ParsingFunction<'a, 'b, ()>,
+        mut r: impl ParsingFunction<'a, 'b, U>,
+        i: IndexedIterator<'a, 'b>,
+    ) -> ParsingResult<'a, 'b, (T, U)> {
+        let (lhs, next) = l(self, i)?;
+        let ((), next) = rep(self, next)?;
+        let (rhs, end) = r(self, next)?;
+        Ok(((lhs, rhs), end))
+    }
+
+    // Parsers for primitives
 
     fn parse_identifier<'a, 'b: 'a>(
         &mut self,
@@ -345,154 +497,6 @@ impl Parser {
         }
     }
 
-    fn parse_many<'a, 'b: 'a, T>(
-        &mut self,
-        mut parser: impl ParsingFunction<'a, 'b, T>,
-        mut i: IndexedIterator<'a, 'b>,
-    ) -> ParsingResult<'a, 'b, Vec<T>> {
-        let mut result = Vec::new();
-
-        while let Ok((parsed, next)) = parser(self, i) {
-            result.push(parsed);
-            i = next;
-        }
-
-        Ok((result, i))
-    }
-
-    fn parse_all<'a, 'b: 'a, T>(
-        &mut self,
-        mut parser: impl ParsingFunction<'a, 'b, T>,
-        mut i: IndexedIterator<'a, 'b>,
-    ) -> ParsingResult<'a, 'b, Vec<T>> {
-        let mut result = Vec::new();
-
-        while i.current().is_some() {
-            let (parsed, next) = parser(self, i)?;
-            result.push(parsed);
-            i = next;
-        }
-
-        Ok((result, i))
-    }
-
-    fn parse_one_of<'a, 'b: 'a, T>(
-        &mut self,
-        mut l: impl ParsingFunction<'a, 'b, T>,
-        mut r: impl ParsingFunction<'a, 'b, T>,
-        i: IndexedIterator<'a, 'b>,
-    ) -> ParsingResult<'a, 'b, T> {
-        match l(self, i) {
-            Ok(val) => Ok(val),
-            Err(first_err) => match r(self, i) {
-                res @ Ok(_) => res,
-                Err(second_err) => Err(ParsingError {
-                    what: format!(
-                        "Following parses failed\n{}\n{}",
-                        first_err.what, second_err.what
-                    ),
-                    position: first_err.position,
-                }),
-            },
-        }
-    }
-
-    fn parse_some<'a, 'b: 'a, T>(
-        &mut self,
-        mut parser: impl ParsingFunction<'a, 'b, T>,
-        mut i: IndexedIterator<'a, 'b>,
-    ) -> ParsingResult<'a, 'b, Vec<T>> {
-        let mut result = Vec::new();
-        let first = parser(self, i);
-
-        match first {
-            Ok((first_parsed, next)) => {
-                i = next;
-                result.push(first_parsed);
-
-                while let Ok((parsed, next)) = parser(self, i) {
-                    result.push(parsed);
-                    i = next;
-                }
-
-                Ok((result, i))
-            }
-            Err(e) => Err(e),
-        }
-    }
-
-    fn parse_before<'a, 'b: 'a, T>(
-        &mut self,
-        mut parser: impl ParsingFunction<'a, 'b, T>,
-        mut right: impl ParsingFunction<'a, 'b, ()>,
-        i: IndexedIterator<'a, 'b>,
-    ) -> ParsingResult<'a, 'b, T> {
-        let (res, next) = parser(self, i)?;
-        let ((), next) = right(self, next)?;
-        Ok((res, next))
-    }
-
-    fn parse_after<'a, 'b: 'a, T>(
-        &mut self,
-        mut left: impl ParsingFunction<'a, 'b, ()>,
-        mut parser: impl ParsingFunction<'a, 'b, T>,
-        i: IndexedIterator<'a, 'b>,
-    ) -> ParsingResult<'a, 'b, T> {
-        let ((), next) = left(self, i)?;
-        parser(self, next)
-    }
-
-    fn parse_between<'a, 'b: 'a, T>(
-        &mut self,
-        mut left: impl ParsingFunction<'a, 'b, ()>,
-        mut parser: impl ParsingFunction<'a, 'b, T>,
-        mut right: impl ParsingFunction<'a, 'b, ()>,
-        i: IndexedIterator<'a, 'b>,
-    ) -> ParsingResult<'a, 'b, T> {
-        let ((), next) = left(self, i)?;
-        let (res, next) = parser(self, next)?;
-        let ((), next) = right(self, next)?;
-        Ok((res, next))
-    }
-
-    fn try_parse<'a, 'b: 'a, T>(
-        &mut self,
-        mut parser: impl ParsingFunction<'a, 'b, T>,
-        i: IndexedIterator<'a, 'b>,
-    ) -> ParsingResult<'a, 'b, Option<T>> {
-        parser(self, i)
-            .map(|(val, i)| (Some(val), i))
-            .or_else(|_| Ok((None, i)))
-    }
-
-    fn parse_many_sep_by<'a, 'b: 'a, T>(
-        &mut self,
-        mut parser: impl ParsingFunction<'a, 'b, T>,
-        mut sep: impl ParsingFunction<'a, 'b, ()>,
-        i: IndexedIterator<'a, 'b>,
-    ) -> ParsingResult<'a, 'b, Vec<T>> {
-        let mut result = Vec::new();
-        let first = parser(self, i);
-
-        match first {
-            Ok((first_parsed, rest)) => {
-                result.push(first_parsed);
-
-                let mut next = rest;
-
-                while let Ok(((), rest)) = sep(self, next) {
-                    next = rest;
-                    let (elem, rest) = parser(self, next)?;
-                    next = rest;
-                    result.push(elem);
-                }
-
-                Ok((result, next))
-            }
-            Err(_) => Ok((Vec::new(), i)),
-        }
-    }
-
     fn parse_semicolon<'a, 'b: 'a>(
         &mut self,
         i: IndexedIterator<'a, 'b>,
@@ -591,19 +595,6 @@ impl Parser {
         )
     }
 
-    fn parse_def<'a, 'b: 'a, T, U>(
-        &mut self,
-        mut l: impl ParsingFunction<'a, 'b, T>,
-        mut rep: impl ParsingFunction<'a, 'b, ()>,
-        mut r: impl ParsingFunction<'a, 'b, U>,
-        i: IndexedIterator<'a, 'b>,
-    ) -> ParsingResult<'a, 'b, (T, U)> {
-        let (lhs, next) = l(self, i)?;
-        let ((), next) = rep(self, next)?;
-        let (rhs, end) = r(self, next)?;
-        Ok(((lhs, rhs), end))
-    }
-
     fn parse_field_description<'a, 'b: 'a>(
         &mut self,
         i: IndexedIterator<'a, 'b>,
@@ -696,12 +687,7 @@ impl Parser {
     ) -> ParsingResult<'a, 'b, Rc<Expression>> {
         match ops.next() {
             Some(operators) => {
-                // println!("Parsing operators: {:?}", operators);
-
                 let (mut head, mut next) = self.parse_operators(ops.clone(), atom.clone(), i)?;
-
-                // println!("parsed head {:?}", head);
-
                 while let Some(Token {
                     kind: TokenKind::Operator(op),
                     ..
@@ -880,8 +866,6 @@ impl Parser {
             });
             next = rest;
         }
-
-        // println!("Parsed atom: {:?}", *head);
 
         Ok((head, next))
     }
@@ -1154,13 +1138,6 @@ impl Parser {
     ) -> ParsingResult<'a, 'b, RoutineDecl> {
         let ((), next) = self.parse_known_kind(&TokenKind::Keyword(tokens::Keyword::Routine), i)?;
         let (name, next) = self.parse_identifier(next)?;
-        // println!("before parsing return type : {}", next.current().unwrap());
-
-        // println!(
-        //     "After parsing return type : {}\ntype is {:?}",
-        //     next.current().unwrap(),
-        //     return_type
-        // );
 
         let (args, next) = self.parse_in_parentheses(
             |ctx, i| {
