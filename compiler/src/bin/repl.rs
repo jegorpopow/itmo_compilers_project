@@ -23,7 +23,7 @@ fn main() {
         io::stdout().flush().unwrap();
 
         let mut buffer = String::new();
-        let _ : usize = io::stdin().read_line(&mut buffer).expect("IO Error");
+        let _: usize = io::stdin().read_line(&mut buffer).expect("IO Error");
 
         match parse_expr_from_line(&buffer) {
             Ok(expr) => println!("{:?}", *expr),

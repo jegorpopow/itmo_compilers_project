@@ -7,7 +7,7 @@ pub struct Position {
 }
 
 impl Position {
-    #[must_use] 
+    #[must_use]
     pub fn begin() -> Self {
         Position { line: 1, column: 0 }
     }

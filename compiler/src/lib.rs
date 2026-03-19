@@ -1,6 +1,6 @@
 pub mod identifier;
-pub mod loop_order;
 pub mod lexer;
+pub mod loop_order;
 pub mod operators;
 pub mod parse_tree;
 pub mod parser;

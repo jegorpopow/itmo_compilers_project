@@ -138,7 +138,9 @@ impl Type {
             | Type::Array(_)
             | Type::Null
             | Type::Unit => Err(AnalysisError {
-                what: format!("Type `{self}` have no fields, but field `{name}` was requested for it"),
+                what: format!(
+                    "Type `{self}` have no fields, but field `{name}` was requested for it"
+                ),
             }),
         }
     }

@@ -11,8 +11,8 @@ use crate::tokens::Token;
 
 mod source_positions;
 
-mod loop_order;
 mod identifier;
+mod loop_order;
 mod operators;
 
 mod bytecode;
