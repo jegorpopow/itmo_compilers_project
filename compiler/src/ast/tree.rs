@@ -1,5 +1,4 @@
 #![expect(dead_code, reason = "WIP")]
-#![allow(clippy::wrong_self_convention)]
 #![allow(clippy::cast_precision_loss)]
 #![allow(clippy::cast_lossless)]
 #![allow(clippy::float_cmp)]
@@ -388,9 +387,9 @@ pub enum SimpleDecl {
     Type(TypeDecl),
 }
 
-impl SimpleDecl {
-    pub fn to_generic_decl(self) -> Decl {
-        match self {
+impl From<SimpleDecl> for Decl {
+    fn from(value: SimpleDecl) -> Self {
+        match value {
             SimpleDecl::Var(var_decl) => Decl::Var(var_decl),
             SimpleDecl::Type(type_decl) => Decl::Type(type_decl),
         }
@@ -403,11 +402,12 @@ pub struct SimpleBinding {
     pub decl: SimpleDecl,
 }
 
-impl SimpleBinding {
-    pub fn to_generic_binding(self) -> Binding {
+impl From<SimpleBinding> for Binding {
+    fn from(sb: SimpleBinding) -> Self {
+        let SimpleBinding { name, decl } = sb;
         Binding {
-            name: self.name,
-            decl: self.decl.to_generic_decl(),
+            name,
+            decl: decl.into(),
         }
     }
 }
@@ -465,9 +465,11 @@ pub enum Decl {
     Routine(RoutineDecl),
 }
 
-impl Decl {
-    pub fn to_simple_decl(self) -> AnalysisResult<SimpleDecl> {
-        match self {
+impl TryFrom<Decl> for SimpleDecl {
+    type Error = AnalysisError;
+
+    fn try_from(value: Decl) -> AnalysisResult<SimpleDecl> {
+        match value {
             Decl::Var(var_decl) => Ok(SimpleDecl::Var(var_decl)),
             Decl::Type(type_decl) => Ok(SimpleDecl::Type(type_decl)),
             Decl::Routine(_) => Err(AnalysisError {
@@ -501,11 +503,16 @@ impl Binding {
             }),
         }
     }
+}
 
-    pub fn to_simple_binding(self) -> AnalysisResult<SimpleBinding> {
+impl TryFrom<Binding> for SimpleBinding {
+    type Error = AnalysisError;
+
+    fn try_from(value: Binding) -> AnalysisResult<SimpleBinding> {
+        let Binding { name, decl } = value;
         Ok(SimpleBinding {
-            name: self.name,
-            decl: self.decl.to_simple_decl()?,
+            name,
+            decl: decl.try_into()?,
         })
     }
 }

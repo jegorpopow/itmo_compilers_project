@@ -708,11 +708,11 @@ impl Converter {
                 }
                 pt::tree::BlockElem::VarDecl(var_decl) => ast::tree::BlockElem::Decl(
                     self.convert_decl(&pt::tree::Declaration::Var(var_decl.clone()), false)
-                        .and_then(ast::tree::Binding::to_simple_binding)?,
+                        .and_then(TryInto::try_into)?,
                 ),
                 pt::tree::BlockElem::TypeDecl(type_decl) => ast::tree::BlockElem::Decl(
                     self.convert_decl(&pt::tree::Declaration::Type(type_decl.clone()), false)
-                        .and_then(ast::tree::Binding::to_simple_binding)?,
+                        .and_then(TryInto::try_into)?,
                 ),
             })
         }
