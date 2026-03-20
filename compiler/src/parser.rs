@@ -1,4 +1,4 @@
-#![allow(clippy::unnecessary_wraps)]
+#![expect(clippy::unnecessary_wraps, reason = "FIXME")]
 use core::fmt;
 use std::rc::Rc;
 

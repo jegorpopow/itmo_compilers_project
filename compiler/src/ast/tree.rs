@@ -1,8 +1,10 @@
 #![expect(dead_code, reason = "WIP")]
-#![allow(clippy::cast_precision_loss)]
-#![allow(clippy::cast_lossless)]
-#![allow(clippy::float_cmp)]
-#![allow(clippy::cast_possible_truncation)]
+#![expect(
+    clippy::cast_precision_loss,
+    clippy::cast_lossless,
+    clippy::cast_possible_truncation,
+    reason = "FIXME"
+)]
 use std::rc::Rc;
 
 use crate::ast::error::{AnalysisError, AnalysisResult};
