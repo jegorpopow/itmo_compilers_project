@@ -48,14 +48,14 @@ impl SyntacticOperator {
             SyntacticOperator::Sub => Some(SemanticBinaryOperator::RealSub),
             SyntacticOperator::Mul => Some(SemanticBinaryOperator::RealMul),
             SyntacticOperator::Div => Some(SemanticBinaryOperator::RealDiv),
-            SyntacticOperator::Mod => None,
             SyntacticOperator::Eq => Some(SemanticBinaryOperator::Eq),
             SyntacticOperator::Ne => Some(SemanticBinaryOperator::Ne),
             SyntacticOperator::Lt => Some(SemanticBinaryOperator::RealLt),
             SyntacticOperator::Le => Some(SemanticBinaryOperator::RealLe),
             SyntacticOperator::Gt => Some(SemanticBinaryOperator::RealGt),
             SyntacticOperator::Ge => Some(SemanticBinaryOperator::RealGe),
-            SyntacticOperator::And
+            SyntacticOperator::Mod
+            | SyntacticOperator::And
             | SyntacticOperator::Or
             | SyntacticOperator::Xor
             | SyntacticOperator::Neg => None,
@@ -94,13 +94,12 @@ impl SyntacticOperator {
             | SyntacticOperator::Lt
             | SyntacticOperator::Le
             | SyntacticOperator::Gt
-            | SyntacticOperator::Ge => None,
+            | SyntacticOperator::Ge
+            | SyntacticOperator::Neg => None,
             SyntacticOperator::Eq => Some(SemanticBinaryOperator::Eq),
-            SyntacticOperator::Ne => Some(SemanticBinaryOperator::BoolXor),
             SyntacticOperator::And => Some(SemanticBinaryOperator::BoolAnd),
             SyntacticOperator::Or => Some(SemanticBinaryOperator::BoolOr),
-            SyntacticOperator::Xor => Some(SemanticBinaryOperator::BoolXor),
-            SyntacticOperator::Neg => None,
+            SyntacticOperator::Ne | SyntacticOperator::Xor => Some(SemanticBinaryOperator::BoolXor),
         }
     }
 }

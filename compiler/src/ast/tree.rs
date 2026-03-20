@@ -371,8 +371,7 @@ impl OptionalDecl for RoutineDecl {
 impl RoutineDecl {
     pub fn signature(&self) -> &RoutineSignature {
         match self {
-            RoutineDecl::Full { signature, .. } => signature,
-            RoutineDecl::Forward { signature } => signature,
+            RoutineDecl::Full { signature, .. } | RoutineDecl::Forward { signature } => signature,
         }
     }
 }
