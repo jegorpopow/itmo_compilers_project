@@ -571,11 +571,11 @@ impl IdentifierTable {
 // FIXME: add target effective type
 pub fn cast_to(
     expr: Rc<Expression>,
-    own_type: &Rc<Type>,
-    target_type: &Rc<Type>,
+    own_type: &Type,
+    target_type: &Type,
 ) -> AnalysisResult<Rc<Expression>> {
-    match &**target_type {
-        Type::Int => match &**own_type {
+    match target_type {
+        Type::Int => match own_type {
             Type::Int => Ok(expr),
             Type::Real => Ok(Rc::new(Expression::RealToInt(expr))),
             Type::Bool => Ok(Rc::new(Expression::BoolToInt(expr))),
@@ -587,7 +587,7 @@ pub fn cast_to(
                 })
             }
         },
-        Type::Real => match &**own_type {
+        Type::Real => match own_type {
             Type::Real => Ok(expr),
             Type::Int => Ok(Rc::new(Expression::IntToReal(expr))),
             Type::Bool => Ok(Rc::new(Expression::BoolToInt(Rc::new(
@@ -602,7 +602,7 @@ pub fn cast_to(
             }
         },
 
-        Type::Bool => match &**own_type {
+        Type::Bool => match own_type {
             Type::Bool => Ok(expr),
             Type::Int => Ok(Rc::new(Expression::IntToBool(expr))),
             Type::Real => Ok(Rc::new(Expression::IntToBool(Rc::new(
@@ -629,7 +629,7 @@ pub fn cast_to(
         }
 
         Type::Alias(_) | Type::Record(_) | Type::Array(_) | Type::Null | Type::Unit => {
-            if *own_type == *target_type || **own_type == Type::Null {
+            if *own_type == *target_type || *own_type == Type::Null {
                 Ok(expr)
             } else {
                 Err(AnalysisError {

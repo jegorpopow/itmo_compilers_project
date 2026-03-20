@@ -190,8 +190,8 @@ impl Converter {
             })
     }
 
-    fn convert_type(&self, t: &Rc<pt::types::Type>) -> AnalysisResult<Rc<ast::types::Type>> {
-        match &**t {
+    fn convert_type(&self, t: &pt::types::Type) -> AnalysisResult<Rc<ast::types::Type>> {
+        match t {
             pt::types::Type::Int => Ok(Rc::new(ast::types::Type::Int)),
             pt::types::Type::Real => Ok(Rc::new(ast::types::Type::Real)),
             pt::types::Type::Bool => Ok(Rc::new(ast::types::Type::Bool)),
@@ -247,9 +247,9 @@ impl Converter {
 
     fn convert_lvalue_expr(
         &self,
-        tree: &Rc<pt::tree::LvalueExpression>,
+        tree: &pt::tree::LvalueExpression,
     ) -> AnalysisResult<(Rc<ast::tree::LvalueExpression>, Rc<ast::types::Type>)> {
-        match &**tree {
+        match tree {
             pt::tree::LvalueExpression::Identifier(raw_identifier) => {
                 match self.lookup(raw_identifier)? {
                     ast::tree::Binding {
@@ -300,9 +300,9 @@ impl Converter {
 
     pub fn convert_expr(
         &self,
-        tree: &Rc<pt::tree::Expression>,
+        tree: &pt::tree::Expression,
     ) -> AnalysisResult<(Rc<ast::tree::Expression>, Rc<ast::types::Type>)> {
-        match &**tree {
+        match tree {
             pt::tree::Expression::LvalueToRvalue(lvalue_expression) => match &**lvalue_expression {
                 pt::tree::LvalueExpression::Member { lhs, member_name }
                     if member_name.name == "length" =>
@@ -523,7 +523,7 @@ impl Converter {
                                         cast_to(
                                             converted_expr,
                                             &expr_type,
-                                            &(converted_effective_type.get_field_type(name)?),
+                                            &*converted_effective_type.get_field_type(name)?,
                                         )?,
                                     ))
                                 },
@@ -586,11 +586,8 @@ impl Converter {
             }
             pt::tree::Statement::While { condition, body } => {
                 let (condition_expr, condition_type) = self.convert_expr(condition)?;
-                let converted_condition_expr = cast_to(
-                    condition_expr,
-                    &condition_type,
-                    &Rc::new(ast::types::Type::Bool),
-                )?;
+                let converted_condition_expr =
+                    cast_to(condition_expr, &condition_type, &ast::types::Type::Bool)?;
                 let body = self.convert_block(body)?;
                 Ok(ast::tree::Statement::While {
                     condition: converted_condition_expr,
@@ -607,11 +604,8 @@ impl Converter {
                 on_false,
             } => {
                 let (condition_expr, condition_type) = self.convert_expr(condition)?;
-                let converted_condition_expr = cast_to(
-                    condition_expr,
-                    &condition_type,
-                    &Rc::new(ast::types::Type::Bool),
-                )?;
+                let converted_condition_expr =
+                    cast_to(condition_expr, &condition_type, &ast::types::Type::Bool)?;
 
                 let converted_then = self.convert_block(on_true)?;
                 let converted_else = on_false
