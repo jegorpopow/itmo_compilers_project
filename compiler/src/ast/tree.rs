@@ -1,10 +1,4 @@
 #![expect(dead_code, reason = "WIP")]
-#![expect(
-    clippy::cast_precision_loss,
-    clippy::cast_lossless,
-    clippy::cast_possible_truncation,
-    reason = "FIXME"
-)]
 use std::rc::Rc;
 
 use crate::ast::error::{AnalysisError, AnalysisResult};
@@ -277,11 +271,17 @@ impl Expression {
                 0 != expression.as_ref().try_constexpr_evaluate()?.as_int()?,
             )),
             Expression::BoolToInt(expression) => Ok(EvaluatedValue::Int(
-                expression.as_ref().try_constexpr_evaluate()?.as_bool()? as i64,
+                expression
+                    .as_ref()
+                    .try_constexpr_evaluate()?
+                    .as_bool()?
+                    .into(),
             )),
+            #[expect(clippy::cast_possible_truncation, reason = "By design")]
             Expression::RealToInt(expression) => Ok(EvaluatedValue::Int(
                 expression.as_ref().try_constexpr_evaluate()?.as_real()? as i64,
             )),
+            #[expect(clippy::cast_precision_loss, reason = "By design")]
             Expression::IntToReal(expression) => Ok(EvaluatedValue::Real(
                 expression.as_ref().try_constexpr_evaluate()?.as_int()? as f64,
             )),
