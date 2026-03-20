@@ -93,32 +93,30 @@ impl Display for Type {
 impl Type {
     fn most_precise(l: &Rc<Self>, r: &Rc<Self>) -> AnalysisResult<Rc<Self>> {
         match (&**l, &**r) {
-            (Type::Int, Type::Int) => Ok(Rc::clone(l)),
-            (Type::Int, Type::Real) => Ok(Rc::clone(r)),
-            (Type::Int, Type::Bool) => Ok(Rc::clone(l)),
-            (Type::Int, Type::Null) => Ok(Rc::clone(l)),
-            (Type::Real, Type::Int) => Ok(Rc::clone(l)),
-            (Type::Real, Type::Real) => Ok(Rc::clone(l)),
-            (Type::Real, Type::Bool) => Ok(Rc::clone(l)),
-            (Type::Real, Type::Null) => Ok(Rc::clone(l)),
-            (Type::Bool, Type::Int) => Ok(Rc::clone(r)),
-            (Type::Bool, Type::Real) => Ok(Rc::clone(r)),
-            (Type::Bool, Type::Bool) => Ok(Rc::clone(l)),
-            (Type::Bool, Type::Null) => Ok(Rc::clone(l)),
-            (Type::Null, Type::Int) => Ok(Rc::clone(r)),
-            (Type::Null, Type::Real) => Ok(Rc::clone(r)),
-            (Type::Null, Type::Bool) => Ok(Rc::clone(r)),
-            (Type::Null, Type::Null) => Ok(Rc::clone(l)),
-            (_, _) => Err(AnalysisError {
-                what: format!("Can not find common arithmetic type for types {l} and  {r}"),
-            }),
+            (Type::Real, Type::Real | Type::Int | Type::Bool)
+            | (Type::Int, Type::Int | Type::Bool)
+            | (Type::Bool, Type::Bool) => Ok(Rc::clone(l)),
+
+            (Type::Int, Type::Real) | (Type::Bool, Type::Real | Type::Int) => Ok(Rc::clone(r)),
+
+            (Type::Alias(_) | Type::Array(_) | Type::Record(_) | Type::Unit | Type::Null, _)
+            | (_, Type::Alias(_) | Type::Array(_) | Type::Record(_) | Type::Unit | Type::Null) => {
+                Err(AnalysisError {
+                    what: format!("Can not find common arithmetic type for types {l} and  {r}"),
+                })
+            }
         }
     }
 
     fn is_scalar(&self) -> bool {
         match self {
-            Type::Null | Type::Int | Type::Real => true,
-            Type::Alias(_) | Type::Record(_) | Type::Array(_) | Type::Bool | Type::Unit => false,
+            Type::Int | Type::Real => true,
+            Type::Alias(_)
+            | Type::Record(_)
+            | Type::Array(_)
+            | Type::Bool
+            | Type::Null
+            | Type::Unit => false,
         }
     }
 
