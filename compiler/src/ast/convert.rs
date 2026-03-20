@@ -1,7 +1,7 @@
 #![allow(dead_code)]
 
 use crate::ast;
-use crate::ast::types::infer_binary_operator_type;
+use crate::ast::types::{BinOpAdjustment, infer_binary_operator_type};
 use crate::bytecode::Location;
 use crate::operators::{SemanticUnaryOperator, SyntacticOperator};
 use crate::parse_tree as pt;
@@ -395,8 +395,11 @@ impl Converter {
             pt::tree::Expression::Binop { op, lhs, rhs } => {
                 let (converted_lhs, lhs_type) = self.convert_expr(lhs)?;
                 let (converted_rhs, rhs_type) = self.convert_expr(rhs)?;
-                let (result_type, operand_type, semantic_op) =
-                    infer_binary_operator_type(&lhs_type, &rhs_type, *op)?;
+                let BinOpAdjustment {
+                    result: result_type,
+                    operand: operand_type,
+                    operator: semantic_op,
+                } = infer_binary_operator_type(&lhs_type, &rhs_type, *op)?;
 
                 let actual_lhs = cast_to(converted_lhs, &lhs_type, &operand_type)?;
                 let actual_rhs = cast_to(converted_rhs, &rhs_type, &operand_type)?;

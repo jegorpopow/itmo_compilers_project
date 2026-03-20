@@ -167,15 +167,20 @@ impl Type {
     }
 }
 
+/// lhs `op` rhs ↦ cast_to(lhs, operand) `operator` cast_to(rhs, operand) :: result
+#[derive(Debug, Clone)]
+pub struct BinOpAdjustment {
+    pub result: Rc<Type>,
+    pub operand: Rc<Type>,
+    pub operator: SemanticBinaryOperator,
+}
+
 // FIXME: rewrite
-/// Generates type for Binop
-/// Given types of lhs, rhs and op returns (result, operand, sem_op)
-/// such as: lhs `op` rhs ↦ cast_to(lhs, operand) `sem_op` cast_to(rhs, operand) :: result
 pub fn infer_binary_operator_type(
     lhs_type: &Rc<Type>,
     rhs_type: &Rc<Type>,
     op: SyntacticOperator,
-) -> AnalysisResult<(Rc<Type>, Rc<Type>, SemanticBinaryOperator)> {
+) -> AnalysisResult<BinOpAdjustment> {
     match op {
         SyntacticOperator::Neg => Err(AnalysisError {
             what: "Logical negation operator can not be applied as binary".to_string(),
@@ -183,11 +188,11 @@ pub fn infer_binary_operator_type(
 
         SyntacticOperator::And | SyntacticOperator::Or | SyntacticOperator::Xor => {
             if lhs_type.is_logical() && rhs_type.is_logical() {
-                Ok((
-                    Rc::new(Type::Bool),
-                    Rc::new(Type::Bool),
-                    op.to_boolean_binary_semantic().expect("Already checked"),
-                ))
+                Ok(BinOpAdjustment {
+                    result: Rc::new(Type::Bool),
+                    operand: Rc::new(Type::Bool),
+                    operator: op.to_boolean_binary_semantic().expect("Already checked"),
+                })
             } else {
                 Err(AnalysisError {
                     what: format!(
@@ -199,15 +204,15 @@ pub fn infer_binary_operator_type(
 
         SyntacticOperator::Eq | SyntacticOperator::Ne => {
             if **lhs_type == **rhs_type || **lhs_type == Type::Null || **rhs_type == Type::Null {
-                Ok((
-                    Rc::new(Type::Bool),
-                    if **lhs_type == Type::Null {
+                Ok(BinOpAdjustment {
+                    result: Rc::new(Type::Bool),
+                    operand: if **lhs_type == Type::Null {
                         Rc::clone(rhs_type)
                     } else {
                         Rc::clone(lhs_type)
                     },
-                    op.to_semantic_compare().expect("already checked"),
-                ))
+                    operator: op.to_semantic_compare().expect("already checked"),
+                })
             } else {
                 Err(AnalysisError {
                     what: format!("Can not apply operator {op:?}for {lhs_type} and {rhs_type}"),
@@ -222,17 +227,17 @@ pub fn infer_binary_operator_type(
             if lhs_type.is_scalar() && rhs_type.is_scalar() {
                 let result_type = Type::most_precise(lhs_type, rhs_type)?;
                 if matches!(&*result_type, Type::Int) {
-                    Ok((
-                        Rc::clone(&result_type),
-                        Rc::clone(&result_type),
-                        op.to_integer_binary_semantic().expect("Already checked"),
-                    ))
+                    Ok(BinOpAdjustment {
+                        result: Rc::clone(&result_type),
+                        operand: Rc::clone(&result_type),
+                        operator: op.to_integer_binary_semantic().expect("Already checked"),
+                    })
                 } else if matches!(&*result_type, Type::Real) {
-                    Ok((
-                        Rc::clone(&result_type),
-                        Rc::clone(&result_type),
-                        op.to_real_binary_semantic().expect("Already checked"),
-                    ))
+                    Ok(BinOpAdjustment {
+                        result: Rc::clone(&result_type),
+                        operand: Rc::clone(&result_type),
+                        operator: op.to_real_binary_semantic().expect("Already checked"),
+                    })
                 } else {
                     Err(AnalysisError {
                         what: format!(
@@ -251,11 +256,11 @@ pub fn infer_binary_operator_type(
 
         SyntacticOperator::Mod => {
             if **lhs_type == **rhs_type && matches!(&**lhs_type, Type::Int) {
-                Ok((
-                    Rc::clone(lhs_type),
-                    Rc::clone(lhs_type),
-                    op.to_integer_binary_semantic().expect("Already checked"),
-                ))
+                Ok(BinOpAdjustment {
+                    result: Rc::clone(lhs_type),
+                    operand: Rc::clone(lhs_type),
+                    operator: op.to_integer_binary_semantic().expect("Already checked"),
+                })
             } else {
                 Err(AnalysisError {
                     what: format!(
@@ -272,17 +277,17 @@ pub fn infer_binary_operator_type(
             if lhs_type.is_scalar() && rhs_type.is_scalar() {
                 let operand_type = Type::most_precise(lhs_type, rhs_type)?;
                 if matches!(&*operand_type, Type::Int) {
-                    Ok((
-                        Rc::new(Type::Bool),
-                        Rc::clone(&operand_type),
-                        op.to_integer_binary_semantic().expect("Already checked"),
-                    ))
+                    Ok(BinOpAdjustment {
+                        result: Rc::new(Type::Bool),
+                        operand: Rc::clone(&operand_type),
+                        operator: op.to_integer_binary_semantic().expect("Already checked"),
+                    })
                 } else if matches!(&*operand_type, Type::Real) {
-                    Ok((
-                        Rc::new(Type::Bool),
-                        Rc::clone(&operand_type),
-                        op.to_real_binary_semantic().expect("Already checked"),
-                    ))
+                    Ok(BinOpAdjustment {
+                        result: Rc::new(Type::Bool),
+                        operand: Rc::clone(&operand_type),
+                        operator: op.to_real_binary_semantic().expect("Already checked"),
+                    })
                 } else {
                     Err(AnalysisError {
                         what: format!(
