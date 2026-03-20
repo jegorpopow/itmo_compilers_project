@@ -15,7 +15,7 @@ use crate::source_positions::{Extent, Position};
 use crate::tokens::{
     self, BoolLiteral as TokenBoolLiteral, Identifier as TokenIdentifier,
     IntegerLiteral as TokenIntegerLiteral, InvalidToken, RealLiteral as TokenRealLiteral, Token,
-    TokenIssue, TokenKind,
+    TokenKind,
 };
 
 trait TokenIterator<'a, 'b: 'a>: Clone + Copy {
@@ -133,15 +133,11 @@ impl Parser {
         while let Some(token) = i.current() {
             match token {
                 Token {
-                    kind:
-                        TokenKind::Invalid(InvalidToken {
-                            problem,
-                            code: TokenIssue::Unexpected,
-                        }),
+                    kind: TokenKind::Invalid(t @ InvalidToken::Unexpected(_)),
                     extent: Extent { start, .. },
                     ..
                 } => {
-                    self.report_recovered(problem.clone(), *start);
+                    self.report_recovered(t.to_string(), *start);
                 }
                 Token {
                     kind: TokenKind::Comment(_),
@@ -359,18 +355,14 @@ impl Parser {
                         self.next(i),
                     ))
                 } else if let Token {
-                    kind:
-                        TokenKind::Invalid(InvalidToken {
-                            problem,
-                            code: TokenIssue::MalformedReal,
-                        }),
+                    kind: TokenKind::Invalid(t @ InvalidToken::MalformedReal(_)),
                     extent: Extent { start, .. },
                     ..
                 } = token
                 {
                     self.recovered_errors.push(ParsingError {
                         position: *start,
-                        what: problem.clone(),
+                        what: t.to_string(),
                     });
 
                     Ok((
@@ -413,18 +405,14 @@ impl Parser {
                         self.next(i),
                     ))
                 } else if let Token {
-                    kind:
-                        TokenKind::Invalid(InvalidToken {
-                            problem,
-                            code: TokenIssue::MalformedReal,
-                        }),
+                    kind: TokenKind::Invalid(t @ InvalidToken::MalformedReal(_)),
                     extent: Extent { start, .. },
                     ..
                 } = token
                 {
                     self.recovered_errors.push(ParsingError {
                         position: *start,
-                        what: problem.clone(),
+                        what: t.to_string(),
                     });
 
                     Ok((

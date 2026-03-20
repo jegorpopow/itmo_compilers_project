@@ -1,4 +1,5 @@
-use core::fmt;
+use core::num::{ParseFloatError, ParseIntError};
+use core::{error, fmt};
 
 use crate::operators::SyntacticOperator;
 use crate::source_positions::Extent;
@@ -61,17 +62,31 @@ pub struct Comment<'a> {
     pub value: &'a str,
 }
 
-#[derive(PartialEq, Eq, Hash, fmt::Debug, Clone, Copy)]
-pub enum TokenIssue {
-    Unexpected,
-    MalformedInteger,
-    MalformedReal,
+#[derive(PartialEq, Eq, fmt::Debug, Clone)]
+pub enum InvalidToken {
+    Unexpected(char),
+    MalformedInteger(ParseIntError),
+    MalformedReal(ParseFloatError),
 }
 
-#[derive(PartialEq, Eq, Hash, fmt::Debug, Clone)]
-pub struct InvalidToken {
-    pub problem: String,
-    pub code: TokenIssue,
+impl error::Error for InvalidToken {
+    fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
+        match self {
+            Self::Unexpected(_) => None,
+            Self::MalformedInteger(e) => Some(e),
+            Self::MalformedReal(e) => Some(e),
+        }
+    }
+}
+
+impl fmt::Display for InvalidToken {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Self::Unexpected(c) => write!(f, "Unexpected character: {c:?}"),
+            Self::MalformedInteger(e) => write!(f, "Malformed integer literal: {e}"),
+            Self::MalformedReal(e) => write!(f, "Malformed real literal: {e}"),
+        }
+    }
 }
 
 impl fmt::Display for Comment<'_> {
@@ -132,7 +147,7 @@ impl fmt::Display for TokenKind<'_> {
             }
             TokenKind::Operator(operator) => write!(f, "OPERATOR({operator:?})"),
             TokenKind::Comment(comment) => write!(f, "COMMENT({comment})"),
-            TokenKind::Invalid(InvalidToken { problem, .. }) => write!(f, "INVALID({problem})"),
+            TokenKind::Invalid(problem) => write!(f, "INVALID({problem})"),
             TokenKind::LeftBracket => write!(f, "LEFT BRACKET"),
             TokenKind::RightBracket => write!(f, "RIGHT BRACKET"),
             TokenKind::LeftParenthesis => write!(f, "LEFT PARENTHESIS"),

@@ -231,20 +231,14 @@ fn symbolic_token<'a>(start: &IndexIterator<'a>) -> Option<(TokenKind<'a>, Index
 fn real_literal_from_representation(s: &str) -> TokenKind<'_> {
     match s.parse::<f64>() {
         Ok(value) => TokenKind::RealLiteral(RealLiteral { value }),
-        Err(e) => TokenKind::Invalid(InvalidToken {
-            problem: format!("Malformed float {s:?}: {e}"),
-            code: TokenIssue::MalformedReal,
-        }),
+        Err(e) => TokenKind::Invalid(InvalidToken::MalformedReal(e)),
     }
 }
 
 fn integer_literal_from_representation(s: &str) -> TokenKind<'_> {
     match s.parse::<i64>() {
         Ok(value) => TokenKind::IntegerLiteral(IntegerLiteral { value }),
-        Err(e) => TokenKind::Invalid(InvalidToken {
-            problem: format!("Malformed integer {s:?}: {e}"),
-            code: TokenIssue::MalformedInteger,
-        }),
+        Err(e) => TokenKind::Invalid(InvalidToken::MalformedInteger(e)),
     }
 }
 
@@ -346,10 +340,7 @@ impl<'src> Iterator for Lexer<'src> {
             .or_else(|| numeric_token(self.allow_sign, &begin))
             .or_else(|| symbolic_token(&begin))
             .unwrap_or((
-                TokenKind::Invalid(InvalidToken {
-                    problem: format!("Unexpected symbol `{first_char}`"),
-                    code: TokenIssue::Unexpected,
-                }),
+                TokenKind::Invalid(InvalidToken::Unexpected(first_char)),
                 rest,
             ));
         self.update_allow_sign(&kind);
