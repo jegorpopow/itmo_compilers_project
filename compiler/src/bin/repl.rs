@@ -18,11 +18,12 @@ fn parse_expr_from_line(str: &str) -> PureParsingResult<Rc<Expression>> {
 }
 
 fn main() -> io::Result<()> {
+    let mut buffer = String::new();
     loop {
         print!("> ");
         io::stdout().flush()?;
 
-        let mut buffer = String::new();
+        buffer.clear();
         let _: usize = io::stdin().read_line(&mut buffer)?;
 
         match parse_expr_from_line(&buffer) {
