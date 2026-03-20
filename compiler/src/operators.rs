@@ -129,6 +129,12 @@ pub enum SemanticBinaryOperator {
     BoolOr = 23,
 }
 
+#[allow(
+    clippy::enum_variant_names,
+    clippy::allow_attributes,
+    reason = "Negation is the only unary operation that we have
+    (expect seems to be broken here, yippee)"
+)]
 #[derive(PartialEq, Eq, Hash, Debug, Clone, Copy)]
 #[repr(u8)]
 pub enum SemanticUnaryOperator {
