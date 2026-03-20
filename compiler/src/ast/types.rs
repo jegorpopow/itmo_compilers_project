@@ -216,7 +216,7 @@ pub fn infer_binary_operator_type(
                 })
             } else {
                 Err(AnalysisError {
-                    what: format!("Can not apply operator {op:?}for {lhs_type} and {rhs_type}"),
+                    what: format!("Can not apply operator {op:?} for {lhs_type} and {rhs_type}"),
                 })
             }
         }
