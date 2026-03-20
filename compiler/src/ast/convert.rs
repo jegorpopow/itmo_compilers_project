@@ -465,7 +465,7 @@ impl Converter {
                     | SyntacticOperator::Div
                     | SyntacticOperator::Mod
                     | SyntacticOperator::Eq
-                    | SyntacticOperator::Neq
+                    | SyntacticOperator::Ne
                     | SyntacticOperator::Lt
                     | SyntacticOperator::Le
                     | SyntacticOperator::Gt

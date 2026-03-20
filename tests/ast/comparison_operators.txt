@@ -277,7 +277,7 @@ Ok(
                                         Stmt(
                                             Print {
                                                 value: Binop {
-                                                    op: Neq,
+                                                    op: Ne,
                                                     lhs: LvalueToRvalue(
                                                         Identifier(
                                                             a(1),
@@ -379,7 +379,7 @@ Ok(
                                         Stmt(
                                             Print {
                                                 value: Binop {
-                                                    op: Neq,
+                                                    op: Ne,
                                                     lhs: LvalueToRvalue(
                                                         Identifier(
                                                             x(3),
@@ -409,7 +409,7 @@ Ok(
                                         Stmt(
                                             Print {
                                                 value: Binop {
-                                                    op: Neq,
+                                                    op: Ne,
                                                     lhs: BoolLiteral(
                                                         True,
                                                     ),

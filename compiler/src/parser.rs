@@ -892,7 +892,7 @@ impl Parser {
             &[
                 SyntacticOperator::Lt,
                 SyntacticOperator::Le,
-                SyntacticOperator::Neq,
+                SyntacticOperator::Ne,
                 SyntacticOperator::Eq,
                 SyntacticOperator::Gt,
                 SyntacticOperator::Ge,

@@ -197,7 +197,7 @@ impl Expression {
                     Ok(EvaluatedValue::Bool(lhs >= rhs))
                 }
                 SemanticBinaryOperator::Eq => Ok(EvaluatedValue::Bool(lhs == rhs)),
-                SemanticBinaryOperator::Neq => Ok(EvaluatedValue::Bool(lhs != rhs)),
+                SemanticBinaryOperator::Ne => Ok(EvaluatedValue::Bool(lhs != rhs)),
                 SemanticBinaryOperator::IntAdd => {
                     let lhs = lhs.as_ref().try_constexpr_evaluate()?.as_int()?;
                     let rhs = rhs.as_ref().try_constexpr_evaluate()?.as_int()?;

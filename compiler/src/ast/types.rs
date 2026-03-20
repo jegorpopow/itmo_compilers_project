@@ -199,7 +199,7 @@ pub fn infer_binary_operator_type(
             }
         }
 
-        SyntacticOperator::Eq | SyntacticOperator::Neq => {
+        SyntacticOperator::Eq | SyntacticOperator::Ne => {
             if **lhs_type == **rhs_type || **lhs_type == Type::Null || **rhs_type == Type::Null {
                 Ok((
                     Rc::new(Type::Bool),

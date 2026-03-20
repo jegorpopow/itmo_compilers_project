@@ -197,7 +197,7 @@ fn symbolic_token<'a>(start: &IndexIterator<'a>) -> Option<(TokenKind<'a>, Index
         (":=", TokenKind::Assignment),
         ("::", TokenKind::Cast),
         ("..", TokenKind::RangeSymbol),
-        ("/=", TokenKind::Operator(SyntacticOperator::Neq)),
+        ("/=", TokenKind::Operator(SyntacticOperator::Ne)),
         ("<=", TokenKind::Operator(SyntacticOperator::Le)),
         (">=", TokenKind::Operator(SyntacticOperator::Ge)),
         ("=>", TokenKind::RightArrow),
