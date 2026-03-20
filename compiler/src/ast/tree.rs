@@ -548,7 +548,6 @@ impl IdentifierTable {
     }
 
     pub fn rebind(&mut self, ident: &Identifier, new_decl: Decl) {
-        assert!(ident.id < self.bindings.len());
         self.bindings[ident.id].decl = new_decl;
     }
 

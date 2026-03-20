@@ -28,13 +28,12 @@ mod parser;
 // TODO: create a Driver module
 
 fn main() -> ExitCode {
-    let args: Vec<String> = env::args().collect();
-    if args.len() < 2 {
+    let Some(file) = env::args().nth(1) else {
         println!("No file provided");
         return ExitCode::from(1);
-    }
+    };
 
-    let Ok(source) = fs::read_to_string(&args[1]) else {
+    let Ok(source) = fs::read_to_string(file) else {
         eprintln!("IO error: cannot read from input file");
         return ExitCode::FAILURE;
     };

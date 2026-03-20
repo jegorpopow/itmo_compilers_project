@@ -35,10 +35,9 @@ impl<'a, 'b> From<&'a [Token<'b>]> for IndexedIterator<'a, 'b> {
         IndexedIterator {
             underlying: value,
             index: 0,
-            pos: if value.is_empty() {
-                Position { line: 0, column: 0 }
-            } else {
-                value[0].extent.start
+            pos: match value.first() {
+                Some(t) => t.extent.start,
+                None => Position { line: 0, column: 0 },
             },
         }
     }
@@ -57,10 +56,9 @@ impl<'a, 'b> TokenIterator<'a, 'b> for IndexedIterator<'a, 'b> {
         IndexedIterator {
             underlying: self.underlying,
             index: self.index + 1,
-            pos: if self.underlying.len() <= self.index + 1 {
-                self.underlying[self.index].extent.end
-            } else {
-                self.underlying[self.index + 1].extent.start
+            pos: match self.underlying.get(self.index + 1) {
+                Some(t) => t.extent.start,
+                None => self.underlying[self.index].extent.end,
             },
         }
     }
