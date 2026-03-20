@@ -1,14 +1,13 @@
-#![allow(dead_code)]
+#![expect(dead_code, reason = "WIP")]
 
 use crate::ast;
-use crate::ast::types::{BinOpAdjustment, infer_binary_operator_type};
-use crate::bytecode::Location;
-use crate::operators::{SemanticUnaryOperator, SyntacticOperator};
-use crate::parse_tree as pt;
-
 use crate::ast::error::{AnalysisError, AnalysisResult};
 use crate::ast::tree::{IdentifierTable, OptionalDecl, cast_to};
+use crate::ast::types::{BinOpAdjustment, infer_binary_operator_type};
+use crate::bytecode::Location;
 use crate::identifier::{Identifier, RawIdentifier};
+use crate::operators::{SemanticUnaryOperator, SyntacticOperator};
+use crate::parse_tree as pt;
 
 use std::collections::HashMap;
 use std::rc::Rc;

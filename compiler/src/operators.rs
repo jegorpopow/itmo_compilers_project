@@ -1,5 +1,3 @@
-#![allow(dead_code, reason = "WIP")]
-
 #[derive(PartialEq, Eq, Hash, Debug, Clone, Copy)]
 pub enum SyntacticOperator {
     Add, // Either binary or unary one

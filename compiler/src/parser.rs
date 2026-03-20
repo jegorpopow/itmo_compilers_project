@@ -1,4 +1,3 @@
-#![expect(dead_code, reason = "WIP")]
 #![allow(clippy::unnecessary_wraps)]
 use core::fmt;
 use std::rc::Rc;
@@ -22,9 +21,6 @@ trait TokenIterator<'a, 'b: 'a>: Clone + Copy {
     fn current(&self) -> Option<&'a Token<'b>>;
     fn position(&self) -> Position;
     fn next(&self) -> Self;
-    fn has_value(&self) -> bool {
-        self.current().is_some()
-    }
 }
 
 #[derive(Clone, Copy, Debug)]
@@ -102,8 +98,6 @@ impl<'a, 'b: 'a, T, F> ParsingFunction<'a, 'b, T> for F where
     F: FnMut(&mut Parser, IndexedIterator<'a, 'b>) -> ParsingResult<'a, 'b, T>
 {
 }
-
-type OperatorsPrecedense = Vec<SyntacticOperator>;
 
 impl Default for Parser {
     fn default() -> Self {

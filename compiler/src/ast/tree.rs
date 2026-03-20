@@ -1,4 +1,4 @@
-#![allow(dead_code, reason = "WIP")]
+#![expect(dead_code, reason = "WIP")]
 #![allow(clippy::wrong_self_convention)]
 #![allow(clippy::cast_precision_loss)]
 #![allow(clippy::cast_lossless)]
