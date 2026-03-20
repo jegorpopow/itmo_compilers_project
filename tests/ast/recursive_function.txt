@@ -77,22 +77,20 @@ Ok(
                                     [
                                         Stmt(
                                             If {
-                                                condition: IntToBool(
-                                                    Binop {
-                                                        op: IntLe,
-                                                        lhs: LvalueToRvalue(
-                                                            Identifier(
-                                                                n(1),
-                                                            ),
+                                                condition: Binop {
+                                                    op: IntLe,
+                                                    lhs: LvalueToRvalue(
+                                                        Identifier(
+                                                            n(1),
                                                         ),
-                                                        rhs: IntegerLiteral(
-                                                            IntegerLiteral {
-                                                                repr: "2",
-                                                                value: 2,
-                                                            },
-                                                        ),
-                                                    },
-                                                ),
+                                                    ),
+                                                    rhs: IntegerLiteral(
+                                                        IntegerLiteral {
+                                                            repr: "2",
+                                                            value: 2,
+                                                        },
+                                                    ),
+                                                },
                                                 on_true: Block(
                                                     [
                                                         Stmt(

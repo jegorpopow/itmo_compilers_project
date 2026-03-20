@@ -172,7 +172,7 @@ impl Type {
 // FIXME: rewrite
 /// Generates type for Binop
 /// Given types of lhs, rhs and op returns (result, operand, sem_op)
-/// such as: lhs `op` rhs ↦ cast_to(lhs, operand) `sem_op` cast_to(rhs, operand) :: resultW
+/// such as: lhs `op` rhs ↦ cast_to(lhs, operand) `sem_op` cast_to(rhs, operand) :: result
 pub fn infer_binary_operator_type(
     lhs_type: &Rc<Type>,
     rhs_type: &Rc<Type>,
@@ -272,17 +272,17 @@ pub fn infer_binary_operator_type(
         | SyntacticOperator::Gt
         | SyntacticOperator::Ge => {
             if lhs_type.is_scalar() && rhs_type.is_scalar() {
-                let result_type = Type::most_precise(lhs_type, rhs_type)?;
-                if matches!(&*result_type, Type::Int) {
+                let operand_type = Type::most_precise(lhs_type, rhs_type)?;
+                if matches!(&*operand_type, Type::Int) {
                     Ok((
-                        Rc::clone(&result_type),
-                        Rc::clone(&result_type),
+                        Rc::new(Type::Bool),
+                        Rc::clone(&operand_type),
                         op.to_integer_binary_semantic().expect("Already checked"),
                     ))
-                } else if matches!(&*result_type, Type::Real) {
+                } else if matches!(&*operand_type, Type::Real) {
                     Ok((
-                        Rc::clone(&result_type),
-                        Rc::clone(&result_type),
+                        Rc::new(Type::Bool),
+                        Rc::clone(&operand_type),
                         op.to_real_binary_semantic().expect("Already checked"),
                     ))
                 } else {

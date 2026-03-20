@@ -328,40 +328,36 @@ Ok(
                                             Print {
                                                 value: Binop {
                                                     op: BoolAnd,
-                                                    lhs: IntToBool(
-                                                        Binop {
-                                                            op: IntLt,
-                                                            lhs: IntegerLiteral(
-                                                                IntegerLiteral {
-                                                                    repr: "1",
-                                                                    value: 1,
-                                                                },
-                                                            ),
-                                                            rhs: IntegerLiteral(
-                                                                IntegerLiteral {
-                                                                    repr: "2",
-                                                                    value: 2,
-                                                                },
-                                                            ),
-                                                        },
-                                                    ),
-                                                    rhs: IntToBool(
-                                                        Binop {
-                                                            op: IntLt,
-                                                            lhs: IntegerLiteral(
-                                                                IntegerLiteral {
-                                                                    repr: "3",
-                                                                    value: 3,
-                                                                },
-                                                            ),
-                                                            rhs: IntegerLiteral(
-                                                                IntegerLiteral {
-                                                                    repr: "4",
-                                                                    value: 4,
-                                                                },
-                                                            ),
-                                                        },
-                                                    ),
+                                                    lhs: Binop {
+                                                        op: IntLt,
+                                                        lhs: IntegerLiteral(
+                                                            IntegerLiteral {
+                                                                repr: "1",
+                                                                value: 1,
+                                                            },
+                                                        ),
+                                                        rhs: IntegerLiteral(
+                                                            IntegerLiteral {
+                                                                repr: "2",
+                                                                value: 2,
+                                                            },
+                                                        ),
+                                                    },
+                                                    rhs: Binop {
+                                                        op: IntLt,
+                                                        lhs: IntegerLiteral(
+                                                            IntegerLiteral {
+                                                                repr: "3",
+                                                                value: 3,
+                                                            },
+                                                        ),
+                                                        rhs: IntegerLiteral(
+                                                            IntegerLiteral {
+                                                                repr: "4",
+                                                                value: 4,
+                                                            },
+                                                        ),
+                                                    },
                                                 },
                                             },
                                         ),
@@ -476,36 +472,32 @@ Ok(
                                             Print {
                                                 value: Binop {
                                                     op: BoolAnd,
-                                                    lhs: IntToBool(
-                                                        Binop {
-                                                            op: IntLt,
-                                                            lhs: LvalueToRvalue(
-                                                                Identifier(
-                                                                    a(3),
-                                                                ),
+                                                    lhs: Binop {
+                                                        op: IntLt,
+                                                        lhs: LvalueToRvalue(
+                                                            Identifier(
+                                                                a(3),
                                                             ),
-                                                            rhs: LvalueToRvalue(
-                                                                Identifier(
-                                                                    b(4),
-                                                                ),
+                                                        ),
+                                                        rhs: LvalueToRvalue(
+                                                            Identifier(
+                                                                b(4),
                                                             ),
-                                                        },
-                                                    ),
-                                                    rhs: IntToBool(
-                                                        Binop {
-                                                            op: IntLt,
-                                                            lhs: LvalueToRvalue(
-                                                                Identifier(
-                                                                    b(4),
-                                                                ),
+                                                        ),
+                                                    },
+                                                    rhs: Binop {
+                                                        op: IntLt,
+                                                        lhs: LvalueToRvalue(
+                                                            Identifier(
+                                                                b(4),
                                                             ),
-                                                            rhs: LvalueToRvalue(
-                                                                Identifier(
-                                                                    c(5),
-                                                                ),
+                                                        ),
+                                                        rhs: LvalueToRvalue(
+                                                            Identifier(
+                                                                c(5),
                                                             ),
-                                                        },
-                                                    ),
+                                                        ),
+                                                    },
                                                 },
                                             },
                                         ),
@@ -513,36 +505,32 @@ Ok(
                                             Print {
                                                 value: Binop {
                                                     op: BoolOr,
-                                                    lhs: IntToBool(
-                                                        Binop {
-                                                            op: IntGt,
-                                                            lhs: LvalueToRvalue(
-                                                                Identifier(
-                                                                    a(3),
-                                                                ),
+                                                    lhs: Binop {
+                                                        op: IntGt,
+                                                        lhs: LvalueToRvalue(
+                                                            Identifier(
+                                                                a(3),
                                                             ),
-                                                            rhs: LvalueToRvalue(
-                                                                Identifier(
-                                                                    b(4),
-                                                                ),
+                                                        ),
+                                                        rhs: LvalueToRvalue(
+                                                            Identifier(
+                                                                b(4),
                                                             ),
-                                                        },
-                                                    ),
-                                                    rhs: IntToBool(
-                                                        Binop {
-                                                            op: IntLt,
-                                                            lhs: LvalueToRvalue(
-                                                                Identifier(
-                                                                    b(4),
-                                                                ),
+                                                        ),
+                                                    },
+                                                    rhs: Binop {
+                                                        op: IntLt,
+                                                        lhs: LvalueToRvalue(
+                                                            Identifier(
+                                                                b(4),
                                                             ),
-                                                            rhs: LvalueToRvalue(
-                                                                Identifier(
-                                                                    c(5),
-                                                                ),
+                                                        ),
+                                                        rhs: LvalueToRvalue(
+                                                            Identifier(
+                                                                c(5),
                                                             ),
-                                                        },
-                                                    ),
+                                                        ),
+                                                    },
                                                 },
                                             },
                                         ),

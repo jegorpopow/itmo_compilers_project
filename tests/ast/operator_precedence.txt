@@ -153,40 +153,36 @@ Ok(
                                             Print {
                                                 value: Binop {
                                                     op: BoolAnd,
-                                                    lhs: IntToBool(
-                                                        Binop {
-                                                            op: IntLt,
-                                                            lhs: IntegerLiteral(
-                                                                IntegerLiteral {
-                                                                    repr: "5",
-                                                                    value: 5,
-                                                                },
-                                                            ),
-                                                            rhs: IntegerLiteral(
-                                                                IntegerLiteral {
-                                                                    repr: "3",
-                                                                    value: 3,
-                                                                },
-                                                            ),
-                                                        },
-                                                    ),
-                                                    rhs: IntToBool(
-                                                        Binop {
-                                                            op: IntGt,
-                                                            lhs: IntegerLiteral(
-                                                                IntegerLiteral {
-                                                                    repr: "4",
-                                                                    value: 4,
-                                                                },
-                                                            ),
-                                                            rhs: IntegerLiteral(
-                                                                IntegerLiteral {
-                                                                    repr: "2",
-                                                                    value: 2,
-                                                                },
-                                                            ),
-                                                        },
-                                                    ),
+                                                    lhs: Binop {
+                                                        op: IntLt,
+                                                        lhs: IntegerLiteral(
+                                                            IntegerLiteral {
+                                                                repr: "5",
+                                                                value: 5,
+                                                            },
+                                                        ),
+                                                        rhs: IntegerLiteral(
+                                                            IntegerLiteral {
+                                                                repr: "3",
+                                                                value: 3,
+                                                            },
+                                                        ),
+                                                    },
+                                                    rhs: Binop {
+                                                        op: IntGt,
+                                                        lhs: IntegerLiteral(
+                                                            IntegerLiteral {
+                                                                repr: "4",
+                                                                value: 4,
+                                                            },
+                                                        ),
+                                                        rhs: IntegerLiteral(
+                                                            IntegerLiteral {
+                                                                repr: "2",
+                                                                value: 2,
+                                                            },
+                                                        ),
+                                                    },
                                                 },
                                             },
                                         ),

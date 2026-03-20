@@ -147,22 +147,20 @@ Ok(
                                         ),
                                         Stmt(
                                             While {
-                                                condition: IntToBool(
-                                                    Binop {
-                                                        op: IntLt,
-                                                        lhs: LvalueToRvalue(
-                                                            Identifier(
-                                                                i(1),
-                                                            ),
+                                                condition: Binop {
+                                                    op: IntLt,
+                                                    lhs: LvalueToRvalue(
+                                                        Identifier(
+                                                            i(1),
                                                         ),
-                                                        rhs: IntegerLiteral(
-                                                            IntegerLiteral {
-                                                                repr: "2",
-                                                                value: 2,
-                                                            },
-                                                        ),
-                                                    },
-                                                ),
+                                                    ),
+                                                    rhs: IntegerLiteral(
+                                                        IntegerLiteral {
+                                                            repr: "2",
+                                                            value: 2,
+                                                        },
+                                                    ),
+                                                },
                                                 body: Block(
                                                     [
                                                         Decl(
@@ -188,22 +186,20 @@ Ok(
                                                         ),
                                                         Stmt(
                                                             While {
-                                                                condition: IntToBool(
-                                                                    Binop {
-                                                                        op: IntLt,
-                                                                        lhs: LvalueToRvalue(
-                                                                            Identifier(
-                                                                                j(2),
-                                                                            ),
+                                                                condition: Binop {
+                                                                    op: IntLt,
+                                                                    lhs: LvalueToRvalue(
+                                                                        Identifier(
+                                                                            j(2),
                                                                         ),
-                                                                        rhs: IntegerLiteral(
-                                                                            IntegerLiteral {
-                                                                                repr: "2",
-                                                                                value: 2,
-                                                                            },
-                                                                        ),
-                                                                    },
-                                                                ),
+                                                                    ),
+                                                                    rhs: IntegerLiteral(
+                                                                        IntegerLiteral {
+                                                                            repr: "2",
+                                                                            value: 2,
+                                                                        },
+                                                                    ),
+                                                                },
                                                                 body: Block(
                                                                     [
                                                                         Decl(
@@ -229,22 +225,20 @@ Ok(
                                                                         ),
                                                                         Stmt(
                                                                             While {
-                                                                                condition: IntToBool(
-                                                                                    Binop {
-                                                                                        op: IntLt,
-                                                                                        lhs: LvalueToRvalue(
-                                                                                            Identifier(
-                                                                                                k(3),
-                                                                                            ),
+                                                                                condition: Binop {
+                                                                                    op: IntLt,
+                                                                                    lhs: LvalueToRvalue(
+                                                                                        Identifier(
+                                                                                            k(3),
                                                                                         ),
-                                                                                        rhs: IntegerLiteral(
-                                                                                            IntegerLiteral {
-                                                                                                repr: "2",
-                                                                                                value: 2,
-                                                                                            },
-                                                                                        ),
-                                                                                    },
-                                                                                ),
+                                                                                    ),
+                                                                                    rhs: IntegerLiteral(
+                                                                                        IntegerLiteral {
+                                                                                            repr: "2",
+                                                                                            value: 2,
+                                                                                        },
+                                                                                    ),
+                                                                                },
                                                                                 body: Block(
                                                                                     [
                                                                                         Decl(
@@ -270,22 +264,20 @@ Ok(
                                                                                         ),
                                                                                         Stmt(
                                                                                             While {
-                                                                                                condition: IntToBool(
-                                                                                                    Binop {
-                                                                                                        op: IntLt,
-                                                                                                        lhs: LvalueToRvalue(
-                                                                                                            Identifier(
-                                                                                                                w(4),
-                                                                                                            ),
+                                                                                                condition: Binop {
+                                                                                                    op: IntLt,
+                                                                                                    lhs: LvalueToRvalue(
+                                                                                                        Identifier(
+                                                                                                            w(4),
                                                                                                         ),
-                                                                                                        rhs: IntegerLiteral(
-                                                                                                            IntegerLiteral {
-                                                                                                                repr: "2",
-                                                                                                                value: 2,
-                                                                                                            },
-                                                                                                        ),
-                                                                                                    },
-                                                                                                ),
+                                                                                                    ),
+                                                                                                    rhs: IntegerLiteral(
+                                                                                                        IntegerLiteral {
+                                                                                                            repr: "2",
+                                                                                                            value: 2,
+                                                                                                        },
+                                                                                                    ),
+                                                                                                },
                                                                                                 body: Block(
                                                                                                     [
                                                                                                         Decl(
@@ -311,22 +303,20 @@ Ok(
                                                                                                         ),
                                                                                                         Stmt(
                                                                                                             While {
-                                                                                                                condition: IntToBool(
-                                                                                                                    Binop {
-                                                                                                                        op: IntLt,
-                                                                                                                        lhs: LvalueToRvalue(
-                                                                                                                            Identifier(
-                                                                                                                                v(5),
-                                                                                                                            ),
+                                                                                                                condition: Binop {
+                                                                                                                    op: IntLt,
+                                                                                                                    lhs: LvalueToRvalue(
+                                                                                                                        Identifier(
+                                                                                                                            v(5),
                                                                                                                         ),
-                                                                                                                        rhs: IntegerLiteral(
-                                                                                                                            IntegerLiteral {
-                                                                                                                                repr: "2",
-                                                                                                                                value: 2,
-                                                                                                                            },
-                                                                                                                        ),
-                                                                                                                    },
-                                                                                                                ),
+                                                                                                                    ),
+                                                                                                                    rhs: IntegerLiteral(
+                                                                                                                        IntegerLiteral {
+                                                                                                                            repr: "2",
+                                                                                                                            value: 2,
+                                                                                                                        },
+                                                                                                                    ),
+                                                                                                                },
                                                                                                                 body: Block(
                                                                                                                     [
                                                                                                                         Stmt(
