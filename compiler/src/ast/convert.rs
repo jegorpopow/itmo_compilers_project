@@ -512,7 +512,7 @@ impl Converter {
                     | ast::types::Type::Unit => Err(AnalysisError {
                         what: format!("No new operator supprted for built-in type {t:?}"),
                     }),
-                    ast::types::Type::Alias(_) => panic!("Effective type can not be alias"),
+                    ast::types::Type::Alias(_) => unreachable!("Effective type can not be alias"),
                     ast::types::Type::Record(_) => {
                         let defined_fields = fields.clone().unwrap_or(Vec::new());
                         let converted_fields = defined_fields.iter().map(|(name, expr)| {
@@ -632,7 +632,7 @@ impl Converter {
                 order,
                 body,
             } => {
-                self.enter_block(); // For counter is in it's own block 
+                self.enter_block(); // For counter is in it's own block
 
                 let counter_loc = self.get_fresh_local_location();
 
