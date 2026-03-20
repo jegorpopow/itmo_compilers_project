@@ -292,7 +292,7 @@ impl Converter {
                         lhs: converted_lhs,
                         index: converted_index,
                     }),
-                    resulting_type,
+                    Rc::clone(resulting_type),
                 ))
             }
         }
@@ -494,7 +494,7 @@ impl Converter {
                             operand: converted_operand,
                             target: Rc::clone(&converted_target_type),
                         }),
-                        Rc::clone(&converted_target_type),
+                        converted_target_type,
                     ))
                 } else {
                     Err(AnalysisError {
@@ -538,7 +538,7 @@ impl Converter {
                                 t: Rc::clone(&converted_type),
                                 fields: Some(converted_fields),
                             }),
-                            Rc::clone(&converted_type),
+                            converted_type,
                         ))
                     }
 
@@ -549,7 +549,7 @@ impl Converter {
                                     t: Rc::clone(&converted_type),
                                     fields: None,
                                 }),
-                                Rc::clone(&converted_type),
+                                converted_type,
                             ))
                         } else if !fields.is_none() {
                             Err(AnalysisError {
@@ -638,7 +638,7 @@ impl Converter {
                         let (array_expr, array_type) = self.convert_expr(from)?;
                         let element_type = array_type.get_element_type()?;
                         let counter_decl = ast::tree::Decl::Var(ast::tree::VarDecl {
-                            t: Rc::clone(&element_type),
+                            t: Rc::clone(element_type),
                             initialiser: None,
                             relative_location: counter_loc,
                         });
@@ -764,12 +764,12 @@ impl Converter {
                         let converted_type = self.convert_type(t)?;
                         let (converted_initialiser, init_type) = self.convert_expr(expr)?;
                         Ok(ast::tree::Decl::Var(ast::tree::VarDecl {
-                            t: Rc::clone(&converted_type),
                             initialiser: Some(cast_to(
                                 converted_initialiser,
                                 &init_type,
                                 &converted_type,
                             )?),
+                            t: converted_type,
                             relative_location: loc,
                         }))
                     }
@@ -898,7 +898,7 @@ impl Converter {
                                         .cloned()
                                         .collect::<Vec<Rc<ast::types::Type>>>()
                                         .clone(),
-                                    return_type: Rc::clone(&converted_return_type),
+                                    return_type: converted_return_type,
                                 });
 
                                 // create a function scope

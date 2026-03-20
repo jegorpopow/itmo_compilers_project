@@ -36,12 +36,6 @@ pub struct ArrayDescription {
     pub length: Option<usize>,
 }
 
-impl ArrayDescription {
-    fn get_element_type(&self) -> Rc<Type> {
-        Rc::clone(&self.t)
-    }
-}
-
 #[derive(Debug, Hash, PartialEq, Eq)]
 pub enum Type {
     Int,
@@ -52,6 +46,13 @@ pub enum Type {
     Array(ArrayDescription),
     Null,
     Unit,
+}
+
+impl Type {
+    pub fn bool() -> Rc<Self> {
+        thread_local! { static BOOL: Rc<Type> = Rc::new(Type::Bool); }
+        BOOL.with(Rc::clone)
+    }
 }
 
 // impl Debug for Type {
@@ -141,9 +142,9 @@ impl Type {
         }
     }
 
-    pub fn get_element_type(&self) -> AnalysisResult<Rc<Type>> {
+    pub fn get_element_type(&self) -> AnalysisResult<&Rc<Type>> {
         match self {
-            Type::Array(record_description) => Ok(record_description.get_element_type()),
+            Type::Array(record_description) => Ok(&record_description.t),
             Type::Int
             | Type::Real
             | Type::Bool
@@ -189,8 +190,8 @@ pub fn infer_binary_operator_type(
         SyntacticOperator::And | SyntacticOperator::Or | SyntacticOperator::Xor => {
             if lhs_type.is_logical() && rhs_type.is_logical() {
                 Ok(BinOpAdjustment {
-                    result: Rc::new(Type::Bool),
-                    operand: Rc::new(Type::Bool),
+                    operand: Type::bool(),
+                    result: Type::bool(),
                     operator: op.to_boolean_binary_semantic().expect("Already checked"),
                 })
             } else {
@@ -205,7 +206,7 @@ pub fn infer_binary_operator_type(
         SyntacticOperator::Eq | SyntacticOperator::Ne => {
             if **lhs_type == **rhs_type || **lhs_type == Type::Null || **rhs_type == Type::Null {
                 Ok(BinOpAdjustment {
-                    result: Rc::new(Type::Bool),
+                    result: Type::bool(),
                     operand: if **lhs_type == Type::Null {
                         Rc::clone(rhs_type)
                     } else {
@@ -228,14 +229,14 @@ pub fn infer_binary_operator_type(
                 let result_type = Type::most_precise(lhs_type, rhs_type)?;
                 if matches!(&*result_type, Type::Int) {
                     Ok(BinOpAdjustment {
-                        result: Rc::clone(&result_type),
                         operand: Rc::clone(&result_type),
+                        result: result_type,
                         operator: op.to_integer_binary_semantic().expect("Already checked"),
                     })
                 } else if matches!(&*result_type, Type::Real) {
                     Ok(BinOpAdjustment {
-                        result: Rc::clone(&result_type),
                         operand: Rc::clone(&result_type),
+                        result: result_type,
                         operator: op.to_real_binary_semantic().expect("Already checked"),
                     })
                 } else {
@@ -257,8 +258,8 @@ pub fn infer_binary_operator_type(
         SyntacticOperator::Mod => {
             if **lhs_type == **rhs_type && matches!(&**lhs_type, Type::Int) {
                 Ok(BinOpAdjustment {
-                    result: Rc::clone(lhs_type),
                     operand: Rc::clone(lhs_type),
+                    result: Rc::clone(lhs_type),
                     operator: op.to_integer_binary_semantic().expect("Already checked"),
                 })
             } else {
@@ -278,14 +279,14 @@ pub fn infer_binary_operator_type(
                 let operand_type = Type::most_precise(lhs_type, rhs_type)?;
                 if matches!(&*operand_type, Type::Int) {
                     Ok(BinOpAdjustment {
-                        result: Rc::new(Type::Bool),
-                        operand: Rc::clone(&operand_type),
+                        result: Type::bool(),
+                        operand: operand_type,
                         operator: op.to_integer_binary_semantic().expect("Already checked"),
                     })
                 } else if matches!(&*operand_type, Type::Real) {
                     Ok(BinOpAdjustment {
-                        result: Rc::new(Type::Bool),
-                        operand: Rc::clone(&operand_type),
+                        result: Type::bool(),
+                        operand: operand_type,
                         operator: op.to_real_binary_semantic().expect("Already checked"),
                     })
                 } else {

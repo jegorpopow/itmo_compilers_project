@@ -619,7 +619,7 @@ pub fn cast_to(
 
         Type::Array(ArrayDescription { t, length: None }) => {
             let element_type = own_type.get_element_type()?;
-            if element_type == *t {
+            if element_type == t {
                 Ok(expr)
             } else {
                 Err(AnalysisError {
