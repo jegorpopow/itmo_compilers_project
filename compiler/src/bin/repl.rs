@@ -17,13 +17,13 @@ fn parse_expr_from_line(str: &str) -> PureParsingResult<Rc<Expression>> {
     parser.parse_expr(start).map(|(val, _)| val)
 }
 
-fn main() {
+fn main() -> io::Result<()> {
     loop {
         print!("> ");
-        io::stdout().flush().unwrap();
+        io::stdout().flush()?;
 
         let mut buffer = String::new();
-        let _: usize = io::stdin().read_line(&mut buffer).expect("IO Error");
+        let _: usize = io::stdin().read_line(&mut buffer)?;
 
         match parse_expr_from_line(&buffer) {
             Ok(expr) => println!("{:?}", *expr),

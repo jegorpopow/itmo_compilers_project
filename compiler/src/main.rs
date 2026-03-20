@@ -27,7 +27,6 @@ mod parser;
 
 // TODO: create a Driver module
 
-#[expect(clippy::unwrap_used, reason = "WIP")]
 fn main() -> ExitCode {
     let args: Vec<String> = env::args().collect();
     if args.len() < 2 {
@@ -35,7 +34,10 @@ fn main() -> ExitCode {
         return ExitCode::from(1);
     }
 
-    let source: String = fs::read_to_string(&args[1]).unwrap();
+    let Ok(source) = fs::read_to_string(&args[1]) else {
+        eprintln!("IO error: cannot read from input file");
+        return ExitCode::FAILURE;
+    };
     let tokens: Vec<Token<'_>> = Lexer::from(source.as_str()).collect();
     for token in &tokens {
         println!("{token}")
