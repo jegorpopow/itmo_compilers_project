@@ -1,9 +1,13 @@
-use crate::ast::error::{AnalysisError, AnalysisResult};
-use crate::identifier::{Identifier, RawIdentifier};
-use crate::operators::{SemanticBinaryOperator, SyntacticOperator};
 use std::fmt::{Debug, Display};
 use std::hash::Hash;
 use std::rc::Rc;
+
+use common::{
+    Identifier, RawIdentifier,
+    operators::{SemanticBinaryOperator, SyntacticOperator},
+};
+
+use crate::{AnalysisError, AnalysisResult};
 
 #[derive(Debug, Hash, PartialEq, Eq)]
 pub struct FieldDescription {
@@ -54,12 +58,6 @@ impl Type {
         BOOL.with(Rc::clone)
     }
 }
-
-// impl Debug for Type {
-//     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-//         write!(f, "{}({})", self.raw.name, self.id)
-//     }
-// }
 
 impl Display for Type {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
@@ -170,14 +168,14 @@ impl Type {
 
 /// lhs `op` rhs ↦ cast_to(lhs, operand) `operator` cast_to(rhs, operand) :: result
 #[derive(Debug, Clone)]
-pub struct BinOpAdjustment {
+pub(crate) struct BinOpAdjustment {
     pub result: Rc<Type>,
     pub operand: Rc<Type>,
     pub operator: SemanticBinaryOperator,
 }
 
 // FIXME: rewrite
-pub fn infer_binary_operator_type(
+pub(crate) fn infer_binary_operator_type(
     lhs_type: &Rc<Type>,
     rhs_type: &Rc<Type>,
     op: SyntacticOperator,

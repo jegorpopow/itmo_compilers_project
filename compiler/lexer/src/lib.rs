@@ -1,11 +1,17 @@
 use phf::phf_map;
 
-use crate::operators::SyntacticOperator;
-use crate::source_positions::{Extent, Position};
-use crate::tokens::*;
+use common::operators::SyntacticOperator;
+use common::{Extent, Position};
+
+mod tokens;
 
 #[cfg(test)]
 mod tests;
+
+pub use crate::tokens::{
+    BoolLiteral, BuiltinTypename, Comment, Identifier, IntegerLiteral, InvalidToken, Keyword,
+    RealLiteral, Token, TokenKind,
+};
 
 trait ImmutableIterator<'a>: Sized + Clone + From<&'a str> {
     fn slice_to_str(start: &Self, end: &Self) -> &'a str;

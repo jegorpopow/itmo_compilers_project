@@ -1,16 +1,16 @@
-#![expect(dead_code, reason = "WIP")]
 use std::rc::Rc;
 
-use crate::ast::error::{AnalysisError, AnalysisResult};
-use crate::ast::types::{ArrayDescription, Type};
-use crate::bytecode::Location;
-use crate::identifier::{Identifier, RawIdentifier};
-use crate::loop_order::LoopOrder;
-
-use crate::operators::{
-    BoolBinOp, IntBinOp, RealBinOp, SemanticBinaryOperator, SemanticUnaryOperator,
-};
 use derive_where::derive_where;
+
+use common::{
+    Identifier, Location, LoopOrder, RawIdentifier,
+    operators::{BoolBinOp, IntBinOp, RealBinOp, SemanticBinaryOperator, SemanticUnaryOperator},
+};
+
+use crate::{
+    AnalysisError, AnalysisResult,
+    types::{ArrayDescription, Type},
+};
 
 #[derive(Debug)]
 #[derive_where(Hash, Eq, PartialEq)]
@@ -35,6 +35,7 @@ pub enum BoolLiteral {
 }
 
 impl BoolLiteral {
+    #[must_use]
     pub fn to_bool(self) -> bool {
         match self {
             BoolLiteral::True => true,
@@ -94,7 +95,7 @@ pub enum Expression {
 }
 
 #[derive(Debug, PartialEq)]
-pub enum EvaluatedValue {
+pub(crate) enum EvaluatedValue {
     Int(i64),
     Real(f64),
     Bool(bool),
@@ -130,7 +131,7 @@ impl EvaluatedValue {
 }
 
 impl EvaluatedValue {
-    pub fn as_usize(&self) -> AnalysisResult<usize> {
+    pub(crate) fn as_usize(&self) -> AnalysisResult<usize> {
         match self {
             &EvaluatedValue::Int(val) => val.try_into().map_err(|e| AnalysisError {
                 what: format!("Complile-time non negative constant expected but found {val}: {e}"),
@@ -188,7 +189,7 @@ impl BinOp<bool> for BoolBinOp {
 }
 
 impl Expression {
-    pub fn try_constexpr_evaluate(&self) -> AnalysisResult<EvaluatedValue> {
+    pub(crate) fn try_constexpr_evaluate(&self) -> AnalysisResult<EvaluatedValue> {
         match self {
             Expression::IntegerLiteral(integer_literal) => {
                 Ok(EvaluatedValue::Int(integer_literal.value))
@@ -266,7 +267,7 @@ pub struct VarDecl {
     pub relative_location: Location,
 }
 
-pub trait OptionalDecl {
+pub(crate) trait OptionalDecl {
     fn is_full(&self) -> bool;
     fn is_forward(&self) -> bool {
         !self.is_full()
@@ -329,6 +330,7 @@ impl OptionalDecl for RoutineDecl {
 }
 
 impl RoutineDecl {
+    #[must_use]
     pub fn signature(&self) -> &RoutineSignature {
         match self {
             RoutineDecl::Full { signature, .. } | RoutineDecl::Forward { signature } => signature,
@@ -481,18 +483,12 @@ impl TryFrom<Binding> for SimpleBinding {
 #[derive(Debug)]
 pub struct Program(pub Vec<Binding>);
 
-#[derive(Debug)]
+#[derive(Debug, Default)]
 pub struct IdentifierTable {
     bindings: Vec<Binding>,
 }
 
 impl IdentifierTable {
-    pub fn new() -> Self {
-        IdentifierTable {
-            bindings: Vec::new(),
-        }
-    }
-
     pub fn create_binding(&mut self, name: &RawIdentifier, decl: Decl) -> Identifier {
         let id = self.bindings.len();
         let identifier = Identifier {
@@ -510,10 +506,12 @@ impl IdentifierTable {
         self.bindings[ident.id].decl = new_decl;
     }
 
+    #[must_use]
     pub fn get_binding(&self, ident: &Identifier) -> &Binding {
         &self.bindings[ident.id]
     }
 
+    #[must_use]
     pub fn get_binding_by_id(&self, id: usize) -> &Binding {
         &self.bindings[id]
     }
@@ -536,7 +534,7 @@ impl IdentifierTable {
 }
 
 // FIXME: add target effective type
-pub fn cast_to(
+pub(crate) fn cast_to(
     expr: Rc<Expression>,
     own_type: &Type,
     target_type: &Type,

@@ -1,19 +1,21 @@
 #![expect(dead_code, reason = "WIP")]
 
-use crate::operators::{
-    BoolBinOp, IntBinOp, RealBinOp, SemanticBinaryOperator, SemanticUnaryOperator,
+use core::alloc::Layout;
+
+use common::{
+    Location,
+    operators::{BoolBinOp, IntBinOp, RealBinOp, SemanticBinaryOperator, SemanticUnaryOperator},
 };
 
-///  Variable location and id
-#[derive(Debug, Clone, Copy, Hash)]
-pub(crate) enum Location {
-    Global(u16),
-    Local(u16),
-    Argument(u16),
+trait Encode {
+    type Output: Copy;
+    #[must_use]
+    fn encode(&self) -> Self::Output;
 }
 
-impl Location {
-    fn encode(self) -> (u8, [u8; 2]) {
+impl Encode for Location {
+    type Output = (u8, [u8; 2]);
+    fn encode(&self) -> Self::Output {
         match self {
             Self::Global(v) => (0, v.to_le_bytes()),
             Self::Local(v) => (1, v.to_le_bytes()),
@@ -115,65 +117,15 @@ pub(crate) enum Instruction {
     IntToReal, // All of it may be just a built-in call
 }
 
-impl Instruction {
-    pub fn encode(self) -> [u8; 16] {
-        Bytecode::from(self).into()
-    }
-}
+impl Encode for SemanticBinaryOperator {
+    type Output = u8;
 
-#[derive(Default)]
-#[repr(C, align(8))]
-struct Bytecode {
-    opcode: u8,
-    subopcode: u8,
-    arg16: [u8; 2],
-    arg32: [u8; 4],
-    arg64: [u8; 8],
-}
-
-fn into_halves<const H: usize, const N: usize>(s: &mut [u8; N]) -> [&mut [u8; H]; 2] {
-    const { assert!(2 * H == N) }
-    let ([first_half, second_half], []) = s.as_chunks_mut::<H>() else {
-        unreachable!()
-    };
-    [first_half, second_half]
-}
-
-impl From<Bytecode> for [u8; 16] {
-    fn from(bytecode: Bytecode) -> Self {
-        // TODO: all of this is just a convoluted memcpy, lmao
-
-        const { assert!(size_of::<Self>() == size_of::<Bytecode>()) };
-
-        let mut result = [0u8; 16];
-        let [h, s64to128] = into_halves::<8, _>(&mut result);
-        let [h, s32to64] = into_halves::<4, _>(h);
-        let [h, s16to32] = into_halves::<2, _>(h);
-        let [[s0to8], [s8to16]] = into_halves::<1, _>(h);
-        let Bytecode {
-            opcode,
-            subopcode,
-            arg16,
-            arg32,
-            arg64,
-        } = bytecode;
-        *s0to8 = opcode;
-        *s8to16 = subopcode;
-        *s16to32 = arg16;
-        *s32to64 = arg32;
-        *s64to128 = arg64;
-        result
-    }
-}
-
-impl SemanticBinaryOperator {
-    #[must_use]
-    const fn as_u8(self) -> u8 {
+    fn encode(&self) -> Self::Output {
         match self {
-            Self::Eq => 0x00,
-            Self::Ne => 0x01,
+            SemanticBinaryOperator::Eq => 0x00,
+            SemanticBinaryOperator::Ne => 0x01,
 
-            Self::Real(op) => match op {
+            SemanticBinaryOperator::Real(op) => match op {
                 RealBinOp::Le => 0x10,
                 RealBinOp::Lt => 0x11,
                 RealBinOp::Gt => 0x12,
@@ -185,7 +137,7 @@ impl SemanticBinaryOperator {
                 RealBinOp::Div => 0x17,
             },
 
-            Self::Int(op) => match op {
+            SemanticBinaryOperator::Int(op) => match op {
                 IntBinOp::Le => 0x20,
                 IntBinOp::Lt => 0x21,
                 IntBinOp::Gt => 0x22,
@@ -197,7 +149,7 @@ impl SemanticBinaryOperator {
                 IntBinOp::Mod => 0x28,
             },
 
-            Self::Bool(op) => match op {
+            SemanticBinaryOperator::Bool(op) => match op {
                 BoolBinOp::And => 0x30,
                 BoolBinOp::Or => 0x31,
                 BoolBinOp::Xor => 0x32,
@@ -206,22 +158,23 @@ impl SemanticBinaryOperator {
     }
 }
 
-impl From<Instruction> for Bytecode {
-    fn from(inst: Instruction) -> Self {
+impl Encode for Instruction {
+    type Output = Bytecode;
+    fn encode(&self) -> Bytecode {
         let zero = Bytecode::default();
-        match inst {
+        match self {
             Instruction::Drop => Bytecode { opcode: 1, ..zero },
             Instruction::Dup => Bytecode { opcode: 2, ..zero },
             Instruction::Swap => Bytecode { opcode: 3, ..zero },
 
             Instruction::BinOp { op } => Bytecode {
                 opcode: 4,
-                subopcode: op.as_u8(),
+                subopcode: op.encode(),
                 ..zero
             },
             Instruction::UnOp { op } => Bytecode {
                 opcode: 5,
-                subopcode: op as u8,
+                subopcode: *op as u8,
                 ..zero
             },
 
@@ -341,6 +294,51 @@ impl From<Instruction> for Bytecode {
                 ..zero
             },
         }
+    }
+}
+
+#[derive(Default, Clone, Copy)]
+#[repr(C, align(8))]
+struct Bytecode {
+    opcode: u8,
+    subopcode: u8,
+    arg16: [u8; 2],
+    arg32: [u8; 4],
+    arg64: [u8; 8],
+}
+
+fn into_halves<const H: usize, const N: usize>(s: &mut [u8; N]) -> [&mut [u8; H]; 2] {
+    const { assert!(2 * H == N) }
+    let ([first_half, second_half], []) = s.as_chunks_mut::<H>() else {
+        unreachable!()
+    };
+    [first_half, second_half]
+}
+
+impl Encode for Bytecode {
+    type Output = [u8; 16];
+    fn encode(&self) -> Self::Output {
+        // TODO: all of this is just a convoluted memcpy, lmao
+        debug_assert_eq!(Layout::new::<Self>(), Layout::new::<Self::Output>());
+
+        let mut result = [0u8; 16];
+        let [h, s64to128] = into_halves::<8, _>(&mut result);
+        let [h, s32to64] = into_halves::<4, _>(h);
+        let [h, s16to32] = into_halves::<2, _>(h);
+        let [[s0to8], [s8to16]] = into_halves::<1, _>(h);
+        let Bytecode {
+            opcode,
+            subopcode,
+            arg16,
+            arg32,
+            arg64,
+        } = *self;
+        *s0to8 = opcode;
+        *s8to16 = subopcode;
+        *s16to32 = arg16;
+        *s32to64 = arg32;
+        *s64to128 = arg64;
+        result
     }
 }
 

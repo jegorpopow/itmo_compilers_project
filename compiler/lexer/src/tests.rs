@@ -1,23 +1,12 @@
-use anyhow::{Context, ensure};
+use crate::Lexer;
 
-use crate::{
-    ast::{
-        convert::convert,
-        tree::{IdentifierTable, Program},
-    },
-    lexer::Lexer,
-    parser::parse_program,
-};
-
-fn get_ast(src: &str) -> anyhow::Result<(IdentifierTable, Program)> {
-    let tokens: Vec<_> = Lexer::from(src).collect();
-    let (program, parsing_errors) = parse_program(&tokens).context("Failed to parse")?;
-    ensure!(
-        parsing_errors.is_empty(),
-        "Parsing errors: {parsing_errors:?}"
-    );
-    let (program, identifiers) = convert(&program).context("Typecheck error")?;
-    Ok((identifiers, program))
+fn lex(src: &str) -> String {
+    let mut result = String::new();
+    for token in Lexer::from(src) {
+        use core::fmt::Write;
+        writeln!(&mut result, "{token}").expect("Writing to a string won't fail");
+    }
+    result
 }
 
 macro_rules! tests {
@@ -27,14 +16,14 @@ macro_rules! tests {
             fn $name() {
                 let src = include_str!(concat!(
                     env!("CARGO_MANIFEST_DIR"),
-                    "/../tests/src/",
+                    "/../../tests/src/",
                     $file, ".i"
                 ));
                 ::expect_test::expect_file![concat!(
                     env!("CARGO_MANIFEST_DIR"),
-                    "/../tests/ast/",
+                    "/../../tests/lexer/",
                     $file ,".txt"
-                )].assert_debug_eq(&get_ast(src))
+                )].assert_eq(&lex(src))
             }
         )+
     };

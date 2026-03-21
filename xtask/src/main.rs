@@ -86,7 +86,7 @@ fn lexer_tests() -> TestDirContents {
 
 #[throws]
 fn lexer_tests_file() -> PathBuf {
-    workspace_root()?.join("compiler/src/lexer/tests.rs")
+    workspace_root()?.join("compiler/lexer/src/tests.rs")
 }
 
 #[cfg(test)]

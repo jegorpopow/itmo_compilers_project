@@ -1,29 +1,12 @@
-#![expect(unreachable_pub, reason = "WIP")]
-
 use std::env;
 use std::fs;
 use std::process::ExitCode;
 
-use crate::ast::convert::convert;
-use crate::lexer::Lexer;
-use crate::parser::{ParsingError, parse_program};
-use crate::tokens::Token;
-
-mod source_positions;
-
-mod identifier;
-mod loop_order;
-mod operators;
+use ast::convert;
+use lexer::{Lexer, Token};
+use parser::{ParsingError, parse_program};
 
 mod bytecode;
-
-mod tokens;
-
-mod ast;
-mod parse_tree;
-
-mod lexer;
-mod parser;
 
 // TODO: create a Driver module
 
@@ -62,7 +45,7 @@ fn main() -> ExitCode {
                 }
                 Err(err) => {
                     println!("TypeCheck failed:");
-                    println!("Error:\n\t{:?}", err.what);
+                    println!("Error:\n\t{err}");
                 }
             }
         }

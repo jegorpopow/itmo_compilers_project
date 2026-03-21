@@ -3,12 +3,8 @@ use std::{
     rc::Rc,
 };
 
-use compiler::{
-    lexer::Lexer,
-    parse_tree::tree::Expression,
-    parser::{IndexedIterator, Parser, PureParsingResult},
-    tokens::Token,
-};
+use lexer::{Lexer, Token};
+use parser::{Expression, IndexedIterator, Parser, PureParsingResult};
 
 fn parse_expr_from_line(str: &str) -> PureParsingResult<Rc<Expression>> {
     let tokens: Vec<Token<'_>> = Lexer::from(str).collect();

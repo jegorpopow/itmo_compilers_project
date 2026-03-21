@@ -1,0 +1,21 @@
+[package]
+name = "parser"
+authors = [
+  "Pavel Grigorenko <GrigorenkoPV@niuitmo.ru>",
+  "Jegor Popow <juicedogegor@gmail.com>",
+]
+version.workspace = true
+edition.workspace = true
+publish.workspace = true
+rust-version.workspace = true
+
+[lints]
+workspace = true
+
+[dependencies]
+common.path = "../common"
+lexer.path = "../lexer"
+derive-where.workspace = true
+
+[dev-dependencies]
+expect-test.workspace = true

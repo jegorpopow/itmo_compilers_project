@@ -1,12 +1,19 @@
-use crate::{
-    lexer::Lexer,
-    parse_tree::tree::Program,
-    parser::{ParsingError, PureParsingResult, parse_program},
-};
+use anyhow::{Context, ensure};
 
-fn parse(src: &str) -> PureParsingResult<(Program, Vec<ParsingError>)> {
+use lexer::Lexer;
+use parser::parse_program;
+
+use crate::{IdentifierTable, Program, convert};
+
+fn get_ast(src: &str) -> anyhow::Result<(IdentifierTable, Program)> {
     let tokens: Vec<_> = Lexer::from(src).collect();
-    parse_program(&tokens)
+    let (program, parsing_errors) = parse_program(&tokens).context("Failed to parse")?;
+    ensure!(
+        parsing_errors.is_empty(),
+        "Parsing errors: {parsing_errors:?}"
+    );
+    let (program, identifiers) = convert(&program).context("Typecheck error")?;
+    Ok((identifiers, program))
 }
 
 macro_rules! tests {
@@ -16,14 +23,14 @@ macro_rules! tests {
             fn $name() {
                 let src = include_str!(concat!(
                     env!("CARGO_MANIFEST_DIR"),
-                    "/../tests/src/",
+                    "/../../tests/src/",
                     $file, ".i"
                 ));
                 ::expect_test::expect_file![concat!(
                     env!("CARGO_MANIFEST_DIR"),
-                    "/../tests/parser/",
+                    "/../../tests/ast/",
                     $file ,".txt"
-                )].assert_debug_eq(&parse(src))
+                )].assert_debug_eq(&get_ast(src))
             }
         )+
     };

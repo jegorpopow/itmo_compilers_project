@@ -1,8 +1,7 @@
 use core::num::{ParseFloatError, ParseIntError};
 use core::{error, fmt};
 
-use crate::operators::SyntacticOperator;
-use crate::source_positions::Extent;
+use common::{Extent, operators::SyntacticOperator};
 
 // Token types
 

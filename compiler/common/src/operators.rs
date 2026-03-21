@@ -1,3 +1,5 @@
+// FIXME(GrigorenkoPV): lexer does not need to know about semantic operators
+
 #[derive(PartialEq, Eq, Hash, Debug, Clone, Copy)]
 pub enum SyntacticOperator {
     Add, // Either binary or unary one

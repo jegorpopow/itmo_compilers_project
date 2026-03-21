@@ -1,8 +1,9 @@
-use crate::identifier::RawIdentifier;
-use crate::parse_tree::tree::Expression;
 use std::fmt::Debug;
-use std::hash::Hash;
 use std::rc::Rc;
+
+use common::RawIdentifier;
+
+use crate::Expression;
 
 #[derive(Debug, Hash, PartialEq, Eq)]
 pub struct FieldDescription {

@@ -2,10 +2,9 @@ use std::rc::Rc;
 
 use derive_where::derive_where;
 
-use crate::identifier::RawIdentifier;
-use crate::loop_order::LoopOrder;
-use crate::operators::SyntacticOperator;
-use crate::parse_tree::types::Type;
+use common::{LoopOrder, RawIdentifier, operators::SyntacticOperator};
+
+use crate::Type;
 
 #[derive(Debug)]
 #[derive_where(Hash, Eq, PartialEq)]
