@@ -157,9 +157,9 @@ impl Type {
         }
     }
 
-    pub fn ensure_is(&self, other: Type) -> AnalysisResult<Type> {
-        if *self == other {
-            Ok(other)
+    pub fn ensure_is(&self, other: &Type) -> AnalysisResult<()> {
+        if self == other {
+            Ok(())
         } else {
             Err(AnalysisError {
                 what: format!("Type mismatch: {other} expected, {self} found"),
