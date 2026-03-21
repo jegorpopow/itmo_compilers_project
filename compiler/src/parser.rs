@@ -1,4 +1,3 @@
-#![expect(clippy::unnecessary_wraps, reason = "FIXME")]
 use core::fmt;
 use std::rc::Rc;
 
@@ -150,6 +149,10 @@ impl Parser {
     // Parsing combinators
 
     /// Parses with `parser` until it fails
+    #[expect(
+        clippy::unnecessary_wraps,
+        reason = "Better composition with other APIs"
+    )]
     fn parse_many<'a, 'b: 'a, T>(
         &mut self,
         mut parser: impl ParsingFunction<'a, 'b, T>,
