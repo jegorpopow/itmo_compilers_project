@@ -435,7 +435,9 @@ Ok(
                                                     α(4),
                                                 ),
                                                 rhs: Binop {
-                                                    op: IntAdd,
+                                                    op: Int(
+                                                        Add,
+                                                    ),
                                                     lhs: LvalueToRvalue(
                                                         Identifier(
                                                             кошка(1),

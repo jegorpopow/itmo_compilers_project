@@ -7,7 +7,9 @@ use crate::bytecode::Location;
 use crate::identifier::{Identifier, RawIdentifier};
 use crate::loop_order::LoopOrder;
 
-use crate::operators::{SemanticBinaryOperator, SemanticUnaryOperator};
+use crate::operators::{
+    BoolBinOp, IntBinOp, RealBinOp, SemanticBinaryOperator, SemanticUnaryOperator,
+};
 use derive_where::derive_where;
 
 #[derive(Debug)]
@@ -140,6 +142,51 @@ impl EvaluatedValue {
     }
 }
 
+trait BinOp<T> {
+    fn apply(&self, lhs: T, rhs: T) -> EvaluatedValue;
+}
+
+impl BinOp<f64> for RealBinOp {
+    fn apply(&self, lhs: f64, rhs: f64) -> EvaluatedValue {
+        match self {
+            Self::Add => EvaluatedValue::Real(lhs + rhs),
+            Self::Sub => EvaluatedValue::Real(lhs - rhs),
+            Self::Mul => EvaluatedValue::Real(lhs * rhs),
+            Self::Div => EvaluatedValue::Real(lhs / rhs),
+            Self::Le => EvaluatedValue::Bool(lhs <= rhs),
+            Self::Lt => EvaluatedValue::Bool(lhs < rhs),
+            Self::Gt => EvaluatedValue::Bool(lhs > rhs),
+            Self::Ge => EvaluatedValue::Bool(lhs >= rhs),
+        }
+    }
+}
+
+impl BinOp<i64> for IntBinOp {
+    fn apply(&self, lhs: i64, rhs: i64) -> EvaluatedValue {
+        match self {
+            Self::Add => EvaluatedValue::Int(lhs + rhs),
+            Self::Sub => EvaluatedValue::Int(lhs - rhs),
+            Self::Mul => EvaluatedValue::Int(lhs * rhs),
+            Self::Div => EvaluatedValue::Int(lhs / rhs),
+            Self::Mod => EvaluatedValue::Int(lhs % rhs),
+            Self::Le => EvaluatedValue::Bool(lhs <= rhs),
+            Self::Lt => EvaluatedValue::Bool(lhs < rhs),
+            Self::Gt => EvaluatedValue::Bool(lhs > rhs),
+            Self::Ge => EvaluatedValue::Bool(lhs >= rhs),
+        }
+    }
+}
+
+impl BinOp<bool> for BoolBinOp {
+    fn apply(&self, lhs: bool, rhs: bool) -> EvaluatedValue {
+        EvaluatedValue::Bool(match self {
+            Self::And => lhs && rhs,
+            Self::Or => lhs || rhs,
+            Self::Xor => lhs ^ rhs,
+        })
+    }
+}
+
 impl Expression {
     pub fn try_constexpr_evaluate(&self) -> AnalysisResult<EvaluatedValue> {
         match self {
@@ -151,108 +198,20 @@ impl Expression {
                 Ok(EvaluatedValue::Bool(bool_literal.to_bool()))
             }
             Expression::Binop { op, lhs, rhs } => match op {
-                SemanticBinaryOperator::RealAdd => {
-                    let lhs = lhs.as_ref().try_constexpr_evaluate()?.as_real()?;
-                    let rhs = rhs.as_ref().try_constexpr_evaluate()?.as_real()?;
-                    Ok(EvaluatedValue::Real(lhs + rhs))
-                }
-                SemanticBinaryOperator::RealSub => {
-                    let lhs = lhs.as_ref().try_constexpr_evaluate()?.as_real()?;
-                    let rhs = rhs.as_ref().try_constexpr_evaluate()?.as_real()?;
-                    Ok(EvaluatedValue::Real(lhs - rhs))
-                }
-                SemanticBinaryOperator::RealMul => {
-                    let lhs = lhs.as_ref().try_constexpr_evaluate()?.as_real()?;
-                    let rhs = rhs.as_ref().try_constexpr_evaluate()?.as_real()?;
-                    Ok(EvaluatedValue::Real(lhs * rhs))
-                }
-                SemanticBinaryOperator::RealDiv => {
-                    let lhs = lhs.as_ref().try_constexpr_evaluate()?.as_real()?;
-                    let rhs = rhs.as_ref().try_constexpr_evaluate()?.as_real()?;
-                    Ok(EvaluatedValue::Real(lhs / rhs))
-                }
-                SemanticBinaryOperator::RealLe => {
-                    let lhs = lhs.as_ref().try_constexpr_evaluate()?.as_real()?;
-                    let rhs = rhs.as_ref().try_constexpr_evaluate()?.as_real()?;
-                    Ok(EvaluatedValue::Bool(lhs <= rhs))
-                }
-                SemanticBinaryOperator::RealLt => {
-                    let lhs = lhs.as_ref().try_constexpr_evaluate()?.as_real()?;
-                    let rhs = rhs.as_ref().try_constexpr_evaluate()?.as_real()?;
-                    Ok(EvaluatedValue::Bool(lhs < rhs))
-                }
-                SemanticBinaryOperator::RealGt => {
-                    let lhs = lhs.as_ref().try_constexpr_evaluate()?.as_real()?;
-                    let rhs = rhs.as_ref().try_constexpr_evaluate()?.as_real()?;
-                    Ok(EvaluatedValue::Bool(lhs > rhs))
-                }
-                SemanticBinaryOperator::RealGe => {
-                    let lhs = lhs.as_ref().try_constexpr_evaluate()?.as_real()?;
-                    let rhs = rhs.as_ref().try_constexpr_evaluate()?.as_real()?;
-                    Ok(EvaluatedValue::Bool(lhs >= rhs))
-                }
                 SemanticBinaryOperator::Eq => Ok(EvaluatedValue::Bool(lhs == rhs)),
                 SemanticBinaryOperator::Ne => Ok(EvaluatedValue::Bool(lhs != rhs)),
-                SemanticBinaryOperator::IntAdd => {
-                    let lhs = lhs.as_ref().try_constexpr_evaluate()?.as_int()?;
-                    let rhs = rhs.as_ref().try_constexpr_evaluate()?.as_int()?;
-                    Ok(EvaluatedValue::Int(lhs + rhs))
-                }
-                SemanticBinaryOperator::IntSub => {
-                    let lhs = lhs.as_ref().try_constexpr_evaluate()?.as_int()?;
-                    let rhs = rhs.as_ref().try_constexpr_evaluate()?.as_int()?;
-                    Ok(EvaluatedValue::Int(lhs - rhs))
-                }
-                SemanticBinaryOperator::IntMul => {
-                    let lhs = lhs.as_ref().try_constexpr_evaluate()?.as_int()?;
-                    let rhs = rhs.as_ref().try_constexpr_evaluate()?.as_int()?;
-                    Ok(EvaluatedValue::Int(lhs * rhs))
-                }
-                SemanticBinaryOperator::IntDiv => {
-                    let lhs = lhs.as_ref().try_constexpr_evaluate()?.as_int()?;
-                    let rhs = rhs.as_ref().try_constexpr_evaluate()?.as_int()?;
-                    Ok(EvaluatedValue::Int(lhs / rhs))
-                }
-                SemanticBinaryOperator::IntMod => {
-                    let lhs = lhs.as_ref().try_constexpr_evaluate()?.as_int()?;
-                    let rhs = rhs.as_ref().try_constexpr_evaluate()?.as_int()?;
-                    Ok(EvaluatedValue::Int(lhs % rhs))
-                }
-                SemanticBinaryOperator::IntLe => {
-                    let lhs = lhs.as_ref().try_constexpr_evaluate()?.as_int()?;
-                    let rhs = rhs.as_ref().try_constexpr_evaluate()?.as_int()?;
-                    Ok(EvaluatedValue::Bool(lhs <= rhs))
-                }
-                SemanticBinaryOperator::IntLt => {
-                    let lhs = lhs.as_ref().try_constexpr_evaluate()?.as_int()?;
-                    let rhs = rhs.as_ref().try_constexpr_evaluate()?.as_int()?;
-                    Ok(EvaluatedValue::Bool(lhs < rhs))
-                }
-                SemanticBinaryOperator::IntGt => {
-                    let lhs = lhs.as_ref().try_constexpr_evaluate()?.as_int()?;
-                    let rhs = rhs.as_ref().try_constexpr_evaluate()?.as_int()?;
-                    Ok(EvaluatedValue::Bool(lhs > rhs))
-                }
-                SemanticBinaryOperator::IntGe => {
-                    let lhs = lhs.as_ref().try_constexpr_evaluate()?.as_int()?;
-                    let rhs = rhs.as_ref().try_constexpr_evaluate()?.as_int()?;
-                    Ok(EvaluatedValue::Bool(lhs >= rhs))
-                }
-                SemanticBinaryOperator::BoolAnd => {
-                    let lhs = lhs.as_ref().try_constexpr_evaluate()?.as_bool()?;
-                    let rhs = rhs.as_ref().try_constexpr_evaluate()?.as_bool()?;
-                    Ok(EvaluatedValue::Bool(lhs && rhs))
-                }
-                SemanticBinaryOperator::BoolXor => {
-                    let lhs = lhs.as_ref().try_constexpr_evaluate()?.as_bool()?;
-                    let rhs = rhs.as_ref().try_constexpr_evaluate()?.as_bool()?;
-                    Ok(EvaluatedValue::Bool(lhs ^ rhs))
-                }
-                SemanticBinaryOperator::BoolOr => {
-                    let lhs = lhs.as_ref().try_constexpr_evaluate()?.as_bool()?;
-                    let rhs = rhs.as_ref().try_constexpr_evaluate()?.as_bool()?;
-                    Ok(EvaluatedValue::Bool(lhs || rhs))
-                }
+                SemanticBinaryOperator::Real(op) => Ok(op.apply(
+                    lhs.as_ref().try_constexpr_evaluate()?.as_real()?,
+                    rhs.as_ref().try_constexpr_evaluate()?.as_real()?,
+                )),
+                SemanticBinaryOperator::Int(op) => Ok(op.apply(
+                    lhs.as_ref().try_constexpr_evaluate()?.as_int()?,
+                    rhs.as_ref().try_constexpr_evaluate()?.as_int()?,
+                )),
+                SemanticBinaryOperator::Bool(op) => Ok(op.apply(
+                    lhs.as_ref().try_constexpr_evaluate()?.as_bool()?,
+                    rhs.as_ref().try_constexpr_evaluate()?.as_bool()?,
+                )),
             },
 
             Expression::Unop { op, operand } => match op {

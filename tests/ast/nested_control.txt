@@ -148,7 +148,9 @@ Ok(
                                         Stmt(
                                             While {
                                                 condition: Binop {
-                                                    op: IntLt,
+                                                    op: Int(
+                                                        Lt,
+                                                    ),
                                                     lhs: LvalueToRvalue(
                                                         Identifier(
                                                             i(1),
@@ -187,7 +189,9 @@ Ok(
                                                         Stmt(
                                                             While {
                                                                 condition: Binop {
-                                                                    op: IntLt,
+                                                                    op: Int(
+                                                                        Lt,
+                                                                    ),
                                                                     lhs: LvalueToRvalue(
                                                                         Identifier(
                                                                             j(2),
@@ -226,7 +230,9 @@ Ok(
                                                                         Stmt(
                                                                             While {
                                                                                 condition: Binop {
-                                                                                    op: IntLt,
+                                                                                    op: Int(
+                                                                                        Lt,
+                                                                                    ),
                                                                                     lhs: LvalueToRvalue(
                                                                                         Identifier(
                                                                                             k(3),
@@ -265,7 +271,9 @@ Ok(
                                                                                         Stmt(
                                                                                             While {
                                                                                                 condition: Binop {
-                                                                                                    op: IntLt,
+                                                                                                    op: Int(
+                                                                                                        Lt,
+                                                                                                    ),
                                                                                                     lhs: LvalueToRvalue(
                                                                                                         Identifier(
                                                                                                             w(4),
@@ -304,7 +312,9 @@ Ok(
                                                                                                         Stmt(
                                                                                                             While {
                                                                                                                 condition: Binop {
-                                                                                                                    op: IntLt,
+                                                                                                                    op: Int(
+                                                                                                                        Lt,
+                                                                                                                    ),
                                                                                                                     lhs: LvalueToRvalue(
                                                                                                                         Identifier(
                                                                                                                             v(5),
@@ -370,7 +380,9 @@ Ok(
                                                                                                                                     v(5),
                                                                                                                                 ),
                                                                                                                                 rhs: Binop {
-                                                                                                                                    op: IntAdd,
+                                                                                                                                    op: Int(
+                                                                                                                                        Add,
+                                                                                                                                    ),
                                                                                                                                     lhs: LvalueToRvalue(
                                                                                                                                         Identifier(
                                                                                                                                             v(5),
@@ -395,7 +407,9 @@ Ok(
                                                                                                                     w(4),
                                                                                                                 ),
                                                                                                                 rhs: Binop {
-                                                                                                                    op: IntAdd,
+                                                                                                                    op: Int(
+                                                                                                                        Add,
+                                                                                                                    ),
                                                                                                                     lhs: LvalueToRvalue(
                                                                                                                         Identifier(
                                                                                                                             w(4),
@@ -420,7 +434,9 @@ Ok(
                                                                                                     k(3),
                                                                                                 ),
                                                                                                 rhs: Binop {
-                                                                                                    op: IntAdd,
+                                                                                                    op: Int(
+                                                                                                        Add,
+                                                                                                    ),
                                                                                                     lhs: LvalueToRvalue(
                                                                                                         Identifier(
                                                                                                             k(3),
@@ -445,7 +461,9 @@ Ok(
                                                                                     j(2),
                                                                                 ),
                                                                                 rhs: Binop {
-                                                                                    op: IntAdd,
+                                                                                    op: Int(
+                                                                                        Add,
+                                                                                    ),
                                                                                     lhs: LvalueToRvalue(
                                                                                         Identifier(
                                                                                             j(2),
@@ -470,7 +488,9 @@ Ok(
                                                                     i(1),
                                                                 ),
                                                                 rhs: Binop {
-                                                                    op: IntAdd,
+                                                                    op: Int(
+                                                                        Add,
+                                                                    ),
                                                                     lhs: LvalueToRvalue(
                                                                         Identifier(
                                                                             i(1),

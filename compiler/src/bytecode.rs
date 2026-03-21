@@ -1,6 +1,8 @@
 #![expect(dead_code, reason = "WIP")]
 
-use crate::operators::{SemanticBinaryOperator, SemanticUnaryOperator};
+use crate::operators::{
+    BoolBinOp, IntBinOp, RealBinOp, SemanticBinaryOperator, SemanticUnaryOperator,
+};
 
 ///  Variable location and id
 #[derive(Debug, Clone, Copy, Hash)]
@@ -164,6 +166,46 @@ impl From<Bytecode> for [u8; 16] {
     }
 }
 
+impl SemanticBinaryOperator {
+    #[must_use]
+    const fn as_u8(self) -> u8 {
+        match self {
+            Self::Eq => 0x00,
+            Self::Ne => 0x01,
+
+            Self::Real(op) => match op {
+                RealBinOp::Le => 0x10,
+                RealBinOp::Lt => 0x11,
+                RealBinOp::Gt => 0x12,
+                RealBinOp::Ge => 0x13,
+
+                RealBinOp::Add => 0x14,
+                RealBinOp::Sub => 0x15,
+                RealBinOp::Mul => 0x16,
+                RealBinOp::Div => 0x17,
+            },
+
+            Self::Int(op) => match op {
+                IntBinOp::Le => 0x20,
+                IntBinOp::Lt => 0x21,
+                IntBinOp::Gt => 0x22,
+                IntBinOp::Ge => 0x23,
+                IntBinOp::Add => 0x24,
+                IntBinOp::Sub => 0x25,
+                IntBinOp::Mul => 0x26,
+                IntBinOp::Div => 0x27,
+                IntBinOp::Mod => 0x28,
+            },
+
+            Self::Bool(op) => match op {
+                BoolBinOp::And => 0x30,
+                BoolBinOp::Or => 0x31,
+                BoolBinOp::Xor => 0x32,
+            },
+        }
+    }
+}
+
 impl From<Instruction> for Bytecode {
     #[expect(clippy::too_many_lines, reason = "it's THE giant switch")]
     fn from(inst: Instruction) -> Self {
@@ -175,7 +217,7 @@ impl From<Instruction> for Bytecode {
 
             Instruction::BinOp { op } => Bytecode {
                 opcode: 4,
-                subopcode: op as u8,
+                subopcode: op.as_u8(),
                 ..zero
             },
             Instruction::UnOp { op } => Bytecode {

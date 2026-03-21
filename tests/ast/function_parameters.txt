@@ -110,7 +110,9 @@ Ok(
                                         Stmt(
                                             Print {
                                                 value: Binop {
-                                                    op: IntAdd,
+                                                    op: Int(
+                                                        Add,
+                                                    ),
                                                     lhs: LvalueToRvalue(
                                                         Identifier(
                                                             a(1),

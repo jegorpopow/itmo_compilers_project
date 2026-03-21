@@ -152,9 +152,13 @@ Ok(
                                         Stmt(
                                             Print {
                                                 value: Binop {
-                                                    op: BoolAnd,
+                                                    op: Bool(
+                                                        And,
+                                                    ),
                                                     lhs: Binop {
-                                                        op: IntLt,
+                                                        op: Int(
+                                                            Lt,
+                                                        ),
                                                         lhs: IntegerLiteral(
                                                             IntegerLiteral {
                                                                 repr: "5",
@@ -169,7 +173,9 @@ Ok(
                                                         ),
                                                     },
                                                     rhs: Binop {
-                                                        op: IntGt,
+                                                        op: Int(
+                                                            Gt,
+                                                        ),
                                                         lhs: IntegerLiteral(
                                                             IntegerLiteral {
                                                                 repr: "4",
@@ -189,9 +195,13 @@ Ok(
                                         Stmt(
                                             Print {
                                                 value: Binop {
-                                                    op: BoolOr,
+                                                    op: Bool(
+                                                        Or,
+                                                    ),
                                                     lhs: Binop {
-                                                        op: BoolAnd,
+                                                        op: Bool(
+                                                            And,
+                                                        ),
                                                         lhs: BoolLiteral(
                                                             True,
                                                         ),
@@ -220,13 +230,17 @@ Ok(
                                         Stmt(
                                             Print {
                                                 value: Binop {
-                                                    op: IntAdd,
+                                                    op: Int(
+                                                        Add,
+                                                    ),
                                                     lhs: Call {
                                                         callee: g(1),
                                                         args: [],
                                                     },
                                                     rhs: Binop {
-                                                        op: IntMul,
+                                                        op: Int(
+                                                            Mul,
+                                                        ),
                                                         lhs: Call {
                                                             callee: h(2),
                                                             args: [],
@@ -242,9 +256,13 @@ Ok(
                                         Stmt(
                                             Print {
                                                 value: Binop {
-                                                    op: IntMod,
+                                                    op: Int(
+                                                        Mod,
+                                                    ),
                                                     lhs: Binop {
-                                                        op: IntMod,
+                                                        op: Int(
+                                                            Mod,
+                                                        ),
                                                         lhs: IntegerLiteral(
                                                             IntegerLiteral {
                                                                 repr: "17",
@@ -270,9 +288,13 @@ Ok(
                                         Stmt(
                                             Print {
                                                 value: Binop {
-                                                    op: IntMul,
+                                                    op: Int(
+                                                        Mul,
+                                                    ),
                                                     lhs: Binop {
-                                                        op: IntAdd,
+                                                        op: Int(
+                                                            Add,
+                                                        ),
                                                         lhs: Call {
                                                             callee: g(1),
                                                             args: [],
@@ -292,9 +314,13 @@ Ok(
                                         Stmt(
                                             Print {
                                                 value: Binop {
-                                                    op: IntDiv,
+                                                    op: Int(
+                                                        Div,
+                                                    ),
                                                     lhs: Binop {
-                                                        op: IntDiv,
+                                                        op: Int(
+                                                            Div,
+                                                        ),
                                                         lhs: IntegerLiteral(
                                                             IntegerLiteral {
                                                                 repr: "100",

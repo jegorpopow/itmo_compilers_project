@@ -116,7 +116,9 @@ Ok(
                                         Stmt(
                                             If {
                                                 condition: Binop {
-                                                    op: RealLt,
+                                                    op: Real(
+                                                        Lt,
+                                                    ),
                                                     lhs: LvalueToRvalue(
                                                         Identifier(
                                                             value(1),
@@ -137,7 +139,9 @@ Ok(
                                                                     value(1),
                                                                 ),
                                                                 rhs: Binop {
-                                                                    op: RealSub,
+                                                                    op: Real(
+                                                                        Sub,
+                                                                    ),
                                                                     lhs: RealLiteral(
                                                                         RealLiteral {
                                                                             repr: "0.0",
@@ -210,7 +214,9 @@ Ok(
                                                 condition: Binop {
                                                     op: Eq,
                                                     lhs: Binop {
-                                                        op: IntMod,
+                                                        op: Int(
+                                                            Mod,
+                                                        ),
                                                         lhs: LvalueToRvalue(
                                                             Identifier(
                                                                 a(3),

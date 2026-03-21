@@ -274,9 +274,13 @@ Ok(
                                     callee: point_of(3),
                                     args: [
                                         Binop {
-                                            op: RealDiv,
+                                            op: Real(
+                                                Div,
+                                            ),
                                             lhs: Binop {
-                                                op: RealAdd,
+                                                op: Real(
+                                                    Add,
+                                                ),
                                                 lhs: LvalueToRvalue(
                                                     Member {
                                                         lhs: Identifier(
@@ -304,9 +308,13 @@ Ok(
                                             ),
                                         },
                                         Binop {
-                                            op: RealDiv,
+                                            op: Real(
+                                                Div,
+                                            ),
                                             lhs: Binop {
-                                                op: RealAdd,
+                                                op: Real(
+                                                    Add,
+                                                ),
                                                 lhs: LvalueToRvalue(
                                                     Member {
                                                         lhs: Identifier(
@@ -615,11 +623,17 @@ Ok(
                                         Stmt(
                                             Return {
                                                 value: Binop {
-                                                    op: RealAdd,
+                                                    op: Real(
+                                                        Add,
+                                                    ),
                                                     lhs: Binop {
-                                                        op: RealMul,
+                                                        op: Real(
+                                                            Mul,
+                                                        ),
                                                         lhs: Binop {
-                                                            op: RealSub,
+                                                            op: Real(
+                                                                Sub,
+                                                            ),
                                                             lhs: LvalueToRvalue(
                                                                 Member {
                                                                     lhs: Identifier(
@@ -638,7 +652,9 @@ Ok(
                                                             ),
                                                         },
                                                         rhs: Binop {
-                                                            op: RealSub,
+                                                            op: Real(
+                                                                Sub,
+                                                            ),
                                                             lhs: LvalueToRvalue(
                                                                 Member {
                                                                     lhs: Identifier(
@@ -658,9 +674,13 @@ Ok(
                                                         },
                                                     },
                                                     rhs: Binop {
-                                                        op: RealMul,
+                                                        op: Real(
+                                                            Mul,
+                                                        ),
                                                         lhs: Binop {
-                                                            op: RealSub,
+                                                            op: Real(
+                                                                Sub,
+                                                            ),
                                                             lhs: LvalueToRvalue(
                                                                 Member {
                                                                     lhs: Identifier(
@@ -679,7 +699,9 @@ Ok(
                                                             ),
                                                         },
                                                         rhs: Binop {
-                                                            op: RealSub,
+                                                            op: Real(
+                                                                Sub,
+                                                            ),
                                                             lhs: LvalueToRvalue(
                                                                 Member {
                                                                     lhs: Identifier(
@@ -765,9 +787,13 @@ Ok(
                                     callee: point_of(3),
                                     args: [
                                         Binop {
-                                            op: RealDiv,
+                                            op: Real(
+                                                Div,
+                                            ),
                                             lhs: Binop {
-                                                op: RealAdd,
+                                                op: Real(
+                                                    Add,
+                                                ),
                                                 lhs: LvalueToRvalue(
                                                     Member {
                                                         lhs: Identifier(
@@ -795,9 +821,13 @@ Ok(
                                             ),
                                         },
                                         Binop {
-                                            op: RealDiv,
+                                            op: Real(
+                                                Div,
+                                            ),
                                             lhs: Binop {
-                                                op: RealAdd,
+                                                op: Real(
+                                                    Add,
+                                                ),
                                                 lhs: LvalueToRvalue(
                                                     Member {
                                                         lhs: Identifier(

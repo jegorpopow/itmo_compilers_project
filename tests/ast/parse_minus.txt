@@ -28,7 +28,9 @@ Ok(
                             t: Int,
                             initialiser: Some(
                                 Binop {
-                                    op: IntSub,
+                                    op: Int(
+                                        Sub,
+                                    ),
                                     lhs: IntegerLiteral(
                                         IntegerLiteral {
                                             repr: "-1",
@@ -56,7 +58,9 @@ Ok(
                             t: Int,
                             initialiser: Some(
                                 Binop {
-                                    op: IntSub,
+                                    op: Int(
+                                        Sub,
+                                    ),
                                     lhs: IntegerLiteral(
                                         IntegerLiteral {
                                             repr: "-1",
@@ -84,7 +88,9 @@ Ok(
                             t: Int,
                             initialiser: Some(
                                 Binop {
-                                    op: IntAdd,
+                                    op: Int(
+                                        Add,
+                                    ),
                                     lhs: IntegerLiteral(
                                         IntegerLiteral {
                                             repr: "-5",
@@ -92,7 +98,9 @@ Ok(
                                         },
                                     ),
                                     rhs: Binop {
-                                        op: IntAdd,
+                                        op: Int(
+                                            Add,
+                                        ),
                                         lhs: IntegerLiteral(
                                             IntegerLiteral {
                                                 repr: "-7",
@@ -166,7 +174,9 @@ Ok(
                             t: Int,
                             initialiser: Some(
                                 Binop {
-                                    op: IntSub,
+                                    op: Int(
+                                        Sub,
+                                    ),
                                     lhs: IntegerLiteral(
                                         IntegerLiteral {
                                             repr: "-1",
@@ -194,7 +204,9 @@ Ok(
                             t: Int,
                             initialiser: Some(
                                 Binop {
-                                    op: IntSub,
+                                    op: Int(
+                                        Sub,
+                                    ),
                                     lhs: IntegerLiteral(
                                         IntegerLiteral {
                                             repr: "-1",
@@ -222,7 +234,9 @@ Ok(
                             t: Int,
                             initialiser: Some(
                                 Binop {
-                                    op: IntAdd,
+                                    op: Int(
+                                        Add,
+                                    ),
                                     lhs: IntegerLiteral(
                                         IntegerLiteral {
                                             repr: "-5",
@@ -230,7 +244,9 @@ Ok(
                                         },
                                     ),
                                     rhs: Binop {
-                                        op: IntAdd,
+                                        op: Int(
+                                            Add,
+                                        ),
                                         lhs: IntegerLiteral(
                                             IntegerLiteral {
                                                 repr: "-7",

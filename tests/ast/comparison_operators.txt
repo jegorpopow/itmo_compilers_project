@@ -192,7 +192,9 @@ Ok(
                                         Stmt(
                                             Print {
                                                 value: Binop {
-                                                    op: IntLt,
+                                                    op: Int(
+                                                        Lt,
+                                                    ),
                                                     lhs: LvalueToRvalue(
                                                         Identifier(
                                                             a(1),
@@ -209,7 +211,9 @@ Ok(
                                         Stmt(
                                             Print {
                                                 value: Binop {
-                                                    op: IntLe,
+                                                    op: Int(
+                                                        Le,
+                                                    ),
                                                     lhs: LvalueToRvalue(
                                                         Identifier(
                                                             a(1),
@@ -226,7 +230,9 @@ Ok(
                                         Stmt(
                                             Print {
                                                 value: Binop {
-                                                    op: IntGt,
+                                                    op: Int(
+                                                        Gt,
+                                                    ),
                                                     lhs: LvalueToRvalue(
                                                         Identifier(
                                                             a(1),
@@ -243,7 +249,9 @@ Ok(
                                         Stmt(
                                             Print {
                                                 value: Binop {
-                                                    op: IntGe,
+                                                    op: Int(
+                                                        Ge,
+                                                    ),
                                                     lhs: LvalueToRvalue(
                                                         Identifier(
                                                             a(1),
@@ -294,7 +302,9 @@ Ok(
                                         Stmt(
                                             Print {
                                                 value: Binop {
-                                                    op: RealLt,
+                                                    op: Real(
+                                                        Lt,
+                                                    ),
                                                     lhs: LvalueToRvalue(
                                                         Identifier(
                                                             x(3),
@@ -311,7 +321,9 @@ Ok(
                                         Stmt(
                                             Print {
                                                 value: Binop {
-                                                    op: RealLe,
+                                                    op: Real(
+                                                        Le,
+                                                    ),
                                                     lhs: LvalueToRvalue(
                                                         Identifier(
                                                             x(3),
@@ -328,7 +340,9 @@ Ok(
                                         Stmt(
                                             Print {
                                                 value: Binop {
-                                                    op: RealGt,
+                                                    op: Real(
+                                                        Gt,
+                                                    ),
                                                     lhs: LvalueToRvalue(
                                                         Identifier(
                                                             x(3),
@@ -345,7 +359,9 @@ Ok(
                                         Stmt(
                                             Print {
                                                 value: Binop {
-                                                    op: RealGe,
+                                                    op: Real(
+                                                        Ge,
+                                                    ),
                                                     lhs: LvalueToRvalue(
                                                         Identifier(
                                                             x(3),

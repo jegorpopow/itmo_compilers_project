@@ -78,7 +78,9 @@ Ok(
                                         Stmt(
                                             If {
                                                 condition: Binop {
-                                                    op: IntLe,
+                                                    op: Int(
+                                                        Le,
+                                                    ),
                                                     lhs: LvalueToRvalue(
                                                         Identifier(
                                                             n(1),
@@ -111,12 +113,16 @@ Ok(
                                                             Stmt(
                                                                 Return {
                                                                     value: Binop {
-                                                                        op: IntAdd,
+                                                                        op: Int(
+                                                                            Add,
+                                                                        ),
                                                                         lhs: Call {
                                                                             callee: fibonacci(0),
                                                                             args: [
                                                                                 Binop {
-                                                                                    op: IntSub,
+                                                                                    op: Int(
+                                                                                        Sub,
+                                                                                    ),
                                                                                     lhs: LvalueToRvalue(
                                                                                         Identifier(
                                                                                             n(1),
@@ -135,7 +141,9 @@ Ok(
                                                                             callee: fibonacci(0),
                                                                             args: [
                                                                                 Binop {
-                                                                                    op: IntSub,
+                                                                                    op: Int(
+                                                                                        Sub,
+                                                                                    ),
                                                                                     lhs: LvalueToRvalue(
                                                                                         Identifier(
                                                                                             n(1),

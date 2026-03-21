@@ -619,7 +619,9 @@ Ok(
                                                                     result(9),
                                                                 ),
                                                                 rhs: Binop {
-                                                                    op: IntAdd,
+                                                                    op: Int(
+                                                                        Add,
+                                                                    ),
                                                                     lhs: LvalueToRvalue(
                                                                         Identifier(
                                                                             result(9),
