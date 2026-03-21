@@ -207,7 +207,6 @@ impl SemanticBinaryOperator {
 }
 
 impl From<Instruction> for Bytecode {
-    #[expect(clippy::too_many_lines, reason = "it's THE giant switch")]
     fn from(inst: Instruction) -> Self {
         let zero = Bytecode::default();
         match inst {

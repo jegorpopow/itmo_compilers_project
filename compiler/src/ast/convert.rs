@@ -6,6 +6,7 @@ use crate::ast::tree::{IdentifierTable, OptionalDecl, cast_to};
 use crate::ast::types::{BinOpAdjustment, infer_binary_operator_type};
 use crate::bytecode::Location;
 use crate::identifier::{Identifier, RawIdentifier};
+use crate::loop_order::LoopOrder;
 use crate::operators::{SemanticUnaryOperator, SyntacticOperator};
 use crate::parse_tree as pt;
 
@@ -320,6 +321,198 @@ impl Converter {
         })
     }
 
+    fn convert_unary(op: SyntacticOperator, operand: Typed) -> AnalysisResult<Typed> {
+        let Typed {
+            value: converted_operand,
+            ty: operand_type,
+        } = operand;
+
+        Ok(match op {
+            SyntacticOperator::Neg => match &*operand_type {
+                ast::types::Type::Bool => Typed {
+                    value: Rc::new(ast::tree::Expression::Unop {
+                        op: SemanticUnaryOperator::BoolNeg,
+                        operand: converted_operand,
+                    }),
+                    ty: Rc::new(ast::types::Type::Bool),
+                },
+                ast::types::Type::Int
+                | ast::types::Type::Real
+                | ast::types::Type::Alias(_)
+                | ast::types::Type::Record(_)
+                | ast::types::Type::Array(_)
+                | ast::types::Type::Null
+                | ast::types::Type::Unit => Err(AnalysisError {
+                    what: format!(
+                        "Logical negation operator can not be applied to non-boolean {operand_type:?} value"
+                    ),
+                })?,
+            },
+            SyntacticOperator::Sub => match &*operand_type {
+                ast::types::Type::Int => Typed {
+                    value: Rc::new(ast::tree::Expression::Unop {
+                        op: SemanticUnaryOperator::IntNeg,
+                        operand: converted_operand,
+                    }),
+                    ty: Rc::new(ast::types::Type::Int),
+                },
+                ast::types::Type::Real => Typed {
+                    value: Rc::new(ast::tree::Expression::Unop {
+                        op: SemanticUnaryOperator::RealNeg,
+                        operand: converted_operand,
+                    }),
+                    ty: Rc::new(ast::types::Type::Real),
+                },
+                ast::types::Type::Bool
+                | ast::types::Type::Alias(_)
+                | ast::types::Type::Record(_)
+                | ast::types::Type::Array(_)
+                | ast::types::Type::Null
+                | ast::types::Type::Unit => Err(AnalysisError {
+                    what: format!(
+                        "Arithmetical negation operator can not be applied to non-scalar type {operand_type:?} value"
+                    ),
+                })?,
+            },
+            SyntacticOperator::Add
+            | SyntacticOperator::Mul
+            | SyntacticOperator::Div
+            | SyntacticOperator::Mod
+            | SyntacticOperator::Eq
+            | SyntacticOperator::Ne
+            | SyntacticOperator::Lt
+            | SyntacticOperator::Le
+            | SyntacticOperator::Gt
+            | SyntacticOperator::Ge
+            | SyntacticOperator::And
+            | SyntacticOperator::Or
+            | SyntacticOperator::Xor => Err(AnalysisError {
+                what: format!("Operator {op:?} can not be applied as unary"),
+            })?,
+        })
+    }
+
+    fn convert_call(
+        &self,
+        callee: &RawIdentifier,
+        args: &[Rc<pt::tree::Expression>],
+    ) -> AnalysisResult<Typed> {
+        let ast::tree::RoutineSignature {
+            args: formal_args,
+            return_type,
+        } = self.lookup(callee)?.ensure_is_routine()?.signature();
+        let arguments_types: Vec<Rc<ast::types::Type>> = formal_args
+            .iter()
+            .map(|(_, arg_type)| Rc::clone(arg_type))
+            .collect();
+
+        let converted_expressions: Vec<Typed> = args
+            .iter()
+            .map(|arg| self.convert_expr(arg))
+            .collect::<AnalysisResult<_>>()?;
+
+        if arguments_types.len() != converted_expressions.len() {
+            Err(AnalysisError {
+                what: format!(
+                    "routine `{callee}` expexts {} arguments, but got {}",
+                    arguments_types.len(),
+                    converted_expressions.len()
+                ),
+            })
+        } else {
+            let convrted_args = std::iter::zip(arguments_types, converted_expressions)
+                .map(
+                    |(
+                        arg_type,
+                        Typed {
+                            value: expr,
+                            ty: expr_type,
+                        },
+                    )| cast_to(expr, &expr_type, &arg_type),
+                )
+                .collect::<AnalysisResult<Vec<Rc<ast::tree::Expression>>>>()?;
+            Ok(Typed {
+                value: Rc::new(ast::tree::Expression::Call {
+                    callee: self.lookup(callee)?.name.clone(),
+                    args: convrted_args,
+                }),
+                ty: Rc::clone(return_type),
+            })
+        }
+    }
+
+    fn convert_new(
+        &self,
+        t: &pt::types::Type,
+        fields: Option<&[(RawIdentifier, Rc<pt::tree::Expression>)]>,
+    ) -> AnalysisResult<Typed> {
+        let converted_type = self.convert_type(t)?;
+        let converted_effective_type = self.ident_table.get_effective_type(&converted_type)?;
+
+        match &*converted_effective_type {
+            ast::types::Type::Int
+            | ast::types::Type::Real
+            | ast::types::Type::Bool
+            | ast::types::Type::Null
+            | ast::types::Type::Unit => Err(AnalysisError {
+                what: format!("No new operator supprted for built-in type {t:?}"),
+            })?,
+            ast::types::Type::Alias(_) => unreachable!("Effective type can not be alias"),
+            ast::types::Type::Record(_) => {
+                let defined_fields = fields.unwrap_or_default();
+                let converted_fields: Vec<(RawIdentifier, Rc<ast::tree::Expression>)> =
+                    defined_fields
+                        .iter()
+                        .map(|(name, expr)| {
+                            self.convert_expr(expr).and_then(
+                                |Typed {
+                                     value: converted_expr,
+                                     ty: expr_type,
+                                 }| {
+                                    Ok((
+                                        name.clone(),
+                                        cast_to(
+                                            converted_expr,
+                                            &expr_type,
+                                            &*converted_effective_type.get_field_type(name)?,
+                                        )?,
+                                    ))
+                                },
+                            )
+                        })
+                        .collect::<AnalysisResult<_>>()?;
+
+                Ok(Typed {
+                    value: Rc::new(ast::tree::Expression::New {
+                        t: Rc::clone(&converted_type),
+                        fields: Some(converted_fields),
+                    }),
+                    ty: converted_type,
+                })
+            }
+
+            ast::types::Type::Array(array_description) => {
+                if fields.is_none() && array_description.length.is_some() {
+                    Ok(Typed {
+                        value: Rc::new(ast::tree::Expression::New {
+                            t: Rc::clone(&converted_type),
+                            fields: None,
+                        }),
+                        ty: converted_type,
+                    })
+                } else if fields.is_some() {
+                    Err(AnalysisError {
+                        what: format!("No field initialisation possible for array type {t:?}"),
+                    })
+                } else {
+                    Err(AnalysisError {
+                        what: format!("No new length known array creation {t:?}"),
+                    })
+                }
+            }
+        }
+    }
+
     pub fn convert_expr(&self, tree: &pt::tree::Expression) -> AnalysisResult<Typed> {
         Ok(match tree {
             pt::tree::Expression::LvalueToRvalue(lvalue_expression) => match &**lvalue_expression {
@@ -374,50 +567,7 @@ impl Converter {
                 })),
                 ty: Rc::new(ast::types::Type::Bool),
             },
-            pt::tree::Expression::Call { callee, args } => {
-                let ast::tree::RoutineSignature {
-                    args: formal_args,
-                    return_type,
-                } = self.lookup(callee)?.ensure_is_routine()?.signature();
-                let arguments_types: Vec<Rc<ast::types::Type>> = formal_args
-                    .iter()
-                    .map(|(_, arg_type)| Rc::clone(arg_type))
-                    .collect();
-
-                let converted_expressions: Vec<Typed> = args
-                    .iter()
-                    .map(|arg| self.convert_expr(arg))
-                    .collect::<AnalysisResult<_>>()?;
-
-                if arguments_types.len() != converted_expressions.len() {
-                    Err(AnalysisError {
-                        what: format!(
-                            "routine `{callee}` expexts {} arguments, but got {}",
-                            arguments_types.len(),
-                            converted_expressions.len()
-                        ),
-                    })?
-                } else {
-                    let convrted_args = std::iter::zip(arguments_types, converted_expressions)
-                        .map(
-                            |(
-                                arg_type,
-                                Typed {
-                                    value: expr,
-                                    ty: expr_type,
-                                },
-                            )| cast_to(expr, &expr_type, &arg_type),
-                        )
-                        .collect::<AnalysisResult<Vec<Rc<ast::tree::Expression>>>>()?;
-                    Typed {
-                        value: Rc::new(ast::tree::Expression::Call {
-                            callee: self.lookup(callee)?.name.clone(),
-                            args: convrted_args,
-                        }),
-                        ty: Rc::clone(return_type),
-                    }
-                }
-            }
+            pt::tree::Expression::Call { callee, args } => self.convert_call(callee, args)?,
             pt::tree::Expression::Binop { op, lhs, rhs } => {
                 let Typed {
                     value: converted_lhs,
@@ -446,74 +596,7 @@ impl Converter {
                 }
             }
             pt::tree::Expression::Unop { op, operand } => {
-                let Typed {
-                    value: converted_operand,
-                    ty: operand_type,
-                } = self.convert_expr(operand)?;
-
-                match op {
-                    SyntacticOperator::Neg => match &*operand_type {
-                        ast::types::Type::Bool => Typed {
-                            value: Rc::new(ast::tree::Expression::Unop {
-                                op: SemanticUnaryOperator::BoolNeg,
-                                operand: converted_operand,
-                            }),
-                            ty: Rc::new(ast::types::Type::Bool),
-                        },
-                        ast::types::Type::Int
-                        | ast::types::Type::Real
-                        | ast::types::Type::Alias(_)
-                        | ast::types::Type::Record(_)
-                        | ast::types::Type::Array(_)
-                        | ast::types::Type::Null
-                        | ast::types::Type::Unit => Err(AnalysisError {
-                            what: format!(
-                                "Logical negation operator can not be applied to non-boolean {operand_type:?} value"
-                            ),
-                        })?,
-                    },
-                    SyntacticOperator::Sub => match &*operand_type {
-                        ast::types::Type::Int => Typed {
-                            value: Rc::new(ast::tree::Expression::Unop {
-                                op: SemanticUnaryOperator::IntNeg,
-                                operand: converted_operand,
-                            }),
-                            ty: Rc::new(ast::types::Type::Int),
-                        },
-                        ast::types::Type::Real => Typed {
-                            value: Rc::new(ast::tree::Expression::Unop {
-                                op: SemanticUnaryOperator::RealNeg,
-                                operand: converted_operand,
-                            }),
-                            ty: Rc::new(ast::types::Type::Real),
-                        },
-                        ast::types::Type::Bool
-                        | ast::types::Type::Alias(_)
-                        | ast::types::Type::Record(_)
-                        | ast::types::Type::Array(_)
-                        | ast::types::Type::Null
-                        | ast::types::Type::Unit => Err(AnalysisError {
-                            what: format!(
-                                "Arithmetical negation operator can not be applied to non-scalar type {operand_type:?} value"
-                            ),
-                        })?,
-                    },
-                    SyntacticOperator::Add
-                    | SyntacticOperator::Mul
-                    | SyntacticOperator::Div
-                    | SyntacticOperator::Mod
-                    | SyntacticOperator::Eq
-                    | SyntacticOperator::Ne
-                    | SyntacticOperator::Lt
-                    | SyntacticOperator::Le
-                    | SyntacticOperator::Gt
-                    | SyntacticOperator::Ge
-                    | SyntacticOperator::And
-                    | SyntacticOperator::Or
-                    | SyntacticOperator::Xor => Err(AnalysisError {
-                        what: format!("Operator {op:?} can not be applied as unary"),
-                    })?,
-                }
+                Self::convert_unary(*op, self.convert_expr(operand)?)?
             }
             pt::tree::Expression::Cast { operand, target } => {
                 let Typed {
@@ -540,82 +623,78 @@ impl Converter {
                     })?
                 }
             }
-            pt::tree::Expression::New { t, fields } => {
-                let converted_type = self.convert_type(t)?;
-                let converted_effective_type =
-                    self.ident_table.get_effective_type(&converted_type)?;
-
-                match &*converted_effective_type {
-                    ast::types::Type::Int
-                    | ast::types::Type::Real
-                    | ast::types::Type::Bool
-                    | ast::types::Type::Null
-                    | ast::types::Type::Unit => Err(AnalysisError {
-                        what: format!("No new operator supprted for built-in type {t:?}"),
-                    })?,
-                    ast::types::Type::Alias(_) => unreachable!("Effective type can not be alias"),
-                    ast::types::Type::Record(_) => {
-                        let defined_fields = fields.as_deref().unwrap_or_default();
-                        let converted_fields: Vec<(RawIdentifier, Rc<ast::tree::Expression>)> =
-                            defined_fields
-                                .iter()
-                                .map(|(name, expr)| {
-                                    self.convert_expr(expr).and_then(
-                                        |Typed {
-                                             value: converted_expr,
-                                             ty: expr_type,
-                                         }| {
-                                            Ok((
-                                                name.clone(),
-                                                cast_to(
-                                                    converted_expr,
-                                                    &expr_type,
-                                                    &*converted_effective_type
-                                                        .get_field_type(name)?,
-                                                )?,
-                                            ))
-                                        },
-                                    )
-                                })
-                                .collect::<AnalysisResult<_>>()?;
-
-                        Typed {
-                            value: Rc::new(ast::tree::Expression::New {
-                                t: Rc::clone(&converted_type),
-                                fields: Some(converted_fields),
-                            }),
-                            ty: converted_type,
-                        }
-                    }
-
-                    ast::types::Type::Array(array_description) => {
-                        if fields.is_none() && array_description.length.is_some() {
-                            Typed {
-                                value: Rc::new(ast::tree::Expression::New {
-                                    t: Rc::clone(&converted_type),
-                                    fields: None,
-                                }),
-                                ty: converted_type,
-                            }
-                        } else if !fields.is_none() {
-                            Err(AnalysisError {
-                                what: format!(
-                                    "No field initialisation possible for array type {t:?}"
-                                ),
-                            })?
-                        } else {
-                            Err(AnalysisError {
-                                what: format!("No new length known array creation {t:?}"),
-                            })?
-                        }
-                    }
-                }
-            }
+            pt::tree::Expression::New { t, fields } => self.convert_new(t, fields.as_deref())?,
             pt::tree::Expression::Null => Typed {
                 value: Rc::new(ast::tree::Expression::Null),
                 ty: Rc::new(ast::types::Type::Null),
             },
         })
+    }
+
+    fn convert_for(
+        &mut self,
+        counter: &RawIdentifier,
+        from: &pt::tree::Expression,
+        to: Option<&pt::tree::Expression>,
+        order: LoopOrder,
+        body: &pt::tree::Block,
+    ) -> AnalysisResult<ast::tree::Statement> {
+        self.enter_block(); // For counter is in it's own block
+
+        let counter_loc = self.get_fresh_local_location();
+
+        let stmt = match to {
+            None => {
+                let Typed {
+                    value: array_expr,
+                    ty: array_type,
+                } = self.convert_expr(from)?;
+                let element_type = array_type.get_element_type()?;
+                let counter_decl = ast::tree::Decl::Var(ast::tree::VarDecl {
+                    t: Rc::clone(element_type),
+                    initialiser: None,
+                    relative_location: counter_loc,
+                });
+
+                let counter_ident = self.bind_local_decl(counter, counter_decl);
+                let body = self.convert_block(body)?;
+                ast::tree::Statement::ForEach {
+                    counter: counter_ident,
+                    collection: array_expr,
+                    order,
+                    body,
+                }
+            }
+            Some(to) => {
+                let Typed {
+                    value: lower_bound,
+                    ty: lower_bound_type,
+                } = self.convert_expr(from)?;
+                let Typed {
+                    value: upper_bound,
+                    ty: upper_bound_type,
+                } = self.convert_expr(to)?;
+                let int_type = Rc::new(ast::types::Type::Int);
+                let counter_decl = ast::tree::Decl::Var(ast::tree::VarDecl {
+                    t: Rc::clone(&int_type),
+                    initialiser: None,
+                    relative_location: counter_loc,
+                });
+                let counter_ident = self.bind_local_decl(counter, counter_decl);
+                let body = self.convert_block(body)?;
+                ast::tree::Statement::For {
+                    counter: counter_ident,
+                    lower_bound: cast_to(lower_bound, &lower_bound_type, &int_type)?,
+                    upper_bound: cast_to(upper_bound, &upper_bound_type, &int_type)?,
+                    order,
+                    body,
+                }
+            }
+        };
+
+        self.leave_block();
+
+        Ok(stmt)
     }
 
     pub fn convert_stmt(
@@ -687,63 +766,8 @@ impl Converter {
                 to,
                 order,
                 body,
-            } => {
-                self.enter_block(); // For counter is in it's own block
+            } => self.convert_for(counter, from, to.as_deref(), *order, body)?,
 
-                let counter_loc = self.get_fresh_local_location();
-
-                let stmt = match to {
-                    None => {
-                        let Typed {
-                            value: array_expr,
-                            ty: array_type,
-                        } = self.convert_expr(from)?;
-                        let element_type = array_type.get_element_type()?;
-                        let counter_decl = ast::tree::Decl::Var(ast::tree::VarDecl {
-                            t: Rc::clone(element_type),
-                            initialiser: None,
-                            relative_location: counter_loc,
-                        });
-
-                        let counter_ident = self.bind_local_decl(counter, counter_decl);
-                        let body = self.convert_block(body)?;
-                        ast::tree::Statement::ForEach {
-                            counter: counter_ident,
-                            collection: array_expr,
-                            order: *order,
-                            body,
-                        }
-                    }
-                    Some(to) => {
-                        let Typed {
-                            value: lower_bound,
-                            ty: lower_bound_type,
-                        } = self.convert_expr(from)?;
-                        let Typed {
-                            value: upper_bound,
-                            ty: upper_bound_type,
-                        } = self.convert_expr(to)?;
-                        let int_type = Rc::new(ast::types::Type::Int);
-                        let counter_decl = ast::tree::Decl::Var(ast::tree::VarDecl {
-                            t: Rc::clone(&int_type),
-                            initialiser: None,
-                            relative_location: counter_loc,
-                        });
-                        let counter_ident = self.bind_local_decl(counter, counter_decl);
-                        let body = self.convert_block(body)?;
-                        ast::tree::Statement::For {
-                            counter: counter_ident,
-                            lower_bound: cast_to(lower_bound, &lower_bound_type, &int_type)?,
-                            upper_bound: cast_to(upper_bound, &upper_bound_type, &int_type)?,
-                            order: *order,
-                            body,
-                        }
-                    }
-                };
-
-                self.leave_block();
-                stmt
-            }
             pt::tree::Statement::Print { value } => {
                 let Typed { value: expr, ty: _ } = self.convert_expr(value)?;
                 ast::tree::Statement::Print { value: expr }
@@ -881,211 +905,245 @@ impl Converter {
                     decl: type_decl,
                 }
             }
-            pt::tree::Declaration::Routine(pt::tree::RoutineDecl {
-                name,
-                arguments,
-                return_type,
-                body,
-            }) => {
-                if !is_global {
-                    return Err(AnalysisError {
+            pt::tree::Declaration::Routine(decl) => {
+                if is_global {
+                    self.convert_routine(decl)
+                } else {
+                    Err(AnalysisError {
                         what: "Local routines declarations is not supported".to_string(),
-                    });
-                }
-                let converted_arguments_types = arguments
-                    .iter()
-                    .map(|(name, arg_type)| {
-                        self.convert_type(arg_type)
-                            .map(|conerted_arg_type| (name.clone(), conerted_arg_type))
                     })
-                    .collect::<AnalysisResult<Vec<(RawIdentifier, Rc<ast::types::Type>)>>>()?;
-
-                match body {
-                    None => {
-                        let return_type = match &return_type {
-                            Some(t) => self.convert_type(t)?,
-                            None => Rc::new(ast::types::Type::Unit),
-                        };
-
-                        let signature = ast::tree::RoutineSignature {
-                            args: converted_arguments_types,
-                            return_type,
-                        };
-
-                        let ident = self.bind_routine(
-                            name,
-                            ast::tree::RoutineDecl::Forward {
-                                signature: signature.clone(),
-                            },
-                        )?;
-
-                        ast::tree::Binding {
-                            name: ident,
-                            decl: ast::tree::Decl::Routine(ast::tree::RoutineDecl::Forward {
-                                signature,
-                            }),
-                        }
-                    }
-                    Some(body) => {
-                        let args_decls = converted_arguments_types
-                            .iter()
-                            .enumerate()
-                            .map(|(index, (name, t))| {
-                                (
-                                    name.clone(),
-                                    ast::tree::Decl::Var(ast::tree::VarDecl {
-                                        t: Rc::clone(t),
-                                        initialiser: None,
-                                        relative_location: Location::Argument(
-                                            u16::try_from(index)
-                                                .expect("Too many arguments for function"),
-                                        ),
-                                    }),
-                                )
-                            })
-                            .collect::<Vec<(RawIdentifier, ast::tree::Decl)>>();
-
-                        match (return_type, body) {
-                            (return_type, pt::tree::RoutineBody::Block(block)) => {
-                                let converted_return_type = return_type
-                                    .as_ref()
-                                    .map_or(Ok(Rc::new(ast::types::Type::Unit)), |t| {
-                                        self.convert_type(t)
-                                    })?;
-
-                                // Firstly, create a forward declaration for possible recursive use
-                                let signature = ast::tree::RoutineSignature {
-                                    args: converted_arguments_types.clone(),
-                                    return_type: Rc::clone(&converted_return_type),
-                                };
-
-                                let ident = self.bind_routine(
-                                    name,
-                                    ast::tree::RoutineDecl::Forward {
-                                        signature: signature.clone(),
-                                    },
-                                )?;
-
-                                // Memorise that routine for type-check of return statement
-                                self.current_routine = Some(RoutinePrototype {
-                                    name: name.clone(),
-                                    args: converted_arguments_types
-                                        .iter()
-                                        .map(|(_, t)| t)
-                                        .cloned()
-                                        .collect::<Vec<Rc<ast::types::Type>>>()
-                                        .clone(),
-                                    return_type: converted_return_type,
-                                });
-
-                                // create a function scope
-                                self.enter_block();
-
-                                let args_bindings = args_decls
-                                    .iter()
-                                    .map(|(raw_name, decl)| {
-                                        let arg_ident =
-                                            self.bind_local_decl(raw_name, decl.clone());
-                                        ast::tree::Binding {
-                                            name: arg_ident,
-                                            decl: decl.clone(),
-                                        }
-                                    })
-                                    .collect::<Vec<ast::tree::Binding>>();
-
-                                let converted_body = self.convert_block(block)?;
-
-                                self.leave_block();
-                                self.current_routine = None;
-
-                                ast::tree::Binding {
-                                    name: ident,
-                                    decl: ast::tree::Decl::Routine(ast::tree::RoutineDecl::Full {
-                                        signature,
-                                        args_bindings,
-                                        body: ast::tree::RoutineBody::Block(converted_body),
-                                    }),
-                                }
-                            }
-                            (None, pt::tree::RoutineBody::Expression(expression)) => {
-                                // No recursive calls for expression function
-                                self.enter_block();
-
-                                let args_bindings = args_decls
-                                    .iter()
-                                    .map(|(raw_name, decl)| {
-                                        let arg_ident =
-                                            self.bind_local_decl(raw_name, decl.clone());
-                                        ast::tree::Binding {
-                                            name: arg_ident,
-                                            decl: decl.clone(),
-                                        }
-                                    })
-                                    .collect::<Vec<ast::tree::Binding>>();
-
-                                let Typed { value: expr, ty: t } = self.convert_expr(expression)?;
-
-                                self.leave_block(); // If we met an error we do not need recover
-
-                                let signature = ast::tree::RoutineSignature {
-                                    args: converted_arguments_types,
-                                    return_type: t,
-                                };
-
-                                let decl = ast::tree::RoutineDecl::Full {
-                                    signature,
-                                    args_bindings,
-                                    body: ast::tree::RoutineBody::Expression(expr),
-                                };
-
-                                let ident = self.bind_routine(name, decl.clone())?;
-                                ast::tree::Binding {
-                                    name: ident,
-                                    decl: ast::tree::Decl::Routine(decl),
-                                }
-                            }
-                            (Some(return_type), pt::tree::RoutineBody::Expression(expression)) => {
-                                let converted_return_type = self.convert_type(return_type)?;
-
-                                let args_bindings = args_decls
-                                    .iter()
-                                    .map(|(raw_name, decl)| {
-                                        let arg_ident =
-                                            self.bind_local_decl(raw_name, decl.clone());
-                                        ast::tree::Binding {
-                                            name: arg_ident,
-                                            decl: decl.clone(),
-                                        }
-                                    })
-                                    .collect::<Vec<ast::tree::Binding>>();
-
-                                let Typed { value: expr, ty: t } = self.convert_expr(expression)?;
-                                self.leave_block(); // If we met an error we do not need recover
-
-                                let expr = cast_to(expr, &t, &converted_return_type)?;
-
-                                let signature = ast::tree::RoutineSignature {
-                                    args: converted_arguments_types,
-                                    return_type: converted_return_type,
-                                };
-
-                                let decl = ast::tree::RoutineDecl::Full {
-                                    signature,
-                                    args_bindings,
-                                    body: ast::tree::RoutineBody::Expression(expr),
-                                };
-
-                                let ident = self.bind_routine(name, decl.clone())?;
-                                ast::tree::Binding {
-                                    name: ident,
-                                    decl: ast::tree::Decl::Routine(decl),
-                                }
-                            }
-                        }
-                    }
-                }
+                }?
             }
         })
+    }
+
+    fn convert_routine(
+        &mut self,
+        decl: &pt::tree::RoutineDecl,
+    ) -> AnalysisResult<ast::tree::Binding> {
+        let pt::tree::RoutineDecl {
+            name,
+            arguments,
+            return_type,
+            body,
+        } = decl;
+        let converted_arguments_types = arguments
+            .iter()
+            .map(|(name, arg_type)| {
+                self.convert_type(arg_type)
+                    .map(|conerted_arg_type| (name.clone(), conerted_arg_type))
+            })
+            .collect::<AnalysisResult<Vec<(RawIdentifier, Rc<ast::types::Type>)>>>()?;
+
+        let Some(body) = body else {
+            let return_type = match &return_type {
+                Some(t) => self.convert_type(t)?,
+                None => Rc::new(ast::types::Type::Unit),
+            };
+
+            let signature = ast::tree::RoutineSignature {
+                args: converted_arguments_types,
+                return_type,
+            };
+
+            let ident = self.bind_routine(
+                name,
+                ast::tree::RoutineDecl::Forward {
+                    signature: signature.clone(),
+                },
+            )?;
+
+            return Ok(ast::tree::Binding {
+                name: ident,
+                decl: ast::tree::Decl::Routine(ast::tree::RoutineDecl::Forward { signature }),
+            });
+        };
+
+        let args_decls: Vec<_> = converted_arguments_types
+            .iter()
+            .enumerate()
+            .map(|(index, (name, t))| {
+                (
+                    name.clone(),
+                    ast::tree::Decl::Var(ast::tree::VarDecl {
+                        t: Rc::clone(t),
+                        initialiser: None,
+                        relative_location: Location::Argument(
+                            u16::try_from(index).expect("Too many arguments for function"),
+                        ),
+                    }),
+                )
+            })
+            .collect();
+
+        let return_type = return_type.as_deref();
+
+        match body {
+            pt::tree::RoutineBody::Block(block) => self.convert_routine_block(
+                name,
+                return_type,
+                block,
+                converted_arguments_types,
+                &args_decls,
+            ),
+            pt::tree::RoutineBody::Expression(expression) => self.convert_routine_expression(
+                name,
+                return_type,
+                expression,
+                converted_arguments_types,
+                &args_decls,
+            ),
+        }
+    }
+
+    fn convert_routine_block(
+        &mut self,
+        name: &RawIdentifier,
+        return_type: Option<&pt::types::Type>,
+        block: &pt::tree::Block,
+        converted_arguments_types: Vec<(RawIdentifier, Rc<ast::types::Type>)>,
+        args_decls: &[(RawIdentifier, ast::tree::Decl)],
+    ) -> AnalysisResult<ast::tree::Binding> {
+        let converted_return_type = return_type
+            .as_ref()
+            .map_or(Ok(Rc::new(ast::types::Type::Unit)), |t| {
+                self.convert_type(t)
+            })?;
+
+        // Firstly, create a forward declaration for possible recursive use
+        let signature = ast::tree::RoutineSignature {
+            args: converted_arguments_types.clone(),
+            return_type: Rc::clone(&converted_return_type),
+        };
+
+        let ident = self.bind_routine(
+            name,
+            ast::tree::RoutineDecl::Forward {
+                signature: signature.clone(),
+            },
+        )?;
+
+        // Memorise that routine for type-check of return statement
+        self.current_routine = Some(RoutinePrototype {
+            name: name.clone(),
+            args: converted_arguments_types
+                .into_iter()
+                .map(|(_, t)| t)
+                .collect(),
+            return_type: converted_return_type,
+        });
+
+        // create a function scope
+        self.enter_block();
+
+        let args_bindings = args_decls
+            .iter()
+            .map(|(raw_name, decl)| {
+                let arg_ident = self.bind_local_decl(raw_name, decl.clone());
+                ast::tree::Binding {
+                    name: arg_ident,
+                    decl: decl.clone(),
+                }
+            })
+            .collect::<Vec<ast::tree::Binding>>();
+
+        let converted_body = self.convert_block(block)?;
+
+        self.leave_block();
+        self.current_routine = None;
+
+        Ok(ast::tree::Binding {
+            name: ident,
+            decl: ast::tree::Decl::Routine(ast::tree::RoutineDecl::Full {
+                signature,
+                args_bindings,
+                body: ast::tree::RoutineBody::Block(converted_body),
+            }),
+        })
+    }
+
+    fn convert_routine_expression(
+        &mut self,
+        name: &RawIdentifier,
+        return_type: Option<&pt::types::Type>,
+        expression: &pt::tree::Expression,
+        converted_arguments_types: Vec<(RawIdentifier, Rc<ast::types::Type>)>,
+        args_decls: &[(RawIdentifier, ast::tree::Decl)],
+    ) -> AnalysisResult<ast::tree::Binding> {
+        match return_type {
+            None => {
+                // No recursive calls for expression function
+                self.enter_block();
+
+                let args_bindings = args_decls
+                    .iter()
+                    .map(|(raw_name, decl)| {
+                        let arg_ident = self.bind_local_decl(raw_name, decl.clone());
+                        ast::tree::Binding {
+                            name: arg_ident,
+                            decl: decl.clone(),
+                        }
+                    })
+                    .collect::<Vec<ast::tree::Binding>>();
+
+                let Typed { value: expr, ty: t } = self.convert_expr(expression)?;
+
+                self.leave_block(); // If we met an error we do not need recover
+
+                let signature = ast::tree::RoutineSignature {
+                    args: converted_arguments_types,
+                    return_type: t,
+                };
+
+                let decl = ast::tree::RoutineDecl::Full {
+                    signature,
+                    args_bindings,
+                    body: ast::tree::RoutineBody::Expression(expr),
+                };
+
+                let ident = self.bind_routine(name, decl.clone())?;
+                Ok(ast::tree::Binding {
+                    name: ident,
+                    decl: ast::tree::Decl::Routine(decl),
+                })
+            }
+            Some(return_type) => {
+                let converted_return_type = self.convert_type(return_type)?;
+
+                let args_bindings = args_decls
+                    .iter()
+                    .map(|(raw_name, decl)| {
+                        let arg_ident = self.bind_local_decl(raw_name, decl.clone());
+                        ast::tree::Binding {
+                            name: arg_ident,
+                            decl: decl.clone(),
+                        }
+                    })
+                    .collect::<Vec<ast::tree::Binding>>();
+
+                let Typed { value: expr, ty: t } = self.convert_expr(expression)?;
+                self.leave_block(); // If we met an error we do not need recover
+
+                let expr = cast_to(expr, &t, &converted_return_type)?;
+
+                let signature = ast::tree::RoutineSignature {
+                    args: converted_arguments_types,
+                    return_type: converted_return_type,
+                };
+
+                let decl = ast::tree::RoutineDecl::Full {
+                    signature,
+                    args_bindings,
+                    body: ast::tree::RoutineBody::Expression(expr),
+                };
+
+                let ident = self.bind_routine(name, decl.clone())?;
+                Ok(ast::tree::Binding {
+                    name: ident,
+                    decl: ast::tree::Decl::Routine(decl),
+                })
+            }
+        }
     }
 }
 
