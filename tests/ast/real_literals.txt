@@ -339,6 +339,47 @@ Ok(
                         },
                     ),
                 },
+                Binding {
+                    name: r(18),
+                    decl: Var(
+                        VarDecl {
+                            t: Real,
+                            initialiser: Some(
+                                RealLiteral(
+                                    RealLiteral {
+                                        repr: "Inf",
+                                        value: inf,
+                                    },
+                                ),
+                            ),
+                            relative_location: Local(
+                                17,
+                            ),
+                        },
+                    ),
+                },
+                Binding {
+                    name: s(19),
+                    decl: Var(
+                        VarDecl {
+                            t: Real,
+                            initialiser: Some(
+                                Unop {
+                                    op: RealNeg,
+                                    operand: RealLiteral(
+                                        RealLiteral {
+                                            repr: "Inf",
+                                            value: inf,
+                                        },
+                                    ),
+                                },
+                            ),
+                            relative_location: Local(
+                                18,
+                            ),
+                        },
+                    ),
+                },
             ],
         },
         Program(
@@ -864,6 +905,69 @@ Ok(
                                                 value: LvalueToRvalue(
                                                     Identifier(
                                                         q(17),
+                                                    ),
+                                                ),
+                                            },
+                                        ),
+                                        Decl(
+                                            SimpleBinding {
+                                                name: r(18),
+                                                decl: Var(
+                                                    VarDecl {
+                                                        t: Real,
+                                                        initialiser: Some(
+                                                            RealLiteral(
+                                                                RealLiteral {
+                                                                    repr: "Inf",
+                                                                    value: inf,
+                                                                },
+                                                            ),
+                                                        ),
+                                                        relative_location: Local(
+                                                            17,
+                                                        ),
+                                                    },
+                                                ),
+                                            },
+                                        ),
+                                        Stmt(
+                                            Print {
+                                                value: LvalueToRvalue(
+                                                    Identifier(
+                                                        r(18),
+                                                    ),
+                                                ),
+                                            },
+                                        ),
+                                        Decl(
+                                            SimpleBinding {
+                                                name: s(19),
+                                                decl: Var(
+                                                    VarDecl {
+                                                        t: Real,
+                                                        initialiser: Some(
+                                                            Unop {
+                                                                op: RealNeg,
+                                                                operand: RealLiteral(
+                                                                    RealLiteral {
+                                                                        repr: "Inf",
+                                                                        value: inf,
+                                                                    },
+                                                                ),
+                                                            },
+                                                        ),
+                                                        relative_location: Local(
+                                                            18,
+                                                        ),
+                                                    },
+                                                ),
+                                            },
+                                        ),
+                                        Stmt(
+                                            Print {
+                                                value: LvalueToRvalue(
+                                                    Identifier(
+                                                        s(19),
                                                     ),
                                                 ),
                                             },

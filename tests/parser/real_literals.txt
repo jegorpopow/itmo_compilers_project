@@ -405,6 +405,55 @@ Ok(
                                                 ),
                                             },
                                         ),
+                                        VarDecl(
+                                            VarDecl {
+                                                name: r"r",
+                                                t: None,
+                                                initialiser: Some(
+                                                    RealLiteral(
+                                                        RealLiteral {
+                                                            repr: "Inf",
+                                                            value: inf,
+                                                        },
+                                                    ),
+                                                ),
+                                            },
+                                        ),
+                                        Stmt(
+                                            Print {
+                                                value: LvalueToRvalue(
+                                                    Identifier(
+                                                        r"r",
+                                                    ),
+                                                ),
+                                            },
+                                        ),
+                                        VarDecl(
+                                            VarDecl {
+                                                name: r"s",
+                                                t: None,
+                                                initialiser: Some(
+                                                    Unop {
+                                                        op: Sub,
+                                                        operand: RealLiteral(
+                                                            RealLiteral {
+                                                                repr: "Inf",
+                                                                value: inf,
+                                                            },
+                                                        ),
+                                                    },
+                                                ),
+                                            },
+                                        ),
+                                        Stmt(
+                                            Print {
+                                                value: LvalueToRvalue(
+                                                    Identifier(
+                                                        r"s",
+                                                    ),
+                                                ),
+                                            },
+                                        ),
                                     ],
                                 ),
                             ),

@@ -174,6 +174,7 @@ fn name_disambiguation(lexeme: &str) -> TokenKind<'_> {
         "real" => TokenKind::BuiltinTypename(BuiltinTypename::Real),
         "boolean" => TokenKind::BuiltinTypename(BuiltinTypename::Boolean),
         "NaN" => TokenKind::RealLiteral(RealLiteral { value: f64::NAN }),
+        "Inf" => TokenKind::RealLiteral(RealLiteral { value: f64::INFINITY }),
     };
 
     match KNOWN_TOKENS.get(lexeme) {

@@ -49,4 +49,10 @@ routine main() is
 
   var q is -NaN;
   print q;
+
+  var r is Inf;
+  print r;
+
+  var s is -Inf;
+  print s;
 end
