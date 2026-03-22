@@ -3,11 +3,11 @@ use std::{
     rc::Rc,
 };
 
-use lexer::{Lexer, Token};
+use lexer::Lexer;
 use parser::{Expression, IndexedIterator, Parser, PureParsingResult};
 
 fn parse_expr_from_line(str: &str) -> PureParsingResult<Rc<Expression>> {
-    let tokens: Vec<Token<'_>> = Lexer::from(str).collect();
+    let tokens: Vec<_> = Lexer::from(str).collect();
     let mut parser = Parser::new();
     let start = IndexedIterator::from(tokens.as_slice());
     parser.parse_expr(start).map(|(val, _)| val)
@@ -24,7 +24,7 @@ fn main() -> io::Result<()> {
 
         match parse_expr_from_line(&buffer) {
             Ok(expr) => println!("{:?}", *expr),
-            Err(err) => println!("IO error: {} @ {}", err.what, err.position),
+            Err(err) => println!("error: {} @ {}", err.what, err.position),
         }
     }
 }
