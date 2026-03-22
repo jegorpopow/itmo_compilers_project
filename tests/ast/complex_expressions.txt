@@ -585,7 +585,9 @@ Ok(
                                                 value: Unop {
                                                     op: BoolNeg,
                                                     operand: Binop {
-                                                        op: Eq,
+                                                        op: Eq(
+                                                            Eq,
+                                                        ),
                                                         lhs: LvalueToRvalue(
                                                             Identifier(
                                                                 a(3),

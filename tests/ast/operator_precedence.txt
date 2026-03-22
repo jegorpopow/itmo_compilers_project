@@ -210,7 +210,9 @@ Ok(
                                                         ),
                                                     },
                                                     rhs: Binop {
-                                                        op: Eq,
+                                                        op: Eq(
+                                                            Eq,
+                                                        ),
                                                         lhs: IntegerLiteral(
                                                             IntegerLiteral {
                                                                 repr: "1",

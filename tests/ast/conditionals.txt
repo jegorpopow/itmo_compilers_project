@@ -212,7 +212,9 @@ Ok(
                                         Stmt(
                                             If {
                                                 condition: Binop {
-                                                    op: Eq,
+                                                    op: Eq(
+                                                        Eq,
+                                                    ),
                                                     lhs: Binop {
                                                         op: Int(
                                                             Mod,

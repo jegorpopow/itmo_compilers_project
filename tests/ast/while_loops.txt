@@ -118,7 +118,9 @@ Ok(
                                         Stmt(
                                             While {
                                                 condition: Binop {
-                                                    op: Ne,
+                                                    op: Eq(
+                                                        Ne,
+                                                    ),
                                                     lhs: LvalueToRvalue(
                                                         Identifier(
                                                             n(1),
@@ -136,7 +138,9 @@ Ok(
                                                         Stmt(
                                                             If {
                                                                 condition: Binop {
-                                                                    op: Eq,
+                                                                    op: Eq(
+                                                                        Eq,
+                                                                    ),
                                                                     lhs: Binop {
                                                                         op: Int(
                                                                             Mod,

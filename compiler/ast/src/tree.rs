@@ -4,7 +4,9 @@ use derive_where::derive_where;
 
 use common::{
     Identifier, Location, LoopOrder, RawIdentifier,
-    operators::{BoolBinOp, IntBinOp, RealBinOp, SemanticBinaryOperator, SemanticUnaryOperator},
+    operators::{
+        BoolBinOp, EqBinOp, IntBinOp, RealBinOp, SemanticBinaryOperator, SemanticUnaryOperator,
+    },
 };
 
 use crate::{
@@ -188,6 +190,15 @@ impl BinOp<bool> for BoolBinOp {
     }
 }
 
+impl BinOp<EvaluatedValue> for EqBinOp {
+    fn apply(&self, lhs: EvaluatedValue, rhs: EvaluatedValue) -> EvaluatedValue {
+        EvaluatedValue::Bool(match self {
+            Self::Eq => lhs == rhs,
+            Self::Ne => lhs != rhs,
+        })
+    }
+}
+
 impl Expression {
     pub(crate) fn try_constexpr_evaluate(&self) -> AnalysisResult<EvaluatedValue> {
         match self {
@@ -198,52 +209,39 @@ impl Expression {
             Expression::BoolLiteral(bool_literal) => {
                 Ok(EvaluatedValue::Bool(bool_literal.to_bool()))
             }
-            Expression::Binop { op, lhs, rhs } => match op {
-                SemanticBinaryOperator::Eq => Ok(EvaluatedValue::Bool(lhs == rhs)),
-                SemanticBinaryOperator::Ne => Ok(EvaluatedValue::Bool(lhs != rhs)),
-                SemanticBinaryOperator::Real(op) => Ok(op.apply(
-                    lhs.as_ref().try_constexpr_evaluate()?.as_real()?,
-                    rhs.as_ref().try_constexpr_evaluate()?.as_real()?,
-                )),
-                SemanticBinaryOperator::Int(op) => Ok(op.apply(
-                    lhs.as_ref().try_constexpr_evaluate()?.as_int()?,
-                    rhs.as_ref().try_constexpr_evaluate()?.as_int()?,
-                )),
-                SemanticBinaryOperator::Bool(op) => Ok(op.apply(
-                    lhs.as_ref().try_constexpr_evaluate()?.as_bool()?,
-                    rhs.as_ref().try_constexpr_evaluate()?.as_bool()?,
-                )),
-            },
+            Expression::Binop { op, lhs, rhs } => {
+                let lhs = lhs.try_constexpr_evaluate()?;
+                let rhs = rhs.try_constexpr_evaluate()?;
+                Ok(match op {
+                    SemanticBinaryOperator::Eq(op) => op.apply(lhs, rhs),
+                    SemanticBinaryOperator::Real(op) => op.apply(lhs.as_real()?, rhs.as_real()?),
+                    SemanticBinaryOperator::Int(op) => op.apply(lhs.as_int()?, rhs.as_int()?),
+                    SemanticBinaryOperator::Bool(op) => op.apply(lhs.as_bool()?, rhs.as_bool()?),
+                })
+            }
 
-            Expression::Unop { op, operand } => match op {
-                SemanticUnaryOperator::IntNeg => Ok(EvaluatedValue::Int(
-                    -operand.as_ref().try_constexpr_evaluate()?.as_int()?,
-                )),
-                SemanticUnaryOperator::RealNeg => Ok(EvaluatedValue::Real(
-                    -operand.as_ref().try_constexpr_evaluate()?.as_real()?,
-                )),
-                SemanticUnaryOperator::BoolNeg => Ok(EvaluatedValue::Bool(
-                    !operand.as_ref().try_constexpr_evaluate()?.as_bool()?,
-                )),
-            },
+            Expression::Unop { op, operand } => {
+                let operand = operand.try_constexpr_evaluate()?;
+                Ok(match op {
+                    SemanticUnaryOperator::IntNeg => EvaluatedValue::Int(-operand.as_int()?),
+                    SemanticUnaryOperator::RealNeg => EvaluatedValue::Real(-operand.as_real()?),
+                    SemanticUnaryOperator::BoolNeg => EvaluatedValue::Bool(!operand.as_bool()?),
+                })
+            }
 
             Expression::IntToBool(expression) => Ok(EvaluatedValue::Bool(
-                0 != expression.as_ref().try_constexpr_evaluate()?.as_int()?,
+                expression.try_constexpr_evaluate()?.as_int()? != 0,
             )),
             Expression::BoolToInt(expression) => Ok(EvaluatedValue::Int(
-                expression
-                    .as_ref()
-                    .try_constexpr_evaluate()?
-                    .as_bool()?
-                    .into(),
+                expression.try_constexpr_evaluate()?.as_bool()?.into(),
             )),
             #[expect(clippy::cast_possible_truncation, reason = "By design")]
             Expression::RealToInt(expression) => Ok(EvaluatedValue::Int(
-                expression.as_ref().try_constexpr_evaluate()?.as_real()? as i64,
+                expression.try_constexpr_evaluate()?.as_real()? as i64,
             )),
             #[expect(clippy::cast_precision_loss, reason = "By design")]
             Expression::IntToReal(expression) => Ok(EvaluatedValue::Real(
-                expression.as_ref().try_constexpr_evaluate()?.as_int()? as f64,
+                expression.try_constexpr_evaluate()?.as_int()? as f64,
             )),
 
             Expression::Call { .. }

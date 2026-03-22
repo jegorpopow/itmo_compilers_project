@@ -4,7 +4,9 @@ use core::alloc::Layout;
 
 use common::{
     Location,
-    operators::{BoolBinOp, IntBinOp, RealBinOp, SemanticBinaryOperator, SemanticUnaryOperator},
+    operators::{
+        BoolBinOp, EqBinOp, IntBinOp, RealBinOp, SemanticBinaryOperator, SemanticUnaryOperator,
+    },
 };
 
 trait Encode {
@@ -122,8 +124,10 @@ impl Encode for SemanticBinaryOperator {
 
     fn encode(&self) -> Self::Output {
         match self {
-            SemanticBinaryOperator::Eq => 0x00,
-            SemanticBinaryOperator::Ne => 0x01,
+            SemanticBinaryOperator::Eq(op) => match op {
+                EqBinOp::Eq => 0x00,
+                EqBinOp::Ne => 0x01,
+            },
 
             SemanticBinaryOperator::Real(op) => match op {
                 RealBinOp::Le => 0x10,

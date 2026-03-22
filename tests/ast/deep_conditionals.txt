@@ -312,7 +312,9 @@ Ok(
                                         Stmt(
                                             If {
                                                 condition: Binop {
-                                                    op: Eq,
+                                                    op: Eq(
+                                                        Eq,
+                                                    ),
                                                     lhs: LvalueToRvalue(
                                                         Identifier(
                                                             a(1),
@@ -340,7 +342,9 @@ Ok(
                                                         Stmt(
                                                             If {
                                                                 condition: Binop {
-                                                                    op: Eq,
+                                                                    op: Eq(
+                                                                        Eq,
+                                                                    ),
                                                                     lhs: LvalueToRvalue(
                                                                         Identifier(
                                                                             b(2),
@@ -368,7 +372,9 @@ Ok(
                                                                         Stmt(
                                                                             If {
                                                                                 condition: Binop {
-                                                                                    op: Eq,
+                                                                                    op: Eq(
+                                                                                        Eq,
+                                                                                    ),
                                                                                     lhs: LvalueToRvalue(
                                                                                         Identifier(
                                                                                             c(3),
@@ -401,7 +407,9 @@ Ok(
                                                                                             Stmt(
                                                                                                 If {
                                                                                                     condition: Binop {
-                                                                                                        op: Eq,
+                                                                                                        op: Eq(
+                                                                                                            Eq,
+                                                                                                        ),
                                                                                                         lhs: LvalueToRvalue(
                                                                                                             Identifier(
                                                                                                                 d(4),
@@ -444,7 +452,9 @@ Ok(
                                                                             Stmt(
                                                                                 If {
                                                                                     condition: Binop {
-                                                                                        op: Eq,
+                                                                                        op: Eq(
+                                                                                            Eq,
+                                                                                        ),
                                                                                         lhs: LvalueToRvalue(
                                                                                             Identifier(
                                                                                                 e(5),
@@ -477,7 +487,9 @@ Ok(
                                                                                                 Stmt(
                                                                                                     If {
                                                                                                         condition: Binop {
-                                                                                                            op: Eq,
+                                                                                                            op: Eq(
+                                                                                                                Eq,
+                                                                                                            ),
                                                                                                             lhs: LvalueToRvalue(
                                                                                                                 Identifier(
                                                                                                                     f(6),
@@ -520,7 +532,9 @@ Ok(
                                                         Stmt(
                                                             If {
                                                                 condition: Binop {
-                                                                    op: Eq,
+                                                                    op: Eq(
+                                                                        Eq,
+                                                                    ),
                                                                     lhs: LvalueToRvalue(
                                                                         Identifier(
                                                                             d(4),
@@ -548,7 +562,9 @@ Ok(
                                                                         Stmt(
                                                                             If {
                                                                                 condition: Binop {
-                                                                                    op: Eq,
+                                                                                    op: Eq(
+                                                                                        Eq,
+                                                                                    ),
                                                                                     lhs: LvalueToRvalue(
                                                                                         Identifier(
                                                                                             e(5),
@@ -576,7 +592,9 @@ Ok(
                                                                                         Stmt(
                                                                                             If {
                                                                                                 condition: Binop {
-                                                                                                    op: Eq,
+                                                                                                    op: Eq(
+                                                                                                        Eq,
+                                                                                                    ),
                                                                                                     lhs: LvalueToRvalue(
                                                                                                         Identifier(
                                                                                                             f(6),
@@ -604,7 +622,9 @@ Ok(
                                                                                                         Stmt(
                                                                                                             If {
                                                                                                                 condition: Binop {
-                                                                                                                    op: Eq,
+                                                                                                                    op: Eq(
+                                                                                                                        Eq,
+                                                                                                                    ),
                                                                                                                     lhs: LvalueToRvalue(
                                                                                                                         Identifier(
                                                                                                                             g(7),
@@ -697,7 +717,9 @@ Ok(
                                                                             Stmt(
                                                                                 If {
                                                                                     condition: Binop {
-                                                                                        op: Eq,
+                                                                                        op: Eq(
+                                                                                            Eq,
+                                                                                        ),
                                                                                         lhs: LvalueToRvalue(
                                                                                             Identifier(
                                                                                                 b(2),
@@ -730,7 +752,9 @@ Ok(
                                                                                                 Stmt(
                                                                                                     If {
                                                                                                         condition: Binop {
-                                                                                                            op: Eq,
+                                                                                                            op: Eq(
+                                                                                                                Eq,
+                                                                                                            ),
                                                                                                             lhs: LvalueToRvalue(
                                                                                                                 Identifier(
                                                                                                                     c(3),
@@ -778,7 +802,9 @@ Ok(
                                                             Stmt(
                                                                 If {
                                                                     condition: Binop {
-                                                                        op: Eq,
+                                                                        op: Eq(
+                                                                            Eq,
+                                                                        ),
                                                                         lhs: LvalueToRvalue(
                                                                             Identifier(
                                                                                 e(5),
@@ -811,7 +837,9 @@ Ok(
                                                                                 Stmt(
                                                                                     If {
                                                                                         condition: Binop {
-                                                                                            op: Eq,
+                                                                                            op: Eq(
+                                                                                                Eq,
+                                                                                            ),
                                                                                             lhs: LvalueToRvalue(
                                                                                                 Identifier(
                                                                                                     g(7),
