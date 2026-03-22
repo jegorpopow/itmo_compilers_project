@@ -12,6 +12,8 @@ workspace = true
 [dependencies]
 anyhow.workspace = true
 culpa = "1.0.2"
+derive-where.workspace = true
+strum = { version = "0.28.0", features = ["derive"] }
 
 [dependencies.clap]
 version = "4.5.60"

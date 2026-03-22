@@ -1,18 +1,25 @@
-use core::fmt;
+use core::{fmt, mem};
 use std::{
-    collections::HashSet,
+    collections::BTreeSet,
     env, fs,
     path::{Path, PathBuf},
 };
 
 use anyhow::{Context as _, Error, anyhow, ensure};
 use culpa::throws;
+use derive_where::derive_where;
+use strum::{EnumIter, IntoEnumIterator};
+
+mod cli;
+
+#[cfg(test)]
+mod tests;
 
 #[derive(Debug)]
 struct TestDirContents {
     dir: PathBuf,
     extension: String,
-    names: HashSet<String>,
+    names: BTreeSet<String>,
 }
 
 impl TestDirContents {
@@ -31,7 +38,7 @@ impl TestDirContents {
 fn list_tests(dir: PathBuf) -> TestDirContents {
     let mut expected_extension: Option<String> = None;
 
-    let mut names = HashSet::new();
+    let mut names = BTreeSet::new();
 
     for entry in fs::read_dir(&dir).with_context(|| format!("failed to ls {}", dir.display()))? {
         let entry = entry.with_context(|| format!("Error traversing {}", dir.display()))?;
@@ -66,6 +73,13 @@ fn list_tests(dir: PathBuf) -> TestDirContents {
     }
 }
 
+fn path_append(mut path: PathBuf, components: &[&str]) -> PathBuf {
+    for component in components {
+        path.push(component);
+    }
+    path
+}
+
 #[throws]
 fn workspace_root() -> PathBuf {
     Path::new(env!("CARGO_MANIFEST_DIR"))
@@ -76,68 +90,111 @@ fn workspace_root() -> PathBuf {
 
 #[throws]
 fn tests_dir() -> PathBuf {
-    workspace_root()?.join("tests")
+    path_append(workspace_root()?, &["tests"])
 }
 
 #[throws]
-fn lexer_tests() -> TestDirContents {
-    list_tests(tests_dir()?.join("lexer")).context("Failed to get a list of lexer tests")?
+fn srcs_dir() -> PathBuf {
+    path_append(tests_dir()?, &["src"])
 }
 
 #[throws]
-fn lexer_tests_file() -> PathBuf {
-    workspace_root()?.join("compiler/lexer/src/tests.rs")
+fn test_sources() -> TestDirContents {
+    list_tests(srcs_dir()?).context("Failed to get a list test sources")?
 }
 
-#[cfg(test)]
-mod tests;
-
-struct TestCase<'a> {
-    ident: String,
-    name: &'a str,
+#[derive(Clone, Copy, EnumIter)]
+enum TestedCrate {
+    Lexer,
+    Parser,
+    AST,
 }
 
-impl fmt::Display for TestCase<'_> {
+impl fmt::Display for TestedCrate {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        let Self { ident, name } = self;
-        write!(f, "{ident} => {name:?}")
+        f.write_str(self.name())
     }
 }
 
-#[throws]
-fn update_lexer_tests() {
-    let tests = lexer_tests()?;
-    debug_assert_eq!(tests.extension, "txt");
-    println!(
-        "Adding following test cases (found in {}):",
-        tests.dir.display()
-    );
+impl TestedCrate {
+    #[must_use]
+    const fn name(self) -> &'static str {
+        match self {
+            Self::Lexer => "lexer",
+            Self::Parser => "parser",
+            Self::AST => "ast",
+        }
+    }
 
-    let mut test_cases = tests
-        .names
-        .iter()
-        .map(|name| TestCase {
-            ident: name.replace(' ', "_"),
-            name,
-        })
-        .collect::<Vec<_>>();
-    test_cases.sort_by(|a, b| a.ident.cmp(&b.ident));
-
-    for case in &test_cases {
-        println!(
-            "\tfrom {}:\n\t\t{case},",
-            tests.name_to_path(case.name).display()
+    #[throws]
+    fn tests_file(self) -> PathBuf {
+        path_append(
+            workspace_root()?,
+            &["compiler", self.name(), "src", "tests.rs"],
         )
     }
+}
 
-    let path = lexer_tests_file()?;
+#[derive_where(Ord, PartialOrd, Eq, PartialEq)]
+struct TestCase {
+    ident: String,
+
+    #[derive_where(skip)]
+    filename: String,
+    #[derive_where(skip)]
+    src_path: PathBuf,
+}
+
+impl fmt::Display for TestCase {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        let Self {
+            ident,
+            filename,
+            src_path: _,
+        } = self;
+        write!(f, "{ident} => {filename:?}")
+    }
+}
+
+impl TestCase {
+    #[must_use]
+    fn new(srcs: &TestDirContents, filename: String) -> Self {
+        Self {
+            ident: filename.to_lowercase(),
+            src_path: srcs.name_to_path(&filename),
+            filename,
+        }
+    }
+
+    #[throws]
+    fn all() -> Vec<Self> {
+        let mut srcs = test_sources()?;
+        let mut result: Vec<Self> = mem::take(&mut srcs.names)
+            .into_iter()
+            .map(|name| Self::new(&srcs, name))
+            .collect();
+        result.sort_unstable();
+        result
+    }
+}
+
+#[throws]
+fn update_listing(path: &Path, test_cases: &[TestCase]) {
+    println!("Adding following test cases to {}:", path.display());
+
+    for case in test_cases {
+        println!("\tfrom {}:\n\t\t{case},", case.src_path.display())
+    }
+
     let s =
-        fs::read_to_string(&path).with_context(|| format!("Failed to read {}", path.display()))?;
+        fs::read_to_string(path).with_context(|| format!("Failed to read {}", path.display()))?;
 
     let (prefix, remainder) = s
         .split_once("tests!")
         .with_context(|| format!("Cannot find \"tests!\" in {}", path.display()))?;
-    let (_, remainder) = remainder.split_once("\n];").context("TODO")?;
+    let (_, remainder) = remainder
+        .split_once("\n];")
+        .context("Couldn't find the closing bracket")?;
 
     let s = &mut prefix.to_owned();
     s.push_str("tests! [\n");
@@ -148,16 +205,22 @@ fn update_lexer_tests() {
     s.push_str("];");
     s.push_str(remainder);
 
-    fs::write(&path, s).with_context(|| format!("Failed to write back to {}", path.display()))?
+    fs::write(path, s).with_context(|| format!("Failed to write back to {}", path.display()))?
 }
 
-mod cli;
+#[throws]
+fn update_listings() {
+    let test_cases = TestCase::all()?;
+
+    for target in TestedCrate::iter() {
+        update_listing(&target.tests_file()?, &test_cases)
+            .with_context(|| format!("Failed to update test cases for {target}"))?
+    }
+}
 
 #[throws]
 fn main() {
     match cli::Task::parse() {
-        cli::Task::UpdateLexerTests => {
-            update_lexer_tests().context("Failed to update lexer test cases")?
-        }
+        cli::Task::UpdateListings => update_listings()?,
     }
 }
