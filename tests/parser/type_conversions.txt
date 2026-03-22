@@ -1,0 +1,216 @@
+Ok(
+    (
+        Program(
+            [
+                Routine(
+                    RoutineDecl {
+                        name: r"main",
+                        arguments: [],
+                        return_type: None,
+                        body: Some(
+                            Block(
+                                Block(
+                                    [
+                                        VarDecl(
+                                            VarDecl {
+                                                name: r"i",
+                                                t: Some(
+                                                    Int,
+                                                ),
+                                                initialiser: None,
+                                            },
+                                        ),
+                                        VarDecl(
+                                            VarDecl {
+                                                name: r"r",
+                                                t: Some(
+                                                    Real,
+                                                ),
+                                                initialiser: None,
+                                            },
+                                        ),
+                                        VarDecl(
+                                            VarDecl {
+                                                name: r"b",
+                                                t: Some(
+                                                    Bool,
+                                                ),
+                                                initialiser: None,
+                                            },
+                                        ),
+                                        Stmt(
+                                            Assignment {
+                                                lhs: Identifier(
+                                                    r"i",
+                                                ),
+                                                rhs: IntegerLiteral(
+                                                    IntegerLiteral {
+                                                        repr: "5",
+                                                        value: 5,
+                                                    },
+                                                ),
+                                            },
+                                        ),
+                                        Stmt(
+                                            Assignment {
+                                                lhs: Identifier(
+                                                    r"i",
+                                                ),
+                                                rhs: RealLiteral(
+                                                    RealLiteral {
+                                                        repr: "3.7",
+                                                        value: 3.7,
+                                                    },
+                                                ),
+                                            },
+                                        ),
+                                        Stmt(
+                                            Assignment {
+                                                lhs: Identifier(
+                                                    r"i",
+                                                ),
+                                                rhs: BoolLiteral(
+                                                    True,
+                                                ),
+                                            },
+                                        ),
+                                        Stmt(
+                                            Assignment {
+                                                lhs: Identifier(
+                                                    r"i",
+                                                ),
+                                                rhs: BoolLiteral(
+                                                    False,
+                                                ),
+                                            },
+                                        ),
+                                        Stmt(
+                                            Assignment {
+                                                lhs: Identifier(
+                                                    r"r",
+                                                ),
+                                                rhs: RealLiteral(
+                                                    RealLiteral {
+                                                        repr: "2.5",
+                                                        value: 2.5,
+                                                    },
+                                                ),
+                                            },
+                                        ),
+                                        Stmt(
+                                            Assignment {
+                                                lhs: Identifier(
+                                                    r"r",
+                                                ),
+                                                rhs: IntegerLiteral(
+                                                    IntegerLiteral {
+                                                        repr: "10",
+                                                        value: 10,
+                                                    },
+                                                ),
+                                            },
+                                        ),
+                                        Stmt(
+                                            Assignment {
+                                                lhs: Identifier(
+                                                    r"r",
+                                                ),
+                                                rhs: BoolLiteral(
+                                                    True,
+                                                ),
+                                            },
+                                        ),
+                                        Stmt(
+                                            Assignment {
+                                                lhs: Identifier(
+                                                    r"r",
+                                                ),
+                                                rhs: BoolLiteral(
+                                                    False,
+                                                ),
+                                            },
+                                        ),
+                                        Stmt(
+                                            Assignment {
+                                                lhs: Identifier(
+                                                    r"b",
+                                                ),
+                                                rhs: BoolLiteral(
+                                                    True,
+                                                ),
+                                            },
+                                        ),
+                                        Stmt(
+                                            Assignment {
+                                                lhs: Identifier(
+                                                    r"b",
+                                                ),
+                                                rhs: BoolLiteral(
+                                                    False,
+                                                ),
+                                            },
+                                        ),
+                                        Stmt(
+                                            Assignment {
+                                                lhs: Identifier(
+                                                    r"b",
+                                                ),
+                                                rhs: IntegerLiteral(
+                                                    IntegerLiteral {
+                                                        repr: "1",
+                                                        value: 1,
+                                                    },
+                                                ),
+                                            },
+                                        ),
+                                        Stmt(
+                                            Assignment {
+                                                lhs: Identifier(
+                                                    r"b",
+                                                ),
+                                                rhs: IntegerLiteral(
+                                                    IntegerLiteral {
+                                                        repr: "0",
+                                                        value: 0,
+                                                    },
+                                                ),
+                                            },
+                                        ),
+                                        Stmt(
+                                            Print {
+                                                value: LvalueToRvalue(
+                                                    Identifier(
+                                                        r"i",
+                                                    ),
+                                                ),
+                                            },
+                                        ),
+                                        Stmt(
+                                            Print {
+                                                value: LvalueToRvalue(
+                                                    Identifier(
+                                                        r"r",
+                                                    ),
+                                                ),
+                                            },
+                                        ),
+                                        Stmt(
+                                            Print {
+                                                value: LvalueToRvalue(
+                                                    Identifier(
+                                                        r"b",
+                                                    ),
+                                                ),
+                                            },
+                                        ),
+                                    ],
+                                ),
+                            ),
+                        ),
+                    },
+                ),
+            ],
+        ),
+        [],
+    ),
+)

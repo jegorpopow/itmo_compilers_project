@@ -1,0 +1,243 @@
+Ok(
+    (
+        Program(
+            [
+                Routine(
+                    RoutineDecl {
+                        name: r"f",
+                        arguments: [],
+                        return_type: None,
+                        body: Some(
+                            Expression(
+                                IntegerLiteral(
+                                    IntegerLiteral {
+                                        repr: "1",
+                                        value: 1,
+                                    },
+                                ),
+                            ),
+                        ),
+                    },
+                ),
+                Routine(
+                    RoutineDecl {
+                        name: r"g",
+                        arguments: [],
+                        return_type: None,
+                        body: Some(
+                            Expression(
+                                IntegerLiteral(
+                                    IntegerLiteral {
+                                        repr: "2",
+                                        value: 2,
+                                    },
+                                ),
+                            ),
+                        ),
+                    },
+                ),
+                Routine(
+                    RoutineDecl {
+                        name: r"h",
+                        arguments: [],
+                        return_type: None,
+                        body: Some(
+                            Expression(
+                                IntegerLiteral(
+                                    IntegerLiteral {
+                                        repr: "3",
+                                        value: 3,
+                                    },
+                                ),
+                            ),
+                        ),
+                    },
+                ),
+                Routine(
+                    RoutineDecl {
+                        name: r"main",
+                        arguments: [],
+                        return_type: None,
+                        body: Some(
+                            Block(
+                                Block(
+                                    [
+                                        Stmt(
+                                            Print {
+                                                value: Binop {
+                                                    op: And,
+                                                    lhs: Binop {
+                                                        op: Lt,
+                                                        lhs: IntegerLiteral(
+                                                            IntegerLiteral {
+                                                                repr: "5",
+                                                                value: 5,
+                                                            },
+                                                        ),
+                                                        rhs: IntegerLiteral(
+                                                            IntegerLiteral {
+                                                                repr: "3",
+                                                                value: 3,
+                                                            },
+                                                        ),
+                                                    },
+                                                    rhs: Binop {
+                                                        op: Gt,
+                                                        lhs: IntegerLiteral(
+                                                            IntegerLiteral {
+                                                                repr: "4",
+                                                                value: 4,
+                                                            },
+                                                        ),
+                                                        rhs: IntegerLiteral(
+                                                            IntegerLiteral {
+                                                                repr: "2",
+                                                                value: 2,
+                                                            },
+                                                        ),
+                                                    },
+                                                },
+                                            },
+                                        ),
+                                        Stmt(
+                                            Print {
+                                                value: Binop {
+                                                    op: Or,
+                                                    lhs: Binop {
+                                                        op: And,
+                                                        lhs: BoolLiteral(
+                                                            True,
+                                                        ),
+                                                        rhs: BoolLiteral(
+                                                            False,
+                                                        ),
+                                                    },
+                                                    rhs: Binop {
+                                                        op: Eq,
+                                                        lhs: IntegerLiteral(
+                                                            IntegerLiteral {
+                                                                repr: "1",
+                                                                value: 1,
+                                                            },
+                                                        ),
+                                                        rhs: IntegerLiteral(
+                                                            IntegerLiteral {
+                                                                repr: "1",
+                                                                value: 1,
+                                                            },
+                                                        ),
+                                                    },
+                                                },
+                                            },
+                                        ),
+                                        Stmt(
+                                            Print {
+                                                value: Binop {
+                                                    op: Add,
+                                                    lhs: Call {
+                                                        callee: r"g",
+                                                        args: [],
+                                                    },
+                                                    rhs: Binop {
+                                                        op: Mul,
+                                                        lhs: Call {
+                                                            callee: r"h",
+                                                            args: [],
+                                                        },
+                                                        rhs: Call {
+                                                            callee: r"f",
+                                                            args: [],
+                                                        },
+                                                    },
+                                                },
+                                            },
+                                        ),
+                                        Stmt(
+                                            Print {
+                                                value: Binop {
+                                                    op: Mod,
+                                                    lhs: Binop {
+                                                        op: Mod,
+                                                        lhs: IntegerLiteral(
+                                                            IntegerLiteral {
+                                                                repr: "17",
+                                                                value: 17,
+                                                            },
+                                                        ),
+                                                        rhs: IntegerLiteral(
+                                                            IntegerLiteral {
+                                                                repr: "5",
+                                                                value: 5,
+                                                            },
+                                                        ),
+                                                    },
+                                                    rhs: IntegerLiteral(
+                                                        IntegerLiteral {
+                                                            repr: "2",
+                                                            value: 2,
+                                                        },
+                                                    ),
+                                                },
+                                            },
+                                        ),
+                                        Stmt(
+                                            Print {
+                                                value: Binop {
+                                                    op: Mul,
+                                                    lhs: Binop {
+                                                        op: Add,
+                                                        lhs: Call {
+                                                            callee: r"g",
+                                                            args: [],
+                                                        },
+                                                        rhs: Call {
+                                                            callee: r"h",
+                                                            args: [],
+                                                        },
+                                                    },
+                                                    rhs: Call {
+                                                        callee: r"f",
+                                                        args: [],
+                                                    },
+                                                },
+                                            },
+                                        ),
+                                        Stmt(
+                                            Print {
+                                                value: Binop {
+                                                    op: Div,
+                                                    lhs: Binop {
+                                                        op: Div,
+                                                        lhs: IntegerLiteral(
+                                                            IntegerLiteral {
+                                                                repr: "100",
+                                                                value: 100,
+                                                            },
+                                                        ),
+                                                        rhs: IntegerLiteral(
+                                                            IntegerLiteral {
+                                                                repr: "2",
+                                                                value: 2,
+                                                            },
+                                                        ),
+                                                    },
+                                                    rhs: IntegerLiteral(
+                                                        IntegerLiteral {
+                                                            repr: "5",
+                                                            value: 5,
+                                                        },
+                                                    ),
+                                                },
+                                            },
+                                        ),
+                                    ],
+                                ),
+                            ),
+                        ),
+                    },
+                ),
+            ],
+        ),
+        [],
+    ),
+)
