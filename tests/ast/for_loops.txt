@@ -1,0 +1,1178 @@
+Ok(
+    (
+        IdentifierTable {
+            bindings: [
+                Binding {
+                    name: array_length(0),
+                    decl: Routine(
+                        Forward {
+                            signature: RoutineSignature {
+                                args: [
+                                    (
+                                        r"a",
+                                        Array(
+                                            ArrayDescription {
+                                                t: Int,
+                                                length: None,
+                                            },
+                                        ),
+                                    ),
+                                ],
+                                return_type: Int,
+                            },
+                        },
+                    ),
+                },
+                Binding {
+                    name: bubble_sort(1),
+                    decl: Routine(
+                        Forward {
+                            signature: RoutineSignature {
+                                args: [
+                                    (
+                                        r"a",
+                                        Array(
+                                            ArrayDescription {
+                                                t: Int,
+                                                length: None,
+                                            },
+                                        ),
+                                    ),
+                                    (
+                                        r"length",
+                                        Int,
+                                    ),
+                                ],
+                                return_type: Unit,
+                            },
+                        },
+                    ),
+                },
+                Binding {
+                    name: sort_and_print_reversed_array(2),
+                    decl: Routine(
+                        Forward {
+                            signature: RoutineSignature {
+                                args: [
+                                    (
+                                        r"a",
+                                        Array(
+                                            ArrayDescription {
+                                                t: Int,
+                                                length: None,
+                                            },
+                                        ),
+                                    ),
+                                ],
+                                return_type: Unit,
+                            },
+                        },
+                    ),
+                },
+                Binding {
+                    name: a(3),
+                    decl: Var(
+                        VarDecl {
+                            t: Array(
+                                ArrayDescription {
+                                    t: Int,
+                                    length: None,
+                                },
+                            ),
+                            initialiser: None,
+                            relative_location: Argument(
+                                0,
+                            ),
+                        },
+                    ),
+                },
+                Binding {
+                    name: elem(4),
+                    decl: Var(
+                        VarDecl {
+                            t: Int,
+                            initialiser: None,
+                            relative_location: Local(
+                                0,
+                            ),
+                        },
+                    ),
+                },
+                Binding {
+                    name: a(5),
+                    decl: Var(
+                        VarDecl {
+                            t: Array(
+                                ArrayDescription {
+                                    t: Int,
+                                    length: None,
+                                },
+                            ),
+                            initialiser: None,
+                            relative_location: Argument(
+                                0,
+                            ),
+                        },
+                    ),
+                },
+                Binding {
+                    name: result(6),
+                    decl: Var(
+                        VarDecl {
+                            t: Int,
+                            initialiser: Some(
+                                IntegerLiteral(
+                                    IntegerLiteral {
+                                        repr: "0",
+                                        value: 0,
+                                    },
+                                ),
+                            ),
+                            relative_location: Local(
+                                0,
+                            ),
+                        },
+                    ),
+                },
+                Binding {
+                    name: _(7),
+                    decl: Var(
+                        VarDecl {
+                            t: Int,
+                            initialiser: None,
+                            relative_location: Local(
+                                1,
+                            ),
+                        },
+                    ),
+                },
+                Binding {
+                    name: a(8),
+                    decl: Var(
+                        VarDecl {
+                            t: Array(
+                                ArrayDescription {
+                                    t: Int,
+                                    length: None,
+                                },
+                            ),
+                            initialiser: None,
+                            relative_location: Argument(
+                                0,
+                            ),
+                        },
+                    ),
+                },
+                Binding {
+                    name: length(9),
+                    decl: Var(
+                        VarDecl {
+                            t: Int,
+                            initialiser: None,
+                            relative_location: Argument(
+                                1,
+                            ),
+                        },
+                    ),
+                },
+                Binding {
+                    name: i(10),
+                    decl: Var(
+                        VarDecl {
+                            t: Int,
+                            initialiser: None,
+                            relative_location: Local(
+                                0,
+                            ),
+                        },
+                    ),
+                },
+                Binding {
+                    name: j(11),
+                    decl: Var(
+                        VarDecl {
+                            t: Int,
+                            initialiser: None,
+                            relative_location: Local(
+                                1,
+                            ),
+                        },
+                    ),
+                },
+                Binding {
+                    name: t(12),
+                    decl: Var(
+                        VarDecl {
+                            t: Int,
+                            initialiser: Some(
+                                LvalueToRvalue(
+                                    Index {
+                                        lhs: Identifier(
+                                            a(8),
+                                        ),
+                                        index: LvalueToRvalue(
+                                            Identifier(
+                                                j(11),
+                                            ),
+                                        ),
+                                    },
+                                ),
+                            ),
+                            relative_location: Local(
+                                2,
+                            ),
+                        },
+                    ),
+                },
+                Binding {
+                    name: countdown(13),
+                    decl: Routine(
+                        Forward {
+                            signature: RoutineSignature {
+                                args: [
+                                    (
+                                        r"n",
+                                        Int,
+                                    ),
+                                ],
+                                return_type: Unit,
+                            },
+                        },
+                    ),
+                },
+                Binding {
+                    name: n(14),
+                    decl: Var(
+                        VarDecl {
+                            t: Int,
+                            initialiser: None,
+                            relative_location: Argument(
+                                0,
+                            ),
+                        },
+                    ),
+                },
+                Binding {
+                    name: i(15),
+                    decl: Var(
+                        VarDecl {
+                            t: Int,
+                            initialiser: None,
+                            relative_location: Local(
+                                0,
+                            ),
+                        },
+                    ),
+                },
+                Binding {
+                    name: count(16),
+                    decl: Routine(
+                        Forward {
+                            signature: RoutineSignature {
+                                args: [
+                                    (
+                                        r"n",
+                                        Int,
+                                    ),
+                                ],
+                                return_type: Unit,
+                            },
+                        },
+                    ),
+                },
+                Binding {
+                    name: n(17),
+                    decl: Var(
+                        VarDecl {
+                            t: Int,
+                            initialiser: None,
+                            relative_location: Argument(
+                                0,
+                            ),
+                        },
+                    ),
+                },
+                Binding {
+                    name: i(18),
+                    decl: Var(
+                        VarDecl {
+                            t: Int,
+                            initialiser: None,
+                            relative_location: Local(
+                                0,
+                            ),
+                        },
+                    ),
+                },
+                Binding {
+                    name: main(19),
+                    decl: Routine(
+                        Forward {
+                            signature: RoutineSignature {
+                                args: [],
+                                return_type: Unit,
+                            },
+                        },
+                    ),
+                },
+                Binding {
+                    name: arr(20),
+                    decl: Var(
+                        VarDecl {
+                            t: Array(
+                                ArrayDescription {
+                                    t: Int,
+                                    length: Some(
+                                        5,
+                                    ),
+                                },
+                            ),
+                            initialiser: Some(
+                                New {
+                                    t: Array(
+                                        ArrayDescription {
+                                            t: Int,
+                                            length: Some(
+                                                5,
+                                            ),
+                                        },
+                                    ),
+                                    fields: None,
+                                },
+                            ),
+                            relative_location: Local(
+                                0,
+                            ),
+                        },
+                    ),
+                },
+            ],
+        },
+        Program(
+            [
+                Binding {
+                    name: array_length(0),
+                    decl: Routine(
+                        Forward {
+                            signature: RoutineSignature {
+                                args: [
+                                    (
+                                        r"a",
+                                        Array(
+                                            ArrayDescription {
+                                                t: Int,
+                                                length: None,
+                                            },
+                                        ),
+                                    ),
+                                ],
+                                return_type: Int,
+                            },
+                        },
+                    ),
+                },
+                Binding {
+                    name: bubble_sort(1),
+                    decl: Routine(
+                        Forward {
+                            signature: RoutineSignature {
+                                args: [
+                                    (
+                                        r"a",
+                                        Array(
+                                            ArrayDescription {
+                                                t: Int,
+                                                length: None,
+                                            },
+                                        ),
+                                    ),
+                                    (
+                                        r"length",
+                                        Int,
+                                    ),
+                                ],
+                                return_type: Unit,
+                            },
+                        },
+                    ),
+                },
+                Binding {
+                    name: sort_and_print_reversed_array(2),
+                    decl: Routine(
+                        Full {
+                            signature: RoutineSignature {
+                                args: [
+                                    (
+                                        r"a",
+                                        Array(
+                                            ArrayDescription {
+                                                t: Int,
+                                                length: None,
+                                            },
+                                        ),
+                                    ),
+                                ],
+                                return_type: Unit,
+                            },
+                            args_bindings: [
+                                Binding {
+                                    name: a(3),
+                                    decl: Var(
+                                        VarDecl {
+                                            t: Array(
+                                                ArrayDescription {
+                                                    t: Int,
+                                                    length: None,
+                                                },
+                                            ),
+                                            initialiser: None,
+                                            relative_location: Argument(
+                                                0,
+                                            ),
+                                        },
+                                    ),
+                                },
+                            ],
+                            body: Block(
+                                Block(
+                                    [
+                                        Stmt(
+                                            Expr(
+                                                Call {
+                                                    callee: bubble_sort(1),
+                                                    args: [
+                                                        LvalueToRvalue(
+                                                            Identifier(
+                                                                a(3),
+                                                            ),
+                                                        ),
+                                                        LenghtOf {
+                                                            arr: LvalueToRvalue(
+                                                                Identifier(
+                                                                    a(3),
+                                                                ),
+                                                            ),
+                                                        },
+                                                    ],
+                                                },
+                                            ),
+                                        ),
+                                        Stmt(
+                                            ForEach {
+                                                counter: elem(4),
+                                                collection: LvalueToRvalue(
+                                                    Identifier(
+                                                        a(3),
+                                                    ),
+                                                ),
+                                                order: Reversed,
+                                                body: Block(
+                                                    [
+                                                        Stmt(
+                                                            Print {
+                                                                value: LvalueToRvalue(
+                                                                    Identifier(
+                                                                        elem(4),
+                                                                    ),
+                                                                ),
+                                                            },
+                                                        ),
+                                                    ],
+                                                ),
+                                            },
+                                        ),
+                                    ],
+                                ),
+                            ),
+                        },
+                    ),
+                },
+                Binding {
+                    name: array_length(0),
+                    decl: Routine(
+                        Full {
+                            signature: RoutineSignature {
+                                args: [
+                                    (
+                                        r"a",
+                                        Array(
+                                            ArrayDescription {
+                                                t: Int,
+                                                length: None,
+                                            },
+                                        ),
+                                    ),
+                                ],
+                                return_type: Int,
+                            },
+                            args_bindings: [
+                                Binding {
+                                    name: a(5),
+                                    decl: Var(
+                                        VarDecl {
+                                            t: Array(
+                                                ArrayDescription {
+                                                    t: Int,
+                                                    length: None,
+                                                },
+                                            ),
+                                            initialiser: None,
+                                            relative_location: Argument(
+                                                0,
+                                            ),
+                                        },
+                                    ),
+                                },
+                            ],
+                            body: Block(
+                                Block(
+                                    [
+                                        Decl(
+                                            SimpleBinding {
+                                                name: result(6),
+                                                decl: Var(
+                                                    VarDecl {
+                                                        t: Int,
+                                                        initialiser: Some(
+                                                            IntegerLiteral(
+                                                                IntegerLiteral {
+                                                                    repr: "0",
+                                                                    value: 0,
+                                                                },
+                                                            ),
+                                                        ),
+                                                        relative_location: Local(
+                                                            0,
+                                                        ),
+                                                    },
+                                                ),
+                                            },
+                                        ),
+                                        Stmt(
+                                            ForEach {
+                                                counter: _(7),
+                                                collection: LvalueToRvalue(
+                                                    Identifier(
+                                                        a(5),
+                                                    ),
+                                                ),
+                                                order: Direct,
+                                                body: Block(
+                                                    [
+                                                        Stmt(
+                                                            Assignment {
+                                                                lhs: Identifier(
+                                                                    result(6),
+                                                                ),
+                                                                rhs: Binop {
+                                                                    op: IntAdd,
+                                                                    lhs: LvalueToRvalue(
+                                                                        Identifier(
+                                                                            result(6),
+                                                                        ),
+                                                                    ),
+                                                                    rhs: IntegerLiteral(
+                                                                        IntegerLiteral {
+                                                                            repr: "1",
+                                                                            value: 1,
+                                                                        },
+                                                                    ),
+                                                                },
+                                                            },
+                                                        ),
+                                                    ],
+                                                ),
+                                            },
+                                        ),
+                                        Stmt(
+                                            Return {
+                                                value: LvalueToRvalue(
+                                                    Identifier(
+                                                        result(6),
+                                                    ),
+                                                ),
+                                            },
+                                        ),
+                                    ],
+                                ),
+                            ),
+                        },
+                    ),
+                },
+                Binding {
+                    name: bubble_sort(1),
+                    decl: Routine(
+                        Full {
+                            signature: RoutineSignature {
+                                args: [
+                                    (
+                                        r"a",
+                                        Array(
+                                            ArrayDescription {
+                                                t: Int,
+                                                length: None,
+                                            },
+                                        ),
+                                    ),
+                                    (
+                                        r"length",
+                                        Int,
+                                    ),
+                                ],
+                                return_type: Unit,
+                            },
+                            args_bindings: [
+                                Binding {
+                                    name: a(8),
+                                    decl: Var(
+                                        VarDecl {
+                                            t: Array(
+                                                ArrayDescription {
+                                                    t: Int,
+                                                    length: None,
+                                                },
+                                            ),
+                                            initialiser: None,
+                                            relative_location: Argument(
+                                                0,
+                                            ),
+                                        },
+                                    ),
+                                },
+                                Binding {
+                                    name: length(9),
+                                    decl: Var(
+                                        VarDecl {
+                                            t: Int,
+                                            initialiser: None,
+                                            relative_location: Argument(
+                                                1,
+                                            ),
+                                        },
+                                    ),
+                                },
+                            ],
+                            body: Block(
+                                Block(
+                                    [
+                                        Stmt(
+                                            For {
+                                                counter: i(10),
+                                                lower_bound: IntegerLiteral(
+                                                    IntegerLiteral {
+                                                        repr: "1",
+                                                        value: 1,
+                                                    },
+                                                ),
+                                                upper_bound: LvalueToRvalue(
+                                                    Identifier(
+                                                        length(9),
+                                                    ),
+                                                ),
+                                                order: Direct,
+                                                body: Block(
+                                                    [
+                                                        Stmt(
+                                                            For {
+                                                                counter: j(11),
+                                                                lower_bound: IntegerLiteral(
+                                                                    IntegerLiteral {
+                                                                        repr: "2",
+                                                                        value: 2,
+                                                                    },
+                                                                ),
+                                                                upper_bound: LvalueToRvalue(
+                                                                    Identifier(
+                                                                        i(10),
+                                                                    ),
+                                                                ),
+                                                                order: Direct,
+                                                                body: Block(
+                                                                    [
+                                                                        Stmt(
+                                                                            If {
+                                                                                condition: IntToBool(
+                                                                                    Binop {
+                                                                                        op: IntGt,
+                                                                                        lhs: LvalueToRvalue(
+                                                                                            Index {
+                                                                                                lhs: Identifier(
+                                                                                                    a(8),
+                                                                                                ),
+                                                                                                index: Binop {
+                                                                                                    op: IntSub,
+                                                                                                    lhs: LvalueToRvalue(
+                                                                                                        Identifier(
+                                                                                                            j(11),
+                                                                                                        ),
+                                                                                                    ),
+                                                                                                    rhs: IntegerLiteral(
+                                                                                                        IntegerLiteral {
+                                                                                                            repr: "1",
+                                                                                                            value: 1,
+                                                                                                        },
+                                                                                                    ),
+                                                                                                },
+                                                                                            },
+                                                                                        ),
+                                                                                        rhs: LvalueToRvalue(
+                                                                                            Index {
+                                                                                                lhs: Identifier(
+                                                                                                    a(8),
+                                                                                                ),
+                                                                                                index: LvalueToRvalue(
+                                                                                                    Identifier(
+                                                                                                        j(11),
+                                                                                                    ),
+                                                                                                ),
+                                                                                            },
+                                                                                        ),
+                                                                                    },
+                                                                                ),
+                                                                                on_true: Block(
+                                                                                    [
+                                                                                        Decl(
+                                                                                            SimpleBinding {
+                                                                                                name: t(12),
+                                                                                                decl: Var(
+                                                                                                    VarDecl {
+                                                                                                        t: Int,
+                                                                                                        initialiser: Some(
+                                                                                                            LvalueToRvalue(
+                                                                                                                Index {
+                                                                                                                    lhs: Identifier(
+                                                                                                                        a(8),
+                                                                                                                    ),
+                                                                                                                    index: LvalueToRvalue(
+                                                                                                                        Identifier(
+                                                                                                                            j(11),
+                                                                                                                        ),
+                                                                                                                    ),
+                                                                                                                },
+                                                                                                            ),
+                                                                                                        ),
+                                                                                                        relative_location: Local(
+                                                                                                            2,
+                                                                                                        ),
+                                                                                                    },
+                                                                                                ),
+                                                                                            },
+                                                                                        ),
+                                                                                        Stmt(
+                                                                                            Assignment {
+                                                                                                lhs: Index {
+                                                                                                    lhs: Identifier(
+                                                                                                        a(8),
+                                                                                                    ),
+                                                                                                    index: LvalueToRvalue(
+                                                                                                        Identifier(
+                                                                                                            j(11),
+                                                                                                        ),
+                                                                                                    ),
+                                                                                                },
+                                                                                                rhs: LvalueToRvalue(
+                                                                                                    Index {
+                                                                                                        lhs: Identifier(
+                                                                                                            a(8),
+                                                                                                        ),
+                                                                                                        index: Binop {
+                                                                                                            op: IntSub,
+                                                                                                            lhs: LvalueToRvalue(
+                                                                                                                Identifier(
+                                                                                                                    j(11),
+                                                                                                                ),
+                                                                                                            ),
+                                                                                                            rhs: IntegerLiteral(
+                                                                                                                IntegerLiteral {
+                                                                                                                    repr: "1",
+                                                                                                                    value: 1,
+                                                                                                                },
+                                                                                                            ),
+                                                                                                        },
+                                                                                                    },
+                                                                                                ),
+                                                                                            },
+                                                                                        ),
+                                                                                        Stmt(
+                                                                                            Assignment {
+                                                                                                lhs: Index {
+                                                                                                    lhs: Identifier(
+                                                                                                        a(8),
+                                                                                                    ),
+                                                                                                    index: Binop {
+                                                                                                        op: IntSub,
+                                                                                                        lhs: LvalueToRvalue(
+                                                                                                            Identifier(
+                                                                                                                j(11),
+                                                                                                            ),
+                                                                                                        ),
+                                                                                                        rhs: IntegerLiteral(
+                                                                                                            IntegerLiteral {
+                                                                                                                repr: "1",
+                                                                                                                value: 1,
+                                                                                                            },
+                                                                                                        ),
+                                                                                                    },
+                                                                                                },
+                                                                                                rhs: LvalueToRvalue(
+                                                                                                    Identifier(
+                                                                                                        t(12),
+                                                                                                    ),
+                                                                                                ),
+                                                                                            },
+                                                                                        ),
+                                                                                    ],
+                                                                                ),
+                                                                                on_false: None,
+                                                                            },
+                                                                        ),
+                                                                    ],
+                                                                ),
+                                                            },
+                                                        ),
+                                                    ],
+                                                ),
+                                            },
+                                        ),
+                                    ],
+                                ),
+                            ),
+                        },
+                    ),
+                },
+                Binding {
+                    name: countdown(13),
+                    decl: Routine(
+                        Full {
+                            signature: RoutineSignature {
+                                args: [
+                                    (
+                                        r"n",
+                                        Int,
+                                    ),
+                                ],
+                                return_type: Unit,
+                            },
+                            args_bindings: [
+                                Binding {
+                                    name: n(14),
+                                    decl: Var(
+                                        VarDecl {
+                                            t: Int,
+                                            initialiser: None,
+                                            relative_location: Argument(
+                                                0,
+                                            ),
+                                        },
+                                    ),
+                                },
+                            ],
+                            body: Block(
+                                Block(
+                                    [
+                                        Stmt(
+                                            For {
+                                                counter: i(15),
+                                                lower_bound: LvalueToRvalue(
+                                                    Identifier(
+                                                        n(14),
+                                                    ),
+                                                ),
+                                                upper_bound: IntegerLiteral(
+                                                    IntegerLiteral {
+                                                        repr: "0",
+                                                        value: 0,
+                                                    },
+                                                ),
+                                                order: Reversed,
+                                                body: Block(
+                                                    [
+                                                        Stmt(
+                                                            Print {
+                                                                value: LvalueToRvalue(
+                                                                    Identifier(
+                                                                        i(15),
+                                                                    ),
+                                                                ),
+                                                            },
+                                                        ),
+                                                    ],
+                                                ),
+                                            },
+                                        ),
+                                    ],
+                                ),
+                            ),
+                        },
+                    ),
+                },
+                Binding {
+                    name: count(16),
+                    decl: Routine(
+                        Full {
+                            signature: RoutineSignature {
+                                args: [
+                                    (
+                                        r"n",
+                                        Int,
+                                    ),
+                                ],
+                                return_type: Unit,
+                            },
+                            args_bindings: [
+                                Binding {
+                                    name: n(17),
+                                    decl: Var(
+                                        VarDecl {
+                                            t: Int,
+                                            initialiser: None,
+                                            relative_location: Argument(
+                                                0,
+                                            ),
+                                        },
+                                    ),
+                                },
+                            ],
+                            body: Block(
+                                Block(
+                                    [
+                                        Stmt(
+                                            For {
+                                                counter: i(18),
+                                                lower_bound: IntegerLiteral(
+                                                    IntegerLiteral {
+                                                        repr: "0",
+                                                        value: 0,
+                                                    },
+                                                ),
+                                                upper_bound: LvalueToRvalue(
+                                                    Identifier(
+                                                        n(17),
+                                                    ),
+                                                ),
+                                                order: Direct,
+                                                body: Block(
+                                                    [
+                                                        Stmt(
+                                                            Print {
+                                                                value: LvalueToRvalue(
+                                                                    Identifier(
+                                                                        i(18),
+                                                                    ),
+                                                                ),
+                                                            },
+                                                        ),
+                                                    ],
+                                                ),
+                                            },
+                                        ),
+                                    ],
+                                ),
+                            ),
+                        },
+                    ),
+                },
+                Binding {
+                    name: main(19),
+                    decl: Routine(
+                        Full {
+                            signature: RoutineSignature {
+                                args: [],
+                                return_type: Unit,
+                            },
+                            args_bindings: [],
+                            body: Block(
+                                Block(
+                                    [
+                                        Decl(
+                                            SimpleBinding {
+                                                name: arr(20),
+                                                decl: Var(
+                                                    VarDecl {
+                                                        t: Array(
+                                                            ArrayDescription {
+                                                                t: Int,
+                                                                length: Some(
+                                                                    5,
+                                                                ),
+                                                            },
+                                                        ),
+                                                        initialiser: Some(
+                                                            New {
+                                                                t: Array(
+                                                                    ArrayDescription {
+                                                                        t: Int,
+                                                                        length: Some(
+                                                                            5,
+                                                                        ),
+                                                                    },
+                                                                ),
+                                                                fields: None,
+                                                            },
+                                                        ),
+                                                        relative_location: Local(
+                                                            0,
+                                                        ),
+                                                    },
+                                                ),
+                                            },
+                                        ),
+                                        Stmt(
+                                            Assignment {
+                                                lhs: Index {
+                                                    lhs: Identifier(
+                                                        arr(20),
+                                                    ),
+                                                    index: IntegerLiteral(
+                                                        IntegerLiteral {
+                                                            repr: "1",
+                                                            value: 1,
+                                                        },
+                                                    ),
+                                                },
+                                                rhs: IntegerLiteral(
+                                                    IntegerLiteral {
+                                                        repr: "3",
+                                                        value: 3,
+                                                    },
+                                                ),
+                                            },
+                                        ),
+                                        Stmt(
+                                            Assignment {
+                                                lhs: Index {
+                                                    lhs: Identifier(
+                                                        arr(20),
+                                                    ),
+                                                    index: IntegerLiteral(
+                                                        IntegerLiteral {
+                                                            repr: "2",
+                                                            value: 2,
+                                                        },
+                                                    ),
+                                                },
+                                                rhs: IntegerLiteral(
+                                                    IntegerLiteral {
+                                                        repr: "5",
+                                                        value: 5,
+                                                    },
+                                                ),
+                                            },
+                                        ),
+                                        Stmt(
+                                            Assignment {
+                                                lhs: Index {
+                                                    lhs: Identifier(
+                                                        arr(20),
+                                                    ),
+                                                    index: IntegerLiteral(
+                                                        IntegerLiteral {
+                                                            repr: "3",
+                                                            value: 3,
+                                                        },
+                                                    ),
+                                                },
+                                                rhs: IntegerLiteral(
+                                                    IntegerLiteral {
+                                                        repr: "1",
+                                                        value: 1,
+                                                    },
+                                                ),
+                                            },
+                                        ),
+                                        Stmt(
+                                            Assignment {
+                                                lhs: Index {
+                                                    lhs: Identifier(
+                                                        arr(20),
+                                                    ),
+                                                    index: IntegerLiteral(
+                                                        IntegerLiteral {
+                                                            repr: "4",
+                                                            value: 4,
+                                                        },
+                                                    ),
+                                                },
+                                                rhs: IntegerLiteral(
+                                                    IntegerLiteral {
+                                                        repr: "2",
+                                                        value: 2,
+                                                    },
+                                                ),
+                                            },
+                                        ),
+                                        Stmt(
+                                            Assignment {
+                                                lhs: Index {
+                                                    lhs: Identifier(
+                                                        arr(20),
+                                                    ),
+                                                    index: IntegerLiteral(
+                                                        IntegerLiteral {
+                                                            repr: "5",
+                                                            value: 5,
+                                                        },
+                                                    ),
+                                                },
+                                                rhs: IntegerLiteral(
+                                                    IntegerLiteral {
+                                                        repr: "4",
+                                                        value: 4,
+                                                    },
+                                                ),
+                                            },
+                                        ),
+                                        Stmt(
+                                            Expr(
+                                                Call {
+                                                    callee: sort_and_print_reversed_array(2),
+                                                    args: [
+                                                        LvalueToRvalue(
+                                                            Identifier(
+                                                                arr(20),
+                                                            ),
+                                                        ),
+                                                    ],
+                                                },
+                                            ),
+                                        ),
+                                        Stmt(
+                                            Expr(
+                                                Call {
+                                                    callee: count(16),
+                                                    args: [
+                                                        IntegerLiteral(
+                                                            IntegerLiteral {
+                                                                repr: "3",
+                                                                value: 3,
+                                                            },
+                                                        ),
+                                                    ],
+                                                },
+                                            ),
+                                        ),
+                                        Stmt(
+                                            Expr(
+                                                Call {
+                                                    callee: countdown(13),
+                                                    args: [
+                                                        IntegerLiteral(
+                                                            IntegerLiteral {
+                                                                repr: "5",
+                                                                value: 5,
+                                                            },
+                                                        ),
+                                                    ],
+                                                },
+                                            ),
+                                        ),
+                                    ],
+                                ),
+                            ),
+                        },
+                    ),
+                },
+            ],
+        ),
+    ),
+)

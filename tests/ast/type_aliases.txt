@@ -1,0 +1,326 @@
+Ok(
+    (
+        IdentifierTable {
+            bindings: [
+                Binding {
+                    name: kilometers(0),
+                    decl: Type(
+                        Full {
+                            prescribed: Real,
+                            effective: Real,
+                        },
+                    ),
+                },
+                Binding {
+                    name: miles(1),
+                    decl: Type(
+                        Full {
+                            prescribed: Real,
+                            effective: Real,
+                        },
+                    ),
+                },
+                Binding {
+                    name: dist(2),
+                    decl: Var(
+                        VarDecl {
+                            t: Alias(
+                                miles(1),
+                            ),
+                            initialiser: None,
+                            relative_location: Argument(
+                                0,
+                            ),
+                        },
+                    ),
+                },
+                Binding {
+                    name: miles_to_kiometers(3),
+                    decl: Routine(
+                        Full {
+                            signature: RoutineSignature {
+                                args: [
+                                    (
+                                        r"dist",
+                                        Alias(
+                                            miles(1),
+                                        ),
+                                    ),
+                                ],
+                                return_type: Alias(
+                                    kilometers(0),
+                                ),
+                            },
+                            args_bindings: [
+                                Binding {
+                                    name: dist(2),
+                                    decl: Var(
+                                        VarDecl {
+                                            t: Alias(
+                                                miles(1),
+                                            ),
+                                            initialiser: None,
+                                            relative_location: Argument(
+                                                0,
+                                            ),
+                                        },
+                                    ),
+                                },
+                            ],
+                            body: Expression(
+                                Cast {
+                                    operand: Binop {
+                                        op: RealMul,
+                                        lhs: Cast {
+                                            operand: LvalueToRvalue(
+                                                Identifier(
+                                                    dist(2),
+                                                ),
+                                            ),
+                                            target: Real,
+                                        },
+                                        rhs: RealLiteral(
+                                            RealLiteral {
+                                                repr: "1.60934",
+                                                value: 1.60934,
+                                            },
+                                        ),
+                                    },
+                                    target: Alias(
+                                        kilometers(0),
+                                    ),
+                                },
+                            ),
+                        },
+                    ),
+                },
+                Binding {
+                    name: main(4),
+                    decl: Routine(
+                        Forward {
+                            signature: RoutineSignature {
+                                args: [],
+                                return_type: Unit,
+                            },
+                        },
+                    ),
+                },
+                Binding {
+                    name: dist(5),
+                    decl: Var(
+                        VarDecl {
+                            t: Alias(
+                                miles(1),
+                            ),
+                            initialiser: Some(
+                                Cast {
+                                    operand: RealLiteral(
+                                        RealLiteral {
+                                            repr: "10.0",
+                                            value: 10.0,
+                                        },
+                                    ),
+                                    target: Alias(
+                                        miles(1),
+                                    ),
+                                },
+                            ),
+                            relative_location: Local(
+                                0,
+                            ),
+                        },
+                    ),
+                },
+                Binding {
+                    name: result(6),
+                    decl: Var(
+                        VarDecl {
+                            t: Alias(
+                                kilometers(0),
+                            ),
+                            initialiser: Some(
+                                Call {
+                                    callee: miles_to_kiometers(3),
+                                    args: [
+                                        LvalueToRvalue(
+                                            Identifier(
+                                                dist(5),
+                                            ),
+                                        ),
+                                    ],
+                                },
+                            ),
+                            relative_location: Local(
+                                1,
+                            ),
+                        },
+                    ),
+                },
+            ],
+        },
+        Program(
+            [
+                Binding {
+                    name: kilometers(0),
+                    decl: Type(
+                        Full {
+                            prescribed: Real,
+                            effective: Real,
+                        },
+                    ),
+                },
+                Binding {
+                    name: miles(1),
+                    decl: Type(
+                        Full {
+                            prescribed: Real,
+                            effective: Real,
+                        },
+                    ),
+                },
+                Binding {
+                    name: miles_to_kiometers(3),
+                    decl: Routine(
+                        Full {
+                            signature: RoutineSignature {
+                                args: [
+                                    (
+                                        r"dist",
+                                        Alias(
+                                            miles(1),
+                                        ),
+                                    ),
+                                ],
+                                return_type: Alias(
+                                    kilometers(0),
+                                ),
+                            },
+                            args_bindings: [
+                                Binding {
+                                    name: dist(2),
+                                    decl: Var(
+                                        VarDecl {
+                                            t: Alias(
+                                                miles(1),
+                                            ),
+                                            initialiser: None,
+                                            relative_location: Argument(
+                                                0,
+                                            ),
+                                        },
+                                    ),
+                                },
+                            ],
+                            body: Expression(
+                                Cast {
+                                    operand: Binop {
+                                        op: RealMul,
+                                        lhs: Cast {
+                                            operand: LvalueToRvalue(
+                                                Identifier(
+                                                    dist(2),
+                                                ),
+                                            ),
+                                            target: Real,
+                                        },
+                                        rhs: RealLiteral(
+                                            RealLiteral {
+                                                repr: "1.60934",
+                                                value: 1.60934,
+                                            },
+                                        ),
+                                    },
+                                    target: Alias(
+                                        kilometers(0),
+                                    ),
+                                },
+                            ),
+                        },
+                    ),
+                },
+                Binding {
+                    name: main(4),
+                    decl: Routine(
+                        Full {
+                            signature: RoutineSignature {
+                                args: [],
+                                return_type: Unit,
+                            },
+                            args_bindings: [],
+                            body: Block(
+                                Block(
+                                    [
+                                        Decl(
+                                            SimpleBinding {
+                                                name: dist(5),
+                                                decl: Var(
+                                                    VarDecl {
+                                                        t: Alias(
+                                                            miles(1),
+                                                        ),
+                                                        initialiser: Some(
+                                                            Cast {
+                                                                operand: RealLiteral(
+                                                                    RealLiteral {
+                                                                        repr: "10.0",
+                                                                        value: 10.0,
+                                                                    },
+                                                                ),
+                                                                target: Alias(
+                                                                    miles(1),
+                                                                ),
+                                                            },
+                                                        ),
+                                                        relative_location: Local(
+                                                            0,
+                                                        ),
+                                                    },
+                                                ),
+                                            },
+                                        ),
+                                        Decl(
+                                            SimpleBinding {
+                                                name: result(6),
+                                                decl: Var(
+                                                    VarDecl {
+                                                        t: Alias(
+                                                            kilometers(0),
+                                                        ),
+                                                        initialiser: Some(
+                                                            Call {
+                                                                callee: miles_to_kiometers(3),
+                                                                args: [
+                                                                    LvalueToRvalue(
+                                                                        Identifier(
+                                                                            dist(5),
+                                                                        ),
+                                                                    ),
+                                                                ],
+                                                            },
+                                                        ),
+                                                        relative_location: Local(
+                                                            1,
+                                                        ),
+                                                    },
+                                                ),
+                                            },
+                                        ),
+                                        Stmt(
+                                            Print {
+                                                value: LvalueToRvalue(
+                                                    Identifier(
+                                                        result(6),
+                                                    ),
+                                                ),
+                                            },
+                                        ),
+                                    ],
+                                ),
+                            ),
+                        },
+                    ),
+                },
+            ],
+        ),
+    ),
+)
