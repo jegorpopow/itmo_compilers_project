@@ -1263,7 +1263,7 @@ impl Parser {
     }
 }
 
-pub fn parse_programm(tokens: &[Token<'_>]) -> PureParsingResult<(Program, Vec<ParsingError>)> {
+pub fn parse_program(tokens: &[Token<'_>]) -> PureParsingResult<(Program, Vec<ParsingError>)> {
     let mut parser = Parser::new();
     let start = parser.skip_unused(IndexedIterator::from(tokens));
     let (decls, _) = parser.parse_all(Parser::parse_declaration, start)?;
