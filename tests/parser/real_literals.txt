@@ -379,6 +379,32 @@ Ok(
                                                 ),
                                             },
                                         ),
+                                        VarDecl(
+                                            VarDecl {
+                                                name: r"q",
+                                                t: None,
+                                                initialiser: Some(
+                                                    Unop {
+                                                        op: Sub,
+                                                        operand: RealLiteral(
+                                                            RealLiteral {
+                                                                repr: "NaN",
+                                                                value: NaN,
+                                                            },
+                                                        ),
+                                                    },
+                                                ),
+                                            },
+                                        ),
+                                        Stmt(
+                                            Print {
+                                                value: LvalueToRvalue(
+                                                    Identifier(
+                                                        r"q",
+                                                    ),
+                                                ),
+                                            },
+                                        ),
                                     ],
                                 ),
                             ),

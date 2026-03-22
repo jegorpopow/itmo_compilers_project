@@ -46,4 +46,7 @@ routine main() is
 
   var p is +.5;
   print p;
+
+  var q is -NaN;
+  print q;
 end

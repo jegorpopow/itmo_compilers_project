@@ -317,6 +317,28 @@ Ok(
                         },
                     ),
                 },
+                Binding {
+                    name: q(17),
+                    decl: Var(
+                        VarDecl {
+                            t: Real,
+                            initialiser: Some(
+                                Unop {
+                                    op: RealNeg,
+                                    operand: RealLiteral(
+                                        RealLiteral {
+                                            repr: "NaN",
+                                            value: NaN,
+                                        },
+                                    ),
+                                },
+                            ),
+                            relative_location: Local(
+                                16,
+                            ),
+                        },
+                    ),
+                },
             ],
         },
         Program(
@@ -809,6 +831,39 @@ Ok(
                                                 value: LvalueToRvalue(
                                                     Identifier(
                                                         p(16),
+                                                    ),
+                                                ),
+                                            },
+                                        ),
+                                        Decl(
+                                            SimpleBinding {
+                                                name: q(17),
+                                                decl: Var(
+                                                    VarDecl {
+                                                        t: Real,
+                                                        initialiser: Some(
+                                                            Unop {
+                                                                op: RealNeg,
+                                                                operand: RealLiteral(
+                                                                    RealLiteral {
+                                                                        repr: "NaN",
+                                                                        value: NaN,
+                                                                    },
+                                                                ),
+                                                            },
+                                                        ),
+                                                        relative_location: Local(
+                                                            16,
+                                                        ),
+                                                    },
+                                                ),
+                                            },
+                                        ),
+                                        Stmt(
+                                            Print {
+                                                value: LvalueToRvalue(
+                                                    Identifier(
+                                                        q(17),
                                                     ),
                                                 ),
                                             },
