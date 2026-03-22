@@ -45,8 +45,8 @@ fn main() -> ExitCode {
         Ok((program, errs)) => {
             println!("Following errors occurred:");
 
-            for ParsingError { what, position } in errs {
-                println!("\t{what} @ {position}");
+            for err in errs {
+                println!("\t{err}");
             }
 
             for decl in &program.0 {
