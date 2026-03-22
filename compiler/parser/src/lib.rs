@@ -605,37 +605,37 @@ impl Parser {
         ))
     }
 
-    // FIXME(GrigorenkoPV)
     fn parse_type<'a, 'b: 'a>(
         &mut self,
         i: IndexedIterator<'a, 'b>,
     ) -> ParsingResult<'a, 'b, Rc<Type>> {
         self.parse_identifier(i)
-            .map(|(ident, next)| (Rc::new(Type::Alias(ident)), next))
+            .map(|(ident, next)| (Type::Alias(ident), next))
             .or_else(|_| {
                 self.parse_known_kind(&TokenKind::BuiltinTypename(BuiltinTypename::Real), i)
-                    .map(|((), next)| (Rc::new(Type::Real), next))
+                    .map(|((), next)| (Type::Real, next))
             })
             .or_else(|_| {
                 self.parse_known_kind(&TokenKind::BuiltinTypename(BuiltinTypename::Integer), i)
-                    .map(|((), next)| (Rc::new(Type::Int), next))
+                    .map(|((), next)| (Type::Int, next))
             })
             .or_else(|_| {
                 self.parse_known_kind(&TokenKind::BuiltinTypename(BuiltinTypename::Boolean), i)
-                    .map(|((), next)| (Rc::new(Type::Bool), next))
+                    .map(|((), next)| (Type::Bool, next))
             })
             .or_else(|_| {
                 self.parse_array_desc(i)
-                    .map(|(arr_desc, i)| (Rc::new(Type::Array(arr_desc)), i))
+                    .map(|(arr_desc, i)| (Type::Array(arr_desc), i))
             })
             .or_else(|_| {
                 self.parse_record_desc(i)
-                    .map(|(rec_desc, i)| (Rc::new(Type::Record(rec_desc)), i))
+                    .map(|(rec_desc, i)| (Type::Record(rec_desc), i))
             })
             .map_err(|_err| ParsingError {
                 what: "Type exptected, but not found".to_owned(),
                 position: i.position(),
             })
+            .map(|(ty, next)| (Rc::new(ty), next))
     }
 
     fn parse_operators<'a, 'b: 'a>(
