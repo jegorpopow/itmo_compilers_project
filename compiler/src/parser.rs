@@ -1,5 +1,6 @@
 #![expect(dead_code, reason = "WIP")]
 #![allow(clippy::unnecessary_wraps)]
+use core::fmt;
 use std::rc::Rc;
 
 use crate::identifier::RawIdentifier;
@@ -74,6 +75,15 @@ pub struct ParsingError {
     pub what: String,
     pub position: Position,
 }
+
+impl fmt::Display for ParsingError {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        let Self { what, position } = self;
+        write!(f, "{what} @ {position}")
+    }
+}
+
+impl core::error::Error for ParsingError {}
 
 #[derive(Debug)]
 pub struct Parser {
@@ -1263,7 +1273,7 @@ impl Parser {
     }
 }
 
-pub fn parse_programm(tokens: &[Token<'_>]) -> PureParsingResult<(Program, Vec<ParsingError>)> {
+pub fn parse_program(tokens: &[Token<'_>]) -> PureParsingResult<(Program, Vec<ParsingError>)> {
     let mut parser = Parser::new();
     let start = parser.skip_unused(IndexedIterator::from(tokens));
     let (decls, _) = parser.parse_all(Parser::parse_declaration, start)?;

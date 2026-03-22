@@ -6,7 +6,7 @@ use std::process::ExitCode;
 
 use crate::ast::convert::convert;
 use crate::lexer::Lexer;
-use crate::parser::{ParsingError, parse_programm};
+use crate::parser::{ParsingError, parse_program};
 use crate::tokens::Token;
 
 mod source_positions;
@@ -41,12 +41,12 @@ fn main() -> ExitCode {
         println!("{token}")
     }
 
-    match parse_programm(tokens.as_slice()) {
+    match parse_program(tokens.as_slice()) {
         Ok((program, errs)) => {
-            println!("Following errors occured:");
+            println!("Following errors occurred:");
 
-            for ParsingError { what, position } in errs {
-                println!("\t{what} @ {position}");
+            for err in errs {
+                println!("\t{err}");
             }
 
             for decl in &program.0 {

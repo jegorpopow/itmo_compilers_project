@@ -1,0 +1,118 @@
+Ok(
+    (
+        Program(
+            [
+                Var(
+                    VarDecl {
+                        name: r"a",
+                        t: None,
+                        initialiser: Some(
+                            IntegerLiteral(
+                                IntegerLiteral {
+                                    repr: "-1",
+                                    value: -1,
+                                },
+                            ),
+                        ),
+                    },
+                ),
+                Var(
+                    VarDecl {
+                        name: r"b",
+                        t: None,
+                        initialiser: Some(
+                            Binop {
+                                op: Sub,
+                                lhs: IntegerLiteral(
+                                    IntegerLiteral {
+                                        repr: "-1",
+                                        value: -1,
+                                    },
+                                ),
+                                rhs: IntegerLiteral(
+                                    IntegerLiteral {
+                                        repr: "-2",
+                                        value: -2,
+                                    },
+                                ),
+                            },
+                        ),
+                    },
+                ),
+                Var(
+                    VarDecl {
+                        name: r"c",
+                        t: None,
+                        initialiser: Some(
+                            Binop {
+                                op: Sub,
+                                lhs: IntegerLiteral(
+                                    IntegerLiteral {
+                                        repr: "-1",
+                                        value: -1,
+                                    },
+                                ),
+                                rhs: IntegerLiteral(
+                                    IntegerLiteral {
+                                        repr: "-2",
+                                        value: -2,
+                                    },
+                                ),
+                            },
+                        ),
+                    },
+                ),
+                Var(
+                    VarDecl {
+                        name: r"d",
+                        t: None,
+                        initialiser: Some(
+                            Binop {
+                                op: Add,
+                                lhs: IntegerLiteral(
+                                    IntegerLiteral {
+                                        repr: "-5",
+                                        value: -5,
+                                    },
+                                ),
+                                rhs: Binop {
+                                    op: Add,
+                                    lhs: IntegerLiteral(
+                                        IntegerLiteral {
+                                            repr: "-7",
+                                            value: -7,
+                                        },
+                                    ),
+                                    rhs: IntegerLiteral(
+                                        IntegerLiteral {
+                                            repr: "-8",
+                                            value: -8,
+                                        },
+                                    ),
+                                },
+                            },
+                        ),
+                    },
+                ),
+                Var(
+                    VarDecl {
+                        name: r"e",
+                        t: None,
+                        initialiser: Some(
+                            Unop {
+                                op: Sub,
+                                operand: IntegerLiteral(
+                                    IntegerLiteral {
+                                        repr: "-7",
+                                        value: -7,
+                                    },
+                                ),
+                            },
+                        ),
+                    },
+                ),
+            ],
+        ),
+        [],
+    ),
+)

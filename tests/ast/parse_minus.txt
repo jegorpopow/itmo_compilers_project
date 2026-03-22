@@ -1,0 +1,280 @@
+Ok(
+    (
+        IdentifierTable {
+            bindings: [
+                Binding {
+                    name: a(0),
+                    decl: Var(
+                        VarDecl {
+                            t: Int,
+                            initialiser: Some(
+                                IntegerLiteral(
+                                    IntegerLiteral {
+                                        repr: "-1",
+                                        value: -1,
+                                    },
+                                ),
+                            ),
+                            relative_location: Global(
+                                0,
+                            ),
+                        },
+                    ),
+                },
+                Binding {
+                    name: b(1),
+                    decl: Var(
+                        VarDecl {
+                            t: Int,
+                            initialiser: Some(
+                                Binop {
+                                    op: IntSub,
+                                    lhs: IntegerLiteral(
+                                        IntegerLiteral {
+                                            repr: "-1",
+                                            value: -1,
+                                        },
+                                    ),
+                                    rhs: IntegerLiteral(
+                                        IntegerLiteral {
+                                            repr: "-2",
+                                            value: -2,
+                                        },
+                                    ),
+                                },
+                            ),
+                            relative_location: Global(
+                                1,
+                            ),
+                        },
+                    ),
+                },
+                Binding {
+                    name: c(2),
+                    decl: Var(
+                        VarDecl {
+                            t: Int,
+                            initialiser: Some(
+                                Binop {
+                                    op: IntSub,
+                                    lhs: IntegerLiteral(
+                                        IntegerLiteral {
+                                            repr: "-1",
+                                            value: -1,
+                                        },
+                                    ),
+                                    rhs: IntegerLiteral(
+                                        IntegerLiteral {
+                                            repr: "-2",
+                                            value: -2,
+                                        },
+                                    ),
+                                },
+                            ),
+                            relative_location: Global(
+                                2,
+                            ),
+                        },
+                    ),
+                },
+                Binding {
+                    name: d(3),
+                    decl: Var(
+                        VarDecl {
+                            t: Int,
+                            initialiser: Some(
+                                Binop {
+                                    op: IntAdd,
+                                    lhs: IntegerLiteral(
+                                        IntegerLiteral {
+                                            repr: "-5",
+                                            value: -5,
+                                        },
+                                    ),
+                                    rhs: Binop {
+                                        op: IntAdd,
+                                        lhs: IntegerLiteral(
+                                            IntegerLiteral {
+                                                repr: "-7",
+                                                value: -7,
+                                            },
+                                        ),
+                                        rhs: IntegerLiteral(
+                                            IntegerLiteral {
+                                                repr: "-8",
+                                                value: -8,
+                                            },
+                                        ),
+                                    },
+                                },
+                            ),
+                            relative_location: Global(
+                                3,
+                            ),
+                        },
+                    ),
+                },
+                Binding {
+                    name: e(4),
+                    decl: Var(
+                        VarDecl {
+                            t: Int,
+                            initialiser: Some(
+                                Unop {
+                                    op: IntNeg,
+                                    operand: IntegerLiteral(
+                                        IntegerLiteral {
+                                            repr: "-7",
+                                            value: -7,
+                                        },
+                                    ),
+                                },
+                            ),
+                            relative_location: Global(
+                                4,
+                            ),
+                        },
+                    ),
+                },
+            ],
+        },
+        Program(
+            [
+                Binding {
+                    name: a(0),
+                    decl: Var(
+                        VarDecl {
+                            t: Int,
+                            initialiser: Some(
+                                IntegerLiteral(
+                                    IntegerLiteral {
+                                        repr: "-1",
+                                        value: -1,
+                                    },
+                                ),
+                            ),
+                            relative_location: Global(
+                                0,
+                            ),
+                        },
+                    ),
+                },
+                Binding {
+                    name: b(1),
+                    decl: Var(
+                        VarDecl {
+                            t: Int,
+                            initialiser: Some(
+                                Binop {
+                                    op: IntSub,
+                                    lhs: IntegerLiteral(
+                                        IntegerLiteral {
+                                            repr: "-1",
+                                            value: -1,
+                                        },
+                                    ),
+                                    rhs: IntegerLiteral(
+                                        IntegerLiteral {
+                                            repr: "-2",
+                                            value: -2,
+                                        },
+                                    ),
+                                },
+                            ),
+                            relative_location: Global(
+                                1,
+                            ),
+                        },
+                    ),
+                },
+                Binding {
+                    name: c(2),
+                    decl: Var(
+                        VarDecl {
+                            t: Int,
+                            initialiser: Some(
+                                Binop {
+                                    op: IntSub,
+                                    lhs: IntegerLiteral(
+                                        IntegerLiteral {
+                                            repr: "-1",
+                                            value: -1,
+                                        },
+                                    ),
+                                    rhs: IntegerLiteral(
+                                        IntegerLiteral {
+                                            repr: "-2",
+                                            value: -2,
+                                        },
+                                    ),
+                                },
+                            ),
+                            relative_location: Global(
+                                2,
+                            ),
+                        },
+                    ),
+                },
+                Binding {
+                    name: d(3),
+                    decl: Var(
+                        VarDecl {
+                            t: Int,
+                            initialiser: Some(
+                                Binop {
+                                    op: IntAdd,
+                                    lhs: IntegerLiteral(
+                                        IntegerLiteral {
+                                            repr: "-5",
+                                            value: -5,
+                                        },
+                                    ),
+                                    rhs: Binop {
+                                        op: IntAdd,
+                                        lhs: IntegerLiteral(
+                                            IntegerLiteral {
+                                                repr: "-7",
+                                                value: -7,
+                                            },
+                                        ),
+                                        rhs: IntegerLiteral(
+                                            IntegerLiteral {
+                                                repr: "-8",
+                                                value: -8,
+                                            },
+                                        ),
+                                    },
+                                },
+                            ),
+                            relative_location: Global(
+                                3,
+                            ),
+                        },
+                    ),
+                },
+                Binding {
+                    name: e(4),
+                    decl: Var(
+                        VarDecl {
+                            t: Int,
+                            initialiser: Some(
+                                Unop {
+                                    op: IntNeg,
+                                    operand: IntegerLiteral(
+                                        IntegerLiteral {
+                                            repr: "-7",
+                                            value: -7,
+                                        },
+                                    ),
+                                },
+                            ),
+                            relative_location: Global(
+                                4,
+                            ),
+                        },
+                    ),
+                },
+            ],
+        ),
+    ),
+)

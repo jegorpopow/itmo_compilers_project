@@ -1,0 +1,104 @@
+Ok(
+    (
+        Program(
+            [
+                Var(
+                    VarDecl {
+                        name: r"x",
+                        t: Some(
+                            Int,
+                        ),
+                        initialiser: Some(
+                            IntegerLiteral(
+                                IntegerLiteral {
+                                    repr: "0",
+                                    value: 0,
+                                },
+                            ),
+                        ),
+                    },
+                ),
+                Routine(
+                    RoutineDecl {
+                        name: r"main",
+                        arguments: [],
+                        return_type: None,
+                        body: Some(
+                            Block(
+                                Block(
+                                    [
+                                        Stmt(
+                                            Print {
+                                                value: LvalueToRvalue(
+                                                    Identifier(
+                                                        r"x",
+                                                    ),
+                                                ),
+                                            },
+                                        ),
+                                        VarDecl(
+                                            VarDecl {
+                                                name: r"x",
+                                                t: None,
+                                                initialiser: Some(
+                                                    IntegerLiteral(
+                                                        IntegerLiteral {
+                                                            repr: "1",
+                                                            value: 1,
+                                                        },
+                                                    ),
+                                                ),
+                                            },
+                                        ),
+                                        Stmt(
+                                            Print {
+                                                value: LvalueToRvalue(
+                                                    Identifier(
+                                                        r"x",
+                                                    ),
+                                                ),
+                                            },
+                                        ),
+                                        Stmt(
+                                            If {
+                                                condition: BoolLiteral(
+                                                    True,
+                                                ),
+                                                on_true: Block(
+                                                    [
+                                                        VarDecl(
+                                                            VarDecl {
+                                                                name: r"x",
+                                                                t: None,
+                                                                initialiser: Some(
+                                                                    BoolLiteral(
+                                                                        True,
+                                                                    ),
+                                                                ),
+                                                            },
+                                                        ),
+                                                        Stmt(
+                                                            Print {
+                                                                value: LvalueToRvalue(
+                                                                    Identifier(
+                                                                        r"x",
+                                                                    ),
+                                                                ),
+                                                            },
+                                                        ),
+                                                    ],
+                                                ),
+                                                on_false: None,
+                                            },
+                                        ),
+                                    ],
+                                ),
+                            ),
+                        ),
+                    },
+                ),
+            ],
+        ),
+        [],
+    ),
+)

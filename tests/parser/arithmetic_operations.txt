@@ -1,0 +1,401 @@
+Ok(
+    (
+        Program(
+            [
+                Routine(
+                    RoutineDecl {
+                        name: r"main",
+                        arguments: [],
+                        return_type: None,
+                        body: Some(
+                            Block(
+                                Block(
+                                    [
+                                        VarDecl(
+                                            VarDecl {
+                                                name: r"a",
+                                                t: None,
+                                                initialiser: Some(
+                                                    IntegerLiteral(
+                                                        IntegerLiteral {
+                                                            repr: "7",
+                                                            value: 7,
+                                                        },
+                                                    ),
+                                                ),
+                                            },
+                                        ),
+                                        VarDecl(
+                                            VarDecl {
+                                                name: r"b",
+                                                t: None,
+                                                initialiser: Some(
+                                                    IntegerLiteral(
+                                                        IntegerLiteral {
+                                                            repr: "3",
+                                                            value: 3,
+                                                        },
+                                                    ),
+                                                ),
+                                            },
+                                        ),
+                                        VarDecl(
+                                            VarDecl {
+                                                name: r"x",
+                                                t: None,
+                                                initialiser: Some(
+                                                    RealLiteral(
+                                                        RealLiteral {
+                                                            repr: "5.5",
+                                                            value: 5.5,
+                                                        },
+                                                    ),
+                                                ),
+                                            },
+                                        ),
+                                        VarDecl(
+                                            VarDecl {
+                                                name: r"y",
+                                                t: None,
+                                                initialiser: Some(
+                                                    RealLiteral(
+                                                        RealLiteral {
+                                                            repr: "2.0",
+                                                            value: 2.0,
+                                                        },
+                                                    ),
+                                                ),
+                                            },
+                                        ),
+                                        Stmt(
+                                            Print {
+                                                value: Binop {
+                                                    op: Add,
+                                                    lhs: LvalueToRvalue(
+                                                        Identifier(
+                                                            r"a",
+                                                        ),
+                                                    ),
+                                                    rhs: LvalueToRvalue(
+                                                        Identifier(
+                                                            r"b",
+                                                        ),
+                                                    ),
+                                                },
+                                            },
+                                        ),
+                                        Stmt(
+                                            Print {
+                                                value: Binop {
+                                                    op: Sub,
+                                                    lhs: LvalueToRvalue(
+                                                        Identifier(
+                                                            r"a",
+                                                        ),
+                                                    ),
+                                                    rhs: LvalueToRvalue(
+                                                        Identifier(
+                                                            r"b",
+                                                        ),
+                                                    ),
+                                                },
+                                            },
+                                        ),
+                                        Stmt(
+                                            Print {
+                                                value: Binop {
+                                                    op: Mul,
+                                                    lhs: LvalueToRvalue(
+                                                        Identifier(
+                                                            r"a",
+                                                        ),
+                                                    ),
+                                                    rhs: LvalueToRvalue(
+                                                        Identifier(
+                                                            r"b",
+                                                        ),
+                                                    ),
+                                                },
+                                            },
+                                        ),
+                                        Stmt(
+                                            Print {
+                                                value: Binop {
+                                                    op: Div,
+                                                    lhs: LvalueToRvalue(
+                                                        Identifier(
+                                                            r"a",
+                                                        ),
+                                                    ),
+                                                    rhs: LvalueToRvalue(
+                                                        Identifier(
+                                                            r"b",
+                                                        ),
+                                                    ),
+                                                },
+                                            },
+                                        ),
+                                        Stmt(
+                                            Print {
+                                                value: Binop {
+                                                    op: Mod,
+                                                    lhs: LvalueToRvalue(
+                                                        Identifier(
+                                                            r"a",
+                                                        ),
+                                                    ),
+                                                    rhs: LvalueToRvalue(
+                                                        Identifier(
+                                                            r"b",
+                                                        ),
+                                                    ),
+                                                },
+                                            },
+                                        ),
+                                        Stmt(
+                                            Print {
+                                                value: Binop {
+                                                    op: Div,
+                                                    lhs: IntegerLiteral(
+                                                        IntegerLiteral {
+                                                            repr: "-7",
+                                                            value: -7,
+                                                        },
+                                                    ),
+                                                    rhs: IntegerLiteral(
+                                                        IntegerLiteral {
+                                                            repr: "3",
+                                                            value: 3,
+                                                        },
+                                                    ),
+                                                },
+                                            },
+                                        ),
+                                        Stmt(
+                                            Print {
+                                                value: Binop {
+                                                    op: Mod,
+                                                    lhs: IntegerLiteral(
+                                                        IntegerLiteral {
+                                                            repr: "-7",
+                                                            value: -7,
+                                                        },
+                                                    ),
+                                                    rhs: IntegerLiteral(
+                                                        IntegerLiteral {
+                                                            repr: "3",
+                                                            value: 3,
+                                                        },
+                                                    ),
+                                                },
+                                            },
+                                        ),
+                                        Stmt(
+                                            Print {
+                                                value: Binop {
+                                                    op: Div,
+                                                    lhs: IntegerLiteral(
+                                                        IntegerLiteral {
+                                                            repr: "7",
+                                                            value: 7,
+                                                        },
+                                                    ),
+                                                    rhs: IntegerLiteral(
+                                                        IntegerLiteral {
+                                                            repr: "-3",
+                                                            value: -3,
+                                                        },
+                                                    ),
+                                                },
+                                            },
+                                        ),
+                                        Stmt(
+                                            Print {
+                                                value: Binop {
+                                                    op: Mod,
+                                                    lhs: IntegerLiteral(
+                                                        IntegerLiteral {
+                                                            repr: "7",
+                                                            value: 7,
+                                                        },
+                                                    ),
+                                                    rhs: IntegerLiteral(
+                                                        IntegerLiteral {
+                                                            repr: "-3",
+                                                            value: -3,
+                                                        },
+                                                    ),
+                                                },
+                                            },
+                                        ),
+                                        Stmt(
+                                            Print {
+                                                value: Binop {
+                                                    op: Add,
+                                                    lhs: LvalueToRvalue(
+                                                        Identifier(
+                                                            r"x",
+                                                        ),
+                                                    ),
+                                                    rhs: LvalueToRvalue(
+                                                        Identifier(
+                                                            r"y",
+                                                        ),
+                                                    ),
+                                                },
+                                            },
+                                        ),
+                                        Stmt(
+                                            Print {
+                                                value: Binop {
+                                                    op: Sub,
+                                                    lhs: LvalueToRvalue(
+                                                        Identifier(
+                                                            r"x",
+                                                        ),
+                                                    ),
+                                                    rhs: LvalueToRvalue(
+                                                        Identifier(
+                                                            r"y",
+                                                        ),
+                                                    ),
+                                                },
+                                            },
+                                        ),
+                                        Stmt(
+                                            Print {
+                                                value: Binop {
+                                                    op: Mul,
+                                                    lhs: LvalueToRvalue(
+                                                        Identifier(
+                                                            r"x",
+                                                        ),
+                                                    ),
+                                                    rhs: LvalueToRvalue(
+                                                        Identifier(
+                                                            r"y",
+                                                        ),
+                                                    ),
+                                                },
+                                            },
+                                        ),
+                                        Stmt(
+                                            Print {
+                                                value: Binop {
+                                                    op: Div,
+                                                    lhs: LvalueToRvalue(
+                                                        Identifier(
+                                                            r"x",
+                                                        ),
+                                                    ),
+                                                    rhs: LvalueToRvalue(
+                                                        Identifier(
+                                                            r"y",
+                                                        ),
+                                                    ),
+                                                },
+                                            },
+                                        ),
+                                        Stmt(
+                                            Print {
+                                                value: Binop {
+                                                    op: Add,
+                                                    lhs: LvalueToRvalue(
+                                                        Identifier(
+                                                            r"a",
+                                                        ),
+                                                    ),
+                                                    rhs: LvalueToRvalue(
+                                                        Identifier(
+                                                            r"x",
+                                                        ),
+                                                    ),
+                                                },
+                                            },
+                                        ),
+                                        Stmt(
+                                            Print {
+                                                value: Binop {
+                                                    op: Add,
+                                                    lhs: LvalueToRvalue(
+                                                        Identifier(
+                                                            r"x",
+                                                        ),
+                                                    ),
+                                                    rhs: LvalueToRvalue(
+                                                        Identifier(
+                                                            r"b",
+                                                        ),
+                                                    ),
+                                                },
+                                            },
+                                        ),
+                                        Stmt(
+                                            Print {
+                                                value: Binop {
+                                                    op: Mul,
+                                                    lhs: LvalueToRvalue(
+                                                        Identifier(
+                                                            r"a",
+                                                        ),
+                                                    ),
+                                                    rhs: LvalueToRvalue(
+                                                        Identifier(
+                                                            r"y",
+                                                        ),
+                                                    ),
+                                                },
+                                            },
+                                        ),
+                                        Stmt(
+                                            Print {
+                                                value: Binop {
+                                                    op: Sub,
+                                                    lhs: LvalueToRvalue(
+                                                        Identifier(
+                                                            r"y",
+                                                        ),
+                                                    ),
+                                                    rhs: LvalueToRvalue(
+                                                        Identifier(
+                                                            r"a",
+                                                        ),
+                                                    ),
+                                                },
+                                            },
+                                        ),
+                                        Stmt(
+                                            Print {
+                                                value: Unop {
+                                                    op: Sub,
+                                                    operand: LvalueToRvalue(
+                                                        Identifier(
+                                                            r"a",
+                                                        ),
+                                                    ),
+                                                },
+                                            },
+                                        ),
+                                        Stmt(
+                                            Print {
+                                                value: Unop {
+                                                    op: Sub,
+                                                    operand: LvalueToRvalue(
+                                                        Identifier(
+                                                            r"x",
+                                                        ),
+                                                    ),
+                                                },
+                                            },
+                                        ),
+                                    ],
+                                ),
+                            ),
+                        ),
+                    },
+                ),
+            ],
+        ),
+        [],
+    ),
+)
