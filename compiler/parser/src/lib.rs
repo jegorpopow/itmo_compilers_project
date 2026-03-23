@@ -284,7 +284,7 @@ impl Parser {
         Ok((result, next))
     }
 
-    /// Parsers `l`, `rep`, `r`, drops the valuse in centre
+    // / Parsers `l`, `rep`, `r`, drops the values in centre
     fn parse_def<'a, 'b: 'a, T, U>(
         &mut self,
         mut l: impl ParsingFunction<'a, 'b, T>,
@@ -632,7 +632,7 @@ impl Parser {
                     .map(|(rec_desc, i)| (Type::Record(rec_desc), i))
             })
             .map_err(|_err| ParsingError {
-                what: "Type exptected, but not found".to_owned(),
+                what: "Type expected, but not found".to_owned(),
                 position: i.position(),
             })
             .map(|(ty, next)| (Rc::new(ty), next))
@@ -1168,11 +1168,11 @@ impl Parser {
                 self.next(next),
             )),
             Some(t) => Err(ParsingError {
-                what: format!("Function body or `;` expexted, {t} found"),
+                what: format!("Function body or `;` expected, {t} found"),
                 position: next.position(),
             }),
             None => Err(ParsingError {
-                what: "Function body or `;` expexted, EOF found".to_owned(),
+                what: "Function body or `;` expected, EOF found".to_owned(),
                 position: next.position(),
             }),
         }
@@ -1209,7 +1209,7 @@ impl Parser {
                 position: i.position(),
             }),
             None => Err(ParsingError {
-                what: "Declaration expexted, EOF found".to_owned(),
+                what: "Declaration expected, EOF found".to_owned(),
                 position: i.position(),
             }),
         }

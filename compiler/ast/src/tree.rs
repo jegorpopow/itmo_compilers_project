@@ -86,7 +86,7 @@ pub enum Expression {
         t: Rc<Type>,
         fields: Option<Vec<(RawIdentifier, Rc<Expression>)>>,
     },
-    LenghtOf {
+    LengthOf {
         arr: Rc<Expression>,
     },
     Null,
@@ -136,10 +136,10 @@ impl EvaluatedValue {
     pub(crate) fn as_usize(&self) -> AnalysisResult<usize> {
         match self {
             &EvaluatedValue::Int(val) => val.try_into().map_err(|e| AnalysisError {
-                what: format!("Complile-time non negative constant expected but found {val}: {e}"),
+                what: format!("Compile-time non negative constant expected but found {val}: {e}"),
             }),
             EvaluatedValue::Real(_) | EvaluatedValue::Bool(_) => Err(AnalysisError {
-                what: "Complile-time expression of type integer expected".to_owned(),
+                what: "Compile-time expression of type integer expected".to_owned(),
             }),
         }
     }
@@ -247,7 +247,7 @@ impl Expression {
             Expression::Call { .. }
             | Expression::Cast { .. }
             | Expression::New { .. }
-            | Expression::LenghtOf { .. }
+            | Expression::LengthOf { .. }
             | Expression::Null
             | Expression::LvalueToRvalue(_) => Err(AnalysisError {
                 what: format!(

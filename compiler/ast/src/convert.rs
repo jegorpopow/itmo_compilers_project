@@ -266,7 +266,7 @@ impl Converter {
                     },
                     t => Err(AnalysisError {
                         what: format!(
-                            "{:?} is not a name of variable in lvalue exprerssion",
+                            "{:?} is not a name of variable in lvalue expression",
                             t.name
                         ),
                     })?,
@@ -405,13 +405,13 @@ impl Converter {
         if arguments_types.len() != converted_expressions.len() {
             Err(AnalysisError {
                 what: format!(
-                    "routine `{callee}` expexts {} arguments, but got {}",
+                    "routine `{callee}` expects {} arguments, but got {}",
                     arguments_types.len(),
                     converted_expressions.len()
                 ),
             })
         } else {
-            let convrted_args = std::iter::zip(arguments_types, converted_expressions)
+            let converted_args = std::iter::zip(arguments_types, converted_expressions)
                 .map(
                     |(
                         arg_type,
@@ -425,7 +425,7 @@ impl Converter {
             Ok(Typed {
                 value: Rc::new(Expression::Call {
                     callee: self.lookup(callee)?.name.clone(),
-                    args: convrted_args,
+                    args: converted_args,
                 }),
                 ty: Rc::clone(return_type),
             })
@@ -483,7 +483,7 @@ impl Converter {
             Type::Array(ArrayDescription { length: None, t: _ }) => Err(AnalysisError {
                 what: format!("No new length known array creation {t:?}"),
             }),
-            
+
             Type::Array(ArrayDescription {
                 length: Some(_),
                 t: _,
@@ -511,7 +511,7 @@ impl Converter {
                     if lhs_type.get_element_type().is_ok() {
                         // Length of array
                         Typed {
-                            value: Rc::new(Expression::LenghtOf {
+                            value: Rc::new(Expression::LengthOf {
                                 arr: Rc::new(Expression::LvalueToRvalue(lhs)),
                             }),
                             ty: Rc::new(Type::Int),
@@ -907,7 +907,7 @@ impl Converter {
             .iter()
             .map(|(name, arg_type)| {
                 self.convert_type(arg_type)
-                    .map(|conerted_arg_type| (name.clone(), conerted_arg_type))
+                    .map(|converted_arg_type| (name.clone(), converted_arg_type))
             })
             .collect::<AnalysisResult<Vec<(RawIdentifier, Rc<Type>)>>>()?;
 
