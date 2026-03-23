@@ -1,19 +1,18 @@
-#![allow(dead_code, reason = "WIP")]
-#![allow(clippy::wrong_self_convention)]
-#![allow(clippy::cast_precision_loss)]
-#![allow(clippy::cast_lossless)]
-#![allow(clippy::float_cmp)]
-#![allow(clippy::cast_possible_truncation)]
 use std::rc::Rc;
 
-use crate::ast::error::{AnalysisError, AnalysisResult};
-use crate::ast::types::{ArrayDescription, Type};
-use crate::bytecode::Location;
-use crate::identifier::{Identifier, RawIdentifier};
-use crate::loop_order::LoopOrder;
-
-use crate::operators::{SemanticBinaryOperator, SemanticUnaryOperator};
 use derive_where::derive_where;
+
+use common::{
+    Identifier, Location, LoopOrder, RawIdentifier,
+    operators::{
+        BoolBinOp, EqBinOp, IntBinOp, RealBinOp, SemanticBinaryOperator, SemanticUnaryOperator,
+    },
+};
+
+use crate::{
+    AnalysisError, AnalysisResult,
+    types::{ArrayDescription, Type},
+};
 
 #[derive(Debug)]
 #[derive_where(Hash, Eq, PartialEq)]
@@ -38,6 +37,7 @@ pub enum BoolLiteral {
 }
 
 impl BoolLiteral {
+    #[must_use]
     pub fn to_bool(self) -> bool {
         match self {
             BoolLiteral::True => true,
@@ -97,7 +97,7 @@ pub enum Expression {
 }
 
 #[derive(Debug, PartialEq)]
-pub enum EvaluatedValue {
+pub(crate) enum EvaluatedValue {
     Int(i64),
     Real(f64),
     Bool(bool),
@@ -133,17 +133,11 @@ impl EvaluatedValue {
 }
 
 impl EvaluatedValue {
-    pub fn as_usize(&self) -> AnalysisResult<usize> {
+    pub(crate) fn as_usize(&self) -> AnalysisResult<usize> {
         match self {
-            EvaluatedValue::Int(val) => {
-                if *val >= 0 {
-                    Ok(usize::try_from(*val).unwrap())
-                } else {
-                    Err(AnalysisError {
-                        what: format!("Complile-time non negative constant expected {val} found"),
-                    })
-                }
-            }
+            &EvaluatedValue::Int(val) => val.try_into().map_err(|e| AnalysisError {
+                what: format!("Complile-time non negative constant expected but found {val}: {e}"),
+            }),
             EvaluatedValue::Real(_) | EvaluatedValue::Bool(_) => Err(AnalysisError {
                 what: "Complile-time expression of type integer expected".to_owned(),
             }),
@@ -151,8 +145,62 @@ impl EvaluatedValue {
     }
 }
 
+trait BinOp<T> {
+    fn apply(&self, lhs: T, rhs: T) -> EvaluatedValue;
+}
+
+impl BinOp<f64> for RealBinOp {
+    fn apply(&self, lhs: f64, rhs: f64) -> EvaluatedValue {
+        match self {
+            Self::Add => EvaluatedValue::Real(lhs + rhs),
+            Self::Sub => EvaluatedValue::Real(lhs - rhs),
+            Self::Mul => EvaluatedValue::Real(lhs * rhs),
+            Self::Div => EvaluatedValue::Real(lhs / rhs),
+            Self::Le => EvaluatedValue::Bool(lhs <= rhs),
+            Self::Lt => EvaluatedValue::Bool(lhs < rhs),
+            Self::Gt => EvaluatedValue::Bool(lhs > rhs),
+            Self::Ge => EvaluatedValue::Bool(lhs >= rhs),
+        }
+    }
+}
+
+impl BinOp<i64> for IntBinOp {
+    fn apply(&self, lhs: i64, rhs: i64) -> EvaluatedValue {
+        match self {
+            Self::Add => EvaluatedValue::Int(lhs + rhs),
+            Self::Sub => EvaluatedValue::Int(lhs - rhs),
+            Self::Mul => EvaluatedValue::Int(lhs * rhs),
+            Self::Div => EvaluatedValue::Int(lhs / rhs),
+            Self::Mod => EvaluatedValue::Int(lhs % rhs),
+            Self::Le => EvaluatedValue::Bool(lhs <= rhs),
+            Self::Lt => EvaluatedValue::Bool(lhs < rhs),
+            Self::Gt => EvaluatedValue::Bool(lhs > rhs),
+            Self::Ge => EvaluatedValue::Bool(lhs >= rhs),
+        }
+    }
+}
+
+impl BinOp<bool> for BoolBinOp {
+    fn apply(&self, lhs: bool, rhs: bool) -> EvaluatedValue {
+        EvaluatedValue::Bool(match self {
+            Self::And => lhs && rhs,
+            Self::Or => lhs || rhs,
+            Self::Xor => lhs ^ rhs,
+        })
+    }
+}
+
+impl BinOp<EvaluatedValue> for EqBinOp {
+    fn apply(&self, lhs: EvaluatedValue, rhs: EvaluatedValue) -> EvaluatedValue {
+        EvaluatedValue::Bool(match self {
+            Self::Eq => lhs == rhs,
+            Self::Ne => lhs != rhs,
+        })
+    }
+}
+
 impl Expression {
-    pub fn try_constexpr_evaluate(&self) -> AnalysisResult<EvaluatedValue> {
+    pub(crate) fn try_constexpr_evaluate(&self) -> AnalysisResult<EvaluatedValue> {
         match self {
             Expression::IntegerLiteral(integer_literal) => {
                 Ok(EvaluatedValue::Int(integer_literal.value))
@@ -161,134 +209,39 @@ impl Expression {
             Expression::BoolLiteral(bool_literal) => {
                 Ok(EvaluatedValue::Bool(bool_literal.to_bool()))
             }
-            Expression::Binop { op, lhs, rhs } => match op {
-                SemanticBinaryOperator::RealAdd => {
-                    let lhs = lhs.as_ref().try_constexpr_evaluate()?.as_real()?;
-                    let rhs = rhs.as_ref().try_constexpr_evaluate()?.as_real()?;
-                    Ok(EvaluatedValue::Real(lhs + rhs))
-                }
-                SemanticBinaryOperator::RealSub => {
-                    let lhs = lhs.as_ref().try_constexpr_evaluate()?.as_real()?;
-                    let rhs = rhs.as_ref().try_constexpr_evaluate()?.as_real()?;
-                    Ok(EvaluatedValue::Real(lhs - rhs))
-                }
-                SemanticBinaryOperator::RealMul => {
-                    let lhs = lhs.as_ref().try_constexpr_evaluate()?.as_real()?;
-                    let rhs = rhs.as_ref().try_constexpr_evaluate()?.as_real()?;
-                    Ok(EvaluatedValue::Real(lhs * rhs))
-                }
-                SemanticBinaryOperator::RealDiv => {
-                    let lhs = lhs.as_ref().try_constexpr_evaluate()?.as_real()?;
-                    let rhs = rhs.as_ref().try_constexpr_evaluate()?.as_real()?;
-                    Ok(EvaluatedValue::Real(lhs / rhs))
-                }
-                SemanticBinaryOperator::RealLe => {
-                    let lhs = lhs.as_ref().try_constexpr_evaluate()?.as_real()?;
-                    let rhs = rhs.as_ref().try_constexpr_evaluate()?.as_real()?;
-                    Ok(EvaluatedValue::Bool(lhs <= rhs))
-                }
-                SemanticBinaryOperator::RealLt => {
-                    let lhs = lhs.as_ref().try_constexpr_evaluate()?.as_real()?;
-                    let rhs = rhs.as_ref().try_constexpr_evaluate()?.as_real()?;
-                    Ok(EvaluatedValue::Bool(lhs < rhs))
-                }
-                SemanticBinaryOperator::RealGt => {
-                    let lhs = lhs.as_ref().try_constexpr_evaluate()?.as_real()?;
-                    let rhs = rhs.as_ref().try_constexpr_evaluate()?.as_real()?;
-                    Ok(EvaluatedValue::Bool(lhs > rhs))
-                }
-                SemanticBinaryOperator::RealGe => {
-                    let lhs = lhs.as_ref().try_constexpr_evaluate()?.as_real()?;
-                    let rhs = rhs.as_ref().try_constexpr_evaluate()?.as_real()?;
-                    Ok(EvaluatedValue::Bool(lhs >= rhs))
-                }
-                SemanticBinaryOperator::Eq => Ok(EvaluatedValue::Bool(lhs == rhs)),
-                SemanticBinaryOperator::Neq => Ok(EvaluatedValue::Bool(lhs != rhs)),
-                SemanticBinaryOperator::IntAdd => {
-                    let lhs = lhs.as_ref().try_constexpr_evaluate()?.as_int()?;
-                    let rhs = rhs.as_ref().try_constexpr_evaluate()?.as_int()?;
-                    Ok(EvaluatedValue::Int(lhs + rhs))
-                }
-                SemanticBinaryOperator::IntSub => {
-                    let lhs = lhs.as_ref().try_constexpr_evaluate()?.as_int()?;
-                    let rhs = rhs.as_ref().try_constexpr_evaluate()?.as_int()?;
-                    Ok(EvaluatedValue::Int(lhs - rhs))
-                }
-                SemanticBinaryOperator::IntMul => {
-                    let lhs = lhs.as_ref().try_constexpr_evaluate()?.as_int()?;
-                    let rhs = rhs.as_ref().try_constexpr_evaluate()?.as_int()?;
-                    Ok(EvaluatedValue::Int(lhs * rhs))
-                }
-                SemanticBinaryOperator::IntDiv => {
-                    let lhs = lhs.as_ref().try_constexpr_evaluate()?.as_int()?;
-                    let rhs = rhs.as_ref().try_constexpr_evaluate()?.as_int()?;
-                    Ok(EvaluatedValue::Int(lhs / rhs))
-                }
-                SemanticBinaryOperator::IntMod => {
-                    let lhs = lhs.as_ref().try_constexpr_evaluate()?.as_int()?;
-                    let rhs = rhs.as_ref().try_constexpr_evaluate()?.as_int()?;
-                    Ok(EvaluatedValue::Int(lhs % rhs))
-                }
-                SemanticBinaryOperator::IntLe => {
-                    let lhs = lhs.as_ref().try_constexpr_evaluate()?.as_int()?;
-                    let rhs = rhs.as_ref().try_constexpr_evaluate()?.as_int()?;
-                    Ok(EvaluatedValue::Bool(lhs <= rhs))
-                }
-                SemanticBinaryOperator::IntLt => {
-                    let lhs = lhs.as_ref().try_constexpr_evaluate()?.as_int()?;
-                    let rhs = rhs.as_ref().try_constexpr_evaluate()?.as_int()?;
-                    Ok(EvaluatedValue::Bool(lhs < rhs))
-                }
-                SemanticBinaryOperator::IntGt => {
-                    let lhs = lhs.as_ref().try_constexpr_evaluate()?.as_int()?;
-                    let rhs = rhs.as_ref().try_constexpr_evaluate()?.as_int()?;
-                    Ok(EvaluatedValue::Bool(lhs > rhs))
-                }
-                SemanticBinaryOperator::IntGe => {
-                    let lhs = lhs.as_ref().try_constexpr_evaluate()?.as_int()?;
-                    let rhs = rhs.as_ref().try_constexpr_evaluate()?.as_int()?;
-                    Ok(EvaluatedValue::Bool(lhs >= rhs))
-                }
-                SemanticBinaryOperator::BoolAnd => {
-                    let lhs = lhs.as_ref().try_constexpr_evaluate()?.as_bool()?;
-                    let rhs = rhs.as_ref().try_constexpr_evaluate()?.as_bool()?;
-                    Ok(EvaluatedValue::Bool(lhs && rhs))
-                }
-                SemanticBinaryOperator::BoolXor => {
-                    let lhs = lhs.as_ref().try_constexpr_evaluate()?.as_bool()?;
-                    let rhs = rhs.as_ref().try_constexpr_evaluate()?.as_bool()?;
-                    Ok(EvaluatedValue::Bool(lhs ^ rhs))
-                }
-                SemanticBinaryOperator::BoolOr => {
-                    let lhs = lhs.as_ref().try_constexpr_evaluate()?.as_bool()?;
-                    let rhs = rhs.as_ref().try_constexpr_evaluate()?.as_bool()?;
-                    Ok(EvaluatedValue::Bool(lhs || rhs))
-                }
-            },
+            Expression::Binop { op, lhs, rhs } => {
+                let lhs = lhs.try_constexpr_evaluate()?;
+                let rhs = rhs.try_constexpr_evaluate()?;
+                Ok(match op {
+                    SemanticBinaryOperator::Eq(op) => op.apply(lhs, rhs),
+                    SemanticBinaryOperator::Real(op) => op.apply(lhs.as_real()?, rhs.as_real()?),
+                    SemanticBinaryOperator::Int(op) => op.apply(lhs.as_int()?, rhs.as_int()?),
+                    SemanticBinaryOperator::Bool(op) => op.apply(lhs.as_bool()?, rhs.as_bool()?),
+                })
+            }
 
-            Expression::Unop { op, operand } => match op {
-                SemanticUnaryOperator::IntNeg => Ok(EvaluatedValue::Int(
-                    -operand.as_ref().try_constexpr_evaluate()?.as_int()?,
-                )),
-                SemanticUnaryOperator::RealNeg => Ok(EvaluatedValue::Real(
-                    -operand.as_ref().try_constexpr_evaluate()?.as_real()?,
-                )),
-                SemanticUnaryOperator::BoolNeg => Ok(EvaluatedValue::Bool(
-                    !operand.as_ref().try_constexpr_evaluate()?.as_bool()?,
-                )),
-            },
+            Expression::Unop { op, operand } => {
+                let operand = operand.try_constexpr_evaluate()?;
+                Ok(match op {
+                    SemanticUnaryOperator::IntNeg => EvaluatedValue::Int(-operand.as_int()?),
+                    SemanticUnaryOperator::RealNeg => EvaluatedValue::Real(-operand.as_real()?),
+                    SemanticUnaryOperator::BoolNeg => EvaluatedValue::Bool(!operand.as_bool()?),
+                })
+            }
 
             Expression::IntToBool(expression) => Ok(EvaluatedValue::Bool(
-                0 != expression.as_ref().try_constexpr_evaluate()?.as_int()?,
+                expression.try_constexpr_evaluate()?.as_int()? != 0,
             )),
             Expression::BoolToInt(expression) => Ok(EvaluatedValue::Int(
-                expression.as_ref().try_constexpr_evaluate()?.as_bool()? as i64,
+                expression.try_constexpr_evaluate()?.as_bool()?.into(),
             )),
+            #[expect(clippy::cast_possible_truncation, reason = "By design")]
             Expression::RealToInt(expression) => Ok(EvaluatedValue::Int(
-                expression.as_ref().try_constexpr_evaluate()?.as_real()? as i64,
+                expression.try_constexpr_evaluate()?.as_real()? as i64,
             )),
+            #[expect(clippy::cast_precision_loss, reason = "By design")]
             Expression::IntToReal(expression) => Ok(EvaluatedValue::Real(
-                expression.as_ref().try_constexpr_evaluate()?.as_int()? as f64,
+                expression.try_constexpr_evaluate()?.as_int()? as f64,
             )),
 
             Expression::Call { .. }
@@ -312,7 +265,7 @@ pub struct VarDecl {
     pub relative_location: Location,
 }
 
-pub trait OptionalDecl {
+pub(crate) trait OptionalDecl {
     fn is_full(&self) -> bool;
     fn is_forward(&self) -> bool {
         !self.is_full()
@@ -375,10 +328,10 @@ impl OptionalDecl for RoutineDecl {
 }
 
 impl RoutineDecl {
+    #[must_use]
     pub fn signature(&self) -> &RoutineSignature {
         match self {
-            RoutineDecl::Full { signature, .. } => signature,
-            RoutineDecl::Forward { signature } => signature,
+            RoutineDecl::Full { signature, .. } | RoutineDecl::Forward { signature } => signature,
         }
     }
 }
@@ -395,9 +348,9 @@ pub enum SimpleDecl {
     Type(TypeDecl),
 }
 
-impl SimpleDecl {
-    pub fn to_generic_decl(self) -> Decl {
-        match self {
+impl From<SimpleDecl> for Decl {
+    fn from(value: SimpleDecl) -> Self {
+        match value {
             SimpleDecl::Var(var_decl) => Decl::Var(var_decl),
             SimpleDecl::Type(type_decl) => Decl::Type(type_decl),
         }
@@ -410,11 +363,12 @@ pub struct SimpleBinding {
     pub decl: SimpleDecl,
 }
 
-impl SimpleBinding {
-    pub fn to_generic_binding(self) -> Binding {
+impl From<SimpleBinding> for Binding {
+    fn from(sb: SimpleBinding) -> Self {
+        let SimpleBinding { name, decl } = sb;
         Binding {
-            name: self.name,
-            decl: self.decl.to_generic_decl(),
+            name,
+            decl: decl.into(),
         }
     }
 }
@@ -472,9 +426,11 @@ pub enum Decl {
     Routine(RoutineDecl),
 }
 
-impl Decl {
-    pub fn to_simple_decl(self) -> AnalysisResult<SimpleDecl> {
-        match self {
+impl TryFrom<Decl> for SimpleDecl {
+    type Error = AnalysisError;
+
+    fn try_from(value: Decl) -> AnalysisResult<SimpleDecl> {
+        match value {
             Decl::Var(var_decl) => Ok(SimpleDecl::Var(var_decl)),
             Decl::Type(type_decl) => Ok(SimpleDecl::Type(type_decl)),
             Decl::Routine(_) => Err(AnalysisError {
@@ -508,11 +464,16 @@ impl Binding {
             }),
         }
     }
+}
 
-    pub fn to_simple_binding(self) -> AnalysisResult<SimpleBinding> {
+impl TryFrom<Binding> for SimpleBinding {
+    type Error = AnalysisError;
+
+    fn try_from(value: Binding) -> AnalysisResult<SimpleBinding> {
+        let Binding { name, decl } = value;
         Ok(SimpleBinding {
-            name: self.name,
-            decl: self.decl.to_simple_decl()?,
+            name,
+            decl: decl.try_into()?,
         })
     }
 }
@@ -520,18 +481,12 @@ impl Binding {
 #[derive(Debug)]
 pub struct Program(pub Vec<Binding>);
 
-#[derive(Debug)]
+#[derive(Debug, Default)]
 pub struct IdentifierTable {
     bindings: Vec<Binding>,
 }
 
 impl IdentifierTable {
-    pub fn new() -> Self {
-        IdentifierTable {
-            bindings: Vec::new(),
-        }
-    }
-
     pub fn create_binding(&mut self, name: &RawIdentifier, decl: Decl) -> Identifier {
         let id = self.bindings.len();
         let identifier = Identifier {
@@ -546,14 +501,15 @@ impl IdentifierTable {
     }
 
     pub fn rebind(&mut self, ident: &Identifier, new_decl: Decl) {
-        assert!(ident.id < self.bindings.len());
         self.bindings[ident.id].decl = new_decl;
     }
 
+    #[must_use]
     pub fn get_binding(&self, ident: &Identifier) -> &Binding {
         &self.bindings[ident.id]
     }
 
+    #[must_use]
     pub fn get_binding_by_id(&self, id: usize) -> &Binding {
         &self.bindings[id]
     }
@@ -576,13 +532,13 @@ impl IdentifierTable {
 }
 
 // FIXME: add target effective type
-pub fn cast_to(
+pub(crate) fn cast_to(
     expr: Rc<Expression>,
-    own_type: &Rc<Type>,
-    target_type: &Rc<Type>,
+    own_type: &Type,
+    target_type: &Type,
 ) -> AnalysisResult<Rc<Expression>> {
-    match &**target_type {
-        Type::Int => match &**own_type {
+    match target_type {
+        Type::Int => match own_type {
             Type::Int => Ok(expr),
             Type::Real => Ok(Rc::new(Expression::RealToInt(expr))),
             Type::Bool => Ok(Rc::new(Expression::BoolToInt(expr))),
@@ -594,7 +550,7 @@ pub fn cast_to(
                 })
             }
         },
-        Type::Real => match &**own_type {
+        Type::Real => match own_type {
             Type::Real => Ok(expr),
             Type::Int => Ok(Rc::new(Expression::IntToReal(expr))),
             Type::Bool => Ok(Rc::new(Expression::BoolToInt(Rc::new(
@@ -609,7 +565,7 @@ pub fn cast_to(
             }
         },
 
-        Type::Bool => match &**own_type {
+        Type::Bool => match own_type {
             Type::Bool => Ok(expr),
             Type::Int => Ok(Rc::new(Expression::IntToBool(expr))),
             Type::Real => Ok(Rc::new(Expression::IntToBool(Rc::new(
@@ -626,7 +582,7 @@ pub fn cast_to(
 
         Type::Array(ArrayDescription { t, length: None }) => {
             let element_type = own_type.get_element_type()?;
-            if element_type == *t {
+            if element_type == t {
                 Ok(expr)
             } else {
                 Err(AnalysisError {
@@ -636,7 +592,7 @@ pub fn cast_to(
         }
 
         Type::Alias(_) | Type::Record(_) | Type::Array(_) | Type::Null | Type::Unit => {
-            if *own_type == *target_type || **own_type == Type::Null {
+            if *own_type == *target_type || *own_type == Type::Null {
                 Ok(expr)
             } else {
                 Err(AnalysisError {

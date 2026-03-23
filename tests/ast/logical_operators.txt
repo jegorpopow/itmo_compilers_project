@@ -180,7 +180,9 @@ Ok(
                                         Stmt(
                                             Print {
                                                 value: Binop {
-                                                    op: BoolAnd,
+                                                    op: Bool(
+                                                        And,
+                                                    ),
                                                     lhs: LvalueToRvalue(
                                                         Identifier(
                                                             a(1),
@@ -197,7 +199,9 @@ Ok(
                                         Stmt(
                                             Print {
                                                 value: Binop {
-                                                    op: BoolAnd,
+                                                    op: Bool(
+                                                        And,
+                                                    ),
                                                     lhs: LvalueToRvalue(
                                                         Identifier(
                                                             a(1),
@@ -212,7 +216,9 @@ Ok(
                                         Stmt(
                                             Print {
                                                 value: Binop {
-                                                    op: BoolOr,
+                                                    op: Bool(
+                                                        Or,
+                                                    ),
                                                     lhs: LvalueToRvalue(
                                                         Identifier(
                                                             a(1),
@@ -229,7 +235,9 @@ Ok(
                                         Stmt(
                                             Print {
                                                 value: Binop {
-                                                    op: BoolOr,
+                                                    op: Bool(
+                                                        Or,
+                                                    ),
                                                     lhs: BoolLiteral(
                                                         False,
                                                     ),

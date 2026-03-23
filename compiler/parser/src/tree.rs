@@ -1,13 +1,10 @@
-#![allow(dead_code, reason = "WIP")]
-
 use std::rc::Rc;
 
 use derive_where::derive_where;
 
-use crate::identifier::RawIdentifier;
-use crate::loop_order::LoopOrder;
-use crate::operators::SyntacticOperator;
-use crate::parse_tree::types::Type;
+use common::{LoopOrder, RawIdentifier, operators::SyntacticOperator};
+
+use crate::Type;
 
 #[derive(Debug)]
 #[derive_where(Hash, Eq, PartialEq)]
@@ -147,17 +144,6 @@ pub enum Declaration {
     Var(VarDecl),
     Type(TypeDecl),
     Routine(RoutineDecl),
-}
-
-impl Declaration {
-    #[must_use]
-    pub fn name(&self) -> &RawIdentifier {
-        match self {
-            Declaration::Var(var_decl) => &var_decl.name,
-            Declaration::Type(type_decl) => &type_decl.name,
-            Declaration::Routine(routine_decl) => &routine_decl.name,
-        }
-    }
 }
 
 #[derive(Debug)]

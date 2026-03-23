@@ -565,7 +565,9 @@ Ok(
                                                                     result(6),
                                                                 ),
                                                                 rhs: Binop {
-                                                                    op: IntAdd,
+                                                                    op: Int(
+                                                                        Add,
+                                                                    ),
                                                                     lhs: LvalueToRvalue(
                                                                         Identifier(
                                                                             result(6),
@@ -691,44 +693,46 @@ Ok(
                                                                     [
                                                                         Stmt(
                                                                             If {
-                                                                                condition: IntToBool(
-                                                                                    Binop {
-                                                                                        op: IntGt,
-                                                                                        lhs: LvalueToRvalue(
-                                                                                            Index {
-                                                                                                lhs: Identifier(
-                                                                                                    a(8),
+                                                                                condition: Binop {
+                                                                                    op: Int(
+                                                                                        Gt,
+                                                                                    ),
+                                                                                    lhs: LvalueToRvalue(
+                                                                                        Index {
+                                                                                            lhs: Identifier(
+                                                                                                a(8),
+                                                                                            ),
+                                                                                            index: Binop {
+                                                                                                op: Int(
+                                                                                                    Sub,
                                                                                                 ),
-                                                                                                index: Binop {
-                                                                                                    op: IntSub,
-                                                                                                    lhs: LvalueToRvalue(
-                                                                                                        Identifier(
-                                                                                                            j(11),
-                                                                                                        ),
-                                                                                                    ),
-                                                                                                    rhs: IntegerLiteral(
-                                                                                                        IntegerLiteral {
-                                                                                                            repr: "1",
-                                                                                                            value: 1,
-                                                                                                        },
-                                                                                                    ),
-                                                                                                },
-                                                                                            },
-                                                                                        ),
-                                                                                        rhs: LvalueToRvalue(
-                                                                                            Index {
-                                                                                                lhs: Identifier(
-                                                                                                    a(8),
-                                                                                                ),
-                                                                                                index: LvalueToRvalue(
+                                                                                                lhs: LvalueToRvalue(
                                                                                                     Identifier(
                                                                                                         j(11),
                                                                                                     ),
                                                                                                 ),
+                                                                                                rhs: IntegerLiteral(
+                                                                                                    IntegerLiteral {
+                                                                                                        repr: "1",
+                                                                                                        value: 1,
+                                                                                                    },
+                                                                                                ),
                                                                                             },
-                                                                                        ),
-                                                                                    },
-                                                                                ),
+                                                                                        },
+                                                                                    ),
+                                                                                    rhs: LvalueToRvalue(
+                                                                                        Index {
+                                                                                            lhs: Identifier(
+                                                                                                a(8),
+                                                                                            ),
+                                                                                            index: LvalueToRvalue(
+                                                                                                Identifier(
+                                                                                                    j(11),
+                                                                                                ),
+                                                                                            ),
+                                                                                        },
+                                                                                    ),
+                                                                                },
                                                                                 on_true: Block(
                                                                                     [
                                                                                         Decl(
@@ -776,7 +780,9 @@ Ok(
                                                                                                             a(8),
                                                                                                         ),
                                                                                                         index: Binop {
-                                                                                                            op: IntSub,
+                                                                                                            op: Int(
+                                                                                                                Sub,
+                                                                                                            ),
                                                                                                             lhs: LvalueToRvalue(
                                                                                                                 Identifier(
                                                                                                                     j(11),
@@ -800,7 +806,9 @@ Ok(
                                                                                                         a(8),
                                                                                                     ),
                                                                                                     index: Binop {
-                                                                                                        op: IntSub,
+                                                                                                        op: Int(
+                                                                                                            Sub,
+                                                                                                        ),
                                                                                                         lhs: LvalueToRvalue(
                                                                                                             Identifier(
                                                                                                                 j(11),

@@ -196,7 +196,9 @@ Ok(
                             ],
                             body: Expression(
                                 Binop {
-                                    op: Eq,
+                                    op: Eq(
+                                        Eq,
+                                    ),
                                     lhs: LvalueToRvalue(
                                         Identifier(
                                             l(5),
@@ -525,7 +527,9 @@ Ok(
                             ],
                             body: Expression(
                                 Binop {
-                                    op: Eq,
+                                    op: Eq(
+                                        Eq,
+                                    ),
                                     lhs: LvalueToRvalue(
                                         Identifier(
                                             l(5),
@@ -619,7 +623,9 @@ Ok(
                                                                     result(9),
                                                                 ),
                                                                 rhs: Binop {
-                                                                    op: IntAdd,
+                                                                    op: Int(
+                                                                        Add,
+                                                                    ),
                                                                     lhs: LvalueToRvalue(
                                                                         Identifier(
                                                                             result(9),

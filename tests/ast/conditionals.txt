@@ -115,24 +115,22 @@ Ok(
                                     [
                                         Stmt(
                                             If {
-                                                condition: IntToBool(
-                                                    RealToInt(
-                                                        Binop {
-                                                            op: RealLt,
-                                                            lhs: LvalueToRvalue(
-                                                                Identifier(
-                                                                    value(1),
-                                                                ),
-                                                            ),
-                                                            rhs: RealLiteral(
-                                                                RealLiteral {
-                                                                    repr: "0.0",
-                                                                    value: 0.0,
-                                                                },
-                                                            ),
+                                                condition: Binop {
+                                                    op: Real(
+                                                        Lt,
+                                                    ),
+                                                    lhs: LvalueToRvalue(
+                                                        Identifier(
+                                                            value(1),
+                                                        ),
+                                                    ),
+                                                    rhs: RealLiteral(
+                                                        RealLiteral {
+                                                            repr: "0.0",
+                                                            value: 0.0,
                                                         },
                                                     ),
-                                                ),
+                                                },
                                                 on_true: Block(
                                                     [
                                                         Stmt(
@@ -141,7 +139,9 @@ Ok(
                                                                     value(1),
                                                                 ),
                                                                 rhs: Binop {
-                                                                    op: RealSub,
+                                                                    op: Real(
+                                                                        Sub,
+                                                                    ),
                                                                     lhs: RealLiteral(
                                                                         RealLiteral {
                                                                             repr: "0.0",
@@ -212,9 +212,13 @@ Ok(
                                         Stmt(
                                             If {
                                                 condition: Binop {
-                                                    op: Eq,
+                                                    op: Eq(
+                                                        Eq,
+                                                    ),
                                                     lhs: Binop {
-                                                        op: IntMod,
+                                                        op: Int(
+                                                            Mod,
+                                                        ),
                                                         lhs: LvalueToRvalue(
                                                             Identifier(
                                                                 a(3),

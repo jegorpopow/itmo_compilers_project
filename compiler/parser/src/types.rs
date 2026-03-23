@@ -1,10 +1,9 @@
-#![expect(dead_code, reason = "WIP")]
-
-use crate::identifier::RawIdentifier;
-use crate::parse_tree::tree::Expression;
 use std::fmt::Debug;
-use std::hash::Hash;
 use std::rc::Rc;
+
+use common::RawIdentifier;
+
+use crate::Expression;
 
 #[derive(Debug, Hash, PartialEq, Eq)]
 pub struct FieldDescription {
@@ -16,8 +15,6 @@ pub struct FieldDescription {
 pub struct RecordDescription {
     pub fields: Vec<FieldDescription>,
 }
-
-trait ArrayLengthRepr: Debug + Hash + PartialEq + Eq {}
 
 #[derive(Debug, Hash, PartialEq, Eq)]
 pub struct ArrayDescription {

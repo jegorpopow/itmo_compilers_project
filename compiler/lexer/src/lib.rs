@@ -1,11 +1,17 @@
 use phf::phf_map;
 
-use crate::operators::SyntacticOperator;
-use crate::source_positions::{Extent, Position};
-use crate::tokens::*;
+use common::operators::SyntacticOperator;
+use common::{Extent, Position};
+
+mod tokens;
 
 #[cfg(test)]
 mod tests;
+
+pub use crate::tokens::{
+    BoolLiteral, BuiltinTypename, Comment, Identifier, IntegerLiteral, InvalidToken, Keyword,
+    RealLiteral, Token, TokenKind,
+};
 
 trait ImmutableIterator<'a>: Sized + Clone + From<&'a str> {
     fn slice_to_str(start: &Self, end: &Self) -> &'a str;
@@ -168,6 +174,7 @@ fn name_disambiguation(lexeme: &str) -> TokenKind<'_> {
         "real" => TokenKind::BuiltinTypename(BuiltinTypename::Real),
         "boolean" => TokenKind::BuiltinTypename(BuiltinTypename::Boolean),
         "NaN" => TokenKind::RealLiteral(RealLiteral { value: f64::NAN }),
+        "Inf" => TokenKind::RealLiteral(RealLiteral { value: f64::INFINITY }),
     };
 
     match KNOWN_TOKENS.get(lexeme) {
@@ -197,7 +204,7 @@ fn symbolic_token<'a>(start: &IndexIterator<'a>) -> Option<(TokenKind<'a>, Index
         (":=", TokenKind::Assignment),
         ("::", TokenKind::Cast),
         ("..", TokenKind::RangeSymbol),
-        ("/=", TokenKind::Operator(SyntacticOperator::Neq)),
+        ("/=", TokenKind::Operator(SyntacticOperator::Ne)),
         ("<=", TokenKind::Operator(SyntacticOperator::Le)),
         (">=", TokenKind::Operator(SyntacticOperator::Ge)),
         ("=>", TokenKind::RightArrow),
@@ -231,20 +238,14 @@ fn symbolic_token<'a>(start: &IndexIterator<'a>) -> Option<(TokenKind<'a>, Index
 fn real_literal_from_representation(s: &str) -> TokenKind<'_> {
     match s.parse::<f64>() {
         Ok(value) => TokenKind::RealLiteral(RealLiteral { value }),
-        Err(e) => TokenKind::Invalid(InvalidToken {
-            problem: format!("Malformed float {s:?}: {e}"),
-            code: TokenIssue::MalformedReal,
-        }),
+        Err(e) => TokenKind::Invalid(InvalidToken::MalformedReal(e)),
     }
 }
 
 fn integer_literal_from_representation(s: &str) -> TokenKind<'_> {
     match s.parse::<i64>() {
         Ok(value) => TokenKind::IntegerLiteral(IntegerLiteral { value }),
-        Err(e) => TokenKind::Invalid(InvalidToken {
-            problem: format!("Malformed integer {s:?}: {e}"),
-            code: TokenIssue::MalformedInteger,
-        }),
+        Err(e) => TokenKind::Invalid(InvalidToken::MalformedInteger(e)),
     }
 }
 
@@ -346,10 +347,7 @@ impl<'src> Iterator for Lexer<'src> {
             .or_else(|| numeric_token(self.allow_sign, &begin))
             .or_else(|| symbolic_token(&begin))
             .unwrap_or((
-                TokenKind::Invalid(InvalidToken {
-                    problem: format!("Unexpected symbol `{first_char}`"),
-                    code: TokenIssue::Unexpected,
-                }),
+                TokenKind::Invalid(InvalidToken::Unexpected(first_char)),
                 rest,
             ));
         self.update_allow_sign(&kind);

@@ -77,22 +77,22 @@ Ok(
                                     [
                                         Stmt(
                                             If {
-                                                condition: IntToBool(
-                                                    Binop {
-                                                        op: IntLe,
-                                                        lhs: LvalueToRvalue(
-                                                            Identifier(
-                                                                n(1),
-                                                            ),
+                                                condition: Binop {
+                                                    op: Int(
+                                                        Le,
+                                                    ),
+                                                    lhs: LvalueToRvalue(
+                                                        Identifier(
+                                                            n(1),
                                                         ),
-                                                        rhs: IntegerLiteral(
-                                                            IntegerLiteral {
-                                                                repr: "2",
-                                                                value: 2,
-                                                            },
-                                                        ),
-                                                    },
-                                                ),
+                                                    ),
+                                                    rhs: IntegerLiteral(
+                                                        IntegerLiteral {
+                                                            repr: "2",
+                                                            value: 2,
+                                                        },
+                                                    ),
+                                                },
                                                 on_true: Block(
                                                     [
                                                         Stmt(
@@ -113,12 +113,16 @@ Ok(
                                                             Stmt(
                                                                 Return {
                                                                     value: Binop {
-                                                                        op: IntAdd,
+                                                                        op: Int(
+                                                                            Add,
+                                                                        ),
                                                                         lhs: Call {
                                                                             callee: fibonacci(0),
                                                                             args: [
                                                                                 Binop {
-                                                                                    op: IntSub,
+                                                                                    op: Int(
+                                                                                        Sub,
+                                                                                    ),
                                                                                     lhs: LvalueToRvalue(
                                                                                         Identifier(
                                                                                             n(1),
@@ -137,7 +141,9 @@ Ok(
                                                                             callee: fibonacci(0),
                                                                             args: [
                                                                                 Binop {
-                                                                                    op: IntSub,
+                                                                                    op: Int(
+                                                                                        Sub,
+                                                                                    ),
                                                                                     lhs: LvalueToRvalue(
                                                                                         Identifier(
                                                                                             n(1),

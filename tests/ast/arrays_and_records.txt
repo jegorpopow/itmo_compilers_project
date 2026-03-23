@@ -138,7 +138,7 @@ Ok(
                                         Real,
                                     ),
                                 ],
-                                return_type: Real,
+                                return_type: Bool,
                             },
                             args_bindings: [
                                 Binding {
@@ -180,11 +180,17 @@ Ok(
                             ],
                             body: Expression(
                                 Binop {
-                                    op: RealLt,
+                                    op: Real(
+                                        Lt,
+                                    ),
                                     lhs: Binop {
-                                        op: RealMul,
+                                        op: Real(
+                                            Mul,
+                                        ),
                                         lhs: Binop {
-                                            op: RealSub,
+                                            op: Real(
+                                                Sub,
+                                            ),
                                             lhs: LvalueToRvalue(
                                                 Identifier(
                                                     a(3),
@@ -197,7 +203,9 @@ Ok(
                                             ),
                                         },
                                         rhs: Binop {
-                                            op: RealSub,
+                                            op: Real(
+                                                Sub,
+                                            ),
                                             lhs: LvalueToRvalue(
                                                 Identifier(
                                                     a(3),
@@ -211,7 +219,9 @@ Ok(
                                         },
                                     },
                                     rhs: Binop {
-                                        op: RealMul,
+                                        op: Real(
+                                            Mul,
+                                        ),
                                         lhs: LvalueToRvalue(
                                             Identifier(
                                                 eps(5),
@@ -327,301 +337,21 @@ Ok(
                             ],
                             body: Expression(
                                 Binop {
-                                    op: BoolOr,
+                                    op: Bool(
+                                        Or,
+                                    ),
                                     lhs: Binop {
-                                        op: BoolOr,
-                                        lhs: IntToBool(
-                                            RealToInt(
-                                                Call {
-                                                    callee: approximately_eq(6),
-                                                    args: [
-                                                        Binop {
-                                                            op: RealAdd,
-                                                            lhs: Call {
-                                                                callee: squared_distance(7),
-                                                                args: [
-                                                                    LvalueToRvalue(
-                                                                        Index {
-                                                                            lhs: Identifier(
-                                                                                t(10),
-                                                                            ),
-                                                                            index: IntegerLiteral(
-                                                                                IntegerLiteral {
-                                                                                    repr: "1",
-                                                                                    value: 1,
-                                                                                },
-                                                                            ),
-                                                                        },
-                                                                    ),
-                                                                    LvalueToRvalue(
-                                                                        Index {
-                                                                            lhs: Identifier(
-                                                                                t(10),
-                                                                            ),
-                                                                            index: IntegerLiteral(
-                                                                                IntegerLiteral {
-                                                                                    repr: "2",
-                                                                                    value: 2,
-                                                                                },
-                                                                            ),
-                                                                        },
-                                                                    ),
-                                                                ],
-                                                            },
-                                                            rhs: Call {
-                                                                callee: squared_distance(7),
-                                                                args: [
-                                                                    LvalueToRvalue(
-                                                                        Index {
-                                                                            lhs: Identifier(
-                                                                                t(10),
-                                                                            ),
-                                                                            index: IntegerLiteral(
-                                                                                IntegerLiteral {
-                                                                                    repr: "2",
-                                                                                    value: 2,
-                                                                                },
-                                                                            ),
-                                                                        },
-                                                                    ),
-                                                                    LvalueToRvalue(
-                                                                        Index {
-                                                                            lhs: Identifier(
-                                                                                t(10),
-                                                                            ),
-                                                                            index: IntegerLiteral(
-                                                                                IntegerLiteral {
-                                                                                    repr: "3",
-                                                                                    value: 3,
-                                                                                },
-                                                                            ),
-                                                                        },
-                                                                    ),
-                                                                ],
-                                                            },
-                                                        },
-                                                        Call {
-                                                            callee: squared_distance(7),
-                                                            args: [
-                                                                LvalueToRvalue(
-                                                                    Index {
-                                                                        lhs: Identifier(
-                                                                            t(10),
-                                                                        ),
-                                                                        index: IntegerLiteral(
-                                                                            IntegerLiteral {
-                                                                                repr: "1",
-                                                                                value: 1,
-                                                                            },
-                                                                        ),
-                                                                    },
-                                                                ),
-                                                                LvalueToRvalue(
-                                                                    Index {
-                                                                        lhs: Identifier(
-                                                                            t(10),
-                                                                        ),
-                                                                        index: IntegerLiteral(
-                                                                            IntegerLiteral {
-                                                                                repr: "3",
-                                                                                value: 3,
-                                                                            },
-                                                                        ),
-                                                                    },
-                                                                ),
-                                                            ],
-                                                        },
-                                                        LvalueToRvalue(
-                                                            Identifier(
-                                                                EPS(2),
-                                                            ),
-                                                        ),
-                                                    ],
-                                                },
-                                            ),
+                                        op: Bool(
+                                            Or,
                                         ),
-                                        rhs: IntToBool(
-                                            RealToInt(
-                                                Call {
-                                                    callee: approximately_eq(6),
-                                                    args: [
-                                                        Binop {
-                                                            op: RealAdd,
-                                                            lhs: Call {
-                                                                callee: squared_distance(7),
-                                                                args: [
-                                                                    LvalueToRvalue(
-                                                                        Index {
-                                                                            lhs: Identifier(
-                                                                                t(10),
-                                                                            ),
-                                                                            index: IntegerLiteral(
-                                                                                IntegerLiteral {
-                                                                                    repr: "1",
-                                                                                    value: 1,
-                                                                                },
-                                                                            ),
-                                                                        },
-                                                                    ),
-                                                                    LvalueToRvalue(
-                                                                        Index {
-                                                                            lhs: Identifier(
-                                                                                t(10),
-                                                                            ),
-                                                                            index: IntegerLiteral(
-                                                                                IntegerLiteral {
-                                                                                    repr: "3",
-                                                                                    value: 3,
-                                                                                },
-                                                                            ),
-                                                                        },
-                                                                    ),
-                                                                ],
-                                                            },
-                                                            rhs: Call {
-                                                                callee: squared_distance(7),
-                                                                args: [
-                                                                    LvalueToRvalue(
-                                                                        Index {
-                                                                            lhs: Identifier(
-                                                                                t(10),
-                                                                            ),
-                                                                            index: IntegerLiteral(
-                                                                                IntegerLiteral {
-                                                                                    repr: "1",
-                                                                                    value: 1,
-                                                                                },
-                                                                            ),
-                                                                        },
-                                                                    ),
-                                                                    LvalueToRvalue(
-                                                                        Index {
-                                                                            lhs: Identifier(
-                                                                                t(10),
-                                                                            ),
-                                                                            index: IntegerLiteral(
-                                                                                IntegerLiteral {
-                                                                                    repr: "2",
-                                                                                    value: 2,
-                                                                                },
-                                                                            ),
-                                                                        },
-                                                                    ),
-                                                                ],
-                                                            },
-                                                        },
-                                                        Call {
-                                                            callee: squared_distance(7),
-                                                            args: [
-                                                                LvalueToRvalue(
-                                                                    Index {
-                                                                        lhs: Identifier(
-                                                                            t(10),
-                                                                        ),
-                                                                        index: IntegerLiteral(
-                                                                            IntegerLiteral {
-                                                                                repr: "2",
-                                                                                value: 2,
-                                                                            },
-                                                                        ),
-                                                                    },
-                                                                ),
-                                                                LvalueToRvalue(
-                                                                    Index {
-                                                                        lhs: Identifier(
-                                                                            t(10),
-                                                                        ),
-                                                                        index: IntegerLiteral(
-                                                                            IntegerLiteral {
-                                                                                repr: "3",
-                                                                                value: 3,
-                                                                            },
-                                                                        ),
-                                                                    },
-                                                                ),
-                                                            ],
-                                                        },
-                                                        LvalueToRvalue(
-                                                            Identifier(
-                                                                EPS(2),
-                                                            ),
-                                                        ),
-                                                    ],
-                                                },
-                                            ),
-                                        ),
-                                    },
-                                    rhs: IntToBool(
-                                        RealToInt(
-                                            Call {
-                                                callee: approximately_eq(6),
-                                                args: [
-                                                    Binop {
-                                                        op: RealAdd,
-                                                        lhs: Call {
-                                                            callee: squared_distance(7),
-                                                            args: [
-                                                                LvalueToRvalue(
-                                                                    Index {
-                                                                        lhs: Identifier(
-                                                                            t(10),
-                                                                        ),
-                                                                        index: IntegerLiteral(
-                                                                            IntegerLiteral {
-                                                                                repr: "3",
-                                                                                value: 3,
-                                                                            },
-                                                                        ),
-                                                                    },
-                                                                ),
-                                                                LvalueToRvalue(
-                                                                    Index {
-                                                                        lhs: Identifier(
-                                                                            t(10),
-                                                                        ),
-                                                                        index: IntegerLiteral(
-                                                                            IntegerLiteral {
-                                                                                repr: "1",
-                                                                                value: 1,
-                                                                            },
-                                                                        ),
-                                                                    },
-                                                                ),
-                                                            ],
-                                                        },
-                                                        rhs: Call {
-                                                            callee: squared_distance(7),
-                                                            args: [
-                                                                LvalueToRvalue(
-                                                                    Index {
-                                                                        lhs: Identifier(
-                                                                            t(10),
-                                                                        ),
-                                                                        index: IntegerLiteral(
-                                                                            IntegerLiteral {
-                                                                                repr: "3",
-                                                                                value: 3,
-                                                                            },
-                                                                        ),
-                                                                    },
-                                                                ),
-                                                                LvalueToRvalue(
-                                                                    Index {
-                                                                        lhs: Identifier(
-                                                                            t(10),
-                                                                        ),
-                                                                        index: IntegerLiteral(
-                                                                            IntegerLiteral {
-                                                                                repr: "2",
-                                                                                value: 2,
-                                                                            },
-                                                                        ),
-                                                                    },
-                                                                ),
-                                                            ],
-                                                        },
-                                                    },
-                                                    Call {
+                                        lhs: Call {
+                                            callee: approximately_eq(6),
+                                            args: [
+                                                Binop {
+                                                    op: Real(
+                                                        Add,
+                                                    ),
+                                                    lhs: Call {
                                                         callee: squared_distance(7),
                                                         args: [
                                                             LvalueToRvalue(
@@ -652,15 +382,293 @@ Ok(
                                                             ),
                                                         ],
                                                     },
-                                                    LvalueToRvalue(
-                                                        Identifier(
-                                                            EPS(2),
+                                                    rhs: Call {
+                                                        callee: squared_distance(7),
+                                                        args: [
+                                                            LvalueToRvalue(
+                                                                Index {
+                                                                    lhs: Identifier(
+                                                                        t(10),
+                                                                    ),
+                                                                    index: IntegerLiteral(
+                                                                        IntegerLiteral {
+                                                                            repr: "2",
+                                                                            value: 2,
+                                                                        },
+                                                                    ),
+                                                                },
+                                                            ),
+                                                            LvalueToRvalue(
+                                                                Index {
+                                                                    lhs: Identifier(
+                                                                        t(10),
+                                                                    ),
+                                                                    index: IntegerLiteral(
+                                                                        IntegerLiteral {
+                                                                            repr: "3",
+                                                                            value: 3,
+                                                                        },
+                                                                    ),
+                                                                },
+                                                            ),
+                                                        ],
+                                                    },
+                                                },
+                                                Call {
+                                                    callee: squared_distance(7),
+                                                    args: [
+                                                        LvalueToRvalue(
+                                                            Index {
+                                                                lhs: Identifier(
+                                                                    t(10),
+                                                                ),
+                                                                index: IntegerLiteral(
+                                                                    IntegerLiteral {
+                                                                        repr: "1",
+                                                                        value: 1,
+                                                                    },
+                                                                ),
+                                                            },
                                                         ),
+                                                        LvalueToRvalue(
+                                                            Index {
+                                                                lhs: Identifier(
+                                                                    t(10),
+                                                                ),
+                                                                index: IntegerLiteral(
+                                                                    IntegerLiteral {
+                                                                        repr: "3",
+                                                                        value: 3,
+                                                                    },
+                                                                ),
+                                                            },
+                                                        ),
+                                                    ],
+                                                },
+                                                LvalueToRvalue(
+                                                    Identifier(
+                                                        EPS(2),
+                                                    ),
+                                                ),
+                                            ],
+                                        },
+                                        rhs: Call {
+                                            callee: approximately_eq(6),
+                                            args: [
+                                                Binop {
+                                                    op: Real(
+                                                        Add,
+                                                    ),
+                                                    lhs: Call {
+                                                        callee: squared_distance(7),
+                                                        args: [
+                                                            LvalueToRvalue(
+                                                                Index {
+                                                                    lhs: Identifier(
+                                                                        t(10),
+                                                                    ),
+                                                                    index: IntegerLiteral(
+                                                                        IntegerLiteral {
+                                                                            repr: "1",
+                                                                            value: 1,
+                                                                        },
+                                                                    ),
+                                                                },
+                                                            ),
+                                                            LvalueToRvalue(
+                                                                Index {
+                                                                    lhs: Identifier(
+                                                                        t(10),
+                                                                    ),
+                                                                    index: IntegerLiteral(
+                                                                        IntegerLiteral {
+                                                                            repr: "3",
+                                                                            value: 3,
+                                                                        },
+                                                                    ),
+                                                                },
+                                                            ),
+                                                        ],
+                                                    },
+                                                    rhs: Call {
+                                                        callee: squared_distance(7),
+                                                        args: [
+                                                            LvalueToRvalue(
+                                                                Index {
+                                                                    lhs: Identifier(
+                                                                        t(10),
+                                                                    ),
+                                                                    index: IntegerLiteral(
+                                                                        IntegerLiteral {
+                                                                            repr: "1",
+                                                                            value: 1,
+                                                                        },
+                                                                    ),
+                                                                },
+                                                            ),
+                                                            LvalueToRvalue(
+                                                                Index {
+                                                                    lhs: Identifier(
+                                                                        t(10),
+                                                                    ),
+                                                                    index: IntegerLiteral(
+                                                                        IntegerLiteral {
+                                                                            repr: "2",
+                                                                            value: 2,
+                                                                        },
+                                                                    ),
+                                                                },
+                                                            ),
+                                                        ],
+                                                    },
+                                                },
+                                                Call {
+                                                    callee: squared_distance(7),
+                                                    args: [
+                                                        LvalueToRvalue(
+                                                            Index {
+                                                                lhs: Identifier(
+                                                                    t(10),
+                                                                ),
+                                                                index: IntegerLiteral(
+                                                                    IntegerLiteral {
+                                                                        repr: "2",
+                                                                        value: 2,
+                                                                    },
+                                                                ),
+                                                            },
+                                                        ),
+                                                        LvalueToRvalue(
+                                                            Index {
+                                                                lhs: Identifier(
+                                                                    t(10),
+                                                                ),
+                                                                index: IntegerLiteral(
+                                                                    IntegerLiteral {
+                                                                        repr: "3",
+                                                                        value: 3,
+                                                                    },
+                                                                ),
+                                                            },
+                                                        ),
+                                                    ],
+                                                },
+                                                LvalueToRvalue(
+                                                    Identifier(
+                                                        EPS(2),
+                                                    ),
+                                                ),
+                                            ],
+                                        },
+                                    },
+                                    rhs: Call {
+                                        callee: approximately_eq(6),
+                                        args: [
+                                            Binop {
+                                                op: Real(
+                                                    Add,
+                                                ),
+                                                lhs: Call {
+                                                    callee: squared_distance(7),
+                                                    args: [
+                                                        LvalueToRvalue(
+                                                            Index {
+                                                                lhs: Identifier(
+                                                                    t(10),
+                                                                ),
+                                                                index: IntegerLiteral(
+                                                                    IntegerLiteral {
+                                                                        repr: "3",
+                                                                        value: 3,
+                                                                    },
+                                                                ),
+                                                            },
+                                                        ),
+                                                        LvalueToRvalue(
+                                                            Index {
+                                                                lhs: Identifier(
+                                                                    t(10),
+                                                                ),
+                                                                index: IntegerLiteral(
+                                                                    IntegerLiteral {
+                                                                        repr: "1",
+                                                                        value: 1,
+                                                                    },
+                                                                ),
+                                                            },
+                                                        ),
+                                                    ],
+                                                },
+                                                rhs: Call {
+                                                    callee: squared_distance(7),
+                                                    args: [
+                                                        LvalueToRvalue(
+                                                            Index {
+                                                                lhs: Identifier(
+                                                                    t(10),
+                                                                ),
+                                                                index: IntegerLiteral(
+                                                                    IntegerLiteral {
+                                                                        repr: "3",
+                                                                        value: 3,
+                                                                    },
+                                                                ),
+                                                            },
+                                                        ),
+                                                        LvalueToRvalue(
+                                                            Index {
+                                                                lhs: Identifier(
+                                                                    t(10),
+                                                                ),
+                                                                index: IntegerLiteral(
+                                                                    IntegerLiteral {
+                                                                        repr: "2",
+                                                                        value: 2,
+                                                                    },
+                                                                ),
+                                                            },
+                                                        ),
+                                                    ],
+                                                },
+                                            },
+                                            Call {
+                                                callee: squared_distance(7),
+                                                args: [
+                                                    LvalueToRvalue(
+                                                        Index {
+                                                            lhs: Identifier(
+                                                                t(10),
+                                                            ),
+                                                            index: IntegerLiteral(
+                                                                IntegerLiteral {
+                                                                    repr: "1",
+                                                                    value: 1,
+                                                                },
+                                                            ),
+                                                        },
+                                                    ),
+                                                    LvalueToRvalue(
+                                                        Index {
+                                                            lhs: Identifier(
+                                                                t(10),
+                                                            ),
+                                                            index: IntegerLiteral(
+                                                                IntegerLiteral {
+                                                                    repr: "2",
+                                                                    value: 2,
+                                                                },
+                                                            ),
+                                                        },
                                                     ),
                                                 ],
                                             },
-                                        ),
-                                    ),
+                                            LvalueToRvalue(
+                                                Identifier(
+                                                    EPS(2),
+                                                ),
+                                            ),
+                                        ],
+                                    },
                                 },
                             ),
                         },
@@ -802,7 +810,7 @@ Ok(
                                         Real,
                                     ),
                                 ],
-                                return_type: Real,
+                                return_type: Bool,
                             },
                             args_bindings: [
                                 Binding {
@@ -844,11 +852,17 @@ Ok(
                             ],
                             body: Expression(
                                 Binop {
-                                    op: RealLt,
+                                    op: Real(
+                                        Lt,
+                                    ),
                                     lhs: Binop {
-                                        op: RealMul,
+                                        op: Real(
+                                            Mul,
+                                        ),
                                         lhs: Binop {
-                                            op: RealSub,
+                                            op: Real(
+                                                Sub,
+                                            ),
                                             lhs: LvalueToRvalue(
                                                 Identifier(
                                                     a(3),
@@ -861,7 +875,9 @@ Ok(
                                             ),
                                         },
                                         rhs: Binop {
-                                            op: RealSub,
+                                            op: Real(
+                                                Sub,
+                                            ),
                                             lhs: LvalueToRvalue(
                                                 Identifier(
                                                     a(3),
@@ -875,7 +891,9 @@ Ok(
                                         },
                                     },
                                     rhs: Binop {
-                                        op: RealMul,
+                                        op: Real(
+                                            Mul,
+                                        ),
                                         lhs: LvalueToRvalue(
                                             Identifier(
                                                 eps(5),
@@ -949,11 +967,17 @@ Ok(
                                         Stmt(
                                             Return {
                                                 value: Binop {
-                                                    op: RealAdd,
+                                                    op: Real(
+                                                        Add,
+                                                    ),
                                                     lhs: Binop {
-                                                        op: RealMul,
+                                                        op: Real(
+                                                            Mul,
+                                                        ),
                                                         lhs: Binop {
-                                                            op: RealSub,
+                                                            op: Real(
+                                                                Sub,
+                                                            ),
                                                             lhs: LvalueToRvalue(
                                                                 Member {
                                                                     lhs: Identifier(
@@ -972,7 +996,9 @@ Ok(
                                                             ),
                                                         },
                                                         rhs: Binop {
-                                                            op: RealSub,
+                                                            op: Real(
+                                                                Sub,
+                                                            ),
                                                             lhs: LvalueToRvalue(
                                                                 Member {
                                                                     lhs: Identifier(
@@ -992,9 +1018,13 @@ Ok(
                                                         },
                                                     },
                                                     rhs: Binop {
-                                                        op: RealMul,
+                                                        op: Real(
+                                                            Mul,
+                                                        ),
                                                         lhs: Binop {
-                                                            op: RealSub,
+                                                            op: Real(
+                                                                Sub,
+                                                            ),
                                                             lhs: LvalueToRvalue(
                                                                 Member {
                                                                     lhs: Identifier(
@@ -1013,7 +1043,9 @@ Ok(
                                                             ),
                                                         },
                                                         rhs: Binop {
-                                                            op: RealSub,
+                                                            op: Real(
+                                                                Sub,
+                                                            ),
                                                             lhs: LvalueToRvalue(
                                                                 Member {
                                                                     lhs: Identifier(
@@ -1074,301 +1106,21 @@ Ok(
                             ],
                             body: Expression(
                                 Binop {
-                                    op: BoolOr,
+                                    op: Bool(
+                                        Or,
+                                    ),
                                     lhs: Binop {
-                                        op: BoolOr,
-                                        lhs: IntToBool(
-                                            RealToInt(
-                                                Call {
-                                                    callee: approximately_eq(6),
-                                                    args: [
-                                                        Binop {
-                                                            op: RealAdd,
-                                                            lhs: Call {
-                                                                callee: squared_distance(7),
-                                                                args: [
-                                                                    LvalueToRvalue(
-                                                                        Index {
-                                                                            lhs: Identifier(
-                                                                                t(10),
-                                                                            ),
-                                                                            index: IntegerLiteral(
-                                                                                IntegerLiteral {
-                                                                                    repr: "1",
-                                                                                    value: 1,
-                                                                                },
-                                                                            ),
-                                                                        },
-                                                                    ),
-                                                                    LvalueToRvalue(
-                                                                        Index {
-                                                                            lhs: Identifier(
-                                                                                t(10),
-                                                                            ),
-                                                                            index: IntegerLiteral(
-                                                                                IntegerLiteral {
-                                                                                    repr: "2",
-                                                                                    value: 2,
-                                                                                },
-                                                                            ),
-                                                                        },
-                                                                    ),
-                                                                ],
-                                                            },
-                                                            rhs: Call {
-                                                                callee: squared_distance(7),
-                                                                args: [
-                                                                    LvalueToRvalue(
-                                                                        Index {
-                                                                            lhs: Identifier(
-                                                                                t(10),
-                                                                            ),
-                                                                            index: IntegerLiteral(
-                                                                                IntegerLiteral {
-                                                                                    repr: "2",
-                                                                                    value: 2,
-                                                                                },
-                                                                            ),
-                                                                        },
-                                                                    ),
-                                                                    LvalueToRvalue(
-                                                                        Index {
-                                                                            lhs: Identifier(
-                                                                                t(10),
-                                                                            ),
-                                                                            index: IntegerLiteral(
-                                                                                IntegerLiteral {
-                                                                                    repr: "3",
-                                                                                    value: 3,
-                                                                                },
-                                                                            ),
-                                                                        },
-                                                                    ),
-                                                                ],
-                                                            },
-                                                        },
-                                                        Call {
-                                                            callee: squared_distance(7),
-                                                            args: [
-                                                                LvalueToRvalue(
-                                                                    Index {
-                                                                        lhs: Identifier(
-                                                                            t(10),
-                                                                        ),
-                                                                        index: IntegerLiteral(
-                                                                            IntegerLiteral {
-                                                                                repr: "1",
-                                                                                value: 1,
-                                                                            },
-                                                                        ),
-                                                                    },
-                                                                ),
-                                                                LvalueToRvalue(
-                                                                    Index {
-                                                                        lhs: Identifier(
-                                                                            t(10),
-                                                                        ),
-                                                                        index: IntegerLiteral(
-                                                                            IntegerLiteral {
-                                                                                repr: "3",
-                                                                                value: 3,
-                                                                            },
-                                                                        ),
-                                                                    },
-                                                                ),
-                                                            ],
-                                                        },
-                                                        LvalueToRvalue(
-                                                            Identifier(
-                                                                EPS(2),
-                                                            ),
-                                                        ),
-                                                    ],
-                                                },
-                                            ),
+                                        op: Bool(
+                                            Or,
                                         ),
-                                        rhs: IntToBool(
-                                            RealToInt(
-                                                Call {
-                                                    callee: approximately_eq(6),
-                                                    args: [
-                                                        Binop {
-                                                            op: RealAdd,
-                                                            lhs: Call {
-                                                                callee: squared_distance(7),
-                                                                args: [
-                                                                    LvalueToRvalue(
-                                                                        Index {
-                                                                            lhs: Identifier(
-                                                                                t(10),
-                                                                            ),
-                                                                            index: IntegerLiteral(
-                                                                                IntegerLiteral {
-                                                                                    repr: "1",
-                                                                                    value: 1,
-                                                                                },
-                                                                            ),
-                                                                        },
-                                                                    ),
-                                                                    LvalueToRvalue(
-                                                                        Index {
-                                                                            lhs: Identifier(
-                                                                                t(10),
-                                                                            ),
-                                                                            index: IntegerLiteral(
-                                                                                IntegerLiteral {
-                                                                                    repr: "3",
-                                                                                    value: 3,
-                                                                                },
-                                                                            ),
-                                                                        },
-                                                                    ),
-                                                                ],
-                                                            },
-                                                            rhs: Call {
-                                                                callee: squared_distance(7),
-                                                                args: [
-                                                                    LvalueToRvalue(
-                                                                        Index {
-                                                                            lhs: Identifier(
-                                                                                t(10),
-                                                                            ),
-                                                                            index: IntegerLiteral(
-                                                                                IntegerLiteral {
-                                                                                    repr: "1",
-                                                                                    value: 1,
-                                                                                },
-                                                                            ),
-                                                                        },
-                                                                    ),
-                                                                    LvalueToRvalue(
-                                                                        Index {
-                                                                            lhs: Identifier(
-                                                                                t(10),
-                                                                            ),
-                                                                            index: IntegerLiteral(
-                                                                                IntegerLiteral {
-                                                                                    repr: "2",
-                                                                                    value: 2,
-                                                                                },
-                                                                            ),
-                                                                        },
-                                                                    ),
-                                                                ],
-                                                            },
-                                                        },
-                                                        Call {
-                                                            callee: squared_distance(7),
-                                                            args: [
-                                                                LvalueToRvalue(
-                                                                    Index {
-                                                                        lhs: Identifier(
-                                                                            t(10),
-                                                                        ),
-                                                                        index: IntegerLiteral(
-                                                                            IntegerLiteral {
-                                                                                repr: "2",
-                                                                                value: 2,
-                                                                            },
-                                                                        ),
-                                                                    },
-                                                                ),
-                                                                LvalueToRvalue(
-                                                                    Index {
-                                                                        lhs: Identifier(
-                                                                            t(10),
-                                                                        ),
-                                                                        index: IntegerLiteral(
-                                                                            IntegerLiteral {
-                                                                                repr: "3",
-                                                                                value: 3,
-                                                                            },
-                                                                        ),
-                                                                    },
-                                                                ),
-                                                            ],
-                                                        },
-                                                        LvalueToRvalue(
-                                                            Identifier(
-                                                                EPS(2),
-                                                            ),
-                                                        ),
-                                                    ],
-                                                },
-                                            ),
-                                        ),
-                                    },
-                                    rhs: IntToBool(
-                                        RealToInt(
-                                            Call {
-                                                callee: approximately_eq(6),
-                                                args: [
-                                                    Binop {
-                                                        op: RealAdd,
-                                                        lhs: Call {
-                                                            callee: squared_distance(7),
-                                                            args: [
-                                                                LvalueToRvalue(
-                                                                    Index {
-                                                                        lhs: Identifier(
-                                                                            t(10),
-                                                                        ),
-                                                                        index: IntegerLiteral(
-                                                                            IntegerLiteral {
-                                                                                repr: "3",
-                                                                                value: 3,
-                                                                            },
-                                                                        ),
-                                                                    },
-                                                                ),
-                                                                LvalueToRvalue(
-                                                                    Index {
-                                                                        lhs: Identifier(
-                                                                            t(10),
-                                                                        ),
-                                                                        index: IntegerLiteral(
-                                                                            IntegerLiteral {
-                                                                                repr: "1",
-                                                                                value: 1,
-                                                                            },
-                                                                        ),
-                                                                    },
-                                                                ),
-                                                            ],
-                                                        },
-                                                        rhs: Call {
-                                                            callee: squared_distance(7),
-                                                            args: [
-                                                                LvalueToRvalue(
-                                                                    Index {
-                                                                        lhs: Identifier(
-                                                                            t(10),
-                                                                        ),
-                                                                        index: IntegerLiteral(
-                                                                            IntegerLiteral {
-                                                                                repr: "3",
-                                                                                value: 3,
-                                                                            },
-                                                                        ),
-                                                                    },
-                                                                ),
-                                                                LvalueToRvalue(
-                                                                    Index {
-                                                                        lhs: Identifier(
-                                                                            t(10),
-                                                                        ),
-                                                                        index: IntegerLiteral(
-                                                                            IntegerLiteral {
-                                                                                repr: "2",
-                                                                                value: 2,
-                                                                            },
-                                                                        ),
-                                                                    },
-                                                                ),
-                                                            ],
-                                                        },
-                                                    },
-                                                    Call {
+                                        lhs: Call {
+                                            callee: approximately_eq(6),
+                                            args: [
+                                                Binop {
+                                                    op: Real(
+                                                        Add,
+                                                    ),
+                                                    lhs: Call {
                                                         callee: squared_distance(7),
                                                         args: [
                                                             LvalueToRvalue(
@@ -1399,15 +1151,293 @@ Ok(
                                                             ),
                                                         ],
                                                     },
-                                                    LvalueToRvalue(
-                                                        Identifier(
-                                                            EPS(2),
+                                                    rhs: Call {
+                                                        callee: squared_distance(7),
+                                                        args: [
+                                                            LvalueToRvalue(
+                                                                Index {
+                                                                    lhs: Identifier(
+                                                                        t(10),
+                                                                    ),
+                                                                    index: IntegerLiteral(
+                                                                        IntegerLiteral {
+                                                                            repr: "2",
+                                                                            value: 2,
+                                                                        },
+                                                                    ),
+                                                                },
+                                                            ),
+                                                            LvalueToRvalue(
+                                                                Index {
+                                                                    lhs: Identifier(
+                                                                        t(10),
+                                                                    ),
+                                                                    index: IntegerLiteral(
+                                                                        IntegerLiteral {
+                                                                            repr: "3",
+                                                                            value: 3,
+                                                                        },
+                                                                    ),
+                                                                },
+                                                            ),
+                                                        ],
+                                                    },
+                                                },
+                                                Call {
+                                                    callee: squared_distance(7),
+                                                    args: [
+                                                        LvalueToRvalue(
+                                                            Index {
+                                                                lhs: Identifier(
+                                                                    t(10),
+                                                                ),
+                                                                index: IntegerLiteral(
+                                                                    IntegerLiteral {
+                                                                        repr: "1",
+                                                                        value: 1,
+                                                                    },
+                                                                ),
+                                                            },
                                                         ),
+                                                        LvalueToRvalue(
+                                                            Index {
+                                                                lhs: Identifier(
+                                                                    t(10),
+                                                                ),
+                                                                index: IntegerLiteral(
+                                                                    IntegerLiteral {
+                                                                        repr: "3",
+                                                                        value: 3,
+                                                                    },
+                                                                ),
+                                                            },
+                                                        ),
+                                                    ],
+                                                },
+                                                LvalueToRvalue(
+                                                    Identifier(
+                                                        EPS(2),
+                                                    ),
+                                                ),
+                                            ],
+                                        },
+                                        rhs: Call {
+                                            callee: approximately_eq(6),
+                                            args: [
+                                                Binop {
+                                                    op: Real(
+                                                        Add,
+                                                    ),
+                                                    lhs: Call {
+                                                        callee: squared_distance(7),
+                                                        args: [
+                                                            LvalueToRvalue(
+                                                                Index {
+                                                                    lhs: Identifier(
+                                                                        t(10),
+                                                                    ),
+                                                                    index: IntegerLiteral(
+                                                                        IntegerLiteral {
+                                                                            repr: "1",
+                                                                            value: 1,
+                                                                        },
+                                                                    ),
+                                                                },
+                                                            ),
+                                                            LvalueToRvalue(
+                                                                Index {
+                                                                    lhs: Identifier(
+                                                                        t(10),
+                                                                    ),
+                                                                    index: IntegerLiteral(
+                                                                        IntegerLiteral {
+                                                                            repr: "3",
+                                                                            value: 3,
+                                                                        },
+                                                                    ),
+                                                                },
+                                                            ),
+                                                        ],
+                                                    },
+                                                    rhs: Call {
+                                                        callee: squared_distance(7),
+                                                        args: [
+                                                            LvalueToRvalue(
+                                                                Index {
+                                                                    lhs: Identifier(
+                                                                        t(10),
+                                                                    ),
+                                                                    index: IntegerLiteral(
+                                                                        IntegerLiteral {
+                                                                            repr: "1",
+                                                                            value: 1,
+                                                                        },
+                                                                    ),
+                                                                },
+                                                            ),
+                                                            LvalueToRvalue(
+                                                                Index {
+                                                                    lhs: Identifier(
+                                                                        t(10),
+                                                                    ),
+                                                                    index: IntegerLiteral(
+                                                                        IntegerLiteral {
+                                                                            repr: "2",
+                                                                            value: 2,
+                                                                        },
+                                                                    ),
+                                                                },
+                                                            ),
+                                                        ],
+                                                    },
+                                                },
+                                                Call {
+                                                    callee: squared_distance(7),
+                                                    args: [
+                                                        LvalueToRvalue(
+                                                            Index {
+                                                                lhs: Identifier(
+                                                                    t(10),
+                                                                ),
+                                                                index: IntegerLiteral(
+                                                                    IntegerLiteral {
+                                                                        repr: "2",
+                                                                        value: 2,
+                                                                    },
+                                                                ),
+                                                            },
+                                                        ),
+                                                        LvalueToRvalue(
+                                                            Index {
+                                                                lhs: Identifier(
+                                                                    t(10),
+                                                                ),
+                                                                index: IntegerLiteral(
+                                                                    IntegerLiteral {
+                                                                        repr: "3",
+                                                                        value: 3,
+                                                                    },
+                                                                ),
+                                                            },
+                                                        ),
+                                                    ],
+                                                },
+                                                LvalueToRvalue(
+                                                    Identifier(
+                                                        EPS(2),
+                                                    ),
+                                                ),
+                                            ],
+                                        },
+                                    },
+                                    rhs: Call {
+                                        callee: approximately_eq(6),
+                                        args: [
+                                            Binop {
+                                                op: Real(
+                                                    Add,
+                                                ),
+                                                lhs: Call {
+                                                    callee: squared_distance(7),
+                                                    args: [
+                                                        LvalueToRvalue(
+                                                            Index {
+                                                                lhs: Identifier(
+                                                                    t(10),
+                                                                ),
+                                                                index: IntegerLiteral(
+                                                                    IntegerLiteral {
+                                                                        repr: "3",
+                                                                        value: 3,
+                                                                    },
+                                                                ),
+                                                            },
+                                                        ),
+                                                        LvalueToRvalue(
+                                                            Index {
+                                                                lhs: Identifier(
+                                                                    t(10),
+                                                                ),
+                                                                index: IntegerLiteral(
+                                                                    IntegerLiteral {
+                                                                        repr: "1",
+                                                                        value: 1,
+                                                                    },
+                                                                ),
+                                                            },
+                                                        ),
+                                                    ],
+                                                },
+                                                rhs: Call {
+                                                    callee: squared_distance(7),
+                                                    args: [
+                                                        LvalueToRvalue(
+                                                            Index {
+                                                                lhs: Identifier(
+                                                                    t(10),
+                                                                ),
+                                                                index: IntegerLiteral(
+                                                                    IntegerLiteral {
+                                                                        repr: "3",
+                                                                        value: 3,
+                                                                    },
+                                                                ),
+                                                            },
+                                                        ),
+                                                        LvalueToRvalue(
+                                                            Index {
+                                                                lhs: Identifier(
+                                                                    t(10),
+                                                                ),
+                                                                index: IntegerLiteral(
+                                                                    IntegerLiteral {
+                                                                        repr: "2",
+                                                                        value: 2,
+                                                                    },
+                                                                ),
+                                                            },
+                                                        ),
+                                                    ],
+                                                },
+                                            },
+                                            Call {
+                                                callee: squared_distance(7),
+                                                args: [
+                                                    LvalueToRvalue(
+                                                        Index {
+                                                            lhs: Identifier(
+                                                                t(10),
+                                                            ),
+                                                            index: IntegerLiteral(
+                                                                IntegerLiteral {
+                                                                    repr: "1",
+                                                                    value: 1,
+                                                                },
+                                                            ),
+                                                        },
+                                                    ),
+                                                    LvalueToRvalue(
+                                                        Index {
+                                                            lhs: Identifier(
+                                                                t(10),
+                                                            ),
+                                                            index: IntegerLiteral(
+                                                                IntegerLiteral {
+                                                                    repr: "2",
+                                                                    value: 2,
+                                                                },
+                                                            ),
+                                                        },
                                                     ),
                                                 ],
                                             },
-                                        ),
-                                    ),
+                                            LvalueToRvalue(
+                                                Identifier(
+                                                    EPS(2),
+                                                ),
+                                            ),
+                                        ],
+                                    },
                                 },
                             ),
                         },

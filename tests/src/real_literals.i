@@ -1,34 +1,58 @@
 routine main() is
   var a is 0.0;
-  var b is 3.14;
-  var c is 1.5;
-  var d is 0.5;
-  var e is 10.25;
-  var f is 0.001;
-  var g is 999.999999999999;
-  var h is 0.12345678901234;
-  var i is 2.71828182845904;
-  var j is 1.11111111111111;
-  var k is 0.00000000000001;
-  var l is 12345.6789012345;
-  var m is NaN;
-  var n is .5;
-  var o is -.5;
-  var p is +.5;
   print a;
+
+  var b is 3.14;
   print b;
+
+  var c is 1.5;
   print c;
+
+  var d is 0.5;
   print d;
+
+  var e is 10.25;
   print e;
+
+  var f is 0.001;
   print f;
+
+  var g is 999.999999999999;
   print g;
+
+  var h is 0.12345678901234;
   print h;
+
+  var i is 2.71828182845904;
   print i;
+
+  var j is 1.11111111111111;
   print j;
+
+  var k is 0.00000000000001;
   print k;
+
+  var l is 12345.6789012345;
   print l;
+
+  var m is NaN;
   print m;
+
+  var n is .5;
   print n;
+
+  var o is -.5;
   print o;
+
+  var p is +.5;
   print p;
+
+  var q is -NaN;
+  print q;
+
+  var r is Inf;
+  print r;
+
+  var s is -Inf;
+  print s;
 end

@@ -1,30 +1,31 @@
-#![expect(dead_code, reason = "WIP")]
-#![allow(clippy::unnecessary_wraps)]
 use core::fmt;
 use std::rc::Rc;
 
-use crate::identifier::RawIdentifier;
-use crate::loop_order::LoopOrder;
-use crate::operators::SyntacticOperator;
-use crate::parse_tree::tree::{
-    Block, BlockElem, BoolLiteral, Declaration, Expression, IntegerLiteral, LvalueExpression,
-    Program, RealLiteral, RoutineBody, RoutineDecl, Statement, TypeDecl, VarDecl,
+use common::{Extent, LoopOrder, Position, RawIdentifier, operators::SyntacticOperator};
+use lexer::{
+    BoolLiteral as TokenBoolLiteral, BuiltinTypename, Identifier as TokenIdentifier,
+    IntegerLiteral as TokenIntegerLiteral, InvalidToken, Keyword, RealLiteral as TokenRealLiteral,
+    Token, TokenKind,
 };
-use crate::parse_tree::types::{ArrayDescription, FieldDescription, RecordDescription, Type};
-use crate::source_positions::{Extent, Position};
-use crate::tokens::{
-    self, BoolLiteral as TokenBoolLiteral, Identifier as TokenIdentifier,
-    IntegerLiteral as TokenIntegerLiteral, InvalidToken, RealLiteral as TokenRealLiteral, Token,
-    TokenIssue, TokenKind,
+
+mod tree;
+mod types;
+
+#[cfg(test)]
+mod tests;
+
+pub use crate::{
+    tree::{
+        Block, BlockElem, BoolLiteral, Declaration, Expression, IntegerLiteral, LvalueExpression,
+        Program, RealLiteral, RoutineBody, RoutineDecl, Statement, TypeDecl, VarDecl,
+    },
+    types::{ArrayDescription, FieldDescription, RecordDescription, Type},
 };
 
 trait TokenIterator<'a, 'b: 'a>: Clone + Copy {
     fn current(&self) -> Option<&'a Token<'b>>;
     fn position(&self) -> Position;
     fn next(&self) -> Self;
-    fn has_value(&self) -> bool {
-        self.current().is_some()
-    }
 }
 
 #[derive(Clone, Copy, Debug)]
@@ -39,10 +40,9 @@ impl<'a, 'b> From<&'a [Token<'b>]> for IndexedIterator<'a, 'b> {
         IndexedIterator {
             underlying: value,
             index: 0,
-            pos: if value.is_empty() {
-                Position { line: 0, column: 0 }
-            } else {
-                value[0].extent.start
+            pos: match value.first() {
+                Some(t) => t.extent.start,
+                None => Position { line: 0, column: 0 },
             },
         }
     }
@@ -61,10 +61,9 @@ impl<'a, 'b> TokenIterator<'a, 'b> for IndexedIterator<'a, 'b> {
         IndexedIterator {
             underlying: self.underlying,
             index: self.index + 1,
-            pos: if self.underlying.len() <= self.index + 1 {
-                self.underlying[self.index].extent.end
-            } else {
-                self.underlying[self.index + 1].extent.start
+            pos: match self.underlying.get(self.index + 1) {
+                Some(t) => t.extent.start,
+                None => self.underlying[self.index].extent.end,
             },
         }
     }
@@ -103,8 +102,6 @@ impl<'a, 'b: 'a, T, F> ParsingFunction<'a, 'b, T> for F where
 {
 }
 
-type OperatorsPrecedense = Vec<SyntacticOperator>;
-
 impl Default for Parser {
     fn default() -> Self {
         Self::new()
@@ -133,15 +130,11 @@ impl Parser {
         while let Some(token) = i.current() {
             match token {
                 Token {
-                    kind:
-                        TokenKind::Invalid(InvalidToken {
-                            problem,
-                            code: TokenIssue::Unexpected,
-                        }),
+                    kind: TokenKind::Invalid(t @ InvalidToken::Unexpected(_)),
                     extent: Extent { start, .. },
                     ..
                 } => {
-                    self.report_recovered(problem.clone(), *start);
+                    self.report_recovered(t.to_string(), *start);
                 }
                 Token {
                     kind: TokenKind::Comment(_),
@@ -162,6 +155,10 @@ impl Parser {
     // Parsing combinators
 
     /// Parses with `parser` until it fails
+    #[expect(
+        clippy::unnecessary_wraps,
+        reason = "Better composition with other APIs"
+    )]
     fn parse_many<'a, 'b: 'a, T>(
         &mut self,
         mut parser: impl ParsingFunction<'a, 'b, T>,
@@ -201,19 +198,15 @@ impl Parser {
         mut r: impl ParsingFunction<'a, 'b, T>,
         i: IndexedIterator<'a, 'b>,
     ) -> ParsingResult<'a, 'b, T> {
-        match l(self, i) {
-            Ok(val) => Ok(val),
-            Err(first_err) => match r(self, i) {
-                res @ Ok(_) => res,
-                Err(second_err) => Err(ParsingError {
-                    what: format!(
-                        "Following parses failed\n{}\n{}",
-                        first_err.what, second_err.what
-                    ),
-                    position: first_err.position,
-                }),
-            },
-        }
+        l(self, i).or_else(|first_err| {
+            r(self, i).map_err(|second_err| ParsingError {
+                what: format!(
+                    "Following parses failed\n{}\n{}",
+                    first_err.what, second_err.what
+                ),
+                position: first_err.position,
+            })
+        })
     }
 
     /// Parses with `parser`, parses with `right` and drops latter value
@@ -272,25 +265,23 @@ impl Parser {
         i: IndexedIterator<'a, 'b>,
     ) -> ParsingResult<'a, 'b, Vec<T>> {
         let mut result = Vec::new();
-        let first = parser(self, i);
 
-        match first {
-            Ok((first_parsed, rest)) => {
-                result.push(first_parsed);
+        let Ok((first_parsed, rest)) = parser(self, i) else {
+            return Ok((Vec::new(), i));
+        };
 
-                let mut next = rest;
+        result.push(first_parsed);
 
-                while let Ok(((), rest)) = sep(self, next) {
-                    next = rest;
-                    let (elem, rest) = parser(self, next)?;
-                    next = rest;
-                    result.push(elem);
-                }
+        let mut next = rest;
 
-                Ok((result, next))
-            }
-            Err(_) => Ok((Vec::new(), i)),
+        while let Ok(((), rest)) = sep(self, next) {
+            next = rest;
+            let (elem, rest) = parser(self, next)?;
+            next = rest;
+            result.push(elem);
         }
+
+        Ok((result, next))
     }
 
     /// Parsers `l`, `rep`, `r`, drops the valuse in centre
@@ -314,25 +305,19 @@ impl Parser {
         i: IndexedIterator<'a, 'b>,
     ) -> ParsingResult<'a, 'b, RawIdentifier> {
         match i.current() {
-            Some(token) => {
-                if let Token {
-                    kind: TokenKind::Identifier(TokenIdentifier { name }),
-                    ..
-                } = token
-                {
-                    Ok((
-                        RawIdentifier {
-                            name: (*name).to_owned(),
-                        },
-                        self.next(i),
-                    ))
-                } else {
-                    Err(ParsingError {
-                        what: format!("Identifier expected, {token} found"),
-                        position: i.position(),
-                    })
-                }
-            }
+            Some(&Token {
+                kind: TokenKind::Identifier(TokenIdentifier { name }),
+                ..
+            }) => Ok((
+                RawIdentifier {
+                    name: name.to_owned(),
+                },
+                self.next(i),
+            )),
+            Some(token) => Err(ParsingError {
+                what: format!("Identifier expected, {token} found"),
+                position: i.position(),
+            }),
             None => Err(ParsingError {
                 what: "Identifier expected, EOF found".to_owned(),
                 position: i.position(),
@@ -345,48 +330,41 @@ impl Parser {
         i: IndexedIterator<'a, 'b>,
     ) -> ParsingResult<'a, 'b, RealLiteral> {
         match i.current() {
-            Some(token) => {
-                if let Token {
-                    kind: TokenKind::RealLiteral(TokenRealLiteral { value }),
-                    ..
-                } = token
-                {
-                    Ok((
-                        RealLiteral {
-                            repr: token.lexeme.to_owned(),
-                            value: *value,
-                        },
-                        self.next(i),
-                    ))
-                } else if let Token {
-                    kind:
-                        TokenKind::Invalid(InvalidToken {
-                            problem,
-                            code: TokenIssue::MalformedReal,
-                        }),
-                    extent: Extent { start, .. },
-                    ..
-                } = token
-                {
-                    self.recovered_errors.push(ParsingError {
-                        position: *start,
-                        what: problem.clone(),
-                    });
+            Some(&Token {
+                kind: TokenKind::RealLiteral(TokenRealLiteral { value }),
+                lexeme,
+                ..
+            }) => Ok((
+                RealLiteral {
+                    repr: lexeme.to_owned(),
+                    value,
+                },
+                self.next(i),
+            )),
 
-                    Ok((
-                        RealLiteral {
-                            repr: token.lexeme.to_owned(),
-                            value: f64::NAN,
-                        },
-                        self.next(i),
-                    ))
-                } else {
-                    Err(ParsingError {
-                        what: format!("Real literal expected, {token} found"),
-                        position: i.position(),
-                    })
-                }
+            Some(&Token {
+                kind: TokenKind::Invalid(ref t @ InvalidToken::MalformedReal(_)),
+                extent: Extent { start, .. },
+                lexeme,
+            }) => {
+                self.recovered_errors.push(ParsingError {
+                    position: start,
+                    what: t.to_string(),
+                });
+
+                Ok((
+                    RealLiteral {
+                        repr: lexeme.to_owned(),
+                        value: f64::NAN,
+                    },
+                    self.next(i),
+                ))
             }
+
+            Some(token) => Err(ParsingError {
+                what: format!("Real literal expected, {token} found"),
+                position: i.position(),
+            }),
             None => Err(ParsingError {
                 what: "Real literal expected, EOF found".to_owned(),
                 position: i.position(),
@@ -399,48 +377,40 @@ impl Parser {
         i: IndexedIterator<'a, 'b>,
     ) -> ParsingResult<'a, 'b, IntegerLiteral> {
         match i.current() {
-            Some(token) => {
-                if let Token {
-                    kind: TokenKind::IntegerLiteral(TokenIntegerLiteral { value }),
-                    ..
-                } = token
-                {
-                    Ok((
-                        IntegerLiteral {
-                            repr: token.lexeme.to_owned(),
-                            value: *value,
-                        },
-                        self.next(i),
-                    ))
-                } else if let Token {
-                    kind:
-                        TokenKind::Invalid(InvalidToken {
-                            problem,
-                            code: TokenIssue::MalformedReal,
-                        }),
-                    extent: Extent { start, .. },
-                    ..
-                } = token
-                {
-                    self.recovered_errors.push(ParsingError {
-                        position: *start,
-                        what: problem.clone(),
-                    });
+            Some(&Token {
+                kind: TokenKind::IntegerLiteral(TokenIntegerLiteral { value }),
+                lexeme,
+                ..
+            }) => Ok((
+                IntegerLiteral {
+                    repr: lexeme.to_owned(),
+                    value,
+                },
+                self.next(i),
+            )),
 
-                    Ok((
-                        IntegerLiteral {
-                            repr: token.lexeme.to_owned(),
-                            value: 0,
-                        },
-                        self.next(i),
-                    ))
-                } else {
-                    Err(ParsingError {
-                        what: format!("Integer literal expected, {token} found"),
-                        position: i.position(),
-                    })
-                }
+            Some(&Token {
+                kind: TokenKind::Invalid(ref t @ InvalidToken::MalformedReal(_)),
+                extent: Extent { start, .. },
+                lexeme,
+            }) => {
+                self.recovered_errors.push(ParsingError {
+                    position: start,
+                    what: t.to_string(),
+                });
+                Ok((
+                    IntegerLiteral {
+                        repr: lexeme.to_owned(),
+                        value: 0,
+                    },
+                    self.next(i),
+                ))
             }
+
+            Some(token) => Err(ParsingError {
+                what: format!("Integer literal expected, {token} found"),
+                position: i.position(),
+            }),
             None => Err(ParsingError {
                 what: "Integer literal expected, EOF found".to_owned(),
                 position: i.position(),
@@ -453,27 +423,22 @@ impl Parser {
         i: IndexedIterator<'a, 'b>,
     ) -> ParsingResult<'a, 'b, BoolLiteral> {
         match i.current() {
-            Some(token) => {
-                if let Token {
-                    kind: TokenKind::BoolLiteral(TokenBoolLiteral { value }),
-                    ..
-                } = token
-                {
-                    Ok((
-                        if *value {
-                            BoolLiteral::True
-                        } else {
-                            BoolLiteral::False
-                        },
-                        self.next(i),
-                    ))
+            Some(&Token {
+                kind: TokenKind::BoolLiteral(TokenBoolLiteral { value }),
+                ..
+            }) => Ok((
+                if value {
+                    BoolLiteral::True
                 } else {
-                    Err(ParsingError {
-                        what: format!("Bool literal expected, {token} found"),
-                        position: i.position(),
-                    })
-                }
-            }
+                    BoolLiteral::False
+                },
+                self.next(i),
+            )),
+            Some(token) => Err(ParsingError {
+                what: format!("Bool literal expected, {token} found"),
+                position: i.position(),
+            }),
+
             None => Err(ParsingError {
                 what: "Bool literal expected, EOF found".to_owned(),
                 position: i.position(),
@@ -487,18 +452,11 @@ impl Parser {
         i: IndexedIterator<'a, 'b>,
     ) -> ParsingResult<'a, 'b, ()> {
         match i.current() {
-            Some(token) => {
-                if token.kind == *expected_kind {
-                    Ok(((), self.next(i)))
-                } else {
-                    Err(ParsingError {
-                        what: format!(
-                            "Token of kind {expected_kind} expected, token {token} found"
-                        ),
-                        position: token.extent.start,
-                    })
-                }
-            }
+            Some(Token { kind, .. }) if kind == expected_kind => Ok(((), self.next(i))),
+            Some(token) => Err(ParsingError {
+                what: format!("Token of kind {expected_kind} expected, token {token} found"),
+                position: token.extent.start,
+            }),
             None => Err(ParsingError {
                 what: format!("Token of kind {expected_kind} expected, token EOF found"),
                 position: i.position(),
@@ -529,25 +487,25 @@ impl Parser {
         &mut self,
         i: IndexedIterator<'a, 'b>,
     ) -> ParsingResult<'a, 'b, ()> {
-        self.parse_known_kind(&TokenKind::Keyword(tokens::Keyword::End), i)
+        self.parse_known_kind(&TokenKind::Keyword(Keyword::End), i)
     }
 
     fn parse_kw_loop<'a, 'b: 'a>(
         &mut self,
         i: IndexedIterator<'a, 'b>,
     ) -> ParsingResult<'a, 'b, ()> {
-        self.parse_known_kind(&TokenKind::Keyword(tokens::Keyword::Loop), i)
+        self.parse_known_kind(&TokenKind::Keyword(Keyword::Loop), i)
     }
 
     fn parse_kw_where<'a, 'b: 'a>(
         &mut self,
         i: IndexedIterator<'a, 'b>,
     ) -> ParsingResult<'a, 'b, ()> {
-        self.parse_known_kind(&TokenKind::Keyword(tokens::Keyword::Where), i)
+        self.parse_known_kind(&TokenKind::Keyword(Keyword::Where), i)
     }
 
     fn parse_kw_is<'a, 'b: 'a>(&mut self, i: IndexedIterator<'a, 'b>) -> ParsingResult<'a, 'b, ()> {
-        self.parse_known_kind(&TokenKind::Keyword(tokens::Keyword::Is), i)
+        self.parse_known_kind(&TokenKind::Keyword(Keyword::Is), i)
     }
 
     fn parse_left_bracket<'a, 'b: 'a>(
@@ -608,7 +566,7 @@ impl Parser {
         &mut self,
         i: IndexedIterator<'a, 'b>,
     ) -> ParsingResult<'a, 'b, FieldDescription> {
-        let ((), next) = self.parse_known_kind(&TokenKind::Keyword(tokens::Keyword::Var), i)?;
+        let ((), next) = self.parse_known_kind(&TokenKind::Keyword(Keyword::Var), i)?;
         let (ident, next) = self.parse_identifier(next)?;
         let ((), next) = self.parse_kw_is(next)?;
         let (t, next) = self.parse_type(next)?;
@@ -620,13 +578,13 @@ impl Parser {
         &mut self,
         i: IndexedIterator<'a, 'b>,
     ) -> ParsingResult<'a, 'b, RecordDescription> {
-        let ((), next) = self.parse_known_kind(&TokenKind::Keyword(tokens::Keyword::Record), i)?;
+        let ((), next) = self.parse_known_kind(&TokenKind::Keyword(Keyword::Record), i)?;
         let (fields, next) = self.parse_many(
             |ctx, i| ctx.parse_before(Self::parse_field_description, Self::parse_semicolon, i),
             next,
         )?;
 
-        let ((), next) = self.parse_known_kind(&TokenKind::Keyword(tokens::Keyword::End), next)?;
+        let ((), next) = self.parse_known_kind(&TokenKind::Keyword(Keyword::End), next)?;
         Ok((RecordDescription { fields }, next))
     }
 
@@ -634,7 +592,7 @@ impl Parser {
         &mut self,
         i: IndexedIterator<'a, 'b>,
     ) -> ParsingResult<'a, 'b, ArrayDescription> {
-        let ((), next) = self.parse_known_kind(&TokenKind::Keyword(tokens::Keyword::Array), i)?;
+        let ((), next) = self.parse_known_kind(&TokenKind::Keyword(Keyword::Array), i)?;
         let (length, next) =
             self.parse_in_brackets(|ctx, i| ctx.try_parse(Self::parse_expr, i), next)?;
         let (element_type, next) = self.parse_type(next)?;
@@ -652,40 +610,32 @@ impl Parser {
         i: IndexedIterator<'a, 'b>,
     ) -> ParsingResult<'a, 'b, Rc<Type>> {
         self.parse_identifier(i)
-            .map(|(ident, next)| (Rc::new(Type::Alias(ident)), next))
+            .map(|(ident, next)| (Type::Alias(ident), next))
             .or_else(|_| {
-                self.parse_known_kind(
-                    &TokenKind::BuiltinTypename(tokens::BuiltinTypename::Real),
-                    i,
-                )
-                .map(|((), next)| (Rc::new(Type::Real), next))
+                self.parse_known_kind(&TokenKind::BuiltinTypename(BuiltinTypename::Real), i)
+                    .map(|((), next)| (Type::Real, next))
             })
             .or_else(|_| {
-                self.parse_known_kind(
-                    &TokenKind::BuiltinTypename(tokens::BuiltinTypename::Integer),
-                    i,
-                )
-                .map(|((), next)| (Rc::new(Type::Int), next))
+                self.parse_known_kind(&TokenKind::BuiltinTypename(BuiltinTypename::Integer), i)
+                    .map(|((), next)| (Type::Int, next))
             })
             .or_else(|_| {
-                self.parse_known_kind(
-                    &TokenKind::BuiltinTypename(tokens::BuiltinTypename::Boolean),
-                    i,
-                )
-                .map(|((), next)| (Rc::new(Type::Bool), next))
+                self.parse_known_kind(&TokenKind::BuiltinTypename(BuiltinTypename::Boolean), i)
+                    .map(|((), next)| (Type::Bool, next))
             })
             .or_else(|_| {
                 self.parse_array_desc(i)
-                    .map(|(arr_desc, i)| (Rc::new(Type::Array(arr_desc)), i))
+                    .map(|(arr_desc, i)| (Type::Array(arr_desc), i))
             })
             .or_else(|_| {
                 self.parse_record_desc(i)
-                    .map(|(rec_desc, i)| (Rc::new(Type::Record(rec_desc)), i))
+                    .map(|(rec_desc, i)| (Type::Record(rec_desc), i))
             })
             .map_err(|_err| ParsingError {
                 what: "Type exptected, but not found".to_owned(),
                 position: i.position(),
             })
+            .map(|(ty, next)| (Rc::new(ty), next))
     }
 
     fn parse_operators<'a, 'b: 'a>(
@@ -701,19 +651,16 @@ impl Parser {
                     kind: TokenKind::Operator(op),
                     ..
                 }) = next.current()
+                    && operators.contains(op)
                 {
-                    if operators.contains(op) {
-                        next = self.next(next);
-                        let (rhs, rest) = self.parse_operators(ops.clone(), atom.clone(), next)?;
-                        next = rest;
-                        head = Rc::new(Expression::Binop {
-                            op: *op,
-                            lhs: head,
-                            rhs,
-                        });
-                    } else {
-                        return Ok((head, next));
-                    }
+                    next = self.next(next);
+                    let (rhs, rest) = self.parse_operators(ops.clone(), atom.clone(), next)?;
+                    next = rest;
+                    head = Rc::new(Expression::Binop {
+                        op: *op,
+                        lhs: head,
+                        rhs,
+                    });
                 }
 
                 Ok((head, next))
@@ -778,7 +725,7 @@ impl Parser {
         i: IndexedIterator<'a, 'b>,
     ) -> ParsingResult<'a, 'b, Rc<Expression>> {
         self.parse_after(
-            |ctx, i| ctx.parse_known_kind(&TokenKind::Keyword(tokens::Keyword::New), i),
+            |ctx, i| ctx.parse_known_kind(&TokenKind::Keyword(Keyword::New), i),
             |ctx, i| {
                 let (t, next) = ctx.parse_type(i)?;
                 let (fields, next) = ctx.try_parse(
@@ -838,7 +785,7 @@ impl Parser {
         let (mut head, mut next) = self
             .parse_call(i)
             .or_else(|_| {
-                self.parse_known_kind(&TokenKind::Keyword(tokens::Keyword::Null), i)
+                self.parse_known_kind(&TokenKind::Keyword(Keyword::Null), i)
                     .map(|((), next)| (Rc::new(Expression::Null), next))
             })
             .or_else(|_| {
@@ -892,7 +839,7 @@ impl Parser {
             &[
                 SyntacticOperator::Lt,
                 SyntacticOperator::Le,
-                SyntacticOperator::Neq,
+                SyntacticOperator::Ne,
                 SyntacticOperator::Eq,
                 SyntacticOperator::Gt,
                 SyntacticOperator::Ge,
@@ -916,7 +863,7 @@ impl Parser {
         &mut self,
         i: IndexedIterator<'a, 'b>,
     ) -> ParsingResult<'a, 'b, VarDecl> {
-        let ((), next) = self.parse_known_kind(&TokenKind::Keyword(tokens::Keyword::Var), i)?;
+        let ((), next) = self.parse_known_kind(&TokenKind::Keyword(Keyword::Var), i)?;
         let (name, next) = self.parse_identifier(next)?;
         let (t, next) = self.try_parse(
             |ctx, i| ctx.parse_after(Self::parse_colon, Self::parse_type, i),
@@ -941,7 +888,7 @@ impl Parser {
         &mut self,
         i: IndexedIterator<'a, 'b>,
     ) -> ParsingResult<'a, 'b, TypeDecl> {
-        let ((), next) = self.parse_known_kind(&TokenKind::Keyword(tokens::Keyword::Type), i)?;
+        let ((), next) = self.parse_known_kind(&TokenKind::Keyword(Keyword::Type), i)?;
         let (name, next) = self.parse_identifier(next)?;
         let (t, next) = self.parse_after(Self::parse_kw_is, Self::parse_type, next)?;
         let ((), next) = self.parse_semicolon(next)?;
@@ -967,20 +914,17 @@ impl Parser {
     ) -> ParsingResult<'a, 'b, Statement> {
         match i.current() {
             Some(Token {
-                kind: TokenKind::Keyword(tokens::Keyword::If),
+                kind: TokenKind::Keyword(Keyword::If),
                 ..
             }) => {
                 let next = self.next(i);
                 let (condition, next) = self.parse_expr(next)?;
-                let ((), next) =
-                    self.parse_known_kind(&TokenKind::Keyword(tokens::Keyword::Then), next)?;
+                let ((), next) = self.parse_known_kind(&TokenKind::Keyword(Keyword::Then), next)?;
                 let (on_true, next) = self.parse_block(next)?;
                 let (on_false, next) = self.try_parse(
                     |ctx, i| {
                         ctx.parse_after(
-                            |ctx, i| {
-                                ctx.parse_known_kind(&TokenKind::Keyword(tokens::Keyword::Else), i)
-                            },
+                            |ctx, i| ctx.parse_known_kind(&TokenKind::Keyword(Keyword::Else), i),
                             Self::parse_block,
                             i,
                         )
@@ -1001,7 +945,7 @@ impl Parser {
             }
 
             Some(Token {
-                kind: TokenKind::Keyword(tokens::Keyword::While),
+                kind: TokenKind::Keyword(Keyword::While),
                 ..
             }) => {
                 let next = self.next(i);
@@ -1018,7 +962,7 @@ impl Parser {
             }
 
             Some(Token {
-                kind: TokenKind::Keyword(tokens::Keyword::Print),
+                kind: TokenKind::Keyword(Keyword::Print),
                 ..
             }) => {
                 let next = self.next(i);
@@ -1029,7 +973,7 @@ impl Parser {
             }
 
             Some(Token {
-                kind: TokenKind::Keyword(tokens::Keyword::Return),
+                kind: TokenKind::Keyword(Keyword::Return),
                 ..
             }) => {
                 let next = self.next(i);
@@ -1040,21 +984,20 @@ impl Parser {
             }
 
             Some(Token {
-                kind: TokenKind::Keyword(tokens::Keyword::For),
+                kind: TokenKind::Keyword(Keyword::For),
                 ..
             }) => {
                 let next = self.next(i);
                 let (counter, next) = self.parse_identifier(next)?;
 
-                let ((), next) =
-                    self.parse_known_kind(&TokenKind::Keyword(tokens::Keyword::In), next)?;
+                let ((), next) = self.parse_known_kind(&TokenKind::Keyword(Keyword::In), next)?;
 
                 let (from, next) = self.parse_expr(next)?;
 
                 let ((), next) = self.parse_known_kind(&TokenKind::RangeSymbol, next)?;
                 let (to, next) = self.try_parse(Self::parse_expr, next)?;
                 let (order, next) = self.try_parse(
-                    |ctx, i| ctx.parse_known_kind(&TokenKind::Keyword(tokens::Keyword::Reverse), i),
+                    |ctx, i| ctx.parse_known_kind(&TokenKind::Keyword(Keyword::Reverse), i),
                     next,
                 )?;
 
@@ -1109,14 +1052,14 @@ impl Parser {
     ) -> ParsingResult<'a, 'b, BlockElem> {
         match i.current() {
             Some(Token {
-                kind: TokenKind::Keyword(tokens::Keyword::Var),
+                kind: TokenKind::Keyword(Keyword::Var),
                 ..
             }) => self
                 .parse_var_decl(i)
                 .map(|(decl, next)| (BlockElem::VarDecl(decl), next)),
 
             Some(Token {
-                kind: TokenKind::Keyword(tokens::Keyword::Type),
+                kind: TokenKind::Keyword(Keyword::Type),
                 ..
             }) => self
                 .parse_type_decl(i)
@@ -1145,7 +1088,7 @@ impl Parser {
         &mut self,
         i: IndexedIterator<'a, 'b>,
     ) -> ParsingResult<'a, 'b, RoutineDecl> {
-        let ((), next) = self.parse_known_kind(&TokenKind::Keyword(tokens::Keyword::Routine), i)?;
+        let ((), next) = self.parse_known_kind(&TokenKind::Keyword(Keyword::Routine), i)?;
         let (name, next) = self.parse_identifier(next)?;
 
         let (args, next) = self.parse_in_parentheses(
@@ -1191,7 +1134,7 @@ impl Parser {
             }
 
             Some(Token {
-                kind: TokenKind::Keyword(tokens::Keyword::Is),
+                kind: TokenKind::Keyword(Keyword::Is),
                 ..
             }) => {
                 let (body, next) = self.parse_between(
@@ -1241,21 +1184,21 @@ impl Parser {
     ) -> ParsingResult<'a, 'b, Declaration> {
         match i.current() {
             Some(Token {
-                kind: TokenKind::Keyword(tokens::Keyword::Var),
+                kind: TokenKind::Keyword(Keyword::Var),
                 ..
             }) => self
                 .parse_var_decl(i)
                 .map(|(decl, next)| (Declaration::Var(decl), next)),
 
             Some(Token {
-                kind: TokenKind::Keyword(tokens::Keyword::Type),
+                kind: TokenKind::Keyword(Keyword::Type),
                 ..
             }) => self
                 .parse_type_decl(i)
                 .map(|(decl, next)| (Declaration::Type(decl), next)),
 
             Some(Token {
-                kind: TokenKind::Keyword(tokens::Keyword::Routine),
+                kind: TokenKind::Keyword(Keyword::Routine),
                 ..
             }) => self
                 .parse_routine_decl(i)

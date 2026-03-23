@@ -317,6 +317,69 @@ Ok(
                         },
                     ),
                 },
+                Binding {
+                    name: q(17),
+                    decl: Var(
+                        VarDecl {
+                            t: Real,
+                            initialiser: Some(
+                                Unop {
+                                    op: RealNeg,
+                                    operand: RealLiteral(
+                                        RealLiteral {
+                                            repr: "NaN",
+                                            value: NaN,
+                                        },
+                                    ),
+                                },
+                            ),
+                            relative_location: Local(
+                                16,
+                            ),
+                        },
+                    ),
+                },
+                Binding {
+                    name: r(18),
+                    decl: Var(
+                        VarDecl {
+                            t: Real,
+                            initialiser: Some(
+                                RealLiteral(
+                                    RealLiteral {
+                                        repr: "Inf",
+                                        value: inf,
+                                    },
+                                ),
+                            ),
+                            relative_location: Local(
+                                17,
+                            ),
+                        },
+                    ),
+                },
+                Binding {
+                    name: s(19),
+                    decl: Var(
+                        VarDecl {
+                            t: Real,
+                            initialiser: Some(
+                                Unop {
+                                    op: RealNeg,
+                                    operand: RealLiteral(
+                                        RealLiteral {
+                                            repr: "Inf",
+                                            value: inf,
+                                        },
+                                    ),
+                                },
+                            ),
+                            relative_location: Local(
+                                18,
+                            ),
+                        },
+                    ),
+                },
             ],
         },
         Program(
@@ -354,6 +417,15 @@ Ok(
                                                 ),
                                             },
                                         ),
+                                        Stmt(
+                                            Print {
+                                                value: LvalueToRvalue(
+                                                    Identifier(
+                                                        a(1),
+                                                    ),
+                                                ),
+                                            },
+                                        ),
                                         Decl(
                                             SimpleBinding {
                                                 name: b(2),
@@ -372,6 +444,15 @@ Ok(
                                                             1,
                                                         ),
                                                     },
+                                                ),
+                                            },
+                                        ),
+                                        Stmt(
+                                            Print {
+                                                value: LvalueToRvalue(
+                                                    Identifier(
+                                                        b(2),
+                                                    ),
                                                 ),
                                             },
                                         ),
@@ -396,6 +477,15 @@ Ok(
                                                 ),
                                             },
                                         ),
+                                        Stmt(
+                                            Print {
+                                                value: LvalueToRvalue(
+                                                    Identifier(
+                                                        c(3),
+                                                    ),
+                                                ),
+                                            },
+                                        ),
                                         Decl(
                                             SimpleBinding {
                                                 name: d(4),
@@ -414,6 +504,15 @@ Ok(
                                                             3,
                                                         ),
                                                     },
+                                                ),
+                                            },
+                                        ),
+                                        Stmt(
+                                            Print {
+                                                value: LvalueToRvalue(
+                                                    Identifier(
+                                                        d(4),
+                                                    ),
                                                 ),
                                             },
                                         ),
@@ -438,6 +537,15 @@ Ok(
                                                 ),
                                             },
                                         ),
+                                        Stmt(
+                                            Print {
+                                                value: LvalueToRvalue(
+                                                    Identifier(
+                                                        e(5),
+                                                    ),
+                                                ),
+                                            },
+                                        ),
                                         Decl(
                                             SimpleBinding {
                                                 name: f(6),
@@ -456,6 +564,15 @@ Ok(
                                                             5,
                                                         ),
                                                     },
+                                                ),
+                                            },
+                                        ),
+                                        Stmt(
+                                            Print {
+                                                value: LvalueToRvalue(
+                                                    Identifier(
+                                                        f(6),
+                                                    ),
                                                 ),
                                             },
                                         ),
@@ -480,6 +597,15 @@ Ok(
                                                 ),
                                             },
                                         ),
+                                        Stmt(
+                                            Print {
+                                                value: LvalueToRvalue(
+                                                    Identifier(
+                                                        g(7),
+                                                    ),
+                                                ),
+                                            },
+                                        ),
                                         Decl(
                                             SimpleBinding {
                                                 name: h(8),
@@ -498,6 +624,15 @@ Ok(
                                                             7,
                                                         ),
                                                     },
+                                                ),
+                                            },
+                                        ),
+                                        Stmt(
+                                            Print {
+                                                value: LvalueToRvalue(
+                                                    Identifier(
+                                                        h(8),
+                                                    ),
                                                 ),
                                             },
                                         ),
@@ -522,6 +657,15 @@ Ok(
                                                 ),
                                             },
                                         ),
+                                        Stmt(
+                                            Print {
+                                                value: LvalueToRvalue(
+                                                    Identifier(
+                                                        i(9),
+                                                    ),
+                                                ),
+                                            },
+                                        ),
                                         Decl(
                                             SimpleBinding {
                                                 name: j(10),
@@ -540,6 +684,15 @@ Ok(
                                                             9,
                                                         ),
                                                     },
+                                                ),
+                                            },
+                                        ),
+                                        Stmt(
+                                            Print {
+                                                value: LvalueToRvalue(
+                                                    Identifier(
+                                                        j(10),
+                                                    ),
                                                 ),
                                             },
                                         ),
@@ -564,6 +717,15 @@ Ok(
                                                 ),
                                             },
                                         ),
+                                        Stmt(
+                                            Print {
+                                                value: LvalueToRvalue(
+                                                    Identifier(
+                                                        k(11),
+                                                    ),
+                                                ),
+                                            },
+                                        ),
                                         Decl(
                                             SimpleBinding {
                                                 name: l(12),
@@ -582,6 +744,15 @@ Ok(
                                                             11,
                                                         ),
                                                     },
+                                                ),
+                                            },
+                                        ),
+                                        Stmt(
+                                            Print {
+                                                value: LvalueToRvalue(
+                                                    Identifier(
+                                                        l(12),
+                                                    ),
                                                 ),
                                             },
                                         ),
@@ -606,6 +777,15 @@ Ok(
                                                 ),
                                             },
                                         ),
+                                        Stmt(
+                                            Print {
+                                                value: LvalueToRvalue(
+                                                    Identifier(
+                                                        m(13),
+                                                    ),
+                                                ),
+                                            },
+                                        ),
                                         Decl(
                                             SimpleBinding {
                                                 name: n(14),
@@ -627,6 +807,15 @@ Ok(
                                                 ),
                                             },
                                         ),
+                                        Stmt(
+                                            Print {
+                                                value: LvalueToRvalue(
+                                                    Identifier(
+                                                        n(14),
+                                                    ),
+                                                ),
+                                            },
+                                        ),
                                         Decl(
                                             SimpleBinding {
                                                 name: o(15),
@@ -645,6 +834,15 @@ Ok(
                                                             14,
                                                         ),
                                                     },
+                                                ),
+                                            },
+                                        ),
+                                        Stmt(
+                                            Print {
+                                                value: LvalueToRvalue(
+                                                    Identifier(
+                                                        o(15),
+                                                    ),
                                                 ),
                                             },
                                         ),
@@ -673,142 +871,103 @@ Ok(
                                             Print {
                                                 value: LvalueToRvalue(
                                                     Identifier(
-                                                        a(1),
-                                                    ),
-                                                ),
-                                            },
-                                        ),
-                                        Stmt(
-                                            Print {
-                                                value: LvalueToRvalue(
-                                                    Identifier(
-                                                        b(2),
-                                                    ),
-                                                ),
-                                            },
-                                        ),
-                                        Stmt(
-                                            Print {
-                                                value: LvalueToRvalue(
-                                                    Identifier(
-                                                        c(3),
-                                                    ),
-                                                ),
-                                            },
-                                        ),
-                                        Stmt(
-                                            Print {
-                                                value: LvalueToRvalue(
-                                                    Identifier(
-                                                        d(4),
-                                                    ),
-                                                ),
-                                            },
-                                        ),
-                                        Stmt(
-                                            Print {
-                                                value: LvalueToRvalue(
-                                                    Identifier(
-                                                        e(5),
-                                                    ),
-                                                ),
-                                            },
-                                        ),
-                                        Stmt(
-                                            Print {
-                                                value: LvalueToRvalue(
-                                                    Identifier(
-                                                        f(6),
-                                                    ),
-                                                ),
-                                            },
-                                        ),
-                                        Stmt(
-                                            Print {
-                                                value: LvalueToRvalue(
-                                                    Identifier(
-                                                        g(7),
-                                                    ),
-                                                ),
-                                            },
-                                        ),
-                                        Stmt(
-                                            Print {
-                                                value: LvalueToRvalue(
-                                                    Identifier(
-                                                        h(8),
-                                                    ),
-                                                ),
-                                            },
-                                        ),
-                                        Stmt(
-                                            Print {
-                                                value: LvalueToRvalue(
-                                                    Identifier(
-                                                        i(9),
-                                                    ),
-                                                ),
-                                            },
-                                        ),
-                                        Stmt(
-                                            Print {
-                                                value: LvalueToRvalue(
-                                                    Identifier(
-                                                        j(10),
-                                                    ),
-                                                ),
-                                            },
-                                        ),
-                                        Stmt(
-                                            Print {
-                                                value: LvalueToRvalue(
-                                                    Identifier(
-                                                        k(11),
-                                                    ),
-                                                ),
-                                            },
-                                        ),
-                                        Stmt(
-                                            Print {
-                                                value: LvalueToRvalue(
-                                                    Identifier(
-                                                        l(12),
-                                                    ),
-                                                ),
-                                            },
-                                        ),
-                                        Stmt(
-                                            Print {
-                                                value: LvalueToRvalue(
-                                                    Identifier(
-                                                        m(13),
-                                                    ),
-                                                ),
-                                            },
-                                        ),
-                                        Stmt(
-                                            Print {
-                                                value: LvalueToRvalue(
-                                                    Identifier(
-                                                        n(14),
-                                                    ),
-                                                ),
-                                            },
-                                        ),
-                                        Stmt(
-                                            Print {
-                                                value: LvalueToRvalue(
-                                                    Identifier(
-                                                        o(15),
-                                                    ),
-                                                ),
-                                            },
-                                        ),
-                                        Stmt(
-                                            Print {
-                                                value: LvalueToRvalue(
-                                                    Identifier(
                                                         p(16),
+                                                    ),
+                                                ),
+                                            },
+                                        ),
+                                        Decl(
+                                            SimpleBinding {
+                                                name: q(17),
+                                                decl: Var(
+                                                    VarDecl {
+                                                        t: Real,
+                                                        initialiser: Some(
+                                                            Unop {
+                                                                op: RealNeg,
+                                                                operand: RealLiteral(
+                                                                    RealLiteral {
+                                                                        repr: "NaN",
+                                                                        value: NaN,
+                                                                    },
+                                                                ),
+                                                            },
+                                                        ),
+                                                        relative_location: Local(
+                                                            16,
+                                                        ),
+                                                    },
+                                                ),
+                                            },
+                                        ),
+                                        Stmt(
+                                            Print {
+                                                value: LvalueToRvalue(
+                                                    Identifier(
+                                                        q(17),
+                                                    ),
+                                                ),
+                                            },
+                                        ),
+                                        Decl(
+                                            SimpleBinding {
+                                                name: r(18),
+                                                decl: Var(
+                                                    VarDecl {
+                                                        t: Real,
+                                                        initialiser: Some(
+                                                            RealLiteral(
+                                                                RealLiteral {
+                                                                    repr: "Inf",
+                                                                    value: inf,
+                                                                },
+                                                            ),
+                                                        ),
+                                                        relative_location: Local(
+                                                            17,
+                                                        ),
+                                                    },
+                                                ),
+                                            },
+                                        ),
+                                        Stmt(
+                                            Print {
+                                                value: LvalueToRvalue(
+                                                    Identifier(
+                                                        r(18),
+                                                    ),
+                                                ),
+                                            },
+                                        ),
+                                        Decl(
+                                            SimpleBinding {
+                                                name: s(19),
+                                                decl: Var(
+                                                    VarDecl {
+                                                        t: Real,
+                                                        initialiser: Some(
+                                                            Unop {
+                                                                op: RealNeg,
+                                                                operand: RealLiteral(
+                                                                    RealLiteral {
+                                                                        repr: "Inf",
+                                                                        value: inf,
+                                                                    },
+                                                                ),
+                                                            },
+                                                        ),
+                                                        relative_location: Local(
+                                                            18,
+                                                        ),
+                                                    },
+                                                ),
+                                            },
+                                        ),
+                                        Stmt(
+                                            Print {
+                                                value: LvalueToRvalue(
+                                                    Identifier(
+                                                        s(19),
                                                     ),
                                                 ),
                                             },

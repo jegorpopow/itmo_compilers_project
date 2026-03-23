@@ -1,9 +1,13 @@
-use crate::ast::error::{AnalysisError, AnalysisResult};
-use crate::identifier::{Identifier, RawIdentifier};
-use crate::operators::{SemanticBinaryOperator, SyntacticOperator};
 use std::fmt::{Debug, Display};
 use std::hash::Hash;
 use std::rc::Rc;
+
+use common::{
+    Identifier, RawIdentifier,
+    operators::{SemanticBinaryOperator, SyntacticOperator},
+};
+
+use crate::{AnalysisError, AnalysisResult};
 
 #[derive(Debug, Hash, PartialEq, Eq)]
 pub struct FieldDescription {
@@ -36,12 +40,6 @@ pub struct ArrayDescription {
     pub length: Option<usize>,
 }
 
-impl ArrayDescription {
-    fn get_element_type(&self) -> Rc<Type> {
-        Rc::clone(&self.t)
-    }
-}
-
 #[derive(Debug, Hash, PartialEq, Eq)]
 pub enum Type {
     Int,
@@ -54,11 +52,12 @@ pub enum Type {
     Unit,
 }
 
-// impl Debug for Type {
-//     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-//         write!(f, "{}({})", self.raw.name, self.id)
-//     }
-// }
+impl Type {
+    pub fn bool() -> Rc<Self> {
+        thread_local! { static BOOL: Rc<Type> = Rc::new(Type::Bool); }
+        BOOL.with(Rc::clone)
+    }
+}
 
 impl Display for Type {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
@@ -93,32 +92,30 @@ impl Display for Type {
 impl Type {
     fn most_precise(l: &Rc<Self>, r: &Rc<Self>) -> AnalysisResult<Rc<Self>> {
         match (&**l, &**r) {
-            (Type::Int, Type::Int) => Ok(Rc::clone(l)),
-            (Type::Int, Type::Real) => Ok(Rc::clone(r)),
-            (Type::Int, Type::Bool) => Ok(Rc::clone(l)),
-            (Type::Int, Type::Null) => Ok(Rc::clone(l)),
-            (Type::Real, Type::Int) => Ok(Rc::clone(l)),
-            (Type::Real, Type::Real) => Ok(Rc::clone(l)),
-            (Type::Real, Type::Bool) => Ok(Rc::clone(l)),
-            (Type::Real, Type::Null) => Ok(Rc::clone(l)),
-            (Type::Bool, Type::Int) => Ok(Rc::clone(r)),
-            (Type::Bool, Type::Real) => Ok(Rc::clone(r)),
-            (Type::Bool, Type::Bool) => Ok(Rc::clone(l)),
-            (Type::Bool, Type::Null) => Ok(Rc::clone(l)),
-            (Type::Null, Type::Int) => Ok(Rc::clone(r)),
-            (Type::Null, Type::Real) => Ok(Rc::clone(r)),
-            (Type::Null, Type::Bool) => Ok(Rc::clone(r)),
-            (Type::Null, Type::Null) => Ok(Rc::clone(l)),
-            (_, _) => Err(AnalysisError {
-                what: format!("Can not find common arithmetic type for types {l} and  {r}"),
-            }),
+            (Type::Real, Type::Real | Type::Int | Type::Bool)
+            | (Type::Int, Type::Int | Type::Bool)
+            | (Type::Bool, Type::Bool) => Ok(Rc::clone(l)),
+
+            (Type::Int, Type::Real) | (Type::Bool, Type::Real | Type::Int) => Ok(Rc::clone(r)),
+
+            (Type::Alias(_) | Type::Array(_) | Type::Record(_) | Type::Unit | Type::Null, _)
+            | (_, Type::Alias(_) | Type::Array(_) | Type::Record(_) | Type::Unit | Type::Null) => {
+                Err(AnalysisError {
+                    what: format!("Can not find common arithmetic type for types {l} and  {r}"),
+                })
+            }
         }
     }
 
     fn is_scalar(&self) -> bool {
         match self {
-            Type::Null | Type::Int | Type::Real => true,
-            Type::Alias(_) | Type::Record(_) | Type::Array(_) | Type::Bool | Type::Unit => false,
+            Type::Int | Type::Real => true,
+            Type::Alias(_)
+            | Type::Record(_)
+            | Type::Array(_)
+            | Type::Bool
+            | Type::Null
+            | Type::Unit => false,
         }
     }
 
@@ -143,9 +140,9 @@ impl Type {
         }
     }
 
-    pub fn get_element_type(&self) -> AnalysisResult<Rc<Type>> {
+    pub fn get_element_type(&self) -> AnalysisResult<&Rc<Type>> {
         match self {
-            Type::Array(record_description) => Ok(record_description.get_element_type()),
+            Type::Array(record_description) => Ok(&record_description.t),
             Type::Int
             | Type::Real
             | Type::Bool
@@ -158,9 +155,9 @@ impl Type {
         }
     }
 
-    pub fn ensure_is(&self, other: Type) -> AnalysisResult<Type> {
-        if *self == other {
-            Ok(other)
+    pub fn ensure_is(&self, other: &Type) -> AnalysisResult<()> {
+        if self == other {
+            Ok(())
         } else {
             Err(AnalysisError {
                 what: format!("Type mismatch: {other} expected, {self} found"),
@@ -169,15 +166,20 @@ impl Type {
     }
 }
 
+/// lhs `op` rhs ↦ cast_to(lhs, operand) `operator` cast_to(rhs, operand) :: result
+#[derive(Debug, Clone)]
+pub(crate) struct BinOpAdjustment {
+    pub result: Rc<Type>,
+    pub operand: Rc<Type>,
+    pub operator: SemanticBinaryOperator,
+}
+
 // FIXME: rewrite
-/// Generates type for Binop
-/// Given types of lhs, rhs and op returns (result, operand, sem_op)
-/// such as: lhs `op` rhs ↦ cast_to(lhs, operand) `sem_op` cast_to(rhs, operand) :: resultW
-pub fn infer_binary_operator_type(
+pub(crate) fn infer_binary_operator_type(
     lhs_type: &Rc<Type>,
     rhs_type: &Rc<Type>,
     op: SyntacticOperator,
-) -> AnalysisResult<(Rc<Type>, Rc<Type>, SemanticBinaryOperator)> {
+) -> AnalysisResult<BinOpAdjustment> {
     match op {
         SyntacticOperator::Neg => Err(AnalysisError {
             what: "Logical negation operator can not be applied as binary".to_string(),
@@ -185,11 +187,11 @@ pub fn infer_binary_operator_type(
 
         SyntacticOperator::And | SyntacticOperator::Or | SyntacticOperator::Xor => {
             if lhs_type.is_logical() && rhs_type.is_logical() {
-                Ok((
-                    Rc::new(Type::Bool),
-                    Rc::new(Type::Bool),
-                    op.to_boolean_binary_semantic().expect("Already checked"),
-                ))
+                Ok(BinOpAdjustment {
+                    operand: Type::bool(),
+                    result: Type::bool(),
+                    operator: op.to_boolean_binary_semantic().expect("Already checked"),
+                })
             } else {
                 Err(AnalysisError {
                     what: format!(
@@ -199,20 +201,20 @@ pub fn infer_binary_operator_type(
             }
         }
 
-        SyntacticOperator::Eq | SyntacticOperator::Neq => {
+        SyntacticOperator::Eq | SyntacticOperator::Ne => {
             if **lhs_type == **rhs_type || **lhs_type == Type::Null || **rhs_type == Type::Null {
-                Ok((
-                    Rc::new(Type::Bool),
-                    if **lhs_type == Type::Null {
+                Ok(BinOpAdjustment {
+                    result: Type::bool(),
+                    operand: if **lhs_type == Type::Null {
                         Rc::clone(rhs_type)
                     } else {
                         Rc::clone(lhs_type)
                     },
-                    op.to_semantic_compare().expect("already checked"),
-                ))
+                    operator: op.to_semantic_compare().expect("already checked"),
+                })
             } else {
                 Err(AnalysisError {
-                    what: format!("Can not apply operator {op:?}for {lhs_type} and {rhs_type}"),
+                    what: format!("Can not apply operator {op:?} for {lhs_type} and {rhs_type}"),
                 })
             }
         }
@@ -224,17 +226,17 @@ pub fn infer_binary_operator_type(
             if lhs_type.is_scalar() && rhs_type.is_scalar() {
                 let result_type = Type::most_precise(lhs_type, rhs_type)?;
                 if matches!(&*result_type, Type::Int) {
-                    Ok((
-                        Rc::clone(&result_type),
-                        Rc::clone(&result_type),
-                        op.to_integer_binary_semantic().expect("Already checked"),
-                    ))
+                    Ok(BinOpAdjustment {
+                        operand: Rc::clone(&result_type),
+                        result: result_type,
+                        operator: op.to_integer_binary_semantic().expect("Already checked"),
+                    })
                 } else if matches!(&*result_type, Type::Real) {
-                    Ok((
-                        Rc::clone(&result_type),
-                        Rc::clone(&result_type),
-                        op.to_real_binary_semantic().expect("Already checked"),
-                    ))
+                    Ok(BinOpAdjustment {
+                        operand: Rc::clone(&result_type),
+                        result: result_type,
+                        operator: op.to_real_binary_semantic().expect("Already checked"),
+                    })
                 } else {
                     Err(AnalysisError {
                         what: format!(
@@ -253,11 +255,11 @@ pub fn infer_binary_operator_type(
 
         SyntacticOperator::Mod => {
             if **lhs_type == **rhs_type && matches!(&**lhs_type, Type::Int) {
-                Ok((
-                    Rc::clone(lhs_type),
-                    Rc::clone(lhs_type),
-                    op.to_integer_binary_semantic().expect("Already checked"),
-                ))
+                Ok(BinOpAdjustment {
+                    operand: Rc::clone(lhs_type),
+                    result: Rc::clone(lhs_type),
+                    operator: op.to_integer_binary_semantic().expect("Already checked"),
+                })
             } else {
                 Err(AnalysisError {
                     what: format!(
@@ -272,19 +274,19 @@ pub fn infer_binary_operator_type(
         | SyntacticOperator::Gt
         | SyntacticOperator::Ge => {
             if lhs_type.is_scalar() && rhs_type.is_scalar() {
-                let result_type = Type::most_precise(lhs_type, rhs_type)?;
-                if matches!(&*result_type, Type::Int) {
-                    Ok((
-                        Rc::clone(&result_type),
-                        Rc::clone(&result_type),
-                        op.to_integer_binary_semantic().expect("Already checked"),
-                    ))
-                } else if matches!(&*result_type, Type::Real) {
-                    Ok((
-                        Rc::clone(&result_type),
-                        Rc::clone(&result_type),
-                        op.to_real_binary_semantic().expect("Already checked"),
-                    ))
+                let operand_type = Type::most_precise(lhs_type, rhs_type)?;
+                if matches!(&*operand_type, Type::Int) {
+                    Ok(BinOpAdjustment {
+                        result: Type::bool(),
+                        operand: operand_type,
+                        operator: op.to_integer_binary_semantic().expect("Already checked"),
+                    })
+                } else if matches!(&*operand_type, Type::Real) {
+                    Ok(BinOpAdjustment {
+                        result: Type::bool(),
+                        operand: operand_type,
+                        operator: op.to_real_binary_semantic().expect("Already checked"),
+                    })
                 } else {
                     Err(AnalysisError {
                         what: format!(

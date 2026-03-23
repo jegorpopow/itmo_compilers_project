@@ -70,7 +70,9 @@ Ok(
                             body: Expression(
                                 Cast {
                                     operand: Binop {
-                                        op: RealMul,
+                                        op: Real(
+                                            Mul,
+                                        ),
                                         lhs: Cast {
                                             operand: LvalueToRvalue(
                                                 Identifier(
@@ -214,7 +216,9 @@ Ok(
                             body: Expression(
                                 Cast {
                                     operand: Binop {
-                                        op: RealMul,
+                                        op: Real(
+                                            Mul,
+                                        ),
                                         lhs: Cast {
                                             operand: LvalueToRvalue(
                                                 Identifier(

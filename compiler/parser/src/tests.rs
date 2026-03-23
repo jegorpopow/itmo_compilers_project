@@ -1,12 +1,10 @@
-use crate::lexer::Lexer;
+use lexer::Lexer;
 
-fn lex(src: &str) -> String {
-    let mut result = String::new();
-    for token in Lexer::from(src) {
-        use core::fmt::Write;
-        writeln!(&mut result, "{token}").expect("Writing to a string won't fail");
-    }
-    result
+use crate::{ParsingError, Program, PureParsingResult, parse_program};
+
+fn parse(src: &str) -> PureParsingResult<(Program, Vec<ParsingError>)> {
+    let tokens: Vec<_> = Lexer::from(src).collect();
+    parse_program(&tokens)
 }
 
 macro_rules! tests {
@@ -16,14 +14,14 @@ macro_rules! tests {
             fn $name() {
                 let src = include_str!(concat!(
                     env!("CARGO_MANIFEST_DIR"),
-                    "/../tests/src/",
+                    "/../../tests/src/",
                     $file, ".i"
                 ));
                 ::expect_test::expect_file![concat!(
                     env!("CARGO_MANIFEST_DIR"),
-                    "/../tests/lexer/",
+                    "/../../tests/parser/",
                     $file ,".txt"
-                )].assert_eq(&lex(src))
+                )].assert_debug_eq(&parse(src))
             }
         )+
     };
@@ -52,7 +50,7 @@ tests! [
     parse_minus => "parse_minus",
     real_literals => "real_literals",
     records => "records",
-    recursive_functions => "recursive_function",
+    recursive_function => "recursive_function",
     recursive_types => "recursive_types",
     shadow => "shadow",
     type_aliases => "type_aliases",

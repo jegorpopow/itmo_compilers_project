@@ -1,28 +1,43 @@
 use super::*;
 
-use anyhow::bail;
+impl TestedCrate {
+    #[throws]
+    fn test_dir(self) -> PathBuf {
+        path_append(tests_dir()?, &[self.name()])
+    }
 
-#[throws]
-fn test_sources() -> TestDirContents {
-    list_tests(tests_dir()?.join("src")).context("Failed to get a list test sources")?
+    #[throws]
+    fn tests(self) -> TestDirContents {
+        list_tests(self.test_dir()?)?
+    }
 }
 
-#[throws]
-fn check_has_all_tests(actual: &TestDirContents, expected: &TestDirContents) {
-    let missing: Vec<_> = expected.names.difference(&actual.names).collect();
-    if !missing.is_empty() {
-        let mut msg = "Some tests are missing:".to_string();
-        for name in missing {
+fn diff<'a>(
+    lhs: &'a TestDirContents,
+    rhs: &'a TestDirContents,
+) -> impl Iterator<Item = [PathBuf; 2]> + use<'a> {
+    lhs.names
+        .difference(&rhs.names)
+        .map(|name| [lhs.name_to_path(name), rhs.name_to_path(name)])
+}
+
+fn check_has_all_tests(actual: &TestDirContents, expected: &TestDirContents) -> anyhow::Result<()> {
+    let missing: Vec<_> = diff(actual, expected)
+        .chain(diff(expected, actual))
+        .collect();
+    if missing.is_empty() {
+        Ok(())
+    } else {
+        let mut message = "Some files are missing:\n".to_string();
+        for [present, missing] in missing {
             use core::fmt::Write;
-            write!(
-                &mut msg,
-                "{:?} (expected because {:?} exists)",
-                actual.name_to_path(name),
-                expected.name_to_path(name)
+            writeln!(
+                &mut message,
+                "{missing:?} (expected because {present:?} exists)",
             )
             .expect("Writing to String can't fail")
         }
-        bail!("Some tests are missing: {msg}")
+        Err(Error::msg(message))
     }
 }
 
@@ -30,35 +45,36 @@ fn check_has_all_tests(actual: &TestDirContents, expected: &TestDirContents) {
 #[throws]
 fn all_files_are_used() {
     let srcs = test_sources()?;
-    assert_eq!(srcs.extension, "i");
-    let lexer_tests = lexer_tests()?;
-    assert_eq!(lexer_tests.extension, "txt");
-    check_has_all_tests(&lexer_tests, &srcs)?;
-    check_has_all_tests(&srcs, &lexer_tests)?;
+    for target in TestedCrate::iter() {
+        let tests = target.tests()?;
+        check_has_all_tests(&tests, &srcs)
+            .with_context(|| format!("Some tests are missing for {target}"))?;
+        check_has_all_tests(&srcs, &tests)
+            .with_context(|| format!("Unexpected tests for {target}"))?;
+    }
 }
 
 #[test]
 #[throws]
-fn lexer_has_all_test_cases() {
-    let path = lexer_tests_file()?;
-    let actual = fs::read_to_string(&path).with_context(|| {
-        format!(
-            "Failed to read the file with lexer tests ({})",
-            path.display()
-        )
-    })?;
-    let expected = lexer_tests()?;
-    #[expect(
-        clippy::iter_over_hash_type,
-        reason = "Do we really care about order of errors?"
-    )]
-    for name in &expected.names {
-        assert!(
-            actual.contains(&*format!(" => {name:?},")),
-            "Test case {name:?} is missing in {} (expected because {:?} exists).\n\
-            !!!! Consider running `cargo x update-lexer-tests`. !!!!",
-            path.display(),
-            expected.name_to_path(name)
-        )
+fn listings_are_up_to_date() {
+    let test_cases = TestCase::all()?;
+
+    for target in TestedCrate::iter() {
+        let test_file = target.tests_file()?;
+        let actual = fs::read_to_string(&test_file).with_context(|| {
+            format!(
+                "Failed to read the file with {target} tests ({})",
+                test_file.display()
+            )
+        })?;
+        for case in &test_cases {
+            let expected = case.to_string();
+            assert!(
+                actual.contains(&expected),
+                "Test case `{expected}` is missing in {target} (expected because {:?} exists).\n\
+                !!!! Consider running `cargo x update-listings`. !!!!",
+                case.src_path.display()
+            )
+        }
     }
 }

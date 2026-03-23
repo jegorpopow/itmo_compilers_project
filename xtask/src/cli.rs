@@ -9,8 +9,8 @@ use clap::Parser;
 )]
 #[derive(Debug)]
 pub(crate) enum Task {
-    /// Update test cases listed in lexer src based on tests/ dir content
-    UpdateLexerTests,
+    /// Update test cases listed in source files based on tests/src/ dir content
+    UpdateListings,
 }
 
 impl Task {

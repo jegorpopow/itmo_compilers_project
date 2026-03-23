@@ -118,7 +118,9 @@ Ok(
                                         Stmt(
                                             While {
                                                 condition: Binop {
-                                                    op: Neq,
+                                                    op: Eq(
+                                                        Ne,
+                                                    ),
                                                     lhs: LvalueToRvalue(
                                                         Identifier(
                                                             n(1),
@@ -136,9 +138,13 @@ Ok(
                                                         Stmt(
                                                             If {
                                                                 condition: Binop {
-                                                                    op: Eq,
+                                                                    op: Eq(
+                                                                        Eq,
+                                                                    ),
                                                                     lhs: Binop {
-                                                                        op: IntMod,
+                                                                        op: Int(
+                                                                            Mod,
+                                                                        ),
                                                                         lhs: LvalueToRvalue(
                                                                             Identifier(
                                                                                 n(1),
@@ -166,7 +172,9 @@ Ok(
                                                                                     n(1),
                                                                                 ),
                                                                                 rhs: Binop {
-                                                                                    op: IntDiv,
+                                                                                    op: Int(
+                                                                                        Div,
+                                                                                    ),
                                                                                     lhs: LvalueToRvalue(
                                                                                         Identifier(
                                                                                             n(1),
@@ -192,9 +200,13 @@ Ok(
                                                                                         n(1),
                                                                                     ),
                                                                                     rhs: Binop {
-                                                                                        op: IntAdd,
+                                                                                        op: Int(
+                                                                                            Add,
+                                                                                        ),
                                                                                         lhs: Binop {
-                                                                                            op: IntMul,
+                                                                                            op: Int(
+                                                                                                Mul,
+                                                                                            ),
                                                                                             lhs: IntegerLiteral(
                                                                                                 IntegerLiteral {
                                                                                                     repr: "3",
@@ -227,7 +239,9 @@ Ok(
                                                                     steps(2),
                                                                 ),
                                                                 rhs: Binop {
-                                                                    op: IntAdd,
+                                                                    op: Int(
+                                                                        Add,
+                                                                    ),
                                                                     lhs: LvalueToRvalue(
                                                                         Identifier(
                                                                             steps(2),
