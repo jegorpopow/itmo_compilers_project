@@ -442,12 +442,12 @@ impl Converter {
 
         match &*converted_effective_type {
             Type::Int | Type::Real | Type::Bool | Type::Null | Type::Unit => Err(AnalysisError {
-                what: format!("No new operator supprted for built-in type {t:?}"),
+                what: format!("No new operator supported for built-in type {t:?}"),
             })?,
             Type::Alias(_) => unreachable!("Effective type can not be alias"),
             Type::Record(_) => {
-                let defined_fields = fields.unwrap_or_default();
-                let converted_fields: Vec<(RawIdentifier, Rc<Expression>)> = defined_fields
+                let converted_fields: Vec<(RawIdentifier, Rc<Expression>)> = fields
+                    .unwrap_or_default()
                     .iter()
                     .map(|(name, expr)| {
                         self.convert_expr(expr).and_then(
@@ -476,26 +476,24 @@ impl Converter {
                     ty: converted_type,
                 })
             }
+            Type::Array(_) if fields.is_some() => Err(AnalysisError {
+                what: format!("No field initialization possible for array type {t:?}"),
+            }),
 
-            Type::Array(array_description) => {
-                if fields.is_none() && array_description.length.is_some() {
-                    Ok(Typed {
-                        value: Rc::new(Expression::New {
-                            t: Rc::clone(&converted_type),
-                            fields: None,
-                        }),
-                        ty: converted_type,
-                    })
-                } else if fields.is_some() {
-                    Err(AnalysisError {
-                        what: format!("No field initialisation possible for array type {t:?}"),
-                    })
-                } else {
-                    Err(AnalysisError {
-                        what: format!("No new length known array creation {t:?}"),
-                    })
-                }
-            }
+            Type::Array(ArrayDescription { length: None, t: _ }) => Err(AnalysisError {
+                what: format!("No new length known array creation {t:?}"),
+            }),
+            
+            Type::Array(ArrayDescription {
+                length: Some(_),
+                t: _,
+            }) => Ok(Typed {
+                value: Rc::new(Expression::New {
+                    t: Rc::clone(&converted_type),
+                    fields: None,
+                }),
+                ty: converted_type,
+            }),
         }
     }
 
