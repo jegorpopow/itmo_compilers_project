@@ -20,7 +20,7 @@ Ok(
                                     [
                                         Stmt(
                                             If {
-                                                condition: Binop {
+                                                condition: BinOp {
                                                     op: Lt,
                                                     lhs: LvalueToRvalue(
                                                         Identifier(
@@ -41,7 +41,7 @@ Ok(
                                                                 lhs: Identifier(
                                                                     r"value",
                                                                 ),
-                                                                rhs: Binop {
+                                                                rhs: BinOp {
                                                                     op: Sub,
                                                                     lhs: RealLiteral(
                                                                         RealLiteral {
@@ -102,9 +102,9 @@ Ok(
                                         ),
                                         Stmt(
                                             If {
-                                                condition: Binop {
+                                                condition: BinOp {
                                                     op: Eq,
-                                                    lhs: Binop {
+                                                    lhs: BinOp {
                                                         op: Mod,
                                                         lhs: LvalueToRvalue(
                                                             Identifier(

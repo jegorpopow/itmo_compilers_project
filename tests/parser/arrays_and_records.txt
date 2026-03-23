@@ -30,7 +30,7 @@ Ok(
                                     r"point",
                                 ),
                                 length: Some(
-                                    Binop {
+                                    BinOp {
                                         op: Add,
                                         lhs: IntegerLiteral(
                                             IntegerLiteral {
@@ -84,11 +84,11 @@ Ok(
                         return_type: None,
                         body: Some(
                             Expression(
-                                Binop {
+                                BinOp {
                                     op: Lt,
-                                    lhs: Binop {
+                                    lhs: BinOp {
                                         op: Mul,
-                                        lhs: Binop {
+                                        lhs: BinOp {
                                             op: Sub,
                                             lhs: LvalueToRvalue(
                                                 Identifier(
@@ -101,7 +101,7 @@ Ok(
                                                 ),
                                             ),
                                         },
-                                        rhs: Binop {
+                                        rhs: BinOp {
                                             op: Sub,
                                             lhs: LvalueToRvalue(
                                                 Identifier(
@@ -115,7 +115,7 @@ Ok(
                                             ),
                                         },
                                     },
-                                    rhs: Binop {
+                                    rhs: BinOp {
                                         op: Mul,
                                         lhs: LvalueToRvalue(
                                             Identifier(
@@ -159,11 +159,11 @@ Ok(
                                     [
                                         Stmt(
                                             Return {
-                                                value: Binop {
+                                                value: BinOp {
                                                     op: Add,
-                                                    lhs: Binop {
+                                                    lhs: BinOp {
                                                         op: Mul,
-                                                        lhs: Binop {
+                                                        lhs: BinOp {
                                                             op: Sub,
                                                             lhs: LvalueToRvalue(
                                                                 Member {
@@ -182,7 +182,7 @@ Ok(
                                                                 },
                                                             ),
                                                         },
-                                                        rhs: Binop {
+                                                        rhs: BinOp {
                                                             op: Sub,
                                                             lhs: LvalueToRvalue(
                                                                 Member {
@@ -202,9 +202,9 @@ Ok(
                                                             ),
                                                         },
                                                     },
-                                                    rhs: Binop {
+                                                    rhs: BinOp {
                                                         op: Mul,
-                                                        lhs: Binop {
+                                                        lhs: BinOp {
                                                             op: Sub,
                                                             lhs: LvalueToRvalue(
                                                                 Member {
@@ -223,7 +223,7 @@ Ok(
                                                                 },
                                                             ),
                                                         },
-                                                        rhs: Binop {
+                                                        rhs: BinOp {
                                                             op: Sub,
                                                             lhs: LvalueToRvalue(
                                                                 Member {
@@ -266,14 +266,14 @@ Ok(
                         return_type: None,
                         body: Some(
                             Expression(
-                                Binop {
+                                BinOp {
                                     op: Or,
-                                    lhs: Binop {
+                                    lhs: BinOp {
                                         op: Or,
                                         lhs: Call {
                                             callee: r"approximately_eq",
                                             args: [
-                                                Binop {
+                                                BinOp {
                                                     op: Add,
                                                     lhs: Call {
                                                         callee: r"squared_distance",
@@ -379,7 +379,7 @@ Ok(
                                         rhs: Call {
                                             callee: r"approximately_eq",
                                             args: [
-                                                Binop {
+                                                BinOp {
                                                     op: Add,
                                                     lhs: Call {
                                                         callee: r"squared_distance",
@@ -486,7 +486,7 @@ Ok(
                                     rhs: Call {
                                         callee: r"approximately_eq",
                                         args: [
-                                            Binop {
+                                            BinOp {
                                                 op: Add,
                                                 lhs: Call {
                                                     callee: r"squared_distance",

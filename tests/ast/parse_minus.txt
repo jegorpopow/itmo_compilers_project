@@ -27,7 +27,7 @@ Ok(
                         VarDecl {
                             t: Int,
                             initialiser: Some(
-                                Binop {
+                                BinOp {
                                     op: Int(
                                         Sub,
                                     ),
@@ -57,7 +57,7 @@ Ok(
                         VarDecl {
                             t: Int,
                             initialiser: Some(
-                                Binop {
+                                BinOp {
                                     op: Int(
                                         Sub,
                                     ),
@@ -87,7 +87,7 @@ Ok(
                         VarDecl {
                             t: Int,
                             initialiser: Some(
-                                Binop {
+                                BinOp {
                                     op: Int(
                                         Add,
                                     ),
@@ -97,7 +97,7 @@ Ok(
                                             value: -5,
                                         },
                                     ),
-                                    rhs: Binop {
+                                    rhs: BinOp {
                                         op: Int(
                                             Add,
                                         ),
@@ -128,7 +128,7 @@ Ok(
                         VarDecl {
                             t: Int,
                             initialiser: Some(
-                                Unop {
+                                UnOp {
                                     op: IntNeg,
                                     operand: IntegerLiteral(
                                         IntegerLiteral {
@@ -173,7 +173,7 @@ Ok(
                         VarDecl {
                             t: Int,
                             initialiser: Some(
-                                Binop {
+                                BinOp {
                                     op: Int(
                                         Sub,
                                     ),
@@ -203,7 +203,7 @@ Ok(
                         VarDecl {
                             t: Int,
                             initialiser: Some(
-                                Binop {
+                                BinOp {
                                     op: Int(
                                         Sub,
                                     ),
@@ -233,7 +233,7 @@ Ok(
                         VarDecl {
                             t: Int,
                             initialiser: Some(
-                                Binop {
+                                BinOp {
                                     op: Int(
                                         Add,
                                     ),
@@ -243,7 +243,7 @@ Ok(
                                             value: -5,
                                         },
                                     ),
-                                    rhs: Binop {
+                                    rhs: BinOp {
                                         op: Int(
                                             Add,
                                         ),
@@ -274,7 +274,7 @@ Ok(
                         VarDecl {
                             t: Int,
                             initialiser: Some(
-                                Unop {
+                                UnOp {
                                     op: IntNeg,
                                     operand: IntegerLiteral(
                                         IntegerLiteral {

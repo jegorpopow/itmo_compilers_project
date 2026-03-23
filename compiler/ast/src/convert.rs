@@ -321,7 +321,7 @@ impl Converter {
         Ok(match op {
             SyntacticOperator::Neg => match &*operand_type {
                 Type::Bool => Typed {
-                    value: Rc::new(Expression::Unop {
+                    value: Rc::new(Expression::UnOp {
                         op: SemanticUnaryOperator::BoolNeg,
                         operand: converted_operand,
                     }),
@@ -341,14 +341,14 @@ impl Converter {
             },
             SyntacticOperator::Sub => match &*operand_type {
                 Type::Int => Typed {
-                    value: Rc::new(Expression::Unop {
+                    value: Rc::new(Expression::UnOp {
                         op: SemanticUnaryOperator::IntNeg,
                         operand: converted_operand,
                     }),
                     ty: Rc::new(Type::Int),
                 },
                 Type::Real => Typed {
-                    value: Rc::new(Expression::Unop {
+                    value: Rc::new(Expression::UnOp {
                         op: SemanticUnaryOperator::RealNeg,
                         operand: converted_operand,
                     }),
@@ -550,7 +550,7 @@ impl Converter {
                 ty: Rc::new(Type::Bool),
             },
             parser::Expression::Call { callee, args } => self.convert_call(callee, args)?,
-            parser::Expression::Binop { op, lhs, rhs } => {
+            parser::Expression::BinOp { op, lhs, rhs } => {
                 let Typed {
                     value: converted_lhs,
                     ty: lhs_type,
@@ -569,7 +569,7 @@ impl Converter {
                 let actual_rhs = cast_to(converted_rhs, &rhs_type, &operand_type)?;
 
                 Typed {
-                    value: Rc::new(Expression::Binop {
+                    value: Rc::new(Expression::BinOp {
                         op: semantic_op,
                         lhs: actual_lhs,
                         rhs: actual_rhs,
@@ -577,7 +577,7 @@ impl Converter {
                     ty: result_type,
                 }
             }
-            parser::Expression::Unop { op, operand } => {
+            parser::Expression::UnOp { op, operand } => {
                 Self::convert_unary(*op, self.convert_expr(operand)?)?
             }
             parser::Expression::Cast { operand, target } => {

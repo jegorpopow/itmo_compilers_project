@@ -117,7 +117,7 @@ Ok(
                                         ),
                                         Stmt(
                                             While {
-                                                condition: Binop {
+                                                condition: BinOp {
                                                     op: Eq(
                                                         Ne,
                                                     ),
@@ -137,11 +137,11 @@ Ok(
                                                     [
                                                         Stmt(
                                                             If {
-                                                                condition: Binop {
+                                                                condition: BinOp {
                                                                     op: Eq(
                                                                         Eq,
                                                                     ),
-                                                                    lhs: Binop {
+                                                                    lhs: BinOp {
                                                                         op: Int(
                                                                             Mod,
                                                                         ),
@@ -171,7 +171,7 @@ Ok(
                                                                                 lhs: Identifier(
                                                                                     n(1),
                                                                                 ),
-                                                                                rhs: Binop {
+                                                                                rhs: BinOp {
                                                                                     op: Int(
                                                                                         Div,
                                                                                     ),
@@ -199,11 +199,11 @@ Ok(
                                                                                     lhs: Identifier(
                                                                                         n(1),
                                                                                     ),
-                                                                                    rhs: Binop {
+                                                                                    rhs: BinOp {
                                                                                         op: Int(
                                                                                             Add,
                                                                                         ),
-                                                                                        lhs: Binop {
+                                                                                        lhs: BinOp {
                                                                                             op: Int(
                                                                                                 Mul,
                                                                                             ),
@@ -238,7 +238,7 @@ Ok(
                                                                 lhs: Identifier(
                                                                     steps(2),
                                                                 ),
-                                                                rhs: Binop {
+                                                                rhs: BinOp {
                                                                     op: Int(
                                                                         Add,
                                                                     ),

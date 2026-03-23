@@ -168,7 +168,7 @@ Ok(
                                                                 lhs: Identifier(
                                                                     r"result",
                                                                 ),
-                                                                rhs: Binop {
+                                                                rhs: BinOp {
                                                                     op: Add,
                                                                     lhs: LvalueToRvalue(
                                                                         Identifier(
@@ -266,14 +266,14 @@ Ok(
                                                                     [
                                                                         Stmt(
                                                                             If {
-                                                                                condition: Binop {
+                                                                                condition: BinOp {
                                                                                     op: Gt,
                                                                                     lhs: LvalueToRvalue(
                                                                                         Index {
                                                                                             lhs: Identifier(
                                                                                                 r"a",
                                                                                             ),
-                                                                                            index: Binop {
+                                                                                            index: BinOp {
                                                                                                 op: Sub,
                                                                                                 lhs: LvalueToRvalue(
                                                                                                     Identifier(
@@ -341,7 +341,7 @@ Ok(
                                                                                                         lhs: Identifier(
                                                                                                             r"a",
                                                                                                         ),
-                                                                                                        index: Binop {
+                                                                                                        index: BinOp {
                                                                                                             op: Sub,
                                                                                                             lhs: LvalueToRvalue(
                                                                                                                 Identifier(
@@ -365,7 +365,7 @@ Ok(
                                                                                                     lhs: Identifier(
                                                                                                         r"a",
                                                                                                     ),
-                                                                                                    index: Binop {
+                                                                                                    index: BinOp {
                                                                                                         op: Sub,
                                                                                                         lhs: LvalueToRvalue(
                                                                                                             Identifier(

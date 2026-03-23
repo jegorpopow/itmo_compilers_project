@@ -21,7 +21,7 @@ Ok(
                         name: r"b",
                         t: None,
                         initialiser: Some(
-                            Binop {
+                            BinOp {
                                 op: Sub,
                                 lhs: IntegerLiteral(
                                     IntegerLiteral {
@@ -44,7 +44,7 @@ Ok(
                         name: r"c",
                         t: None,
                         initialiser: Some(
-                            Binop {
+                            BinOp {
                                 op: Sub,
                                 lhs: IntegerLiteral(
                                     IntegerLiteral {
@@ -67,7 +67,7 @@ Ok(
                         name: r"d",
                         t: None,
                         initialiser: Some(
-                            Binop {
+                            BinOp {
                                 op: Add,
                                 lhs: IntegerLiteral(
                                     IntegerLiteral {
@@ -75,7 +75,7 @@ Ok(
                                         value: -5,
                                     },
                                 ),
-                                rhs: Binop {
+                                rhs: BinOp {
                                     op: Add,
                                     lhs: IntegerLiteral(
                                         IntegerLiteral {
@@ -99,7 +99,7 @@ Ok(
                         name: r"e",
                         t: None,
                         initialiser: Some(
-                            Unop {
+                            UnOp {
                                 op: Sub,
                                 operand: IntegerLiteral(
                                     IntegerLiteral {

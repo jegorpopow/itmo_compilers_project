@@ -107,7 +107,7 @@ Ok(
                         return_type: None,
                         body: Some(
                             Expression(
-                                Binop {
+                                BinOp {
                                     op: Eq,
                                     lhs: LvalueToRvalue(
                                         Identifier(
@@ -158,7 +158,7 @@ Ok(
                                         ),
                                         Stmt(
                                             While {
-                                                condition: Unop {
+                                                condition: UnOp {
                                                     op: Neg,
                                                     operand: Call {
                                                         callee: r"is_empty",
@@ -178,7 +178,7 @@ Ok(
                                                                 lhs: Identifier(
                                                                     r"result",
                                                                 ),
-                                                                rhs: Binop {
+                                                                rhs: BinOp {
                                                                     op: Add,
                                                                     lhs: LvalueToRvalue(
                                                                         Identifier(
@@ -262,7 +262,7 @@ Ok(
                                         ),
                                         Stmt(
                                             While {
-                                                condition: Unop {
+                                                condition: UnOp {
                                                     op: Neg,
                                                     operand: Call {
                                                         callee: r"is_empty",

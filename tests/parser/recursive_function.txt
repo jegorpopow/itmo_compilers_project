@@ -20,7 +20,7 @@ Ok(
                                     [
                                         Stmt(
                                             If {
-                                                condition: Binop {
+                                                condition: BinOp {
                                                     op: Le,
                                                     lhs: LvalueToRvalue(
                                                         Identifier(
@@ -53,12 +53,12 @@ Ok(
                                                         [
                                                             Stmt(
                                                                 Return {
-                                                                    value: Binop {
+                                                                    value: BinOp {
                                                                         op: Add,
                                                                         lhs: Call {
                                                                             callee: r"fibonacci",
                                                                             args: [
-                                                                                Binop {
+                                                                                BinOp {
                                                                                     op: Sub,
                                                                                     lhs: LvalueToRvalue(
                                                                                         Identifier(
@@ -77,7 +77,7 @@ Ok(
                                                                         rhs: Call {
                                                                             callee: r"fibonacci",
                                                                             args: [
-                                                                                Binop {
+                                                                                BinOp {
                                                                                     op: Sub,
                                                                                     lhs: LvalueToRvalue(
                                                                                         Identifier(

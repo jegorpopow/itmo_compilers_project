@@ -564,7 +564,7 @@ Ok(
                                                                 lhs: Identifier(
                                                                     result(6),
                                                                 ),
-                                                                rhs: Binop {
+                                                                rhs: BinOp {
                                                                     op: Int(
                                                                         Add,
                                                                     ),
@@ -693,7 +693,7 @@ Ok(
                                                                     [
                                                                         Stmt(
                                                                             If {
-                                                                                condition: Binop {
+                                                                                condition: BinOp {
                                                                                     op: Int(
                                                                                         Gt,
                                                                                     ),
@@ -702,7 +702,7 @@ Ok(
                                                                                             lhs: Identifier(
                                                                                                 a(8),
                                                                                             ),
-                                                                                            index: Binop {
+                                                                                            index: BinOp {
                                                                                                 op: Int(
                                                                                                     Sub,
                                                                                                 ),
@@ -779,7 +779,7 @@ Ok(
                                                                                                         lhs: Identifier(
                                                                                                             a(8),
                                                                                                         ),
-                                                                                                        index: Binop {
+                                                                                                        index: BinOp {
                                                                                                             op: Int(
                                                                                                                 Sub,
                                                                                                             ),
@@ -805,7 +805,7 @@ Ok(
                                                                                                     lhs: Identifier(
                                                                                                         a(8),
                                                                                                     ),
-                                                                                                    index: Binop {
+                                                                                                    index: BinOp {
                                                                                                         op: Int(
                                                                                                             Sub,
                                                                                                         ),

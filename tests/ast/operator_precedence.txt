@@ -151,11 +151,11 @@ Ok(
                                     [
                                         Stmt(
                                             Print {
-                                                value: Binop {
+                                                value: BinOp {
                                                     op: Bool(
                                                         And,
                                                     ),
-                                                    lhs: Binop {
+                                                    lhs: BinOp {
                                                         op: Int(
                                                             Lt,
                                                         ),
@@ -172,7 +172,7 @@ Ok(
                                                             },
                                                         ),
                                                     },
-                                                    rhs: Binop {
+                                                    rhs: BinOp {
                                                         op: Int(
                                                             Gt,
                                                         ),
@@ -194,11 +194,11 @@ Ok(
                                         ),
                                         Stmt(
                                             Print {
-                                                value: Binop {
+                                                value: BinOp {
                                                     op: Bool(
                                                         Or,
                                                     ),
-                                                    lhs: Binop {
+                                                    lhs: BinOp {
                                                         op: Bool(
                                                             And,
                                                         ),
@@ -209,7 +209,7 @@ Ok(
                                                             False,
                                                         ),
                                                     },
-                                                    rhs: Binop {
+                                                    rhs: BinOp {
                                                         op: Eq(
                                                             Eq,
                                                         ),
@@ -231,7 +231,7 @@ Ok(
                                         ),
                                         Stmt(
                                             Print {
-                                                value: Binop {
+                                                value: BinOp {
                                                     op: Int(
                                                         Add,
                                                     ),
@@ -239,7 +239,7 @@ Ok(
                                                         callee: g(1),
                                                         args: [],
                                                     },
-                                                    rhs: Binop {
+                                                    rhs: BinOp {
                                                         op: Int(
                                                             Mul,
                                                         ),
@@ -257,11 +257,11 @@ Ok(
                                         ),
                                         Stmt(
                                             Print {
-                                                value: Binop {
+                                                value: BinOp {
                                                     op: Int(
                                                         Mod,
                                                     ),
-                                                    lhs: Binop {
+                                                    lhs: BinOp {
                                                         op: Int(
                                                             Mod,
                                                         ),
@@ -289,11 +289,11 @@ Ok(
                                         ),
                                         Stmt(
                                             Print {
-                                                value: Binop {
+                                                value: BinOp {
                                                     op: Int(
                                                         Mul,
                                                     ),
-                                                    lhs: Binop {
+                                                    lhs: BinOp {
                                                         op: Int(
                                                             Add,
                                                         ),
@@ -315,11 +315,11 @@ Ok(
                                         ),
                                         Stmt(
                                             Print {
-                                                value: Binop {
+                                                value: BinOp {
                                                     op: Int(
                                                         Div,
                                                     ),
-                                                    lhs: Binop {
+                                                    lhs: BinOp {
                                                         op: Int(
                                                             Div,
                                                         ),

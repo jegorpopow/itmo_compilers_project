@@ -29,7 +29,7 @@ Ok(
                         body: Some(
                             Expression(
                                 Cast {
-                                    operand: Binop {
+                                    operand: BinOp {
                                         op: Mul,
                                         lhs: Cast {
                                             operand: LvalueToRvalue(

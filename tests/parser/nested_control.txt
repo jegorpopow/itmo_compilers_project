@@ -27,7 +27,7 @@ Ok(
                                         ),
                                         Stmt(
                                             While {
-                                                condition: Binop {
+                                                condition: BinOp {
                                                     op: Lt,
                                                     lhs: LvalueToRvalue(
                                                         Identifier(
@@ -59,7 +59,7 @@ Ok(
                                                         ),
                                                         Stmt(
                                                             While {
-                                                                condition: Binop {
+                                                                condition: BinOp {
                                                                     op: Lt,
                                                                     lhs: LvalueToRvalue(
                                                                         Identifier(
@@ -91,7 +91,7 @@ Ok(
                                                                         ),
                                                                         Stmt(
                                                                             While {
-                                                                                condition: Binop {
+                                                                                condition: BinOp {
                                                                                     op: Lt,
                                                                                     lhs: LvalueToRvalue(
                                                                                         Identifier(
@@ -123,7 +123,7 @@ Ok(
                                                                                         ),
                                                                                         Stmt(
                                                                                             While {
-                                                                                                condition: Binop {
+                                                                                                condition: BinOp {
                                                                                                     op: Lt,
                                                                                                     lhs: LvalueToRvalue(
                                                                                                         Identifier(
@@ -155,7 +155,7 @@ Ok(
                                                                                                         ),
                                                                                                         Stmt(
                                                                                                             While {
-                                                                                                                condition: Binop {
+                                                                                                                condition: BinOp {
                                                                                                                     op: Lt,
                                                                                                                     lhs: LvalueToRvalue(
                                                                                                                         Identifier(
@@ -221,7 +221,7 @@ Ok(
                                                                                                                                 lhs: Identifier(
                                                                                                                                     r"v",
                                                                                                                                 ),
-                                                                                                                                rhs: Binop {
+                                                                                                                                rhs: BinOp {
                                                                                                                                     op: Add,
                                                                                                                                     lhs: LvalueToRvalue(
                                                                                                                                         Identifier(
@@ -246,7 +246,7 @@ Ok(
                                                                                                                 lhs: Identifier(
                                                                                                                     r"w",
                                                                                                                 ),
-                                                                                                                rhs: Binop {
+                                                                                                                rhs: BinOp {
                                                                                                                     op: Add,
                                                                                                                     lhs: LvalueToRvalue(
                                                                                                                         Identifier(
@@ -271,7 +271,7 @@ Ok(
                                                                                                 lhs: Identifier(
                                                                                                     r"k",
                                                                                                 ),
-                                                                                                rhs: Binop {
+                                                                                                rhs: BinOp {
                                                                                                     op: Add,
                                                                                                     lhs: LvalueToRvalue(
                                                                                                         Identifier(
@@ -296,7 +296,7 @@ Ok(
                                                                                 lhs: Identifier(
                                                                                     r"j",
                                                                                 ),
-                                                                                rhs: Binop {
+                                                                                rhs: BinOp {
                                                                                     op: Add,
                                                                                     lhs: LvalueToRvalue(
                                                                                         Identifier(
@@ -321,7 +321,7 @@ Ok(
                                                                 lhs: Identifier(
                                                                     r"i",
                                                                 ),
-                                                                rhs: Binop {
+                                                                rhs: BinOp {
                                                                     op: Add,
                                                                     lhs: LvalueToRvalue(
                                                                         Identifier(

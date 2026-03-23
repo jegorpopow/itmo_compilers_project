@@ -77,7 +77,7 @@ Ok(
                                     [
                                         Stmt(
                                             If {
-                                                condition: Binop {
+                                                condition: BinOp {
                                                     op: Int(
                                                         Le,
                                                     ),
@@ -112,14 +112,14 @@ Ok(
                                                         [
                                                             Stmt(
                                                                 Return {
-                                                                    value: Binop {
+                                                                    value: BinOp {
                                                                         op: Int(
                                                                             Add,
                                                                         ),
                                                                         lhs: Call {
                                                                             callee: fibonacci(0),
                                                                             args: [
-                                                                                Binop {
+                                                                                BinOp {
                                                                                     op: Int(
                                                                                         Sub,
                                                                                     ),
@@ -140,7 +140,7 @@ Ok(
                                                                         rhs: Call {
                                                                             callee: fibonacci(0),
                                                                             args: [
-                                                                                Binop {
+                                                                                BinOp {
                                                                                     op: Int(
                                                                                         Sub,
                                                                                     ),

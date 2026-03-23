@@ -69,12 +69,12 @@ pub enum Expression {
         callee: Identifier,
         args: Vec<Rc<Expression>>,
     },
-    Binop {
+    BinOp {
         op: SemanticBinaryOperator,
         lhs: Rc<Expression>,
         rhs: Rc<Expression>,
     },
-    Unop {
+    UnOp {
         op: SemanticUnaryOperator,
         operand: Rc<Expression>,
     },
@@ -209,7 +209,7 @@ impl Expression {
             Expression::BoolLiteral(bool_literal) => {
                 Ok(EvaluatedValue::Bool(bool_literal.to_bool()))
             }
-            Expression::Binop { op, lhs, rhs } => {
+            Expression::BinOp { op, lhs, rhs } => {
                 let lhs = lhs.try_constexpr_evaluate()?;
                 let rhs = rhs.try_constexpr_evaluate()?;
                 Ok(match op {
@@ -220,7 +220,7 @@ impl Expression {
                 })
             }
 
-            Expression::Unop { op, operand } => {
+            Expression::UnOp { op, operand } => {
                 let operand = operand.try_constexpr_evaluate()?;
                 Ok(match op {
                     SemanticUnaryOperator::IntNeg => EvaluatedValue::Int(-operand.as_int()?),

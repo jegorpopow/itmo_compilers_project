@@ -656,7 +656,7 @@ impl Parser {
                     next = self.next(next);
                     let (rhs, rest) = self.parse_operators(ops.clone(), atom.clone(), next)?;
                     next = rest;
-                    head = Rc::new(Expression::Binop {
+                    head = Rc::new(Expression::BinOp {
                         op: *op,
                         lhs: head,
                         rhs,
@@ -717,7 +717,7 @@ impl Parser {
             Self::parse_atom,
             i,
         )
-        .map(|(atom, i)| (Rc::new(Expression::Unop { op, operand: atom }), i))
+        .map(|(atom, i)| (Rc::new(Expression::UnOp { op, operand: atom }), i))
     }
 
     fn parse_new<'a, 'b: 'a>(
