@@ -464,6 +464,14 @@ impl Parser {
         }
     }
 
+    fn parse_keyword<'a, 'b: 'a>(
+        &mut self,
+        keyword: Keyword,
+        i: IndexedIterator<'a, 'b>,
+    ) -> ParsingResult<'a, 'b, ()> {
+        self.parse_known_kind(&TokenKind::Keyword(keyword), i)
+    }
+
     fn parse_semicolon<'a, 'b: 'a>(
         &mut self,
         i: IndexedIterator<'a, 'b>,
@@ -487,25 +495,25 @@ impl Parser {
         &mut self,
         i: IndexedIterator<'a, 'b>,
     ) -> ParsingResult<'a, 'b, ()> {
-        self.parse_known_kind(&TokenKind::Keyword(Keyword::End), i)
+        self.parse_keyword(Keyword::End, i)
     }
 
     fn parse_kw_loop<'a, 'b: 'a>(
         &mut self,
         i: IndexedIterator<'a, 'b>,
     ) -> ParsingResult<'a, 'b, ()> {
-        self.parse_known_kind(&TokenKind::Keyword(Keyword::Loop), i)
+        self.parse_keyword(Keyword::Loop, i)
     }
 
     fn parse_kw_where<'a, 'b: 'a>(
         &mut self,
         i: IndexedIterator<'a, 'b>,
     ) -> ParsingResult<'a, 'b, ()> {
-        self.parse_known_kind(&TokenKind::Keyword(Keyword::Where), i)
+        self.parse_keyword(Keyword::Where, i)
     }
 
     fn parse_kw_is<'a, 'b: 'a>(&mut self, i: IndexedIterator<'a, 'b>) -> ParsingResult<'a, 'b, ()> {
-        self.parse_known_kind(&TokenKind::Keyword(Keyword::Is), i)
+        self.parse_keyword(Keyword::Is, i)
     }
 
     fn parse_left_bracket<'a, 'b: 'a>(
@@ -566,7 +574,7 @@ impl Parser {
         &mut self,
         i: IndexedIterator<'a, 'b>,
     ) -> ParsingResult<'a, 'b, FieldDescription> {
-        let ((), next) = self.parse_known_kind(&TokenKind::Keyword(Keyword::Var), i)?;
+        let ((), next) = self.parse_keyword(Keyword::Var, i)?;
         let (ident, next) = self.parse_identifier(next)?;
         let ((), next) = self.parse_kw_is(next)?;
         let (t, next) = self.parse_type(next)?;
@@ -578,13 +586,13 @@ impl Parser {
         &mut self,
         i: IndexedIterator<'a, 'b>,
     ) -> ParsingResult<'a, 'b, RecordDescription> {
-        let ((), next) = self.parse_known_kind(&TokenKind::Keyword(Keyword::Record), i)?;
+        let ((), next) = self.parse_keyword(Keyword::Record, i)?;
         let (fields, next) = self.parse_many(
             |ctx, i| ctx.parse_before(Self::parse_field_description, Self::parse_semicolon, i),
             next,
         )?;
 
-        let ((), next) = self.parse_known_kind(&TokenKind::Keyword(Keyword::End), next)?;
+        let ((), next) = self.parse_keyword(Keyword::End, next)?;
         Ok((RecordDescription { fields }, next))
     }
 
@@ -592,7 +600,7 @@ impl Parser {
         &mut self,
         i: IndexedIterator<'a, 'b>,
     ) -> ParsingResult<'a, 'b, ArrayDescription> {
-        let ((), next) = self.parse_known_kind(&TokenKind::Keyword(Keyword::Array), i)?;
+        let ((), next) = self.parse_keyword(Keyword::Array, i)?;
         let (length, next) =
             self.parse_in_brackets(|ctx, i| ctx.try_parse(Self::parse_expr, i), next)?;
         let (element_type, next) = self.parse_type(next)?;
@@ -725,7 +733,7 @@ impl Parser {
         i: IndexedIterator<'a, 'b>,
     ) -> ParsingResult<'a, 'b, Rc<Expression>> {
         self.parse_after(
-            |ctx, i| ctx.parse_known_kind(&TokenKind::Keyword(Keyword::New), i),
+            |ctx, i| ctx.parse_keyword(Keyword::New, i),
             |ctx, i| {
                 let (t, next) = ctx.parse_type(i)?;
                 let (fields, next) = ctx.try_parse(
@@ -785,7 +793,7 @@ impl Parser {
         let (mut head, mut next) = self
             .parse_call(i)
             .or_else(|_| {
-                self.parse_known_kind(&TokenKind::Keyword(Keyword::Null), i)
+                self.parse_keyword(Keyword::Null, i)
                     .map(|((), next)| (Rc::new(Expression::Null), next))
             })
             .or_else(|_| {
@@ -863,7 +871,7 @@ impl Parser {
         &mut self,
         i: IndexedIterator<'a, 'b>,
     ) -> ParsingResult<'a, 'b, VarDecl> {
-        let ((), next) = self.parse_known_kind(&TokenKind::Keyword(Keyword::Var), i)?;
+        let ((), next) = self.parse_keyword(Keyword::Var, i)?;
         let (name, next) = self.parse_identifier(next)?;
         let (t, next) = self.try_parse(
             |ctx, i| ctx.parse_after(Self::parse_colon, Self::parse_type, i),
@@ -888,7 +896,7 @@ impl Parser {
         &mut self,
         i: IndexedIterator<'a, 'b>,
     ) -> ParsingResult<'a, 'b, TypeDecl> {
-        let ((), next) = self.parse_known_kind(&TokenKind::Keyword(Keyword::Type), i)?;
+        let ((), next) = self.parse_keyword(Keyword::Type, i)?;
         let (name, next) = self.parse_identifier(next)?;
         let (t, next) = self.parse_after(Self::parse_kw_is, Self::parse_type, next)?;
         let ((), next) = self.parse_semicolon(next)?;
@@ -919,12 +927,12 @@ impl Parser {
             }) => {
                 let next = self.next(i);
                 let (condition, next) = self.parse_expr(next)?;
-                let ((), next) = self.parse_known_kind(&TokenKind::Keyword(Keyword::Then), next)?;
+                let ((), next) = self.parse_keyword(Keyword::Then, next)?;
                 let (on_true, next) = self.parse_block(next)?;
                 let (on_false, next) = self.try_parse(
                     |ctx, i| {
                         ctx.parse_after(
-                            |ctx, i| ctx.parse_known_kind(&TokenKind::Keyword(Keyword::Else), i),
+                            |ctx, i| ctx.parse_keyword(Keyword::Else, i),
                             Self::parse_block,
                             i,
                         )
@@ -990,16 +998,14 @@ impl Parser {
                 let next = self.next(i);
                 let (counter, next) = self.parse_identifier(next)?;
 
-                let ((), next) = self.parse_known_kind(&TokenKind::Keyword(Keyword::In), next)?;
+                let ((), next) = self.parse_keyword(Keyword::In, next)?;
 
                 let (from, next) = self.parse_expr(next)?;
 
                 let ((), next) = self.parse_known_kind(&TokenKind::RangeSymbol, next)?;
                 let (to, next) = self.try_parse(Self::parse_expr, next)?;
-                let (order, next) = self.try_parse(
-                    |ctx, i| ctx.parse_known_kind(&TokenKind::Keyword(Keyword::Reverse), i),
-                    next,
-                )?;
+                let (order, next) =
+                    self.try_parse(|ctx, i| ctx.parse_keyword(Keyword::Reverse, i), next)?;
 
                 let order = order.map_or(LoopOrder::Direct, |()| LoopOrder::Reversed);
 
@@ -1088,7 +1094,7 @@ impl Parser {
         &mut self,
         i: IndexedIterator<'a, 'b>,
     ) -> ParsingResult<'a, 'b, RoutineDecl> {
-        let ((), next) = self.parse_known_kind(&TokenKind::Keyword(Keyword::Routine), i)?;
+        let ((), next) = self.parse_keyword(Keyword::Routine, i)?;
         let (name, next) = self.parse_identifier(next)?;
 
         let (args, next) = self.parse_in_parentheses(
