@@ -119,15 +119,13 @@ Ok(
                                 args_bindings: [
                                     Binding {
                                         name: n(1),
-                                        decl: Var(
-                                            VarDecl {
-                                                t: Int,
-                                                initialiser: None,
-                                                relative_location: Argument(
-                                                    0,
-                                                ),
-                                            },
-                                        ),
+                                        decl: VarDecl {
+                                            t: Int,
+                                            initialiser: None,
+                                            relative_location: Argument(
+                                                0,
+                                            ),
+                                        },
                                     },
                                 ],
                                 body: Block(

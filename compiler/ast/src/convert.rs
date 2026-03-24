@@ -948,13 +948,13 @@ impl Converter {
             .map(|(index, (name, t))| {
                 (
                     name.clone(),
-                    Decl::Var(VarDecl {
+                    VarDecl {
                         t: Rc::clone(t),
                         initialiser: None,
                         relative_location: Location::Argument(
                             u16::try_from(index).expect("Too many arguments for function"),
                         ),
-                    }),
+                    },
                 )
             })
             .collect();
@@ -985,7 +985,7 @@ impl Converter {
         return_type: Option<&parser::Type>,
         block: &parser::Block,
         converted_arguments_types: Vec<(RawIdentifier, Rc<Type>)>,
-        args_decls: &[(RawIdentifier, Decl)],
+        args_decls: &[(RawIdentifier, VarDecl)],
     ) -> AnalysisResult<Binding> {
         let converted_return_type = return_type
             .as_ref()
@@ -1017,16 +1017,7 @@ impl Converter {
         // create a function scope
         self.enter_block();
 
-        let args_bindings = args_decls
-            .iter()
-            .map(|(raw_name, decl)| {
-                let arg_ident = self.bind_local_decl(raw_name, decl.clone());
-                Binding {
-                    name: arg_ident,
-                    decl: decl.clone(),
-                }
-            })
-            .collect::<Vec<Binding>>();
+        let args_bindings = self.bind_args(args_decls);
 
         let converted_body = self.convert_block(block)?;
 
@@ -1043,29 +1034,34 @@ impl Converter {
         })
     }
 
+    fn bind_args(&mut self, args_decls: &[(RawIdentifier, VarDecl)]) -> Vec<Binding<VarDecl>> {
+        args_decls
+            .iter()
+            .map(|(raw_name, decl)| {
+                let decl = decl.to_owned();
+                let arg_ident = self.bind_local_decl(raw_name, Decl::Var(decl.clone()));
+                Binding {
+                    name: arg_ident,
+                    decl,
+                }
+            })
+            .collect()
+    }
+
     fn convert_routine_expression(
         &mut self,
         name: &RawIdentifier,
         return_type: Option<&parser::Type>,
         expression: &parser::Expression,
         converted_arguments_types: Vec<(RawIdentifier, Rc<Type>)>,
-        args_decls: &[(RawIdentifier, Decl)],
+        args_decls: &[(RawIdentifier, VarDecl)],
     ) -> AnalysisResult<Binding> {
         match return_type {
             None => {
                 // No recursive calls for expression function
                 self.enter_block();
 
-                let args_bindings = args_decls
-                    .iter()
-                    .map(|(raw_name, decl)| {
-                        let arg_ident = self.bind_local_decl(raw_name, decl.clone());
-                        Binding {
-                            name: arg_ident,
-                            decl: decl.clone(),
-                        }
-                    })
-                    .collect::<Vec<Binding>>();
+                let args_bindings = self.bind_args(args_decls);
 
                 let Typed { value: expr, ty: t } = self.convert_expr(expression)?;
 
@@ -1091,16 +1087,7 @@ impl Converter {
             Some(return_type) => {
                 let converted_return_type = self.convert_type(return_type)?;
 
-                let args_bindings = args_decls
-                    .iter()
-                    .map(|(raw_name, decl)| {
-                        let arg_ident = self.bind_local_decl(raw_name, decl.clone());
-                        Binding {
-                            name: arg_ident,
-                            decl: decl.clone(),
-                        }
-                    })
-                    .collect::<Vec<Binding>>();
+                let args_bindings = self.bind_args(args_decls);
 
                 let Typed { value: expr, ty: t } = self.convert_expr(expression)?;
                 self.leave_block(); // If we met an error we do not need recover

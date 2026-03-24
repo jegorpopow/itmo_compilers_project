@@ -312,7 +312,7 @@ pub struct RoutineSignature {
 #[derive(Debug, Clone)]
 pub struct Routine {
     pub signature: RoutineSignature,
-    pub args_bindings: Vec<Binding>,
+    pub args_bindings: Vec<Binding<VarDecl>>,
     pub body: RoutineBody,
 }
 
@@ -444,9 +444,9 @@ impl TryFrom<Decl> for SimpleDecl {
 }
 
 #[derive(Debug, Clone)]
-pub struct Binding {
+pub struct Binding<T = Decl> {
     pub name: Identifier,
-    pub decl: Decl,
+    pub decl: T,
 }
 
 impl Binding {

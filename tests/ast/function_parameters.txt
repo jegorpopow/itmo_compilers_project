@@ -82,27 +82,23 @@ Ok(
                                 args_bindings: [
                                     Binding {
                                         name: a(1),
-                                        decl: Var(
-                                            VarDecl {
-                                                t: Int,
-                                                initialiser: None,
-                                                relative_location: Argument(
-                                                    0,
-                                                ),
-                                            },
-                                        ),
+                                        decl: VarDecl {
+                                            t: Int,
+                                            initialiser: None,
+                                            relative_location: Argument(
+                                                0,
+                                            ),
+                                        },
                                     },
                                     Binding {
                                         name: b(2),
-                                        decl: Var(
-                                            VarDecl {
-                                                t: Int,
-                                                initialiser: None,
-                                                relative_location: Argument(
-                                                    1,
-                                                ),
-                                            },
-                                        ),
+                                        decl: VarDecl {
+                                            t: Int,
+                                            initialiser: None,
+                                            relative_location: Argument(
+                                                1,
+                                            ),
+                                        },
                                     },
                                 ],
                                 body: Block(
