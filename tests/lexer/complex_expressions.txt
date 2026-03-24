@@ -10,7 +10,7 @@
 "is" @ 1:39-1:41 is KEYWORD(Is)
 "return" @ 2:2-2:8 is KEYWORD(Return)
 "n" @ 2:9-2:10 is IDENTIFIER(n)
-"+" @ 2:11-2:12 is OPERATOR(Add)
+"+" @ 2:11-2:12 is OPERATOR(Plus)
 "1" @ 2:13-2:14 is INTEGER LITERAL(1)
 ";" @ 2:14-2:15 is SEMICOLON
 "end" @ 3:0-3:3 is KEYWORD(End)
@@ -36,7 +36,7 @@
 ";" @ 8:12-8:13 is SEMICOLON
 "print" @ 10:2-10:7 is KEYWORD(Print)
 "2" @ 10:8-10:9 is INTEGER LITERAL(2)
-"+" @ 10:10-10:11 is OPERATOR(Add)
+"+" @ 10:10-10:11 is OPERATOR(Plus)
 "3" @ 10:12-10:13 is INTEGER LITERAL(3)
 "*" @ 10:14-10:15 is OPERATOR(Mul)
 "4" @ 10:16-10:17 is INTEGER LITERAL(4)
@@ -44,7 +44,7 @@
 "print" @ 11:2-11:7 is KEYWORD(Print)
 "(" @ 11:8-11:9 is LEFT PARENTHESIS
 "2" @ 11:9-11:10 is INTEGER LITERAL(2)
-"+" @ 11:11-11:12 is OPERATOR(Add)
+"+" @ 11:11-11:12 is OPERATOR(Plus)
 "3" @ 11:13-11:14 is INTEGER LITERAL(3)
 ")" @ 11:14-11:15 is RIGHT PARENTHESIS
 "*" @ 11:16-11:17 is OPERATOR(Mul)
@@ -52,11 +52,11 @@
 ";" @ 11:19-11:20 is SEMICOLON
 "print" @ 12:2-12:7 is KEYWORD(Print)
 "1" @ 12:8-12:9 is INTEGER LITERAL(1)
-"+" @ 12:10-12:11 is OPERATOR(Add)
+"+" @ 12:10-12:11 is OPERATOR(Plus)
 "2" @ 12:12-12:13 is INTEGER LITERAL(2)
 "<" @ 12:14-12:15 is OPERATOR(Lt)
 "3" @ 12:16-12:17 is INTEGER LITERAL(3)
-"+" @ 12:18-12:19 is OPERATOR(Add)
+"+" @ 12:18-12:19 is OPERATOR(Plus)
 "4" @ 12:20-12:21 is INTEGER LITERAL(4)
 ";" @ 12:21-12:22 is SEMICOLON
 "print" @ 13:2-13:7 is KEYWORD(Print)
@@ -71,19 +71,19 @@
 "print" @ 15:2-15:7 is KEYWORD(Print)
 "(" @ 15:8-15:9 is LEFT PARENTHESIS
 "a" @ 15:9-15:10 is IDENTIFIER(a)
-"+" @ 15:11-15:12 is OPERATOR(Add)
+"+" @ 15:11-15:12 is OPERATOR(Plus)
 "b" @ 15:13-15:14 is IDENTIFIER(b)
 ")" @ 15:14-15:15 is RIGHT PARENTHESIS
 "*" @ 15:16-15:17 is OPERATOR(Mul)
 "(" @ 15:18-15:19 is LEFT PARENTHESIS
 "c" @ 15:19-15:20 is IDENTIFIER(c)
-"-" @ 15:21-15:22 is OPERATOR(Sub)
+"-" @ 15:21-15:22 is OPERATOR(Minus)
 "a" @ 15:23-15:24 is IDENTIFIER(a)
 ")" @ 15:24-15:25 is RIGHT PARENTHESIS
 ";" @ 15:25-15:26 is SEMICOLON
 "print" @ 16:2-16:7 is KEYWORD(Print)
 "a" @ 16:8-16:9 is IDENTIFIER(a)
-"+" @ 16:10-16:11 is OPERATOR(Add)
+"+" @ 16:10-16:11 is OPERATOR(Plus)
 "b" @ 16:12-16:13 is IDENTIFIER(b)
 "*" @ 16:14-16:15 is OPERATOR(Mul)
 "c" @ 16:16-16:17 is IDENTIFIER(c)
@@ -93,7 +93,7 @@
 "(" @ 18:15-18:16 is LEFT PARENTHESIS
 "5" @ 18:16-18:17 is INTEGER LITERAL(5)
 ")" @ 18:17-18:18 is RIGHT PARENTHESIS
-"+" @ 18:19-18:20 is OPERATOR(Add)
+"+" @ 18:19-18:20 is OPERATOR(Plus)
 "add_one" @ 18:21-18:28 is IDENTIFIER(add_one)
 "(" @ 18:28-18:29 is LEFT PARENTHESIS
 "3" @ 18:29-18:30 is INTEGER LITERAL(3)
@@ -135,7 +135,7 @@
 ")" @ 22:25-22:26 is RIGHT PARENTHESIS
 ";" @ 22:26-22:27 is SEMICOLON
 "print" @ 23:2-23:7 is KEYWORD(Print)
-"not" @ 23:8-23:11 is OPERATOR(Neg)
+"not" @ 23:8-23:11 is OPERATOR(Not)
 "(" @ 23:12-23:13 is LEFT PARENTHESIS
 "a" @ 23:13-23:14 is IDENTIFIER(a)
 "=" @ 23:15-23:16 is OPERATOR(Eq)

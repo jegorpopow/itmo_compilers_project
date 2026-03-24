@@ -159,7 +159,7 @@ Ok(
                                         Stmt(
                                             While {
                                                 condition: UnOp {
-                                                    op: Neg,
+                                                    op: Not,
                                                     operand: Call {
                                                         callee: r"is_empty",
                                                         args: [
@@ -179,7 +179,7 @@ Ok(
                                                                     r"result",
                                                                 ),
                                                                 rhs: BinOp {
-                                                                    op: Add,
+                                                                    op: Plus,
                                                                     lhs: LvalueToRvalue(
                                                                         Identifier(
                                                                             r"result",
@@ -263,7 +263,7 @@ Ok(
                                         Stmt(
                                             While {
                                                 condition: UnOp {
-                                                    op: Neg,
+                                                    op: Not,
                                                     operand: Call {
                                                         callee: r"is_empty",
                                                         args: [

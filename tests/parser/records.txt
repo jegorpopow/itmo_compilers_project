@@ -93,11 +93,11 @@ Ok(
                                         Stmt(
                                             Return {
                                                 value: BinOp {
-                                                    op: Add,
+                                                    op: Plus,
                                                     lhs: BinOp {
                                                         op: Mul,
                                                         lhs: BinOp {
-                                                            op: Sub,
+                                                            op: Minus,
                                                             lhs: LvalueToRvalue(
                                                                 Member {
                                                                     lhs: Identifier(
@@ -116,7 +116,7 @@ Ok(
                                                             ),
                                                         },
                                                         rhs: BinOp {
-                                                            op: Sub,
+                                                            op: Minus,
                                                             lhs: LvalueToRvalue(
                                                                 Member {
                                                                     lhs: Identifier(
@@ -138,7 +138,7 @@ Ok(
                                                     rhs: BinOp {
                                                         op: Mul,
                                                         lhs: BinOp {
-                                                            op: Sub,
+                                                            op: Minus,
                                                             lhs: LvalueToRvalue(
                                                                 Member {
                                                                     lhs: Identifier(
@@ -157,7 +157,7 @@ Ok(
                                                             ),
                                                         },
                                                         rhs: BinOp {
-                                                            op: Sub,
+                                                            op: Minus,
                                                             lhs: LvalueToRvalue(
                                                                 Member {
                                                                     lhs: Identifier(
@@ -211,7 +211,7 @@ Ok(
                                         BinOp {
                                             op: Div,
                                             lhs: BinOp {
-                                                op: Add,
+                                                op: Plus,
                                                 lhs: LvalueToRvalue(
                                                     Member {
                                                         lhs: Identifier(
@@ -239,7 +239,7 @@ Ok(
                                         BinOp {
                                             op: Div,
                                             lhs: BinOp {
-                                                op: Add,
+                                                op: Plus,
                                                 lhs: LvalueToRvalue(
                                                     Member {
                                                         lhs: Identifier(

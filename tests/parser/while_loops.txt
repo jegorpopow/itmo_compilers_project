@@ -109,7 +109,7 @@ Ok(
                                                                                         r"n",
                                                                                     ),
                                                                                     rhs: BinOp {
-                                                                                        op: Add,
+                                                                                        op: Plus,
                                                                                         lhs: BinOp {
                                                                                             op: Mul,
                                                                                             lhs: IntegerLiteral(
@@ -144,7 +144,7 @@ Ok(
                                                                     r"steps",
                                                                 ),
                                                                 rhs: BinOp {
-                                                                    op: Add,
+                                                                    op: Plus,
                                                                     lhs: LvalueToRvalue(
                                                                         Identifier(
                                                                             r"steps",

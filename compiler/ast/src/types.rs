@@ -181,7 +181,7 @@ pub(crate) fn infer_binary_operator_type(
     op: SyntacticOperator,
 ) -> AnalysisResult<BinOpAdjustment> {
     match op {
-        SyntacticOperator::Neg => Err(AnalysisError {
+        SyntacticOperator::Not => Err(AnalysisError {
             what: "Logical negation operator can not be applied as binary".to_string(),
         }),
 
@@ -219,8 +219,8 @@ pub(crate) fn infer_binary_operator_type(
             }
         }
 
-        SyntacticOperator::Add
-        | SyntacticOperator::Sub
+        SyntacticOperator::Plus
+        | SyntacticOperator::Minus
         | SyntacticOperator::Mul
         | SyntacticOperator::Div => {
             if lhs_type.is_scalar() && rhs_type.is_scalar() {

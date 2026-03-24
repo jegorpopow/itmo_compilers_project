@@ -319,7 +319,7 @@ impl Converter {
         } = operand;
 
         Ok(match op {
-            SyntacticOperator::Neg => match &*operand_type {
+            SyntacticOperator::Not => match &*operand_type {
                 Type::Bool => Typed {
                     value: Rc::new(Expression::UnOp {
                         op: SemanticUnaryOperator::BoolNeg,
@@ -339,7 +339,7 @@ impl Converter {
                     ),
                 })?,
             },
-            SyntacticOperator::Sub => match &*operand_type {
+            SyntacticOperator::Minus => match &*operand_type {
                 Type::Int => Typed {
                     value: Rc::new(Expression::UnOp {
                         op: SemanticUnaryOperator::IntNeg,
@@ -365,7 +365,7 @@ impl Converter {
                     ),
                 })?,
             },
-            SyntacticOperator::Add
+            SyntacticOperator::Plus
             | SyntacticOperator::Mul
             | SyntacticOperator::Div
             | SyntacticOperator::Mod

@@ -128,7 +128,7 @@ Ok(
                                         Stmt(
                                             Print {
                                                 value: UnOp {
-                                                    op: Neg,
+                                                    op: Not,
                                                     operand: LvalueToRvalue(
                                                         Identifier(
                                                             r"a",
@@ -140,7 +140,7 @@ Ok(
                                         Stmt(
                                             Print {
                                                 value: UnOp {
-                                                    op: Neg,
+                                                    op: Not,
                                                     operand: LvalueToRvalue(
                                                         Identifier(
                                                             r"b",

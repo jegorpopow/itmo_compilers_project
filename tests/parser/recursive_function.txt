@@ -54,12 +54,12 @@ Ok(
                                                             Stmt(
                                                                 Return {
                                                                     value: BinOp {
-                                                                        op: Add,
+                                                                        op: Plus,
                                                                         lhs: Call {
                                                                             callee: r"fibonacci",
                                                                             args: [
                                                                                 BinOp {
-                                                                                    op: Sub,
+                                                                                    op: Minus,
                                                                                     lhs: LvalueToRvalue(
                                                                                         Identifier(
                                                                                             r"n",
@@ -78,7 +78,7 @@ Ok(
                                                                             callee: r"fibonacci",
                                                                             args: [
                                                                                 BinOp {
-                                                                                    op: Sub,
+                                                                                    op: Minus,
                                                                                     lhs: LvalueToRvalue(
                                                                                         Identifier(
                                                                                             r"n",

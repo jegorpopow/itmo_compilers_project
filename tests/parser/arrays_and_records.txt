@@ -31,7 +31,7 @@ Ok(
                                 ),
                                 length: Some(
                                     BinOp {
-                                        op: Add,
+                                        op: Plus,
                                         lhs: IntegerLiteral(
                                             IntegerLiteral {
                                                 repr: "1",
@@ -89,7 +89,7 @@ Ok(
                                     lhs: BinOp {
                                         op: Mul,
                                         lhs: BinOp {
-                                            op: Sub,
+                                            op: Minus,
                                             lhs: LvalueToRvalue(
                                                 Identifier(
                                                     r"a",
@@ -102,7 +102,7 @@ Ok(
                                             ),
                                         },
                                         rhs: BinOp {
-                                            op: Sub,
+                                            op: Minus,
                                             lhs: LvalueToRvalue(
                                                 Identifier(
                                                     r"a",
@@ -160,11 +160,11 @@ Ok(
                                         Stmt(
                                             Return {
                                                 value: BinOp {
-                                                    op: Add,
+                                                    op: Plus,
                                                     lhs: BinOp {
                                                         op: Mul,
                                                         lhs: BinOp {
-                                                            op: Sub,
+                                                            op: Minus,
                                                             lhs: LvalueToRvalue(
                                                                 Member {
                                                                     lhs: Identifier(
@@ -183,7 +183,7 @@ Ok(
                                                             ),
                                                         },
                                                         rhs: BinOp {
-                                                            op: Sub,
+                                                            op: Minus,
                                                             lhs: LvalueToRvalue(
                                                                 Member {
                                                                     lhs: Identifier(
@@ -205,7 +205,7 @@ Ok(
                                                     rhs: BinOp {
                                                         op: Mul,
                                                         lhs: BinOp {
-                                                            op: Sub,
+                                                            op: Minus,
                                                             lhs: LvalueToRvalue(
                                                                 Member {
                                                                     lhs: Identifier(
@@ -224,7 +224,7 @@ Ok(
                                                             ),
                                                         },
                                                         rhs: BinOp {
-                                                            op: Sub,
+                                                            op: Minus,
                                                             lhs: LvalueToRvalue(
                                                                 Member {
                                                                     lhs: Identifier(
@@ -274,7 +274,7 @@ Ok(
                                             callee: r"approximately_eq",
                                             args: [
                                                 BinOp {
-                                                    op: Add,
+                                                    op: Plus,
                                                     lhs: Call {
                                                         callee: r"squared_distance",
                                                         args: [
@@ -380,7 +380,7 @@ Ok(
                                             callee: r"approximately_eq",
                                             args: [
                                                 BinOp {
-                                                    op: Add,
+                                                    op: Plus,
                                                     lhs: Call {
                                                         callee: r"squared_distance",
                                                         args: [
@@ -487,7 +487,7 @@ Ok(
                                         callee: r"approximately_eq",
                                         args: [
                                             BinOp {
-                                                op: Add,
+                                                op: Plus,
                                                 lhs: Call {
                                                     callee: r"squared_distance",
                                                     args: [

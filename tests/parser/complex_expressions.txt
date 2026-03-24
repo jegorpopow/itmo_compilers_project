@@ -21,7 +21,7 @@ Ok(
                                         Stmt(
                                             Return {
                                                 value: BinOp {
-                                                    op: Add,
+                                                    op: Plus,
                                                     lhs: LvalueToRvalue(
                                                         Identifier(
                                                             r"n",
@@ -96,7 +96,7 @@ Ok(
                                         Stmt(
                                             Print {
                                                 value: BinOp {
-                                                    op: Add,
+                                                    op: Plus,
                                                     lhs: IntegerLiteral(
                                                         IntegerLiteral {
                                                             repr: "2",
@@ -126,7 +126,7 @@ Ok(
                                                 value: BinOp {
                                                     op: Mul,
                                                     lhs: BinOp {
-                                                        op: Add,
+                                                        op: Plus,
                                                         lhs: IntegerLiteral(
                                                             IntegerLiteral {
                                                                 repr: "2",
@@ -154,7 +154,7 @@ Ok(
                                                 value: BinOp {
                                                     op: Lt,
                                                     lhs: BinOp {
-                                                        op: Add,
+                                                        op: Plus,
                                                         lhs: IntegerLiteral(
                                                             IntegerLiteral {
                                                                 repr: "1",
@@ -169,7 +169,7 @@ Ok(
                                                         ),
                                                     },
                                                     rhs: BinOp {
-                                                        op: Add,
+                                                        op: Plus,
                                                         lhs: IntegerLiteral(
                                                             IntegerLiteral {
                                                                 repr: "3",
@@ -228,7 +228,7 @@ Ok(
                                                 value: BinOp {
                                                     op: Mul,
                                                     lhs: BinOp {
-                                                        op: Add,
+                                                        op: Plus,
                                                         lhs: LvalueToRvalue(
                                                             Identifier(
                                                                 r"a",
@@ -241,7 +241,7 @@ Ok(
                                                         ),
                                                     },
                                                     rhs: BinOp {
-                                                        op: Sub,
+                                                        op: Minus,
                                                         lhs: LvalueToRvalue(
                                                             Identifier(
                                                                 r"c",
@@ -259,7 +259,7 @@ Ok(
                                         Stmt(
                                             Print {
                                                 value: BinOp {
-                                                    op: Add,
+                                                    op: Plus,
                                                     lhs: LvalueToRvalue(
                                                         Identifier(
                                                             r"a",
@@ -284,7 +284,7 @@ Ok(
                                         Stmt(
                                             Print {
                                                 value: BinOp {
-                                                    op: Add,
+                                                    op: Plus,
                                                     lhs: Call {
                                                         callee: r"add_one",
                                                         args: [
@@ -399,7 +399,7 @@ Ok(
                                         Stmt(
                                             Print {
                                                 value: UnOp {
-                                                    op: Neg,
+                                                    op: Not,
                                                     operand: BinOp {
                                                         op: Eq,
                                                         lhs: LvalueToRvalue(

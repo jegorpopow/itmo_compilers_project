@@ -808,8 +808,8 @@ impl Parser {
                 self.parse_bool_literal(i)
                     .map(|(literal, next)| (Rc::new(Expression::BoolLiteral(literal)), next))
             })
-            .or_else(|_| self.parse_unop(SyntacticOperator::Neg, i))
-            .or_else(|_| self.parse_unop(SyntacticOperator::Sub, i))
+            .or_else(|_| self.parse_unop(SyntacticOperator::Not, i))
+            .or_else(|_| self.parse_unop(SyntacticOperator::Minus, i))
             .or_else(|_| self.parse_new(i))
             .or_else(|_| self.parse_in_parentheses(Self::parse_expr, i))
             .or_else(|_| {
@@ -852,7 +852,7 @@ impl Parser {
                 SyntacticOperator::Gt,
                 SyntacticOperator::Ge,
             ],
-            &[SyntacticOperator::Add, SyntacticOperator::Sub],
+            &[SyntacticOperator::Plus, SyntacticOperator::Minus],
             &[
                 SyntacticOperator::Mul,
                 SyntacticOperator::Div,

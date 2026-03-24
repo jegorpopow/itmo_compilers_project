@@ -70,7 +70,7 @@ Ok(
                                         Stmt(
                                             Print {
                                                 value: BinOp {
-                                                    op: Add,
+                                                    op: Plus,
                                                     lhs: LvalueToRvalue(
                                                         Identifier(
                                                             r"a",
@@ -87,7 +87,7 @@ Ok(
                                         Stmt(
                                             Print {
                                                 value: BinOp {
-                                                    op: Sub,
+                                                    op: Minus,
                                                     lhs: LvalueToRvalue(
                                                         Identifier(
                                                             r"a",
@@ -231,7 +231,7 @@ Ok(
                                         Stmt(
                                             Print {
                                                 value: BinOp {
-                                                    op: Add,
+                                                    op: Plus,
                                                     lhs: LvalueToRvalue(
                                                         Identifier(
                                                             r"x",
@@ -248,7 +248,7 @@ Ok(
                                         Stmt(
                                             Print {
                                                 value: BinOp {
-                                                    op: Sub,
+                                                    op: Minus,
                                                     lhs: LvalueToRvalue(
                                                         Identifier(
                                                             r"x",
@@ -299,7 +299,7 @@ Ok(
                                         Stmt(
                                             Print {
                                                 value: BinOp {
-                                                    op: Add,
+                                                    op: Plus,
                                                     lhs: LvalueToRvalue(
                                                         Identifier(
                                                             r"a",
@@ -316,7 +316,7 @@ Ok(
                                         Stmt(
                                             Print {
                                                 value: BinOp {
-                                                    op: Add,
+                                                    op: Plus,
                                                     lhs: LvalueToRvalue(
                                                         Identifier(
                                                             r"x",
@@ -350,7 +350,7 @@ Ok(
                                         Stmt(
                                             Print {
                                                 value: BinOp {
-                                                    op: Sub,
+                                                    op: Minus,
                                                     lhs: LvalueToRvalue(
                                                         Identifier(
                                                             r"y",
@@ -367,7 +367,7 @@ Ok(
                                         Stmt(
                                             Print {
                                                 value: UnOp {
-                                                    op: Sub,
+                                                    op: Minus,
                                                     operand: LvalueToRvalue(
                                                         Identifier(
                                                             r"a",
@@ -379,7 +379,7 @@ Ok(
                                         Stmt(
                                             Print {
                                                 value: UnOp {
-                                                    op: Sub,
+                                                    op: Minus,
                                                     operand: LvalueToRvalue(
                                                         Identifier(
                                                             r"x",
