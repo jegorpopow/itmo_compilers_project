@@ -56,6 +56,12 @@
 "not" @ 20:8-20:11 is OPERATOR(Not)
 "b" @ 20:12-20:13 is IDENTIFIER(b)
 ";" @ 20:13-20:14 is SEMICOLON
-"-- print not x;" @ 21:2-21:17 is COMMENT( print not x;)
-"-- print not y;" @ 22:2-22:17 is COMMENT( print not y;)
+"print" @ 21:2-21:7 is KEYWORD(Print)
+"not" @ 21:8-21:11 is OPERATOR(Not)
+"x" @ 21:12-21:13 is IDENTIFIER(x)
+";" @ 21:13-21:14 is SEMICOLON
+"print" @ 22:2-22:7 is KEYWORD(Print)
+"not" @ 22:8-22:11 is OPERATOR(Not)
+"y" @ 22:12-22:13 is IDENTIFIER(y)
+";" @ 22:13-22:14 is SEMICOLON
 "end" @ 23:0-23:3 is KEYWORD(End)

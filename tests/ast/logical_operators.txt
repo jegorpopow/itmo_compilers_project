@@ -273,6 +273,34 @@ Ok(
                                                 },
                                             },
                                         ),
+                                        Stmt(
+                                            Print {
+                                                value: UnOp {
+                                                    op: BoolNeg,
+                                                    operand: IntToBool(
+                                                        LvalueToRvalue(
+                                                            Identifier(
+                                                                x(3),
+                                                            ),
+                                                        ),
+                                                    ),
+                                                },
+                                            },
+                                        ),
+                                        Stmt(
+                                            Print {
+                                                value: UnOp {
+                                                    op: BoolNeg,
+                                                    operand: IntToBool(
+                                                        LvalueToRvalue(
+                                                            Identifier(
+                                                                y(4),
+                                                            ),
+                                                        ),
+                                                    ),
+                                                },
+                                            },
+                                        ),
                                     ],
                                 ),
                             ),

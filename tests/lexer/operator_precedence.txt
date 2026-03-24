@@ -77,7 +77,18 @@
 "(" @ 10:23-10:24 is LEFT PARENTHESIS
 ")" @ 10:24-10:25 is RIGHT PARENTHESIS
 ";" @ 10:25-10:26 is SEMICOLON
-"-- print 5 > 3 and 2 < 4 or not 1;" @ 11:2-11:36 is COMMENT( print 5 > 3 and 2 < 4 or not 1;)
+"print" @ 11:2-11:7 is KEYWORD(Print)
+"5" @ 11:8-11:9 is INTEGER LITERAL(5)
+">" @ 11:10-11:11 is OPERATOR(Gt)
+"3" @ 11:12-11:13 is INTEGER LITERAL(3)
+"and" @ 11:14-11:17 is OPERATOR(And)
+"2" @ 11:18-11:19 is INTEGER LITERAL(2)
+"<" @ 11:20-11:21 is OPERATOR(Lt)
+"4" @ 11:22-11:23 is INTEGER LITERAL(4)
+"or" @ 11:24-11:26 is OPERATOR(Or)
+"not" @ 11:27-11:30 is OPERATOR(Not)
+"1" @ 11:31-11:32 is INTEGER LITERAL(1)
+";" @ 11:32-11:33 is SEMICOLON
 "print" @ 12:2-12:7 is KEYWORD(Print)
 "100" @ 12:8-12:11 is INTEGER LITERAL(100)
 "/" @ 12:12-12:13 is OPERATOR(Div)

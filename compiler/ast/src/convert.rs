@@ -327,8 +327,15 @@ impl Converter {
                     }),
                     ty: Rc::new(Type::Bool),
                 },
-                Type::Int
-                | Type::Real
+                Type::Int => Typed {
+                    value: Rc::new(Expression::UnOp {
+                        op: SemanticUnaryOperator::BoolNeg,
+                        operand: Rc::new(Expression::IntToBool(converted_operand)),
+                    }),
+                    ty: Rc::new(Type::Bool),
+                },
+
+                Type::Real
                 | Type::Alias(_)
                 | Type::Record(_)
                 | Type::Array(_)

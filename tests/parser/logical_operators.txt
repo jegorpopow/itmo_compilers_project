@@ -149,6 +149,30 @@ Ok(
                                                 },
                                             },
                                         ),
+                                        Stmt(
+                                            Print {
+                                                value: UnOp {
+                                                    op: Not,
+                                                    operand: LvalueToRvalue(
+                                                        Identifier(
+                                                            r"x",
+                                                        ),
+                                                    ),
+                                                },
+                                            },
+                                        ),
+                                        Stmt(
+                                            Print {
+                                                value: UnOp {
+                                                    op: Not,
+                                                    operand: LvalueToRvalue(
+                                                        Identifier(
+                                                            r"y",
+                                                        ),
+                                                    ),
+                                                },
+                                            },
+                                        ),
                                     ],
                                 ),
                             ),

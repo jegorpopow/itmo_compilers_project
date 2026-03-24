@@ -316,6 +316,65 @@ Ok(
                                         Stmt(
                                             Print {
                                                 value: BinOp {
+                                                    op: Bool(
+                                                        Or,
+                                                    ),
+                                                    lhs: BinOp {
+                                                        op: Bool(
+                                                            And,
+                                                        ),
+                                                        lhs: BinOp {
+                                                            op: Int(
+                                                                Gt,
+                                                            ),
+                                                            lhs: IntegerLiteral(
+                                                                IntegerLiteral {
+                                                                    repr: "5",
+                                                                    value: 5,
+                                                                },
+                                                            ),
+                                                            rhs: IntegerLiteral(
+                                                                IntegerLiteral {
+                                                                    repr: "3",
+                                                                    value: 3,
+                                                                },
+                                                            ),
+                                                        },
+                                                        rhs: BinOp {
+                                                            op: Int(
+                                                                Lt,
+                                                            ),
+                                                            lhs: IntegerLiteral(
+                                                                IntegerLiteral {
+                                                                    repr: "2",
+                                                                    value: 2,
+                                                                },
+                                                            ),
+                                                            rhs: IntegerLiteral(
+                                                                IntegerLiteral {
+                                                                    repr: "4",
+                                                                    value: 4,
+                                                                },
+                                                            ),
+                                                        },
+                                                    },
+                                                    rhs: UnOp {
+                                                        op: BoolNeg,
+                                                        operand: IntToBool(
+                                                            IntegerLiteral(
+                                                                IntegerLiteral {
+                                                                    repr: "1",
+                                                                    value: 1,
+                                                                },
+                                                            ),
+                                                        ),
+                                                    },
+                                                },
+                                            },
+                                        ),
+                                        Stmt(
+                                            Print {
+                                                value: BinOp {
                                                     op: Int(
                                                         Div,
                                                     ),
