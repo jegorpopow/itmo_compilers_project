@@ -1035,11 +1035,11 @@ impl Converter {
 
         Ok(Binding {
             name: ident,
-            decl: Decl::Routine(RoutineDecl::Full {
+            decl: Decl::Routine(RoutineDecl::Full(Routine {
                 signature,
                 args_bindings,
                 body: RoutineBody::Block(converted_body),
-            }),
+            })),
         })
     }
 
@@ -1076,11 +1076,11 @@ impl Converter {
                     return_type: t,
                 };
 
-                let decl = RoutineDecl::Full {
+                let decl = RoutineDecl::Full(Routine {
                     signature,
                     args_bindings,
                     body: RoutineBody::Expression(expr),
-                };
+                });
 
                 let ident = self.bind_routine(name, decl.clone())?;
                 Ok(Binding {
@@ -1112,11 +1112,11 @@ impl Converter {
                     return_type: converted_return_type,
                 };
 
-                let decl = RoutineDecl::Full {
+                let decl = RoutineDecl::Full(Routine {
                     signature,
                     args_bindings,
                     body: RoutineBody::Expression(expr),
-                };
+                });
 
                 let ident = self.bind_routine(name, decl.clone())?;
                 Ok(Binding {

@@ -310,15 +310,16 @@ pub struct RoutineSignature {
 }
 
 #[derive(Debug, Clone)]
+pub struct Routine {
+    pub signature: RoutineSignature,
+    pub args_bindings: Vec<Binding>,
+    pub body: RoutineBody,
+}
+
+#[derive(Debug, Clone)]
 pub enum RoutineDecl {
-    Full {
-        signature: RoutineSignature,
-        args_bindings: Vec<Binding>,
-        body: RoutineBody,
-    },
-    Forward {
-        signature: RoutineSignature,
-    },
+    Full(Routine),
+    Forward { signature: RoutineSignature },
 }
 
 impl OptionalDecl for RoutineDecl {
@@ -331,7 +332,9 @@ impl RoutineDecl {
     #[must_use]
     pub fn signature(&self) -> &RoutineSignature {
         match self {
-            RoutineDecl::Full { signature, .. } | RoutineDecl::Forward { signature } => signature,
+            RoutineDecl::Full(Routine { signature, .. }) | RoutineDecl::Forward { signature } => {
+                signature
+            }
         }
     }
 }

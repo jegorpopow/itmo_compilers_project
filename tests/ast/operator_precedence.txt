@@ -5,61 +5,67 @@ Ok(
                 Binding {
                     name: f(0),
                     decl: Routine(
-                        Full {
-                            signature: RoutineSignature {
-                                args: [],
-                                return_type: Int,
-                            },
-                            args_bindings: [],
-                            body: Expression(
-                                IntegerLiteral(
-                                    IntegerLiteral {
-                                        repr: "1",
-                                        value: 1,
-                                    },
+                        Full(
+                            Routine {
+                                signature: RoutineSignature {
+                                    args: [],
+                                    return_type: Int,
+                                },
+                                args_bindings: [],
+                                body: Expression(
+                                    IntegerLiteral(
+                                        IntegerLiteral {
+                                            repr: "1",
+                                            value: 1,
+                                        },
+                                    ),
                                 ),
-                            ),
-                        },
+                            },
+                        ),
                     ),
                 },
                 Binding {
                     name: g(1),
                     decl: Routine(
-                        Full {
-                            signature: RoutineSignature {
-                                args: [],
-                                return_type: Int,
-                            },
-                            args_bindings: [],
-                            body: Expression(
-                                IntegerLiteral(
-                                    IntegerLiteral {
-                                        repr: "2",
-                                        value: 2,
-                                    },
+                        Full(
+                            Routine {
+                                signature: RoutineSignature {
+                                    args: [],
+                                    return_type: Int,
+                                },
+                                args_bindings: [],
+                                body: Expression(
+                                    IntegerLiteral(
+                                        IntegerLiteral {
+                                            repr: "2",
+                                            value: 2,
+                                        },
+                                    ),
                                 ),
-                            ),
-                        },
+                            },
+                        ),
                     ),
                 },
                 Binding {
                     name: h(2),
                     decl: Routine(
-                        Full {
-                            signature: RoutineSignature {
-                                args: [],
-                                return_type: Int,
-                            },
-                            args_bindings: [],
-                            body: Expression(
-                                IntegerLiteral(
-                                    IntegerLiteral {
-                                        repr: "3",
-                                        value: 3,
-                                    },
+                        Full(
+                            Routine {
+                                signature: RoutineSignature {
+                                    args: [],
+                                    return_type: Int,
+                                },
+                                args_bindings: [],
+                                body: Expression(
+                                    IntegerLiteral(
+                                        IntegerLiteral {
+                                            repr: "3",
+                                            value: 3,
+                                        },
+                                    ),
                                 ),
-                            ),
-                        },
+                            },
+                        ),
                     ),
                 },
                 Binding {
@@ -80,252 +86,91 @@ Ok(
                 Binding {
                     name: f(0),
                     decl: Routine(
-                        Full {
-                            signature: RoutineSignature {
-                                args: [],
-                                return_type: Int,
-                            },
-                            args_bindings: [],
-                            body: Expression(
-                                IntegerLiteral(
-                                    IntegerLiteral {
-                                        repr: "1",
-                                        value: 1,
-                                    },
+                        Full(
+                            Routine {
+                                signature: RoutineSignature {
+                                    args: [],
+                                    return_type: Int,
+                                },
+                                args_bindings: [],
+                                body: Expression(
+                                    IntegerLiteral(
+                                        IntegerLiteral {
+                                            repr: "1",
+                                            value: 1,
+                                        },
+                                    ),
                                 ),
-                            ),
-                        },
+                            },
+                        ),
                     ),
                 },
                 Binding {
                     name: g(1),
                     decl: Routine(
-                        Full {
-                            signature: RoutineSignature {
-                                args: [],
-                                return_type: Int,
-                            },
-                            args_bindings: [],
-                            body: Expression(
-                                IntegerLiteral(
-                                    IntegerLiteral {
-                                        repr: "2",
-                                        value: 2,
-                                    },
+                        Full(
+                            Routine {
+                                signature: RoutineSignature {
+                                    args: [],
+                                    return_type: Int,
+                                },
+                                args_bindings: [],
+                                body: Expression(
+                                    IntegerLiteral(
+                                        IntegerLiteral {
+                                            repr: "2",
+                                            value: 2,
+                                        },
+                                    ),
                                 ),
-                            ),
-                        },
+                            },
+                        ),
                     ),
                 },
                 Binding {
                     name: h(2),
                     decl: Routine(
-                        Full {
-                            signature: RoutineSignature {
-                                args: [],
-                                return_type: Int,
-                            },
-                            args_bindings: [],
-                            body: Expression(
-                                IntegerLiteral(
-                                    IntegerLiteral {
-                                        repr: "3",
-                                        value: 3,
-                                    },
+                        Full(
+                            Routine {
+                                signature: RoutineSignature {
+                                    args: [],
+                                    return_type: Int,
+                                },
+                                args_bindings: [],
+                                body: Expression(
+                                    IntegerLiteral(
+                                        IntegerLiteral {
+                                            repr: "3",
+                                            value: 3,
+                                        },
+                                    ),
                                 ),
-                            ),
-                        },
+                            },
+                        ),
                     ),
                 },
                 Binding {
                     name: main(3),
                     decl: Routine(
-                        Full {
-                            signature: RoutineSignature {
-                                args: [],
-                                return_type: Unit,
-                            },
-                            args_bindings: [],
-                            body: Block(
-                                Block(
-                                    [
-                                        Stmt(
-                                            Print {
-                                                value: BinOp {
-                                                    op: Bool(
-                                                        And,
-                                                    ),
-                                                    lhs: BinOp {
-                                                        op: Int(
-                                                            Lt,
-                                                        ),
-                                                        lhs: IntegerLiteral(
-                                                            IntegerLiteral {
-                                                                repr: "5",
-                                                                value: 5,
-                                                            },
-                                                        ),
-                                                        rhs: IntegerLiteral(
-                                                            IntegerLiteral {
-                                                                repr: "3",
-                                                                value: 3,
-                                                            },
-                                                        ),
-                                                    },
-                                                    rhs: BinOp {
-                                                        op: Int(
-                                                            Gt,
-                                                        ),
-                                                        lhs: IntegerLiteral(
-                                                            IntegerLiteral {
-                                                                repr: "4",
-                                                                value: 4,
-                                                            },
-                                                        ),
-                                                        rhs: IntegerLiteral(
-                                                            IntegerLiteral {
-                                                                repr: "2",
-                                                                value: 2,
-                                                            },
-                                                        ),
-                                                    },
-                                                },
-                                            },
-                                        ),
-                                        Stmt(
-                                            Print {
-                                                value: BinOp {
-                                                    op: Bool(
-                                                        Or,
-                                                    ),
-                                                    lhs: BinOp {
-                                                        op: Bool(
-                                                            And,
-                                                        ),
-                                                        lhs: BoolLiteral(
-                                                            True,
-                                                        ),
-                                                        rhs: BoolLiteral(
-                                                            False,
-                                                        ),
-                                                    },
-                                                    rhs: BinOp {
-                                                        op: Eq(
-                                                            Eq,
-                                                        ),
-                                                        lhs: IntegerLiteral(
-                                                            IntegerLiteral {
-                                                                repr: "1",
-                                                                value: 1,
-                                                            },
-                                                        ),
-                                                        rhs: IntegerLiteral(
-                                                            IntegerLiteral {
-                                                                repr: "1",
-                                                                value: 1,
-                                                            },
-                                                        ),
-                                                    },
-                                                },
-                                            },
-                                        ),
-                                        Stmt(
-                                            Print {
-                                                value: BinOp {
-                                                    op: Int(
-                                                        Add,
-                                                    ),
-                                                    lhs: Call {
-                                                        callee: g(1),
-                                                        args: [],
-                                                    },
-                                                    rhs: BinOp {
-                                                        op: Int(
-                                                            Mul,
-                                                        ),
-                                                        lhs: Call {
-                                                            callee: h(2),
-                                                            args: [],
-                                                        },
-                                                        rhs: Call {
-                                                            callee: f(0),
-                                                            args: [],
-                                                        },
-                                                    },
-                                                },
-                                            },
-                                        ),
-                                        Stmt(
-                                            Print {
-                                                value: BinOp {
-                                                    op: Int(
-                                                        Mod,
-                                                    ),
-                                                    lhs: BinOp {
-                                                        op: Int(
-                                                            Mod,
-                                                        ),
-                                                        lhs: IntegerLiteral(
-                                                            IntegerLiteral {
-                                                                repr: "17",
-                                                                value: 17,
-                                                            },
-                                                        ),
-                                                        rhs: IntegerLiteral(
-                                                            IntegerLiteral {
-                                                                repr: "5",
-                                                                value: 5,
-                                                            },
-                                                        ),
-                                                    },
-                                                    rhs: IntegerLiteral(
-                                                        IntegerLiteral {
-                                                            repr: "2",
-                                                            value: 2,
-                                                        },
-                                                    ),
-                                                },
-                                            },
-                                        ),
-                                        Stmt(
-                                            Print {
-                                                value: BinOp {
-                                                    op: Int(
-                                                        Mul,
-                                                    ),
-                                                    lhs: BinOp {
-                                                        op: Int(
-                                                            Add,
-                                                        ),
-                                                        lhs: Call {
-                                                            callee: g(1),
-                                                            args: [],
-                                                        },
-                                                        rhs: Call {
-                                                            callee: h(2),
-                                                            args: [],
-                                                        },
-                                                    },
-                                                    rhs: Call {
-                                                        callee: f(0),
-                                                        args: [],
-                                                    },
-                                                },
-                                            },
-                                        ),
-                                        Stmt(
-                                            Print {
-                                                value: BinOp {
-                                                    op: Bool(
-                                                        Or,
-                                                    ),
-                                                    lhs: BinOp {
+                        Full(
+                            Routine {
+                                signature: RoutineSignature {
+                                    args: [],
+                                    return_type: Unit,
+                                },
+                                args_bindings: [],
+                                body: Block(
+                                    Block(
+                                        [
+                                            Stmt(
+                                                Print {
+                                                    value: BinOp {
                                                         op: Bool(
                                                             And,
                                                         ),
                                                         lhs: BinOp {
                                                             op: Int(
-                                                                Gt,
+                                                                Lt,
                                                             ),
                                                             lhs: IntegerLiteral(
                                                                 IntegerLiteral {
@@ -342,52 +187,110 @@ Ok(
                                                         },
                                                         rhs: BinOp {
                                                             op: Int(
-                                                                Lt,
+                                                                Gt,
                                                             ),
                                                             lhs: IntegerLiteral(
-                                                                IntegerLiteral {
-                                                                    repr: "2",
-                                                                    value: 2,
-                                                                },
-                                                            ),
-                                                            rhs: IntegerLiteral(
                                                                 IntegerLiteral {
                                                                     repr: "4",
                                                                     value: 4,
                                                                 },
                                                             ),
+                                                            rhs: IntegerLiteral(
+                                                                IntegerLiteral {
+                                                                    repr: "2",
+                                                                    value: 2,
+                                                                },
+                                                            ),
                                                         },
                                                     },
-                                                    rhs: UnOp {
-                                                        op: BoolNeg,
-                                                        operand: IntToBool(
-                                                            IntegerLiteral(
+                                                },
+                                            ),
+                                            Stmt(
+                                                Print {
+                                                    value: BinOp {
+                                                        op: Bool(
+                                                            Or,
+                                                        ),
+                                                        lhs: BinOp {
+                                                            op: Bool(
+                                                                And,
+                                                            ),
+                                                            lhs: BoolLiteral(
+                                                                True,
+                                                            ),
+                                                            rhs: BoolLiteral(
+                                                                False,
+                                                            ),
+                                                        },
+                                                        rhs: BinOp {
+                                                            op: Eq(
+                                                                Eq,
+                                                            ),
+                                                            lhs: IntegerLiteral(
                                                                 IntegerLiteral {
                                                                     repr: "1",
                                                                     value: 1,
                                                                 },
                                                             ),
-                                                        ),
+                                                            rhs: IntegerLiteral(
+                                                                IntegerLiteral {
+                                                                    repr: "1",
+                                                                    value: 1,
+                                                                },
+                                                            ),
+                                                        },
                                                     },
                                                 },
-                                            },
-                                        ),
-                                        Stmt(
-                                            Print {
-                                                value: BinOp {
-                                                    op: Int(
-                                                        Div,
-                                                    ),
-                                                    lhs: BinOp {
+                                            ),
+                                            Stmt(
+                                                Print {
+                                                    value: BinOp {
                                                         op: Int(
-                                                            Div,
+                                                            Add,
                                                         ),
-                                                        lhs: IntegerLiteral(
-                                                            IntegerLiteral {
-                                                                repr: "100",
-                                                                value: 100,
+                                                        lhs: Call {
+                                                            callee: g(1),
+                                                            args: [],
+                                                        },
+                                                        rhs: BinOp {
+                                                            op: Int(
+                                                                Mul,
+                                                            ),
+                                                            lhs: Call {
+                                                                callee: h(2),
+                                                                args: [],
                                                             },
+                                                            rhs: Call {
+                                                                callee: f(0),
+                                                                args: [],
+                                                            },
+                                                        },
+                                                    },
+                                                },
+                                            ),
+                                            Stmt(
+                                                Print {
+                                                    value: BinOp {
+                                                        op: Int(
+                                                            Mod,
                                                         ),
+                                                        lhs: BinOp {
+                                                            op: Int(
+                                                                Mod,
+                                                            ),
+                                                            lhs: IntegerLiteral(
+                                                                IntegerLiteral {
+                                                                    repr: "17",
+                                                                    value: 17,
+                                                                },
+                                                            ),
+                                                            rhs: IntegerLiteral(
+                                                                IntegerLiteral {
+                                                                    repr: "5",
+                                                                    value: 5,
+                                                                },
+                                                            ),
+                                                        },
                                                         rhs: IntegerLiteral(
                                                             IntegerLiteral {
                                                                 repr: "2",
@@ -395,19 +298,130 @@ Ok(
                                                             },
                                                         ),
                                                     },
-                                                    rhs: IntegerLiteral(
-                                                        IntegerLiteral {
-                                                            repr: "5",
-                                                            value: 5,
-                                                        },
-                                                    ),
                                                 },
-                                            },
-                                        ),
-                                    ],
+                                            ),
+                                            Stmt(
+                                                Print {
+                                                    value: BinOp {
+                                                        op: Int(
+                                                            Mul,
+                                                        ),
+                                                        lhs: BinOp {
+                                                            op: Int(
+                                                                Add,
+                                                            ),
+                                                            lhs: Call {
+                                                                callee: g(1),
+                                                                args: [],
+                                                            },
+                                                            rhs: Call {
+                                                                callee: h(2),
+                                                                args: [],
+                                                            },
+                                                        },
+                                                        rhs: Call {
+                                                            callee: f(0),
+                                                            args: [],
+                                                        },
+                                                    },
+                                                },
+                                            ),
+                                            Stmt(
+                                                Print {
+                                                    value: BinOp {
+                                                        op: Bool(
+                                                            Or,
+                                                        ),
+                                                        lhs: BinOp {
+                                                            op: Bool(
+                                                                And,
+                                                            ),
+                                                            lhs: BinOp {
+                                                                op: Int(
+                                                                    Gt,
+                                                                ),
+                                                                lhs: IntegerLiteral(
+                                                                    IntegerLiteral {
+                                                                        repr: "5",
+                                                                        value: 5,
+                                                                    },
+                                                                ),
+                                                                rhs: IntegerLiteral(
+                                                                    IntegerLiteral {
+                                                                        repr: "3",
+                                                                        value: 3,
+                                                                    },
+                                                                ),
+                                                            },
+                                                            rhs: BinOp {
+                                                                op: Int(
+                                                                    Lt,
+                                                                ),
+                                                                lhs: IntegerLiteral(
+                                                                    IntegerLiteral {
+                                                                        repr: "2",
+                                                                        value: 2,
+                                                                    },
+                                                                ),
+                                                                rhs: IntegerLiteral(
+                                                                    IntegerLiteral {
+                                                                        repr: "4",
+                                                                        value: 4,
+                                                                    },
+                                                                ),
+                                                            },
+                                                        },
+                                                        rhs: UnOp {
+                                                            op: BoolNeg,
+                                                            operand: IntToBool(
+                                                                IntegerLiteral(
+                                                                    IntegerLiteral {
+                                                                        repr: "1",
+                                                                        value: 1,
+                                                                    },
+                                                                ),
+                                                            ),
+                                                        },
+                                                    },
+                                                },
+                                            ),
+                                            Stmt(
+                                                Print {
+                                                    value: BinOp {
+                                                        op: Int(
+                                                            Div,
+                                                        ),
+                                                        lhs: BinOp {
+                                                            op: Int(
+                                                                Div,
+                                                            ),
+                                                            lhs: IntegerLiteral(
+                                                                IntegerLiteral {
+                                                                    repr: "100",
+                                                                    value: 100,
+                                                                },
+                                                            ),
+                                                            rhs: IntegerLiteral(
+                                                                IntegerLiteral {
+                                                                    repr: "2",
+                                                                    value: 2,
+                                                                },
+                                                            ),
+                                                        },
+                                                        rhs: IntegerLiteral(
+                                                            IntegerLiteral {
+                                                                repr: "5",
+                                                                value: 5,
+                                                            },
+                                                        ),
+                                                    },
+                                                },
+                                            ),
+                                        ],
+                                    ),
                                 ),
-                            ),
-                        },
+                            },
+                        ),
                     ),
                 },
             ],
