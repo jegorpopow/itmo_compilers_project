@@ -98,3 +98,22 @@ pub enum Location {
     Local(u16),
     Argument(u16),
 }
+
+pub type Integer = i64;
+pub type Real = f64;
+
+#[expect(clippy::inline_always, reason = "an `as` cast")]
+#[inline(always)]
+#[must_use]
+#[expect(clippy::cast_precision_loss, reason = "By design")]
+pub const fn integer_to_real(i: Integer) -> Real {
+    i as Real
+}
+
+#[expect(clippy::inline_always, reason = "an `as` cast")]
+#[inline(always)]
+#[must_use]
+#[expect(clippy::cast_possible_truncation, reason = "By design")]
+pub const fn real_to_integer(i: Real) -> Integer {
+    i as Integer
+}

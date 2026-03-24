@@ -3,10 +3,11 @@ use std::rc::Rc;
 use derive_where::derive_where;
 
 use common::{
-    Identifier, Location, LoopOrder, RawIdentifier,
+    Identifier, Integer, Location, LoopOrder, RawIdentifier, Real, integer_to_real,
     operators::{
         BoolBinOp, EqBinOp, IntBinOp, RealBinOp, SemanticBinaryOperator, SemanticUnaryOperator,
     },
+    real_to_integer,
 };
 
 use crate::{
@@ -19,10 +20,10 @@ use crate::{
 pub struct IntegerLiteral {
     pub repr: String,
     #[derive_where(skip(EqHashOrd))]
-    pub value: i64,
+    pub value: Integer,
 }
 
-impl From<&IntegerLiteral> for i64 {
+impl From<&IntegerLiteral> for Integer {
     fn from(value: &IntegerLiteral) -> Self {
         value.value
     }
@@ -33,10 +34,10 @@ impl From<&IntegerLiteral> for i64 {
 pub struct RealLiteral {
     pub repr: String,
     #[derive_where(skip(EqHashOrd))]
-    pub value: f64,
+    pub value: Real,
 }
 
-impl From<&RealLiteral> for f64 {
+impl From<&RealLiteral> for Real {
     fn from(value: &RealLiteral) -> Self {
         value.value
     }
@@ -119,13 +120,13 @@ pub enum Expression {
 
 #[derive(Debug, PartialEq)]
 pub(crate) enum EvaluatedValue {
-    Int(i64),
-    Real(f64),
+    Int(Integer),
+    Real(Real),
     Bool(bool),
 }
 
 impl EvaluatedValue {
-    fn as_int(&self) -> AnalysisResult<i64> {
+    fn as_int(&self) -> AnalysisResult<Integer> {
         match self {
             EvaluatedValue::Int(val) => Ok(*val),
             EvaluatedValue::Real(_) | EvaluatedValue::Bool(_) => Err(AnalysisError {
@@ -134,7 +135,7 @@ impl EvaluatedValue {
         }
     }
 
-    fn as_real(&self) -> AnalysisResult<f64> {
+    fn as_real(&self) -> AnalysisResult<Real> {
         match self {
             EvaluatedValue::Real(val) => Ok(*val),
             EvaluatedValue::Int(_) | EvaluatedValue::Bool(_) => Err(AnalysisError {
@@ -170,8 +171,8 @@ trait BinOp<T> {
     fn apply(&self, lhs: T, rhs: T) -> EvaluatedValue;
 }
 
-impl BinOp<f64> for RealBinOp {
-    fn apply(&self, lhs: f64, rhs: f64) -> EvaluatedValue {
+impl BinOp<Real> for RealBinOp {
+    fn apply(&self, lhs: Real, rhs: Real) -> EvaluatedValue {
         match self {
             Self::Add => EvaluatedValue::Real(lhs + rhs),
             Self::Sub => EvaluatedValue::Real(lhs - rhs),
@@ -185,8 +186,8 @@ impl BinOp<f64> for RealBinOp {
     }
 }
 
-impl BinOp<i64> for IntBinOp {
-    fn apply(&self, lhs: i64, rhs: i64) -> EvaluatedValue {
+impl BinOp<Integer> for IntBinOp {
+    fn apply(&self, lhs: Integer, rhs: Integer) -> EvaluatedValue {
         match self {
             Self::Add => EvaluatedValue::Int(lhs + rhs),
             Self::Sub => EvaluatedValue::Int(lhs - rhs),
@@ -253,14 +254,14 @@ impl Expression {
             Expression::BoolToInt(expression) => {
                 EvaluatedValue::Int(expression.try_constexpr_evaluate()?.as_bool()?.into())
             }
-            #[expect(clippy::cast_possible_truncation, reason = "By design")]
-            Expression::RealToInt(expression) => {
-                EvaluatedValue::Int(expression.try_constexpr_evaluate()?.as_real()? as i64)
-            }
-            #[expect(clippy::cast_precision_loss, reason = "By design")]
-            Expression::IntToReal(expression) => {
-                EvaluatedValue::Real(expression.try_constexpr_evaluate()?.as_int()? as f64)
-            }
+
+            Expression::RealToInt(expression) => EvaluatedValue::Int(real_to_integer(
+                expression.try_constexpr_evaluate()?.as_real()?,
+            )),
+
+            Expression::IntToReal(expression) => EvaluatedValue::Real(integer_to_real(
+                expression.try_constexpr_evaluate()?.as_int()?,
+            )),
 
             Expression::Call { .. }
             | Expression::Cast { .. }

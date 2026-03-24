@@ -2,6 +2,7 @@ use core::num::{ParseFloatError, ParseIntError};
 use core::{error, fmt};
 
 use common::{Extent, operators::SyntacticOperator};
+use common::{Integer, Real};
 
 // Token types
 
@@ -36,12 +37,12 @@ pub struct Identifier<'a> {
 
 #[derive(PartialEq, Eq, Hash, fmt::Debug, Clone, Copy)]
 pub struct IntegerLiteral {
-    pub value: i64,
+    pub value: Integer,
 }
 
 #[derive(PartialEq, fmt::Debug, Clone, Copy)]
 pub struct RealLiteral {
-    pub value: f64,
+    pub value: Real,
 }
 
 #[derive(PartialEq, Eq, Hash, fmt::Debug, Clone, Copy)]

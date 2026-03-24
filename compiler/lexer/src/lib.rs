@@ -1,7 +1,7 @@
 use phf::phf_map;
 
 use common::operators::SyntacticOperator;
-use common::{Extent, Position};
+use common::{Extent, Position, Real};
 
 mod tokens;
 
@@ -173,8 +173,8 @@ fn name_disambiguation(lexeme: &str) -> TokenKind<'_> {
         "integer" => TokenKind::BuiltinTypename(BuiltinTypename::Integer),
         "real" => TokenKind::BuiltinTypename(BuiltinTypename::Real),
         "boolean" => TokenKind::BuiltinTypename(BuiltinTypename::Boolean),
-        "NaN" => TokenKind::RealLiteral(RealLiteral { value: f64::NAN }),
-        "Inf" => TokenKind::RealLiteral(RealLiteral { value: f64::INFINITY }),
+        "NaN" => TokenKind::RealLiteral(RealLiteral { value: Real::NAN }),
+        "Inf" => TokenKind::RealLiteral(RealLiteral { value: Real::INFINITY }),
     };
 
     match KNOWN_TOKENS.get(lexeme) {
@@ -236,14 +236,14 @@ fn symbolic_token<'a>(start: &IndexIterator<'a>) -> Option<(TokenKind<'a>, Index
 }
 
 fn real_literal_from_representation(s: &str) -> TokenKind<'_> {
-    match s.parse::<f64>() {
+    match s.parse() {
         Ok(value) => TokenKind::RealLiteral(RealLiteral { value }),
         Err(e) => TokenKind::Invalid(InvalidToken::MalformedReal(e)),
     }
 }
 
 fn integer_literal_from_representation(s: &str) -> TokenKind<'_> {
-    match s.parse::<i64>() {
+    match s.parse() {
         Ok(value) => TokenKind::IntegerLiteral(IntegerLiteral { value }),
         Err(e) => TokenKind::Invalid(InvalidToken::MalformedInteger(e)),
     }

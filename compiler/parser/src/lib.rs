@@ -1,7 +1,7 @@
 use core::fmt;
 use std::rc::Rc;
 
-use common::{Extent, LoopOrder, Position, RawIdentifier, operators::SyntacticOperator};
+use common::{Extent, LoopOrder, Position, RawIdentifier, Real, operators::SyntacticOperator};
 use lexer::{
     BoolLiteral as TokenBoolLiteral, BuiltinTypename, Identifier as TokenIdentifier,
     IntegerLiteral as TokenIntegerLiteral, InvalidToken, Keyword, RealLiteral as TokenRealLiteral,
@@ -355,7 +355,7 @@ impl Parser {
                 Ok((
                     RealLiteral {
                         repr: lexeme.to_owned(),
-                        value: f64::NAN,
+                        value: Real::NAN,
                     },
                     self.next(i),
                 ))
