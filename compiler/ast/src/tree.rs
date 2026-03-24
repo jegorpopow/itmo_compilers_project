@@ -22,6 +22,12 @@ pub struct IntegerLiteral {
     pub value: i64,
 }
 
+impl From<&IntegerLiteral> for i64 {
+    fn from(value: &IntegerLiteral) -> Self {
+        value.value
+    }
+}
+
 #[derive(Debug)]
 #[derive_where(Hash, Eq, PartialEq)]
 pub struct RealLiteral {
@@ -30,16 +36,31 @@ pub struct RealLiteral {
     pub value: f64,
 }
 
+impl From<&RealLiteral> for f64 {
+    fn from(value: &RealLiteral) -> Self {
+        value.value
+    }
+}
+
 #[derive(Debug, Hash, PartialEq, Eq, Clone, Copy)]
 pub enum BoolLiteral {
     True,
     False,
 }
 
-impl BoolLiteral {
-    #[must_use]
-    pub fn to_bool(self) -> bool {
-        match self {
+impl From<bool> for BoolLiteral {
+    fn from(value: bool) -> Self {
+        #[expect(clippy::match_bool, reason = "prettier this way")]
+        match value {
+            true => Self::True,
+            false => Self::False,
+        }
+    }
+}
+
+impl From<BoolLiteral> for bool {
+    fn from(value: BoolLiteral) -> Self {
+        match value {
             BoolLiteral::True => true,
             BoolLiteral::False => false,
         }
@@ -201,48 +222,45 @@ impl BinOp<EvaluatedValue> for EqBinOp {
 
 impl Expression {
     pub(crate) fn try_constexpr_evaluate(&self) -> AnalysisResult<EvaluatedValue> {
-        match self {
-            Expression::IntegerLiteral(integer_literal) => {
-                Ok(EvaluatedValue::Int(integer_literal.value))
-            }
-            Expression::RealLiteral(real_literal) => Ok(EvaluatedValue::Real(real_literal.value)),
-            Expression::BoolLiteral(bool_literal) => {
-                Ok(EvaluatedValue::Bool(bool_literal.to_bool()))
-            }
+        Ok(match self {
+            Expression::IntegerLiteral(lit) => EvaluatedValue::Int(lit.value),
+            Expression::RealLiteral(lit) => EvaluatedValue::Real(lit.value),
+            &Expression::BoolLiteral(lit) => EvaluatedValue::Bool(lit.into()),
+
             Expression::BinOp { op, lhs, rhs } => {
                 let lhs = lhs.try_constexpr_evaluate()?;
                 let rhs = rhs.try_constexpr_evaluate()?;
-                Ok(match op {
+                match op {
                     SemanticBinaryOperator::Eq(op) => op.apply(lhs, rhs),
                     SemanticBinaryOperator::Real(op) => op.apply(lhs.as_real()?, rhs.as_real()?),
                     SemanticBinaryOperator::Int(op) => op.apply(lhs.as_int()?, rhs.as_int()?),
                     SemanticBinaryOperator::Bool(op) => op.apply(lhs.as_bool()?, rhs.as_bool()?),
-                })
+                }
             }
 
             Expression::UnOp { op, operand } => {
                 let operand = operand.try_constexpr_evaluate()?;
-                Ok(match op {
+                match op {
                     SemanticUnaryOperator::IntNeg => EvaluatedValue::Int(-operand.as_int()?),
                     SemanticUnaryOperator::RealNeg => EvaluatedValue::Real(-operand.as_real()?),
                     SemanticUnaryOperator::BoolNeg => EvaluatedValue::Bool(!operand.as_bool()?),
-                })
+                }
             }
 
-            Expression::IntToBool(expression) => Ok(EvaluatedValue::Bool(
-                expression.try_constexpr_evaluate()?.as_int()? != 0,
-            )),
-            Expression::BoolToInt(expression) => Ok(EvaluatedValue::Int(
-                expression.try_constexpr_evaluate()?.as_bool()?.into(),
-            )),
+            Expression::IntToBool(expression) => {
+                EvaluatedValue::Bool(expression.try_constexpr_evaluate()?.as_int()? != 0)
+            }
+            Expression::BoolToInt(expression) => {
+                EvaluatedValue::Int(expression.try_constexpr_evaluate()?.as_bool()?.into())
+            }
             #[expect(clippy::cast_possible_truncation, reason = "By design")]
-            Expression::RealToInt(expression) => Ok(EvaluatedValue::Int(
-                expression.try_constexpr_evaluate()?.as_real()? as i64,
-            )),
+            Expression::RealToInt(expression) => {
+                EvaluatedValue::Int(expression.try_constexpr_evaluate()?.as_real()? as i64)
+            }
             #[expect(clippy::cast_precision_loss, reason = "By design")]
-            Expression::IntToReal(expression) => Ok(EvaluatedValue::Real(
-                expression.try_constexpr_evaluate()?.as_int()? as f64,
-            )),
+            Expression::IntToReal(expression) => {
+                EvaluatedValue::Real(expression.try_constexpr_evaluate()?.as_int()? as f64)
+            }
 
             Expression::Call { .. }
             | Expression::Cast { .. }
@@ -253,8 +271,8 @@ impl Expression {
                 what: format!(
                     "Non constexpr expression {self:?} in compile-time computation context"
                 ),
-            }),
-        }
+            })?,
+        })
     }
 }
 
