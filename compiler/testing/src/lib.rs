@@ -1,4 +1,3 @@
-#[cfg(feature = "testing")]
 use core::fmt;
 
 pub mod paths;
@@ -15,6 +14,12 @@ impl From<Mode> for &'static str {
             Mode::Pass => "pass",
             Mode::Fail => "fail",
         }
+    }
+}
+
+impl fmt::Display for Mode {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.write_str((*self).into())
     }
 }
 

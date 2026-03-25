@@ -85,30 +85,57 @@ fn all_are_up_to_date() {
             )
         })?;
 
-        for case in stage.test_cases()?.iter().flatten() {
-            let expected = case.to_string();
-            assert!(
-                actual.contains(&expected),
-                "Test case `{expected}` is missing in {} (expected because {:?} exists).\n\
-                !!!! Consider running `cargo x update-listings`. !!!!",
-                test_file.display(),
-                case.src_path.display(),
-            )
+        for (_, cases) in stage.test_cases()?.iter() {
+            for case in cases {
+                let expected = case.to_string();
+                assert!(
+                    actual.contains(&expected),
+                    "Test case `{expected}` is missing in {} (expected because {:?} exists).\n\
+                    !!!! Consider running `cargo x update-listings`. !!!!",
+                    test_file.display(),
+                    case.src_path.display(),
+                )
+            }
         }
     }
 }
 
 #[throws]
 fn update(path: &Path, test_cases: &Both<Vec<TestCase>>) {
+    const LISTING_START: &str = "\n    pass = [\n";
+    const LISTING_END: &str = "\n}\n";
+
     println!("Adding following test cases to {}:", path.display());
-    for case in test_cases.iter().flatten() {
-        println!("\tfrom {}:\n\t\t{case},", case.src_path.display())
+    for (mode, cases) in test_cases.iter() {
+        println!("\t{mode}:");
+        for case in cases {
+            println!("\t\t{} => {}", case.ident, case.src_path.display())
+        }
     }
 
     let s =
         fs::read_to_string(path).with_context(|| format!("Failed to read {}", path.display()))?;
 
-    todo!();
+    let (prefix, tail) = s
+        .split_once(LISTING_START)
+        .with_context(|| format!("Can't find {LISTING_START:?}"))?;
+    let (_, tail) = tail
+        .split_once(LISTING_END)
+        .with_context(|| format!("Can't find {LISTING_END:?}"))?;
+
+    let mut s = prefix.to_owned();
+
+    for (mode, cases) in test_cases.iter() {
+        use core::fmt::Write;
+        writeln!(s, "\n    {mode} = [")?;
+        for case in cases {
+            writeln!(s, "        {case}")?
+        }
+        write!(s, "    ]")?
+    }
+
+    s.push_str(LISTING_END);
+    s.push_str(tail);
 
     fs::write(path, s).with_context(|| format!("Failed to write back to {}", path.display()))?
 }

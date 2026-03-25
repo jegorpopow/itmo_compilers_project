@@ -105,7 +105,7 @@ impl crate::Stage {
 
 #[cfg(test)]
 fn check_tests(actual: &Both<TestDirContents>, expected: &TestDirContents) {
-    for dir in actual.iter() {
+    for (_, dir) in actual.iter() {
         for stem in &dir.stems {
             assert!(
                 expected.stems.contains(stem),

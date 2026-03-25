@@ -13,7 +13,7 @@ fn get_ast(src: &str) -> AnalysisResult<String> {
     convert(&program).map(|res| format!("{res:#?}\n"))
 }
 
-testing::tests! [
+testing::tests! {
     folder = "ast"
     extension = "txt"
     fun = get_ast
@@ -43,6 +43,5 @@ testing::tests! [
         while_loops => "while_loops"
     ]
     fail = [
-
     ]
-];
+}

@@ -6,6 +6,7 @@
 use anyhow::Error;
 use culpa::throws;
 use strum::EnumIter;
+use testing::Mode;
 
 mod cli;
 mod folders;
@@ -51,9 +52,9 @@ impl<T> Both<T> {
         }
     }
 
-    fn iter(&self) -> impl Iterator<Item = &T> {
+    fn iter(&self) -> impl Iterator<Item = (Mode, &T)> {
         let Self { pass, fail } = self;
-        [pass, fail].into_iter()
+        [(Mode::Pass, pass), (Mode::Fail, fail)].into_iter()
     }
 }
 #[throws]

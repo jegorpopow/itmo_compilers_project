@@ -15,7 +15,7 @@ fn interpret(src: &str) -> String {
     String::from_utf8(result).context("Somehow got non-UTF8 output")?
 }
 
-testing::tests! [
+testing::tests! {
     folder = "run"
     extension = "stdout"
     fun = interpret
@@ -25,4 +25,4 @@ testing::tests! [
     fail = [
 
     ]
-];
+}

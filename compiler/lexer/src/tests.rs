@@ -9,7 +9,7 @@ fn lex(src: &str) -> Result<String, core::fmt::Error> {
     Ok(result)
 }
 
-testing::tests! [
+testing::tests! {
     folder = "lexer"
     extension = "txt"
     fun = lex
@@ -41,6 +41,5 @@ testing::tests! [
         while_loops => "while_loops"
     ]
     fail = [
-
     ]
-];
+}

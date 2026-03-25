@@ -7,7 +7,7 @@ fn parse(src: &str) -> PureParsingResult<String> {
     parse_program(&tokens).map(|res| format!("{res:#?}\n"))
 }
 
-testing::tests! [
+testing::tests! {
     folder = "parser"
     extension = "txt"
     fun = parse
@@ -40,4 +40,4 @@ testing::tests! [
         invalid => "invalid"
         lexer_invalid => "lexer_invalid"
     ]
-];
+}
