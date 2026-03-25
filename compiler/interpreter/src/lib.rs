@@ -1,6 +1,6 @@
 #![expect(dead_code, reason = "WIP")]
 
-use std::{collections::HashMap, io::Write};
+use std::{collections::HashMap, fmt::Debug, io::Write};
 
 use anyhow::{Context as _, Error, bail, ensure};
 use ast::{
@@ -47,6 +47,23 @@ enum BlockError<'a> {
 impl From<Error> for BlockError<'_> {
     fn from(e: Error) -> Self {
         Self::Error(e)
+    }
+}
+
+trait IdentSelector: Debug {
+    #[must_use]
+    fn matches(&self, ident: &Identifier) -> bool;
+}
+
+impl IdentSelector for str {
+    fn matches(&self, ident: &Identifier) -> bool {
+        self == ident.raw.name
+    }
+}
+
+impl IdentSelector for Identifier {
+    fn matches(&self, ident: &Identifier) -> bool {
+        self == ident
     }
 }
 
@@ -98,13 +115,13 @@ impl<'a, W: Write> Interpreter<'a, W> {
 
 impl<'a, W: Write> Interpreter<'a, W> {
     #[throws]
-    fn find_routine(&self, routine: &str) -> &'a Routine {
+    fn find_routine<I: IdentSelector + ?Sized>(&self, routine: &I) -> &'a Routine {
         self.program
             .0
             .iter()
             .find_map(|Binding { name, decl }| {
                 if let Decl::Routine(RoutineDecl::Full(r)) = decl
-                    && name.raw.name == routine
+                    && routine.matches(name)
                 {
                     Some(r)
                 } else {
@@ -166,7 +183,7 @@ impl<'a, W: Write> Interpreter<'a, W> {
                     .iter()
                     .map(|arg| self.expression(bindings, arg))
                     .collect::<Result<_, _>>()?;
-                self.call(&callee.raw.name, args)?
+                self.call(callee, args)?
             }
             Expression::BinOp { .. } => todo!(),
             Expression::UnOp { op, operand } => match op {
@@ -291,7 +308,7 @@ impl<'a, W: Write> Interpreter<'a, W> {
     }
 
     #[throws]
-    fn call(&mut self, routine: &str, args: Vec<Value<'a>>) -> Value<'a> {
+    fn call<I: IdentSelector + ?Sized>(&mut self, routine: &I, args: Vec<Value<'a>>) -> Value<'a> {
         let Routine {
             signature: _,
             args_bindings,
