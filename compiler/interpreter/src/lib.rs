@@ -197,7 +197,7 @@ impl<'a, W: Write> Interpreter<'a, W> {
                     Value::Bool(!self.bool_expression(bindings, operand)?)
                 }
             },
-            Expression::Cast { .. } => todo!(),
+            Expression::Cast { operand, target: _ } => self.expression(bindings, operand)?,
             Expression::New { .. } => todo!(),
 
             Expression::LengthOf { arr } => Value::Integer(
@@ -228,20 +228,19 @@ impl<'a, W: Write> Interpreter<'a, W> {
             Value::Bool(value) => writeln!(self.out, "{value}"),
             Value::Integer(value) => writeln!(self.out, "{value}"),
             &Value::Real(value) => {
-                if value == 0.0 {
+                if value.fract() == 0.0 {
                     writeln!(self.out, "{value:?}")
                 } else {
                     writeln!(self.out, "{value}")
                 }
             }
-            Value::Null => todo!(),
+            Value::Null => writeln!(self.out, "null"),
             Value::Array { .. } => todo!(),
             Value::Struct { .. } => todo!(),
         }
         .context("IO error")?
     }
 
-    /// `Some` means there was a `return`
     #[throws(BlockError<'a>)]
     fn block(&mut self, bindings: &mut Bindings<'a>, block: &'a Block) {
         let Block(stmts) = block;
