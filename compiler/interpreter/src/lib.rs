@@ -5,10 +5,11 @@ use std::{collections::HashMap, io::Write};
 use anyhow::{Context as _, Error, bail, ensure};
 use ast::{
     Binding, Block, BlockElem, Decl, Expression, IntegerLiteral, LvalueExpression, Program,
-    RealLiteral, Routine, RoutineBody, RoutineDecl, RoutineSignature, SimpleBinding, SimpleDecl,
-    VarDecl,
+    RealLiteral, Routine, RoutineBody, RoutineDecl, SimpleBinding, SimpleDecl, VarDecl,
 };
-use common::{Integer, Real, integer_to_real, operators::SemanticUnaryOperator, real_to_integer};
+use common::{
+    Identifier, Integer, Real, integer_to_real, operators::SemanticUnaryOperator, real_to_integer,
+};
 use culpa::{throw, throws};
 
 #[cfg(test)]
@@ -28,7 +29,7 @@ enum Value<'a> {
         fields: HashMap<&'a str, Value<'a>>,
     },
 }
-type Bindings<'a> = HashMap<&'a str, Value<'a>>;
+type Bindings<'a> = HashMap<&'a Identifier, Value<'a>>;
 
 #[derive(Debug)]
 struct Interpreter<'a, W: Write> {
@@ -121,7 +122,7 @@ impl<'a, W: Write> Interpreter<'a, W> {
     ) -> &'b mut Value<'a> {
         match lvalue {
             LvalueExpression::Identifier(ident) => bindings
-                .get_mut(ident.raw.name.as_str())
+                .get_mut(ident)
                 .with_context(|| format!("Could not find variable {ident:?}"))?,
 
             LvalueExpression::Member { lhs, member_name } => {
@@ -239,7 +240,7 @@ impl<'a, W: Write> Interpreter<'a, W> {
                         None => {}
                         Some(e) => {
                             let e = self.expression(bindings, e)?;
-                            match bindings.insert(&name.raw.name, e) {
+                            match bindings.insert(name, e) {
                                 None => {}
                                 Some(_) => todo!(),
                             }
@@ -292,25 +293,21 @@ impl<'a, W: Write> Interpreter<'a, W> {
     #[throws]
     fn call(&mut self, routine: &str, args: Vec<Value<'a>>) -> Value<'a> {
         let Routine {
-            signature:
-                RoutineSignature {
-                    args: arg_names,
-                    return_type: _,
-                },
-            args_bindings: _,
+            signature: _,
+            args_bindings,
             body,
         } = self.find_routine(routine)?;
         {
-            let expected = arg_names.len();
+            let expected = args_bindings.len();
             let actual = args.len();
             ensure!(
                 expected == actual,
                 "Expected {expected} for {routine:?} args but got {actual}"
             )
         }
-        let mut bindings: Bindings<'a> = arg_names
+        let mut bindings: Bindings<'a> = args_bindings
             .iter()
-            .map(|(ident, _ty)| ident.name.as_str())
+            .map(|Binding { name, decl: _ }| name)
             .zip(args)
             .collect();
         match body {
