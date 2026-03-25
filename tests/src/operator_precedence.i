@@ -1,6 +1,6 @@
-routine f() => 1;
-routine g() => 2;
-routine h() => 3;
+routine f() => 3;
+routine g() => 4;
+routine h() => 5;
 
 routine main() is
   print 5 < 3 and 4 > 2;

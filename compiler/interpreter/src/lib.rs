@@ -8,14 +8,18 @@ use ast::{
     RealLiteral, Routine, RoutineBody, RoutineDecl, SimpleBinding, SimpleDecl, VarDecl,
 };
 use common::{
-    Identifier, Integer, Real, integer_to_real, operators::SemanticUnaryOperator, real_to_integer,
+    Identifier, Integer, Real, integer_to_real,
+    operators::{
+        BoolBinOp, EqBinOp, IntBinOp, RealBinOp, SemanticBinaryOperator, SemanticUnaryOperator,
+    },
+    real_to_integer,
 };
 use culpa::{throw, throws};
 
 #[cfg(test)]
 mod tests;
 
-#[derive(Debug, Clone, Default)]
+#[derive(Debug, Clone, Default, PartialEq)]
 enum Value<'a> {
     #[default]
     Null,
@@ -169,6 +173,66 @@ impl<'a, W: Write> Interpreter<'a, W> {
     }
 
     #[throws]
+    fn binop(
+        &mut self,
+        bindings: &mut Bindings<'a>,
+        op: SemanticBinaryOperator,
+        lhs: &Expression,
+        rhs: &Expression,
+    ) -> Value<'a> {
+        match op {
+            SemanticBinaryOperator::Eq(op) => {
+                let lhs = self.expression(bindings, lhs)?;
+                let rhs = self.expression(bindings, rhs)?;
+                Value::Bool(match op {
+                    EqBinOp::Eq => lhs == rhs,
+                    EqBinOp::Ne => lhs != rhs,
+                })
+            }
+            SemanticBinaryOperator::Real(op) => {
+                let lhs = self.real_expression(bindings, lhs)?;
+                let rhs = self.real_expression(bindings, rhs)?;
+                match op {
+                    RealBinOp::Add => Value::Real(lhs + rhs),
+                    RealBinOp::Sub => Value::Real(lhs - rhs),
+                    RealBinOp::Mul => Value::Real(lhs * rhs),
+                    RealBinOp::Div => Value::Real(lhs / rhs),
+                    RealBinOp::Le => Value::Bool(lhs <= rhs),
+                    RealBinOp::Lt => Value::Bool(lhs < rhs),
+                    RealBinOp::Gt => Value::Bool(lhs > rhs),
+                    RealBinOp::Ge => Value::Bool(lhs >= rhs),
+                }
+            }
+            SemanticBinaryOperator::Int(op) => {
+                let lhs = self.integer_expression(bindings, lhs)?;
+                let rhs = self.integer_expression(bindings, rhs)?;
+                match op {
+                    IntBinOp::Add => Value::Integer(lhs + rhs),
+                    IntBinOp::Sub => Value::Integer(lhs - rhs),
+                    IntBinOp::Mul => Value::Integer(lhs * rhs),
+                    IntBinOp::Div => Value::Integer(lhs / rhs),
+                    IntBinOp::Mod => Value::Integer(lhs % rhs),
+                    IntBinOp::Le => Value::Bool(lhs <= rhs),
+                    IntBinOp::Lt => Value::Bool(lhs < rhs),
+                    IntBinOp::Gt => Value::Bool(lhs > rhs),
+                    IntBinOp::Ge => Value::Bool(lhs >= rhs),
+                }
+            }
+            SemanticBinaryOperator::Bool(op) => Value::Bool(match op {
+                BoolBinOp::And => {
+                    self.bool_expression(bindings, lhs)? && self.bool_expression(bindings, rhs)?
+                }
+                BoolBinOp::Or => {
+                    self.bool_expression(bindings, lhs)? || self.bool_expression(bindings, rhs)?
+                }
+                BoolBinOp::Xor => {
+                    self.bool_expression(bindings, lhs)? ^ self.bool_expression(bindings, rhs)?
+                }
+            }),
+        }
+    }
+
+    #[throws]
     fn expression(&mut self, bindings: &mut Bindings<'a>, expression: &Expression) -> Value<'a> {
         match expression {
             Expression::Null => Value::Null,
@@ -185,7 +249,7 @@ impl<'a, W: Write> Interpreter<'a, W> {
                     .collect::<Result<_, _>>()?;
                 self.call(callee, args)?
             }
-            Expression::BinOp { .. } => todo!(),
+            Expression::BinOp { op, lhs, rhs } => self.binop(bindings, *op, lhs, rhs)?,
             Expression::UnOp { op, operand } => match op {
                 SemanticUnaryOperator::IntNeg => {
                     Value::Integer(-self.integer_expression(bindings, operand)?)
@@ -265,7 +329,11 @@ impl<'a, W: Write> Interpreter<'a, W> {
                 },
 
                 BlockElem::Stmt(stmt) => match stmt {
-                    ast::Statement::Assignment { .. } => todo!(),
+                    ast::Statement::Assignment { lhs, rhs } => {
+                        let rhs = self.expression(bindings, rhs)?;
+                        let lhs = self.lvalue(bindings, lhs)?;
+                        *lhs = rhs;
+                    }
 
                     ast::Statement::While { condition, body } => {
                         while self.bool_expression(bindings, condition)? {
