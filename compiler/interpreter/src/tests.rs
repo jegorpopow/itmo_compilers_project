@@ -15,37 +15,41 @@ fn interpret(src: &str) -> String {
     String::from_utf8(result).context("Somehow got non-UTF8 output")?
 }
 
-// FIXME(GrigorenkoPV): uncomment all
 testing::tests! {
     folder = "run"
     extension = "stdout"
     fun = interpret
     pass = [
-        arithmetic_operations => "arithmetic_operations"
+        // FIXME(GrigorenkoPV): support records & type aliases
         // arrays_and_records => "arrays_and_records"
+        // recursive_types => "recursive_types"
+        // records => "records"
+
+        // FIXME: resolution issues
+        // shadow => "shadow"
+        // type_conversions => "type_conversions"
+        // variable_declarations => "variable_declarations"
+
+        // FIXME: no main
+        // parse_minus => "parse_minus"
+
+        // FIXME: arrays are passed by reference
+        // for_loops => "for_loops"
+
+        arithmetic_operations => "arithmetic_operations"
         comparison_operators => "comparison_operators"
         complex_expressions => "complex_expressions"
         conditionals => "conditionals"
         deep_conditionals => "deep_conditionals"
-        // for_loops => "for_loops"
         function_parameters => "function_parameters"
         function_return => "function_return"
         identifiers => "identifiers"
         logical_operators => "logical_operators"
-        // nested_control => "nested_control"
+        nested_control => "nested_control"
         operator_precedence => "operator_precedence"
-        // parse_minus => "parse_minus"
         real_literals => "real_literals"
-        // records => "records"
         recursive_function => "recursive_function"
-        // recursive_types => "recursive_types"
-        // FIXME
-        // shadow => "shadow"
         type_aliases => "type_aliases"
-        // FIXME
-        // type_conversions => "type_conversions"
-        // FIXME
-        // variable_declarations => "variable_declarations"
         while_loops => "while_loops"
     ]
     fail = [

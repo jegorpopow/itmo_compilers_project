@@ -1,14 +1,15 @@
 #![expect(dead_code, reason = "WIP")]
 
-use std::{collections::HashMap, fmt::Debug, io::Write};
+use std::{collections::HashMap, fmt::Debug, io::Write, rc::Rc};
 
 use anyhow::{Context as _, Error, bail, ensure};
 use ast::{
-    Binding, Block, BlockElem, Decl, Expression, IntegerLiteral, LvalueExpression, Program,
-    RealLiteral, Routine, RoutineBody, RoutineDecl, SimpleBinding, SimpleDecl, VarDecl,
+    ArrayDescription, Binding, Block, BlockElem, Decl, Expression, IntegerLiteral,
+    LvalueExpression, Program, RealLiteral, Routine, RoutineBody, RoutineDecl, SimpleBinding,
+    SimpleDecl, Type, VarDecl,
 };
 use common::{
-    Identifier, Integer, Real, integer_to_real,
+    Identifier, Integer, LoopOrder, RawIdentifier, Real, integer_to_real,
     operators::{
         BoolBinOp, EqBinOp, IntBinOp, RealBinOp, SemanticBinaryOperator, SemanticUnaryOperator,
     },
@@ -232,6 +233,36 @@ impl<'a, W: Write> Interpreter<'a, W> {
         }
     }
 
+    #[expect(
+        clippy::wrong_self_convention,
+        clippy::new_ret_no_self,
+        reason = "`new` as in `Expression::New`"
+    )]
+    #[expect(clippy::unused_self, reason = "WIP")]
+    #[throws]
+    fn new(
+        &mut self,
+        _bindings: &mut Bindings<'a>,
+        ty: &Type,
+        fields: Option<&[(RawIdentifier, Rc<Expression>)]>,
+    ) -> Value<'a> {
+        match ty {
+            &Type::Array(ArrayDescription { t: _, length }) => Value::Array {
+                elements: match (length, fields) {
+                    (Some(n), None) => vec![Value::Null; n],
+                    _ => todo!(),
+                },
+            },
+
+            Type::Alias(_) => todo!(),
+            Type::Record(_) => todo!(),
+
+            Type::Int | Type::Real | Type::Bool | Type::Null | Type::Unit => {
+                bail!("Unsupported type for `new` expression: {ty}")
+            }
+        }
+    }
+
     #[throws]
     fn expression(&mut self, bindings: &mut Bindings<'a>, expression: &Expression) -> Value<'a> {
         match expression {
@@ -262,7 +293,7 @@ impl<'a, W: Write> Interpreter<'a, W> {
                 }
             },
             Expression::Cast { operand, target: _ } => self.expression(bindings, operand)?,
-            Expression::New { .. } => todo!(),
+            Expression::New { t, fields } => self.new(bindings, t, fields.as_deref())?,
 
             Expression::LengthOf { arr } => Value::Integer(
                 self.array_expression(bindings, arr)?
@@ -320,9 +351,8 @@ impl<'a, W: Write> Interpreter<'a, W> {
                         None => {}
                         Some(e) => {
                             let e = self.expression(bindings, e)?;
-                            match bindings.insert(name, e) {
-                                None => {}
-                                Some(_) => todo!(),
+                            if let Some(prev) = bindings.insert(name, e) {
+                                eprintln!("Discarding previous value for {name}: {prev:?}")
                             }
                         }
                     },
@@ -358,8 +388,43 @@ impl<'a, W: Write> Interpreter<'a, W> {
                         }
                     }
 
-                    ast::Statement::For { .. } => todo!(),
-                    ast::Statement::ForEach { .. } => todo!(),
+                    ast::Statement::For {
+                        counter,
+                        lower_bound,
+                        upper_bound,
+                        order,
+                        body,
+                    } => {
+                        let lower = self.integer_expression(bindings, lower_bound)?;
+                        let upper = self.integer_expression(bindings, upper_bound)?;
+                        let range: &mut dyn Iterator<Item = Integer> = match order {
+                            LoopOrder::Direct => &mut (lower..=upper),
+                            LoopOrder::Reversed => &mut (upper..=lower).rev(),
+                        };
+                        for value in range {
+                            let prev = bindings.insert(counter, Value::Integer(value));
+                            drop(prev);
+                            self.block(bindings, body)?
+                        }
+                    }
+
+                    ast::Statement::ForEach {
+                        counter,
+                        collection,
+                        order,
+                        body,
+                    } => {
+                        let mut collection = self.array_expression(bindings, collection)?;
+                        match order {
+                            LoopOrder::Direct => {}
+                            LoopOrder::Reversed => collection.reverse(),
+                        }
+                        for value in collection {
+                            let prev = bindings.insert(counter, value);
+                            drop(prev);
+                            self.block(bindings, body)?
+                        }
+                    }
 
                     ast::Statement::Print { value } => {
                         let value = self.expression(bindings, value)?;
