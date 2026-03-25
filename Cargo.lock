@@ -62,12 +62,11 @@ checksum = "7f202df86484c868dbad7eaa557ef785d5c66295e41b460ef922eca0723b842c"
 name = "ast"
 version = "0.0.0"
 dependencies = [
- "anyhow",
  "common",
  "derive-where",
- "expect-test",
  "lexer",
  "parser",
+ "testing",
 ]
 
 [[package]]
@@ -200,9 +199,9 @@ dependencies = [
  "ast",
  "common",
  "culpa",
- "expect-test",
  "lexer",
  "parser",
+ "testing",
 ]
 
 [[package]]
@@ -216,8 +215,8 @@ name = "lexer"
 version = "0.0.0"
 dependencies = [
  "common",
- "expect-test",
  "phf",
+ "testing",
  "unicode-ident",
 ]
 
@@ -239,8 +238,8 @@ version = "0.0.0"
 dependencies = [
  "common",
  "derive-where",
- "expect-test",
  "lexer",
+ "testing",
 ]
 
 [[package]]
@@ -392,6 +391,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "testing"
+version = "0.0.0"
+dependencies = [
+ "anyhow",
+ "expect-test",
+ "pathdiff",
+]
+
+[[package]]
 name = "unicase"
 version = "2.9.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -438,6 +446,6 @@ dependencies = [
  "clap",
  "culpa",
  "derive-where",
- "pathdiff",
  "strum",
+ "testing",
 ]

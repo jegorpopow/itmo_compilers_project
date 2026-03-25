@@ -7,8 +7,9 @@ use std::{
 use anyhow::{Context as _, Error};
 use culpa::throws;
 use derive_where::derive_where;
+use testing::paths::{PathExt as _, workspace_root};
 
-use crate::{Stage, folders::TestDirContents, utils::PathExt, workspace_root};
+use crate::{Stage, folders::TestDirContents};
 
 #[derive_where(Ord, PartialOrd, Eq, PartialEq)]
 struct TestCase {

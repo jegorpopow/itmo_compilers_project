@@ -1,0 +1,135 @@
+(
+    Program(
+        [
+            Var(
+                VarDecl {
+                    name: r"a",
+                    t: Some(
+                        Int,
+                    ),
+                    initialiser: Some(
+                        IntegerLiteral(
+                            IntegerLiteral {
+                                repr: "0",
+                                value: 0,
+                            },
+                        ),
+                    ),
+                },
+            ),
+            Var(
+                VarDecl {
+                    name: r"b",
+                    t: None,
+                    initialiser: Some(
+                        RealLiteral(
+                            RealLiteral {
+                                repr: "1.5",
+                                value: 1.5,
+                            },
+                        ),
+                    ),
+                },
+            ),
+            Var(
+                VarDecl {
+                    name: r"c",
+                    t: Some(
+                        Int,
+                    ),
+                    initialiser: None,
+                },
+            ),
+            Routine(
+                RoutineDecl {
+                    name: r"main",
+                    arguments: [],
+                    return_type: None,
+                    body: Some(
+                        Block(
+                            Block(
+                                [
+                                    VarDecl(
+                                        VarDecl {
+                                            name: r"local",
+                                            t: None,
+                                            initialiser: Some(
+                                                BoolLiteral(
+                                                    True,
+                                                ),
+                                            ),
+                                        },
+                                    ),
+                                    Stmt(
+                                        Assignment {
+                                            lhs: Identifier(
+                                                r"c",
+                                            ),
+                                            rhs: IntegerLiteral(
+                                                IntegerLiteral {
+                                                    repr: "0",
+                                                    value: 0,
+                                                },
+                                            ),
+                                        },
+                                    ),
+                                    VarDecl(
+                                        VarDecl {
+                                            name: r"another_local",
+                                            t: None,
+                                            initialiser: Some(
+                                                RealLiteral(
+                                                    RealLiteral {
+                                                        repr: "0.0",
+                                                        value: 0.0,
+                                                    },
+                                                ),
+                                            ),
+                                        },
+                                    ),
+                                    Stmt(
+                                        Print {
+                                            value: LvalueToRvalue(
+                                                Identifier(
+                                                    r"c",
+                                                ),
+                                            ),
+                                        },
+                                    ),
+                                    Stmt(
+                                        Print {
+                                            value: LvalueToRvalue(
+                                                Identifier(
+                                                    r"local",
+                                                ),
+                                            ),
+                                        },
+                                    ),
+                                    Stmt(
+                                        Print {
+                                            value: LvalueToRvalue(
+                                                Identifier(
+                                                    r"a",
+                                                ),
+                                            ),
+                                        },
+                                    ),
+                                    Stmt(
+                                        Print {
+                                            value: LvalueToRvalue(
+                                                Identifier(
+                                                    r"b",
+                                                ),
+                                            ),
+                                        },
+                                    ),
+                                ],
+                            ),
+                        ),
+                    ),
+                },
+            ),
+        ],
+    ),
+    [],
+)

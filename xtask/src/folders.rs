@@ -3,8 +3,6 @@ use std::{collections::BTreeSet, fs::read_dir, path::PathBuf};
 use anyhow::{Context as _, Error, anyhow, ensure};
 use culpa::throws;
 
-use crate::tests_src_dir;
-
 #[derive(Debug)]
 pub(crate) struct TestDirContents {
     pub dir: PathBuf,
@@ -63,7 +61,7 @@ impl TestDirContents {
 
     #[throws]
     pub(crate) fn srcs() -> Self {
-        Self::new(tests_src_dir())?
+        Self::new(testing::paths::src_dir())?
     }
 }
 
@@ -81,9 +79,8 @@ impl crate::Stage {
 
     #[throws]
     fn test_dir(self) -> PathBuf {
-        use crate::utils::PathExt as _;
-
-        crate::tests_dir().append(&[self.test_dir_name()])
+        use testing::paths::PathExt as _;
+        testing::paths::src_dir().append(&[self.test_dir_name()])
     }
 
     #[throws]
