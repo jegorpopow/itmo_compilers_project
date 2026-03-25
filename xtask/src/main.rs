@@ -17,8 +17,7 @@ enum Stage {
     Lexer,
     Parser,
     AST,
-    // TODO(GrigorenkoPV)
-    // Interpreter,
+    Interpreter,
 }
 
 impl Stage {
@@ -29,7 +28,7 @@ impl Stage {
             Self::Lexer => None,
             Self::Parser => Some(Self::Lexer),
             Self::AST => Some(Self::Parser),
-            // Self::Interpreter => Some(Self::AST),
+            Self::Interpreter => Some(Self::AST),
         }
     }
 

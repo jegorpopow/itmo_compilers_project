@@ -79,7 +79,7 @@ impl crate::Stage {
             Self::Lexer => "lexer",
             Self::Parser => "parser",
             Self::AST => "ast",
-            // Self::Interpreter => "run",
+            Self::Interpreter => "run",
         }
     }
 
