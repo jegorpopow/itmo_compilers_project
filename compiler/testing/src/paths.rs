@@ -1,18 +1,10 @@
-use std::{
-    env::current_dir,
-    fs,
-    path::{Path, PathBuf},
-};
-
-use pathdiff::diff_paths;
+use std::path::{Path, PathBuf};
 
 use crate::Mode;
 
 pub trait PathExt {
     #[must_use]
     fn append(self, components: &[&str]) -> Self;
-    #[must_use]
-    fn make_relative_if_possible(self) -> Self;
 }
 
 impl PathExt for PathBuf {
@@ -22,24 +14,18 @@ impl PathExt for PathBuf {
         }
         self
     }
-
-    fn make_relative_if_possible(self) -> Self {
-        if let Ok(cwd) = current_dir()
-            && let path = fs::canonicalize(&self).as_ref().unwrap_or(&self)
-            && let Some(relative) = diff_paths(dbg!(path), dbg!(cwd))
-        {
-            relative
-        } else {
-            self
-        }
-    }
 }
 
 #[must_use]
 pub fn workspace_root() -> PathBuf {
-    Path::new(env!("CARGO_MANIFEST_DIR"))
-        .to_owned()
-        .append(&["..", ".."])
+    let manifest_dir = Path::new(env!("CARGO_MANIFEST_DIR"));
+    if let Some(parent) = manifest_dir.parent()
+        && let Some(root) = parent.parent()
+    {
+        root.to_owned()
+    } else {
+        manifest_dir.to_owned().append(&["..", ".."])
+    }
 }
 
 #[must_use]

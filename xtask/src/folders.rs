@@ -3,6 +3,10 @@ use std::{collections::BTreeSet, fs::read_dir, path::PathBuf};
 use anyhow::{Context as _, Error, anyhow, ensure};
 use culpa::throws;
 
+use testing::Mode;
+
+use crate::Both;
+
 #[derive(Debug)]
 pub(crate) struct TestDirContents {
     pub dir: PathBuf,
@@ -23,9 +27,17 @@ impl TestDirContents {
 
     #[throws]
     pub(crate) fn new(dir: PathBuf) -> Self {
-        let mut expected_extension: Option<String> = None;
-
         let mut stems = BTreeSet::new();
+
+        if !dir.exists() {
+            return Self {
+                dir,
+                extension: "*".into(),
+                stems,
+            };
+        }
+
+        let mut expected_extension: Option<String> = None;
 
         for entry in read_dir(&dir).with_context(|| format!("failed to ls {}", dir.display()))? {
             let entry = entry.with_context(|| format!("Error traversing {}", dir.display()))?;
@@ -58,14 +70,8 @@ impl TestDirContents {
             stems,
         }
     }
-
-    #[throws]
-    pub(crate) fn srcs() -> Self {
-        Self::new(testing::paths::src_dir())?
-    }
 }
 
-#[cfg(test)]
 impl crate::Stage {
     #[must_use]
     const fn test_dir_name(self) -> &'static str {
@@ -78,57 +84,57 @@ impl crate::Stage {
     }
 
     #[throws]
-    fn test_dir(self) -> PathBuf {
+    fn test_dir_for_mode(self, mode: Mode) -> PathBuf {
         use testing::paths::PathExt as _;
-        testing::paths::src_dir().append(&[self.test_dir_name()])
+        testing::paths::tests_dir().append(&[self.test_dir_name(), mode.into()])
     }
 
     #[throws]
-    fn tests(self) -> TestDirContents {
-        TestDirContents::new(self.test_dir()?)?
+    pub(crate) fn tests_for_mode(self, mode: Mode) -> TestDirContents {
+        TestDirContents::new(self.test_dir_for_mode(mode)?)?
+    }
+
+    #[throws]
+    pub(crate) fn tests(self) -> Both<TestDirContents> {
+        Both {
+            pass: self.tests_for_mode(Mode::Pass)?,
+            fail: self.tests_for_mode(Mode::Fail)?,
+        }
     }
 }
 
 #[cfg(test)]
-fn diff<'a>(
-    lhs: &'a TestDirContents,
-    rhs: &'a TestDirContents,
-) -> impl Iterator<Item = [PathBuf; 2]> + use<'a> {
-    lhs.stems
-        .difference(&rhs.stems)
-        .map(|stem| [lhs.stem_to_path(stem), rhs.stem_to_path(stem)])
-}
-
-#[cfg(test)]
-fn check_has_all_tests(actual: &TestDirContents, expected: &TestDirContents) -> anyhow::Result<()> {
-    let missing: Vec<_> = diff(actual, expected)
-        .chain(diff(expected, actual))
-        .collect();
-    if missing.is_empty() {
-        Ok(())
-    } else {
-        let mut message = "Some files are missing:\n".to_string();
-        for [present, missing] in missing {
-            use core::fmt::Write;
-            writeln!(
-                &mut message,
-                "{missing:?} (expected because {present:?} exists)",
+fn check_tests(actual: &Both<TestDirContents>, expected: &TestDirContents) {
+    for dir in actual.iter() {
+        for stem in &dir.stems {
+            assert!(
+                expected.stems.contains(stem),
+                "There is {}, but no {}",
+                dir.stem_to_path(stem).display(),
+                expected.stem_to_path(stem).display(),
             )
-            .expect("Writing to String can't fail")
         }
-        Err(Error::msg(message))
+    }
+    for stem in &expected.stems {
+        assert!(
+            actual.pass.stems.contains(stem) || actual.fail.stems.contains(stem),
+            "There is {}, but no {} or {}",
+            expected.stem_to_path(stem).display(),
+            actual.pass.stem_to_path(stem).display(),
+            actual.fail.stem_to_path(stem).display(),
+        )
     }
 }
 
 #[test]
 #[throws]
 fn all_files_are_used() {
-    let srcs = TestDirContents::srcs()?;
     for stage in crate::Stage::all() {
+        let expected = match stage.prev() {
+            Some(prev) => prev.tests_for_mode(Mode::Pass),
+            None => TestDirContents::new(testing::paths::src_dir()),
+        }?;
         let tests = stage.tests()?;
-        check_has_all_tests(&tests, &srcs)
-            .with_context(|| format!("Some tests are missing for {stage:?}"))?;
-        check_has_all_tests(&srcs, &tests)
-            .with_context(|| format!("Unexpected tests for {stage:?}"))?;
+        check_tests(&tests, &expected)
     }
 }

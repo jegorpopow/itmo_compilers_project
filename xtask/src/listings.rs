@@ -9,7 +9,7 @@ use culpa::throws;
 use derive_where::derive_where;
 use testing::paths::{PathExt as _, workspace_root};
 
-use crate::{Stage, folders::TestDirContents};
+use crate::{Both, Stage, folders::TestDirContents};
 
 #[derive_where(Ord, PartialOrd, Eq, PartialEq)]
 struct TestCase {
@@ -43,12 +43,10 @@ impl TestCase {
         }
     }
 
-    #[throws]
-    fn all() -> Vec<Self> {
-        let mut srcs = TestDirContents::srcs()?;
-        let mut result: Vec<_> = mem::take(&mut srcs.stems)
+    fn for_dir(mut list: TestDirContents) -> Vec<Self> {
+        let mut result: Vec<_> = mem::take(&mut list.stems)
             .into_iter()
-            .map(|name| Self::new(&srcs, name))
+            .map(|name| Self::new(&list, name))
             .collect();
         result.sort_unstable();
         result
@@ -61,18 +59,23 @@ impl Stage {
             Self::Lexer => "lexer",
             Self::Parser => "parser",
             Self::AST => "ast",
+            // Self::Interpreter => "interpreter",
         }
     }
 
     fn tests_file(self) -> PathBuf {
         workspace_root().append(&["compiler", self.crate_name(), "src", "tests.rs"])
     }
+
+    #[throws]
+    fn test_cases(self) -> Both<Vec<TestCase>> {
+        self.tests()?.map(TestCase::for_dir)
+    }
 }
 
 #[test]
 #[throws]
 fn all_are_up_to_date() {
-    let test_cases = TestCase::all()?;
     for stage in Stage::all() {
         let test_file = stage.tests_file();
         let actual = fs::read_to_string(&test_file).with_context(|| {
@@ -81,54 +84,39 @@ fn all_are_up_to_date() {
                 test_file.display()
             )
         })?;
-        for case in &test_cases {
+
+        for case in stage.test_cases()?.iter().flatten() {
             let expected = case.to_string();
             assert!(
                 actual.contains(&expected),
-                "Test case `{expected}` is missing in {stage:?} (expected because {:?} exists).\n\
+                "Test case `{expected}` is missing in {} (expected because {:?} exists).\n\
                 !!!! Consider running `cargo x update-listings`. !!!!",
-                case.src_path.display()
+                test_file.display(),
+                case.src_path.display(),
             )
         }
     }
 }
 
 #[throws]
-fn update(path: &Path, test_cases: &[TestCase]) {
+fn update(path: &Path, test_cases: &Both<Vec<TestCase>>) {
     println!("Adding following test cases to {}:", path.display());
-
-    for case in test_cases {
+    for case in test_cases.iter().flatten() {
         println!("\tfrom {}:\n\t\t{case},", case.src_path.display())
     }
 
     let s =
         fs::read_to_string(path).with_context(|| format!("Failed to read {}", path.display()))?;
 
-    let (prefix, remainder) = s
-        .split_once("tests!")
-        .with_context(|| format!("Cannot find \"tests!\" in {}", path.display()))?;
-    let (_, remainder) = remainder
-        .split_once("\n];")
-        .context("Couldn't find the closing bracket")?;
-
-    let s = &mut prefix.to_owned();
-    s.push_str("tests! [\n");
-    for case in test_cases {
-        use core::fmt::Write;
-        writeln!(s, "    {case},").expect("Writing to String won't fail")
-    }
-    s.push_str("];");
-    s.push_str(remainder);
+    todo!();
 
     fs::write(path, s).with_context(|| format!("Failed to write back to {}", path.display()))?
 }
 
 #[throws]
 pub(crate) fn update_all() {
-    let test_cases: Vec<TestCase> = TestCase::all()?;
-
     for stage in Stage::all() {
-        update(&stage.tests_file(), &test_cases)
+        update(&stage.tests_file(), &stage.test_cases()?)
             .with_context(|| format!("Failed to update test cases for {stage:?}"))?
     }
 }

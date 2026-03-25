@@ -21,14 +21,14 @@ enum Stage {
 }
 
 impl Stage {
-    // TODO(GrigorenkoPV)
-    #[cfg(false)]
+    #[cfg(test)]
     #[must_use]
     const fn prev(self) -> Option<Self> {
         match self {
             Self::Lexer => None,
             Self::Parser => Some(Self::Lexer),
             Self::AST => Some(Self::Parser),
+            // Self::Interpreter => Some(Self::AST),
         }
     }
 
@@ -37,6 +37,25 @@ impl Stage {
     }
 }
 
+struct Both<T> {
+    pass: T,
+    fail: T,
+}
+
+impl<T> Both<T> {
+    fn map<U>(self, f: impl Fn(T) -> U) -> Both<U> {
+        let Self { pass, fail } = self;
+        Both {
+            pass: f(pass),
+            fail: f(fail),
+        }
+    }
+
+    fn iter(&self) -> impl Iterator<Item = &T> {
+        let Self { pass, fail } = self;
+        [pass, fail].into_iter()
+    }
+}
 #[throws]
 fn main() {
     match cli::Task::parse() {
