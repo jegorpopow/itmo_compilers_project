@@ -30,8 +30,8 @@ Ok(
                                     r"point",
                                 ),
                                 length: Some(
-                                    Binop {
-                                        op: Add,
+                                    BinOp {
+                                        op: Plus,
                                         lhs: IntegerLiteral(
                                             IntegerLiteral {
                                                 repr: "1",
@@ -84,12 +84,12 @@ Ok(
                         return_type: None,
                         body: Some(
                             Expression(
-                                Binop {
+                                BinOp {
                                     op: Lt,
-                                    lhs: Binop {
+                                    lhs: BinOp {
                                         op: Mul,
-                                        lhs: Binop {
-                                            op: Sub,
+                                        lhs: BinOp {
+                                            op: Minus,
                                             lhs: LvalueToRvalue(
                                                 Identifier(
                                                     r"a",
@@ -101,8 +101,8 @@ Ok(
                                                 ),
                                             ),
                                         },
-                                        rhs: Binop {
-                                            op: Sub,
+                                        rhs: BinOp {
+                                            op: Minus,
                                             lhs: LvalueToRvalue(
                                                 Identifier(
                                                     r"a",
@@ -115,7 +115,7 @@ Ok(
                                             ),
                                         },
                                     },
-                                    rhs: Binop {
+                                    rhs: BinOp {
                                         op: Mul,
                                         lhs: LvalueToRvalue(
                                             Identifier(
@@ -159,12 +159,12 @@ Ok(
                                     [
                                         Stmt(
                                             Return {
-                                                value: Binop {
-                                                    op: Add,
-                                                    lhs: Binop {
+                                                value: BinOp {
+                                                    op: Plus,
+                                                    lhs: BinOp {
                                                         op: Mul,
-                                                        lhs: Binop {
-                                                            op: Sub,
+                                                        lhs: BinOp {
+                                                            op: Minus,
                                                             lhs: LvalueToRvalue(
                                                                 Member {
                                                                     lhs: Identifier(
@@ -182,8 +182,8 @@ Ok(
                                                                 },
                                                             ),
                                                         },
-                                                        rhs: Binop {
-                                                            op: Sub,
+                                                        rhs: BinOp {
+                                                            op: Minus,
                                                             lhs: LvalueToRvalue(
                                                                 Member {
                                                                     lhs: Identifier(
@@ -202,10 +202,10 @@ Ok(
                                                             ),
                                                         },
                                                     },
-                                                    rhs: Binop {
+                                                    rhs: BinOp {
                                                         op: Mul,
-                                                        lhs: Binop {
-                                                            op: Sub,
+                                                        lhs: BinOp {
+                                                            op: Minus,
                                                             lhs: LvalueToRvalue(
                                                                 Member {
                                                                     lhs: Identifier(
@@ -223,8 +223,8 @@ Ok(
                                                                 },
                                                             ),
                                                         },
-                                                        rhs: Binop {
-                                                            op: Sub,
+                                                        rhs: BinOp {
+                                                            op: Minus,
                                                             lhs: LvalueToRvalue(
                                                                 Member {
                                                                     lhs: Identifier(
@@ -266,15 +266,15 @@ Ok(
                         return_type: None,
                         body: Some(
                             Expression(
-                                Binop {
+                                BinOp {
                                     op: Or,
-                                    lhs: Binop {
+                                    lhs: BinOp {
                                         op: Or,
                                         lhs: Call {
                                             callee: r"approximately_eq",
                                             args: [
-                                                Binop {
-                                                    op: Add,
+                                                BinOp {
+                                                    op: Plus,
                                                     lhs: Call {
                                                         callee: r"squared_distance",
                                                         args: [
@@ -379,8 +379,8 @@ Ok(
                                         rhs: Call {
                                             callee: r"approximately_eq",
                                             args: [
-                                                Binop {
-                                                    op: Add,
+                                                BinOp {
+                                                    op: Plus,
                                                     lhs: Call {
                                                         callee: r"squared_distance",
                                                         args: [
@@ -486,8 +486,8 @@ Ok(
                                     rhs: Call {
                                         callee: r"approximately_eq",
                                         args: [
-                                            Binop {
-                                                op: Add,
+                                            BinOp {
+                                                op: Plus,
                                                 lhs: Call {
                                                     callee: r"squared_distance",
                                                     args: [

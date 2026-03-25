@@ -63,7 +63,7 @@ Ok(
                                         ),
                                         Stmt(
                                             Print {
-                                                value: Binop {
+                                                value: BinOp {
                                                     op: And,
                                                     lhs: LvalueToRvalue(
                                                         Identifier(
@@ -80,7 +80,7 @@ Ok(
                                         ),
                                         Stmt(
                                             Print {
-                                                value: Binop {
+                                                value: BinOp {
                                                     op: And,
                                                     lhs: LvalueToRvalue(
                                                         Identifier(
@@ -95,7 +95,7 @@ Ok(
                                         ),
                                         Stmt(
                                             Print {
-                                                value: Binop {
+                                                value: BinOp {
                                                     op: Or,
                                                     lhs: LvalueToRvalue(
                                                         Identifier(
@@ -112,7 +112,7 @@ Ok(
                                         ),
                                         Stmt(
                                             Print {
-                                                value: Binop {
+                                                value: BinOp {
                                                     op: Or,
                                                     lhs: BoolLiteral(
                                                         False,
@@ -127,8 +127,8 @@ Ok(
                                         ),
                                         Stmt(
                                             Print {
-                                                value: Unop {
-                                                    op: Neg,
+                                                value: UnOp {
+                                                    op: Not,
                                                     operand: LvalueToRvalue(
                                                         Identifier(
                                                             r"a",
@@ -139,11 +139,35 @@ Ok(
                                         ),
                                         Stmt(
                                             Print {
-                                                value: Unop {
-                                                    op: Neg,
+                                                value: UnOp {
+                                                    op: Not,
                                                     operand: LvalueToRvalue(
                                                         Identifier(
                                                             r"b",
+                                                        ),
+                                                    ),
+                                                },
+                                            },
+                                        ),
+                                        Stmt(
+                                            Print {
+                                                value: UnOp {
+                                                    op: Not,
+                                                    operand: LvalueToRvalue(
+                                                        Identifier(
+                                                            r"x",
+                                                        ),
+                                                    ),
+                                                },
+                                            },
+                                        ),
+                                        Stmt(
+                                            Print {
+                                                value: UnOp {
+                                                    op: Not,
+                                                    operand: LvalueToRvalue(
+                                                        Identifier(
+                                                            r"y",
                                                         ),
                                                     ),
                                                 },

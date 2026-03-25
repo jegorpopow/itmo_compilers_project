@@ -107,7 +107,7 @@ Ok(
                         return_type: None,
                         body: Some(
                             Expression(
-                                Binop {
+                                BinOp {
                                     op: Eq,
                                     lhs: LvalueToRvalue(
                                         Identifier(
@@ -158,8 +158,8 @@ Ok(
                                         ),
                                         Stmt(
                                             While {
-                                                condition: Unop {
-                                                    op: Neg,
+                                                condition: UnOp {
+                                                    op: Not,
                                                     operand: Call {
                                                         callee: r"is_empty",
                                                         args: [
@@ -178,8 +178,8 @@ Ok(
                                                                 lhs: Identifier(
                                                                     r"result",
                                                                 ),
-                                                                rhs: Binop {
-                                                                    op: Add,
+                                                                rhs: BinOp {
+                                                                    op: Plus,
                                                                     lhs: LvalueToRvalue(
                                                                         Identifier(
                                                                             r"result",
@@ -262,8 +262,8 @@ Ok(
                                         ),
                                         Stmt(
                                             While {
-                                                condition: Unop {
-                                                    op: Neg,
+                                                condition: UnOp {
+                                                    op: Not,
                                                     operand: Call {
                                                         callee: r"is_empty",
                                                         args: [

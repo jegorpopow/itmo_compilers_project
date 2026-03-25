@@ -21,8 +21,8 @@ Ok(
                         name: r"b",
                         t: None,
                         initialiser: Some(
-                            Binop {
-                                op: Sub,
+                            BinOp {
+                                op: Minus,
                                 lhs: IntegerLiteral(
                                     IntegerLiteral {
                                         repr: "-1",
@@ -44,8 +44,8 @@ Ok(
                         name: r"c",
                         t: None,
                         initialiser: Some(
-                            Binop {
-                                op: Sub,
+                            BinOp {
+                                op: Minus,
                                 lhs: IntegerLiteral(
                                     IntegerLiteral {
                                         repr: "-1",
@@ -67,16 +67,16 @@ Ok(
                         name: r"d",
                         t: None,
                         initialiser: Some(
-                            Binop {
-                                op: Add,
+                            BinOp {
+                                op: Plus,
                                 lhs: IntegerLiteral(
                                     IntegerLiteral {
                                         repr: "-5",
                                         value: -5,
                                     },
                                 ),
-                                rhs: Binop {
-                                    op: Add,
+                                rhs: BinOp {
+                                    op: Plus,
                                     lhs: IntegerLiteral(
                                         IntegerLiteral {
                                             repr: "-7",
@@ -99,8 +99,8 @@ Ok(
                         name: r"e",
                         t: None,
                         initialiser: Some(
-                            Unop {
-                                op: Sub,
+                            UnOp {
+                                op: Minus,
                                 operand: IntegerLiteral(
                                     IntegerLiteral {
                                         repr: "-7",

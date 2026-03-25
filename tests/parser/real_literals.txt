@@ -384,8 +384,8 @@ Ok(
                                                 name: r"q",
                                                 t: None,
                                                 initialiser: Some(
-                                                    Unop {
-                                                        op: Sub,
+                                                    UnOp {
+                                                        op: Minus,
                                                         operand: RealLiteral(
                                                             RealLiteral {
                                                                 repr: "NaN",
@@ -433,8 +433,8 @@ Ok(
                                                 name: r"s",
                                                 t: None,
                                                 initialiser: Some(
-                                                    Unop {
-                                                        op: Sub,
+                                                    UnOp {
+                                                        op: Minus,
                                                         operand: RealLiteral(
                                                             RealLiteral {
                                                                 repr: "Inf",

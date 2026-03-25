@@ -168,8 +168,8 @@ Ok(
                                                                 lhs: Identifier(
                                                                     r"result",
                                                                 ),
-                                                                rhs: Binop {
-                                                                    op: Add,
+                                                                rhs: BinOp {
+                                                                    op: Plus,
                                                                     lhs: LvalueToRvalue(
                                                                         Identifier(
                                                                             r"result",
@@ -266,15 +266,15 @@ Ok(
                                                                     [
                                                                         Stmt(
                                                                             If {
-                                                                                condition: Binop {
+                                                                                condition: BinOp {
                                                                                     op: Gt,
                                                                                     lhs: LvalueToRvalue(
                                                                                         Index {
                                                                                             lhs: Identifier(
                                                                                                 r"a",
                                                                                             ),
-                                                                                            index: Binop {
-                                                                                                op: Sub,
+                                                                                            index: BinOp {
+                                                                                                op: Minus,
                                                                                                 lhs: LvalueToRvalue(
                                                                                                     Identifier(
                                                                                                         r"j",
@@ -341,8 +341,8 @@ Ok(
                                                                                                         lhs: Identifier(
                                                                                                             r"a",
                                                                                                         ),
-                                                                                                        index: Binop {
-                                                                                                            op: Sub,
+                                                                                                        index: BinOp {
+                                                                                                            op: Minus,
                                                                                                             lhs: LvalueToRvalue(
                                                                                                                 Identifier(
                                                                                                                     r"j",
@@ -365,8 +365,8 @@ Ok(
                                                                                                     lhs: Identifier(
                                                                                                         r"a",
                                                                                                     ),
-                                                                                                    index: Binop {
-                                                                                                        op: Sub,
+                                                                                                    index: BinOp {
+                                                                                                        op: Minus,
                                                                                                         lhs: LvalueToRvalue(
                                                                                                             Identifier(
                                                                                                                 r"j",

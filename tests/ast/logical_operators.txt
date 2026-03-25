@@ -179,7 +179,7 @@ Ok(
                                         ),
                                         Stmt(
                                             Print {
-                                                value: Binop {
+                                                value: BinOp {
                                                     op: Bool(
                                                         And,
                                                     ),
@@ -198,7 +198,7 @@ Ok(
                                         ),
                                         Stmt(
                                             Print {
-                                                value: Binop {
+                                                value: BinOp {
                                                     op: Bool(
                                                         And,
                                                     ),
@@ -215,7 +215,7 @@ Ok(
                                         ),
                                         Stmt(
                                             Print {
-                                                value: Binop {
+                                                value: BinOp {
                                                     op: Bool(
                                                         Or,
                                                     ),
@@ -234,7 +234,7 @@ Ok(
                                         ),
                                         Stmt(
                                             Print {
-                                                value: Binop {
+                                                value: BinOp {
                                                     op: Bool(
                                                         Or,
                                                     ),
@@ -251,7 +251,7 @@ Ok(
                                         ),
                                         Stmt(
                                             Print {
-                                                value: Unop {
+                                                value: UnOp {
                                                     op: BoolNeg,
                                                     operand: LvalueToRvalue(
                                                         Identifier(
@@ -263,11 +263,39 @@ Ok(
                                         ),
                                         Stmt(
                                             Print {
-                                                value: Unop {
+                                                value: UnOp {
                                                     op: BoolNeg,
                                                     operand: LvalueToRvalue(
                                                         Identifier(
                                                             b(2),
+                                                        ),
+                                                    ),
+                                                },
+                                            },
+                                        ),
+                                        Stmt(
+                                            Print {
+                                                value: UnOp {
+                                                    op: BoolNeg,
+                                                    operand: IntToBool(
+                                                        LvalueToRvalue(
+                                                            Identifier(
+                                                                x(3),
+                                                            ),
+                                                        ),
+                                                    ),
+                                                },
+                                            },
+                                        ),
+                                        Stmt(
+                                            Print {
+                                                value: UnOp {
+                                                    op: BoolNeg,
+                                                    operand: IntToBool(
+                                                        LvalueToRvalue(
+                                                            Identifier(
+                                                                y(4),
+                                                            ),
                                                         ),
                                                     ),
                                                 },

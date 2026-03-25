@@ -179,15 +179,15 @@ Ok(
                                 },
                             ],
                             body: Expression(
-                                Binop {
+                                BinOp {
                                     op: Real(
                                         Lt,
                                     ),
-                                    lhs: Binop {
+                                    lhs: BinOp {
                                         op: Real(
                                             Mul,
                                         ),
-                                        lhs: Binop {
+                                        lhs: BinOp {
                                             op: Real(
                                                 Sub,
                                             ),
@@ -202,7 +202,7 @@ Ok(
                                                 ),
                                             ),
                                         },
-                                        rhs: Binop {
+                                        rhs: BinOp {
                                             op: Real(
                                                 Sub,
                                             ),
@@ -218,7 +218,7 @@ Ok(
                                             ),
                                         },
                                     },
-                                    rhs: Binop {
+                                    rhs: BinOp {
                                         op: Real(
                                             Mul,
                                         ),
@@ -336,18 +336,18 @@ Ok(
                                 },
                             ],
                             body: Expression(
-                                Binop {
+                                BinOp {
                                     op: Bool(
                                         Or,
                                     ),
-                                    lhs: Binop {
+                                    lhs: BinOp {
                                         op: Bool(
                                             Or,
                                         ),
                                         lhs: Call {
                                             callee: approximately_eq(6),
                                             args: [
-                                                Binop {
+                                                BinOp {
                                                     op: Real(
                                                         Add,
                                                     ),
@@ -455,7 +455,7 @@ Ok(
                                         rhs: Call {
                                             callee: approximately_eq(6),
                                             args: [
-                                                Binop {
+                                                BinOp {
                                                     op: Real(
                                                         Add,
                                                     ),
@@ -564,7 +564,7 @@ Ok(
                                     rhs: Call {
                                         callee: approximately_eq(6),
                                         args: [
-                                            Binop {
+                                            BinOp {
                                                 op: Real(
                                                     Add,
                                                 ),
@@ -851,15 +851,15 @@ Ok(
                                 },
                             ],
                             body: Expression(
-                                Binop {
+                                BinOp {
                                     op: Real(
                                         Lt,
                                     ),
-                                    lhs: Binop {
+                                    lhs: BinOp {
                                         op: Real(
                                             Mul,
                                         ),
-                                        lhs: Binop {
+                                        lhs: BinOp {
                                             op: Real(
                                                 Sub,
                                             ),
@@ -874,7 +874,7 @@ Ok(
                                                 ),
                                             ),
                                         },
-                                        rhs: Binop {
+                                        rhs: BinOp {
                                             op: Real(
                                                 Sub,
                                             ),
@@ -890,7 +890,7 @@ Ok(
                                             ),
                                         },
                                     },
-                                    rhs: Binop {
+                                    rhs: BinOp {
                                         op: Real(
                                             Mul,
                                         ),
@@ -966,15 +966,15 @@ Ok(
                                     [
                                         Stmt(
                                             Return {
-                                                value: Binop {
+                                                value: BinOp {
                                                     op: Real(
                                                         Add,
                                                     ),
-                                                    lhs: Binop {
+                                                    lhs: BinOp {
                                                         op: Real(
                                                             Mul,
                                                         ),
-                                                        lhs: Binop {
+                                                        lhs: BinOp {
                                                             op: Real(
                                                                 Sub,
                                                             ),
@@ -995,7 +995,7 @@ Ok(
                                                                 },
                                                             ),
                                                         },
-                                                        rhs: Binop {
+                                                        rhs: BinOp {
                                                             op: Real(
                                                                 Sub,
                                                             ),
@@ -1017,11 +1017,11 @@ Ok(
                                                             ),
                                                         },
                                                     },
-                                                    rhs: Binop {
+                                                    rhs: BinOp {
                                                         op: Real(
                                                             Mul,
                                                         ),
-                                                        lhs: Binop {
+                                                        lhs: BinOp {
                                                             op: Real(
                                                                 Sub,
                                                             ),
@@ -1042,7 +1042,7 @@ Ok(
                                                                 },
                                                             ),
                                                         },
-                                                        rhs: Binop {
+                                                        rhs: BinOp {
                                                             op: Real(
                                                                 Sub,
                                                             ),
@@ -1105,18 +1105,18 @@ Ok(
                                 },
                             ],
                             body: Expression(
-                                Binop {
+                                BinOp {
                                     op: Bool(
                                         Or,
                                     ),
-                                    lhs: Binop {
+                                    lhs: BinOp {
                                         op: Bool(
                                             Or,
                                         ),
                                         lhs: Call {
                                             callee: approximately_eq(6),
                                             args: [
-                                                Binop {
+                                                BinOp {
                                                     op: Real(
                                                         Add,
                                                     ),
@@ -1224,7 +1224,7 @@ Ok(
                                         rhs: Call {
                                             callee: approximately_eq(6),
                                             args: [
-                                                Binop {
+                                                BinOp {
                                                     op: Real(
                                                         Add,
                                                     ),
@@ -1333,7 +1333,7 @@ Ok(
                                     rhs: Call {
                                         callee: approximately_eq(6),
                                         args: [
-                                            Binop {
+                                            BinOp {
                                                 op: Real(
                                                     Add,
                                                 ),

@@ -266,7 +266,7 @@ impl Converter {
                     },
                     t => Err(AnalysisError {
                         what: format!(
-                            "{:?} is not a name of variable in lvalue exprerssion",
+                            "{:?} is not a name of variable in lvalue expression",
                             t.name
                         ),
                     })?,
@@ -319,16 +319,23 @@ impl Converter {
         } = operand;
 
         Ok(match op {
-            SyntacticOperator::Neg => match &*operand_type {
+            SyntacticOperator::Not => match &*operand_type {
                 Type::Bool => Typed {
-                    value: Rc::new(Expression::Unop {
+                    value: Rc::new(Expression::UnOp {
                         op: SemanticUnaryOperator::BoolNeg,
                         operand: converted_operand,
                     }),
                     ty: Rc::new(Type::Bool),
                 },
-                Type::Int
-                | Type::Real
+                Type::Int => Typed {
+                    value: Rc::new(Expression::UnOp {
+                        op: SemanticUnaryOperator::BoolNeg,
+                        operand: Rc::new(Expression::IntToBool(converted_operand)),
+                    }),
+                    ty: Rc::new(Type::Bool),
+                },
+
+                Type::Real
                 | Type::Alias(_)
                 | Type::Record(_)
                 | Type::Array(_)
@@ -339,16 +346,16 @@ impl Converter {
                     ),
                 })?,
             },
-            SyntacticOperator::Sub => match &*operand_type {
+            SyntacticOperator::Minus => match &*operand_type {
                 Type::Int => Typed {
-                    value: Rc::new(Expression::Unop {
+                    value: Rc::new(Expression::UnOp {
                         op: SemanticUnaryOperator::IntNeg,
                         operand: converted_operand,
                     }),
                     ty: Rc::new(Type::Int),
                 },
                 Type::Real => Typed {
-                    value: Rc::new(Expression::Unop {
+                    value: Rc::new(Expression::UnOp {
                         op: SemanticUnaryOperator::RealNeg,
                         operand: converted_operand,
                     }),
@@ -365,7 +372,7 @@ impl Converter {
                     ),
                 })?,
             },
-            SyntacticOperator::Add
+            SyntacticOperator::Plus
             | SyntacticOperator::Mul
             | SyntacticOperator::Div
             | SyntacticOperator::Mod
@@ -405,13 +412,13 @@ impl Converter {
         if arguments_types.len() != converted_expressions.len() {
             Err(AnalysisError {
                 what: format!(
-                    "routine `{callee}` expexts {} arguments, but got {}",
+                    "routine `{callee}` expects {} arguments, but got {}",
                     arguments_types.len(),
                     converted_expressions.len()
                 ),
             })
         } else {
-            let convrted_args = std::iter::zip(arguments_types, converted_expressions)
+            let converted_args = std::iter::zip(arguments_types, converted_expressions)
                 .map(
                     |(
                         arg_type,
@@ -425,7 +432,7 @@ impl Converter {
             Ok(Typed {
                 value: Rc::new(Expression::Call {
                     callee: self.lookup(callee)?.name.clone(),
-                    args: convrted_args,
+                    args: converted_args,
                 }),
                 ty: Rc::clone(return_type),
             })
@@ -442,12 +449,12 @@ impl Converter {
 
         match &*converted_effective_type {
             Type::Int | Type::Real | Type::Bool | Type::Null | Type::Unit => Err(AnalysisError {
-                what: format!("No new operator supprted for built-in type {t:?}"),
+                what: format!("No new operator supported for built-in type {t:?}"),
             })?,
             Type::Alias(_) => unreachable!("Effective type can not be alias"),
             Type::Record(_) => {
-                let defined_fields = fields.unwrap_or_default();
-                let converted_fields: Vec<(RawIdentifier, Rc<Expression>)> = defined_fields
+                let converted_fields: Vec<(RawIdentifier, Rc<Expression>)> = fields
+                    .unwrap_or_default()
                     .iter()
                     .map(|(name, expr)| {
                         self.convert_expr(expr).and_then(
@@ -476,26 +483,24 @@ impl Converter {
                     ty: converted_type,
                 })
             }
+            Type::Array(_) if fields.is_some() => Err(AnalysisError {
+                what: format!("No field initialization possible for array type {t:?}"),
+            }),
 
-            Type::Array(array_description) => {
-                if fields.is_none() && array_description.length.is_some() {
-                    Ok(Typed {
-                        value: Rc::new(Expression::New {
-                            t: Rc::clone(&converted_type),
-                            fields: None,
-                        }),
-                        ty: converted_type,
-                    })
-                } else if fields.is_some() {
-                    Err(AnalysisError {
-                        what: format!("No field initialisation possible for array type {t:?}"),
-                    })
-                } else {
-                    Err(AnalysisError {
-                        what: format!("No new length known array creation {t:?}"),
-                    })
-                }
-            }
+            Type::Array(ArrayDescription { length: None, t: _ }) => Err(AnalysisError {
+                what: format!("No new length known array creation {t:?}"),
+            }),
+
+            Type::Array(ArrayDescription {
+                length: Some(_),
+                t: _,
+            }) => Ok(Typed {
+                value: Rc::new(Expression::New {
+                    t: Rc::clone(&converted_type),
+                    fields: None,
+                }),
+                ty: converted_type,
+            }),
         }
     }
 
@@ -513,7 +518,7 @@ impl Converter {
                     if lhs_type.get_element_type().is_ok() {
                         // Length of array
                         Typed {
-                            value: Rc::new(Expression::LenghtOf {
+                            value: Rc::new(Expression::LengthOf {
                                 arr: Rc::new(Expression::LvalueToRvalue(lhs)),
                             }),
                             ty: Rc::new(Type::Int),
@@ -552,7 +557,7 @@ impl Converter {
                 ty: Rc::new(Type::Bool),
             },
             parser::Expression::Call { callee, args } => self.convert_call(callee, args)?,
-            parser::Expression::Binop { op, lhs, rhs } => {
+            parser::Expression::BinOp { op, lhs, rhs } => {
                 let Typed {
                     value: converted_lhs,
                     ty: lhs_type,
@@ -571,7 +576,7 @@ impl Converter {
                 let actual_rhs = cast_to(converted_rhs, &rhs_type, &operand_type)?;
 
                 Typed {
-                    value: Rc::new(Expression::Binop {
+                    value: Rc::new(Expression::BinOp {
                         op: semantic_op,
                         lhs: actual_lhs,
                         rhs: actual_rhs,
@@ -579,7 +584,7 @@ impl Converter {
                     ty: result_type,
                 }
             }
-            parser::Expression::Unop { op, operand } => {
+            parser::Expression::UnOp { op, operand } => {
                 Self::convert_unary(*op, self.convert_expr(operand)?)?
             }
             parser::Expression::Cast { operand, target } => {
@@ -909,7 +914,7 @@ impl Converter {
             .iter()
             .map(|(name, arg_type)| {
                 self.convert_type(arg_type)
-                    .map(|conerted_arg_type| (name.clone(), conerted_arg_type))
+                    .map(|converted_arg_type| (name.clone(), converted_arg_type))
             })
             .collect::<AnalysisResult<Vec<(RawIdentifier, Rc<Type>)>>>()?;
 

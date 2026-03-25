@@ -20,7 +20,7 @@ Ok(
                                     [
                                         Stmt(
                                             If {
-                                                condition: Binop {
+                                                condition: BinOp {
                                                     op: Le,
                                                     lhs: LvalueToRvalue(
                                                         Identifier(
@@ -53,13 +53,13 @@ Ok(
                                                         [
                                                             Stmt(
                                                                 Return {
-                                                                    value: Binop {
-                                                                        op: Add,
+                                                                    value: BinOp {
+                                                                        op: Plus,
                                                                         lhs: Call {
                                                                             callee: r"fibonacci",
                                                                             args: [
-                                                                                Binop {
-                                                                                    op: Sub,
+                                                                                BinOp {
+                                                                                    op: Minus,
                                                                                     lhs: LvalueToRvalue(
                                                                                         Identifier(
                                                                                             r"n",
@@ -77,8 +77,8 @@ Ok(
                                                                         rhs: Call {
                                                                             callee: r"fibonacci",
                                                                             args: [
-                                                                                Binop {
-                                                                                    op: Sub,
+                                                                                BinOp {
+                                                                                    op: Minus,
                                                                                     lhs: LvalueToRvalue(
                                                                                         Identifier(
                                                                                             r"n",

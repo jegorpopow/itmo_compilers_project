@@ -92,12 +92,12 @@ Ok(
                                     [
                                         Stmt(
                                             Return {
-                                                value: Binop {
-                                                    op: Add,
-                                                    lhs: Binop {
+                                                value: BinOp {
+                                                    op: Plus,
+                                                    lhs: BinOp {
                                                         op: Mul,
-                                                        lhs: Binop {
-                                                            op: Sub,
+                                                        lhs: BinOp {
+                                                            op: Minus,
                                                             lhs: LvalueToRvalue(
                                                                 Member {
                                                                     lhs: Identifier(
@@ -115,8 +115,8 @@ Ok(
                                                                 },
                                                             ),
                                                         },
-                                                        rhs: Binop {
-                                                            op: Sub,
+                                                        rhs: BinOp {
+                                                            op: Minus,
                                                             lhs: LvalueToRvalue(
                                                                 Member {
                                                                     lhs: Identifier(
@@ -135,10 +135,10 @@ Ok(
                                                             ),
                                                         },
                                                     },
-                                                    rhs: Binop {
+                                                    rhs: BinOp {
                                                         op: Mul,
-                                                        lhs: Binop {
-                                                            op: Sub,
+                                                        lhs: BinOp {
+                                                            op: Minus,
                                                             lhs: LvalueToRvalue(
                                                                 Member {
                                                                     lhs: Identifier(
@@ -156,8 +156,8 @@ Ok(
                                                                 },
                                                             ),
                                                         },
-                                                        rhs: Binop {
-                                                            op: Sub,
+                                                        rhs: BinOp {
+                                                            op: Minus,
                                                             lhs: LvalueToRvalue(
                                                                 Member {
                                                                     lhs: Identifier(
@@ -208,10 +208,10 @@ Ok(
                                 Call {
                                     callee: r"point_of",
                                     args: [
-                                        Binop {
+                                        BinOp {
                                             op: Div,
-                                            lhs: Binop {
-                                                op: Add,
+                                            lhs: BinOp {
+                                                op: Plus,
                                                 lhs: LvalueToRvalue(
                                                     Member {
                                                         lhs: Identifier(
@@ -236,10 +236,10 @@ Ok(
                                                 },
                                             ),
                                         },
-                                        Binop {
+                                        BinOp {
                                             op: Div,
-                                            lhs: Binop {
-                                                op: Add,
+                                            lhs: BinOp {
+                                                op: Plus,
                                                 lhs: LvalueToRvalue(
                                                     Member {
                                                         lhs: Identifier(

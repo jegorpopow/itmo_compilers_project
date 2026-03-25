@@ -51,12 +51,12 @@ pub enum Expression {
         callee: RawIdentifier,
         args: Vec<Rc<Expression>>,
     },
-    Binop {
+    BinOp {
         op: SyntacticOperator,
         lhs: Rc<Expression>,
         rhs: Rc<Expression>,
     },
-    Unop {
+    UnOp {
         op: SyntacticOperator,
         operand: Rc<Expression>,
     },
