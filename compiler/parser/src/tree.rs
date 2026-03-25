@@ -2,7 +2,7 @@ use std::rc::Rc;
 
 use derive_where::derive_where;
 
-use common::{LoopOrder, RawIdentifier, operators::SyntacticOperator};
+use common::{Integer, LoopOrder, RawIdentifier, Real, operators::SyntacticOperator};
 
 use crate::Type;
 
@@ -11,7 +11,7 @@ use crate::Type;
 pub struct IntegerLiteral {
     pub repr: String,
     #[derive_where(skip(EqHashOrd))]
-    pub value: i64,
+    pub value: Integer,
 }
 
 #[derive(Debug)]
@@ -19,7 +19,7 @@ pub struct IntegerLiteral {
 pub struct RealLiteral {
     pub repr: String,
     #[derive_where(skip(EqHashOrd))]
-    pub value: f64,
+    pub value: Real,
 }
 
 #[derive(Debug, Hash, PartialEq, Eq, Clone, Copy)]

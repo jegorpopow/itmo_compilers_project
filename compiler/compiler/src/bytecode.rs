@@ -3,7 +3,7 @@
 use core::alloc::Layout;
 
 use common::{
-    Location,
+    Integer, Location, Real,
     operators::{
         BoolBinOp, EqBinOp, IntBinOp, RealBinOp, SemanticBinaryOperator, SemanticUnaryOperator,
     },
@@ -31,11 +31,11 @@ pub(crate) struct TypeId(u32);
 pub(crate) enum Instruction {
     /// push int / bool onto stack
     IntConst {
-        value: i64,
+        value: Integer,
     },
     /// push real onto stack
     RealConst {
-        value: f64,
+        value: Real,
     },
     /// push to stack
     Load {

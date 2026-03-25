@@ -3,10 +3,11 @@ use std::rc::Rc;
 use derive_where::derive_where;
 
 use common::{
-    Identifier, Location, LoopOrder, RawIdentifier,
+    Identifier, Integer, Location, LoopOrder, RawIdentifier, Real, integer_to_real,
     operators::{
         BoolBinOp, EqBinOp, IntBinOp, RealBinOp, SemanticBinaryOperator, SemanticUnaryOperator,
     },
+    real_to_integer,
 };
 
 use crate::{
@@ -19,7 +20,13 @@ use crate::{
 pub struct IntegerLiteral {
     pub repr: String,
     #[derive_where(skip(EqHashOrd))]
-    pub value: i64,
+    pub value: Integer,
+}
+
+impl From<&IntegerLiteral> for Integer {
+    fn from(value: &IntegerLiteral) -> Self {
+        value.value
+    }
 }
 
 #[derive(Debug)]
@@ -27,7 +34,13 @@ pub struct IntegerLiteral {
 pub struct RealLiteral {
     pub repr: String,
     #[derive_where(skip(EqHashOrd))]
-    pub value: f64,
+    pub value: Real,
+}
+
+impl From<&RealLiteral> for Real {
+    fn from(value: &RealLiteral) -> Self {
+        value.value
+    }
 }
 
 #[derive(Debug, Hash, PartialEq, Eq, Clone, Copy)]
@@ -36,10 +49,19 @@ pub enum BoolLiteral {
     False,
 }
 
-impl BoolLiteral {
-    #[must_use]
-    pub fn to_bool(self) -> bool {
-        match self {
+impl From<bool> for BoolLiteral {
+    fn from(value: bool) -> Self {
+        #[expect(clippy::match_bool, reason = "prettier this way")]
+        match value {
+            true => Self::True,
+            false => Self::False,
+        }
+    }
+}
+
+impl From<BoolLiteral> for bool {
+    fn from(value: BoolLiteral) -> Self {
+        match value {
             BoolLiteral::True => true,
             BoolLiteral::False => false,
         }
@@ -98,13 +120,13 @@ pub enum Expression {
 
 #[derive(Debug, PartialEq)]
 pub(crate) enum EvaluatedValue {
-    Int(i64),
-    Real(f64),
+    Int(Integer),
+    Real(Real),
     Bool(bool),
 }
 
 impl EvaluatedValue {
-    fn as_int(&self) -> AnalysisResult<i64> {
+    fn as_int(&self) -> AnalysisResult<Integer> {
         match self {
             EvaluatedValue::Int(val) => Ok(*val),
             EvaluatedValue::Real(_) | EvaluatedValue::Bool(_) => Err(AnalysisError {
@@ -113,7 +135,7 @@ impl EvaluatedValue {
         }
     }
 
-    fn as_real(&self) -> AnalysisResult<f64> {
+    fn as_real(&self) -> AnalysisResult<Real> {
         match self {
             EvaluatedValue::Real(val) => Ok(*val),
             EvaluatedValue::Int(_) | EvaluatedValue::Bool(_) => Err(AnalysisError {
@@ -149,8 +171,8 @@ trait BinOp<T> {
     fn apply(&self, lhs: T, rhs: T) -> EvaluatedValue;
 }
 
-impl BinOp<f64> for RealBinOp {
-    fn apply(&self, lhs: f64, rhs: f64) -> EvaluatedValue {
+impl BinOp<Real> for RealBinOp {
+    fn apply(&self, lhs: Real, rhs: Real) -> EvaluatedValue {
         match self {
             Self::Add => EvaluatedValue::Real(lhs + rhs),
             Self::Sub => EvaluatedValue::Real(lhs - rhs),
@@ -164,8 +186,8 @@ impl BinOp<f64> for RealBinOp {
     }
 }
 
-impl BinOp<i64> for IntBinOp {
-    fn apply(&self, lhs: i64, rhs: i64) -> EvaluatedValue {
+impl BinOp<Integer> for IntBinOp {
+    fn apply(&self, lhs: Integer, rhs: Integer) -> EvaluatedValue {
         match self {
             Self::Add => EvaluatedValue::Int(lhs + rhs),
             Self::Sub => EvaluatedValue::Int(lhs - rhs),
@@ -201,47 +223,44 @@ impl BinOp<EvaluatedValue> for EqBinOp {
 
 impl Expression {
     pub(crate) fn try_constexpr_evaluate(&self) -> AnalysisResult<EvaluatedValue> {
-        match self {
-            Expression::IntegerLiteral(integer_literal) => {
-                Ok(EvaluatedValue::Int(integer_literal.value))
-            }
-            Expression::RealLiteral(real_literal) => Ok(EvaluatedValue::Real(real_literal.value)),
-            Expression::BoolLiteral(bool_literal) => {
-                Ok(EvaluatedValue::Bool(bool_literal.to_bool()))
-            }
+        Ok(match self {
+            Expression::IntegerLiteral(lit) => EvaluatedValue::Int(lit.value),
+            Expression::RealLiteral(lit) => EvaluatedValue::Real(lit.value),
+            &Expression::BoolLiteral(lit) => EvaluatedValue::Bool(lit.into()),
+
             Expression::BinOp { op, lhs, rhs } => {
                 let lhs = lhs.try_constexpr_evaluate()?;
                 let rhs = rhs.try_constexpr_evaluate()?;
-                Ok(match op {
+                match op {
                     SemanticBinaryOperator::Eq(op) => op.apply(lhs, rhs),
                     SemanticBinaryOperator::Real(op) => op.apply(lhs.as_real()?, rhs.as_real()?),
                     SemanticBinaryOperator::Int(op) => op.apply(lhs.as_int()?, rhs.as_int()?),
                     SemanticBinaryOperator::Bool(op) => op.apply(lhs.as_bool()?, rhs.as_bool()?),
-                })
+                }
             }
 
             Expression::UnOp { op, operand } => {
                 let operand = operand.try_constexpr_evaluate()?;
-                Ok(match op {
+                match op {
                     SemanticUnaryOperator::IntNeg => EvaluatedValue::Int(-operand.as_int()?),
                     SemanticUnaryOperator::RealNeg => EvaluatedValue::Real(-operand.as_real()?),
                     SemanticUnaryOperator::BoolNeg => EvaluatedValue::Bool(!operand.as_bool()?),
-                })
+                }
             }
 
-            Expression::IntToBool(expression) => Ok(EvaluatedValue::Bool(
-                expression.try_constexpr_evaluate()?.as_int()? != 0,
+            Expression::IntToBool(expression) => {
+                EvaluatedValue::Bool(expression.try_constexpr_evaluate()?.as_int()? != 0)
+            }
+            Expression::BoolToInt(expression) => {
+                EvaluatedValue::Int(expression.try_constexpr_evaluate()?.as_bool()?.into())
+            }
+
+            Expression::RealToInt(expression) => EvaluatedValue::Int(real_to_integer(
+                expression.try_constexpr_evaluate()?.as_real()?,
             )),
-            Expression::BoolToInt(expression) => Ok(EvaluatedValue::Int(
-                expression.try_constexpr_evaluate()?.as_bool()?.into(),
-            )),
-            #[expect(clippy::cast_possible_truncation, reason = "By design")]
-            Expression::RealToInt(expression) => Ok(EvaluatedValue::Int(
-                expression.try_constexpr_evaluate()?.as_real()? as i64,
-            )),
-            #[expect(clippy::cast_precision_loss, reason = "By design")]
-            Expression::IntToReal(expression) => Ok(EvaluatedValue::Real(
-                expression.try_constexpr_evaluate()?.as_int()? as f64,
+
+            Expression::IntToReal(expression) => EvaluatedValue::Real(integer_to_real(
+                expression.try_constexpr_evaluate()?.as_int()?,
             )),
 
             Expression::Call { .. }
@@ -253,8 +272,8 @@ impl Expression {
                 what: format!(
                     "Non constexpr expression {self:?} in compile-time computation context"
                 ),
-            }),
-        }
+            })?,
+        })
     }
 }
 
@@ -310,15 +329,16 @@ pub struct RoutineSignature {
 }
 
 #[derive(Debug, Clone)]
+pub struct Routine {
+    pub signature: RoutineSignature,
+    pub args_bindings: Vec<Binding<VarDecl>>,
+    pub body: RoutineBody,
+}
+
+#[derive(Debug, Clone)]
 pub enum RoutineDecl {
-    Full {
-        signature: RoutineSignature,
-        args_bindings: Vec<Binding>,
-        body: RoutineBody,
-    },
-    Forward {
-        signature: RoutineSignature,
-    },
+    Full(Routine),
+    Forward { signature: RoutineSignature },
 }
 
 impl OptionalDecl for RoutineDecl {
@@ -331,7 +351,9 @@ impl RoutineDecl {
     #[must_use]
     pub fn signature(&self) -> &RoutineSignature {
         match self {
-            RoutineDecl::Full { signature, .. } | RoutineDecl::Forward { signature } => signature,
+            RoutineDecl::Full(Routine { signature, .. }) | RoutineDecl::Forward { signature } => {
+                signature
+            }
         }
     }
 }
@@ -441,9 +463,9 @@ impl TryFrom<Decl> for SimpleDecl {
 }
 
 #[derive(Debug, Clone)]
-pub struct Binding {
+pub struct Binding<T = Decl> {
     pub name: Identifier,
-    pub decl: Decl,
+    pub decl: T,
 }
 
 impl Binding {

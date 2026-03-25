@@ -72,81 +72,83 @@ Ok(
                 Binding {
                     name: singleton(3),
                     decl: Routine(
-                        Full {
-                            signature: RoutineSignature {
-                                args: [
-                                    (
-                                        r"data",
-                                        Int,
+                        Full(
+                            Routine {
+                                signature: RoutineSignature {
+                                    args: [
+                                        (
+                                            r"data",
+                                            Int,
+                                        ),
+                                    ],
+                                    return_type: Alias(
+                                        linked_list(0),
                                     ),
-                                ],
-                                return_type: Alias(
-                                    linked_list(0),
-                                ),
-                            },
-                            args_bindings: [
-                                Binding {
-                                    name: data(2),
-                                    decl: Var(
-                                        VarDecl {
+                                },
+                                args_bindings: [
+                                    Binding {
+                                        name: data(2),
+                                        decl: VarDecl {
                                             t: Int,
                                             initialiser: None,
                                             relative_location: Argument(
                                                 0,
                                             ),
                                         },
-                                    ),
-                                },
-                            ],
-                            body: Expression(
-                                New {
-                                    t: Alias(
-                                        linked_list(0),
-                                    ),
-                                    fields: Some(
-                                        [
-                                            (
-                                                r"data",
-                                                LvalueToRvalue(
-                                                    Identifier(
-                                                        data(2),
+                                    },
+                                ],
+                                body: Expression(
+                                    New {
+                                        t: Alias(
+                                            linked_list(0),
+                                        ),
+                                        fields: Some(
+                                            [
+                                                (
+                                                    r"data",
+                                                    LvalueToRvalue(
+                                                        Identifier(
+                                                            data(2),
+                                                        ),
                                                     ),
                                                 ),
-                                            ),
-                                            (
-                                                r"tail",
-                                                LvalueToRvalue(
-                                                    Identifier(
-                                                        EMPTY(1),
+                                                (
+                                                    r"tail",
+                                                    LvalueToRvalue(
+                                                        Identifier(
+                                                            EMPTY(1),
+                                                        ),
                                                     ),
                                                 ),
-                                            ),
-                                        ],
-                                    ),
-                                },
-                            ),
-                        },
+                                            ],
+                                        ),
+                                    },
+                                ),
+                            },
+                        ),
                     ),
                 },
                 Binding {
                     name: empty(4),
                     decl: Routine(
-                        Full {
-                            signature: RoutineSignature {
-                                args: [],
-                                return_type: Alias(
-                                    linked_list(0),
-                                ),
-                            },
-                            args_bindings: [],
-                            body: Expression(
-                                LvalueToRvalue(
-                                    Identifier(
-                                        EMPTY(1),
+                        Full(
+                            Routine {
+                                signature: RoutineSignature {
+                                    args: [],
+                                    return_type: Alias(
+                                        linked_list(0),
+                                    ),
+                                },
+                                args_bindings: [],
+                                body: Expression(
+                                    LvalueToRvalue(
+                                        Identifier(
+                                            EMPTY(1),
+                                        ),
                                     ),
                                 ),
-                            ),
-                        },
+                            },
+                        ),
                     ),
                 },
                 Binding {
@@ -166,23 +168,23 @@ Ok(
                 Binding {
                     name: is_empty(6),
                     decl: Routine(
-                        Full {
-                            signature: RoutineSignature {
-                                args: [
-                                    (
-                                        r"l",
-                                        Alias(
-                                            linked_list(0),
+                        Full(
+                            Routine {
+                                signature: RoutineSignature {
+                                    args: [
+                                        (
+                                            r"l",
+                                            Alias(
+                                                linked_list(0),
+                                            ),
                                         ),
-                                    ),
-                                ],
-                                return_type: Bool,
-                            },
-                            args_bindings: [
-                                Binding {
-                                    name: l(5),
-                                    decl: Var(
-                                        VarDecl {
+                                    ],
+                                    return_type: Bool,
+                                },
+                                args_bindings: [
+                                    Binding {
+                                        name: l(5),
+                                        decl: VarDecl {
                                             t: Alias(
                                                 linked_list(0),
                                             ),
@@ -191,27 +193,27 @@ Ok(
                                                 0,
                                             ),
                                         },
-                                    ),
-                                },
-                            ],
-                            body: Expression(
-                                BinOp {
-                                    op: Eq(
-                                        Eq,
-                                    ),
-                                    lhs: LvalueToRvalue(
-                                        Identifier(
-                                            l(5),
+                                    },
+                                ],
+                                body: Expression(
+                                    BinOp {
+                                        op: Eq(
+                                            Eq,
                                         ),
-                                    ),
-                                    rhs: LvalueToRvalue(
-                                        Identifier(
-                                            EMPTY(1),
+                                        lhs: LvalueToRvalue(
+                                            Identifier(
+                                                l(5),
+                                            ),
                                         ),
-                                    ),
-                                },
-                            ),
-                        },
+                                        rhs: LvalueToRvalue(
+                                            Identifier(
+                                                EMPTY(1),
+                                            ),
+                                        ),
+                                    },
+                                ),
+                            },
+                        ),
                     ),
                 },
                 Binding {
@@ -417,103 +419,105 @@ Ok(
                 Binding {
                     name: singleton(3),
                     decl: Routine(
-                        Full {
-                            signature: RoutineSignature {
-                                args: [
-                                    (
-                                        r"data",
-                                        Int,
+                        Full(
+                            Routine {
+                                signature: RoutineSignature {
+                                    args: [
+                                        (
+                                            r"data",
+                                            Int,
+                                        ),
+                                    ],
+                                    return_type: Alias(
+                                        linked_list(0),
                                     ),
-                                ],
-                                return_type: Alias(
-                                    linked_list(0),
-                                ),
-                            },
-                            args_bindings: [
-                                Binding {
-                                    name: data(2),
-                                    decl: Var(
-                                        VarDecl {
+                                },
+                                args_bindings: [
+                                    Binding {
+                                        name: data(2),
+                                        decl: VarDecl {
                                             t: Int,
                                             initialiser: None,
                                             relative_location: Argument(
                                                 0,
                                             ),
                                         },
-                                    ),
-                                },
-                            ],
-                            body: Expression(
-                                New {
-                                    t: Alias(
-                                        linked_list(0),
-                                    ),
-                                    fields: Some(
-                                        [
-                                            (
-                                                r"data",
-                                                LvalueToRvalue(
-                                                    Identifier(
-                                                        data(2),
+                                    },
+                                ],
+                                body: Expression(
+                                    New {
+                                        t: Alias(
+                                            linked_list(0),
+                                        ),
+                                        fields: Some(
+                                            [
+                                                (
+                                                    r"data",
+                                                    LvalueToRvalue(
+                                                        Identifier(
+                                                            data(2),
+                                                        ),
                                                     ),
                                                 ),
-                                            ),
-                                            (
-                                                r"tail",
-                                                LvalueToRvalue(
-                                                    Identifier(
-                                                        EMPTY(1),
+                                                (
+                                                    r"tail",
+                                                    LvalueToRvalue(
+                                                        Identifier(
+                                                            EMPTY(1),
+                                                        ),
                                                     ),
                                                 ),
-                                            ),
-                                        ],
-                                    ),
-                                },
-                            ),
-                        },
+                                            ],
+                                        ),
+                                    },
+                                ),
+                            },
+                        ),
                     ),
                 },
                 Binding {
                     name: empty(4),
                     decl: Routine(
-                        Full {
-                            signature: RoutineSignature {
-                                args: [],
-                                return_type: Alias(
-                                    linked_list(0),
-                                ),
-                            },
-                            args_bindings: [],
-                            body: Expression(
-                                LvalueToRvalue(
-                                    Identifier(
-                                        EMPTY(1),
+                        Full(
+                            Routine {
+                                signature: RoutineSignature {
+                                    args: [],
+                                    return_type: Alias(
+                                        linked_list(0),
+                                    ),
+                                },
+                                args_bindings: [],
+                                body: Expression(
+                                    LvalueToRvalue(
+                                        Identifier(
+                                            EMPTY(1),
+                                        ),
                                     ),
                                 ),
-                            ),
-                        },
+                            },
+                        ),
                     ),
                 },
                 Binding {
                     name: is_empty(6),
                     decl: Routine(
-                        Full {
-                            signature: RoutineSignature {
-                                args: [
-                                    (
-                                        r"l",
-                                        Alias(
-                                            linked_list(0),
+                        Full(
+                            Routine {
+                                signature: RoutineSignature {
+                                    args: [
+                                        (
+                                            r"l",
+                                            Alias(
+                                                linked_list(0),
+                                            ),
                                         ),
-                                    ),
-                                ],
-                                return_type: Bool,
-                            },
-                            args_bindings: [
-                                Binding {
-                                    name: l(5),
-                                    decl: Var(
-                                        VarDecl {
+                                    ],
+                                    return_type: Bool,
+                                },
+                                args_bindings: [
+                                    Binding {
+                                        name: l(5),
+                                        decl: VarDecl {
                                             t: Alias(
                                                 linked_list(0),
                                             ),
@@ -522,49 +526,49 @@ Ok(
                                                 0,
                                             ),
                                         },
-                                    ),
-                                },
-                            ],
-                            body: Expression(
-                                BinOp {
-                                    op: Eq(
-                                        Eq,
-                                    ),
-                                    lhs: LvalueToRvalue(
-                                        Identifier(
-                                            l(5),
+                                    },
+                                ],
+                                body: Expression(
+                                    BinOp {
+                                        op: Eq(
+                                            Eq,
                                         ),
-                                    ),
-                                    rhs: LvalueToRvalue(
-                                        Identifier(
-                                            EMPTY(1),
+                                        lhs: LvalueToRvalue(
+                                            Identifier(
+                                                l(5),
+                                            ),
                                         ),
-                                    ),
-                                },
-                            ),
-                        },
+                                        rhs: LvalueToRvalue(
+                                            Identifier(
+                                                EMPTY(1),
+                                            ),
+                                        ),
+                                    },
+                                ),
+                            },
+                        ),
                     ),
                 },
                 Binding {
                     name: length(7),
                     decl: Routine(
-                        Full {
-                            signature: RoutineSignature {
-                                args: [
-                                    (
-                                        r"l",
-                                        Alias(
-                                            linked_list(0),
+                        Full(
+                            Routine {
+                                signature: RoutineSignature {
+                                    args: [
+                                        (
+                                            r"l",
+                                            Alias(
+                                                linked_list(0),
+                                            ),
                                         ),
-                                    ),
-                                ],
-                                return_type: Int,
-                            },
-                            args_bindings: [
-                                Binding {
-                                    name: l(8),
-                                    decl: Var(
-                                        VarDecl {
+                                    ],
+                                    return_type: Int,
+                                },
+                                args_bindings: [
+                                    Binding {
+                                        name: l(8),
+                                        decl: VarDecl {
                                             t: Alias(
                                                 linked_list(0),
                                             ),
@@ -573,129 +577,129 @@ Ok(
                                                 0,
                                             ),
                                         },
-                                    ),
-                                },
-                            ],
-                            body: Block(
-                                Block(
-                                    [
-                                        Decl(
-                                            SimpleBinding {
-                                                name: result(9),
-                                                decl: Var(
-                                                    VarDecl {
-                                                        t: Int,
-                                                        initialiser: Some(
-                                                            IntegerLiteral(
-                                                                IntegerLiteral {
-                                                                    repr: "0",
-                                                                    value: 0,
+                                    },
+                                ],
+                                body: Block(
+                                    Block(
+                                        [
+                                            Decl(
+                                                SimpleBinding {
+                                                    name: result(9),
+                                                    decl: Var(
+                                                        VarDecl {
+                                                            t: Int,
+                                                            initialiser: Some(
+                                                                IntegerLiteral(
+                                                                    IntegerLiteral {
+                                                                        repr: "0",
+                                                                        value: 0,
+                                                                    },
+                                                                ),
+                                                            ),
+                                                            relative_location: Local(
+                                                                0,
+                                                            ),
+                                                        },
+                                                    ),
+                                                },
+                                            ),
+                                            Stmt(
+                                                While {
+                                                    condition: UnOp {
+                                                        op: BoolNeg,
+                                                        operand: Call {
+                                                            callee: is_empty(6),
+                                                            args: [
+                                                                LvalueToRvalue(
+                                                                    Identifier(
+                                                                        l(8),
+                                                                    ),
+                                                                ),
+                                                            ],
+                                                        },
+                                                    },
+                                                    body: Block(
+                                                        [
+                                                            Stmt(
+                                                                Assignment {
+                                                                    lhs: Identifier(
+                                                                        result(9),
+                                                                    ),
+                                                                    rhs: BinOp {
+                                                                        op: Int(
+                                                                            Add,
+                                                                        ),
+                                                                        lhs: LvalueToRvalue(
+                                                                            Identifier(
+                                                                                result(9),
+                                                                            ),
+                                                                        ),
+                                                                        rhs: IntegerLiteral(
+                                                                            IntegerLiteral {
+                                                                                repr: "1",
+                                                                                value: 1,
+                                                                            },
+                                                                        ),
+                                                                    },
                                                                 },
                                                             ),
-                                                        ),
-                                                        relative_location: Local(
-                                                            0,
-                                                        ),
-                                                    },
-                                                ),
-                                            },
-                                        ),
-                                        Stmt(
-                                            While {
-                                                condition: UnOp {
-                                                    op: BoolNeg,
-                                                    operand: Call {
-                                                        callee: is_empty(6),
-                                                        args: [
-                                                            LvalueToRvalue(
-                                                                Identifier(
-                                                                    l(8),
-                                                                ),
-                                                            ),
-                                                        ],
-                                                    },
-                                                },
-                                                body: Block(
-                                                    [
-                                                        Stmt(
-                                                            Assignment {
-                                                                lhs: Identifier(
-                                                                    result(9),
-                                                                ),
-                                                                rhs: BinOp {
-                                                                    op: Int(
-                                                                        Add,
+                                                            Stmt(
+                                                                Assignment {
+                                                                    lhs: Identifier(
+                                                                        l(8),
                                                                     ),
-                                                                    lhs: LvalueToRvalue(
-                                                                        Identifier(
-                                                                            result(9),
-                                                                        ),
-                                                                    ),
-                                                                    rhs: IntegerLiteral(
-                                                                        IntegerLiteral {
-                                                                            repr: "1",
-                                                                            value: 1,
+                                                                    rhs: LvalueToRvalue(
+                                                                        Member {
+                                                                            lhs: Identifier(
+                                                                                l(8),
+                                                                            ),
+                                                                            member_name: r"tail",
                                                                         },
                                                                     ),
                                                                 },
-                                                            },
-                                                        ),
-                                                        Stmt(
-                                                            Assignment {
-                                                                lhs: Identifier(
-                                                                    l(8),
-                                                                ),
-                                                                rhs: LvalueToRvalue(
-                                                                    Member {
-                                                                        lhs: Identifier(
-                                                                            l(8),
-                                                                        ),
-                                                                        member_name: r"tail",
-                                                                    },
-                                                                ),
-                                                            },
-                                                        ),
-                                                    ],
-                                                ),
-                                            },
-                                        ),
-                                        Stmt(
-                                            Return {
-                                                value: LvalueToRvalue(
-                                                    Identifier(
-                                                        result(9),
+                                                            ),
+                                                        ],
                                                     ),
-                                                ),
-                                            },
-                                        ),
-                                    ],
+                                                },
+                                            ),
+                                            Stmt(
+                                                Return {
+                                                    value: LvalueToRvalue(
+                                                        Identifier(
+                                                            result(9),
+                                                        ),
+                                                    ),
+                                                },
+                                            ),
+                                        ],
+                                    ),
                                 ),
-                            ),
-                        },
+                            },
+                        ),
                     ),
                 },
                 Binding {
                     name: reverse_list(10),
                     decl: Routine(
-                        Full {
-                            signature: RoutineSignature {
-                                args: [
-                                    (
-                                        r"l",
-                                        Alias(
-                                            linked_list(0),
+                        Full(
+                            Routine {
+                                signature: RoutineSignature {
+                                    args: [
+                                        (
+                                            r"l",
+                                            Alias(
+                                                linked_list(0),
+                                            ),
                                         ),
+                                    ],
+                                    return_type: Alias(
+                                        linked_list(0),
                                     ),
-                                ],
-                                return_type: Alias(
-                                    linked_list(0),
-                                ),
-                            },
-                            args_bindings: [
-                                Binding {
-                                    name: l(11),
-                                    decl: Var(
-                                        VarDecl {
+                                },
+                                args_bindings: [
+                                    Binding {
+                                        name: l(11),
+                                        decl: VarDecl {
                                             t: Alias(
                                                 linked_list(0),
                                             ),
@@ -704,177 +708,179 @@ Ok(
                                                 0,
                                             ),
                                         },
-                                    ),
-                                },
-                            ],
-                            body: Block(
-                                Block(
-                                    [
-                                        Decl(
-                                            SimpleBinding {
-                                                name: result(12),
-                                                decl: Var(
-                                                    VarDecl {
-                                                        t: Alias(
-                                                            linked_list(0),
-                                                        ),
-                                                        initialiser: Some(
-                                                            Call {
-                                                                callee: empty(4),
-                                                                args: [],
-                                                            },
-                                                        ),
-                                                        relative_location: Local(
-                                                            0,
-                                                        ),
-                                                    },
-                                                ),
-                                            },
-                                        ),
-                                        Stmt(
-                                            While {
-                                                condition: UnOp {
-                                                    op: BoolNeg,
-                                                    operand: Call {
-                                                        callee: is_empty(6),
-                                                        args: [
-                                                            LvalueToRvalue(
-                                                                Identifier(
-                                                                    l(11),
-                                                                ),
+                                    },
+                                ],
+                                body: Block(
+                                    Block(
+                                        [
+                                            Decl(
+                                                SimpleBinding {
+                                                    name: result(12),
+                                                    decl: Var(
+                                                        VarDecl {
+                                                            t: Alias(
+                                                                linked_list(0),
                                                             ),
-                                                        ],
-                                                    },
+                                                            initialiser: Some(
+                                                                Call {
+                                                                    callee: empty(4),
+                                                                    args: [],
+                                                                },
+                                                            ),
+                                                            relative_location: Local(
+                                                                0,
+                                                            ),
+                                                        },
+                                                    ),
                                                 },
-                                                body: Block(
-                                                    [
-                                                        Stmt(
-                                                            Assignment {
-                                                                lhs: Identifier(
-                                                                    result(12),
-                                                                ),
-                                                                rhs: New {
-                                                                    t: Alias(
-                                                                        linked_list(0),
+                                            ),
+                                            Stmt(
+                                                While {
+                                                    condition: UnOp {
+                                                        op: BoolNeg,
+                                                        operand: Call {
+                                                            callee: is_empty(6),
+                                                            args: [
+                                                                LvalueToRvalue(
+                                                                    Identifier(
+                                                                        l(11),
                                                                     ),
-                                                                    fields: Some(
-                                                                        [
-                                                                            (
-                                                                                r"data",
-                                                                                LvalueToRvalue(
-                                                                                    Member {
-                                                                                        lhs: Identifier(
-                                                                                            l(11),
-                                                                                        ),
-                                                                                        member_name: r"data",
-                                                                                    },
-                                                                                ),
-                                                                            ),
-                                                                            (
-                                                                                r"tail",
-                                                                                LvalueToRvalue(
-                                                                                    Identifier(
-                                                                                        result(12),
+                                                                ),
+                                                            ],
+                                                        },
+                                                    },
+                                                    body: Block(
+                                                        [
+                                                            Stmt(
+                                                                Assignment {
+                                                                    lhs: Identifier(
+                                                                        result(12),
+                                                                    ),
+                                                                    rhs: New {
+                                                                        t: Alias(
+                                                                            linked_list(0),
+                                                                        ),
+                                                                        fields: Some(
+                                                                            [
+                                                                                (
+                                                                                    r"data",
+                                                                                    LvalueToRvalue(
+                                                                                        Member {
+                                                                                            lhs: Identifier(
+                                                                                                l(11),
+                                                                                            ),
+                                                                                            member_name: r"data",
+                                                                                        },
                                                                                     ),
                                                                                 ),
+                                                                                (
+                                                                                    r"tail",
+                                                                                    LvalueToRvalue(
+                                                                                        Identifier(
+                                                                                            result(12),
+                                                                                        ),
+                                                                                    ),
+                                                                                ),
+                                                                            ],
+                                                                        ),
+                                                                    },
+                                                                },
+                                                            ),
+                                                            Stmt(
+                                                                Assignment {
+                                                                    lhs: Identifier(
+                                                                        l(11),
+                                                                    ),
+                                                                    rhs: LvalueToRvalue(
+                                                                        Member {
+                                                                            lhs: Identifier(
+                                                                                l(11),
                                                                             ),
-                                                                        ],
+                                                                            member_name: r"tail",
+                                                                        },
                                                                     ),
                                                                 },
-                                                            },
-                                                        ),
-                                                        Stmt(
-                                                            Assignment {
-                                                                lhs: Identifier(
-                                                                    l(11),
-                                                                ),
-                                                                rhs: LvalueToRvalue(
-                                                                    Member {
-                                                                        lhs: Identifier(
-                                                                            l(11),
-                                                                        ),
-                                                                        member_name: r"tail",
-                                                                    },
-                                                                ),
-                                                            },
-                                                        ),
-                                                    ],
-                                                ),
-                                            },
-                                        ),
-                                        Stmt(
-                                            Return {
-                                                value: LvalueToRvalue(
-                                                    Identifier(
-                                                        result(12),
+                                                            ),
+                                                        ],
                                                     ),
-                                                ),
-                                            },
-                                        ),
-                                    ],
+                                                },
+                                            ),
+                                            Stmt(
+                                                Return {
+                                                    value: LvalueToRvalue(
+                                                        Identifier(
+                                                            result(12),
+                                                        ),
+                                                    ),
+                                                },
+                                            ),
+                                        ],
+                                    ),
                                 ),
-                            ),
-                        },
+                            },
+                        ),
                     ),
                 },
                 Binding {
                     name: main(13),
                     decl: Routine(
-                        Full {
-                            signature: RoutineSignature {
-                                args: [],
-                                return_type: Unit,
-                            },
-                            args_bindings: [],
-                            body: Block(
-                                Block(
-                                    [
-                                        Decl(
-                                            SimpleBinding {
-                                                name: list(14),
-                                                decl: Var(
-                                                    VarDecl {
-                                                        t: Alias(
-                                                            linked_list(0),
-                                                        ),
-                                                        initialiser: Some(
-                                                            Call {
-                                                                callee: singleton(3),
-                                                                args: [
-                                                                    IntegerLiteral(
-                                                                        IntegerLiteral {
-                                                                            repr: "1",
-                                                                            value: 1,
-                                                                        },
-                                                                    ),
-                                                                ],
-                                                            },
-                                                        ),
-                                                        relative_location: Local(
-                                                            0,
-                                                        ),
-                                                    },
-                                                ),
-                                            },
-                                        ),
-                                        Stmt(
-                                            Print {
-                                                value: Call {
-                                                    callee: length(7),
-                                                    args: [
-                                                        LvalueToRvalue(
-                                                            Identifier(
-                                                                list(14),
+                        Full(
+                            Routine {
+                                signature: RoutineSignature {
+                                    args: [],
+                                    return_type: Unit,
+                                },
+                                args_bindings: [],
+                                body: Block(
+                                    Block(
+                                        [
+                                            Decl(
+                                                SimpleBinding {
+                                                    name: list(14),
+                                                    decl: Var(
+                                                        VarDecl {
+                                                            t: Alias(
+                                                                linked_list(0),
                                                             ),
-                                                        ),
-                                                    ],
+                                                            initialiser: Some(
+                                                                Call {
+                                                                    callee: singleton(3),
+                                                                    args: [
+                                                                        IntegerLiteral(
+                                                                            IntegerLiteral {
+                                                                                repr: "1",
+                                                                                value: 1,
+                                                                            },
+                                                                        ),
+                                                                    ],
+                                                                },
+                                                            ),
+                                                            relative_location: Local(
+                                                                0,
+                                                            ),
+                                                        },
+                                                    ),
                                                 },
-                                            },
-                                        ),
-                                    ],
+                                            ),
+                                            Stmt(
+                                                Print {
+                                                    value: Call {
+                                                        callee: length(7),
+                                                        args: [
+                                                            LvalueToRvalue(
+                                                                Identifier(
+                                                                    list(14),
+                                                                ),
+                                                            ),
+                                                        ],
+                                                    },
+                                                },
+                                            ),
+                                        ],
+                                    ),
                                 ),
-                            ),
-                        },
+                            },
+                        ),
                     ),
                 },
             ],

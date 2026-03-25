@@ -11,8 +11,8 @@ pub use crate::{
     convert::convert,
     tree::{
         Binding, Block, BlockElem, BoolLiteral, Decl, Expression, IdentifierTable, IntegerLiteral,
-        LvalueExpression, Program, RealLiteral, RoutineBody, RoutineDecl, RoutineSignature,
-        SimpleBinding, SimpleDecl, Statement, TypeDecl, VarDecl,
+        LvalueExpression, Program, RealLiteral, Routine, RoutineBody, RoutineDecl,
+        RoutineSignature, SimpleBinding, SimpleDecl, Statement, TypeDecl, VarDecl,
     },
     types::{ArrayDescription, FieldDescription, RecordDescription, Type},
 };

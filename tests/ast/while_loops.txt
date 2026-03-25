@@ -67,132 +67,103 @@ Ok(
                 Binding {
                     name: collatz(0),
                     decl: Routine(
-                        Full {
-                            signature: RoutineSignature {
-                                args: [
-                                    (
-                                        r"n",
-                                        Int,
-                                    ),
-                                ],
-                                return_type: Int,
-                            },
-                            args_bindings: [
-                                Binding {
-                                    name: n(1),
-                                    decl: Var(
-                                        VarDecl {
+                        Full(
+                            Routine {
+                                signature: RoutineSignature {
+                                    args: [
+                                        (
+                                            r"n",
+                                            Int,
+                                        ),
+                                    ],
+                                    return_type: Int,
+                                },
+                                args_bindings: [
+                                    Binding {
+                                        name: n(1),
+                                        decl: VarDecl {
                                             t: Int,
                                             initialiser: None,
                                             relative_location: Argument(
                                                 0,
                                             ),
                                         },
-                                    ),
-                                },
-                            ],
-                            body: Block(
-                                Block(
-                                    [
-                                        Decl(
-                                            SimpleBinding {
-                                                name: steps(2),
-                                                decl: Var(
-                                                    VarDecl {
-                                                        t: Int,
-                                                        initialiser: Some(
-                                                            IntegerLiteral(
-                                                                IntegerLiteral {
-                                                                    repr: "0",
-                                                                    value: 0,
-                                                                },
+                                    },
+                                ],
+                                body: Block(
+                                    Block(
+                                        [
+                                            Decl(
+                                                SimpleBinding {
+                                                    name: steps(2),
+                                                    decl: Var(
+                                                        VarDecl {
+                                                            t: Int,
+                                                            initialiser: Some(
+                                                                IntegerLiteral(
+                                                                    IntegerLiteral {
+                                                                        repr: "0",
+                                                                        value: 0,
+                                                                    },
+                                                                ),
                                                             ),
-                                                        ),
-                                                        relative_location: Local(
-                                                            0,
-                                                        ),
-                                                    },
-                                                ),
-                                            },
-                                        ),
-                                        Stmt(
-                                            While {
-                                                condition: BinOp {
-                                                    op: Eq(
-                                                        Ne,
-                                                    ),
-                                                    lhs: LvalueToRvalue(
-                                                        Identifier(
-                                                            n(1),
-                                                        ),
-                                                    ),
-                                                    rhs: IntegerLiteral(
-                                                        IntegerLiteral {
-                                                            repr: "1",
-                                                            value: 1,
+                                                            relative_location: Local(
+                                                                0,
+                                                            ),
                                                         },
                                                     ),
                                                 },
-                                                body: Block(
-                                                    [
-                                                        Stmt(
-                                                            If {
-                                                                condition: BinOp {
-                                                                    op: Eq(
-                                                                        Eq,
-                                                                    ),
-                                                                    lhs: BinOp {
-                                                                        op: Int(
-                                                                            Mod,
+                                            ),
+                                            Stmt(
+                                                While {
+                                                    condition: BinOp {
+                                                        op: Eq(
+                                                            Ne,
+                                                        ),
+                                                        lhs: LvalueToRvalue(
+                                                            Identifier(
+                                                                n(1),
+                                                            ),
+                                                        ),
+                                                        rhs: IntegerLiteral(
+                                                            IntegerLiteral {
+                                                                repr: "1",
+                                                                value: 1,
+                                                            },
+                                                        ),
+                                                    },
+                                                    body: Block(
+                                                        [
+                                                            Stmt(
+                                                                If {
+                                                                    condition: BinOp {
+                                                                        op: Eq(
+                                                                            Eq,
                                                                         ),
-                                                                        lhs: LvalueToRvalue(
-                                                                            Identifier(
-                                                                                n(1),
+                                                                        lhs: BinOp {
+                                                                            op: Int(
+                                                                                Mod,
                                                                             ),
-                                                                        ),
+                                                                            lhs: LvalueToRvalue(
+                                                                                Identifier(
+                                                                                    n(1),
+                                                                                ),
+                                                                            ),
+                                                                            rhs: IntegerLiteral(
+                                                                                IntegerLiteral {
+                                                                                    repr: "2",
+                                                                                    value: 2,
+                                                                                },
+                                                                            ),
+                                                                        },
                                                                         rhs: IntegerLiteral(
                                                                             IntegerLiteral {
-                                                                                repr: "2",
-                                                                                value: 2,
+                                                                                repr: "0",
+                                                                                value: 0,
                                                                             },
                                                                         ),
                                                                     },
-                                                                    rhs: IntegerLiteral(
-                                                                        IntegerLiteral {
-                                                                            repr: "0",
-                                                                            value: 0,
-                                                                        },
-                                                                    ),
-                                                                },
-                                                                on_true: Block(
-                                                                    [
-                                                                        Stmt(
-                                                                            Assignment {
-                                                                                lhs: Identifier(
-                                                                                    n(1),
-                                                                                ),
-                                                                                rhs: BinOp {
-                                                                                    op: Int(
-                                                                                        Div,
-                                                                                    ),
-                                                                                    lhs: LvalueToRvalue(
-                                                                                        Identifier(
-                                                                                            n(1),
-                                                                                        ),
-                                                                                    ),
-                                                                                    rhs: IntegerLiteral(
-                                                                                        IntegerLiteral {
-                                                                                            repr: "2",
-                                                                                            value: 2,
-                                                                                        },
-                                                                                    ),
-                                                                                },
-                                                                            },
-                                                                        ),
-                                                                    ],
-                                                                ),
-                                                                on_false: Some(
-                                                                    Block(
+                                                                    on_true: Block(
                                                                         [
                                                                             Stmt(
                                                                                 Assignment {
@@ -201,28 +172,17 @@ Ok(
                                                                                     ),
                                                                                     rhs: BinOp {
                                                                                         op: Int(
-                                                                                            Add,
+                                                                                            Div,
                                                                                         ),
-                                                                                        lhs: BinOp {
-                                                                                            op: Int(
-                                                                                                Mul,
+                                                                                        lhs: LvalueToRvalue(
+                                                                                            Identifier(
+                                                                                                n(1),
                                                                                             ),
-                                                                                            lhs: IntegerLiteral(
-                                                                                                IntegerLiteral {
-                                                                                                    repr: "3",
-                                                                                                    value: 3,
-                                                                                                },
-                                                                                            ),
-                                                                                            rhs: LvalueToRvalue(
-                                                                                                Identifier(
-                                                                                                    n(1),
-                                                                                                ),
-                                                                                            ),
-                                                                                        },
+                                                                                        ),
                                                                                         rhs: IntegerLiteral(
                                                                                             IntegerLiteral {
-                                                                                                repr: "1",
-                                                                                                value: 1,
+                                                                                                repr: "2",
+                                                                                                value: 2,
                                                                                             },
                                                                                         ),
                                                                                     },
@@ -230,82 +190,124 @@ Ok(
                                                                             ),
                                                                         ],
                                                                     ),
-                                                                ),
-                                                            },
-                                                        ),
-                                                        Stmt(
-                                                            Assignment {
-                                                                lhs: Identifier(
-                                                                    steps(2),
-                                                                ),
-                                                                rhs: BinOp {
-                                                                    op: Int(
-                                                                        Add,
-                                                                    ),
-                                                                    lhs: LvalueToRvalue(
-                                                                        Identifier(
-                                                                            steps(2),
+                                                                    on_false: Some(
+                                                                        Block(
+                                                                            [
+                                                                                Stmt(
+                                                                                    Assignment {
+                                                                                        lhs: Identifier(
+                                                                                            n(1),
+                                                                                        ),
+                                                                                        rhs: BinOp {
+                                                                                            op: Int(
+                                                                                                Add,
+                                                                                            ),
+                                                                                            lhs: BinOp {
+                                                                                                op: Int(
+                                                                                                    Mul,
+                                                                                                ),
+                                                                                                lhs: IntegerLiteral(
+                                                                                                    IntegerLiteral {
+                                                                                                        repr: "3",
+                                                                                                        value: 3,
+                                                                                                    },
+                                                                                                ),
+                                                                                                rhs: LvalueToRvalue(
+                                                                                                    Identifier(
+                                                                                                        n(1),
+                                                                                                    ),
+                                                                                                ),
+                                                                                            },
+                                                                                            rhs: IntegerLiteral(
+                                                                                                IntegerLiteral {
+                                                                                                    repr: "1",
+                                                                                                    value: 1,
+                                                                                                },
+                                                                                            ),
+                                                                                        },
+                                                                                    },
+                                                                                ),
+                                                                            ],
                                                                         ),
                                                                     ),
-                                                                    rhs: IntegerLiteral(
-                                                                        IntegerLiteral {
-                                                                            repr: "1",
-                                                                            value: 1,
-                                                                        },
-                                                                    ),
                                                                 },
-                                                            },
-                                                        ),
-                                                    ],
-                                                ),
-                                            },
-                                        ),
-                                        Stmt(
-                                            Return {
-                                                value: LvalueToRvalue(
-                                                    Identifier(
-                                                        steps(2),
+                                                            ),
+                                                            Stmt(
+                                                                Assignment {
+                                                                    lhs: Identifier(
+                                                                        steps(2),
+                                                                    ),
+                                                                    rhs: BinOp {
+                                                                        op: Int(
+                                                                            Add,
+                                                                        ),
+                                                                        lhs: LvalueToRvalue(
+                                                                            Identifier(
+                                                                                steps(2),
+                                                                            ),
+                                                                        ),
+                                                                        rhs: IntegerLiteral(
+                                                                            IntegerLiteral {
+                                                                                repr: "1",
+                                                                                value: 1,
+                                                                            },
+                                                                        ),
+                                                                    },
+                                                                },
+                                                            ),
+                                                        ],
                                                     ),
-                                                ),
-                                            },
-                                        ),
-                                    ],
+                                                },
+                                            ),
+                                            Stmt(
+                                                Return {
+                                                    value: LvalueToRvalue(
+                                                        Identifier(
+                                                            steps(2),
+                                                        ),
+                                                    ),
+                                                },
+                                            ),
+                                        ],
+                                    ),
                                 ),
-                            ),
-                        },
+                            },
+                        ),
                     ),
                 },
                 Binding {
                     name: main(3),
                     decl: Routine(
-                        Full {
-                            signature: RoutineSignature {
-                                args: [],
-                                return_type: Unit,
-                            },
-                            args_bindings: [],
-                            body: Block(
-                                Block(
-                                    [
-                                        Stmt(
-                                            Print {
-                                                value: Call {
-                                                    callee: collatz(0),
-                                                    args: [
-                                                        IntegerLiteral(
-                                                            IntegerLiteral {
-                                                                repr: "7",
-                                                                value: 7,
-                                                            },
-                                                        ),
-                                                    ],
+                        Full(
+                            Routine {
+                                signature: RoutineSignature {
+                                    args: [],
+                                    return_type: Unit,
+                                },
+                                args_bindings: [],
+                                body: Block(
+                                    Block(
+                                        [
+                                            Stmt(
+                                                Print {
+                                                    value: Call {
+                                                        callee: collatz(0),
+                                                        args: [
+                                                            IntegerLiteral(
+                                                                IntegerLiteral {
+                                                                    repr: "7",
+                                                                    value: 7,
+                                                                },
+                                                            ),
+                                                        ],
+                                                    },
                                                 },
-                                            },
-                                        ),
-                                    ],
+                                            ),
+                                        ],
+                                    ),
                                 ),
-                            ),
-                        },
+                            },
+                        ),
                     ),
                 },
             ],
