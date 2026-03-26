@@ -1,0 +1,28 @@
+routine False() : boolean is
+  var result is false;
+  print result;
+  return result;
+end
+
+routine True() : boolean is
+  var result is true;
+  print result;
+  return result;
+end
+
+routine main() is
+  print 0;
+  print True() and False();
+  print 1;
+  print False() and True();
+
+  print 2;
+  print True() or False();
+  print 3;
+  print False() or True();
+
+  print 4;
+  print True() xor False();
+  print 5;
+  print False() xor True();
+end

@@ -28,6 +28,7 @@ testing::tests! {
         function_parameters => "function_parameters"
         function_return => "function_return"
         identifiers => "identifiers"
+        lazy_operators => "lazy_operators"
         logical_operators => "logical_operators"
         nested_control => "nested_control"
         operator_precedence => "operator_precedence"
