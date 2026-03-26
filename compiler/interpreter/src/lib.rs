@@ -414,19 +414,22 @@ impl<'a, W: Write> Interpreter<'a, W> {
                 BlockElem::Decl(SimpleBinding { name, decl }) => match decl {
                     SimpleDecl::Type(_) => {}
                     SimpleDecl::Var(VarDecl {
-                        t: _,
+                        t,
                         initialiser,
                         relative_location: _,
-                    }) => match initialiser {
-                        None => {}
-                        Some(e) => {
-                            let e = self.expression(bindings, e)?;
-                            let e = self.heap.alloc(e);
-                            if let Some(prev) = bindings.insert(name, e) {
-                                eprintln!("Discarding previous value for {name}: {prev:?}")
-                            }
+                    }) => {
+                        let e = match initialiser {
+                            Some(e) => self.expression(bindings, e),
+                            None => self.default_value_for_type(t),
+                        }?;
+                        let e = self.heap.alloc(e);
+                        if let Some(prev) = bindings.insert(name, e) {
+                            eprintln!(
+                                "Discarding previous value for {name}: {:?} => {:?}",
+                                self.heap[prev], self.heap[e]
+                            )
                         }
-                    },
+                    }
                 },
 
                 BlockElem::Stmt(stmt) => match stmt {

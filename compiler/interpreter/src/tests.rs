@@ -36,8 +36,7 @@ testing::tests! {
         real_literals => "real_literals"
         records => "records"
         recursive_function => "recursive_function"
-        // FIXME: default initialization of variable
-        // recursive_types => "recursive_types"
+        recursive_types => "recursive_types"
         shadow => "shadow"
         type_aliases => "type_aliases"
         type_conversions => "type_conversions"
