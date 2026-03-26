@@ -1,4 +1,4 @@
-use clap::Parser;
+use clap::{Parser, ValueEnum};
 
 #[derive(Parser)]
 #[command(author, about)]
@@ -11,6 +11,13 @@ use clap::Parser;
 pub(crate) enum Task {
     /// Update test cases listed in source files based on tests/src/ dir content
     UpdateListings,
+    /// Add a new test case.
+    AddTest {
+        /// Name of the test case (will be used as a filename stem).
+        name: String,
+        /// Stage at which the test should fail (if any).
+        fail_stage: Option<Stage>,
+    },
 }
 
 impl Task {
@@ -18,6 +25,20 @@ impl Task {
     #[expect(clippy::same_name_method, reason = "hiding clap under the rug")]
     pub(crate) fn parse() -> Self {
         <Self as Parser>::parse()
+    }
+}
+
+#[derive(Clone, Copy, Debug, ValueEnum, PartialEq, Eq)]
+pub(crate) enum Stage {
+    Lexer,
+    Parser,
+    AST,
+    Run,
+}
+
+impl Stage {
+    pub(crate) fn all() -> &'static [Self] {
+        <Self as ValueEnum>::value_variants()
     }
 }
 
