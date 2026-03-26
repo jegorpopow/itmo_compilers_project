@@ -1,13 +1,11 @@
-#![expect(dead_code, reason = "WIP")]
-
 use core::iter;
 use std::{collections::HashMap, fmt::Debug, io::Write, rc::Rc};
 
 use anyhow::{Context as _, Error, bail, ensure};
 use ast::{
-    ArrayDescription, Binding, Block, BlockElem, Decl, Expression, IntegerLiteral,
-    LvalueExpression, Program, RealLiteral, Routine, RoutineBody, RoutineDecl, SimpleBinding,
-    SimpleDecl, Type, VarDecl,
+    ArrayDescription, Binding, Block, BlockElem, Decl, Expression, FieldDescription,
+    IntegerLiteral, LvalueExpression, Program, RealLiteral, RecordDescription, Routine,
+    RoutineBody, RoutineDecl, SimpleBinding, SimpleDecl, Type, TypeDecl, VarDecl,
 };
 use common::{
     Identifier, Integer, LoopOrder, RawIdentifier, Real, integer_to_real,
@@ -33,7 +31,7 @@ enum Value<'a> {
         elements: Vec<Address<'a>>,
     },
     Struct {
-        fields: HashMap<&'a str, Address<'a>>,
+        fields: HashMap<&'a RawIdentifier, Address<'a>>,
     },
 }
 
@@ -85,7 +83,7 @@ impl IdentSelector for Identifier {
 )]
 impl<'a, W: Write> Interpreter<'a, W> {
     #[throws]
-    fn bool_expression(&mut self, bindings: &mut Bindings<'a>, expression: &Expression) -> bool {
+    fn bool_expression(&mut self, bindings: &mut Bindings<'a>, expression: &'a Expression) -> bool {
         match self.expression(bindings, expression)? {
             Value::Bool(value) => value,
             value => bail!("Expected bool, got {value:?}"),
@@ -96,7 +94,7 @@ impl<'a, W: Write> Interpreter<'a, W> {
     fn integer_expression(
         &mut self,
         bindings: &mut Bindings<'a>,
-        expression: &Expression,
+        expression: &'a Expression,
     ) -> Integer {
         match self.expression(bindings, expression)? {
             Value::Integer(value) => value,
@@ -105,7 +103,7 @@ impl<'a, W: Write> Interpreter<'a, W> {
     }
 
     #[throws]
-    fn real_expression(&mut self, bindings: &mut Bindings<'a>, expression: &Expression) -> Real {
+    fn real_expression(&mut self, bindings: &mut Bindings<'a>, expression: &'a Expression) -> Real {
         match self.expression(bindings, expression)? {
             Value::Real(value) => value,
             value => bail!("Expected real, got {value:?}"),
@@ -116,7 +114,7 @@ impl<'a, W: Write> Interpreter<'a, W> {
     fn array_expression(
         &mut self,
         bindings: &mut Bindings<'a>,
-        expression: &Expression,
+        expression: &'a Expression,
     ) -> Vec<Address<'a>> {
         match self.expression(bindings, expression)? {
             Value::Array { elements } => elements,
@@ -126,6 +124,17 @@ impl<'a, W: Write> Interpreter<'a, W> {
 }
 
 impl<'a, W: Write> Interpreter<'a, W> {
+    #[throws]
+    fn default_value_for_type(&mut self, ty: &Type) -> Value<'a> {
+        match ty {
+            Type::Int => Value::Integer(0),
+            Type::Real => Value::Real(0.0),
+            Type::Bool => Value::Bool(false),
+            Type::Alias(ty) => self.default_value_for_type(self.find_type(ty)?)?,
+            Type::Record(_) | Type::Array(_) | Type::Null | Type::Unit => Value::Null,
+        }
+    }
+
     #[throws]
     fn find_routine<I: IdentSelector + ?Sized>(&self, routine: &I) -> &'a Routine {
         self.program
@@ -144,7 +153,27 @@ impl<'a, W: Write> Interpreter<'a, W> {
     }
 
     #[throws]
-    fn lvalue(&mut self, bindings: &mut Bindings<'a>, lvalue: &LvalueExpression) -> Address<'a> {
+    fn find_type(&self, ty: &Identifier) -> &'a Type {
+        self.program
+            .0
+            .iter()
+            .find_map(|Binding { name, decl }| {
+                if let Decl::Type(TypeDecl::Full {
+                    prescribed: _,
+                    effective,
+                }) = decl
+                    && name == ty
+                {
+                    Some(effective.as_ref())
+                } else {
+                    None
+                }
+            })
+            .with_context(|| format!("Could not find type {ty:?}"))?
+    }
+
+    #[throws]
+    fn lvalue(&mut self, bindings: &mut Bindings<'a>, lvalue: &'a LvalueExpression) -> Address<'a> {
         match lvalue {
             LvalueExpression::Identifier(ident) => *bindings
                 .get(ident)
@@ -154,7 +183,7 @@ impl<'a, W: Write> Interpreter<'a, W> {
                 let lhs = self.lvalue(bindings, lhs)?;
                 match &self.heap[lhs] {
                     Value::Struct { fields } => *fields
-                        .get(member_name.name.as_str())
+                        .get(&member_name)
                         .with_context(|| format!("No field {member_name:?}"))?,
                     e @ (Value::Null
                     | Value::Bool(_)
@@ -193,8 +222,8 @@ impl<'a, W: Write> Interpreter<'a, W> {
         &mut self,
         bindings: &mut Bindings<'a>,
         op: SemanticBinaryOperator,
-        lhs: &Expression,
-        rhs: &Expression,
+        lhs: &'a Expression,
+        rhs: &'a Expression,
     ) -> Value<'a> {
         match op {
             SemanticBinaryOperator::Eq(op) => {
@@ -256,22 +285,43 @@ impl<'a, W: Write> Interpreter<'a, W> {
     #[throws]
     fn new(
         &mut self,
-        _bindings: &mut Bindings<'a>,
-        ty: &Type,
-        fields: Option<&[(RawIdentifier, Rc<Expression>)]>,
+        bindings: &mut Bindings<'a>,
+        ty: &'a Type,
+        field_values: Option<&'a [(RawIdentifier, Rc<Expression>)]>,
     ) -> Value<'a> {
         match ty {
-            &Type::Array(ArrayDescription { t: _, length }) => Value::Array {
-                elements: match (length, fields) {
-                    (Some(n), None) => iter::repeat_with(|| self.heap.alloc(Value::Null))
-                        .take(n)
-                        .collect(),
+            Type::Array(ArrayDescription { t, length }) => Value::Array {
+                elements: match (*length, field_values) {
+                    (Some(n), None) => {
+                        let value = self.default_value_for_type(t)?;
+                        iter::repeat_n(value, n)
+                            .map(|v| self.heap.alloc(v))
+                            .collect()
+                    }
                     _ => todo!(),
                 },
             },
 
-            Type::Alias(_) => todo!(),
-            Type::Record(_) => todo!(),
+            Type::Alias(ty) => self.new(bindings, self.find_type(ty)?, field_values)?,
+            Type::Record(RecordDescription {
+                fields: expected_fields,
+            }) => {
+                let fields: HashMap<&'a RawIdentifier, Address<'a>> = expected_fields
+                    .iter()
+                    .map(|FieldDescription { name, t }| {
+                        self.default_value_for_type(t)
+                            .map(|val| (name, self.heap.alloc(val)))
+                    })
+                    .collect::<Result<_, _>>()?;
+                for (name, val) in field_values.unwrap_or_default() {
+                    let addr = *fields
+                        .get(name)
+                        .with_context(|| format!("No field {name:?} in {ty}"))?;
+                    let val = self.expression(bindings, val)?;
+                    self.heap[addr] = val;
+                }
+                Value::Struct { fields }
+            }
 
             Type::Int | Type::Real | Type::Bool | Type::Null | Type::Unit => {
                 bail!("Unsupported type for `new` expression: {ty}")
@@ -280,7 +330,7 @@ impl<'a, W: Write> Interpreter<'a, W> {
     }
 
     #[throws]
-    fn expression(&mut self, bindings: &mut Bindings<'a>, expression: &Expression) -> Value<'a> {
+    fn expression(&mut self, bindings: &mut Bindings<'a>, expression: &'a Expression) -> Value<'a> {
         match expression {
             Expression::Null => Value::Null,
             &Expression::IntegerLiteral(IntegerLiteral { repr: _, value }) => Value::Integer(value),

@@ -20,12 +20,11 @@ testing::tests! {
     extension = "stdout"
     fun = interpret
     pass = [
-        // FIXME(GrigorenkoPV): support records & type aliases
+        // FIXME: null
         // arrays_and_records => "arrays_and_records"
-        // recursive_types => "recursive_types"
-        // records => "records"
 
         // FIXME: resolution issues
+        // recursive_types => "recursive_types"
         // shadow => "shadow"
         // type_conversions => "type_conversions"
         // variable_declarations => "variable_declarations"
@@ -47,6 +46,7 @@ testing::tests! {
         nested_control => "nested_control"
         operator_precedence => "operator_precedence"
         real_literals => "real_literals"
+        records => "records"
         recursive_function => "recursive_function"
         type_aliases => "type_aliases"
         while_loops => "while_loops"
