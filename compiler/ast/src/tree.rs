@@ -575,8 +575,8 @@ pub(crate) fn cast_to(
         Type::Real => match own_type {
             Type::Real => Ok(expr),
             Type::Int => Ok(Rc::new(Expression::IntToReal(expr))),
-            Type::Bool => Ok(Rc::new(Expression::BoolToInt(Rc::new(
-                Expression::IntToReal(expr),
+            Type::Bool => Ok(Rc::new(Expression::IntToReal(Rc::new(
+                Expression::BoolToInt(expr),
             )))),
             Type::Alias(_) | Type::Record(_) | Type::Array(_) | Type::Null | Type::Unit => {
                 Err(AnalysisError {
