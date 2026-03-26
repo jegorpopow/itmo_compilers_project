@@ -20,21 +20,13 @@ testing::tests! {
     extension = "stdout"
     fun = interpret
     pass = [
-        arrays_and_records => "arrays_and_records"
-
-        // FIXME: default initialization of variables
-        // type_conversions => "type_conversions"
-
-        recursive_types => "recursive_types"
-        shadow => "shadow"
-        variable_declarations => "variable_declarations"
-
-        for_loops => "for_loops"
         arithmetic_operations => "arithmetic_operations"
+        arrays_and_records => "arrays_and_records"
         comparison_operators => "comparison_operators"
         complex_expressions => "complex_expressions"
         conditionals => "conditionals"
         deep_conditionals => "deep_conditionals"
+        for_loops => "for_loops"
         function_parameters => "function_parameters"
         function_return => "function_return"
         identifiers => "identifiers"
@@ -44,7 +36,12 @@ testing::tests! {
         real_literals => "real_literals"
         records => "records"
         recursive_function => "recursive_function"
+        // FIXME: default initialization of variable
+        // recursive_types => "recursive_types"
+        shadow => "shadow"
         type_aliases => "type_aliases"
+        type_conversions => "type_conversions"
+        variable_declarations => "variable_declarations"
         while_loops => "while_loops"
     ]
     fail = [
