@@ -33,9 +33,8 @@ testing::tests! {
         // FIXME: no main
         // parse_minus => "parse_minus"
 
-        // FIXME: arrays are passed by reference
-        // for_loops => "for_loops"
 
+        for_loops => "for_loops"
         arithmetic_operations => "arithmetic_operations"
         comparison_operators => "comparison_operators"
         complex_expressions => "complex_expressions"

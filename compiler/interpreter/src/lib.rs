@@ -1,5 +1,6 @@
 #![expect(dead_code, reason = "WIP")]
 
+use core::iter;
 use std::{collections::HashMap, fmt::Debug, io::Write, rc::Rc};
 
 use anyhow::{Context as _, Error, bail, ensure};
@@ -16,6 +17,7 @@ use common::{
     real_to_integer,
 };
 use culpa::{throw, throws};
+use indexed_arena::{Arena, Idx};
 
 #[cfg(test)]
 mod tests;
@@ -28,18 +30,23 @@ enum Value<'a> {
     Integer(Integer),
     Real(Real),
     Array {
-        elements: Vec<Value<'a>>,
+        elements: Vec<Address<'a>>,
     },
     Struct {
-        fields: HashMap<&'a str, Value<'a>>,
+        fields: HashMap<&'a str, Address<'a>>,
     },
 }
-type Bindings<'a> = HashMap<&'a Identifier, Value<'a>>;
+
+type MemoryIndex = usize;
+type Memory<'a> = Arena<Value<'a>, MemoryIndex>;
+type Address<'a> = Idx<Value<'a>, MemoryIndex>;
+type Bindings<'a> = HashMap<&'a Identifier, Address<'a>>;
 
 #[derive(Debug)]
 struct Interpreter<'a, W: Write> {
     out: W,
     program: &'a Program,
+    heap: Memory<'a>,
 }
 
 // Sadly, Rust's `?` does not work well when you try to combine a `ControlFlow` and a `Result`.
@@ -110,7 +117,7 @@ impl<'a, W: Write> Interpreter<'a, W> {
         &mut self,
         bindings: &mut Bindings<'a>,
         expression: &Expression,
-    ) -> Vec<Value<'a>> {
+    ) -> Vec<Address<'a>> {
         match self.expression(bindings, expression)? {
             Value::Array { elements } => elements,
             value => bail!("Expected array, got {value:?}"),
@@ -137,38 +144,46 @@ impl<'a, W: Write> Interpreter<'a, W> {
     }
 
     #[throws]
-    fn lvalue<'b>(
-        &mut self,
-        bindings: &'b mut Bindings<'a>,
-        lvalue: &LvalueExpression,
-    ) -> &'b mut Value<'a> {
+    fn lvalue(&mut self, bindings: &mut Bindings<'a>, lvalue: &LvalueExpression) -> Address<'a> {
         match lvalue {
-            LvalueExpression::Identifier(ident) => bindings
-                .get_mut(ident)
+            LvalueExpression::Identifier(ident) => *bindings
+                .get(ident)
                 .with_context(|| format!("Could not find variable {ident:?}"))?,
 
             LvalueExpression::Member { lhs, member_name } => {
-                let Value::Struct { fields } = self.lvalue(bindings, lhs)? else {
-                    todo!()
-                };
-                fields
-                    .get_mut(member_name.name.as_str())
-                    .with_context(|| format!("No field {member_name:?}"))?
+                let lhs = self.lvalue(bindings, lhs)?;
+                match &self.heap[lhs] {
+                    Value::Struct { fields } => *fields
+                        .get(member_name.name.as_str())
+                        .with_context(|| format!("No field {member_name:?}"))?,
+                    e @ (Value::Null
+                    | Value::Bool(_)
+                    | Value::Integer(_)
+                    | Value::Real(_)
+                    | Value::Array { .. }) => bail!("{e:?} is not a struct"),
+                }
             }
             LvalueExpression::Index { lhs, index } => {
+                let lhs = self.lvalue(bindings, lhs)?;
                 let index = self.integer_expression(&mut *bindings, index)?;
-                let Value::Array { elements } = self.lvalue(bindings, lhs)? else {
-                    todo!()
-                };
-                let len = elements.len();
-                index
-                    .saturating_sub(1)
-                    .try_into()
-                    .ok()
-                    .and_then(|i: usize| elements.get_mut(i))
-                    .with_context(|| {
-                        format!("Index {index} is out of bounds for array of length {len}")
-                    })?
+                match &self.heap[lhs] {
+                    Value::Array { elements } => {
+                        let len = elements.len();
+                        *index
+                            .saturating_sub(1)
+                            .try_into()
+                            .ok()
+                            .and_then(|i: usize| elements.get(i))
+                            .with_context(|| {
+                                format!("Index {index} is out of bounds for array of length {len}")
+                            })?
+                    }
+                    e @ (Value::Null
+                    | Value::Bool(_)
+                    | Value::Integer(_)
+                    | Value::Real(_)
+                    | Value::Struct { .. }) => bail!("{e:?} is not an array"),
+                }
             }
         }
     }
@@ -238,7 +253,6 @@ impl<'a, W: Write> Interpreter<'a, W> {
         clippy::new_ret_no_self,
         reason = "`new` as in `Expression::New`"
     )]
-    #[expect(clippy::unused_self, reason = "WIP")]
     #[throws]
     fn new(
         &mut self,
@@ -249,7 +263,9 @@ impl<'a, W: Write> Interpreter<'a, W> {
         match ty {
             &Type::Array(ArrayDescription { t: _, length }) => Value::Array {
                 elements: match (length, fields) {
-                    (Some(n), None) => vec![Value::Null; n],
+                    (Some(n), None) => iter::repeat_with(|| self.heap.alloc(Value::Null))
+                        .take(n)
+                        .collect(),
                     _ => todo!(),
                 },
             },
@@ -271,7 +287,10 @@ impl<'a, W: Write> Interpreter<'a, W> {
             &Expression::RealLiteral(RealLiteral { repr: _, value }) => Value::Real(value),
             &Expression::BoolLiteral(l) => Value::Bool(l.into()),
 
-            Expression::LvalueToRvalue(lvalue) => self.lvalue(bindings, lvalue)?.to_owned(),
+            Expression::LvalueToRvalue(lvalue) => {
+                let addr = self.lvalue(bindings, lvalue)?;
+                self.heap[addr].clone()
+            }
 
             Expression::Call { callee, args } => {
                 let args: Vec<_> = args
@@ -351,6 +370,7 @@ impl<'a, W: Write> Interpreter<'a, W> {
                         None => {}
                         Some(e) => {
                             let e = self.expression(bindings, e)?;
+                            let e = self.heap.alloc(e);
                             if let Some(prev) = bindings.insert(name, e) {
                                 eprintln!("Discarding previous value for {name}: {prev:?}")
                             }
@@ -360,9 +380,9 @@ impl<'a, W: Write> Interpreter<'a, W> {
 
                 BlockElem::Stmt(stmt) => match stmt {
                     ast::Statement::Assignment { lhs, rhs } => {
-                        let rhs = self.expression(bindings, rhs)?;
                         let lhs = self.lvalue(bindings, lhs)?;
-                        *lhs = rhs;
+                        let rhs = self.expression(bindings, rhs)?;
+                        self.heap[lhs] = rhs;
                     }
 
                     ast::Statement::While { condition, body } => {
@@ -402,8 +422,8 @@ impl<'a, W: Write> Interpreter<'a, W> {
                             LoopOrder::Reversed => &mut (upper..=lower).rev(),
                         };
                         for value in range {
-                            let prev = bindings.insert(counter, Value::Integer(value));
-                            drop(prev);
+                            let _: Option<Address<'a>> =
+                                bindings.insert(counter, self.heap.alloc(Value::Integer(value)));
                             self.block(bindings, body)?
                         }
                     }
@@ -420,8 +440,7 @@ impl<'a, W: Write> Interpreter<'a, W> {
                             LoopOrder::Reversed => collection.reverse(),
                         }
                         for value in collection {
-                            let prev = bindings.insert(counter, value);
-                            drop(prev);
+                            let _: Option<Address<'a>> = bindings.insert(counter, value);
                             self.block(bindings, body)?
                         }
                     }
@@ -456,8 +475,8 @@ impl<'a, W: Write> Interpreter<'a, W> {
         }
         let mut bindings: Bindings<'a> = args_bindings
             .iter()
-            .map(|Binding { name, decl: _ }| name)
             .zip(args)
+            .map(|(Binding { name, decl: _ }, value)| (name, self.heap.alloc(value)))
             .collect();
         match body {
             RoutineBody::Expression(expression) => self.expression(&mut bindings, expression),
@@ -480,5 +499,10 @@ impl<'a, W: Write> Interpreter<'a, W> {
 }
 
 pub fn interpret(out: impl Write, program: &Program) -> anyhow::Result<()> {
-    Interpreter { out, program }.run()
+    Interpreter {
+        out,
+        program,
+        heap: Default::default(),
+    }
+    .run()
 }
