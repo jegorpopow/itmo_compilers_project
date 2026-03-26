@@ -143,7 +143,7 @@ fn iterators_to_extent(start: &IndexIterator<'_>, end: &IndexIterator<'_>) -> Ex
 
 /// Processes all the identifier-like lexemes (identifiers, keywords, bool literals and some operators)
 fn name_disambiguation(lexeme: &str) -> TokenKind<'_> {
-    static KNOWN_TOKENS: phf::Map<&str, TokenKind<'static>> = phf_map! {
+    const KNOWN_TOKENS: phf::Map<&str, TokenKind<'static>> = phf_map! {
         "var" => TokenKind::Keyword(Keyword::Var),
         "type" => TokenKind::Keyword(Keyword::Type),
         "routine" => TokenKind::Keyword(Keyword::Routine),
@@ -200,7 +200,7 @@ fn comment_token<'a>(start: &IndexIterator<'a>) -> Option<(TokenKind<'a>, IndexI
 }
 
 fn symbolic_token<'a>(start: &IndexIterator<'a>) -> Option<(TokenKind<'a>, IndexIterator<'a>)> {
-    static KNOWN_TOKENS: &[(&str, TokenKind<'static>)] = &[
+    const KNOWN_TOKENS: &[(&str, TokenKind<'static>)] = &[
         (":=", TokenKind::Assignment),
         ("::", TokenKind::Cast),
         ("..", TokenKind::RangeSymbol),
