@@ -29,10 +29,6 @@ testing::tests! {
         // type_conversions => "type_conversions"
         // variable_declarations => "variable_declarations"
 
-        // FIXME: no main
-        // parse_minus => "parse_minus"
-
-
         for_loops => "for_loops"
         arithmetic_operations => "arithmetic_operations"
         comparison_operators => "comparison_operators"
@@ -52,5 +48,6 @@ testing::tests! {
         while_loops => "while_loops"
     ]
     fail = [
+        parse_minus => "parse_minus"
     ]
 }
