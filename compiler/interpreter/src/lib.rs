@@ -45,6 +45,7 @@ struct Interpreter<'a, W: Write> {
     out: W,
     program: &'a Program,
     heap: Memory<'a>,
+    globals: Bindings<'a>,
 }
 
 // Sadly, Rust's `?` does not work well when you try to combine a `ControlFlow` and a `Result`.
@@ -523,11 +524,11 @@ impl<'a, W: Write> Interpreter<'a, W> {
                 "Expected {expected} for {routine:?} args but got {actual}"
             )
         }
-        let mut bindings: Bindings<'a> = args_bindings
-            .iter()
-            .zip(args)
-            .map(|(Binding { name, decl: _ }, value)| (name, self.heap.alloc(value)))
-            .collect();
+        let mut bindings = self.globals.clone();
+        for (Binding { name, decl: _ }, value) in args_bindings.iter().zip(args) {
+            let _: Option<Address<'a>> = bindings.insert(name, self.heap.alloc(value));
+        }
+
         match body {
             RoutineBody::Expression(expression) => self.expression(&mut bindings, expression),
             RoutineBody::Block(block) => match self.block(&mut bindings, block) {
@@ -541,6 +542,32 @@ impl<'a, W: Write> Interpreter<'a, W> {
 
     #[throws]
     fn run(mut self) {
+        for Binding { name, decl } in &self.program.0 {
+            match decl {
+                Decl::Type(_) | Decl::Routine(_) => {}
+                Decl::Var(VarDecl {
+                    t,
+                    initialiser,
+                    relative_location: _,
+                }) => {
+                    // FIXME: globals referencing other globals are not supported
+                    let value = match initialiser.as_deref() {
+                        None => self.default_value_for_type(t)?,
+                        Some(expression) => {
+                            self.expression(&mut Bindings::default(), expression)?
+                        }
+                    };
+                    let value = self.heap.alloc(value);
+                    if let Some(prev) = self.globals.insert(name, value) {
+                        bail!(
+                            "Redefinition of global {name:?}: {:?} => {:?}",
+                            self.heap[prev],
+                            self.heap[value]
+                        )
+                    }
+                }
+            }
+        }
         let value = self.call("main", vec![])?;
         let Value::Null = value else {
             bail!("main returned non-null value: {value:?}")
@@ -552,7 +579,8 @@ pub fn interpret(out: impl Write, program: &Program) -> anyhow::Result<()> {
     Interpreter {
         out,
         program,
-        heap: Default::default(),
+        heap: Memory::default(),
+        globals: Bindings::default(),
     }
     .run()
 }

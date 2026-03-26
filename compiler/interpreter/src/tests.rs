@@ -23,11 +23,12 @@ testing::tests! {
         // FIXME: null
         // arrays_and_records => "arrays_and_records"
 
-        // FIXME: resolution issues
-        // recursive_types => "recursive_types"
-        // shadow => "shadow"
+        // FIXME: default initialization of variables
         // type_conversions => "type_conversions"
-        // variable_declarations => "variable_declarations"
+
+        recursive_types => "recursive_types"
+        shadow => "shadow"
+        variable_declarations => "variable_declarations"
 
         for_loops => "for_loops"
         arithmetic_operations => "arithmetic_operations"
