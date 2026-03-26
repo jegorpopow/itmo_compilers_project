@@ -17,7 +17,6 @@ publish = false
 anyhow = { version = "1.0.102", features = ["backtrace"] }
 culpa = "1.0.2"
 derive-where = "1.6.1"
-expect-test = "1.5.1"
 
 [profile.release]
 opt-level = 3
@@ -83,6 +82,7 @@ let_underscore_untyped = "deny"
 lossy_float_literal = "deny"
 map_err_ignore = "warn"
 missing_errors_doc = "allow"
+missing_panics_doc = "allow"
 mixed_read_write_in_expression = "deny"
 multiple_crate_versions = "warn"
 negative_feature_names = "warn"

@@ -1,0 +1,142 @@
+(
+    Program(
+        [
+            Routine(
+                RoutineDecl {
+                    name: r"fibonacci",
+                    arguments: [
+                        (
+                            r"n",
+                            Int,
+                        ),
+                    ],
+                    return_type: Some(
+                        Int,
+                    ),
+                    body: Some(
+                        Block(
+                            Block(
+                                [
+                                    Stmt(
+                                        If {
+                                            condition: BinOp {
+                                                op: Le,
+                                                lhs: LvalueToRvalue(
+                                                    Identifier(
+                                                        r"n",
+                                                    ),
+                                                ),
+                                                rhs: IntegerLiteral(
+                                                    IntegerLiteral {
+                                                        repr: "2",
+                                                        value: 2,
+                                                    },
+                                                ),
+                                            },
+                                            on_true: Block(
+                                                [
+                                                    Stmt(
+                                                        Return {
+                                                            value: IntegerLiteral(
+                                                                IntegerLiteral {
+                                                                    repr: "1",
+                                                                    value: 1,
+                                                                },
+                                                            ),
+                                                        },
+                                                    ),
+                                                ],
+                                            ),
+                                            on_false: Some(
+                                                Block(
+                                                    [
+                                                        Stmt(
+                                                            Return {
+                                                                value: BinOp {
+                                                                    op: Plus,
+                                                                    lhs: Call {
+                                                                        callee: r"fibonacci",
+                                                                        args: [
+                                                                            BinOp {
+                                                                                op: Minus,
+                                                                                lhs: LvalueToRvalue(
+                                                                                    Identifier(
+                                                                                        r"n",
+                                                                                    ),
+                                                                                ),
+                                                                                rhs: IntegerLiteral(
+                                                                                    IntegerLiteral {
+                                                                                        repr: "1",
+                                                                                        value: 1,
+                                                                                    },
+                                                                                ),
+                                                                            },
+                                                                        ],
+                                                                    },
+                                                                    rhs: Call {
+                                                                        callee: r"fibonacci",
+                                                                        args: [
+                                                                            BinOp {
+                                                                                op: Minus,
+                                                                                lhs: LvalueToRvalue(
+                                                                                    Identifier(
+                                                                                        r"n",
+                                                                                    ),
+                                                                                ),
+                                                                                rhs: IntegerLiteral(
+                                                                                    IntegerLiteral {
+                                                                                        repr: "2",
+                                                                                        value: 2,
+                                                                                    },
+                                                                                ),
+                                                                            },
+                                                                        ],
+                                                                    },
+                                                                },
+                                                            },
+                                                        ),
+                                                    ],
+                                                ),
+                                            ),
+                                        },
+                                    ),
+                                ],
+                            ),
+                        ),
+                    ),
+                },
+            ),
+            Routine(
+                RoutineDecl {
+                    name: r"main",
+                    arguments: [],
+                    return_type: None,
+                    body: Some(
+                        Block(
+                            Block(
+                                [
+                                    Stmt(
+                                        Print {
+                                            value: Call {
+                                                callee: r"fibonacci",
+                                                args: [
+                                                    IntegerLiteral(
+                                                        IntegerLiteral {
+                                                            repr: "10",
+                                                            value: 10,
+                                                        },
+                                                    ),
+                                                ],
+                                            },
+                                        },
+                                    ),
+                                ],
+                            ),
+                        ),
+                    ),
+                },
+            ),
+        ],
+    ),
+    [],
+)

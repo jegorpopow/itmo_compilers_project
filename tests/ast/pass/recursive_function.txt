@@ -1,0 +1,211 @@
+(
+    Program(
+        [
+            Binding {
+                name: fibonacci(0),
+                decl: Routine(
+                    Full(
+                        Routine {
+                            signature: RoutineSignature {
+                                args: [
+                                    (
+                                        r"n",
+                                        Int,
+                                    ),
+                                ],
+                                return_type: Int,
+                            },
+                            args_bindings: [
+                                Binding {
+                                    name: n(1),
+                                    decl: VarDecl {
+                                        t: Int,
+                                        initialiser: None,
+                                        relative_location: Argument(
+                                            0,
+                                        ),
+                                    },
+                                },
+                            ],
+                            body: Block(
+                                Block(
+                                    [
+                                        Stmt(
+                                            If {
+                                                condition: BinOp {
+                                                    op: Int(
+                                                        Le,
+                                                    ),
+                                                    lhs: LvalueToRvalue(
+                                                        Identifier(
+                                                            n(1),
+                                                        ),
+                                                    ),
+                                                    rhs: IntegerLiteral(
+                                                        IntegerLiteral {
+                                                            repr: "2",
+                                                            value: 2,
+                                                        },
+                                                    ),
+                                                },
+                                                on_true: Block(
+                                                    [
+                                                        Stmt(
+                                                            Return {
+                                                                value: IntegerLiteral(
+                                                                    IntegerLiteral {
+                                                                        repr: "1",
+                                                                        value: 1,
+                                                                    },
+                                                                ),
+                                                            },
+                                                        ),
+                                                    ],
+                                                ),
+                                                on_false: Some(
+                                                    Block(
+                                                        [
+                                                            Stmt(
+                                                                Return {
+                                                                    value: BinOp {
+                                                                        op: Int(
+                                                                            Add,
+                                                                        ),
+                                                                        lhs: Call {
+                                                                            callee: fibonacci(0),
+                                                                            args: [
+                                                                                BinOp {
+                                                                                    op: Int(
+                                                                                        Sub,
+                                                                                    ),
+                                                                                    lhs: LvalueToRvalue(
+                                                                                        Identifier(
+                                                                                            n(1),
+                                                                                        ),
+                                                                                    ),
+                                                                                    rhs: IntegerLiteral(
+                                                                                        IntegerLiteral {
+                                                                                            repr: "1",
+                                                                                            value: 1,
+                                                                                        },
+                                                                                    ),
+                                                                                },
+                                                                            ],
+                                                                        },
+                                                                        rhs: Call {
+                                                                            callee: fibonacci(0),
+                                                                            args: [
+                                                                                BinOp {
+                                                                                    op: Int(
+                                                                                        Sub,
+                                                                                    ),
+                                                                                    lhs: LvalueToRvalue(
+                                                                                        Identifier(
+                                                                                            n(1),
+                                                                                        ),
+                                                                                    ),
+                                                                                    rhs: IntegerLiteral(
+                                                                                        IntegerLiteral {
+                                                                                            repr: "2",
+                                                                                            value: 2,
+                                                                                        },
+                                                                                    ),
+                                                                                },
+                                                                            ],
+                                                                        },
+                                                                    },
+                                                                },
+                                                            ),
+                                                        ],
+                                                    ),
+                                                ),
+                                            },
+                                        ),
+                                    ],
+                                ),
+                            ),
+                        },
+                    ),
+                ),
+            },
+            Binding {
+                name: main(2),
+                decl: Routine(
+                    Full(
+                        Routine {
+                            signature: RoutineSignature {
+                                args: [],
+                                return_type: Unit,
+                            },
+                            args_bindings: [],
+                            body: Block(
+                                Block(
+                                    [
+                                        Stmt(
+                                            Print {
+                                                value: Call {
+                                                    callee: fibonacci(0),
+                                                    args: [
+                                                        IntegerLiteral(
+                                                            IntegerLiteral {
+                                                                repr: "10",
+                                                                value: 10,
+                                                            },
+                                                        ),
+                                                    ],
+                                                },
+                                            },
+                                        ),
+                                    ],
+                                ),
+                            ),
+                        },
+                    ),
+                ),
+            },
+        ],
+    ),
+    IdentifierTable {
+        bindings: [
+            Binding {
+                name: fibonacci(0),
+                decl: Routine(
+                    Forward {
+                        signature: RoutineSignature {
+                            args: [
+                                (
+                                    r"n",
+                                    Int,
+                                ),
+                            ],
+                            return_type: Int,
+                        },
+                    },
+                ),
+            },
+            Binding {
+                name: n(1),
+                decl: Var(
+                    VarDecl {
+                        t: Int,
+                        initialiser: None,
+                        relative_location: Argument(
+                            0,
+                        ),
+                    },
+                ),
+            },
+            Binding {
+                name: main(2),
+                decl: Routine(
+                    Forward {
+                        signature: RoutineSignature {
+                            args: [],
+                            return_type: Unit,
+                        },
+                    },
+                ),
+            },
+        ],
+    },
+)

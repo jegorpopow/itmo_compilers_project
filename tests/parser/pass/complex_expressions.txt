@@ -1,0 +1,427 @@
+(
+    Program(
+        [
+            Routine(
+                RoutineDecl {
+                    name: r"add_one",
+                    arguments: [
+                        (
+                            r"n",
+                            Int,
+                        ),
+                    ],
+                    return_type: Some(
+                        Int,
+                    ),
+                    body: Some(
+                        Block(
+                            Block(
+                                [
+                                    Stmt(
+                                        Return {
+                                            value: BinOp {
+                                                op: Plus,
+                                                lhs: LvalueToRvalue(
+                                                    Identifier(
+                                                        r"n",
+                                                    ),
+                                                ),
+                                                rhs: IntegerLiteral(
+                                                    IntegerLiteral {
+                                                        repr: "1",
+                                                        value: 1,
+                                                    },
+                                                ),
+                                            },
+                                        },
+                                    ),
+                                ],
+                            ),
+                        ),
+                    ),
+                },
+            ),
+            Routine(
+                RoutineDecl {
+                    name: r"main",
+                    arguments: [],
+                    return_type: None,
+                    body: Some(
+                        Block(
+                            Block(
+                                [
+                                    VarDecl(
+                                        VarDecl {
+                                            name: r"a",
+                                            t: None,
+                                            initialiser: Some(
+                                                IntegerLiteral(
+                                                    IntegerLiteral {
+                                                        repr: "2",
+                                                        value: 2,
+                                                    },
+                                                ),
+                                            ),
+                                        },
+                                    ),
+                                    VarDecl(
+                                        VarDecl {
+                                            name: r"b",
+                                            t: None,
+                                            initialiser: Some(
+                                                IntegerLiteral(
+                                                    IntegerLiteral {
+                                                        repr: "3",
+                                                        value: 3,
+                                                    },
+                                                ),
+                                            ),
+                                        },
+                                    ),
+                                    VarDecl(
+                                        VarDecl {
+                                            name: r"c",
+                                            t: None,
+                                            initialiser: Some(
+                                                IntegerLiteral(
+                                                    IntegerLiteral {
+                                                        repr: "4",
+                                                        value: 4,
+                                                    },
+                                                ),
+                                            ),
+                                        },
+                                    ),
+                                    Stmt(
+                                        Print {
+                                            value: BinOp {
+                                                op: Plus,
+                                                lhs: IntegerLiteral(
+                                                    IntegerLiteral {
+                                                        repr: "2",
+                                                        value: 2,
+                                                    },
+                                                ),
+                                                rhs: BinOp {
+                                                    op: Mul,
+                                                    lhs: IntegerLiteral(
+                                                        IntegerLiteral {
+                                                            repr: "3",
+                                                            value: 3,
+                                                        },
+                                                    ),
+                                                    rhs: IntegerLiteral(
+                                                        IntegerLiteral {
+                                                            repr: "4",
+                                                            value: 4,
+                                                        },
+                                                    ),
+                                                },
+                                            },
+                                        },
+                                    ),
+                                    Stmt(
+                                        Print {
+                                            value: BinOp {
+                                                op: Mul,
+                                                lhs: BinOp {
+                                                    op: Plus,
+                                                    lhs: IntegerLiteral(
+                                                        IntegerLiteral {
+                                                            repr: "2",
+                                                            value: 2,
+                                                        },
+                                                    ),
+                                                    rhs: IntegerLiteral(
+                                                        IntegerLiteral {
+                                                            repr: "3",
+                                                            value: 3,
+                                                        },
+                                                    ),
+                                                },
+                                                rhs: IntegerLiteral(
+                                                    IntegerLiteral {
+                                                        repr: "4",
+                                                        value: 4,
+                                                    },
+                                                ),
+                                            },
+                                        },
+                                    ),
+                                    Stmt(
+                                        Print {
+                                            value: BinOp {
+                                                op: Lt,
+                                                lhs: BinOp {
+                                                    op: Plus,
+                                                    lhs: IntegerLiteral(
+                                                        IntegerLiteral {
+                                                            repr: "1",
+                                                            value: 1,
+                                                        },
+                                                    ),
+                                                    rhs: IntegerLiteral(
+                                                        IntegerLiteral {
+                                                            repr: "2",
+                                                            value: 2,
+                                                        },
+                                                    ),
+                                                },
+                                                rhs: BinOp {
+                                                    op: Plus,
+                                                    lhs: IntegerLiteral(
+                                                        IntegerLiteral {
+                                                            repr: "3",
+                                                            value: 3,
+                                                        },
+                                                    ),
+                                                    rhs: IntegerLiteral(
+                                                        IntegerLiteral {
+                                                            repr: "4",
+                                                            value: 4,
+                                                        },
+                                                    ),
+                                                },
+                                            },
+                                        },
+                                    ),
+                                    Stmt(
+                                        Print {
+                                            value: BinOp {
+                                                op: And,
+                                                lhs: BinOp {
+                                                    op: Lt,
+                                                    lhs: IntegerLiteral(
+                                                        IntegerLiteral {
+                                                            repr: "1",
+                                                            value: 1,
+                                                        },
+                                                    ),
+                                                    rhs: IntegerLiteral(
+                                                        IntegerLiteral {
+                                                            repr: "2",
+                                                            value: 2,
+                                                        },
+                                                    ),
+                                                },
+                                                rhs: BinOp {
+                                                    op: Lt,
+                                                    lhs: IntegerLiteral(
+                                                        IntegerLiteral {
+                                                            repr: "3",
+                                                            value: 3,
+                                                        },
+                                                    ),
+                                                    rhs: IntegerLiteral(
+                                                        IntegerLiteral {
+                                                            repr: "4",
+                                                            value: 4,
+                                                        },
+                                                    ),
+                                                },
+                                            },
+                                        },
+                                    ),
+                                    Stmt(
+                                        Print {
+                                            value: BinOp {
+                                                op: Mul,
+                                                lhs: BinOp {
+                                                    op: Plus,
+                                                    lhs: LvalueToRvalue(
+                                                        Identifier(
+                                                            r"a",
+                                                        ),
+                                                    ),
+                                                    rhs: LvalueToRvalue(
+                                                        Identifier(
+                                                            r"b",
+                                                        ),
+                                                    ),
+                                                },
+                                                rhs: BinOp {
+                                                    op: Minus,
+                                                    lhs: LvalueToRvalue(
+                                                        Identifier(
+                                                            r"c",
+                                                        ),
+                                                    ),
+                                                    rhs: LvalueToRvalue(
+                                                        Identifier(
+                                                            r"a",
+                                                        ),
+                                                    ),
+                                                },
+                                            },
+                                        },
+                                    ),
+                                    Stmt(
+                                        Print {
+                                            value: BinOp {
+                                                op: Plus,
+                                                lhs: LvalueToRvalue(
+                                                    Identifier(
+                                                        r"a",
+                                                    ),
+                                                ),
+                                                rhs: BinOp {
+                                                    op: Mul,
+                                                    lhs: LvalueToRvalue(
+                                                        Identifier(
+                                                            r"b",
+                                                        ),
+                                                    ),
+                                                    rhs: LvalueToRvalue(
+                                                        Identifier(
+                                                            r"c",
+                                                        ),
+                                                    ),
+                                                },
+                                            },
+                                        },
+                                    ),
+                                    Stmt(
+                                        Print {
+                                            value: BinOp {
+                                                op: Plus,
+                                                lhs: Call {
+                                                    callee: r"add_one",
+                                                    args: [
+                                                        IntegerLiteral(
+                                                            IntegerLiteral {
+                                                                repr: "5",
+                                                                value: 5,
+                                                            },
+                                                        ),
+                                                    ],
+                                                },
+                                                rhs: Call {
+                                                    callee: r"add_one",
+                                                    args: [
+                                                        IntegerLiteral(
+                                                            IntegerLiteral {
+                                                                repr: "3",
+                                                                value: 3,
+                                                            },
+                                                        ),
+                                                    ],
+                                                },
+                                            },
+                                        },
+                                    ),
+                                    Stmt(
+                                        Print {
+                                            value: Call {
+                                                callee: r"add_one",
+                                                args: [
+                                                    Call {
+                                                        callee: r"add_one",
+                                                        args: [
+                                                            IntegerLiteral(
+                                                                IntegerLiteral {
+                                                                    repr: "2",
+                                                                    value: 2,
+                                                                },
+                                                            ),
+                                                        ],
+                                                    },
+                                                ],
+                                            },
+                                        },
+                                    ),
+                                    Stmt(
+                                        Print {
+                                            value: BinOp {
+                                                op: And,
+                                                lhs: BinOp {
+                                                    op: Lt,
+                                                    lhs: LvalueToRvalue(
+                                                        Identifier(
+                                                            r"a",
+                                                        ),
+                                                    ),
+                                                    rhs: LvalueToRvalue(
+                                                        Identifier(
+                                                            r"b",
+                                                        ),
+                                                    ),
+                                                },
+                                                rhs: BinOp {
+                                                    op: Lt,
+                                                    lhs: LvalueToRvalue(
+                                                        Identifier(
+                                                            r"b",
+                                                        ),
+                                                    ),
+                                                    rhs: LvalueToRvalue(
+                                                        Identifier(
+                                                            r"c",
+                                                        ),
+                                                    ),
+                                                },
+                                            },
+                                        },
+                                    ),
+                                    Stmt(
+                                        Print {
+                                            value: BinOp {
+                                                op: Or,
+                                                lhs: BinOp {
+                                                    op: Gt,
+                                                    lhs: LvalueToRvalue(
+                                                        Identifier(
+                                                            r"a",
+                                                        ),
+                                                    ),
+                                                    rhs: LvalueToRvalue(
+                                                        Identifier(
+                                                            r"b",
+                                                        ),
+                                                    ),
+                                                },
+                                                rhs: BinOp {
+                                                    op: Lt,
+                                                    lhs: LvalueToRvalue(
+                                                        Identifier(
+                                                            r"b",
+                                                        ),
+                                                    ),
+                                                    rhs: LvalueToRvalue(
+                                                        Identifier(
+                                                            r"c",
+                                                        ),
+                                                    ),
+                                                },
+                                            },
+                                        },
+                                    ),
+                                    Stmt(
+                                        Print {
+                                            value: UnOp {
+                                                op: Not,
+                                                operand: BinOp {
+                                                    op: Eq,
+                                                    lhs: LvalueToRvalue(
+                                                        Identifier(
+                                                            r"a",
+                                                        ),
+                                                    ),
+                                                    rhs: LvalueToRvalue(
+                                                        Identifier(
+                                                            r"b",
+                                                        ),
+                                                    ),
+                                                },
+                                            },
+                                        },
+                                    ),
+                                ],
+                            ),
+                        ),
+                    ),
+                },
+            ),
+        ],
+    ),
+    [],
+)

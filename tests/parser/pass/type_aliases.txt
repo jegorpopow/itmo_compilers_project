@@ -1,0 +1,124 @@
+(
+    Program(
+        [
+            Type(
+                TypeDecl {
+                    name: r"kilometers",
+                    t: Real,
+                },
+            ),
+            Type(
+                TypeDecl {
+                    name: r"miles",
+                    t: Real,
+                },
+            ),
+            Routine(
+                RoutineDecl {
+                    name: r"miles_to_kiometers",
+                    arguments: [
+                        (
+                            r"dist",
+                            Alias(
+                                r"miles",
+                            ),
+                        ),
+                    ],
+                    return_type: None,
+                    body: Some(
+                        Expression(
+                            Cast {
+                                operand: BinOp {
+                                    op: Mul,
+                                    lhs: Cast {
+                                        operand: LvalueToRvalue(
+                                            Identifier(
+                                                r"dist",
+                                            ),
+                                        ),
+                                        target: Real,
+                                    },
+                                    rhs: RealLiteral(
+                                        RealLiteral {
+                                            repr: "1.60934",
+                                            value: 1.60934,
+                                        },
+                                    ),
+                                },
+                                target: Alias(
+                                    r"kilometers",
+                                ),
+                            },
+                        ),
+                    ),
+                },
+            ),
+            Routine(
+                RoutineDecl {
+                    name: r"main",
+                    arguments: [],
+                    return_type: None,
+                    body: Some(
+                        Block(
+                            Block(
+                                [
+                                    VarDecl(
+                                        VarDecl {
+                                            name: r"dist",
+                                            t: None,
+                                            initialiser: Some(
+                                                Cast {
+                                                    operand: RealLiteral(
+                                                        RealLiteral {
+                                                            repr: "10.0",
+                                                            value: 10.0,
+                                                        },
+                                                    ),
+                                                    target: Alias(
+                                                        r"miles",
+                                                    ),
+                                                },
+                                            ),
+                                        },
+                                    ),
+                                    VarDecl(
+                                        VarDecl {
+                                            name: r"result",
+                                            t: Some(
+                                                Alias(
+                                                    r"kilometers",
+                                                ),
+                                            ),
+                                            initialiser: Some(
+                                                Call {
+                                                    callee: r"miles_to_kiometers",
+                                                    args: [
+                                                        LvalueToRvalue(
+                                                            Identifier(
+                                                                r"dist",
+                                                            ),
+                                                        ),
+                                                    ],
+                                                },
+                                            ),
+                                        },
+                                    ),
+                                    Stmt(
+                                        Print {
+                                            value: LvalueToRvalue(
+                                                Identifier(
+                                                    r"result",
+                                                ),
+                                            ),
+                                        },
+                                    ),
+                                ],
+                            ),
+                        ),
+                    ),
+                },
+            ),
+        ],
+    ),
+    [],
+)

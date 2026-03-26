@@ -1,0 +1,245 @@
+(
+    Program(
+        [
+            Routine(
+                RoutineDecl {
+                    name: r"main",
+                    arguments: [],
+                    return_type: None,
+                    body: Some(
+                        Block(
+                            Block(
+                                [
+                                    VarDecl(
+                                        VarDecl {
+                                            name: r"кошка",
+                                            t: None,
+                                            initialiser: Some(
+                                                IntegerLiteral(
+                                                    IntegerLiteral {
+                                                        repr: "1",
+                                                        value: 1,
+                                                    },
+                                                ),
+                                            ),
+                                        },
+                                    ),
+                                    VarDecl(
+                                        VarDecl {
+                                            name: r"ねこ",
+                                            t: None,
+                                            initialiser: Some(
+                                                IntegerLiteral(
+                                                    IntegerLiteral {
+                                                        repr: "2",
+                                                        value: 2,
+                                                    },
+                                                ),
+                                            ),
+                                        },
+                                    ),
+                                    VarDecl(
+                                        VarDecl {
+                                            name: r"π",
+                                            t: None,
+                                            initialiser: Some(
+                                                IntegerLiteral(
+                                                    IntegerLiteral {
+                                                        repr: "3",
+                                                        value: 3,
+                                                    },
+                                                ),
+                                            ),
+                                        },
+                                    ),
+                                    VarDecl(
+                                        VarDecl {
+                                            name: r"α",
+                                            t: None,
+                                            initialiser: Some(
+                                                IntegerLiteral(
+                                                    IntegerLiteral {
+                                                        repr: "0",
+                                                        value: 0,
+                                                    },
+                                                ),
+                                            ),
+                                        },
+                                    ),
+                                    VarDecl(
+                                        VarDecl {
+                                            name: r"值",
+                                            t: None,
+                                            initialiser: Some(
+                                                IntegerLiteral(
+                                                    IntegerLiteral {
+                                                        repr: "4",
+                                                        value: 4,
+                                                    },
+                                                ),
+                                            ),
+                                        },
+                                    ),
+                                    VarDecl(
+                                        VarDecl {
+                                            name: r"变量",
+                                            t: None,
+                                            initialiser: Some(
+                                                IntegerLiteral(
+                                                    IntegerLiteral {
+                                                        repr: "5",
+                                                        value: 5,
+                                                    },
+                                                ),
+                                            ),
+                                        },
+                                    ),
+                                    VarDecl(
+                                        VarDecl {
+                                            name: r"고양이",
+                                            t: None,
+                                            initialiser: Some(
+                                                IntegerLiteral(
+                                                    IntegerLiteral {
+                                                        repr: "6",
+                                                        value: 6,
+                                                    },
+                                                ),
+                                            ),
+                                        },
+                                    ),
+                                    VarDecl(
+                                        VarDecl {
+                                            name: r"pequeño_pingüino",
+                                            t: None,
+                                            initialiser: Some(
+                                                IntegerLiteral(
+                                                    IntegerLiteral {
+                                                        repr: "7",
+                                                        value: 7,
+                                                    },
+                                                ),
+                                            ),
+                                        },
+                                    ),
+                                    VarDecl(
+                                        VarDecl {
+                                            name: r"'no_strings",
+                                            t: None,
+                                            initialiser: Some(
+                                                IntegerLiteral(
+                                                    IntegerLiteral {
+                                                        repr: "8",
+                                                        value: 8,
+                                                    },
+                                                ),
+                                            ),
+                                        },
+                                    ),
+                                    VarDecl(
+                                        VarDecl {
+                                            name: r"_",
+                                            t: None,
+                                            initialiser: Some(
+                                                IntegerLiteral(
+                                                    IntegerLiteral {
+                                                        repr: "9",
+                                                        value: 9,
+                                                    },
+                                                ),
+                                            ),
+                                        },
+                                    ),
+                                    Stmt(
+                                        Assignment {
+                                            lhs: Identifier(
+                                                r"α",
+                                            ),
+                                            rhs: BinOp {
+                                                op: Plus,
+                                                lhs: LvalueToRvalue(
+                                                    Identifier(
+                                                        r"кошка",
+                                                    ),
+                                                ),
+                                                rhs: LvalueToRvalue(
+                                                    Identifier(
+                                                        r"ねこ",
+                                                    ),
+                                                ),
+                                            },
+                                        },
+                                    ),
+                                    Stmt(
+                                        Print {
+                                            value: LvalueToRvalue(
+                                                Identifier(
+                                                    r"α",
+                                                ),
+                                            ),
+                                        },
+                                    ),
+                                    Stmt(
+                                        Print {
+                                            value: LvalueToRvalue(
+                                                Identifier(
+                                                    r"π",
+                                                ),
+                                            ),
+                                        },
+                                    ),
+                                    Stmt(
+                                        Print {
+                                            value: LvalueToRvalue(
+                                                Identifier(
+                                                    r"值",
+                                                ),
+                                            ),
+                                        },
+                                    ),
+                                    Stmt(
+                                        Print {
+                                            value: LvalueToRvalue(
+                                                Identifier(
+                                                    r"变量",
+                                                ),
+                                            ),
+                                        },
+                                    ),
+                                    Stmt(
+                                        Print {
+                                            value: LvalueToRvalue(
+                                                Identifier(
+                                                    r"고양이",
+                                                ),
+                                            ),
+                                        },
+                                    ),
+                                    Stmt(
+                                        Print {
+                                            value: LvalueToRvalue(
+                                                Identifier(
+                                                    r"pequeño_pingüino",
+                                                ),
+                                            ),
+                                        },
+                                    ),
+                                    Stmt(
+                                        Print {
+                                            value: LvalueToRvalue(
+                                                Identifier(
+                                                    r"'no_strings",
+                                                ),
+                                            ),
+                                        },
+                                    ),
+                                ],
+                            ),
+                        ),
+                    ),
+                },
+            ),
+        ],
+    ),
+    [],
+)

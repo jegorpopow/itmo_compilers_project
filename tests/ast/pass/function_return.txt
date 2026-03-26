@@ -1,0 +1,138 @@
+(
+    Program(
+        [
+            Binding {
+                name: echo(0),
+                decl: Routine(
+                    Full(
+                        Routine {
+                            signature: RoutineSignature {
+                                args: [
+                                    (
+                                        r"data",
+                                        Int,
+                                    ),
+                                ],
+                                return_type: Int,
+                            },
+                            args_bindings: [
+                                Binding {
+                                    name: data(1),
+                                    decl: VarDecl {
+                                        t: Int,
+                                        initialiser: None,
+                                        relative_location: Argument(
+                                            0,
+                                        ),
+                                    },
+                                },
+                            ],
+                            body: Block(
+                                Block(
+                                    [
+                                        Stmt(
+                                            Print {
+                                                value: LvalueToRvalue(
+                                                    Identifier(
+                                                        data(1),
+                                                    ),
+                                                ),
+                                            },
+                                        ),
+                                        Stmt(
+                                            Return {
+                                                value: LvalueToRvalue(
+                                                    Identifier(
+                                                        data(1),
+                                                    ),
+                                                ),
+                                            },
+                                        ),
+                                    ],
+                                ),
+                            ),
+                        },
+                    ),
+                ),
+            },
+            Binding {
+                name: main(2),
+                decl: Routine(
+                    Full(
+                        Routine {
+                            signature: RoutineSignature {
+                                args: [],
+                                return_type: Unit,
+                            },
+                            args_bindings: [],
+                            body: Block(
+                                Block(
+                                    [
+                                        Stmt(
+                                            Print {
+                                                value: Call {
+                                                    callee: echo(0),
+                                                    args: [
+                                                        IntegerLiteral(
+                                                            IntegerLiteral {
+                                                                repr: "42",
+                                                                value: 42,
+                                                            },
+                                                        ),
+                                                    ],
+                                                },
+                                            },
+                                        ),
+                                    ],
+                                ),
+                            ),
+                        },
+                    ),
+                ),
+            },
+        ],
+    ),
+    IdentifierTable {
+        bindings: [
+            Binding {
+                name: echo(0),
+                decl: Routine(
+                    Forward {
+                        signature: RoutineSignature {
+                            args: [
+                                (
+                                    r"data",
+                                    Int,
+                                ),
+                            ],
+                            return_type: Int,
+                        },
+                    },
+                ),
+            },
+            Binding {
+                name: data(1),
+                decl: Var(
+                    VarDecl {
+                        t: Int,
+                        initialiser: None,
+                        relative_location: Argument(
+                            0,
+                        ),
+                    },
+                ),
+            },
+            Binding {
+                name: main(2),
+                decl: Routine(
+                    Forward {
+                        signature: RoutineSignature {
+                            args: [],
+                            return_type: Unit,
+                        },
+                    },
+                ),
+            },
+        ],
+    },
+)
