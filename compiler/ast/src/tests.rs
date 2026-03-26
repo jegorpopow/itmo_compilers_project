@@ -45,5 +45,6 @@ testing::tests! {
         while_loops => "while_loops"
     ]
     fail = [
+        routine_redefinition => "routine_redefinition"
     ]
 }

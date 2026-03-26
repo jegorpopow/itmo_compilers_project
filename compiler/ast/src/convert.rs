@@ -184,8 +184,13 @@ impl Converter {
                     RoutineDecl::Forward { .. },
                 ] => ident.to_owned(),
             },
-            Ok(Binding { .. }) | Err(_) => {
-                // function just shadows previous global variable with the same name
+
+            Ok(Binding {
+                name: _,
+                decl: Decl::Type(_) | Decl::Var(_),
+            })
+            | Err(_) => {
+                // function just shadows previous global variable or type with the same name
                 self.bind_global_decl(routine_name, Decl::Routine(decl))
             }
         })
@@ -994,18 +999,19 @@ impl Converter {
         let converted_return_type =
             return_type.map_or(Ok(Rc::new(Type::Unit)), |t| self.convert_type(t))?;
 
-        // Firstly, create a forward declaration for possible recursive use
         let signature = RoutineSignature {
             args: converted_arguments_types.clone(),
             return_type: Rc::clone(&converted_return_type),
         };
 
-        let ident = self.bind_routine(
+        // Firstly, create a forward declaration for possible recursive use
+        let forward_ident: Identifier = self.bind_routine(
             name,
             RoutineDecl::Forward {
                 signature: signature.clone(),
             },
         )?;
+        drop(forward_ident);
 
         // Memorise that routine for type-check of return statement
         self.current_routine = Some(RoutinePrototype {
@@ -1027,13 +1033,14 @@ impl Converter {
         self.leave_block();
         self.current_routine = None;
 
+        let decl = RoutineDecl::Full(Routine {
+            signature,
+            args_bindings,
+            body: RoutineBody::Block(converted_body),
+        });
         Ok(Binding {
-            name: ident,
-            decl: Decl::Routine(RoutineDecl::Full(Routine {
-                signature,
-                args_bindings,
-                body: RoutineBody::Block(converted_body),
-            })),
+            name: self.bind_routine(name, decl.clone())?,
+            decl: Decl::Routine(decl),
         })
     }
 

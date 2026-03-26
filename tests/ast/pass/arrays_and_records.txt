@@ -1237,25 +1237,162 @@
             Binding {
                 name: squared_distance(7),
                 decl: Routine(
-                    Forward {
-                        signature: RoutineSignature {
-                            args: [
-                                (
-                                    r"from",
-                                    Alias(
-                                        point(0),
+                    Full(
+                        Routine {
+                            signature: RoutineSignature {
+                                args: [
+                                    (
+                                        r"from",
+                                        Alias(
+                                            point(0),
+                                        ),
                                     ),
-                                ),
-                                (
-                                    r"to",
-                                    Alias(
-                                        point(0),
+                                    (
+                                        r"to",
+                                        Alias(
+                                            point(0),
+                                        ),
                                     ),
-                                ),
+                                ],
+                                return_type: Real,
+                            },
+                            args_bindings: [
+                                Binding {
+                                    name: from(8),
+                                    decl: VarDecl {
+                                        t: Alias(
+                                            point(0),
+                                        ),
+                                        initialiser: None,
+                                        relative_location: Argument(
+                                            0,
+                                        ),
+                                    },
+                                },
+                                Binding {
+                                    name: to(9),
+                                    decl: VarDecl {
+                                        t: Alias(
+                                            point(0),
+                                        ),
+                                        initialiser: None,
+                                        relative_location: Argument(
+                                            1,
+                                        ),
+                                    },
+                                },
                             ],
-                            return_type: Real,
+                            body: Block(
+                                Block(
+                                    [
+                                        Stmt(
+                                            Return {
+                                                value: BinOp {
+                                                    op: Real(
+                                                        Add,
+                                                    ),
+                                                    lhs: BinOp {
+                                                        op: Real(
+                                                            Mul,
+                                                        ),
+                                                        lhs: BinOp {
+                                                            op: Real(
+                                                                Sub,
+                                                            ),
+                                                            lhs: LvalueToRvalue(
+                                                                Member {
+                                                                    lhs: Identifier(
+                                                                        from(8),
+                                                                    ),
+                                                                    member_name: r"x",
+                                                                },
+                                                            ),
+                                                            rhs: LvalueToRvalue(
+                                                                Member {
+                                                                    lhs: Identifier(
+                                                                        to(9),
+                                                                    ),
+                                                                    member_name: r"x",
+                                                                },
+                                                            ),
+                                                        },
+                                                        rhs: BinOp {
+                                                            op: Real(
+                                                                Sub,
+                                                            ),
+                                                            lhs: LvalueToRvalue(
+                                                                Member {
+                                                                    lhs: Identifier(
+                                                                        from(8),
+                                                                    ),
+                                                                    member_name: r"x",
+                                                                },
+                                                            ),
+                                                            rhs: LvalueToRvalue(
+                                                                Member {
+                                                                    lhs: Identifier(
+                                                                        to(9),
+                                                                    ),
+                                                                    member_name: r"x",
+                                                                },
+                                                            ),
+                                                        },
+                                                    },
+                                                    rhs: BinOp {
+                                                        op: Real(
+                                                            Mul,
+                                                        ),
+                                                        lhs: BinOp {
+                                                            op: Real(
+                                                                Sub,
+                                                            ),
+                                                            lhs: LvalueToRvalue(
+                                                                Member {
+                                                                    lhs: Identifier(
+                                                                        from(8),
+                                                                    ),
+                                                                    member_name: r"y",
+                                                                },
+                                                            ),
+                                                            rhs: LvalueToRvalue(
+                                                                Member {
+                                                                    lhs: Identifier(
+                                                                        to(9),
+                                                                    ),
+                                                                    member_name: r"y",
+                                                                },
+                                                            ),
+                                                        },
+                                                        rhs: BinOp {
+                                                            op: Real(
+                                                                Sub,
+                                                            ),
+                                                            lhs: LvalueToRvalue(
+                                                                Member {
+                                                                    lhs: Identifier(
+                                                                        from(8),
+                                                                    ),
+                                                                    member_name: r"y",
+                                                                },
+                                                            ),
+                                                            rhs: LvalueToRvalue(
+                                                                Member {
+                                                                    lhs: Identifier(
+                                                                        to(9),
+                                                                    ),
+                                                                    member_name: r"y",
+                                                                },
+                                                            ),
+                                                        },
+                                                    },
+                                                },
+                                            },
+                                        ),
+                                    ],
+                                ),
+                            ),
                         },
-                    },
+                    ),
                 ),
             },
             Binding {
@@ -1673,12 +1810,271 @@
             Binding {
                 name: main(12),
                 decl: Routine(
-                    Forward {
-                        signature: RoutineSignature {
-                            args: [],
-                            return_type: Unit,
+                    Full(
+                        Routine {
+                            signature: RoutineSignature {
+                                args: [],
+                                return_type: Unit,
+                            },
+                            args_bindings: [],
+                            body: Block(
+                                Block(
+                                    [
+                                        Decl(
+                                            SimpleBinding {
+                                                name: t(13),
+                                                decl: Var(
+                                                    VarDecl {
+                                                        t: Alias(
+                                                            triangle(1),
+                                                        ),
+                                                        initialiser: Some(
+                                                            New {
+                                                                t: Alias(
+                                                                    triangle(1),
+                                                                ),
+                                                                fields: None,
+                                                            },
+                                                        ),
+                                                        relative_location: Local(
+                                                            0,
+                                                        ),
+                                                    },
+                                                ),
+                                            },
+                                        ),
+                                        Stmt(
+                                            Assignment {
+                                                lhs: Index {
+                                                    lhs: Identifier(
+                                                        t(13),
+                                                    ),
+                                                    index: IntegerLiteral(
+                                                        IntegerLiteral {
+                                                            repr: "1",
+                                                            value: 1,
+                                                        },
+                                                    ),
+                                                },
+                                                rhs: New {
+                                                    t: Alias(
+                                                        point(0),
+                                                    ),
+                                                    fields: Some(
+                                                        [],
+                                                    ),
+                                                },
+                                            },
+                                        ),
+                                        Stmt(
+                                            Assignment {
+                                                lhs: Member {
+                                                    lhs: Index {
+                                                        lhs: Identifier(
+                                                            t(13),
+                                                        ),
+                                                        index: IntegerLiteral(
+                                                            IntegerLiteral {
+                                                                repr: "1",
+                                                                value: 1,
+                                                            },
+                                                        ),
+                                                    },
+                                                    member_name: r"x",
+                                                },
+                                                rhs: RealLiteral(
+                                                    RealLiteral {
+                                                        repr: "0.0",
+                                                        value: 0.0,
+                                                    },
+                                                ),
+                                            },
+                                        ),
+                                        Stmt(
+                                            Assignment {
+                                                lhs: Member {
+                                                    lhs: Index {
+                                                        lhs: Identifier(
+                                                            t(13),
+                                                        ),
+                                                        index: IntegerLiteral(
+                                                            IntegerLiteral {
+                                                                repr: "1",
+                                                                value: 1,
+                                                            },
+                                                        ),
+                                                    },
+                                                    member_name: r"y",
+                                                },
+                                                rhs: RealLiteral(
+                                                    RealLiteral {
+                                                        repr: "0.0",
+                                                        value: 0.0,
+                                                    },
+                                                ),
+                                            },
+                                        ),
+                                        Stmt(
+                                            Assignment {
+                                                lhs: Index {
+                                                    lhs: Identifier(
+                                                        t(13),
+                                                    ),
+                                                    index: IntegerLiteral(
+                                                        IntegerLiteral {
+                                                            repr: "2",
+                                                            value: 2,
+                                                        },
+                                                    ),
+                                                },
+                                                rhs: New {
+                                                    t: Alias(
+                                                        point(0),
+                                                    ),
+                                                    fields: Some(
+                                                        [],
+                                                    ),
+                                                },
+                                            },
+                                        ),
+                                        Stmt(
+                                            Assignment {
+                                                lhs: Member {
+                                                    lhs: Index {
+                                                        lhs: Identifier(
+                                                            t(13),
+                                                        ),
+                                                        index: IntegerLiteral(
+                                                            IntegerLiteral {
+                                                                repr: "2",
+                                                                value: 2,
+                                                            },
+                                                        ),
+                                                    },
+                                                    member_name: r"x",
+                                                },
+                                                rhs: RealLiteral(
+                                                    RealLiteral {
+                                                        repr: "3.0",
+                                                        value: 3.0,
+                                                    },
+                                                ),
+                                            },
+                                        ),
+                                        Stmt(
+                                            Assignment {
+                                                lhs: Member {
+                                                    lhs: Index {
+                                                        lhs: Identifier(
+                                                            t(13),
+                                                        ),
+                                                        index: IntegerLiteral(
+                                                            IntegerLiteral {
+                                                                repr: "2",
+                                                                value: 2,
+                                                            },
+                                                        ),
+                                                    },
+                                                    member_name: r"y",
+                                                },
+                                                rhs: RealLiteral(
+                                                    RealLiteral {
+                                                        repr: "0.0",
+                                                        value: 0.0,
+                                                    },
+                                                ),
+                                            },
+                                        ),
+                                        Stmt(
+                                            Assignment {
+                                                lhs: Index {
+                                                    lhs: Identifier(
+                                                        t(13),
+                                                    ),
+                                                    index: IntegerLiteral(
+                                                        IntegerLiteral {
+                                                            repr: "3",
+                                                            value: 3,
+                                                        },
+                                                    ),
+                                                },
+                                                rhs: New {
+                                                    t: Alias(
+                                                        point(0),
+                                                    ),
+                                                    fields: Some(
+                                                        [],
+                                                    ),
+                                                },
+                                            },
+                                        ),
+                                        Stmt(
+                                            Assignment {
+                                                lhs: Member {
+                                                    lhs: Index {
+                                                        lhs: Identifier(
+                                                            t(13),
+                                                        ),
+                                                        index: IntegerLiteral(
+                                                            IntegerLiteral {
+                                                                repr: "3",
+                                                                value: 3,
+                                                            },
+                                                        ),
+                                                    },
+                                                    member_name: r"x",
+                                                },
+                                                rhs: RealLiteral(
+                                                    RealLiteral {
+                                                        repr: "0.0",
+                                                        value: 0.0,
+                                                    },
+                                                ),
+                                            },
+                                        ),
+                                        Stmt(
+                                            Assignment {
+                                                lhs: Member {
+                                                    lhs: Index {
+                                                        lhs: Identifier(
+                                                            t(13),
+                                                        ),
+                                                        index: IntegerLiteral(
+                                                            IntegerLiteral {
+                                                                repr: "3",
+                                                                value: 3,
+                                                            },
+                                                        ),
+                                                    },
+                                                    member_name: r"y",
+                                                },
+                                                rhs: RealLiteral(
+                                                    RealLiteral {
+                                                        repr: "4.0",
+                                                        value: 4.0,
+                                                    },
+                                                ),
+                                            },
+                                        ),
+                                        Stmt(
+                                            Print {
+                                                value: Call {
+                                                    callee: is_right(11),
+                                                    args: [
+                                                        LvalueToRvalue(
+                                                            Identifier(
+                                                                t(13),
+                                                            ),
+                                                        ),
+                                                    ],
+                                                },
+                                            },
+                                        ),
+                                    ],
+                                ),
+                            ),
                         },
-                    },
+                    ),
                 ),
             },
             Binding {

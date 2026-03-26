@@ -258,28 +258,88 @@
             Binding {
                 name: print_length(1),
                 decl: Routine(
-                    Forward {
-                        signature: RoutineSignature {
-                            args: [
-                                (
-                                    r"a",
-                                    Array(
-                                        ArrayDescription {
-                                            t: Int,
-                                            length: None,
-                                        },
+                    Full(
+                        Routine {
+                            signature: RoutineSignature {
+                                args: [
+                                    (
+                                        r"a",
+                                        Array(
+                                            ArrayDescription {
+                                                t: Int,
+                                                length: None,
+                                            },
+                                        ),
                                     ),
-                                ),
-                                (
-                                    r"s",
-                                    Alias(
-                                        square(0),
+                                    (
+                                        r"s",
+                                        Alias(
+                                            square(0),
+                                        ),
                                     ),
-                                ),
+                                ],
+                                return_type: Unit,
+                            },
+                            args_bindings: [
+                                Binding {
+                                    name: a(2),
+                                    decl: VarDecl {
+                                        t: Array(
+                                            ArrayDescription {
+                                                t: Int,
+                                                length: None,
+                                            },
+                                        ),
+                                        initialiser: None,
+                                        relative_location: Argument(
+                                            0,
+                                        ),
+                                    },
+                                },
+                                Binding {
+                                    name: s(3),
+                                    decl: VarDecl {
+                                        t: Alias(
+                                            square(0),
+                                        ),
+                                        initialiser: None,
+                                        relative_location: Argument(
+                                            1,
+                                        ),
+                                    },
+                                },
                             ],
-                            return_type: Unit,
+                            body: Block(
+                                Block(
+                                    [
+                                        Stmt(
+                                            Print {
+                                                value: LengthOf {
+                                                    arr: LvalueToRvalue(
+                                                        Identifier(
+                                                            a(2),
+                                                        ),
+                                                    ),
+                                                },
+                                            },
+                                        ),
+                                        Stmt(
+                                            Print {
+                                                value: LvalueToRvalue(
+                                                    Member {
+                                                        lhs: Identifier(
+                                                            s(3),
+                                                        ),
+                                                        member_name: r"length",
+                                                    },
+                                                ),
+                                            },
+                                        ),
+                                    ],
+                                ),
+                            ),
                         },
-                    },
+                    ),
                 ),
             },
             Binding {
@@ -316,12 +376,110 @@
             Binding {
                 name: main(4),
                 decl: Routine(
-                    Forward {
-                        signature: RoutineSignature {
-                            args: [],
-                            return_type: Unit,
+                    Full(
+                        Routine {
+                            signature: RoutineSignature {
+                                args: [],
+                                return_type: Unit,
+                            },
+                            args_bindings: [],
+                            body: Block(
+                                Block(
+                                    [
+                                        Decl(
+                                            SimpleBinding {
+                                                name: a(5),
+                                                decl: Var(
+                                                    VarDecl {
+                                                        t: Array(
+                                                            ArrayDescription {
+                                                                t: Int,
+                                                                length: Some(
+                                                                    5,
+                                                                ),
+                                                            },
+                                                        ),
+                                                        initialiser: Some(
+                                                            New {
+                                                                t: Array(
+                                                                    ArrayDescription {
+                                                                        t: Int,
+                                                                        length: Some(
+                                                                            5,
+                                                                        ),
+                                                                    },
+                                                                ),
+                                                                fields: None,
+                                                            },
+                                                        ),
+                                                        relative_location: Local(
+                                                            0,
+                                                        ),
+                                                    },
+                                                ),
+                                            },
+                                        ),
+                                        Decl(
+                                            SimpleBinding {
+                                                name: s(6),
+                                                decl: Var(
+                                                    VarDecl {
+                                                        t: Alias(
+                                                            square(0),
+                                                        ),
+                                                        initialiser: Some(
+                                                            New {
+                                                                t: Alias(
+                                                                    square(0),
+                                                                ),
+                                                                fields: Some(
+                                                                    [
+                                                                        (
+                                                                            r"length",
+                                                                            IntToReal(
+                                                                                IntegerLiteral(
+                                                                                    IntegerLiteral {
+                                                                                        repr: "10",
+                                                                                        value: 10,
+                                                                                    },
+                                                                                ),
+                                                                            ),
+                                                                        ),
+                                                                    ],
+                                                                ),
+                                                            },
+                                                        ),
+                                                        relative_location: Local(
+                                                            1,
+                                                        ),
+                                                    },
+                                                ),
+                                            },
+                                        ),
+                                        Stmt(
+                                            Expr(
+                                                Call {
+                                                    callee: print_length(1),
+                                                    args: [
+                                                        LvalueToRvalue(
+                                                            Identifier(
+                                                                a(5),
+                                                            ),
+                                                        ),
+                                                        LvalueToRvalue(
+                                                            Identifier(
+                                                                s(6),
+                                                            ),
+                                                        ),
+                                                    ],
+                                                },
+                                            ),
+                                        ),
+                                    ],
+                                ),
+                            ),
                         },
-                    },
+                    ),
                 ),
             },
             Binding {

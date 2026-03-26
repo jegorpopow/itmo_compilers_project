@@ -677,25 +677,162 @@
             Binding {
                 name: squared_distance(4),
                 decl: Routine(
-                    Forward {
-                        signature: RoutineSignature {
-                            args: [
-                                (
-                                    r"from",
-                                    Alias(
-                                        point(0),
+                    Full(
+                        Routine {
+                            signature: RoutineSignature {
+                                args: [
+                                    (
+                                        r"from",
+                                        Alias(
+                                            point(0),
+                                        ),
                                     ),
-                                ),
-                                (
-                                    r"to",
-                                    Alias(
-                                        point(0),
+                                    (
+                                        r"to",
+                                        Alias(
+                                            point(0),
+                                        ),
                                     ),
-                                ),
+                                ],
+                                return_type: Real,
+                            },
+                            args_bindings: [
+                                Binding {
+                                    name: from(5),
+                                    decl: VarDecl {
+                                        t: Alias(
+                                            point(0),
+                                        ),
+                                        initialiser: None,
+                                        relative_location: Argument(
+                                            0,
+                                        ),
+                                    },
+                                },
+                                Binding {
+                                    name: to(6),
+                                    decl: VarDecl {
+                                        t: Alias(
+                                            point(0),
+                                        ),
+                                        initialiser: None,
+                                        relative_location: Argument(
+                                            1,
+                                        ),
+                                    },
+                                },
                             ],
-                            return_type: Real,
+                            body: Block(
+                                Block(
+                                    [
+                                        Stmt(
+                                            Return {
+                                                value: BinOp {
+                                                    op: Real(
+                                                        Add,
+                                                    ),
+                                                    lhs: BinOp {
+                                                        op: Real(
+                                                            Mul,
+                                                        ),
+                                                        lhs: BinOp {
+                                                            op: Real(
+                                                                Sub,
+                                                            ),
+                                                            lhs: LvalueToRvalue(
+                                                                Member {
+                                                                    lhs: Identifier(
+                                                                        from(5),
+                                                                    ),
+                                                                    member_name: r"x",
+                                                                },
+                                                            ),
+                                                            rhs: LvalueToRvalue(
+                                                                Member {
+                                                                    lhs: Identifier(
+                                                                        to(6),
+                                                                    ),
+                                                                    member_name: r"x",
+                                                                },
+                                                            ),
+                                                        },
+                                                        rhs: BinOp {
+                                                            op: Real(
+                                                                Sub,
+                                                            ),
+                                                            lhs: LvalueToRvalue(
+                                                                Member {
+                                                                    lhs: Identifier(
+                                                                        from(5),
+                                                                    ),
+                                                                    member_name: r"x",
+                                                                },
+                                                            ),
+                                                            rhs: LvalueToRvalue(
+                                                                Member {
+                                                                    lhs: Identifier(
+                                                                        to(6),
+                                                                    ),
+                                                                    member_name: r"x",
+                                                                },
+                                                            ),
+                                                        },
+                                                    },
+                                                    rhs: BinOp {
+                                                        op: Real(
+                                                            Mul,
+                                                        ),
+                                                        lhs: BinOp {
+                                                            op: Real(
+                                                                Sub,
+                                                            ),
+                                                            lhs: LvalueToRvalue(
+                                                                Member {
+                                                                    lhs: Identifier(
+                                                                        from(5),
+                                                                    ),
+                                                                    member_name: r"y",
+                                                                },
+                                                            ),
+                                                            rhs: LvalueToRvalue(
+                                                                Member {
+                                                                    lhs: Identifier(
+                                                                        to(6),
+                                                                    ),
+                                                                    member_name: r"y",
+                                                                },
+                                                            ),
+                                                        },
+                                                        rhs: BinOp {
+                                                            op: Real(
+                                                                Sub,
+                                                            ),
+                                                            lhs: LvalueToRvalue(
+                                                                Member {
+                                                                    lhs: Identifier(
+                                                                        from(5),
+                                                                    ),
+                                                                    member_name: r"y",
+                                                                },
+                                                            ),
+                                                            rhs: LvalueToRvalue(
+                                                                Member {
+                                                                    lhs: Identifier(
+                                                                        to(6),
+                                                                    ),
+                                                                    member_name: r"y",
+                                                                },
+                                                            ),
+                                                        },
+                                                    },
+                                                },
+                                            },
+                                        ),
+                                    ],
+                                ),
+                            ),
                         },
-                    },
+                    ),
                 ),
             },
             Binding {
@@ -886,12 +1023,140 @@
             Binding {
                 name: main(10),
                 decl: Routine(
-                    Forward {
-                        signature: RoutineSignature {
-                            args: [],
-                            return_type: Unit,
+                    Full(
+                        Routine {
+                            signature: RoutineSignature {
+                                args: [],
+                                return_type: Unit,
+                            },
+                            args_bindings: [],
+                            body: Block(
+                                Block(
+                                    [
+                                        Decl(
+                                            SimpleBinding {
+                                                name: p1(11),
+                                                decl: Var(
+                                                    VarDecl {
+                                                        t: Alias(
+                                                            point(0),
+                                                        ),
+                                                        initialiser: Some(
+                                                            Call {
+                                                                callee: point_of(3),
+                                                                args: [
+                                                                    RealLiteral(
+                                                                        RealLiteral {
+                                                                            repr: "0.0",
+                                                                            value: 0.0,
+                                                                        },
+                                                                    ),
+                                                                    RealLiteral(
+                                                                        RealLiteral {
+                                                                            repr: "0.0",
+                                                                            value: 0.0,
+                                                                        },
+                                                                    ),
+                                                                ],
+                                                            },
+                                                        ),
+                                                        relative_location: Local(
+                                                            0,
+                                                        ),
+                                                    },
+                                                ),
+                                            },
+                                        ),
+                                        Decl(
+                                            SimpleBinding {
+                                                name: p2(12),
+                                                decl: Var(
+                                                    VarDecl {
+                                                        t: Alias(
+                                                            point(0),
+                                                        ),
+                                                        initialiser: Some(
+                                                            Call {
+                                                                callee: point_of(3),
+                                                                args: [
+                                                                    RealLiteral(
+                                                                        RealLiteral {
+                                                                            repr: "3.0",
+                                                                            value: 3.0,
+                                                                        },
+                                                                    ),
+                                                                    RealLiteral(
+                                                                        RealLiteral {
+                                                                            repr: "4.0",
+                                                                            value: 4.0,
+                                                                        },
+                                                                    ),
+                                                                ],
+                                                            },
+                                                        ),
+                                                        relative_location: Local(
+                                                            1,
+                                                        ),
+                                                    },
+                                                ),
+                                            },
+                                        ),
+                                        Decl(
+                                            SimpleBinding {
+                                                name: mid(13),
+                                                decl: Var(
+                                                    VarDecl {
+                                                        t: Alias(
+                                                            point(0),
+                                                        ),
+                                                        initialiser: Some(
+                                                            Call {
+                                                                callee: middle(9),
+                                                                args: [
+                                                                    LvalueToRvalue(
+                                                                        Identifier(
+                                                                            p1(11),
+                                                                        ),
+                                                                    ),
+                                                                    LvalueToRvalue(
+                                                                        Identifier(
+                                                                            p2(12),
+                                                                        ),
+                                                                    ),
+                                                                ],
+                                                            },
+                                                        ),
+                                                        relative_location: Local(
+                                                            2,
+                                                        ),
+                                                    },
+                                                ),
+                                            },
+                                        ),
+                                        Stmt(
+                                            Print {
+                                                value: Call {
+                                                    callee: squared_distance(4),
+                                                    args: [
+                                                        LvalueToRvalue(
+                                                            Identifier(
+                                                                p1(11),
+                                                            ),
+                                                        ),
+                                                        LvalueToRvalue(
+                                                            Identifier(
+                                                                p2(12),
+                                                            ),
+                                                        ),
+                                                    ],
+                                                },
+                                            },
+                                        ),
+                                    ],
+                                ),
+                            ),
                         },
-                    },
+                    ),
                 ),
             },
             Binding {
