@@ -622,6 +622,27 @@
                                     ),
                                     Stmt(
                                         Assignment {
+                                            lhs: Index {
+                                                lhs: Identifier(
+                                                    r"t",
+                                                ),
+                                                index: IntegerLiteral(
+                                                    IntegerLiteral {
+                                                        repr: "1",
+                                                        value: 1,
+                                                    },
+                                                ),
+                                            },
+                                            rhs: New {
+                                                t: Alias(
+                                                    r"point",
+                                                ),
+                                                fields: None,
+                                            },
+                                        },
+                                    ),
+                                    Stmt(
+                                        Assignment {
                                             lhs: Member {
                                                 lhs: Index {
                                                     lhs: Identifier(
@@ -666,6 +687,27 @@
                                                     value: 0.0,
                                                 },
                                             ),
+                                        },
+                                    ),
+                                    Stmt(
+                                        Assignment {
+                                            lhs: Index {
+                                                lhs: Identifier(
+                                                    r"t",
+                                                ),
+                                                index: IntegerLiteral(
+                                                    IntegerLiteral {
+                                                        repr: "2",
+                                                        value: 2,
+                                                    },
+                                                ),
+                                            },
+                                            rhs: New {
+                                                t: Alias(
+                                                    r"point",
+                                                ),
+                                                fields: None,
+                                            },
                                         },
                                     ),
                                     Stmt(
@@ -714,6 +756,27 @@
                                                     value: 0.0,
                                                 },
                                             ),
+                                        },
+                                    ),
+                                    Stmt(
+                                        Assignment {
+                                            lhs: Index {
+                                                lhs: Identifier(
+                                                    r"t",
+                                                ),
+                                                index: IntegerLiteral(
+                                                    IntegerLiteral {
+                                                        repr: "3",
+                                                        value: 3,
+                                                    },
+                                                ),
+                                            },
+                                            rhs: New {
+                                                t: Alias(
+                                                    r"point",
+                                                ),
+                                                fields: None,
+                                            },
                                         },
                                     ),
                                     Stmt(

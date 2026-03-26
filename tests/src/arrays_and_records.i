@@ -1,16 +1,16 @@
-type point is record 
+type point is record
   var x is real;
   var y is real;
 end;
 
-type triangle is array [1 + 2] point;   
+type triangle is array [1 + 2] point;
 
 var EPS is 0.0000001;
 
 routine approximately_eq(a : real, b : real, eps : real) => (a - b) * (a - b) < eps * eps;
 
-routine squared_distance(from : point, to : point) : real is 
-  return (from.x - to.x) * (from.x - to.x) + (from.y - to.y) * (from.y - to.y); 
+routine squared_distance(from : point, to : point) : real is
+  return (from.x - to.x) * (from.x - to.x) + (from.y - to.y) * (from.y - to.y);
 end
 
 routine is_right(t : triangle) =>
@@ -20,10 +20,13 @@ routine is_right(t : triangle) =>
 
 routine main() is
   var t : triangle is new triangle;
+  t[1] := new point;
   t[1].x := 0.0;
   t[1].y := 0.0;
+  t[2] := new point;
   t[2].x := 3.0;
   t[2].y := 0.0;
+  t[3] := new point;
   t[3].x := 0.0;
   t[3].y := 4.0;
   print is_right(t);

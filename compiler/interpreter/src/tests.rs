@@ -20,8 +20,7 @@ testing::tests! {
     extension = "stdout"
     fun = interpret
     pass = [
-        // FIXME: null
-        // arrays_and_records => "arrays_and_records"
+        arrays_and_records => "arrays_and_records"
 
         // FIXME: default initialization of variables
         // type_conversions => "type_conversions"
