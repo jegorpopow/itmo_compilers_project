@@ -6,7 +6,7 @@ use common::{
 };
 
 use crate::{
-    tree::{OptionalDecl, cast_to},
+    tree::cast_to,
     types::{BinOpAdjustment, infer_binary_operator_type},
     *,
 };
@@ -156,35 +156,39 @@ impl Converter {
         routine_name: &RawIdentifier,
         decl: RoutineDecl,
     ) -> AnalysisResult<Identifier> {
-        let existing_binding = self.lookup(routine_name).cloned();
+        let existing_binding = self.lookup(routine_name);
 
-        match existing_binding {
+        Ok(match existing_binding {
             Ok(Binding {
                 name: ident,
                 decl: Decl::Routine(existing_decl),
-            }) => {
-                if existing_decl.signature() != decl.signature() {
-                    Err(AnalysisError {
-                        what: format!(
-                            "Conflicting signature for declarations of routine {routine_name:?}"
-                        ),
-                    })
-                } else if existing_decl.is_full() && decl.is_full() {
-                    Err(AnalysisError {
-                        what: format!("Conflicting declarations of routine {routine_name:?}"),
-                    })
-                } else if existing_decl.is_forward() && decl.is_full() {
+            }) => match [existing_decl, &decl] {
+                [_, _] if existing_decl.signature() != decl.signature() => Err(AnalysisError {
+                    what: format!(
+                        "Conflicting signature for declarations of routine {routine_name:?}"
+                    ),
+                })?,
+
+                [RoutineDecl::Full(..), RoutineDecl::Full { .. }] => Err(AnalysisError {
+                    what: format!("Conflicting declarations of routine {routine_name:?}"),
+                })?,
+
+                [RoutineDecl::Forward { .. }, RoutineDecl::Full { .. }] => {
+                    let ident = ident.to_owned();
                     self.rebind_decl(&ident, Decl::Routine(decl));
-                    Ok(ident)
-                } else {
-                    Ok(ident)
+                    ident
                 }
-            }
+
+                [
+                    RoutineDecl::Full(..) | RoutineDecl::Forward { .. },
+                    RoutineDecl::Forward { .. },
+                ] => ident.to_owned(),
+            },
             Ok(Binding { .. }) | Err(_) => {
                 // function just shadows previous global variable with the same name
-                Ok(self.bind_global_decl(routine_name, Decl::Routine(decl)))
+                self.bind_global_decl(routine_name, Decl::Routine(decl))
             }
-        }
+        })
     }
 
     fn lookup<'a>(&'a self, name: &RawIdentifier) -> AnalysisResult<&'a Binding> {

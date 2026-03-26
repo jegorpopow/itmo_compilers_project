@@ -284,13 +284,6 @@ pub struct VarDecl {
     pub relative_location: Location,
 }
 
-pub(crate) trait OptionalDecl {
-    fn is_full(&self) -> bool;
-    fn is_forward(&self) -> bool {
-        !self.is_full()
-    }
-}
-
 #[derive(Debug, Hash, Clone)]
 pub enum TypeDecl {
     Full {
@@ -300,12 +293,6 @@ pub enum TypeDecl {
     Forward {
         alias: RawIdentifier,
     },
-}
-
-impl OptionalDecl for TypeDecl {
-    fn is_full(&self) -> bool {
-        matches!(self, TypeDecl::Full { .. })
-    }
 }
 
 impl TypeDecl {
@@ -339,12 +326,6 @@ pub struct Routine {
 pub enum RoutineDecl {
     Full(Routine),
     Forward { signature: RoutineSignature },
-}
-
-impl OptionalDecl for RoutineDecl {
-    fn is_full(&self) -> bool {
-        matches!(self, RoutineDecl::Full { .. })
-    }
 }
 
 impl RoutineDecl {
