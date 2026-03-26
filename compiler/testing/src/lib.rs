@@ -67,6 +67,8 @@ macro_rules! tests {
             $($fail_ident:ident => $fail_name:literal)*
         ]
     ) => {
+        mod pass {
+            use super::*;
         $(
             #[test]
             fn $pass_ident() -> $crate::TestResult {
@@ -79,6 +81,9 @@ macro_rules! tests {
                 )
             }
         )+
+        }
+        mod fail {
+            use super::*;
         $(
             #[test]
             fn $fail_ident() -> $crate::TestResult {
@@ -91,5 +96,6 @@ macro_rules! tests {
                 )
             }
         )*
+        }
     };
 }
