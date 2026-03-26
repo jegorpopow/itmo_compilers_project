@@ -35,6 +35,7 @@ testing::tests! {
         logical_operators => "logical_operators"
         nested_control => "nested_control"
         operator_precedence => "operator_precedence"
+        real_comparisons => "real_comparisons"
         real_literals => "real_literals"
         records => "records"
         recursive_function => "recursive_function"
