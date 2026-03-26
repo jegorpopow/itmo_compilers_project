@@ -26,6 +26,7 @@ testing::tests! {
         identifiers => "identifiers"
         invalid => "invalid"
         lazy_operators => "lazy_operators"
+        length => "length"
         lexer_invalid => "lexer_invalid"
         logical_operators => "logical_operators"
         nested_control => "nested_control"

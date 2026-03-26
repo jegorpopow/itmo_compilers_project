@@ -29,6 +29,7 @@ testing::tests! {
         function_return => "function_return"
         identifiers => "identifiers"
         lazy_operators => "lazy_operators"
+        length => "length"
         logical_operators => "logical_operators"
         nested_control => "nested_control"
         operator_precedence => "operator_precedence"
