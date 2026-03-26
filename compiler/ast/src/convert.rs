@@ -991,9 +991,8 @@ impl Converter {
         converted_arguments_types: Vec<(RawIdentifier, Rc<Type>)>,
         args_decls: &[(RawIdentifier, VarDecl)],
     ) -> AnalysisResult<Binding> {
-        let converted_return_type = return_type
-            .as_ref()
-            .map_or(Ok(Rc::new(Type::Unit)), |t| self.convert_type(t))?;
+        let converted_return_type =
+            return_type.map_or(Ok(Rc::new(Type::Unit)), |t| self.convert_type(t))?;
 
         // Firstly, create a forward declaration for possible recursive use
         let signature = RoutineSignature {
@@ -1060,62 +1059,41 @@ impl Converter {
         converted_arguments_types: Vec<(RawIdentifier, Rc<Type>)>,
         args_decls: &[(RawIdentifier, VarDecl)],
     ) -> AnalysisResult<Binding> {
-        match return_type {
-            None => {
-                // No recursive calls for expression function
-                self.enter_block();
+        let return_type = return_type.map(|t| self.convert_type(t)).transpose()?;
 
-                let args_bindings = self.bind_args(args_decls);
+        // No recursive calls for expression function
+        self.enter_block();
 
-                let Typed { value: expr, ty: t } = self.convert_expr(expression)?;
+        let args_bindings = self.bind_args(args_decls);
 
-                self.leave_block(); // If we met an error we do not need recover
+        let Typed {
+            value: expr,
+            ty: expr_type,
+        } = self.convert_expr(expression)?;
 
-                let signature = RoutineSignature {
-                    args: converted_arguments_types,
-                    return_type: t,
-                };
+        self.leave_block(); // If we met an error we do not need recover
 
-                let decl = RoutineDecl::Full(Routine {
-                    signature,
-                    args_bindings,
-                    body: RoutineBody::Expression(expr),
-                });
+        let expr = match &return_type {
+            Some(ty) => cast_to(expr, &expr_type, ty)?,
+            None => expr,
+        };
 
-                let ident = self.bind_routine(name, decl.clone())?;
-                Ok(Binding {
-                    name: ident,
-                    decl: Decl::Routine(decl),
-                })
-            }
-            Some(return_type) => {
-                let converted_return_type = self.convert_type(return_type)?;
+        let signature = RoutineSignature {
+            args: converted_arguments_types,
+            return_type: return_type.unwrap_or(expr_type),
+        };
 
-                let args_bindings = self.bind_args(args_decls);
+        let decl = RoutineDecl::Full(Routine {
+            signature,
+            args_bindings,
+            body: RoutineBody::Expression(expr),
+        });
 
-                let Typed { value: expr, ty: t } = self.convert_expr(expression)?;
-                self.leave_block(); // If we met an error we do not need recover
-
-                let expr = cast_to(expr, &t, &converted_return_type)?;
-
-                let signature = RoutineSignature {
-                    args: converted_arguments_types,
-                    return_type: converted_return_type,
-                };
-
-                let decl = RoutineDecl::Full(Routine {
-                    signature,
-                    args_bindings,
-                    body: RoutineBody::Expression(expr),
-                });
-
-                let ident = self.bind_routine(name, decl.clone())?;
-                Ok(Binding {
-                    name: ident,
-                    decl: Decl::Routine(decl),
-                })
-            }
-        }
+        let ident = self.bind_routine(name, decl.clone())?;
+        Ok(Binding {
+            name: ident,
+            decl: Decl::Routine(decl),
+        })
     }
 }
 
