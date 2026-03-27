@@ -1,11 +1,16 @@
-use std::{collections::BTreeSet, fs::read_dir, path::PathBuf};
+use core::cmp::Ordering;
+use std::{
+    collections::BTreeSet,
+    fs::{File, read_dir},
+    path::PathBuf,
+};
 
-use anyhow::{Context as _, Error, anyhow, ensure};
+use anyhow::{Context, Error, anyhow, ensure};
 use culpa::throws;
 
 use testing::Mode;
 
-use crate::Both;
+use crate::{Both, Stage};
 
 #[derive(Debug)]
 pub(crate) struct TestDirContents {
@@ -16,7 +21,7 @@ pub(crate) struct TestDirContents {
 
 impl TestDirContents {
     #[must_use]
-    pub(crate) fn stem_to_path(&self, stem: &str) -> PathBuf {
+    pub(crate) fn path(&self, stem: &str) -> PathBuf {
         let Self {
             dir,
             extension,
@@ -70,16 +75,34 @@ impl TestDirContents {
             stems,
         }
     }
+
+    #[throws]
+    pub(crate) fn srcs() -> Self {
+        Self::new(testing::paths::src_dir())?
+    }
+
+    #[throws]
+    fn create_new(&self, name: &str) -> PathBuf {
+        let path = self.path(name);
+        let file: File = File::create_new(&path).with_context(|| {
+            format!(
+                "Could not create {} (maybe it already exists?)",
+                path.display()
+            )
+        })?;
+        drop(file);
+        path
+    }
 }
 
-impl crate::Stage {
+impl Stage {
     #[must_use]
     const fn test_dir_name(self) -> &'static str {
         match self {
             Self::Lexer => "lexer",
             Self::Parser => "parser",
             Self::AST => "ast",
-            Self::Interpreter => "run",
+            Self::Run => "run",
         }
     }
 
@@ -110,8 +133,8 @@ fn check_tests(actual: &Both<TestDirContents>, expected: &TestDirContents) {
             assert!(
                 expected.stems.contains(stem),
                 "There is {}, but no {}",
-                dir.stem_to_path(stem).display(),
-                expected.stem_to_path(stem).display(),
+                dir.path(stem).display(),
+                expected.path(stem).display(),
             )
         }
     }
@@ -119,9 +142,9 @@ fn check_tests(actual: &Both<TestDirContents>, expected: &TestDirContents) {
         assert!(
             actual.pass.stems.contains(stem) || actual.fail.stems.contains(stem),
             "There is {}, but no {} or {}",
-            expected.stem_to_path(stem).display(),
-            actual.pass.stem_to_path(stem).display(),
-            actual.fail.stem_to_path(stem).display(),
+            expected.path(stem).display(),
+            actual.pass.path(stem).display(),
+            actual.fail.path(stem).display(),
         )
     }
 }
@@ -129,12 +152,33 @@ fn check_tests(actual: &Both<TestDirContents>, expected: &TestDirContents) {
 #[test]
 #[throws]
 fn all_files_are_used() {
-    for stage in crate::Stage::all() {
+    for stage in Stage::all() {
         let expected = match stage.prev() {
             Some(prev) => prev.tests_for_mode(Mode::Pass),
-            None => TestDirContents::new(testing::paths::src_dir()),
+            None => TestDirContents::srcs(),
         }?;
         let tests = stage.tests()?;
         check_tests(&tests, &expected)
     }
+}
+
+#[throws]
+pub(super) fn add_test(name: &str, fail_stage: Option<Stage>) -> PathBuf {
+    let result = TestDirContents::srcs()?
+        .create_new(name)
+        .with_context(|| format!("Could not create a source file for {name:?}"))?;
+    println!("Created {}", result.display());
+    for stage in Stage::all() {
+        let mode = match fail_stage.and_then(|s| s.partial_cmp(stage)) {
+            Some(Ordering::Less) => continue,
+            Some(Ordering::Equal) => Mode::Fail,
+            Some(Ordering::Greater) | None => Mode::Pass,
+        };
+        let path = stage
+            .tests_for_mode(mode)?
+            .create_new(name)
+            .with_context(|| format!("Error adding test {name:?} to {stage:?}"))?;
+        println!("Created {}", path.display())
+    }
+    result
 }

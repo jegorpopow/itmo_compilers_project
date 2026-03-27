@@ -28,10 +28,13 @@ testing::tests! {
         function_parameters => "function_parameters"
         function_return => "function_return"
         identifiers => "identifiers"
+        lazy_operators => "lazy_operators"
+        length => "length"
         logical_operators => "logical_operators"
         nested_control => "nested_control"
         operator_precedence => "operator_precedence"
         parse_minus => "parse_minus"
+        real_comparisons => "real_comparisons"
         real_literals => "real_literals"
         records => "records"
         recursive_function => "recursive_function"
@@ -43,5 +46,6 @@ testing::tests! {
         while_loops => "while_loops"
     ]
     fail = [
+        routine_redefinition => "routine_redefinition"
     ]
 }

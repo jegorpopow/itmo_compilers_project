@@ -143,7 +143,7 @@ fn iterators_to_extent(start: &IndexIterator<'_>, end: &IndexIterator<'_>) -> Ex
 
 /// Processes all the identifier-like lexemes (identifiers, keywords, bool literals and some operators)
 fn name_disambiguation(lexeme: &str) -> TokenKind<'_> {
-    static KNOWN_TOKENS: phf::Map<&str, TokenKind<'static>> = phf_map! {
+    const KNOWN_TOKENS: phf::Map<&str, TokenKind<'static>> = phf_map! {
         "var" => TokenKind::Keyword(Keyword::Var),
         "type" => TokenKind::Keyword(Keyword::Type),
         "routine" => TokenKind::Keyword(Keyword::Routine),
@@ -200,7 +200,7 @@ fn comment_token<'a>(start: &IndexIterator<'a>) -> Option<(TokenKind<'a>, IndexI
 }
 
 fn symbolic_token<'a>(start: &IndexIterator<'a>) -> Option<(TokenKind<'a>, IndexIterator<'a>)> {
-    static KNOWN_TOKENS: &[(&str, TokenKind<'static>)] = &[
+    const KNOWN_TOKENS: &[(&str, TokenKind<'static>)] = &[
         (":=", TokenKind::Assignment),
         ("::", TokenKind::Cast),
         ("..", TokenKind::RangeSymbol),
@@ -226,13 +226,9 @@ fn symbolic_token<'a>(start: &IndexIterator<'a>) -> Option<(TokenKind<'a>, Index
         (">", TokenKind::Operator(SyntacticOperator::Gt)),
     ];
 
-    for (pattern, token) in KNOWN_TOKENS {
-        if let Some(end) = start.stars_with(pattern) {
-            return Some((token.clone(), end));
-        }
-    }
-
-    None
+    KNOWN_TOKENS
+        .iter()
+        .find_map(|(pattern, token)| start.stars_with(pattern).map(|end| (token.to_owned(), end)))
 }
 
 fn real_literal_from_representation(s: &str) -> TokenKind<'_> {
@@ -264,30 +260,28 @@ fn numeric_token<'a>(
     if let Some(('.', start_frac)) = tail.next() {
         let (frac_part, rest) = start_frac.take_while(|ch| ch.is_ascii_digit());
 
-        (!frac_part.is_empty())
-            .then(|| {
-                (
-                    real_literal_from_representation(ImmutableIterator::slice_to_str(begin, &rest)),
-                    rest,
-                )
-            })
-            .or_else(|| {
-                (!whole_part.is_empty()).then(|| {
-                    (
-                        integer_literal_from_representation(ImmutableIterator::slice_to_str(
-                            begin, &tail,
-                        )),
-                        tail,
-                    )
-                })
-            })
-    } else {
-        (!whole_part.is_empty()).then(|| {
+        if !frac_part.is_empty() {
+            Some((
+                real_literal_from_representation(ImmutableIterator::slice_to_str(begin, &rest)),
+                rest,
+            ))
+        } else if !whole_part.is_empty() {
+            Some((
+                integer_literal_from_representation(ImmutableIterator::slice_to_str(begin, &tail)),
+                tail,
+            ))
+        } else {
+            None
+        }
+    } else if !whole_part.is_empty() {
+        Some({
             (
                 integer_literal_from_representation(ImmutableIterator::slice_to_str(begin, &tail)),
                 tail,
             )
         })
+    } else {
+        None
     }
 }
 

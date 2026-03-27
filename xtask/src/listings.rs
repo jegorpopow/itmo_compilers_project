@@ -38,7 +38,7 @@ impl TestCase {
     fn new(srcs: &TestDirContents, stem: String) -> Self {
         Self {
             ident: stem.to_lowercase(),
-            src_path: srcs.stem_to_path(&stem),
+            src_path: srcs.path(&stem),
             stem,
         }
     }
@@ -59,7 +59,7 @@ impl Stage {
             Self::Lexer => "lexer",
             Self::Parser => "parser",
             Self::AST => "ast",
-            Self::Interpreter => "interpreter",
+            Self::Run => "interpreter",
         }
     }
 

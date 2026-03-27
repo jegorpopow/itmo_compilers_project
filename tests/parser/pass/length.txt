@@ -1,0 +1,161 @@
+(
+    Program(
+        [
+            Type(
+                TypeDecl {
+                    name: r"square",
+                    t: Record(
+                        RecordDescription {
+                            fields: [
+                                FieldDescription {
+                                    name: r"length",
+                                    t: Real,
+                                },
+                            ],
+                        },
+                    ),
+                },
+            ),
+            Routine(
+                RoutineDecl {
+                    name: r"print_length",
+                    arguments: [
+                        (
+                            r"a",
+                            Array(
+                                ArrayDescription {
+                                    t: Int,
+                                    length: None,
+                                },
+                            ),
+                        ),
+                        (
+                            r"s",
+                            Alias(
+                                r"square",
+                            ),
+                        ),
+                    ],
+                    return_type: None,
+                    body: Some(
+                        Block(
+                            Block(
+                                [
+                                    Stmt(
+                                        Print {
+                                            value: LvalueToRvalue(
+                                                Member {
+                                                    lhs: Identifier(
+                                                        r"a",
+                                                    ),
+                                                    member_name: r"length",
+                                                },
+                                            ),
+                                        },
+                                    ),
+                                    Stmt(
+                                        Print {
+                                            value: LvalueToRvalue(
+                                                Member {
+                                                    lhs: Identifier(
+                                                        r"s",
+                                                    ),
+                                                    member_name: r"length",
+                                                },
+                                            ),
+                                        },
+                                    ),
+                                ],
+                            ),
+                        ),
+                    ),
+                },
+            ),
+            Routine(
+                RoutineDecl {
+                    name: r"main",
+                    arguments: [],
+                    return_type: None,
+                    body: Some(
+                        Block(
+                            Block(
+                                [
+                                    VarDecl(
+                                        VarDecl {
+                                            name: r"a",
+                                            t: None,
+                                            initialiser: Some(
+                                                New {
+                                                    t: Array(
+                                                        ArrayDescription {
+                                                            t: Int,
+                                                            length: Some(
+                                                                IntegerLiteral(
+                                                                    IntegerLiteral {
+                                                                        repr: "5",
+                                                                        value: 5,
+                                                                    },
+                                                                ),
+                                                            ),
+                                                        },
+                                                    ),
+                                                    fields: None,
+                                                },
+                                            ),
+                                        },
+                                    ),
+                                    VarDecl(
+                                        VarDecl {
+                                            name: r"s",
+                                            t: None,
+                                            initialiser: Some(
+                                                New {
+                                                    t: Alias(
+                                                        r"square",
+                                                    ),
+                                                    fields: Some(
+                                                        [
+                                                            (
+                                                                r"length",
+                                                                IntegerLiteral(
+                                                                    IntegerLiteral {
+                                                                        repr: "10",
+                                                                        value: 10,
+                                                                    },
+                                                                ),
+                                                            ),
+                                                        ],
+                                                    ),
+                                                },
+                                            ),
+                                        },
+                                    ),
+                                    Stmt(
+                                        Expr(
+                                            Call {
+                                                callee: r"print_length",
+                                                args: [
+                                                    LvalueToRvalue(
+                                                        Identifier(
+                                                            r"a",
+                                                        ),
+                                                    ),
+                                                    LvalueToRvalue(
+                                                        Identifier(
+                                                            r"s",
+                                                        ),
+                                                    ),
+                                                ],
+                                            },
+                                        ),
+                                    ),
+                                ],
+                            ),
+                        ),
+                    ),
+                },
+            ),
+        ],
+    ),
+    [],
+)

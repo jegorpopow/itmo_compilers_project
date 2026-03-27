@@ -1,0 +1,264 @@
+(
+    Program(
+        [
+            Routine(
+                RoutineDecl {
+                    name: r"False",
+                    arguments: [],
+                    return_type: Some(
+                        Bool,
+                    ),
+                    body: Some(
+                        Block(
+                            Block(
+                                [
+                                    VarDecl(
+                                        VarDecl {
+                                            name: r"result",
+                                            t: None,
+                                            initialiser: Some(
+                                                BoolLiteral(
+                                                    False,
+                                                ),
+                                            ),
+                                        },
+                                    ),
+                                    Stmt(
+                                        Print {
+                                            value: LvalueToRvalue(
+                                                Identifier(
+                                                    r"result",
+                                                ),
+                                            ),
+                                        },
+                                    ),
+                                    Stmt(
+                                        Return {
+                                            value: LvalueToRvalue(
+                                                Identifier(
+                                                    r"result",
+                                                ),
+                                            ),
+                                        },
+                                    ),
+                                ],
+                            ),
+                        ),
+                    ),
+                },
+            ),
+            Routine(
+                RoutineDecl {
+                    name: r"True",
+                    arguments: [],
+                    return_type: Some(
+                        Bool,
+                    ),
+                    body: Some(
+                        Block(
+                            Block(
+                                [
+                                    VarDecl(
+                                        VarDecl {
+                                            name: r"result",
+                                            t: None,
+                                            initialiser: Some(
+                                                BoolLiteral(
+                                                    True,
+                                                ),
+                                            ),
+                                        },
+                                    ),
+                                    Stmt(
+                                        Print {
+                                            value: LvalueToRvalue(
+                                                Identifier(
+                                                    r"result",
+                                                ),
+                                            ),
+                                        },
+                                    ),
+                                    Stmt(
+                                        Return {
+                                            value: LvalueToRvalue(
+                                                Identifier(
+                                                    r"result",
+                                                ),
+                                            ),
+                                        },
+                                    ),
+                                ],
+                            ),
+                        ),
+                    ),
+                },
+            ),
+            Routine(
+                RoutineDecl {
+                    name: r"main",
+                    arguments: [],
+                    return_type: None,
+                    body: Some(
+                        Block(
+                            Block(
+                                [
+                                    Stmt(
+                                        Print {
+                                            value: IntegerLiteral(
+                                                IntegerLiteral {
+                                                    repr: "0",
+                                                    value: 0,
+                                                },
+                                            ),
+                                        },
+                                    ),
+                                    Stmt(
+                                        Print {
+                                            value: BinOp {
+                                                op: And,
+                                                lhs: Call {
+                                                    callee: r"True",
+                                                    args: [],
+                                                },
+                                                rhs: Call {
+                                                    callee: r"False",
+                                                    args: [],
+                                                },
+                                            },
+                                        },
+                                    ),
+                                    Stmt(
+                                        Print {
+                                            value: IntegerLiteral(
+                                                IntegerLiteral {
+                                                    repr: "1",
+                                                    value: 1,
+                                                },
+                                            ),
+                                        },
+                                    ),
+                                    Stmt(
+                                        Print {
+                                            value: BinOp {
+                                                op: And,
+                                                lhs: Call {
+                                                    callee: r"False",
+                                                    args: [],
+                                                },
+                                                rhs: Call {
+                                                    callee: r"True",
+                                                    args: [],
+                                                },
+                                            },
+                                        },
+                                    ),
+                                    Stmt(
+                                        Print {
+                                            value: IntegerLiteral(
+                                                IntegerLiteral {
+                                                    repr: "2",
+                                                    value: 2,
+                                                },
+                                            ),
+                                        },
+                                    ),
+                                    Stmt(
+                                        Print {
+                                            value: BinOp {
+                                                op: Or,
+                                                lhs: Call {
+                                                    callee: r"True",
+                                                    args: [],
+                                                },
+                                                rhs: Call {
+                                                    callee: r"False",
+                                                    args: [],
+                                                },
+                                            },
+                                        },
+                                    ),
+                                    Stmt(
+                                        Print {
+                                            value: IntegerLiteral(
+                                                IntegerLiteral {
+                                                    repr: "3",
+                                                    value: 3,
+                                                },
+                                            ),
+                                        },
+                                    ),
+                                    Stmt(
+                                        Print {
+                                            value: BinOp {
+                                                op: Or,
+                                                lhs: Call {
+                                                    callee: r"False",
+                                                    args: [],
+                                                },
+                                                rhs: Call {
+                                                    callee: r"True",
+                                                    args: [],
+                                                },
+                                            },
+                                        },
+                                    ),
+                                    Stmt(
+                                        Print {
+                                            value: IntegerLiteral(
+                                                IntegerLiteral {
+                                                    repr: "4",
+                                                    value: 4,
+                                                },
+                                            ),
+                                        },
+                                    ),
+                                    Stmt(
+                                        Print {
+                                            value: BinOp {
+                                                op: Xor,
+                                                lhs: Call {
+                                                    callee: r"True",
+                                                    args: [],
+                                                },
+                                                rhs: Call {
+                                                    callee: r"False",
+                                                    args: [],
+                                                },
+                                            },
+                                        },
+                                    ),
+                                    Stmt(
+                                        Print {
+                                            value: IntegerLiteral(
+                                                IntegerLiteral {
+                                                    repr: "5",
+                                                    value: 5,
+                                                },
+                                            ),
+                                        },
+                                    ),
+                                    Stmt(
+                                        Print {
+                                            value: BinOp {
+                                                op: Xor,
+                                                lhs: Call {
+                                                    callee: r"False",
+                                                    args: [],
+                                                },
+                                                rhs: Call {
+                                                    callee: r"True",
+                                                    args: [],
+                                                },
+                                            },
+                                        },
+                                    ),
+                                ],
+                            ),
+                        ),
+                    ),
+                },
+            ),
+        ],
+    ),
+    [],
+)

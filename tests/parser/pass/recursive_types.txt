@@ -80,7 +80,11 @@
                 RoutineDecl {
                     name: r"empty",
                     arguments: [],
-                    return_type: None,
+                    return_type: Some(
+                        Alias(
+                            r"linked_list",
+                        ),
+                    ),
                     body: Some(
                         Expression(
                             LvalueToRvalue(

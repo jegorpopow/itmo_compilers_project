@@ -1,0 +1,639 @@
+(
+    Program(
+        [
+            Binding {
+                name: main(0),
+                decl: Routine(
+                    Full(
+                        Routine {
+                            signature: RoutineSignature {
+                                args: [],
+                                return_type: Unit,
+                            },
+                            args_bindings: [],
+                            body: Block(
+                                Block(
+                                    [
+                                        Stmt(
+                                            Print {
+                                                value: BinOp {
+                                                    op: Eq(
+                                                        Eq,
+                                                    ),
+                                                    lhs: RealLiteral(
+                                                        RealLiteral {
+                                                            repr: "NaN",
+                                                            value: NaN,
+                                                        },
+                                                    ),
+                                                    rhs: RealLiteral(
+                                                        RealLiteral {
+                                                            repr: "NaN",
+                                                            value: NaN,
+                                                        },
+                                                    ),
+                                                },
+                                            },
+                                        ),
+                                        Stmt(
+                                            Print {
+                                                value: BinOp {
+                                                    op: Eq(
+                                                        Ne,
+                                                    ),
+                                                    lhs: RealLiteral(
+                                                        RealLiteral {
+                                                            repr: "NaN",
+                                                            value: NaN,
+                                                        },
+                                                    ),
+                                                    rhs: RealLiteral(
+                                                        RealLiteral {
+                                                            repr: "NaN",
+                                                            value: NaN,
+                                                        },
+                                                    ),
+                                                },
+                                            },
+                                        ),
+                                        Stmt(
+                                            Print {
+                                                value: BinOp {
+                                                    op: Real(
+                                                        Lt,
+                                                    ),
+                                                    lhs: RealLiteral(
+                                                        RealLiteral {
+                                                            repr: "NaN",
+                                                            value: NaN,
+                                                        },
+                                                    ),
+                                                    rhs: RealLiteral(
+                                                        RealLiteral {
+                                                            repr: "NaN",
+                                                            value: NaN,
+                                                        },
+                                                    ),
+                                                },
+                                            },
+                                        ),
+                                        Stmt(
+                                            Print {
+                                                value: BinOp {
+                                                    op: Real(
+                                                        Le,
+                                                    ),
+                                                    lhs: RealLiteral(
+                                                        RealLiteral {
+                                                            repr: "NaN",
+                                                            value: NaN,
+                                                        },
+                                                    ),
+                                                    rhs: RealLiteral(
+                                                        RealLiteral {
+                                                            repr: "NaN",
+                                                            value: NaN,
+                                                        },
+                                                    ),
+                                                },
+                                            },
+                                        ),
+                                        Stmt(
+                                            Print {
+                                                value: BinOp {
+                                                    op: Real(
+                                                        Gt,
+                                                    ),
+                                                    lhs: RealLiteral(
+                                                        RealLiteral {
+                                                            repr: "NaN",
+                                                            value: NaN,
+                                                        },
+                                                    ),
+                                                    rhs: RealLiteral(
+                                                        RealLiteral {
+                                                            repr: "NaN",
+                                                            value: NaN,
+                                                        },
+                                                    ),
+                                                },
+                                            },
+                                        ),
+                                        Stmt(
+                                            Print {
+                                                value: BinOp {
+                                                    op: Real(
+                                                        Ge,
+                                                    ),
+                                                    lhs: RealLiteral(
+                                                        RealLiteral {
+                                                            repr: "NaN",
+                                                            value: NaN,
+                                                        },
+                                                    ),
+                                                    rhs: RealLiteral(
+                                                        RealLiteral {
+                                                            repr: "NaN",
+                                                            value: NaN,
+                                                        },
+                                                    ),
+                                                },
+                                            },
+                                        ),
+                                        Decl(
+                                            SimpleBinding {
+                                                name: a(1),
+                                                decl: Var(
+                                                    VarDecl {
+                                                        t: Real,
+                                                        initialiser: Some(
+                                                            BinOp {
+                                                                op: Real(
+                                                                    Add,
+                                                                ),
+                                                                lhs: BinOp {
+                                                                    op: Real(
+                                                                        Add,
+                                                                    ),
+                                                                    lhs: RealLiteral(
+                                                                        RealLiteral {
+                                                                            repr: "0.1",
+                                                                            value: 0.1,
+                                                                        },
+                                                                    ),
+                                                                    rhs: RealLiteral(
+                                                                        RealLiteral {
+                                                                            repr: "0.1",
+                                                                            value: 0.1,
+                                                                        },
+                                                                    ),
+                                                                },
+                                                                rhs: RealLiteral(
+                                                                    RealLiteral {
+                                                                        repr: "0.1",
+                                                                        value: 0.1,
+                                                                    },
+                                                                ),
+                                                            },
+                                                        ),
+                                                        relative_location: Local(
+                                                            0,
+                                                        ),
+                                                    },
+                                                ),
+                                            },
+                                        ),
+                                        Stmt(
+                                            Print {
+                                                value: LvalueToRvalue(
+                                                    Identifier(
+                                                        a(1),
+                                                    ),
+                                                ),
+                                            },
+                                        ),
+                                        Stmt(
+                                            Print {
+                                                value: BinOp {
+                                                    op: Eq(
+                                                        Eq,
+                                                    ),
+                                                    lhs: LvalueToRvalue(
+                                                        Identifier(
+                                                            a(1),
+                                                        ),
+                                                    ),
+                                                    rhs: RealLiteral(
+                                                        RealLiteral {
+                                                            repr: "0.3",
+                                                            value: 0.3,
+                                                        },
+                                                    ),
+                                                },
+                                            },
+                                        ),
+                                        Decl(
+                                            SimpleBinding {
+                                                name: b(2),
+                                                decl: Var(
+                                                    VarDecl {
+                                                        t: Real,
+                                                        initialiser: Some(
+                                                            BinOp {
+                                                                op: Real(
+                                                                    Add,
+                                                                ),
+                                                                lhs: RealLiteral(
+                                                                    RealLiteral {
+                                                                        repr: "0.1",
+                                                                        value: 0.1,
+                                                                    },
+                                                                ),
+                                                                rhs: RealLiteral(
+                                                                    RealLiteral {
+                                                                        repr: "0.2",
+                                                                        value: 0.2,
+                                                                    },
+                                                                ),
+                                                            },
+                                                        ),
+                                                        relative_location: Local(
+                                                            1,
+                                                        ),
+                                                    },
+                                                ),
+                                            },
+                                        ),
+                                        Stmt(
+                                            Print {
+                                                value: LvalueToRvalue(
+                                                    Identifier(
+                                                        b(2),
+                                                    ),
+                                                ),
+                                            },
+                                        ),
+                                        Stmt(
+                                            Print {
+                                                value: BinOp {
+                                                    op: Eq(
+                                                        Eq,
+                                                    ),
+                                                    lhs: LvalueToRvalue(
+                                                        Identifier(
+                                                            b(2),
+                                                        ),
+                                                    ),
+                                                    rhs: RealLiteral(
+                                                        RealLiteral {
+                                                            repr: "0.3",
+                                                            value: 0.3,
+                                                        },
+                                                    ),
+                                                },
+                                            },
+                                        ),
+                                    ],
+                                ),
+                            ),
+                        },
+                    ),
+                ),
+            },
+        ],
+    ),
+    IdentifierTable {
+        bindings: [
+            Binding {
+                name: main(0),
+                decl: Routine(
+                    Full(
+                        Routine {
+                            signature: RoutineSignature {
+                                args: [],
+                                return_type: Unit,
+                            },
+                            args_bindings: [],
+                            body: Block(
+                                Block(
+                                    [
+                                        Stmt(
+                                            Print {
+                                                value: BinOp {
+                                                    op: Eq(
+                                                        Eq,
+                                                    ),
+                                                    lhs: RealLiteral(
+                                                        RealLiteral {
+                                                            repr: "NaN",
+                                                            value: NaN,
+                                                        },
+                                                    ),
+                                                    rhs: RealLiteral(
+                                                        RealLiteral {
+                                                            repr: "NaN",
+                                                            value: NaN,
+                                                        },
+                                                    ),
+                                                },
+                                            },
+                                        ),
+                                        Stmt(
+                                            Print {
+                                                value: BinOp {
+                                                    op: Eq(
+                                                        Ne,
+                                                    ),
+                                                    lhs: RealLiteral(
+                                                        RealLiteral {
+                                                            repr: "NaN",
+                                                            value: NaN,
+                                                        },
+                                                    ),
+                                                    rhs: RealLiteral(
+                                                        RealLiteral {
+                                                            repr: "NaN",
+                                                            value: NaN,
+                                                        },
+                                                    ),
+                                                },
+                                            },
+                                        ),
+                                        Stmt(
+                                            Print {
+                                                value: BinOp {
+                                                    op: Real(
+                                                        Lt,
+                                                    ),
+                                                    lhs: RealLiteral(
+                                                        RealLiteral {
+                                                            repr: "NaN",
+                                                            value: NaN,
+                                                        },
+                                                    ),
+                                                    rhs: RealLiteral(
+                                                        RealLiteral {
+                                                            repr: "NaN",
+                                                            value: NaN,
+                                                        },
+                                                    ),
+                                                },
+                                            },
+                                        ),
+                                        Stmt(
+                                            Print {
+                                                value: BinOp {
+                                                    op: Real(
+                                                        Le,
+                                                    ),
+                                                    lhs: RealLiteral(
+                                                        RealLiteral {
+                                                            repr: "NaN",
+                                                            value: NaN,
+                                                        },
+                                                    ),
+                                                    rhs: RealLiteral(
+                                                        RealLiteral {
+                                                            repr: "NaN",
+                                                            value: NaN,
+                                                        },
+                                                    ),
+                                                },
+                                            },
+                                        ),
+                                        Stmt(
+                                            Print {
+                                                value: BinOp {
+                                                    op: Real(
+                                                        Gt,
+                                                    ),
+                                                    lhs: RealLiteral(
+                                                        RealLiteral {
+                                                            repr: "NaN",
+                                                            value: NaN,
+                                                        },
+                                                    ),
+                                                    rhs: RealLiteral(
+                                                        RealLiteral {
+                                                            repr: "NaN",
+                                                            value: NaN,
+                                                        },
+                                                    ),
+                                                },
+                                            },
+                                        ),
+                                        Stmt(
+                                            Print {
+                                                value: BinOp {
+                                                    op: Real(
+                                                        Ge,
+                                                    ),
+                                                    lhs: RealLiteral(
+                                                        RealLiteral {
+                                                            repr: "NaN",
+                                                            value: NaN,
+                                                        },
+                                                    ),
+                                                    rhs: RealLiteral(
+                                                        RealLiteral {
+                                                            repr: "NaN",
+                                                            value: NaN,
+                                                        },
+                                                    ),
+                                                },
+                                            },
+                                        ),
+                                        Decl(
+                                            SimpleBinding {
+                                                name: a(1),
+                                                decl: Var(
+                                                    VarDecl {
+                                                        t: Real,
+                                                        initialiser: Some(
+                                                            BinOp {
+                                                                op: Real(
+                                                                    Add,
+                                                                ),
+                                                                lhs: BinOp {
+                                                                    op: Real(
+                                                                        Add,
+                                                                    ),
+                                                                    lhs: RealLiteral(
+                                                                        RealLiteral {
+                                                                            repr: "0.1",
+                                                                            value: 0.1,
+                                                                        },
+                                                                    ),
+                                                                    rhs: RealLiteral(
+                                                                        RealLiteral {
+                                                                            repr: "0.1",
+                                                                            value: 0.1,
+                                                                        },
+                                                                    ),
+                                                                },
+                                                                rhs: RealLiteral(
+                                                                    RealLiteral {
+                                                                        repr: "0.1",
+                                                                        value: 0.1,
+                                                                    },
+                                                                ),
+                                                            },
+                                                        ),
+                                                        relative_location: Local(
+                                                            0,
+                                                        ),
+                                                    },
+                                                ),
+                                            },
+                                        ),
+                                        Stmt(
+                                            Print {
+                                                value: LvalueToRvalue(
+                                                    Identifier(
+                                                        a(1),
+                                                    ),
+                                                ),
+                                            },
+                                        ),
+                                        Stmt(
+                                            Print {
+                                                value: BinOp {
+                                                    op: Eq(
+                                                        Eq,
+                                                    ),
+                                                    lhs: LvalueToRvalue(
+                                                        Identifier(
+                                                            a(1),
+                                                        ),
+                                                    ),
+                                                    rhs: RealLiteral(
+                                                        RealLiteral {
+                                                            repr: "0.3",
+                                                            value: 0.3,
+                                                        },
+                                                    ),
+                                                },
+                                            },
+                                        ),
+                                        Decl(
+                                            SimpleBinding {
+                                                name: b(2),
+                                                decl: Var(
+                                                    VarDecl {
+                                                        t: Real,
+                                                        initialiser: Some(
+                                                            BinOp {
+                                                                op: Real(
+                                                                    Add,
+                                                                ),
+                                                                lhs: RealLiteral(
+                                                                    RealLiteral {
+                                                                        repr: "0.1",
+                                                                        value: 0.1,
+                                                                    },
+                                                                ),
+                                                                rhs: RealLiteral(
+                                                                    RealLiteral {
+                                                                        repr: "0.2",
+                                                                        value: 0.2,
+                                                                    },
+                                                                ),
+                                                            },
+                                                        ),
+                                                        relative_location: Local(
+                                                            1,
+                                                        ),
+                                                    },
+                                                ),
+                                            },
+                                        ),
+                                        Stmt(
+                                            Print {
+                                                value: LvalueToRvalue(
+                                                    Identifier(
+                                                        b(2),
+                                                    ),
+                                                ),
+                                            },
+                                        ),
+                                        Stmt(
+                                            Print {
+                                                value: BinOp {
+                                                    op: Eq(
+                                                        Eq,
+                                                    ),
+                                                    lhs: LvalueToRvalue(
+                                                        Identifier(
+                                                            b(2),
+                                                        ),
+                                                    ),
+                                                    rhs: RealLiteral(
+                                                        RealLiteral {
+                                                            repr: "0.3",
+                                                            value: 0.3,
+                                                        },
+                                                    ),
+                                                },
+                                            },
+                                        ),
+                                    ],
+                                ),
+                            ),
+                        },
+                    ),
+                ),
+            },
+            Binding {
+                name: a(1),
+                decl: Var(
+                    VarDecl {
+                        t: Real,
+                        initialiser: Some(
+                            BinOp {
+                                op: Real(
+                                    Add,
+                                ),
+                                lhs: BinOp {
+                                    op: Real(
+                                        Add,
+                                    ),
+                                    lhs: RealLiteral(
+                                        RealLiteral {
+                                            repr: "0.1",
+                                            value: 0.1,
+                                        },
+                                    ),
+                                    rhs: RealLiteral(
+                                        RealLiteral {
+                                            repr: "0.1",
+                                            value: 0.1,
+                                        },
+                                    ),
+                                },
+                                rhs: RealLiteral(
+                                    RealLiteral {
+                                        repr: "0.1",
+                                        value: 0.1,
+                                    },
+                                ),
+                            },
+                        ),
+                        relative_location: Local(
+                            0,
+                        ),
+                    },
+                ),
+            },
+            Binding {
+                name: b(2),
+                decl: Var(
+                    VarDecl {
+                        t: Real,
+                        initialiser: Some(
+                            BinOp {
+                                op: Real(
+                                    Add,
+                                ),
+                                lhs: RealLiteral(
+                                    RealLiteral {
+                                        repr: "0.1",
+                                        value: 0.1,
+                                    },
+                                ),
+                                rhs: RealLiteral(
+                                    RealLiteral {
+                                        repr: "0.2",
+                                        value: 0.2,
+                                    },
+                                ),
+                            },
+                        ),
+                        relative_location: Local(
+                            1,
+                        ),
+                    },
+                ),
+            },
+        ],
+    },
+)

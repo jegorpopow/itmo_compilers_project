@@ -6,7 +6,7 @@ use common::{
 };
 
 use crate::{
-    tree::{OptionalDecl, cast_to},
+    tree::cast_to,
     types::{BinOpAdjustment, infer_binary_operator_type},
     *,
 };
@@ -156,35 +156,44 @@ impl Converter {
         routine_name: &RawIdentifier,
         decl: RoutineDecl,
     ) -> AnalysisResult<Identifier> {
-        let existing_binding = self.lookup(routine_name).cloned();
+        let existing_binding = self.lookup(routine_name);
 
-        match existing_binding {
+        Ok(match existing_binding {
             Ok(Binding {
                 name: ident,
                 decl: Decl::Routine(existing_decl),
-            }) => {
-                if existing_decl.signature() != decl.signature() {
-                    Err(AnalysisError {
-                        what: format!(
-                            "Conflicting signature for declarations of routine {routine_name:?}"
-                        ),
-                    })
-                } else if existing_decl.is_full() && decl.is_full() {
-                    Err(AnalysisError {
-                        what: format!("Conflicting declarations of routine {routine_name:?}"),
-                    })
-                } else if existing_decl.is_forward() && decl.is_full() {
+            }) => match [existing_decl, &decl] {
+                [_, _] if existing_decl.signature() != decl.signature() => Err(AnalysisError {
+                    what: format!(
+                        "Conflicting signature for declarations of routine {routine_name:?}"
+                    ),
+                })?,
+
+                [RoutineDecl::Full(..), RoutineDecl::Full { .. }] => Err(AnalysisError {
+                    what: format!("Conflicting declarations of routine {routine_name:?}"),
+                })?,
+
+                [RoutineDecl::Forward { .. }, RoutineDecl::Full { .. }] => {
+                    let ident = ident.to_owned();
                     self.rebind_decl(&ident, Decl::Routine(decl));
-                    Ok(ident)
-                } else {
-                    Ok(ident)
+                    ident
                 }
+
+                [
+                    RoutineDecl::Full(..) | RoutineDecl::Forward { .. },
+                    RoutineDecl::Forward { .. },
+                ] => ident.to_owned(),
+            },
+
+            Ok(Binding {
+                name: _,
+                decl: Decl::Type(_) | Decl::Var(_),
+            })
+            | Err(_) => {
+                // function just shadows previous global variable or type with the same name
+                self.bind_global_decl(routine_name, Decl::Routine(decl))
             }
-            Ok(Binding { .. }) | Err(_) => {
-                // function just shadows previous global variable with the same name
-                Ok(self.bind_global_decl(routine_name, Decl::Routine(decl)))
-            }
-        }
+        })
     }
 
     fn lookup<'a>(&'a self, name: &RawIdentifier) -> AnalysisResult<&'a Binding> {
@@ -987,22 +996,22 @@ impl Converter {
         converted_arguments_types: Vec<(RawIdentifier, Rc<Type>)>,
         args_decls: &[(RawIdentifier, VarDecl)],
     ) -> AnalysisResult<Binding> {
-        let converted_return_type = return_type
-            .as_ref()
-            .map_or(Ok(Rc::new(Type::Unit)), |t| self.convert_type(t))?;
+        let converted_return_type =
+            return_type.map_or(Ok(Rc::new(Type::Unit)), |t| self.convert_type(t))?;
 
-        // Firstly, create a forward declaration for possible recursive use
         let signature = RoutineSignature {
             args: converted_arguments_types.clone(),
             return_type: Rc::clone(&converted_return_type),
         };
 
-        let ident = self.bind_routine(
+        // Firstly, create a forward declaration for possible recursive use
+        let forward_ident: Identifier = self.bind_routine(
             name,
             RoutineDecl::Forward {
                 signature: signature.clone(),
             },
         )?;
+        drop(forward_ident);
 
         // Memorise that routine for type-check of return statement
         self.current_routine = Some(RoutinePrototype {
@@ -1024,13 +1033,14 @@ impl Converter {
         self.leave_block();
         self.current_routine = None;
 
+        let decl = RoutineDecl::Full(Routine {
+            signature,
+            args_bindings,
+            body: RoutineBody::Block(converted_body),
+        });
         Ok(Binding {
-            name: ident,
-            decl: Decl::Routine(RoutineDecl::Full(Routine {
-                signature,
-                args_bindings,
-                body: RoutineBody::Block(converted_body),
-            })),
+            name: self.bind_routine(name, decl.clone())?,
+            decl: Decl::Routine(decl),
         })
     }
 
@@ -1056,62 +1066,41 @@ impl Converter {
         converted_arguments_types: Vec<(RawIdentifier, Rc<Type>)>,
         args_decls: &[(RawIdentifier, VarDecl)],
     ) -> AnalysisResult<Binding> {
-        match return_type {
-            None => {
-                // No recursive calls for expression function
-                self.enter_block();
+        let return_type = return_type.map(|t| self.convert_type(t)).transpose()?;
 
-                let args_bindings = self.bind_args(args_decls);
+        // No recursive calls for expression function
+        self.enter_block();
 
-                let Typed { value: expr, ty: t } = self.convert_expr(expression)?;
+        let args_bindings = self.bind_args(args_decls);
 
-                self.leave_block(); // If we met an error we do not need recover
+        let Typed {
+            value: expr,
+            ty: expr_type,
+        } = self.convert_expr(expression)?;
 
-                let signature = RoutineSignature {
-                    args: converted_arguments_types,
-                    return_type: t,
-                };
+        self.leave_block(); // If we met an error we do not need recover
 
-                let decl = RoutineDecl::Full(Routine {
-                    signature,
-                    args_bindings,
-                    body: RoutineBody::Expression(expr),
-                });
+        let expr = match &return_type {
+            Some(ty) => cast_to(expr, &expr_type, ty)?,
+            None => expr,
+        };
 
-                let ident = self.bind_routine(name, decl.clone())?;
-                Ok(Binding {
-                    name: ident,
-                    decl: Decl::Routine(decl),
-                })
-            }
-            Some(return_type) => {
-                let converted_return_type = self.convert_type(return_type)?;
+        let signature = RoutineSignature {
+            args: converted_arguments_types,
+            return_type: return_type.unwrap_or(expr_type),
+        };
 
-                let args_bindings = self.bind_args(args_decls);
+        let decl = RoutineDecl::Full(Routine {
+            signature,
+            args_bindings,
+            body: RoutineBody::Expression(expr),
+        });
 
-                let Typed { value: expr, ty: t } = self.convert_expr(expression)?;
-                self.leave_block(); // If we met an error we do not need recover
-
-                let expr = cast_to(expr, &t, &converted_return_type)?;
-
-                let signature = RoutineSignature {
-                    args: converted_arguments_types,
-                    return_type: converted_return_type,
-                };
-
-                let decl = RoutineDecl::Full(Routine {
-                    signature,
-                    args_bindings,
-                    body: RoutineBody::Expression(expr),
-                });
-
-                let ident = self.bind_routine(name, decl.clone())?;
-                Ok(Binding {
-                    name: ident,
-                    decl: Decl::Routine(decl),
-                })
-            }
-        }
+        let ident = self.bind_routine(name, decl.clone())?;
+        Ok(Binding {
+            name: ident,
+            decl: Decl::Routine(decl),
+        })
     }
 }
 

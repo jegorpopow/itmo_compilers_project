@@ -838,7 +838,7 @@ impl Parser {
         &mut self,
         i: IndexedIterator<'a, 'b>,
     ) -> ParsingResult<'a, 'b, Rc<Expression>> {
-        static OPERATORS_PRECEDENCE_TABLE: &[&[SyntacticOperator]] = &[
+        const OPERATORS_PRECEDENCE_TABLE: &[&[SyntacticOperator]] = &[
             &[
                 SyntacticOperator::And,
                 SyntacticOperator::Or,

@@ -1,4 +1,4 @@
-type linked_list is record 
+type linked_list is record
   var data is integer;
   var tail is linked_list;
 end;
@@ -7,11 +7,11 @@ var EMPTY : linked_list is null;
 
 routine singleton(data: integer) => new linked_list where data is data; tail is EMPTY; end;
 
-routine empty() => EMPTY;
+routine empty() : linked_list => EMPTY;
 
 routine is_empty(l : linked_list) => l = EMPTY;
 
-routine length(l : linked_list ) : integer is 
+routine length(l : linked_list ) : integer is
   var result is 0;
 
   while not is_empty(l) loop
