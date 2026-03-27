@@ -1,4 +1,4 @@
-name: 'PR'
+name: 'Rust'
 on:
   pull_request:
     types: [opened, edited, synchronize, reopened]
@@ -8,25 +8,10 @@ permissions:
   pull-requests: read # We are checking Pull Requests, duh
 
 concurrency:
-  group: ${{ github.ref_name }}
+  group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  zizmor:
-    name: zizmor
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
-        with:
-          persist-credentials: false
-      - name: Lint GitHub CI config with zizmor
-        uses: zizmorcore/zizmor-action@e639db99335bc9038abc0e066dfcd72e23d26fb4 # v0.3.0
-        with:
-          advanced-security: false
-          annotations: true
-          persona: pedantic
-
   rustfmt:
     name: cargo fmt
     runs-on: ubuntu-latest
@@ -36,7 +21,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Setup Rust toolchain
-        uses: actions-rust-lang/setup-rust-toolchain@1780873c7b576612439a134613cc4cc74ce5538c # v1.15.2
+        uses: actions-rust-lang/setup-rust-toolchain@150fca883cd4034361b621bd4e6a9d34e5143606 # v1.15.4
         with:
           rustflags: ""
           components: rustfmt
@@ -52,15 +37,14 @@ jobs:
         with:
           persist-credentials: false
       - name: Setup Rust toolchain
-        uses: actions-rust-lang/setup-rust-toolchain@1780873c7b576612439a134613cc4cc74ce5538c # v1.15.2
+        uses: actions-rust-lang/setup-rust-toolchain@150fca883cd4034361b621bd4e6a9d34e5143606 # v1.15.4
         with:
           rustflags: ""
           components: clippy
       - name: Run clippy
         run: cargo clippy --workspace --all-targets
 
-
-  rust:
+  test:
     name: cargo test
     runs-on: ubuntu-latest
     steps:
@@ -69,7 +53,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Setup Rust toolchain
-        uses: actions-rust-lang/setup-rust-toolchain@1780873c7b576612439a134613cc4cc74ce5538c # v1.15.2
+        uses: actions-rust-lang/setup-rust-toolchain@150fca883cd4034361b621bd4e6a9d34e5143606 # v1.15.4
         with:
           rustflags: ""
       - name: Run tests
