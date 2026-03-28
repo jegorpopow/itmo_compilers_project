@@ -92,7 +92,11 @@ impl<'a> From<&'a str> for IndexIterator<'a> {
 
 impl<'a> ImmutableIterator<'a> for IndexIterator<'a> {
     fn slice_to_str(start: &Self, end: &Self) -> &'a str {
-        assert_eq!(start.underlying.as_ptr(), end.underlying.as_ptr());
+        assert_eq!(
+            start.underlying.as_ptr(),
+            end.underlying.as_ptr(),
+            "cannot slice from different underlying strings"
+        );
         &start.underlying[start.index..end.index]
     }
 
