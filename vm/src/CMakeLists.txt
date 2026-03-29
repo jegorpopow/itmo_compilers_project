@@ -8,7 +8,7 @@ target_include_directories(vm_lib PUBLIC
   ${CMAKE_CURRENT_SOURCE_DIR}/../include
 )
 
-target_link_libraries(vm_lib PUBLIC fmt::fmt)
+target_link_libraries(vm_lib PUBLIC fmt)
 
 add_executable(vm main.cpp)
-target_link_libraries(vm PRIVATE vm_lib gflags::gflags)
+target_link_libraries(vm PRIVATE vm_lib gflags)
