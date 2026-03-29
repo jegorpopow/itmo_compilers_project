@@ -261,7 +261,7 @@ impl Encode for Instruction {
                 ..zero
             },
             Instruction::Jump { label } => Bytecode {
-                opcode: 21,
+                opcode: 22,
                 arg64: label.to_le_bytes(),
                 ..zero
             },
