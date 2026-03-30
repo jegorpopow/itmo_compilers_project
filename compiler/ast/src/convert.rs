@@ -86,7 +86,10 @@ impl Converter {
     }
 
     fn leave_block(&mut self) {
-        assert!(self.current_scope.len() > 1);
+        assert!(
+            self.current_scope.len() > 1,
+            "No non-global contexts to leave"
+        );
         self.local_count -= self
             .current_scope
             .last()

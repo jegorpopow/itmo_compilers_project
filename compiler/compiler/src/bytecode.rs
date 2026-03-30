@@ -312,7 +312,7 @@ struct Bytecode {
 }
 
 fn into_halves<const H: usize, const N: usize>(s: &mut [u8; N]) -> [&mut [u8; H]; 2] {
-    const { assert!(2 * H == N) }
+    const { assert!(2 * H == N, "H should be exactly half of N") }
     let ([first_half, second_half], []) = s.as_chunks_mut::<H>() else {
         unreachable!()
     };
@@ -323,7 +323,11 @@ impl Encode for Bytecode {
     type Output = [u8; 16];
     fn encode(&self) -> Self::Output {
         // TODO: all of this is just a convoluted memcpy, lmao
-        debug_assert_eq!(Layout::new::<Self>(), Layout::new::<Self::Output>());
+        debug_assert_eq!(
+            Layout::new::<Self>(),
+            Layout::new::<Self::Output>(),
+            "this isn't a memcpy anymore"
+        );
 
         let mut result = [0u8; 16];
         let [h, s64to128] = into_halves::<8, _>(&mut result);

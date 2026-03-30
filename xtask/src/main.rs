@@ -1,6 +1,9 @@
-#![allow(
-    clippy::tests_outside_test_module,
-    reason = "makes more sense this way"
+#![cfg_attr(
+    test,
+    expect(
+        clippy::tests_outside_test_module,
+        reason = "makes more sense this way"
+    )
 )]
 
 use core::cmp::Ordering;
