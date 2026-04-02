@@ -3,8 +3,10 @@
 #![expect(unused_variables, reason = "WIP")]
 
 use crate::bytecode::{Instruction, TypeId};
-use ast::IdentifierTable;
-use ast::{AnalysisError, AnalysisResult, Block, Expression, LvalueExpression, Statement};
+use ast::{
+    AnalysisError, AnalysisResult, Block, Expression, IdentifierTable, LvalueExpression, Statement,
+};
+use common::Integer;
 
 pub mod bytecode;
 
@@ -85,7 +87,7 @@ impl<'a> Compiler<'a> {
             }
             Expression::BoolLiteral(bool_literal) => {
                 self.bytecode.push(Instruction::IntConst {
-                    value: i64::from(*bool_literal),
+                    value: Integer::from(*bool_literal),
                 });
             }
             Expression::Call { callee, args } => {
@@ -134,8 +136,10 @@ impl<'a> Compiler<'a> {
                         for (name, expr) in fields.clone().unwrap_or_default() {
                             self.bytecode.push(Instruction::Dup);
                             self.bytecode.push(Instruction::IntConst {
-                                value: i64::try_from(record_description.get_field_index(&name)?)
-                                    .expect("Internal compiler error: to big structure type"),
+                                value: Integer::try_from(
+                                    record_description.get_field_index(&name)?,
+                                )
+                                .expect("Internal compiler error: structure type too big"),
                             });
                             self.bytecode.push(Instruction::ElementAddress);
                             self.compile_expr(&expr)?;
