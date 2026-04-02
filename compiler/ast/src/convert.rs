@@ -1037,10 +1037,7 @@ impl Converter {
 
         let converted_body = self.convert_block(block)?;
 
-        assert!(
-            self.leave_block() == args_bindings.len(),
-            "Internal compiler error"
-        );
+        assert!(self.leave_block() == 0, "Internal compiler error");
         self.current_routine = None;
 
         let decl = RoutineDecl::Full(Routine {
@@ -1088,10 +1085,7 @@ impl Converter {
             ty: expr_type,
         } = self.convert_expr(expression)?;
 
-        assert!(
-            self.leave_block() == args_bindings.len(),
-            "Internal compiler error"
-        ); // If we met an error we do not need recover
+        assert!(self.leave_block() == 0);
 
         let expr = match &return_type {
             Some(ty) => cast_to(expr, &expr_type, ty)?,
