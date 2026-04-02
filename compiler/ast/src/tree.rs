@@ -68,6 +68,15 @@ impl From<BoolLiteral> for bool {
     }
 }
 
+impl From<BoolLiteral> for Integer {
+    fn from(value: BoolLiteral) -> Self {
+        match value {
+            BoolLiteral::True => 1,
+            BoolLiteral::False => 0,
+        }
+    }
+}
+
 #[derive(Debug, Hash, PartialEq, Eq)]
 pub enum LvalueExpression {
     Identifier(Identifier),
@@ -383,7 +392,10 @@ pub enum BlockElem {
 }
 
 #[derive(Debug, Clone)]
-pub struct Block(pub Vec<BlockElem>);
+pub struct Block {
+    pub elems: Vec<BlockElem>,
+    pub locals_count: usize,
+}
 
 #[derive(Debug, Clone)]
 pub enum Statement {
@@ -459,6 +471,15 @@ impl Binding {
         }
     }
 
+    pub fn ensure_is_var(&self) -> AnalysisResult<&VarDecl> {
+        match &self.decl {
+            Decl::Var(t) => Ok(t),
+            Decl::Routine(_) | Decl::Type(_) => Err(AnalysisError {
+                what: format!("Name {:?} does not name a variable", self.name),
+            }),
+        }
+    }
+
     pub fn ensure_is_routine(&self) -> AnalysisResult<&RoutineDecl> {
         match &self.decl {
             Decl::Routine(t) => Ok(t),
@@ -501,6 +522,28 @@ impl IdentifierTable {
             decl,
         });
         identifier
+    }
+
+    pub fn get_default_intialiser(&self, ty: &Rc<Type>) -> AnalysisResult<Rc<Expression>> {
+        match &*self.get_effective_type(ty)? {
+            Type::Int => Ok(Expression::IntegerLiteral(IntegerLiteral {
+                repr: "0".to_string(),
+                value: 0,
+            })
+            .into()),
+            Type::Real => Ok(Expression::RealLiteral(RealLiteral {
+                repr: "0.0".to_string(),
+                value: 0.0,
+            })
+            .into()),
+            Type::Bool => Ok(Expression::BoolLiteral(BoolLiteral::False).into()),
+            Type::Alias(_) => Err(AnalysisError {
+                what: "Effective type cannot be alias".to_string(),
+            }),
+            Type::Record(_) | Type::Array(_) | Type::Null | Type::Unit => {
+                Ok(Expression::Null.into())
+            }
+        }
     }
 
     pub fn rebind(&mut self, ident: &Identifier, new_decl: Decl) {

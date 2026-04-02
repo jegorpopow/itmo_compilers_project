@@ -28,8 +28,8 @@
                                 },
                             ],
                             body: Block(
-                                Block(
-                                    [
+                                Block {
+                                    elems: [
                                         Stmt(
                                             Print {
                                                 value: LvalueToRvalue(
@@ -49,7 +49,8 @@
                                             },
                                         ),
                                     ],
-                                ),
+                                    locals_count: 0,
+                                },
                             ),
                         },
                     ),
@@ -66,8 +67,8 @@
                             },
                             args_bindings: [],
                             body: Block(
-                                Block(
-                                    [
+                                Block {
+                                    elems: [
                                         Stmt(
                                             Print {
                                                 value: Call {
@@ -84,7 +85,8 @@
                                             },
                                         ),
                                     ],
-                                ),
+                                    locals_count: 0,
+                                },
                             ),
                         },
                     ),
@@ -121,8 +123,8 @@
                                 },
                             ],
                             body: Block(
-                                Block(
-                                    [
+                                Block {
+                                    elems: [
                                         Stmt(
                                             Print {
                                                 value: LvalueToRvalue(
@@ -142,7 +144,8 @@
                                             },
                                         ),
                                     ],
-                                ),
+                                    locals_count: 0,
+                                },
                             ),
                         },
                     ),
@@ -171,8 +174,8 @@
                             },
                             args_bindings: [],
                             body: Block(
-                                Block(
-                                    [
+                                Block {
+                                    elems: [
                                         Stmt(
                                             Print {
                                                 value: Call {
@@ -189,7 +192,8 @@
                                             },
                                         ),
                                     ],
-                                ),
+                                    locals_count: 0,
+                                },
                             ),
                         },
                     ),

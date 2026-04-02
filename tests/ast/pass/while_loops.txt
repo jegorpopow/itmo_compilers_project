@@ -28,8 +28,8 @@
                                 },
                             ],
                             body: Block(
-                                Block(
-                                    [
+                                Block {
+                                    elems: [
                                         Decl(
                                             SimpleBinding {
                                                 name: steps(2),
@@ -69,8 +69,8 @@
                                                         },
                                                     ),
                                                 },
-                                                body: Block(
-                                                    [
+                                                body: Block {
+                                                    elems: [
                                                         Stmt(
                                                             If {
                                                                 condition: BinOp {
@@ -100,8 +100,8 @@
                                                                         },
                                                                     ),
                                                                 },
-                                                                on_true: Block(
-                                                                    [
+                                                                on_true: Block {
+                                                                    elems: [
                                                                         Stmt(
                                                                             Assignment {
                                                                                 lhs: Identifier(
@@ -126,10 +126,11 @@
                                                                             },
                                                                         ),
                                                                     ],
-                                                                ),
+                                                                    locals_count: 0,
+                                                                },
                                                                 on_false: Some(
-                                                                    Block(
-                                                                        [
+                                                                    Block {
+                                                                        elems: [
                                                                             Stmt(
                                                                                 Assignment {
                                                                                     lhs: Identifier(
@@ -165,7 +166,8 @@
                                                                                 },
                                                                             ),
                                                                         ],
-                                                                    ),
+                                                                        locals_count: 0,
+                                                                    },
                                                                 ),
                                                             },
                                                         ),
@@ -193,7 +195,8 @@
                                                             },
                                                         ),
                                                     ],
-                                                ),
+                                                    locals_count: 0,
+                                                },
                                             },
                                         ),
                                         Stmt(
@@ -206,7 +209,8 @@
                                             },
                                         ),
                                     ],
-                                ),
+                                    locals_count: 1,
+                                },
                             ),
                         },
                     ),
@@ -223,8 +227,8 @@
                             },
                             args_bindings: [],
                             body: Block(
-                                Block(
-                                    [
+                                Block {
+                                    elems: [
                                         Stmt(
                                             Print {
                                                 value: Call {
@@ -241,7 +245,8 @@
                                             },
                                         ),
                                     ],
-                                ),
+                                    locals_count: 0,
+                                },
                             ),
                         },
                     ),
@@ -278,8 +283,8 @@
                                 },
                             ],
                             body: Block(
-                                Block(
-                                    [
+                                Block {
+                                    elems: [
                                         Decl(
                                             SimpleBinding {
                                                 name: steps(2),
@@ -319,8 +324,8 @@
                                                         },
                                                     ),
                                                 },
-                                                body: Block(
-                                                    [
+                                                body: Block {
+                                                    elems: [
                                                         Stmt(
                                                             If {
                                                                 condition: BinOp {
@@ -350,8 +355,8 @@
                                                                         },
                                                                     ),
                                                                 },
-                                                                on_true: Block(
-                                                                    [
+                                                                on_true: Block {
+                                                                    elems: [
                                                                         Stmt(
                                                                             Assignment {
                                                                                 lhs: Identifier(
@@ -376,10 +381,11 @@
                                                                             },
                                                                         ),
                                                                     ],
-                                                                ),
+                                                                    locals_count: 0,
+                                                                },
                                                                 on_false: Some(
-                                                                    Block(
-                                                                        [
+                                                                    Block {
+                                                                        elems: [
                                                                             Stmt(
                                                                                 Assignment {
                                                                                     lhs: Identifier(
@@ -415,7 +421,8 @@
                                                                                 },
                                                                             ),
                                                                         ],
-                                                                    ),
+                                                                        locals_count: 0,
+                                                                    },
                                                                 ),
                                                             },
                                                         ),
@@ -443,7 +450,8 @@
                                                             },
                                                         ),
                                                     ],
-                                                ),
+                                                    locals_count: 0,
+                                                },
                                             },
                                         ),
                                         Stmt(
@@ -456,7 +464,8 @@
                                             },
                                         ),
                                     ],
-                                ),
+                                    locals_count: 1,
+                                },
                             ),
                         },
                     ),
@@ -504,8 +513,8 @@
                             },
                             args_bindings: [],
                             body: Block(
-                                Block(
-                                    [
+                                Block {
+                                    elems: [
                                         Stmt(
                                             Print {
                                                 value: Call {
@@ -522,7 +531,8 @@
                                             },
                                         ),
                                     ],
-                                ),
+                                    locals_count: 0,
+                                },
                             ),
                         },
                     ),

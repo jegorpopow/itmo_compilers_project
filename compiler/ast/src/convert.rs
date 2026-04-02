@@ -85,17 +85,19 @@ impl Converter {
         self.current_scope.push(ScopeBlock::new())
     }
 
-    fn leave_block(&mut self) {
+    fn leave_block(&mut self) -> usize {
         assert!(
             self.current_scope.len() > 1,
             "No non-global contexts to leave"
         );
-        self.local_count -= self
+
+        let current_block_locals = self
             .current_scope
-            .last()
+            .pop()
             .expect("At least global context is always present")
             .locals_in_block;
-        drop(self.current_scope.pop())
+        self.local_count -= current_block_locals;
+        current_block_locals
     }
 
     fn get_fresh_global_location(&mut self) -> Location {
@@ -693,7 +695,11 @@ impl Converter {
             }
         };
 
-        self.leave_block();
+        assert_eq!(
+            self.leave_block(),
+            1,
+            "Internal compiler error: mismatched number of locals in `for` counter block"
+        );
 
         Ok(stmt)
     }
@@ -811,9 +817,10 @@ impl Converter {
             })
         }
 
-        self.leave_block();
-
-        Ok(Block(result))
+        Ok(Block {
+            elems: result,
+            locals_count: self.leave_block(),
+        })
     }
 
     fn convert_decl(
@@ -1033,7 +1040,11 @@ impl Converter {
 
         let converted_body = self.convert_block(block)?;
 
-        self.leave_block();
+        assert_eq!(
+            self.leave_block(),
+            0,
+            "Internal compiler error: locals found in function arguments block"
+        );
         self.current_routine = None;
 
         let decl = RoutineDecl::Full(Routine {
@@ -1081,7 +1092,11 @@ impl Converter {
             ty: expr_type,
         } = self.convert_expr(expression)?;
 
-        self.leave_block(); // If we met an error we do not need recover
+        assert_eq!(
+            self.leave_block(),
+            0,
+            "Internal compiler error: locals found in function arguments block"
+        );
 
         let expr = match &return_type {
             Some(ty) => cast_to(expr, &expr_type, ty)?,

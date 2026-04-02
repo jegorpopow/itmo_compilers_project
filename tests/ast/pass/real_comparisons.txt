@@ -12,8 +12,8 @@
                             },
                             args_bindings: [],
                             body: Block(
-                                Block(
-                                    [
+                                Block {
+                                    elems: [
                                         Stmt(
                                             Print {
                                                 value: BinOp {
@@ -274,7 +274,8 @@
                                             },
                                         ),
                                     ],
-                                ),
+                                    locals_count: 2,
+                                },
                             ),
                         },
                     ),
@@ -295,8 +296,8 @@
                             },
                             args_bindings: [],
                             body: Block(
-                                Block(
-                                    [
+                                Block {
+                                    elems: [
                                         Stmt(
                                             Print {
                                                 value: BinOp {
@@ -557,7 +558,8 @@
                                             },
                                         ),
                                     ],
-                                ),
+                                    locals_count: 2,
+                                },
                             ),
                         },
                     ),

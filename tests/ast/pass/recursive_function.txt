@@ -28,8 +28,8 @@
                                 },
                             ],
                             body: Block(
-                                Block(
-                                    [
+                                Block {
+                                    elems: [
                                         Stmt(
                                             If {
                                                 condition: BinOp {
@@ -48,8 +48,8 @@
                                                         },
                                                     ),
                                                 },
-                                                on_true: Block(
-                                                    [
+                                                on_true: Block {
+                                                    elems: [
                                                         Stmt(
                                                             Return {
                                                                 value: IntegerLiteral(
@@ -61,10 +61,11 @@
                                                             },
                                                         ),
                                                     ],
-                                                ),
+                                                    locals_count: 0,
+                                                },
                                                 on_false: Some(
-                                                    Block(
-                                                        [
+                                                    Block {
+                                                        elems: [
                                                             Stmt(
                                                                 Return {
                                                                     value: BinOp {
@@ -117,12 +118,14 @@
                                                                 },
                                                             ),
                                                         ],
-                                                    ),
+                                                        locals_count: 0,
+                                                    },
                                                 ),
                                             },
                                         ),
                                     ],
-                                ),
+                                    locals_count: 0,
+                                },
                             ),
                         },
                     ),
@@ -139,8 +142,8 @@
                             },
                             args_bindings: [],
                             body: Block(
-                                Block(
-                                    [
+                                Block {
+                                    elems: [
                                         Stmt(
                                             Print {
                                                 value: Call {
@@ -157,7 +160,8 @@
                                             },
                                         ),
                                     ],
-                                ),
+                                    locals_count: 0,
+                                },
                             ),
                         },
                     ),
@@ -194,8 +198,8 @@
                                 },
                             ],
                             body: Block(
-                                Block(
-                                    [
+                                Block {
+                                    elems: [
                                         Stmt(
                                             If {
                                                 condition: BinOp {
@@ -214,8 +218,8 @@
                                                         },
                                                     ),
                                                 },
-                                                on_true: Block(
-                                                    [
+                                                on_true: Block {
+                                                    elems: [
                                                         Stmt(
                                                             Return {
                                                                 value: IntegerLiteral(
@@ -227,10 +231,11 @@
                                                             },
                                                         ),
                                                     ],
-                                                ),
+                                                    locals_count: 0,
+                                                },
                                                 on_false: Some(
-                                                    Block(
-                                                        [
+                                                    Block {
+                                                        elems: [
                                                             Stmt(
                                                                 Return {
                                                                     value: BinOp {
@@ -283,12 +288,14 @@
                                                                 },
                                                             ),
                                                         ],
-                                                    ),
+                                                        locals_count: 0,
+                                                    },
                                                 ),
                                             },
                                         ),
                                     ],
-                                ),
+                                    locals_count: 0,
+                                },
                             ),
                         },
                     ),
@@ -317,8 +324,8 @@
                             },
                             args_bindings: [],
                             body: Block(
-                                Block(
-                                    [
+                                Block {
+                                    elems: [
                                         Stmt(
                                             Print {
                                                 value: Call {
@@ -335,7 +342,8 @@
                                             },
                                         ),
                                     ],
-                                ),
+                                    locals_count: 0,
+                                },
                             ),
                         },
                     ),

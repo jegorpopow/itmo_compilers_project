@@ -19,7 +19,7 @@ pub use crate::{
 
 #[derive(Debug)]
 pub struct AnalysisError {
-    what: String,
+    pub what: String,
 }
 
 pub type AnalysisResult<T> = Result<T, AnalysisError>;

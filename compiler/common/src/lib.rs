@@ -8,7 +8,7 @@ pub enum LoopOrder {
     Reversed,
 }
 
-#[derive(Hash, PartialEq, Eq, Clone)]
+#[derive(Hash, PartialEq, Eq, Clone, PartialOrd, Ord)]
 pub struct RawIdentifier {
     pub name: String,
 }

@@ -12,8 +12,8 @@
                             },
                             args_bindings: [],
                             body: Block(
-                                Block(
-                                    [
+                                Block {
+                                    elems: [
                                         Decl(
                                             SimpleBinding {
                                                 name: кошка(1),
@@ -310,7 +310,8 @@
                                             },
                                         ),
                                     ],
-                                ),
+                                    locals_count: 10,
+                                },
                             ),
                         },
                     ),
@@ -331,8 +332,8 @@
                             },
                             args_bindings: [],
                             body: Block(
-                                Block(
-                                    [
+                                Block {
+                                    elems: [
                                         Decl(
                                             SimpleBinding {
                                                 name: кошка(1),
@@ -629,7 +630,8 @@
                                             },
                                         ),
                                     ],
-                                ),
+                                    locals_count: 10,
+                                },
                             ),
                         },
                     ),

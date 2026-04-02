@@ -1,0 +1,2285 @@
+"-- real arithmetics supplementary " @ 1:0-1:34 is COMMENT( real arithmetics supplementary )
+"var" @ 3:0-3:3 is KEYWORD(Var)
+"EPS" @ 3:4-3:7 is IDENTIFIER(EPS)
+":" @ 3:8-3:9 is COLON
+"real" @ 3:10-3:14 is TYPENAME(Real)
+"is" @ 3:15-3:17 is KEYWORD(Is)
+"0.0001" @ 3:18-3:24 is REAL LITERAL(0.0001)
+";" @ 3:24-3:25 is SEMICOLON
+"routine" @ 5:0-5:7 is KEYWORD(Routine)
+"real_min" @ 5:8-5:16 is IDENTIFIER(real_min)
+"(" @ 5:16-5:17 is LEFT PARENTHESIS
+"a" @ 5:17-5:18 is IDENTIFIER(a)
+":" @ 5:19-5:20 is COLON
+"real" @ 5:21-5:25 is TYPENAME(Real)
+"," @ 5:25-5:26 is COMMA
+"b" @ 5:27-5:28 is IDENTIFIER(b)
+":" @ 5:29-5:30 is COLON
+"real" @ 5:31-5:35 is TYPENAME(Real)
+")" @ 5:35-5:36 is RIGHT PARENTHESIS
+":" @ 5:37-5:38 is COLON
+"real" @ 5:39-5:43 is TYPENAME(Real)
+"is" @ 5:44-5:46 is KEYWORD(Is)
+"if" @ 6:2-6:4 is KEYWORD(If)
+"a" @ 6:5-6:6 is IDENTIFIER(a)
+"<=" @ 6:7-6:9 is OPERATOR(Le)
+"b" @ 6:10-6:11 is IDENTIFIER(b)
+"then" @ 6:12-6:16 is KEYWORD(Then)
+"return" @ 7:4-7:10 is KEYWORD(Return)
+"a" @ 7:11-7:12 is IDENTIFIER(a)
+";" @ 7:12-7:13 is SEMICOLON
+"else" @ 8:2-8:6 is KEYWORD(Else)
+"return" @ 9:4-9:10 is KEYWORD(Return)
+"b" @ 9:11-9:12 is IDENTIFIER(b)
+";" @ 9:12-9:13 is SEMICOLON
+"end" @ 10:2-10:5 is KEYWORD(End)
+"end" @ 11:0-11:3 is KEYWORD(End)
+"routine" @ 13:0-13:7 is KEYWORD(Routine)
+"real_max" @ 13:8-13:16 is IDENTIFIER(real_max)
+"(" @ 13:16-13:17 is LEFT PARENTHESIS
+"a" @ 13:17-13:18 is IDENTIFIER(a)
+":" @ 13:19-13:20 is COLON
+"real" @ 13:21-13:25 is TYPENAME(Real)
+"," @ 13:25-13:26 is COMMA
+"b" @ 13:27-13:28 is IDENTIFIER(b)
+":" @ 13:29-13:30 is COLON
+"real" @ 13:31-13:35 is TYPENAME(Real)
+")" @ 13:35-13:36 is RIGHT PARENTHESIS
+":" @ 13:37-13:38 is COLON
+"real" @ 13:39-13:43 is TYPENAME(Real)
+"is" @ 13:44-13:46 is KEYWORD(Is)
+"if" @ 14:2-14:4 is KEYWORD(If)
+"a" @ 14:5-14:6 is IDENTIFIER(a)
+">=" @ 14:7-14:9 is OPERATOR(Ge)
+"b" @ 14:10-14:11 is IDENTIFIER(b)
+"then" @ 14:12-14:16 is KEYWORD(Then)
+"return" @ 15:4-15:10 is KEYWORD(Return)
+"a" @ 15:11-15:12 is IDENTIFIER(a)
+";" @ 15:12-15:13 is SEMICOLON
+"else" @ 16:2-16:6 is KEYWORD(Else)
+"return" @ 17:4-17:10 is KEYWORD(Return)
+"b" @ 17:11-17:12 is IDENTIFIER(b)
+";" @ 17:12-17:13 is SEMICOLON
+"end" @ 18:2-18:5 is KEYWORD(End)
+"end" @ 19:0-19:3 is KEYWORD(End)
+"routine" @ 21:0-21:7 is KEYWORD(Routine)
+"is_nan" @ 21:8-21:14 is IDENTIFIER(is_nan)
+"(" @ 21:14-21:15 is LEFT PARENTHESIS
+"x" @ 21:15-21:16 is IDENTIFIER(x)
+":" @ 21:17-21:18 is COLON
+"real" @ 21:19-21:23 is TYPENAME(Real)
+")" @ 21:23-21:24 is RIGHT PARENTHESIS
+"=>" @ 21:25-21:27 is FUNCTION ARROW
+"x" @ 21:28-21:29 is IDENTIFIER(x)
+"/=" @ 21:30-21:32 is OPERATOR(Ne)
+"x" @ 21:33-21:34 is IDENTIFIER(x)
+";" @ 21:34-21:35 is SEMICOLON
+"routine" @ 23:0-23:7 is KEYWORD(Routine)
+"approx_eq" @ 23:8-23:17 is IDENTIFIER(approx_eq)
+"(" @ 23:17-23:18 is LEFT PARENTHESIS
+"lhs" @ 23:18-23:21 is IDENTIFIER(lhs)
+":" @ 23:22-23:23 is COLON
+"real" @ 23:24-23:28 is TYPENAME(Real)
+"," @ 23:28-23:29 is COMMA
+"rhs" @ 23:30-23:33 is IDENTIFIER(rhs)
+":" @ 23:34-23:35 is COLON
+"real" @ 23:36-23:40 is TYPENAME(Real)
+")" @ 23:40-23:41 is RIGHT PARENTHESIS
+"=>" @ 23:42-23:44 is FUNCTION ARROW
+"(" @ 23:45-23:46 is LEFT PARENTHESIS
+"lhs" @ 23:46-23:49 is IDENTIFIER(lhs)
+"-" @ 23:50-23:51 is OPERATOR(Minus)
+"rhs" @ 23:52-23:55 is IDENTIFIER(rhs)
+")" @ 23:55-23:56 is RIGHT PARENTHESIS
+"*" @ 23:57-23:58 is OPERATOR(Mul)
+"(" @ 23:59-23:60 is LEFT PARENTHESIS
+"lhs" @ 23:60-23:63 is IDENTIFIER(lhs)
+"-" @ 23:64-23:65 is OPERATOR(Minus)
+"rhs" @ 23:66-23:69 is IDENTIFIER(rhs)
+")" @ 23:69-23:70 is RIGHT PARENTHESIS
+"<" @ 23:71-23:72 is OPERATOR(Lt)
+"EPS" @ 23:73-23:76 is IDENTIFIER(EPS)
+"*" @ 23:77-23:78 is OPERATOR(Mul)
+"EPS" @ 23:79-23:82 is IDENTIFIER(EPS)
+";" @ 23:82-23:83 is SEMICOLON
+"routine" @ 25:0-25:7 is KEYWORD(Routine)
+"real_interpolate" @ 25:8-25:24 is IDENTIFIER(real_interpolate)
+"(" @ 25:24-25:25 is LEFT PARENTHESIS
+"from" @ 25:25-25:29 is IDENTIFIER(from)
+":" @ 25:30-25:31 is COLON
+"real" @ 25:32-25:36 is TYPENAME(Real)
+"," @ 25:36-25:37 is COMMA
+"to" @ 25:38-25:40 is IDENTIFIER(to)
+":" @ 25:41-25:42 is COLON
+"real" @ 25:43-25:47 is TYPENAME(Real)
+"," @ 25:47-25:48 is COMMA
+"ratio" @ 25:49-25:54 is IDENTIFIER(ratio)
+":" @ 25:55-25:56 is COLON
+"real" @ 25:57-25:61 is TYPENAME(Real)
+")" @ 25:61-25:62 is RIGHT PARENTHESIS
+"=>" @ 25:63-25:65 is FUNCTION ARROW
+"from" @ 26:2-26:6 is IDENTIFIER(from)
+"*" @ 26:7-26:8 is OPERATOR(Mul)
+"(" @ 26:9-26:10 is LEFT PARENTHESIS
+"1" @ 26:10-26:11 is INTEGER LITERAL(1)
+"-" @ 26:12-26:13 is OPERATOR(Minus)
+"ratio" @ 26:14-26:19 is IDENTIFIER(ratio)
+")" @ 26:19-26:20 is RIGHT PARENTHESIS
+"+" @ 26:21-26:22 is OPERATOR(Plus)
+"to" @ 26:23-26:25 is IDENTIFIER(to)
+"*" @ 26:26-26:27 is OPERATOR(Mul)
+"ratio" @ 26:28-26:33 is IDENTIFIER(ratio)
+";" @ 26:33-26:34 is SEMICOLON
+"routine" @ 28:0-28:7 is KEYWORD(Routine)
+"round" @ 28:8-28:13 is IDENTIFIER(round)
+"(" @ 28:13-28:14 is LEFT PARENTHESIS
+"x" @ 28:14-28:15 is IDENTIFIER(x)
+":" @ 28:16-28:17 is COLON
+"real" @ 28:18-28:22 is TYPENAME(Real)
+")" @ 28:22-28:23 is RIGHT PARENTHESIS
+":" @ 28:24-28:25 is COLON
+"integer" @ 28:26-28:33 is TYPENAME(Integer)
+"is" @ 28:34-28:36 is KEYWORD(Is)
+"var" @ 29:2-29:5 is KEYWORD(Var)
+"res" @ 29:6-29:9 is IDENTIFIER(res)
+":" @ 29:10-29:11 is COLON
+"integer" @ 29:12-29:19 is TYPENAME(Integer)
+"is" @ 29:20-29:22 is KEYWORD(Is)
+"x" @ 29:23-29:24 is IDENTIFIER(x)
+";" @ 29:24-29:25 is SEMICOLON
+"if" @ 30:2-30:4 is KEYWORD(If)
+"x" @ 30:5-30:6 is IDENTIFIER(x)
+"-" @ 30:7-30:8 is OPERATOR(Minus)
+"res" @ 30:9-30:12 is IDENTIFIER(res)
+">=" @ 30:13-30:15 is OPERATOR(Ge)
+"0.5" @ 30:16-30:19 is REAL LITERAL(0.5)
+"then" @ 30:20-30:24 is KEYWORD(Then)
+"res" @ 30:25-30:28 is IDENTIFIER(res)
+":=" @ 30:29-30:31 is ASSIGNMENT OPERATOR
+"res" @ 30:32-30:35 is IDENTIFIER(res)
+"+" @ 30:36-30:37 is OPERATOR(Plus)
+"1" @ 30:38-30:39 is INTEGER LITERAL(1)
+";" @ 30:39-30:40 is SEMICOLON
+"end" @ 30:41-30:44 is KEYWORD(End)
+"return" @ 31:2-31:8 is KEYWORD(Return)
+"res" @ 31:9-31:12 is IDENTIFIER(res)
+";" @ 31:12-31:13 is SEMICOLON
+"end" @ 32:0-32:3 is KEYWORD(End)
+"routine" @ 34:0-34:7 is KEYWORD(Routine)
+"sqrt" @ 34:8-34:12 is IDENTIFIER(sqrt)
+"(" @ 34:12-34:13 is LEFT PARENTHESIS
+"s" @ 34:13-34:14 is IDENTIFIER(s)
+":" @ 34:15-34:16 is COLON
+"real" @ 34:17-34:21 is TYPENAME(Real)
+")" @ 34:21-34:22 is RIGHT PARENTHESIS
+":" @ 34:23-34:24 is COLON
+"real" @ 34:25-34:29 is TYPENAME(Real)
+"is" @ 34:30-34:32 is KEYWORD(Is)
+"-- Newton approximation" @ 35:2-35:25 is COMMENT( Newton approximation)
+"if" @ 36:2-36:4 is KEYWORD(If)
+"s" @ 36:5-36:6 is IDENTIFIER(s)
+"<" @ 36:7-36:8 is OPERATOR(Lt)
+"0.0" @ 36:9-36:12 is REAL LITERAL(0)
+"then" @ 36:13-36:17 is KEYWORD(Then)
+"return" @ 37:4-37:10 is KEYWORD(Return)
+"NaN" @ 37:11-37:14 is REAL LITERAL(NaN)
+";" @ 37:14-37:15 is SEMICOLON
+"end" @ 38:2-38:5 is KEYWORD(End)
+"var" @ 40:2-40:5 is KEYWORD(Var)
+"x" @ 40:6-40:7 is IDENTIFIER(x)
+":" @ 40:8-40:9 is COLON
+"real" @ 40:10-40:14 is TYPENAME(Real)
+"is" @ 40:15-40:17 is KEYWORD(Is)
+"1.0" @ 40:18-40:21 is REAL LITERAL(1)
+";" @ 40:21-40:22 is SEMICOLON
+"if" @ 42:2-42:4 is KEYWORD(If)
+"s" @ 42:5-42:6 is IDENTIFIER(s)
+">" @ 42:7-42:8 is OPERATOR(Gt)
+"1.0" @ 42:9-42:12 is REAL LITERAL(1)
+"then" @ 42:13-42:17 is KEYWORD(Then)
+"x" @ 42:18-42:19 is IDENTIFIER(x)
+":=" @ 42:20-42:22 is ASSIGNMENT OPERATOR
+"s" @ 42:23-42:24 is IDENTIFIER(s)
+"/" @ 42:25-42:26 is OPERATOR(Div)
+"2" @ 42:27-42:28 is INTEGER LITERAL(2)
+";" @ 42:28-42:29 is SEMICOLON
+"end" @ 42:30-42:33 is KEYWORD(End)
+"for" @ 44:2-44:5 is KEYWORD(For)
+"i" @ 44:6-44:7 is IDENTIFIER(i)
+"in" @ 44:8-44:10 is KEYWORD(In)
+"0" @ 44:11-44:12 is INTEGER LITERAL(0)
+".." @ 44:13-44:15 is RANGE
+"100" @ 44:16-44:19 is INTEGER LITERAL(100)
+"loop" @ 44:20-44:24 is KEYWORD(Loop)
+"var" @ 45:4-45:7 is KEYWORD(Var)
+"prev_x" @ 45:8-45:14 is IDENTIFIER(prev_x)
+"is" @ 45:15-45:17 is KEYWORD(Is)
+"x" @ 45:18-45:19 is IDENTIFIER(x)
+";" @ 45:19-45:20 is SEMICOLON
+"x" @ 46:4-46:5 is IDENTIFIER(x)
+":=" @ 46:6-46:8 is ASSIGNMENT OPERATOR
+"(" @ 46:9-46:10 is LEFT PARENTHESIS
+"x" @ 46:10-46:11 is IDENTIFIER(x)
+"+" @ 46:12-46:13 is OPERATOR(Plus)
+"s" @ 46:14-46:15 is IDENTIFIER(s)
+"/" @ 46:16-46:17 is OPERATOR(Div)
+"x" @ 46:18-46:19 is IDENTIFIER(x)
+")" @ 46:19-46:20 is RIGHT PARENTHESIS
+"/" @ 46:21-46:22 is OPERATOR(Div)
+"2" @ 46:23-46:24 is INTEGER LITERAL(2)
+";" @ 46:24-46:25 is SEMICOLON
+"if" @ 48:4-48:6 is KEYWORD(If)
+"approx_eq" @ 48:7-48:16 is IDENTIFIER(approx_eq)
+"(" @ 48:16-48:17 is LEFT PARENTHESIS
+"prev_x" @ 48:17-48:23 is IDENTIFIER(prev_x)
+"," @ 48:23-48:24 is COMMA
+"x" @ 48:25-48:26 is IDENTIFIER(x)
+")" @ 48:26-48:27 is RIGHT PARENTHESIS
+"or" @ 48:28-48:30 is OPERATOR(Or)
+"approx_eq" @ 48:31-48:40 is IDENTIFIER(approx_eq)
+"(" @ 48:40-48:41 is LEFT PARENTHESIS
+"x" @ 48:41-48:42 is IDENTIFIER(x)
+"*" @ 48:43-48:44 is OPERATOR(Mul)
+"x" @ 48:45-48:46 is IDENTIFIER(x)
+"," @ 48:46-48:47 is COMMA
+"s" @ 48:48-48:49 is IDENTIFIER(s)
+")" @ 48:49-48:50 is RIGHT PARENTHESIS
+"then" @ 48:51-48:55 is KEYWORD(Then)
+"return" @ 49:6-49:12 is KEYWORD(Return)
+"x" @ 49:13-49:14 is IDENTIFIER(x)
+";" @ 49:14-49:15 is SEMICOLON
+"end" @ 50:4-50:7 is KEYWORD(End)
+"end" @ 51:2-51:5 is KEYWORD(End)
+"return" @ 53:2-53:8 is KEYWORD(Return)
+"x" @ 53:9-53:10 is IDENTIFIER(x)
+";" @ 53:10-53:11 is SEMICOLON
+"end" @ 54:0-54:3 is KEYWORD(End)
+"-- vectors supplementary" @ 56:0-56:24 is COMMENT( vectors supplementary)
+"type" @ 58:0-58:4 is KEYWORD(Type)
+"vector" @ 58:5-58:11 is IDENTIFIER(vector)
+"is" @ 58:12-58:14 is KEYWORD(Is)
+"record" @ 58:15-58:21 is KEYWORD(Record)
+"var" @ 59:2-59:5 is KEYWORD(Var)
+"x" @ 59:6-59:7 is IDENTIFIER(x)
+"is" @ 59:8-59:10 is KEYWORD(Is)
+"real" @ 59:11-59:15 is TYPENAME(Real)
+";" @ 59:15-59:16 is SEMICOLON
+"var" @ 60:2-60:5 is KEYWORD(Var)
+"y" @ 60:6-60:7 is IDENTIFIER(y)
+"is" @ 60:8-60:10 is KEYWORD(Is)
+"real" @ 60:11-60:15 is TYPENAME(Real)
+";" @ 60:15-60:16 is SEMICOLON
+"var" @ 61:2-61:5 is KEYWORD(Var)
+"z" @ 61:6-61:7 is IDENTIFIER(z)
+"is" @ 61:8-61:10 is KEYWORD(Is)
+"real" @ 61:11-61:15 is TYPENAME(Real)
+";" @ 61:15-61:16 is SEMICOLON
+"end" @ 62:0-62:3 is KEYWORD(End)
+";" @ 62:3-62:4 is SEMICOLON
+"-- constructor for simplier literals" @ 64:0-64:36 is COMMENT( constructor for simplier literals)
+"routine" @ 65:0-65:7 is KEYWORD(Routine)
+"vector_of" @ 65:8-65:17 is IDENTIFIER(vector_of)
+"(" @ 65:17-65:18 is LEFT PARENTHESIS
+"x" @ 65:18-65:19 is IDENTIFIER(x)
+":" @ 65:20-65:21 is COLON
+"real" @ 65:22-65:26 is TYPENAME(Real)
+"," @ 65:26-65:27 is COMMA
+"y" @ 65:28-65:29 is IDENTIFIER(y)
+":" @ 65:30-65:31 is COLON
+"real" @ 65:32-65:36 is TYPENAME(Real)
+"," @ 65:36-65:37 is COMMA
+"z" @ 65:38-65:39 is IDENTIFIER(z)
+":" @ 65:40-65:41 is COLON
+"real" @ 65:42-65:46 is TYPENAME(Real)
+")" @ 65:46-65:47 is RIGHT PARENTHESIS
+"=>" @ 65:48-65:50 is FUNCTION ARROW
+"new" @ 66:2-66:5 is KEYWORD(New)
+"vector" @ 66:6-66:12 is IDENTIFIER(vector)
+"where" @ 66:13-66:18 is KEYWORD(Where)
+"x" @ 67:4-67:5 is IDENTIFIER(x)
+"is" @ 67:6-67:8 is KEYWORD(Is)
+"x" @ 67:9-67:10 is IDENTIFIER(x)
+";" @ 67:10-67:11 is SEMICOLON
+"y" @ 68:4-68:5 is IDENTIFIER(y)
+"is" @ 68:6-68:8 is KEYWORD(Is)
+"y" @ 68:9-68:10 is IDENTIFIER(y)
+";" @ 68:10-68:11 is SEMICOLON
+"z" @ 69:4-69:5 is IDENTIFIER(z)
+"is" @ 69:6-69:8 is KEYWORD(Is)
+"z" @ 69:9-69:10 is IDENTIFIER(z)
+";" @ 69:10-69:11 is SEMICOLON
+"end" @ 70:2-70:5 is KEYWORD(End)
+";" @ 70:5-70:6 is SEMICOLON
+"routine" @ 72:0-72:7 is KEYWORD(Routine)
+"vector_add" @ 72:8-72:18 is IDENTIFIER(vector_add)
+"(" @ 72:18-72:19 is LEFT PARENTHESIS
+"lhs" @ 72:19-72:22 is IDENTIFIER(lhs)
+":" @ 72:23-72:24 is COLON
+"vector" @ 72:25-72:31 is IDENTIFIER(vector)
+"," @ 72:31-72:32 is COMMA
+"rhs" @ 72:33-72:36 is IDENTIFIER(rhs)
+":" @ 72:37-72:38 is COLON
+"vector" @ 72:39-72:45 is IDENTIFIER(vector)
+")" @ 72:45-72:46 is RIGHT PARENTHESIS
+"=>" @ 72:47-72:49 is FUNCTION ARROW
+"new" @ 73:2-73:5 is KEYWORD(New)
+"vector" @ 73:6-73:12 is IDENTIFIER(vector)
+"where" @ 73:13-73:18 is KEYWORD(Where)
+"x" @ 74:4-74:5 is IDENTIFIER(x)
+"is" @ 74:6-74:8 is KEYWORD(Is)
+"lhs" @ 74:9-74:12 is IDENTIFIER(lhs)
+"." @ 74:12-74:13 is DOT
+"x" @ 74:13-74:14 is IDENTIFIER(x)
+"+" @ 74:15-74:16 is OPERATOR(Plus)
+"rhs" @ 74:17-74:20 is IDENTIFIER(rhs)
+"." @ 74:20-74:21 is DOT
+"x" @ 74:21-74:22 is IDENTIFIER(x)
+";" @ 74:22-74:23 is SEMICOLON
+"y" @ 75:4-75:5 is IDENTIFIER(y)
+"is" @ 75:6-75:8 is KEYWORD(Is)
+"lhs" @ 75:9-75:12 is IDENTIFIER(lhs)
+"." @ 75:12-75:13 is DOT
+"y" @ 75:13-75:14 is IDENTIFIER(y)
+"+" @ 75:15-75:16 is OPERATOR(Plus)
+"rhs" @ 75:17-75:20 is IDENTIFIER(rhs)
+"." @ 75:20-75:21 is DOT
+"y" @ 75:21-75:22 is IDENTIFIER(y)
+";" @ 75:22-75:23 is SEMICOLON
+"z" @ 76:4-76:5 is IDENTIFIER(z)
+"is" @ 76:6-76:8 is KEYWORD(Is)
+"lhs" @ 76:9-76:12 is IDENTIFIER(lhs)
+"." @ 76:12-76:13 is DOT
+"z" @ 76:13-76:14 is IDENTIFIER(z)
+"+" @ 76:15-76:16 is OPERATOR(Plus)
+"rhs" @ 76:17-76:20 is IDENTIFIER(rhs)
+"." @ 76:20-76:21 is DOT
+"z" @ 76:21-76:22 is IDENTIFIER(z)
+";" @ 76:22-76:23 is SEMICOLON
+"end" @ 77:2-77:5 is KEYWORD(End)
+";" @ 77:5-77:6 is SEMICOLON
+"routine" @ 79:0-79:7 is KEYWORD(Routine)
+"vector_sub" @ 79:8-79:18 is IDENTIFIER(vector_sub)
+"(" @ 79:18-79:19 is LEFT PARENTHESIS
+"lhs" @ 79:19-79:22 is IDENTIFIER(lhs)
+":" @ 79:23-79:24 is COLON
+"vector" @ 79:25-79:31 is IDENTIFIER(vector)
+"," @ 79:31-79:32 is COMMA
+"rhs" @ 79:33-79:36 is IDENTIFIER(rhs)
+":" @ 79:37-79:38 is COLON
+"vector" @ 79:39-79:45 is IDENTIFIER(vector)
+")" @ 79:45-79:46 is RIGHT PARENTHESIS
+"=>" @ 79:47-79:49 is FUNCTION ARROW
+"new" @ 80:2-80:5 is KEYWORD(New)
+"vector" @ 80:6-80:12 is IDENTIFIER(vector)
+"where" @ 80:13-80:18 is KEYWORD(Where)
+"x" @ 81:4-81:5 is IDENTIFIER(x)
+"is" @ 81:6-81:8 is KEYWORD(Is)
+"lhs" @ 81:9-81:12 is IDENTIFIER(lhs)
+"." @ 81:12-81:13 is DOT
+"x" @ 81:13-81:14 is IDENTIFIER(x)
+"-" @ 81:15-81:16 is OPERATOR(Minus)
+"rhs" @ 81:17-81:20 is IDENTIFIER(rhs)
+"." @ 81:20-81:21 is DOT
+"x" @ 81:21-81:22 is IDENTIFIER(x)
+";" @ 81:22-81:23 is SEMICOLON
+"y" @ 82:4-82:5 is IDENTIFIER(y)
+"is" @ 82:6-82:8 is KEYWORD(Is)
+"lhs" @ 82:9-82:12 is IDENTIFIER(lhs)
+"." @ 82:12-82:13 is DOT
+"y" @ 82:13-82:14 is IDENTIFIER(y)
+"-" @ 82:15-82:16 is OPERATOR(Minus)
+"rhs" @ 82:17-82:20 is IDENTIFIER(rhs)
+"." @ 82:20-82:21 is DOT
+"y" @ 82:21-82:22 is IDENTIFIER(y)
+";" @ 82:22-82:23 is SEMICOLON
+"z" @ 83:4-83:5 is IDENTIFIER(z)
+"is" @ 83:6-83:8 is KEYWORD(Is)
+"lhs" @ 83:9-83:12 is IDENTIFIER(lhs)
+"." @ 83:12-83:13 is DOT
+"z" @ 83:13-83:14 is IDENTIFIER(z)
+"-" @ 83:15-83:16 is OPERATOR(Minus)
+"rhs" @ 83:17-83:20 is IDENTIFIER(rhs)
+"." @ 83:20-83:21 is DOT
+"z" @ 83:21-83:22 is IDENTIFIER(z)
+";" @ 83:22-83:23 is SEMICOLON
+"end" @ 84:2-84:5 is KEYWORD(End)
+";" @ 84:5-84:6 is SEMICOLON
+"routine" @ 86:0-86:7 is KEYWORD(Routine)
+"vector_mul" @ 86:8-86:18 is IDENTIFIER(vector_mul)
+"(" @ 86:18-86:19 is LEFT PARENTHESIS
+"k" @ 86:19-86:20 is IDENTIFIER(k)
+":" @ 86:21-86:22 is COLON
+"real" @ 86:23-86:27 is TYPENAME(Real)
+"," @ 86:27-86:28 is COMMA
+"rhs" @ 86:29-86:32 is IDENTIFIER(rhs)
+":" @ 86:33-86:34 is COLON
+"vector" @ 86:35-86:41 is IDENTIFIER(vector)
+")" @ 86:41-86:42 is RIGHT PARENTHESIS
+"=>" @ 86:43-86:45 is FUNCTION ARROW
+"new" @ 87:2-87:5 is KEYWORD(New)
+"vector" @ 87:6-87:12 is IDENTIFIER(vector)
+"where" @ 87:13-87:18 is KEYWORD(Where)
+"x" @ 88:4-88:5 is IDENTIFIER(x)
+"is" @ 88:6-88:8 is KEYWORD(Is)
+"k" @ 88:9-88:10 is IDENTIFIER(k)
+"*" @ 88:11-88:12 is OPERATOR(Mul)
+"rhs" @ 88:13-88:16 is IDENTIFIER(rhs)
+"." @ 88:16-88:17 is DOT
+"x" @ 88:17-88:18 is IDENTIFIER(x)
+";" @ 88:18-88:19 is SEMICOLON
+"y" @ 89:4-89:5 is IDENTIFIER(y)
+"is" @ 89:6-89:8 is KEYWORD(Is)
+"k" @ 89:9-89:10 is IDENTIFIER(k)
+"*" @ 89:11-89:12 is OPERATOR(Mul)
+"rhs" @ 89:13-89:16 is IDENTIFIER(rhs)
+"." @ 89:16-89:17 is DOT
+"y" @ 89:17-89:18 is IDENTIFIER(y)
+";" @ 89:18-89:19 is SEMICOLON
+"z" @ 90:4-90:5 is IDENTIFIER(z)
+"is" @ 90:6-90:8 is KEYWORD(Is)
+"k" @ 90:9-90:10 is IDENTIFIER(k)
+"*" @ 90:11-90:12 is OPERATOR(Mul)
+"rhs" @ 90:13-90:16 is IDENTIFIER(rhs)
+"." @ 90:16-90:17 is DOT
+"z" @ 90:17-90:18 is IDENTIFIER(z)
+";" @ 90:18-90:19 is SEMICOLON
+"end" @ 91:2-91:5 is KEYWORD(End)
+";" @ 91:5-91:6 is SEMICOLON
+"routine" @ 93:0-93:7 is KEYWORD(Routine)
+"vector_dot" @ 93:8-93:18 is IDENTIFIER(vector_dot)
+"(" @ 93:18-93:19 is LEFT PARENTHESIS
+"lhs" @ 93:19-93:22 is IDENTIFIER(lhs)
+":" @ 93:23-93:24 is COLON
+"vector" @ 93:25-93:31 is IDENTIFIER(vector)
+"," @ 93:31-93:32 is COMMA
+"rhs" @ 93:33-93:36 is IDENTIFIER(rhs)
+":" @ 93:37-93:38 is COLON
+"vector" @ 93:39-93:45 is IDENTIFIER(vector)
+")" @ 93:45-93:46 is RIGHT PARENTHESIS
+"=>" @ 93:47-93:49 is FUNCTION ARROW
+"lhs" @ 94:2-94:5 is IDENTIFIER(lhs)
+"." @ 94:5-94:6 is DOT
+"x" @ 94:6-94:7 is IDENTIFIER(x)
+"*" @ 94:8-94:9 is OPERATOR(Mul)
+"rhs" @ 94:10-94:13 is IDENTIFIER(rhs)
+"." @ 94:13-94:14 is DOT
+"x" @ 94:14-94:15 is IDENTIFIER(x)
+"+" @ 94:16-94:17 is OPERATOR(Plus)
+"lhs" @ 94:18-94:21 is IDENTIFIER(lhs)
+"." @ 94:21-94:22 is DOT
+"y" @ 94:22-94:23 is IDENTIFIER(y)
+"*" @ 94:24-94:25 is OPERATOR(Mul)
+"rhs" @ 94:26-94:29 is IDENTIFIER(rhs)
+"." @ 94:29-94:30 is DOT
+"y" @ 94:30-94:31 is IDENTIFIER(y)
+"+" @ 94:32-94:33 is OPERATOR(Plus)
+"lhs" @ 94:34-94:37 is IDENTIFIER(lhs)
+"." @ 94:37-94:38 is DOT
+"z" @ 94:38-94:39 is IDENTIFIER(z)
+"*" @ 94:40-94:41 is OPERATOR(Mul)
+"rhs" @ 94:42-94:45 is IDENTIFIER(rhs)
+"." @ 94:45-94:46 is DOT
+"z" @ 94:46-94:47 is IDENTIFIER(z)
+";" @ 94:47-94:48 is SEMICOLON
+"routine" @ 96:0-96:7 is KEYWORD(Routine)
+"vector_norm" @ 96:8-96:19 is IDENTIFIER(vector_norm)
+"(" @ 96:19-96:20 is LEFT PARENTHESIS
+"v" @ 96:20-96:21 is IDENTIFIER(v)
+":" @ 96:22-96:23 is COLON
+"vector" @ 96:24-96:30 is IDENTIFIER(vector)
+")" @ 96:30-96:31 is RIGHT PARENTHESIS
+"=>" @ 96:32-96:34 is FUNCTION ARROW
+"sqrt" @ 97:2-97:6 is IDENTIFIER(sqrt)
+"(" @ 97:6-97:7 is LEFT PARENTHESIS
+"vector_dot" @ 97:7-97:17 is IDENTIFIER(vector_dot)
+"(" @ 97:17-97:18 is LEFT PARENTHESIS
+"v" @ 97:18-97:19 is IDENTIFIER(v)
+"," @ 97:19-97:20 is COMMA
+"v" @ 97:21-97:22 is IDENTIFIER(v)
+")" @ 97:22-97:23 is RIGHT PARENTHESIS
+")" @ 97:23-97:24 is RIGHT PARENTHESIS
+";" @ 97:24-97:25 is SEMICOLON
+"routine" @ 99:0-99:7 is KEYWORD(Routine)
+"vector_normalised" @ 99:8-99:25 is IDENTIFIER(vector_normalised)
+"(" @ 99:25-99:26 is LEFT PARENTHESIS
+"v" @ 99:26-99:27 is IDENTIFIER(v)
+":" @ 99:28-99:29 is COLON
+"vector" @ 99:30-99:36 is IDENTIFIER(vector)
+")" @ 99:36-99:37 is RIGHT PARENTHESIS
+"=>" @ 99:38-99:40 is FUNCTION ARROW
+"vector_mul" @ 100:2-100:12 is IDENTIFIER(vector_mul)
+"(" @ 100:12-100:13 is LEFT PARENTHESIS
+"1" @ 100:13-100:14 is INTEGER LITERAL(1)
+"/" @ 100:15-100:16 is OPERATOR(Div)
+"vector_norm" @ 100:17-100:28 is IDENTIFIER(vector_norm)
+"(" @ 100:28-100:29 is LEFT PARENTHESIS
+"v" @ 100:29-100:30 is IDENTIFIER(v)
+")" @ 100:30-100:31 is RIGHT PARENTHESIS
+"," @ 100:31-100:32 is COMMA
+"v" @ 100:33-100:34 is IDENTIFIER(v)
+")" @ 100:34-100:35 is RIGHT PARENTHESIS
+";" @ 100:35-100:36 is SEMICOLON
+"-- rays supplementary" @ 103:0-103:21 is COMMENT( rays supplementary)
+"type" @ 105:0-105:4 is KEYWORD(Type)
+"ray" @ 105:5-105:8 is IDENTIFIER(ray)
+"is" @ 105:9-105:11 is KEYWORD(Is)
+"record" @ 105:12-105:18 is KEYWORD(Record)
+"var" @ 106:2-106:5 is KEYWORD(Var)
+"base" @ 106:6-106:10 is IDENTIFIER(base)
+"is" @ 106:11-106:13 is KEYWORD(Is)
+"vector" @ 106:14-106:20 is IDENTIFIER(vector)
+";" @ 106:20-106:21 is SEMICOLON
+"var" @ 107:2-107:5 is KEYWORD(Var)
+"dest" @ 107:6-107:10 is IDENTIFIER(dest)
+"is" @ 107:11-107:13 is KEYWORD(Is)
+"vector" @ 107:14-107:20 is IDENTIFIER(vector)
+";" @ 107:20-107:21 is SEMICOLON
+"end" @ 108:0-108:3 is KEYWORD(End)
+";" @ 108:3-108:4 is SEMICOLON
+"routine" @ 110:0-110:7 is KEYWORD(Routine)
+"ray_from_to" @ 110:8-110:19 is IDENTIFIER(ray_from_to)
+"(" @ 110:19-110:20 is LEFT PARENTHESIS
+"start" @ 110:20-110:25 is IDENTIFIER(start)
+":" @ 110:26-110:27 is COLON
+"vector" @ 110:28-110:34 is IDENTIFIER(vector)
+"," @ 110:34-110:35 is COMMA
+"point" @ 110:36-110:41 is IDENTIFIER(point)
+":" @ 110:42-110:43 is COLON
+"vector" @ 110:44-110:50 is IDENTIFIER(vector)
+")" @ 110:50-110:51 is RIGHT PARENTHESIS
+"=>" @ 110:52-110:54 is FUNCTION ARROW
+"new" @ 111:2-111:5 is KEYWORD(New)
+"ray" @ 111:6-111:9 is IDENTIFIER(ray)
+"where" @ 111:10-111:15 is KEYWORD(Where)
+"base" @ 112:4-112:8 is IDENTIFIER(base)
+"is" @ 112:9-112:11 is KEYWORD(Is)
+"start" @ 112:12-112:17 is IDENTIFIER(start)
+";" @ 112:17-112:18 is SEMICOLON
+"dest" @ 113:4-113:8 is IDENTIFIER(dest)
+"is" @ 113:9-113:11 is KEYWORD(Is)
+"vector_normalised" @ 113:12-113:29 is IDENTIFIER(vector_normalised)
+"(" @ 113:29-113:30 is LEFT PARENTHESIS
+"vector_sub" @ 113:30-113:40 is IDENTIFIER(vector_sub)
+"(" @ 113:40-113:41 is LEFT PARENTHESIS
+"point" @ 113:41-113:46 is IDENTIFIER(point)
+"," @ 113:46-113:47 is COMMA
+"start" @ 113:48-113:53 is IDENTIFIER(start)
+")" @ 113:53-113:54 is RIGHT PARENTHESIS
+")" @ 113:54-113:55 is RIGHT PARENTHESIS
+";" @ 113:55-113:56 is SEMICOLON
+"end" @ 114:2-114:5 is KEYWORD(End)
+";" @ 114:5-114:6 is SEMICOLON
+"routine" @ 116:0-116:7 is KEYWORD(Routine)
+"ray_cut" @ 116:8-116:15 is IDENTIFIER(ray_cut)
+"(" @ 116:15-116:16 is LEFT PARENTHESIS
+"r" @ 116:16-116:17 is IDENTIFIER(r)
+":" @ 116:18-116:19 is COLON
+"ray" @ 116:20-116:23 is IDENTIFIER(ray)
+"," @ 116:23-116:24 is COMMA
+"k" @ 116:25-116:26 is IDENTIFIER(k)
+":" @ 116:27-116:28 is COLON
+"real" @ 116:29-116:33 is TYPENAME(Real)
+")" @ 116:33-116:34 is RIGHT PARENTHESIS
+"=>" @ 116:35-116:37 is FUNCTION ARROW
+"vector_add" @ 117:2-117:12 is IDENTIFIER(vector_add)
+"(" @ 117:12-117:13 is LEFT PARENTHESIS
+"r" @ 117:13-117:14 is IDENTIFIER(r)
+"." @ 117:14-117:15 is DOT
+"base" @ 117:15-117:19 is IDENTIFIER(base)
+"," @ 117:19-117:20 is COMMA
+"vector_mul" @ 117:21-117:31 is IDENTIFIER(vector_mul)
+"(" @ 117:31-117:32 is LEFT PARENTHESIS
+"k" @ 117:32-117:33 is IDENTIFIER(k)
+"," @ 117:33-117:34 is COMMA
+"r" @ 117:35-117:36 is IDENTIFIER(r)
+"." @ 117:36-117:37 is DOT
+"dest" @ 117:37-117:41 is IDENTIFIER(dest)
+")" @ 117:41-117:42 is RIGHT PARENTHESIS
+")" @ 117:42-117:43 is RIGHT PARENTHESIS
+";" @ 117:43-117:44 is SEMICOLON
+"-- canvas supplementary" @ 120:0-120:23 is COMMENT( canvas supplementary)
+"type" @ 122:0-122:4 is KEYWORD(Type)
+"error" @ 122:5-122:10 is IDENTIFIER(error)
+"is" @ 122:11-122:13 is KEYWORD(Is)
+"record" @ 122:14-122:20 is KEYWORD(Record)
+"end" @ 122:21-122:24 is KEYWORD(End)
+";" @ 122:24-122:25 is SEMICOLON
+"type" @ 124:0-124:4 is KEYWORD(Type)
+"byte" @ 124:5-124:9 is IDENTIFIER(byte)
+"is" @ 124:10-124:12 is KEYWORD(Is)
+"integer" @ 124:13-124:20 is TYPENAME(Integer)
+";" @ 124:20-124:21 is SEMICOLON
+"routine" @ 126:0-126:7 is KEYWORD(Routine)
+"int_to_byte" @ 126:8-126:19 is IDENTIFIER(int_to_byte)
+"(" @ 126:19-126:20 is LEFT PARENTHESIS
+"val" @ 126:20-126:23 is IDENTIFIER(val)
+":" @ 126:24-126:25 is COLON
+"integer" @ 126:26-126:33 is TYPENAME(Integer)
+")" @ 126:33-126:34 is RIGHT PARENTHESIS
+":" @ 126:35-126:36 is COLON
+"byte" @ 126:37-126:41 is IDENTIFIER(byte)
+"is" @ 126:42-126:44 is KEYWORD(Is)
+"if" @ 127:2-127:4 is KEYWORD(If)
+"val" @ 127:5-127:8 is IDENTIFIER(val)
+"<" @ 127:9-127:10 is OPERATOR(Lt)
+"0" @ 127:11-127:12 is INTEGER LITERAL(0)
+"or" @ 127:13-127:15 is OPERATOR(Or)
+"val" @ 127:16-127:19 is IDENTIFIER(val)
+">" @ 127:20-127:21 is OPERATOR(Gt)
+"255" @ 127:22-127:25 is INTEGER LITERAL(255)
+"then" @ 127:26-127:30 is KEYWORD(Then)
+"print" @ 128:4-128:9 is KEYWORD(Print)
+"new" @ 128:10-128:13 is KEYWORD(New)
+"error" @ 128:14-128:19 is IDENTIFIER(error)
+";" @ 128:19-128:20 is SEMICOLON
+"-- kind of error reporting, maybe we should add `panic` statement to language" @ 128:21-128:98 is COMMENT( kind of error reporting, maybe we shoul …)
+"return" @ 129:4-129:10 is KEYWORD(Return)
+"0" @ 129:11-129:12 is INTEGER LITERAL(0)
+"::" @ 129:13-129:15 is CAST
+"byte" @ 129:16-129:20 is IDENTIFIER(byte)
+";" @ 129:20-129:21 is SEMICOLON
+"end" @ 130:2-130:5 is KEYWORD(End)
+"return" @ 132:2-132:8 is KEYWORD(Return)
+"val" @ 132:9-132:12 is IDENTIFIER(val)
+"::" @ 132:13-132:15 is CAST
+"byte" @ 132:16-132:20 is IDENTIFIER(byte)
+";" @ 132:20-132:21 is SEMICOLON
+"end" @ 134:0-134:3 is KEYWORD(End)
+"type" @ 136:0-136:4 is KEYWORD(Type)
+"colour" @ 136:5-136:11 is IDENTIFIER(colour)
+"is" @ 136:12-136:14 is KEYWORD(Is)
+"record" @ 136:15-136:21 is KEYWORD(Record)
+"var" @ 137:2-137:5 is KEYWORD(Var)
+"red" @ 137:6-137:9 is IDENTIFIER(red)
+"is" @ 137:10-137:12 is KEYWORD(Is)
+"byte" @ 137:13-137:17 is IDENTIFIER(byte)
+";" @ 137:17-137:18 is SEMICOLON
+"var" @ 138:2-138:5 is KEYWORD(Var)
+"green" @ 138:6-138:11 is IDENTIFIER(green)
+"is" @ 138:12-138:14 is KEYWORD(Is)
+"byte" @ 138:15-138:19 is IDENTIFIER(byte)
+";" @ 138:19-138:20 is SEMICOLON
+"var" @ 139:2-139:5 is KEYWORD(Var)
+"blue" @ 139:6-139:10 is IDENTIFIER(blue)
+"is" @ 139:11-139:13 is KEYWORD(Is)
+"byte" @ 139:14-139:18 is IDENTIFIER(byte)
+";" @ 139:18-139:19 is SEMICOLON
+"end" @ 140:0-140:3 is KEYWORD(End)
+";" @ 140:3-140:4 is SEMICOLON
+"routine" @ 142:0-142:7 is KEYWORD(Routine)
+"colour_of" @ 142:8-142:17 is IDENTIFIER(colour_of)
+"(" @ 142:17-142:18 is LEFT PARENTHESIS
+"r" @ 142:18-142:19 is IDENTIFIER(r)
+":" @ 142:20-142:21 is COLON
+"integer" @ 142:22-142:29 is TYPENAME(Integer)
+"," @ 142:29-142:30 is COMMA
+"g" @ 142:31-142:32 is IDENTIFIER(g)
+":" @ 142:33-142:34 is COLON
+"integer" @ 142:35-142:42 is TYPENAME(Integer)
+"," @ 142:42-142:43 is COMMA
+"b" @ 142:44-142:45 is IDENTIFIER(b)
+":" @ 142:46-142:47 is COLON
+"integer" @ 142:48-142:55 is TYPENAME(Integer)
+")" @ 142:55-142:56 is RIGHT PARENTHESIS
+"=>" @ 142:57-142:59 is FUNCTION ARROW
+"new" @ 143:2-143:5 is KEYWORD(New)
+"colour" @ 143:6-143:12 is IDENTIFIER(colour)
+"where" @ 143:13-143:18 is KEYWORD(Where)
+"red" @ 144:4-144:7 is IDENTIFIER(red)
+"is" @ 144:8-144:10 is KEYWORD(Is)
+"int_to_byte" @ 144:11-144:22 is IDENTIFIER(int_to_byte)
+"(" @ 144:22-144:23 is LEFT PARENTHESIS
+"r" @ 144:23-144:24 is IDENTIFIER(r)
+")" @ 144:24-144:25 is RIGHT PARENTHESIS
+";" @ 144:25-144:26 is SEMICOLON
+"green" @ 145:4-145:9 is IDENTIFIER(green)
+"is" @ 145:10-145:12 is KEYWORD(Is)
+"int_to_byte" @ 145:13-145:24 is IDENTIFIER(int_to_byte)
+"(" @ 145:24-145:25 is LEFT PARENTHESIS
+"g" @ 145:25-145:26 is IDENTIFIER(g)
+")" @ 145:26-145:27 is RIGHT PARENTHESIS
+";" @ 145:27-145:28 is SEMICOLON
+"blue" @ 146:4-146:8 is IDENTIFIER(blue)
+"is" @ 146:9-146:11 is KEYWORD(Is)
+"int_to_byte" @ 146:12-146:23 is IDENTIFIER(int_to_byte)
+"(" @ 146:23-146:24 is LEFT PARENTHESIS
+"b" @ 146:24-146:25 is IDENTIFIER(b)
+")" @ 146:25-146:26 is RIGHT PARENTHESIS
+";" @ 146:26-146:27 is SEMICOLON
+"end" @ 147:2-147:5 is KEYWORD(End)
+";" @ 147:5-147:6 is SEMICOLON
+"routine" @ 149:0-149:7 is KEYWORD(Routine)
+"colour_mix_with_ratio" @ 149:8-149:29 is IDENTIFIER(colour_mix_with_ratio)
+"(" @ 149:29-149:30 is LEFT PARENTHESIS
+"base" @ 149:30-149:34 is IDENTIFIER(base)
+":" @ 149:35-149:36 is COLON
+"colour" @ 149:37-149:43 is IDENTIFIER(colour)
+"," @ 149:43-149:44 is COMMA
+"paint" @ 149:45-149:50 is IDENTIFIER(paint)
+":" @ 149:51-149:52 is COLON
+"colour" @ 149:53-149:59 is IDENTIFIER(colour)
+"," @ 149:59-149:60 is COMMA
+"ratio" @ 149:61-149:66 is IDENTIFIER(ratio)
+":" @ 149:67-149:68 is COLON
+"real" @ 149:69-149:73 is TYPENAME(Real)
+")" @ 149:73-149:74 is RIGHT PARENTHESIS
+"=>" @ 149:75-149:77 is FUNCTION ARROW
+"colour_of" @ 150:2-150:11 is IDENTIFIER(colour_of)
+"(" @ 150:11-150:12 is LEFT PARENTHESIS
+"round" @ 151:4-151:9 is IDENTIFIER(round)
+"(" @ 151:9-151:10 is LEFT PARENTHESIS
+"real_interpolate" @ 151:10-151:26 is IDENTIFIER(real_interpolate)
+"(" @ 151:26-151:27 is LEFT PARENTHESIS
+"base" @ 151:27-151:31 is IDENTIFIER(base)
+"." @ 151:31-151:32 is DOT
+"red" @ 151:32-151:35 is IDENTIFIER(red)
+"::" @ 151:36-151:38 is CAST
+"integer" @ 151:39-151:46 is TYPENAME(Integer)
+"," @ 151:46-151:47 is COMMA
+"paint" @ 151:48-151:53 is IDENTIFIER(paint)
+"." @ 151:53-151:54 is DOT
+"red" @ 151:54-151:57 is IDENTIFIER(red)
+"::" @ 151:58-151:60 is CAST
+"integer" @ 151:61-151:68 is TYPENAME(Integer)
+"," @ 151:68-151:69 is COMMA
+"ratio" @ 151:70-151:75 is IDENTIFIER(ratio)
+")" @ 151:75-151:76 is RIGHT PARENTHESIS
+")" @ 151:76-151:77 is RIGHT PARENTHESIS
+"," @ 151:77-151:78 is COMMA
+"round" @ 152:4-152:9 is IDENTIFIER(round)
+"(" @ 152:9-152:10 is LEFT PARENTHESIS
+"real_interpolate" @ 152:10-152:26 is IDENTIFIER(real_interpolate)
+"(" @ 152:26-152:27 is LEFT PARENTHESIS
+"base" @ 152:27-152:31 is IDENTIFIER(base)
+"." @ 152:31-152:32 is DOT
+"green" @ 152:32-152:37 is IDENTIFIER(green)
+"::" @ 152:38-152:40 is CAST
+"integer" @ 152:41-152:48 is TYPENAME(Integer)
+"," @ 152:48-152:49 is COMMA
+"paint" @ 152:50-152:55 is IDENTIFIER(paint)
+"." @ 152:55-152:56 is DOT
+"green" @ 152:56-152:61 is IDENTIFIER(green)
+"::" @ 152:62-152:64 is CAST
+"integer" @ 152:65-152:72 is TYPENAME(Integer)
+"," @ 152:72-152:73 is COMMA
+"ratio" @ 152:74-152:79 is IDENTIFIER(ratio)
+")" @ 152:79-152:80 is RIGHT PARENTHESIS
+")" @ 152:80-152:81 is RIGHT PARENTHESIS
+"," @ 152:81-152:82 is COMMA
+"round" @ 153:4-153:9 is IDENTIFIER(round)
+"(" @ 153:9-153:10 is LEFT PARENTHESIS
+"real_interpolate" @ 153:10-153:26 is IDENTIFIER(real_interpolate)
+"(" @ 153:26-153:27 is LEFT PARENTHESIS
+"base" @ 153:27-153:31 is IDENTIFIER(base)
+"." @ 153:31-153:32 is DOT
+"blue" @ 153:32-153:36 is IDENTIFIER(blue)
+"::" @ 153:37-153:39 is CAST
+"integer" @ 153:40-153:47 is TYPENAME(Integer)
+"," @ 153:47-153:48 is COMMA
+"paint" @ 153:49-153:54 is IDENTIFIER(paint)
+"." @ 153:54-153:55 is DOT
+"blue" @ 153:55-153:59 is IDENTIFIER(blue)
+"::" @ 153:60-153:62 is CAST
+"integer" @ 153:63-153:70 is TYPENAME(Integer)
+"," @ 153:70-153:71 is COMMA
+"ratio" @ 153:72-153:77 is IDENTIFIER(ratio)
+")" @ 153:77-153:78 is RIGHT PARENTHESIS
+")" @ 153:78-153:79 is RIGHT PARENTHESIS
+")" @ 154:2-154:3 is RIGHT PARENTHESIS
+";" @ 154:3-154:4 is SEMICOLON
+"var" @ 156:0-156:3 is KEYWORD(Var)
+"RED" @ 156:4-156:7 is IDENTIFIER(RED)
+"is" @ 156:8-156:10 is KEYWORD(Is)
+"colour_of" @ 156:11-156:20 is IDENTIFIER(colour_of)
+"(" @ 156:20-156:21 is LEFT PARENTHESIS
+"255" @ 156:21-156:24 is INTEGER LITERAL(255)
+"," @ 156:24-156:25 is COMMA
+"0" @ 156:26-156:27 is INTEGER LITERAL(0)
+"," @ 156:27-156:28 is COMMA
+"0" @ 156:29-156:30 is INTEGER LITERAL(0)
+")" @ 156:30-156:31 is RIGHT PARENTHESIS
+";" @ 156:31-156:32 is SEMICOLON
+"var" @ 157:0-157:3 is KEYWORD(Var)
+"GREEN" @ 157:4-157:9 is IDENTIFIER(GREEN)
+"is" @ 157:10-157:12 is KEYWORD(Is)
+"colour_of" @ 157:13-157:22 is IDENTIFIER(colour_of)
+"(" @ 157:22-157:23 is LEFT PARENTHESIS
+"0" @ 157:23-157:24 is INTEGER LITERAL(0)
+"," @ 157:24-157:25 is COMMA
+"255" @ 157:26-157:29 is INTEGER LITERAL(255)
+"," @ 157:29-157:30 is COMMA
+"0" @ 157:31-157:32 is INTEGER LITERAL(0)
+")" @ 157:32-157:33 is RIGHT PARENTHESIS
+";" @ 157:33-157:34 is SEMICOLON
+"var" @ 158:0-158:3 is KEYWORD(Var)
+"BLUE" @ 158:4-158:8 is IDENTIFIER(BLUE)
+"is" @ 158:9-158:11 is KEYWORD(Is)
+"colour_of" @ 158:12-158:21 is IDENTIFIER(colour_of)
+"(" @ 158:21-158:22 is LEFT PARENTHESIS
+"0" @ 158:22-158:23 is INTEGER LITERAL(0)
+"," @ 158:23-158:24 is COMMA
+"0" @ 158:25-158:26 is INTEGER LITERAL(0)
+"," @ 158:26-158:27 is COMMA
+"255" @ 158:28-158:31 is INTEGER LITERAL(255)
+")" @ 158:31-158:32 is RIGHT PARENTHESIS
+";" @ 158:32-158:33 is SEMICOLON
+"var" @ 159:0-159:3 is KEYWORD(Var)
+"BLACK" @ 159:4-159:9 is IDENTIFIER(BLACK)
+"is" @ 159:10-159:12 is KEYWORD(Is)
+"colour_of" @ 159:13-159:22 is IDENTIFIER(colour_of)
+"(" @ 159:22-159:23 is LEFT PARENTHESIS
+"0" @ 159:23-159:24 is INTEGER LITERAL(0)
+"," @ 159:24-159:25 is COMMA
+"0" @ 159:26-159:27 is INTEGER LITERAL(0)
+"," @ 159:27-159:28 is COMMA
+"0" @ 159:29-159:30 is INTEGER LITERAL(0)
+")" @ 159:30-159:31 is RIGHT PARENTHESIS
+";" @ 159:31-159:32 is SEMICOLON
+"var" @ 160:0-160:3 is KEYWORD(Var)
+"WHITE" @ 160:4-160:9 is IDENTIFIER(WHITE)
+"is" @ 160:10-160:12 is KEYWORD(Is)
+"colour_of" @ 160:13-160:22 is IDENTIFIER(colour_of)
+"(" @ 160:22-160:23 is LEFT PARENTHESIS
+"255" @ 160:23-160:26 is INTEGER LITERAL(255)
+"," @ 160:26-160:27 is COMMA
+"255" @ 160:28-160:31 is INTEGER LITERAL(255)
+"," @ 160:31-160:32 is COMMA
+"255" @ 160:33-160:36 is INTEGER LITERAL(255)
+")" @ 160:36-160:37 is RIGHT PARENTHESIS
+";" @ 160:37-160:38 is SEMICOLON
+"type" @ 162:0-162:4 is KEYWORD(Type)
+"canvas" @ 162:5-162:11 is IDENTIFIER(canvas)
+"is" @ 162:12-162:14 is KEYWORD(Is)
+"record" @ 162:15-162:21 is KEYWORD(Record)
+"var" @ 163:2-163:5 is KEYWORD(Var)
+"pixels" @ 163:6-163:12 is IDENTIFIER(pixels)
+"is" @ 163:13-163:15 is KEYWORD(Is)
+"array" @ 163:16-163:21 is KEYWORD(Array)
+"[" @ 163:22-163:23 is LEFT BRACKET
+"360" @ 163:23-163:26 is INTEGER LITERAL(360)
+"*" @ 163:27-163:28 is OPERATOR(Mul)
+"640" @ 163:29-163:32 is INTEGER LITERAL(640)
+"]" @ 163:32-163:33 is RIGHT BRACKET
+"colour" @ 163:34-163:40 is IDENTIFIER(colour)
+";" @ 163:40-163:41 is SEMICOLON
+"var" @ 164:2-164:5 is KEYWORD(Var)
+"height" @ 164:6-164:12 is IDENTIFIER(height)
+"is" @ 164:13-164:15 is KEYWORD(Is)
+"integer" @ 164:16-164:23 is TYPENAME(Integer)
+";" @ 164:23-164:24 is SEMICOLON
+"var" @ 165:2-165:5 is KEYWORD(Var)
+"width" @ 165:6-165:11 is IDENTIFIER(width)
+"is" @ 165:12-165:14 is KEYWORD(Is)
+"integer" @ 165:15-165:22 is TYPENAME(Integer)
+";" @ 165:22-165:23 is SEMICOLON
+"end" @ 166:0-166:3 is KEYWORD(End)
+";" @ 166:3-166:4 is SEMICOLON
+"routine" @ 168:0-168:7 is KEYWORD(Routine)
+"get_canvas_at" @ 168:8-168:21 is IDENTIFIER(get_canvas_at)
+"(" @ 168:21-168:22 is LEFT PARENTHESIS
+"c" @ 168:22-168:23 is IDENTIFIER(c)
+":" @ 168:24-168:25 is COLON
+"canvas" @ 168:26-168:32 is IDENTIFIER(canvas)
+"," @ 168:32-168:33 is COMMA
+"x" @ 168:34-168:35 is IDENTIFIER(x)
+":" @ 168:36-168:37 is COLON
+"integer" @ 168:38-168:45 is TYPENAME(Integer)
+"," @ 168:45-168:46 is COMMA
+"y" @ 168:47-168:48 is IDENTIFIER(y)
+":" @ 168:49-168:50 is COLON
+"integer" @ 168:51-168:58 is TYPENAME(Integer)
+")" @ 168:58-168:59 is RIGHT PARENTHESIS
+"=>" @ 168:60-168:62 is FUNCTION ARROW
+"c" @ 169:2-169:3 is IDENTIFIER(c)
+"." @ 169:3-169:4 is DOT
+"pixels" @ 169:4-169:10 is IDENTIFIER(pixels)
+"[" @ 169:10-169:11 is LEFT BRACKET
+"c" @ 169:11-169:12 is IDENTIFIER(c)
+"." @ 169:12-169:13 is DOT
+"width" @ 169:13-169:18 is IDENTIFIER(width)
+"*" @ 169:19-169:20 is OPERATOR(Mul)
+"y" @ 169:21-169:22 is IDENTIFIER(y)
+"+" @ 169:23-169:24 is OPERATOR(Plus)
+"x" @ 169:25-169:26 is IDENTIFIER(x)
+"+" @ 169:27-169:28 is OPERATOR(Plus)
+"1" @ 169:29-169:30 is INTEGER LITERAL(1)
+"]" @ 169:30-169:31 is RIGHT BRACKET
+";" @ 169:31-169:32 is SEMICOLON
+"routine" @ 171:0-171:7 is KEYWORD(Routine)
+"set_canvas_at" @ 171:8-171:21 is IDENTIFIER(set_canvas_at)
+"(" @ 171:21-171:22 is LEFT PARENTHESIS
+"c" @ 171:22-171:23 is IDENTIFIER(c)
+":" @ 171:24-171:25 is COLON
+"canvas" @ 171:26-171:32 is IDENTIFIER(canvas)
+"," @ 171:32-171:33 is COMMA
+"x" @ 171:34-171:35 is IDENTIFIER(x)
+":" @ 171:36-171:37 is COLON
+"integer" @ 171:38-171:45 is TYPENAME(Integer)
+"," @ 171:45-171:46 is COMMA
+"y" @ 171:47-171:48 is IDENTIFIER(y)
+":" @ 171:49-171:50 is COLON
+"integer" @ 171:51-171:58 is TYPENAME(Integer)
+"," @ 171:58-171:59 is COMMA
+"nc" @ 171:60-171:62 is IDENTIFIER(nc)
+":" @ 171:63-171:64 is COLON
+"colour" @ 171:65-171:71 is IDENTIFIER(colour)
+")" @ 171:71-171:72 is RIGHT PARENTHESIS
+"is" @ 171:73-171:75 is KEYWORD(Is)
+"c" @ 172:2-172:3 is IDENTIFIER(c)
+"." @ 172:3-172:4 is DOT
+"pixels" @ 172:4-172:10 is IDENTIFIER(pixels)
+"[" @ 172:10-172:11 is LEFT BRACKET
+"c" @ 172:11-172:12 is IDENTIFIER(c)
+"." @ 172:12-172:13 is DOT
+"width" @ 172:13-172:18 is IDENTIFIER(width)
+"*" @ 172:19-172:20 is OPERATOR(Mul)
+"y" @ 172:21-172:22 is IDENTIFIER(y)
+"+" @ 172:23-172:24 is OPERATOR(Plus)
+"x" @ 172:25-172:26 is IDENTIFIER(x)
+"+" @ 172:27-172:28 is OPERATOR(Plus)
+"1" @ 172:29-172:30 is INTEGER LITERAL(1)
+"]" @ 172:30-172:31 is RIGHT BRACKET
+":=" @ 172:32-172:34 is ASSIGNMENT OPERATOR
+"nc" @ 172:35-172:37 is IDENTIFIER(nc)
+";" @ 172:37-172:38 is SEMICOLON
+"end" @ 173:0-173:3 is KEYWORD(End)
+"routine" @ 175:0-175:7 is KEYWORD(Routine)
+"new_canvas" @ 175:8-175:18 is IDENTIFIER(new_canvas)
+"(" @ 175:18-175:19 is LEFT PARENTHESIS
+"h" @ 175:19-175:20 is IDENTIFIER(h)
+":" @ 175:21-175:22 is COLON
+"integer" @ 175:23-175:30 is TYPENAME(Integer)
+"," @ 175:30-175:31 is COMMA
+"w" @ 175:32-175:33 is IDENTIFIER(w)
+":" @ 175:34-175:35 is COLON
+"integer" @ 175:36-175:43 is TYPENAME(Integer)
+"," @ 175:43-175:44 is COMMA
+"background" @ 175:45-175:55 is IDENTIFIER(background)
+":" @ 175:56-175:57 is COLON
+"colour" @ 175:58-175:64 is IDENTIFIER(colour)
+")" @ 175:64-175:65 is RIGHT PARENTHESIS
+":" @ 175:65-175:66 is COLON
+"canvas" @ 175:67-175:73 is IDENTIFIER(canvas)
+"is" @ 175:74-175:76 is KEYWORD(Is)
+"if" @ 176:2-176:4 is KEYWORD(If)
+"h" @ 176:5-176:6 is IDENTIFIER(h)
+"<=" @ 176:7-176:9 is OPERATOR(Le)
+"0" @ 176:10-176:11 is INTEGER LITERAL(0)
+"or" @ 176:12-176:14 is OPERATOR(Or)
+"h" @ 176:15-176:16 is IDENTIFIER(h)
+">" @ 176:17-176:18 is OPERATOR(Gt)
+"360" @ 176:19-176:22 is INTEGER LITERAL(360)
+"or" @ 176:23-176:25 is OPERATOR(Or)
+"w" @ 176:26-176:27 is IDENTIFIER(w)
+"<=" @ 176:28-176:30 is OPERATOR(Le)
+"0" @ 176:31-176:32 is INTEGER LITERAL(0)
+"or" @ 176:33-176:35 is OPERATOR(Or)
+"2" @ 176:36-176:37 is INTEGER LITERAL(2)
+">=" @ 176:38-176:40 is OPERATOR(Ge)
+"640" @ 176:41-176:44 is INTEGER LITERAL(640)
+"then" @ 176:45-176:49 is KEYWORD(Then)
+"print" @ 177:4-177:9 is KEYWORD(Print)
+"new" @ 177:10-177:13 is KEYWORD(New)
+"error" @ 177:14-177:19 is IDENTIFIER(error)
+";" @ 177:19-177:20 is SEMICOLON
+"return" @ 178:4-178:10 is KEYWORD(Return)
+"new" @ 178:11-178:14 is KEYWORD(New)
+"canvas" @ 178:15-178:21 is IDENTIFIER(canvas)
+";" @ 178:21-178:22 is SEMICOLON
+"end" @ 179:2-179:5 is KEYWORD(End)
+"var" @ 181:2-181:5 is KEYWORD(Var)
+"res" @ 181:6-181:9 is IDENTIFIER(res)
+"is" @ 181:10-181:12 is KEYWORD(Is)
+"new" @ 181:13-181:16 is KEYWORD(New)
+"canvas" @ 181:17-181:23 is IDENTIFIER(canvas)
+"where" @ 181:24-181:29 is KEYWORD(Where)
+"pixels" @ 182:4-182:10 is IDENTIFIER(pixels)
+"is" @ 182:11-182:13 is KEYWORD(Is)
+"new" @ 182:14-182:17 is KEYWORD(New)
+"array" @ 182:18-182:23 is KEYWORD(Array)
+"[" @ 182:24-182:25 is LEFT BRACKET
+"360" @ 182:25-182:28 is INTEGER LITERAL(360)
+"*" @ 182:29-182:30 is OPERATOR(Mul)
+"640" @ 182:31-182:34 is INTEGER LITERAL(640)
+"]" @ 182:34-182:35 is RIGHT BRACKET
+"colour" @ 182:36-182:42 is IDENTIFIER(colour)
+";" @ 182:42-182:43 is SEMICOLON
+"height" @ 183:4-183:10 is IDENTIFIER(height)
+"is" @ 183:11-183:13 is KEYWORD(Is)
+"h" @ 183:14-183:15 is IDENTIFIER(h)
+";" @ 183:15-183:16 is SEMICOLON
+"width" @ 184:4-184:9 is IDENTIFIER(width)
+"is" @ 184:10-184:12 is KEYWORD(Is)
+"w" @ 184:13-184:14 is IDENTIFIER(w)
+";" @ 184:14-184:15 is SEMICOLON
+"end" @ 185:2-185:5 is KEYWORD(End)
+";" @ 185:5-185:6 is SEMICOLON
+"for" @ 187:2-187:5 is KEYWORD(For)
+"x" @ 187:6-187:7 is IDENTIFIER(x)
+"in" @ 187:8-187:10 is KEYWORD(In)
+"0" @ 187:11-187:12 is INTEGER LITERAL(0)
+".." @ 187:13-187:15 is RANGE
+"res" @ 187:16-187:19 is IDENTIFIER(res)
+"." @ 187:19-187:20 is DOT
+"height" @ 187:20-187:26 is IDENTIFIER(height)
+"-" @ 187:27-187:28 is OPERATOR(Minus)
+"1" @ 187:29-187:30 is INTEGER LITERAL(1)
+"loop" @ 187:31-187:35 is KEYWORD(Loop)
+"for" @ 188:4-188:7 is KEYWORD(For)
+"y" @ 188:8-188:9 is IDENTIFIER(y)
+"in" @ 188:10-188:12 is KEYWORD(In)
+"0" @ 188:13-188:14 is INTEGER LITERAL(0)
+".." @ 188:15-188:17 is RANGE
+"res" @ 188:18-188:21 is IDENTIFIER(res)
+"." @ 188:21-188:22 is DOT
+"width" @ 188:22-188:27 is IDENTIFIER(width)
+"-" @ 188:28-188:29 is OPERATOR(Minus)
+"1" @ 188:30-188:31 is INTEGER LITERAL(1)
+"loop" @ 188:32-188:36 is KEYWORD(Loop)
+"set_canvas_at" @ 189:6-189:19 is IDENTIFIER(set_canvas_at)
+"(" @ 189:19-189:20 is LEFT PARENTHESIS
+"res" @ 189:20-189:23 is IDENTIFIER(res)
+"," @ 189:23-189:24 is COMMA
+"x" @ 189:25-189:26 is IDENTIFIER(x)
+"," @ 189:26-189:27 is COMMA
+"y" @ 189:28-189:29 is IDENTIFIER(y)
+"," @ 189:29-189:30 is COMMA
+"background" @ 189:31-189:41 is IDENTIFIER(background)
+")" @ 189:41-189:42 is RIGHT PARENTHESIS
+";" @ 189:42-189:43 is SEMICOLON
+"end" @ 190:4-190:7 is KEYWORD(End)
+"end" @ 191:2-191:5 is KEYWORD(End)
+"return" @ 193:2-193:8 is KEYWORD(Return)
+"res" @ 193:9-193:12 is IDENTIFIER(res)
+";" @ 193:12-193:13 is SEMICOLON
+"end" @ 194:0-194:3 is KEYWORD(End)
+"routine" @ 196:0-196:7 is KEYWORD(Routine)
+"render_canvas" @ 196:8-196:21 is IDENTIFIER(render_canvas)
+"(" @ 196:21-196:22 is LEFT PARENTHESIS
+"c" @ 196:22-196:23 is IDENTIFIER(c)
+":" @ 196:24-196:25 is COLON
+"canvas" @ 196:26-196:32 is IDENTIFIER(canvas)
+")" @ 196:32-196:33 is RIGHT PARENTHESIS
+"is" @ 196:34-196:36 is KEYWORD(Is)
+"print" @ 197:2-197:7 is KEYWORD(Print)
+"c" @ 197:8-197:9 is IDENTIFIER(c)
+"." @ 197:9-197:10 is DOT
+"height" @ 197:10-197:16 is IDENTIFIER(height)
+";" @ 197:16-197:17 is SEMICOLON
+"print" @ 198:2-198:7 is KEYWORD(Print)
+"c" @ 198:8-198:9 is IDENTIFIER(c)
+"." @ 198:9-198:10 is DOT
+"width" @ 198:10-198:15 is IDENTIFIER(width)
+";" @ 198:15-198:16 is SEMICOLON
+"for" @ 200:2-200:5 is KEYWORD(For)
+"x" @ 200:6-200:7 is IDENTIFIER(x)
+"in" @ 200:8-200:10 is KEYWORD(In)
+"0" @ 200:11-200:12 is INTEGER LITERAL(0)
+".." @ 200:13-200:15 is RANGE
+"c" @ 200:16-200:17 is IDENTIFIER(c)
+"." @ 200:17-200:18 is DOT
+"height" @ 200:18-200:24 is IDENTIFIER(height)
+"-" @ 200:25-200:26 is OPERATOR(Minus)
+"1" @ 200:27-200:28 is INTEGER LITERAL(1)
+"loop" @ 200:29-200:33 is KEYWORD(Loop)
+"for" @ 201:4-201:7 is KEYWORD(For)
+"y" @ 201:8-201:9 is IDENTIFIER(y)
+"in" @ 201:10-201:12 is KEYWORD(In)
+"0" @ 201:13-201:14 is INTEGER LITERAL(0)
+".." @ 201:15-201:17 is RANGE
+"c" @ 201:18-201:19 is IDENTIFIER(c)
+"." @ 201:19-201:20 is DOT
+"width" @ 201:20-201:25 is IDENTIFIER(width)
+"-" @ 201:26-201:27 is OPERATOR(Minus)
+"1" @ 201:28-201:29 is INTEGER LITERAL(1)
+"loop" @ 201:30-201:34 is KEYWORD(Loop)
+"print" @ 202:6-202:11 is KEYWORD(Print)
+"get_canvas_at" @ 202:12-202:25 is IDENTIFIER(get_canvas_at)
+"(" @ 202:25-202:26 is LEFT PARENTHESIS
+"c" @ 202:26-202:27 is IDENTIFIER(c)
+"," @ 202:27-202:28 is COMMA
+"x" @ 202:29-202:30 is IDENTIFIER(x)
+"," @ 202:30-202:31 is COMMA
+"y" @ 202:32-202:33 is IDENTIFIER(y)
+")" @ 202:33-202:34 is RIGHT PARENTHESIS
+";" @ 202:34-202:35 is SEMICOLON
+"end" @ 203:4-203:7 is KEYWORD(End)
+"end" @ 204:2-204:5 is KEYWORD(End)
+"end" @ 205:0-205:3 is KEYWORD(End)
+"type" @ 209:0-209:4 is KEYWORD(Type)
+"sphere" @ 209:5-209:11 is IDENTIFIER(sphere)
+"is" @ 209:12-209:14 is KEYWORD(Is)
+"record" @ 209:15-209:21 is KEYWORD(Record)
+"var" @ 210:2-210:5 is KEYWORD(Var)
+"centre" @ 210:6-210:12 is IDENTIFIER(centre)
+"is" @ 210:13-210:15 is KEYWORD(Is)
+"vector" @ 210:16-210:22 is IDENTIFIER(vector)
+";" @ 210:22-210:23 is SEMICOLON
+"var" @ 211:2-211:5 is KEYWORD(Var)
+"radius" @ 211:6-211:12 is IDENTIFIER(radius)
+"is" @ 211:13-211:15 is KEYWORD(Is)
+"real" @ 211:16-211:20 is TYPENAME(Real)
+";" @ 211:20-211:21 is SEMICOLON
+"var" @ 212:2-212:5 is KEYWORD(Var)
+"colour" @ 212:6-212:12 is IDENTIFIER(colour)
+"is" @ 212:13-212:15 is KEYWORD(Is)
+"colour" @ 212:16-212:22 is IDENTIFIER(colour)
+";" @ 212:22-212:23 is SEMICOLON
+"end" @ 213:0-213:3 is KEYWORD(End)
+";" @ 213:3-213:4 is SEMICOLON
+"type" @ 215:0-215:4 is KEYWORD(Type)
+"plane" @ 215:5-215:10 is IDENTIFIER(plane)
+"is" @ 215:11-215:13 is KEYWORD(Is)
+"record" @ 215:14-215:20 is KEYWORD(Record)
+"var" @ 216:2-216:5 is KEYWORD(Var)
+"point" @ 216:6-216:11 is IDENTIFIER(point)
+"is" @ 216:12-216:14 is KEYWORD(Is)
+"vector" @ 216:15-216:21 is IDENTIFIER(vector)
+";" @ 216:21-216:22 is SEMICOLON
+"var" @ 217:2-217:5 is KEYWORD(Var)
+"normal" @ 217:6-217:12 is IDENTIFIER(normal)
+"is" @ 217:13-217:15 is KEYWORD(Is)
+"vector" @ 217:16-217:22 is IDENTIFIER(vector)
+";" @ 217:22-217:23 is SEMICOLON
+"var" @ 218:2-218:5 is KEYWORD(Var)
+"colour" @ 218:6-218:12 is IDENTIFIER(colour)
+"is" @ 218:13-218:15 is KEYWORD(Is)
+"colour" @ 218:16-218:22 is IDENTIFIER(colour)
+";" @ 218:22-218:23 is SEMICOLON
+"end" @ 219:0-219:3 is KEYWORD(End)
+";" @ 219:3-219:4 is SEMICOLON
+"-- So-called sum type :)" @ 222:0-222:24 is COMMENT( So-called sum type :))
+"type" @ 223:0-223:4 is KEYWORD(Type)
+"object" @ 223:5-223:11 is IDENTIFIER(object)
+"is" @ 223:12-223:14 is KEYWORD(Is)
+"record" @ 223:15-223:21 is KEYWORD(Record)
+"var" @ 224:2-224:5 is KEYWORD(Var)
+"kind" @ 224:6-224:10 is IDENTIFIER(kind)
+"is" @ 224:11-224:13 is KEYWORD(Is)
+"integer" @ 224:14-224:21 is TYPENAME(Integer)
+";" @ 224:21-224:22 is SEMICOLON
+"var" @ 225:2-225:5 is KEYWORD(Var)
+"s" @ 225:6-225:7 is IDENTIFIER(s)
+"is" @ 225:8-225:10 is KEYWORD(Is)
+"sphere" @ 225:11-225:17 is IDENTIFIER(sphere)
+";" @ 225:17-225:18 is SEMICOLON
+"var" @ 226:2-226:5 is KEYWORD(Var)
+"p" @ 226:6-226:7 is IDENTIFIER(p)
+"is" @ 226:8-226:10 is KEYWORD(Is)
+"plane" @ 226:11-226:16 is IDENTIFIER(plane)
+";" @ 226:16-226:17 is SEMICOLON
+"end" @ 227:0-227:3 is KEYWORD(End)
+";" @ 227:3-227:4 is SEMICOLON
+"routine" @ 229:0-229:7 is KEYWORD(Routine)
+"sphere_to_object" @ 229:8-229:24 is IDENTIFIER(sphere_to_object)
+"(" @ 229:24-229:25 is LEFT PARENTHESIS
+"f" @ 229:25-229:26 is IDENTIFIER(f)
+":" @ 229:27-229:28 is COLON
+"sphere" @ 229:29-229:35 is IDENTIFIER(sphere)
+")" @ 229:35-229:36 is RIGHT PARENTHESIS
+"=>" @ 229:37-229:39 is FUNCTION ARROW
+"new" @ 230:2-230:5 is KEYWORD(New)
+"object" @ 230:6-230:12 is IDENTIFIER(object)
+"where" @ 230:13-230:18 is KEYWORD(Where)
+"kind" @ 231:4-231:8 is IDENTIFIER(kind)
+"is" @ 231:9-231:11 is KEYWORD(Is)
+"1" @ 231:12-231:13 is INTEGER LITERAL(1)
+";" @ 231:13-231:14 is SEMICOLON
+"s" @ 232:4-232:5 is IDENTIFIER(s)
+"is" @ 232:6-232:8 is KEYWORD(Is)
+"f" @ 232:9-232:10 is IDENTIFIER(f)
+";" @ 232:10-232:11 is SEMICOLON
+"p" @ 233:4-233:5 is IDENTIFIER(p)
+"is" @ 233:6-233:8 is KEYWORD(Is)
+"null" @ 233:9-233:13 is KEYWORD(Null)
+";" @ 233:13-233:14 is SEMICOLON
+"end" @ 234:2-234:5 is KEYWORD(End)
+";" @ 234:5-234:6 is SEMICOLON
+"routine" @ 236:0-236:7 is KEYWORD(Routine)
+"plane_to_object" @ 236:8-236:23 is IDENTIFIER(plane_to_object)
+"(" @ 236:23-236:24 is LEFT PARENTHESIS
+"f" @ 236:24-236:25 is IDENTIFIER(f)
+":" @ 236:26-236:27 is COLON
+"plane" @ 236:28-236:33 is IDENTIFIER(plane)
+")" @ 236:33-236:34 is RIGHT PARENTHESIS
+"=>" @ 236:35-236:37 is FUNCTION ARROW
+"new" @ 237:2-237:5 is KEYWORD(New)
+"object" @ 237:6-237:12 is IDENTIFIER(object)
+"where" @ 237:13-237:18 is KEYWORD(Where)
+"kind" @ 238:4-238:8 is IDENTIFIER(kind)
+"is" @ 238:9-238:11 is KEYWORD(Is)
+"2" @ 238:12-238:13 is INTEGER LITERAL(2)
+";" @ 238:13-238:14 is SEMICOLON
+"s" @ 239:4-239:5 is IDENTIFIER(s)
+"is" @ 239:6-239:8 is KEYWORD(Is)
+"null" @ 239:9-239:13 is KEYWORD(Null)
+";" @ 239:13-239:14 is SEMICOLON
+"p" @ 240:4-240:5 is IDENTIFIER(p)
+"is" @ 240:6-240:8 is KEYWORD(Is)
+"f" @ 240:9-240:10 is IDENTIFIER(f)
+";" @ 240:10-240:11 is SEMICOLON
+"end" @ 241:2-241:5 is KEYWORD(End)
+";" @ 241:5-241:6 is SEMICOLON
+"-- NaN stands for no intersection " @ 243:0-243:34 is COMMENT( NaN stands for no intersection )
+"routine" @ 244:0-244:7 is KEYWORD(Routine)
+"intersect_sphere" @ 244:8-244:24 is IDENTIFIER(intersect_sphere)
+"(" @ 244:24-244:25 is LEFT PARENTHESIS
+"s" @ 244:25-244:26 is IDENTIFIER(s)
+":" @ 244:27-244:28 is COLON
+"sphere" @ 244:29-244:35 is IDENTIFIER(sphere)
+"," @ 244:35-244:36 is COMMA
+"r" @ 244:37-244:38 is IDENTIFIER(r)
+":" @ 244:39-244:40 is COLON
+"ray" @ 244:41-244:44 is IDENTIFIER(ray)
+")" @ 244:44-244:45 is RIGHT PARENTHESIS
+":" @ 244:46-244:47 is COLON
+"real" @ 244:48-244:52 is TYPENAME(Real)
+"is" @ 244:53-244:55 is KEYWORD(Is)
+"var" @ 245:2-245:5 is KEYWORD(Var)
+"a" @ 245:6-245:7 is IDENTIFIER(a)
+":" @ 245:8-245:9 is COLON
+"real" @ 245:10-245:14 is TYPENAME(Real)
+"is" @ 245:15-245:17 is KEYWORD(Is)
+"vector_dot" @ 246:4-246:14 is IDENTIFIER(vector_dot)
+"(" @ 246:14-246:15 is LEFT PARENTHESIS
+"r" @ 246:15-246:16 is IDENTIFIER(r)
+"." @ 246:16-246:17 is DOT
+"dest" @ 246:17-246:21 is IDENTIFIER(dest)
+"," @ 246:21-246:22 is COMMA
+"r" @ 246:23-246:24 is IDENTIFIER(r)
+"." @ 246:24-246:25 is DOT
+"dest" @ 246:25-246:29 is IDENTIFIER(dest)
+")" @ 246:29-246:30 is RIGHT PARENTHESIS
+";" @ 246:30-246:31 is SEMICOLON
+"-- almost always 1" @ 246:32-246:50 is COMMENT( almost always 1)
+"var" @ 247:2-247:5 is KEYWORD(Var)
+"b" @ 247:6-247:7 is IDENTIFIER(b)
+":" @ 247:8-247:9 is COLON
+"real" @ 247:10-247:14 is TYPENAME(Real)
+"is" @ 247:15-247:17 is KEYWORD(Is)
+"2" @ 248:4-248:5 is INTEGER LITERAL(2)
+"*" @ 248:6-248:7 is OPERATOR(Mul)
+"vector_dot" @ 248:8-248:18 is IDENTIFIER(vector_dot)
+"(" @ 248:18-248:19 is LEFT PARENTHESIS
+"r" @ 248:19-248:20 is IDENTIFIER(r)
+"." @ 248:20-248:21 is DOT
+"dest" @ 248:21-248:25 is IDENTIFIER(dest)
+"," @ 248:25-248:26 is COMMA
+"vector_sub" @ 248:27-248:37 is IDENTIFIER(vector_sub)
+"(" @ 248:37-248:38 is LEFT PARENTHESIS
+"r" @ 248:38-248:39 is IDENTIFIER(r)
+"." @ 248:39-248:40 is DOT
+"base" @ 248:40-248:44 is IDENTIFIER(base)
+"," @ 248:44-248:45 is COMMA
+"s" @ 248:46-248:47 is IDENTIFIER(s)
+"." @ 248:47-248:48 is DOT
+"centre" @ 248:48-248:54 is IDENTIFIER(centre)
+")" @ 248:54-248:55 is RIGHT PARENTHESIS
+")" @ 248:55-248:56 is RIGHT PARENTHESIS
+";" @ 248:56-248:57 is SEMICOLON
+"var" @ 249:2-249:5 is KEYWORD(Var)
+"c" @ 249:6-249:7 is IDENTIFIER(c)
+":" @ 249:8-249:9 is COLON
+"real" @ 249:10-249:14 is TYPENAME(Real)
+"is" @ 249:15-249:17 is KEYWORD(Is)
+"vector_dot" @ 250:4-250:14 is IDENTIFIER(vector_dot)
+"(" @ 250:14-250:15 is LEFT PARENTHESIS
+"vector_sub" @ 250:15-250:25 is IDENTIFIER(vector_sub)
+"(" @ 250:25-250:26 is LEFT PARENTHESIS
+"r" @ 250:26-250:27 is IDENTIFIER(r)
+"." @ 250:27-250:28 is DOT
+"base" @ 250:28-250:32 is IDENTIFIER(base)
+"," @ 250:32-250:33 is COMMA
+"s" @ 250:34-250:35 is IDENTIFIER(s)
+"." @ 250:35-250:36 is DOT
+"centre" @ 250:36-250:42 is IDENTIFIER(centre)
+")" @ 250:42-250:43 is RIGHT PARENTHESIS
+"," @ 250:43-250:44 is COMMA
+"vector_sub" @ 250:45-250:55 is IDENTIFIER(vector_sub)
+"(" @ 250:55-250:56 is LEFT PARENTHESIS
+"r" @ 250:56-250:57 is IDENTIFIER(r)
+"." @ 250:57-250:58 is DOT
+"base" @ 250:58-250:62 is IDENTIFIER(base)
+"," @ 250:62-250:63 is COMMA
+"s" @ 250:64-250:65 is IDENTIFIER(s)
+"." @ 250:65-250:66 is DOT
+"centre" @ 250:66-250:72 is IDENTIFIER(centre)
+")" @ 250:72-250:73 is RIGHT PARENTHESIS
+")" @ 250:73-250:74 is RIGHT PARENTHESIS
+"-" @ 250:75-250:76 is OPERATOR(Minus)
+"s" @ 250:77-250:78 is IDENTIFIER(s)
+"." @ 250:78-250:79 is DOT
+"radius" @ 250:79-250:85 is IDENTIFIER(radius)
+"*" @ 250:86-250:87 is OPERATOR(Mul)
+"s" @ 250:88-250:89 is IDENTIFIER(s)
+"." @ 250:89-250:90 is DOT
+"radius" @ 250:90-250:96 is IDENTIFIER(radius)
+";" @ 250:96-250:97 is SEMICOLON
+"var" @ 252:2-252:5 is KEYWORD(Var)
+"discriminant" @ 252:6-252:18 is IDENTIFIER(discriminant)
+":" @ 252:19-252:20 is COLON
+"real" @ 252:21-252:25 is TYPENAME(Real)
+"is" @ 252:26-252:28 is KEYWORD(Is)
+"b" @ 253:4-253:5 is IDENTIFIER(b)
+"*" @ 253:6-253:7 is OPERATOR(Mul)
+"b" @ 253:8-253:9 is IDENTIFIER(b)
+"-" @ 253:10-253:11 is OPERATOR(Minus)
+"4" @ 253:12-253:13 is INTEGER LITERAL(4)
+"*" @ 253:14-253:15 is OPERATOR(Mul)
+"a" @ 253:16-253:17 is IDENTIFIER(a)
+"*" @ 253:18-253:19 is OPERATOR(Mul)
+"c" @ 253:20-253:21 is IDENTIFIER(c)
+";" @ 253:21-253:22 is SEMICOLON
+"if" @ 255:2-255:4 is KEYWORD(If)
+"discriminant" @ 255:5-255:17 is IDENTIFIER(discriminant)
+"<" @ 255:18-255:19 is OPERATOR(Lt)
+"0.0" @ 255:20-255:23 is REAL LITERAL(0)
+"then" @ 255:24-255:28 is KEYWORD(Then)
+"return" @ 255:29-255:35 is KEYWORD(Return)
+"NaN" @ 255:36-255:39 is REAL LITERAL(NaN)
+";" @ 255:39-255:40 is SEMICOLON
+"end" @ 255:41-255:44 is KEYWORD(End)
+"var" @ 257:2-257:5 is KEYWORD(Var)
+"t1" @ 257:6-257:8 is IDENTIFIER(t1)
+":" @ 257:9-257:10 is COLON
+"real" @ 257:11-257:15 is TYPENAME(Real)
+"is" @ 257:16-257:18 is KEYWORD(Is)
+"(" @ 258:4-258:5 is LEFT PARENTHESIS
+"-" @ 258:5-258:6 is OPERATOR(Minus)
+"b" @ 258:6-258:7 is IDENTIFIER(b)
+"+" @ 258:8-258:9 is OPERATOR(Plus)
+"sqrt" @ 258:10-258:14 is IDENTIFIER(sqrt)
+"(" @ 258:14-258:15 is LEFT PARENTHESIS
+"discriminant" @ 258:15-258:27 is IDENTIFIER(discriminant)
+")" @ 258:27-258:28 is RIGHT PARENTHESIS
+")" @ 258:28-258:29 is RIGHT PARENTHESIS
+"/" @ 258:30-258:31 is OPERATOR(Div)
+"(" @ 258:32-258:33 is LEFT PARENTHESIS
+"2" @ 258:33-258:34 is INTEGER LITERAL(2)
+"*" @ 258:35-258:36 is OPERATOR(Mul)
+"a" @ 258:37-258:38 is IDENTIFIER(a)
+")" @ 258:38-258:39 is RIGHT PARENTHESIS
+";" @ 258:39-258:40 is SEMICOLON
+"var" @ 259:2-259:5 is KEYWORD(Var)
+"t2" @ 259:6-259:8 is IDENTIFIER(t2)
+":" @ 259:9-259:10 is COLON
+"real" @ 259:11-259:15 is TYPENAME(Real)
+"is" @ 259:16-259:18 is KEYWORD(Is)
+"(" @ 260:4-260:5 is LEFT PARENTHESIS
+"-" @ 260:5-260:6 is OPERATOR(Minus)
+"b" @ 260:6-260:7 is IDENTIFIER(b)
+"-" @ 260:8-260:9 is OPERATOR(Minus)
+"sqrt" @ 260:10-260:14 is IDENTIFIER(sqrt)
+"(" @ 260:14-260:15 is LEFT PARENTHESIS
+"discriminant" @ 260:15-260:27 is IDENTIFIER(discriminant)
+")" @ 260:27-260:28 is RIGHT PARENTHESIS
+")" @ 260:28-260:29 is RIGHT PARENTHESIS
+"/" @ 260:30-260:31 is OPERATOR(Div)
+"(" @ 260:32-260:33 is LEFT PARENTHESIS
+"2" @ 260:33-260:34 is INTEGER LITERAL(2)
+"*" @ 260:35-260:36 is OPERATOR(Mul)
+"a" @ 260:37-260:38 is IDENTIFIER(a)
+")" @ 260:38-260:39 is RIGHT PARENTHESIS
+";" @ 260:39-260:40 is SEMICOLON
+"if" @ 262:2-262:4 is KEYWORD(If)
+"real_min" @ 262:5-262:13 is IDENTIFIER(real_min)
+"(" @ 262:13-262:14 is LEFT PARENTHESIS
+"t1" @ 262:14-262:16 is IDENTIFIER(t1)
+"," @ 262:16-262:17 is COMMA
+"t2" @ 262:18-262:20 is IDENTIFIER(t2)
+")" @ 262:20-262:21 is RIGHT PARENTHESIS
+">" @ 262:22-262:23 is OPERATOR(Gt)
+"0" @ 262:24-262:25 is INTEGER LITERAL(0)
+"then" @ 262:26-262:30 is KEYWORD(Then)
+"return" @ 263:4-263:10 is KEYWORD(Return)
+"real_min" @ 263:11-263:19 is IDENTIFIER(real_min)
+"(" @ 263:19-263:20 is LEFT PARENTHESIS
+"t1" @ 263:20-263:22 is IDENTIFIER(t1)
+"," @ 263:22-263:23 is COMMA
+"t2" @ 263:24-263:26 is IDENTIFIER(t2)
+")" @ 263:26-263:27 is RIGHT PARENTHESIS
+";" @ 263:27-263:28 is SEMICOLON
+"else" @ 264:2-264:6 is KEYWORD(Else)
+"if" @ 265:4-265:6 is KEYWORD(If)
+"real_max" @ 265:7-265:15 is IDENTIFIER(real_max)
+"(" @ 265:15-265:16 is LEFT PARENTHESIS
+"t1" @ 265:16-265:18 is IDENTIFIER(t1)
+"," @ 265:18-265:19 is COMMA
+"t2" @ 265:20-265:22 is IDENTIFIER(t2)
+")" @ 265:22-265:23 is RIGHT PARENTHESIS
+">" @ 265:24-265:25 is OPERATOR(Gt)
+"0" @ 265:26-265:27 is INTEGER LITERAL(0)
+"then" @ 265:28-265:32 is KEYWORD(Then)
+"return" @ 266:6-266:12 is KEYWORD(Return)
+"real_max" @ 266:13-266:21 is IDENTIFIER(real_max)
+"(" @ 266:21-266:22 is LEFT PARENTHESIS
+"t1" @ 266:22-266:24 is IDENTIFIER(t1)
+"," @ 266:24-266:25 is COMMA
+"t2" @ 266:26-266:28 is IDENTIFIER(t2)
+")" @ 266:28-266:29 is RIGHT PARENTHESIS
+";" @ 266:29-266:30 is SEMICOLON
+"else" @ 267:4-267:8 is KEYWORD(Else)
+"return" @ 268:6-268:12 is KEYWORD(Return)
+"NaN" @ 268:13-268:16 is REAL LITERAL(NaN)
+";" @ 268:16-268:17 is SEMICOLON
+"end" @ 269:4-269:7 is KEYWORD(End)
+"end" @ 270:2-270:5 is KEYWORD(End)
+"end" @ 271:0-271:3 is KEYWORD(End)
+"-- NaN stands for no intersection " @ 274:0-274:34 is COMMENT( NaN stands for no intersection )
+"routine" @ 275:0-275:7 is KEYWORD(Routine)
+"intersect_plane" @ 275:8-275:23 is IDENTIFIER(intersect_plane)
+"(" @ 275:23-275:24 is LEFT PARENTHESIS
+"p" @ 275:24-275:25 is IDENTIFIER(p)
+":" @ 275:26-275:27 is COLON
+"plane" @ 275:28-275:33 is IDENTIFIER(plane)
+"," @ 275:33-275:34 is COMMA
+"r" @ 275:35-275:36 is IDENTIFIER(r)
+":" @ 275:37-275:38 is COLON
+"ray" @ 275:39-275:42 is IDENTIFIER(ray)
+")" @ 275:42-275:43 is RIGHT PARENTHESIS
+":" @ 275:44-275:45 is COLON
+"real" @ 275:46-275:50 is TYPENAME(Real)
+"is" @ 275:51-275:53 is KEYWORD(Is)
+"if" @ 276:2-276:4 is KEYWORD(If)
+"approx_eq" @ 276:5-276:14 is IDENTIFIER(approx_eq)
+"(" @ 276:14-276:15 is LEFT PARENTHESIS
+"vector_dot" @ 276:15-276:25 is IDENTIFIER(vector_dot)
+"(" @ 276:25-276:26 is LEFT PARENTHESIS
+"p" @ 276:26-276:27 is IDENTIFIER(p)
+"." @ 276:27-276:28 is DOT
+"normal" @ 276:28-276:34 is IDENTIFIER(normal)
+"," @ 276:34-276:35 is COMMA
+"r" @ 276:36-276:37 is IDENTIFIER(r)
+"." @ 276:37-276:38 is DOT
+"dest" @ 276:38-276:42 is IDENTIFIER(dest)
+")" @ 276:42-276:43 is RIGHT PARENTHESIS
+"," @ 276:43-276:44 is COMMA
+"0" @ 276:45-276:46 is INTEGER LITERAL(0)
+")" @ 276:46-276:47 is RIGHT PARENTHESIS
+"then" @ 276:48-276:52 is KEYWORD(Then)
+"return" @ 277:5-277:11 is KEYWORD(Return)
+"NaN" @ 277:12-277:15 is REAL LITERAL(NaN)
+";" @ 277:15-277:16 is SEMICOLON
+"end" @ 278:2-278:5 is KEYWORD(End)
+"var" @ 280:2-280:5 is KEYWORD(Var)
+"t" @ 280:6-280:7 is IDENTIFIER(t)
+":" @ 280:8-280:9 is COLON
+"real" @ 280:10-280:14 is TYPENAME(Real)
+"is" @ 280:15-280:17 is KEYWORD(Is)
+"vector_dot" @ 281:4-281:14 is IDENTIFIER(vector_dot)
+"(" @ 281:14-281:15 is LEFT PARENTHESIS
+"vector_sub" @ 281:15-281:25 is IDENTIFIER(vector_sub)
+"(" @ 281:25-281:26 is LEFT PARENTHESIS
+"p" @ 281:26-281:27 is IDENTIFIER(p)
+"." @ 281:27-281:28 is DOT
+"point" @ 281:28-281:33 is IDENTIFIER(point)
+"," @ 281:33-281:34 is COMMA
+"r" @ 281:35-281:36 is IDENTIFIER(r)
+"." @ 281:36-281:37 is DOT
+"base" @ 281:37-281:41 is IDENTIFIER(base)
+")" @ 281:41-281:42 is RIGHT PARENTHESIS
+"," @ 281:42-281:43 is COMMA
+"p" @ 281:44-281:45 is IDENTIFIER(p)
+"." @ 281:45-281:46 is DOT
+"normal" @ 281:46-281:52 is IDENTIFIER(normal)
+")" @ 281:52-281:53 is RIGHT PARENTHESIS
+"/" @ 281:54-281:55 is OPERATOR(Div)
+"vector_dot" @ 281:56-281:66 is IDENTIFIER(vector_dot)
+"(" @ 281:66-281:67 is LEFT PARENTHESIS
+"r" @ 281:67-281:68 is IDENTIFIER(r)
+"." @ 281:68-281:69 is DOT
+"dest" @ 281:69-281:73 is IDENTIFIER(dest)
+"," @ 281:73-281:74 is COMMA
+"p" @ 281:75-281:76 is IDENTIFIER(p)
+"." @ 281:76-281:77 is DOT
+"normal" @ 281:77-281:83 is IDENTIFIER(normal)
+")" @ 281:83-281:84 is RIGHT PARENTHESIS
+";" @ 281:84-281:85 is SEMICOLON
+"if" @ 283:2-283:4 is KEYWORD(If)
+"t" @ 283:5-283:6 is IDENTIFIER(t)
+">" @ 283:7-283:8 is OPERATOR(Gt)
+"EPS" @ 283:9-283:12 is IDENTIFIER(EPS)
+"then" @ 283:13-283:17 is KEYWORD(Then)
+"return" @ 284:4-284:10 is KEYWORD(Return)
+"t" @ 284:11-284:12 is IDENTIFIER(t)
+";" @ 284:12-284:13 is SEMICOLON
+"else" @ 285:2-285:6 is KEYWORD(Else)
+"return" @ 286:4-286:10 is KEYWORD(Return)
+"NaN" @ 286:11-286:14 is REAL LITERAL(NaN)
+";" @ 286:14-286:15 is SEMICOLON
+"end" @ 287:2-287:5 is KEYWORD(End)
+"end" @ 288:0-288:3 is KEYWORD(End)
+"-- NaN stands for no intersection " @ 290:0-290:34 is COMMENT( NaN stands for no intersection )
+"routine" @ 291:0-291:7 is KEYWORD(Routine)
+"intersect_object" @ 291:8-291:24 is IDENTIFIER(intersect_object)
+"(" @ 291:24-291:25 is LEFT PARENTHESIS
+"o" @ 291:25-291:26 is IDENTIFIER(o)
+":" @ 291:27-291:28 is COLON
+"object" @ 291:29-291:35 is IDENTIFIER(object)
+"," @ 291:35-291:36 is COMMA
+"r" @ 291:37-291:38 is IDENTIFIER(r)
+":" @ 291:39-291:40 is COLON
+"ray" @ 291:41-291:44 is IDENTIFIER(ray)
+")" @ 291:44-291:45 is RIGHT PARENTHESIS
+":" @ 291:46-291:47 is COLON
+"real" @ 291:48-291:52 is TYPENAME(Real)
+"is" @ 291:53-291:55 is KEYWORD(Is)
+"if" @ 292:2-292:4 is KEYWORD(If)
+"o" @ 292:5-292:6 is IDENTIFIER(o)
+"." @ 292:6-292:7 is DOT
+"kind" @ 292:7-292:11 is IDENTIFIER(kind)
+"=" @ 292:12-292:13 is OPERATOR(Eq)
+"1" @ 292:14-292:15 is INTEGER LITERAL(1)
+"then" @ 292:16-292:20 is KEYWORD(Then)
+"return" @ 292:21-292:27 is KEYWORD(Return)
+"intersect_sphere" @ 292:28-292:44 is IDENTIFIER(intersect_sphere)
+"(" @ 292:44-292:45 is LEFT PARENTHESIS
+"o" @ 292:45-292:46 is IDENTIFIER(o)
+"." @ 292:46-292:47 is DOT
+"s" @ 292:47-292:48 is IDENTIFIER(s)
+"," @ 292:48-292:49 is COMMA
+"r" @ 292:50-292:51 is IDENTIFIER(r)
+")" @ 292:51-292:52 is RIGHT PARENTHESIS
+";" @ 292:52-292:53 is SEMICOLON
+"end" @ 292:54-292:57 is KEYWORD(End)
+"if" @ 293:2-293:4 is KEYWORD(If)
+"o" @ 293:5-293:6 is IDENTIFIER(o)
+"." @ 293:6-293:7 is DOT
+"kind" @ 293:7-293:11 is IDENTIFIER(kind)
+"=" @ 293:12-293:13 is OPERATOR(Eq)
+"2" @ 293:14-293:15 is INTEGER LITERAL(2)
+"then" @ 293:16-293:20 is KEYWORD(Then)
+"return" @ 293:21-293:27 is KEYWORD(Return)
+"intersect_plane" @ 293:28-293:43 is IDENTIFIER(intersect_plane)
+"(" @ 293:43-293:44 is LEFT PARENTHESIS
+"o" @ 293:44-293:45 is IDENTIFIER(o)
+"." @ 293:45-293:46 is DOT
+"p" @ 293:46-293:47 is IDENTIFIER(p)
+"," @ 293:47-293:48 is COMMA
+"r" @ 293:49-293:50 is IDENTIFIER(r)
+")" @ 293:50-293:51 is RIGHT PARENTHESIS
+";" @ 293:51-293:52 is SEMICOLON
+"end" @ 293:53-293:56 is KEYWORD(End)
+"return" @ 294:2-294:8 is KEYWORD(Return)
+"NaN" @ 294:9-294:12 is REAL LITERAL(NaN)
+";" @ 294:12-294:13 is SEMICOLON
+"end" @ 295:0-295:3 is KEYWORD(End)
+"routine" @ 298:0-298:7 is KEYWORD(Routine)
+"normal_at_sphere" @ 298:8-298:24 is IDENTIFIER(normal_at_sphere)
+"(" @ 298:24-298:25 is LEFT PARENTHESIS
+"s" @ 298:25-298:26 is IDENTIFIER(s)
+":" @ 298:27-298:28 is COLON
+"sphere" @ 298:29-298:35 is IDENTIFIER(sphere)
+"," @ 298:35-298:36 is COMMA
+"point" @ 298:37-298:42 is IDENTIFIER(point)
+":" @ 298:43-298:44 is COLON
+"vector" @ 298:45-298:51 is IDENTIFIER(vector)
+")" @ 298:51-298:52 is RIGHT PARENTHESIS
+":" @ 298:53-298:54 is COLON
+"vector" @ 298:55-298:61 is IDENTIFIER(vector)
+"=>" @ 298:62-298:64 is FUNCTION ARROW
+"vector_normalised" @ 299:2-299:19 is IDENTIFIER(vector_normalised)
+"(" @ 299:19-299:20 is LEFT PARENTHESIS
+"vector_sub" @ 299:20-299:30 is IDENTIFIER(vector_sub)
+"(" @ 299:30-299:31 is LEFT PARENTHESIS
+"point" @ 299:31-299:36 is IDENTIFIER(point)
+"," @ 299:36-299:37 is COMMA
+"s" @ 299:38-299:39 is IDENTIFIER(s)
+"." @ 299:39-299:40 is DOT
+"centre" @ 299:40-299:46 is IDENTIFIER(centre)
+")" @ 299:46-299:47 is RIGHT PARENTHESIS
+")" @ 299:47-299:48 is RIGHT PARENTHESIS
+";" @ 299:48-299:49 is SEMICOLON
+"routine" @ 301:0-301:7 is KEYWORD(Routine)
+"normal_at_plane" @ 301:8-301:23 is IDENTIFIER(normal_at_plane)
+"(" @ 301:23-301:24 is LEFT PARENTHESIS
+"p" @ 301:24-301:25 is IDENTIFIER(p)
+":" @ 301:26-301:27 is COLON
+"plane" @ 301:28-301:33 is IDENTIFIER(plane)
+"," @ 301:33-301:34 is COMMA
+"point" @ 301:35-301:40 is IDENTIFIER(point)
+":" @ 301:41-301:42 is COLON
+"vector" @ 301:43-301:49 is IDENTIFIER(vector)
+")" @ 301:49-301:50 is RIGHT PARENTHESIS
+":" @ 301:51-301:52 is COLON
+"vector" @ 301:53-301:59 is IDENTIFIER(vector)
+"=>" @ 301:60-301:62 is FUNCTION ARROW
+"p" @ 302:2-302:3 is IDENTIFIER(p)
+"." @ 302:3-302:4 is DOT
+"normal" @ 302:4-302:10 is IDENTIFIER(normal)
+";" @ 302:10-302:11 is SEMICOLON
+"routine" @ 304:0-304:7 is KEYWORD(Routine)
+"normal_at_object" @ 304:8-304:24 is IDENTIFIER(normal_at_object)
+"(" @ 304:24-304:25 is LEFT PARENTHESIS
+"o" @ 304:25-304:26 is IDENTIFIER(o)
+":" @ 304:27-304:28 is COLON
+"object" @ 304:29-304:35 is IDENTIFIER(object)
+"," @ 304:35-304:36 is COMMA
+"r" @ 304:37-304:38 is IDENTIFIER(r)
+":" @ 304:39-304:40 is COLON
+"vector" @ 304:41-304:47 is IDENTIFIER(vector)
+")" @ 304:47-304:48 is RIGHT PARENTHESIS
+":" @ 304:49-304:50 is COLON
+"vector" @ 304:51-304:57 is IDENTIFIER(vector)
+"is" @ 304:58-304:60 is KEYWORD(Is)
+"if" @ 305:2-305:4 is KEYWORD(If)
+"o" @ 305:5-305:6 is IDENTIFIER(o)
+"." @ 305:6-305:7 is DOT
+"kind" @ 305:7-305:11 is IDENTIFIER(kind)
+"=" @ 305:12-305:13 is OPERATOR(Eq)
+"1" @ 305:14-305:15 is INTEGER LITERAL(1)
+"then" @ 305:16-305:20 is KEYWORD(Then)
+"return" @ 305:21-305:27 is KEYWORD(Return)
+"normal_at_sphere" @ 305:28-305:44 is IDENTIFIER(normal_at_sphere)
+"(" @ 305:44-305:45 is LEFT PARENTHESIS
+"o" @ 305:45-305:46 is IDENTIFIER(o)
+"." @ 305:46-305:47 is DOT
+"s" @ 305:47-305:48 is IDENTIFIER(s)
+"," @ 305:48-305:49 is COMMA
+"r" @ 305:50-305:51 is IDENTIFIER(r)
+")" @ 305:51-305:52 is RIGHT PARENTHESIS
+";" @ 305:52-305:53 is SEMICOLON
+"end" @ 305:54-305:57 is KEYWORD(End)
+"if" @ 306:2-306:4 is KEYWORD(If)
+"o" @ 306:5-306:6 is IDENTIFIER(o)
+"." @ 306:6-306:7 is DOT
+"kind" @ 306:7-306:11 is IDENTIFIER(kind)
+"=" @ 306:12-306:13 is OPERATOR(Eq)
+"2" @ 306:14-306:15 is INTEGER LITERAL(2)
+"then" @ 306:16-306:20 is KEYWORD(Then)
+"return" @ 306:21-306:27 is KEYWORD(Return)
+"normal_at_plane" @ 306:28-306:43 is IDENTIFIER(normal_at_plane)
+"(" @ 306:43-306:44 is LEFT PARENTHESIS
+"o" @ 306:44-306:45 is IDENTIFIER(o)
+"." @ 306:45-306:46 is DOT
+"p" @ 306:46-306:47 is IDENTIFIER(p)
+"," @ 306:47-306:48 is COMMA
+"r" @ 306:49-306:50 is IDENTIFIER(r)
+")" @ 306:50-306:51 is RIGHT PARENTHESIS
+";" @ 306:51-306:52 is SEMICOLON
+"end" @ 306:53-306:56 is KEYWORD(End)
+"return" @ 307:2-307:8 is KEYWORD(Return)
+"null" @ 307:9-307:13 is KEYWORD(Null)
+";" @ 307:13-307:14 is SEMICOLON
+"end" @ 308:0-308:3 is KEYWORD(End)
+"routine" @ 310:0-310:7 is KEYWORD(Routine)
+"colour_at_object" @ 310:8-310:24 is IDENTIFIER(colour_at_object)
+"(" @ 310:24-310:25 is LEFT PARENTHESIS
+"o" @ 310:25-310:26 is IDENTIFIER(o)
+":" @ 310:27-310:28 is COLON
+"object" @ 310:29-310:35 is IDENTIFIER(object)
+"," @ 310:35-310:36 is COMMA
+"r" @ 310:37-310:38 is IDENTIFIER(r)
+":" @ 310:39-310:40 is COLON
+"vector" @ 310:41-310:47 is IDENTIFIER(vector)
+")" @ 310:47-310:48 is RIGHT PARENTHESIS
+":" @ 310:49-310:50 is COLON
+"colour" @ 310:51-310:57 is IDENTIFIER(colour)
+"is" @ 310:58-310:60 is KEYWORD(Is)
+"if" @ 311:2-311:4 is KEYWORD(If)
+"o" @ 311:5-311:6 is IDENTIFIER(o)
+"." @ 311:6-311:7 is DOT
+"kind" @ 311:7-311:11 is IDENTIFIER(kind)
+"=" @ 311:12-311:13 is OPERATOR(Eq)
+"1" @ 311:14-311:15 is INTEGER LITERAL(1)
+"then" @ 311:16-311:20 is KEYWORD(Then)
+"return" @ 311:21-311:27 is KEYWORD(Return)
+"o" @ 311:28-311:29 is IDENTIFIER(o)
+"." @ 311:29-311:30 is DOT
+"s" @ 311:30-311:31 is IDENTIFIER(s)
+"." @ 311:31-311:32 is DOT
+"colour" @ 311:32-311:38 is IDENTIFIER(colour)
+";" @ 311:38-311:39 is SEMICOLON
+"end" @ 311:40-311:43 is KEYWORD(End)
+"if" @ 312:2-312:4 is KEYWORD(If)
+"o" @ 312:5-312:6 is IDENTIFIER(o)
+"." @ 312:6-312:7 is DOT
+"kind" @ 312:7-312:11 is IDENTIFIER(kind)
+"=" @ 312:12-312:13 is OPERATOR(Eq)
+"2" @ 312:14-312:15 is INTEGER LITERAL(2)
+"then" @ 312:16-312:20 is KEYWORD(Then)
+"return" @ 312:21-312:27 is KEYWORD(Return)
+"o" @ 312:28-312:29 is IDENTIFIER(o)
+"." @ 312:29-312:30 is DOT
+"p" @ 312:30-312:31 is IDENTIFIER(p)
+"." @ 312:31-312:32 is DOT
+"colour" @ 312:32-312:38 is IDENTIFIER(colour)
+";" @ 312:38-312:39 is SEMICOLON
+"end" @ 312:40-312:43 is KEYWORD(End)
+"return" @ 313:2-313:8 is KEYWORD(Return)
+"null" @ 313:9-313:13 is KEYWORD(Null)
+";" @ 313:13-313:14 is SEMICOLON
+"end" @ 314:0-314:3 is KEYWORD(End)
+"type" @ 316:0-316:4 is KEYWORD(Type)
+"intersection_desc" @ 316:5-316:22 is IDENTIFIER(intersection_desc)
+"is" @ 316:23-316:25 is KEYWORD(Is)
+"record" @ 316:26-316:32 is KEYWORD(Record)
+"var" @ 317:2-317:5 is KEYWORD(Var)
+"t" @ 317:6-317:7 is IDENTIFIER(t)
+"is" @ 317:8-317:10 is KEYWORD(Is)
+"real" @ 317:11-317:15 is TYPENAME(Real)
+";" @ 317:15-317:16 is SEMICOLON
+"-- NaN stands for no intersection " @ 317:17-317:51 is COMMENT( NaN stands for no intersection )
+"var" @ 318:2-318:5 is KEYWORD(Var)
+"object" @ 318:6-318:12 is IDENTIFIER(object)
+"is" @ 318:13-318:15 is KEYWORD(Is)
+"object" @ 318:16-318:22 is IDENTIFIER(object)
+";" @ 318:22-318:23 is SEMICOLON
+"end" @ 319:0-319:3 is KEYWORD(End)
+";" @ 319:3-319:4 is SEMICOLON
+"routine" @ 321:0-321:7 is KEYWORD(Routine)
+"empty_intersection_desc" @ 321:8-321:31 is IDENTIFIER(empty_intersection_desc)
+"(" @ 321:31-321:32 is LEFT PARENTHESIS
+")" @ 321:32-321:33 is RIGHT PARENTHESIS
+"=>" @ 321:34-321:36 is FUNCTION ARROW
+"new" @ 322:2-322:5 is KEYWORD(New)
+"intersection_desc" @ 322:6-322:23 is IDENTIFIER(intersection_desc)
+"where" @ 322:24-322:29 is KEYWORD(Where)
+"t" @ 323:4-323:5 is IDENTIFIER(t)
+"is" @ 323:6-323:8 is KEYWORD(Is)
+"NaN" @ 323:9-323:12 is REAL LITERAL(NaN)
+";" @ 323:12-323:13 is SEMICOLON
+"object" @ 324:4-324:10 is IDENTIFIER(object)
+"is" @ 324:11-324:13 is KEYWORD(Is)
+"null" @ 324:14-324:18 is KEYWORD(Null)
+";" @ 324:18-324:19 is SEMICOLON
+"end" @ 325:2-325:5 is KEYWORD(End)
+";" @ 325:5-325:6 is SEMICOLON
+"routine" @ 328:0-328:7 is KEYWORD(Routine)
+"trace_ray" @ 328:8-328:17 is IDENTIFIER(trace_ray)
+"(" @ 328:17-328:18 is LEFT PARENTHESIS
+"r" @ 328:18-328:19 is IDENTIFIER(r)
+":" @ 328:20-328:21 is COLON
+"ray" @ 328:22-328:25 is IDENTIFIER(ray)
+"," @ 328:25-328:26 is COMMA
+"scene" @ 328:27-328:32 is IDENTIFIER(scene)
+":" @ 328:33-328:34 is COLON
+"array" @ 328:35-328:40 is KEYWORD(Array)
+"[" @ 328:41-328:42 is LEFT BRACKET
+"]" @ 328:42-328:43 is RIGHT BRACKET
+"object" @ 328:44-328:50 is IDENTIFIER(object)
+")" @ 328:50-328:51 is RIGHT PARENTHESIS
+":" @ 328:52-328:53 is COLON
+"intersection_desc" @ 328:54-328:71 is IDENTIFIER(intersection_desc)
+"is" @ 328:72-328:74 is KEYWORD(Is)
+"var" @ 329:2-329:5 is KEYWORD(Var)
+"best_intersection" @ 329:6-329:23 is IDENTIFIER(best_intersection)
+"is" @ 329:24-329:26 is KEYWORD(Is)
+"empty_intersection_desc" @ 329:27-329:50 is IDENTIFIER(empty_intersection_desc)
+"(" @ 329:50-329:51 is LEFT PARENTHESIS
+")" @ 329:51-329:52 is RIGHT PARENTHESIS
+";" @ 329:52-329:53 is SEMICOLON
+"for" @ 331:2-331:5 is KEYWORD(For)
+"obj" @ 331:6-331:9 is IDENTIFIER(obj)
+"in" @ 331:10-331:12 is KEYWORD(In)
+"scene" @ 331:13-331:18 is IDENTIFIER(scene)
+".." @ 331:19-331:21 is RANGE
+"loop" @ 331:22-331:26 is KEYWORD(Loop)
+"var" @ 332:4-332:7 is KEYWORD(Var)
+"intersection" @ 332:8-332:20 is IDENTIFIER(intersection)
+"is" @ 332:21-332:23 is KEYWORD(Is)
+"intersect_object" @ 332:24-332:40 is IDENTIFIER(intersect_object)
+"(" @ 332:40-332:41 is LEFT PARENTHESIS
+"obj" @ 332:41-332:44 is IDENTIFIER(obj)
+"," @ 332:44-332:45 is COMMA
+"r" @ 332:46-332:47 is IDENTIFIER(r)
+")" @ 332:47-332:48 is RIGHT PARENTHESIS
+";" @ 332:48-332:49 is SEMICOLON
+"if" @ 334:4-334:6 is KEYWORD(If)
+"not" @ 334:7-334:10 is OPERATOR(Not)
+"is_nan" @ 334:11-334:17 is IDENTIFIER(is_nan)
+"(" @ 334:17-334:18 is LEFT PARENTHESIS
+"intersection" @ 334:18-334:30 is IDENTIFIER(intersection)
+")" @ 334:30-334:31 is RIGHT PARENTHESIS
+"and" @ 335:7-335:10 is OPERATOR(And)
+"(" @ 335:11-335:12 is LEFT PARENTHESIS
+"is_nan" @ 336:8-336:14 is IDENTIFIER(is_nan)
+"(" @ 336:14-336:15 is LEFT PARENTHESIS
+"best_intersection" @ 336:15-336:32 is IDENTIFIER(best_intersection)
+"." @ 336:32-336:33 is DOT
+"t" @ 336:33-336:34 is IDENTIFIER(t)
+")" @ 336:34-336:35 is RIGHT PARENTHESIS
+"or" @ 337:8-337:10 is OPERATOR(Or)
+"best_intersection" @ 337:11-337:28 is IDENTIFIER(best_intersection)
+"." @ 337:28-337:29 is DOT
+"t" @ 337:29-337:30 is IDENTIFIER(t)
+">" @ 337:31-337:32 is OPERATOR(Gt)
+"intersection" @ 337:33-337:45 is IDENTIFIER(intersection)
+"+" @ 337:46-337:47 is OPERATOR(Plus)
+"EPS" @ 337:48-337:51 is IDENTIFIER(EPS)
+")" @ 337:51-337:52 is RIGHT PARENTHESIS
+"then" @ 337:53-337:57 is KEYWORD(Then)
+"best_intersection" @ 339:8-339:25 is IDENTIFIER(best_intersection)
+":=" @ 339:26-339:28 is ASSIGNMENT OPERATOR
+"new" @ 340:10-340:13 is KEYWORD(New)
+"intersection_desc" @ 340:14-340:31 is IDENTIFIER(intersection_desc)
+"where" @ 340:32-340:37 is KEYWORD(Where)
+"t" @ 341:12-341:13 is IDENTIFIER(t)
+"is" @ 341:14-341:16 is KEYWORD(Is)
+"intersection" @ 341:17-341:29 is IDENTIFIER(intersection)
+";" @ 341:29-341:30 is SEMICOLON
+"object" @ 342:12-342:18 is IDENTIFIER(object)
+"is" @ 342:19-342:21 is KEYWORD(Is)
+"obj" @ 342:22-342:25 is IDENTIFIER(obj)
+";" @ 342:25-342:26 is SEMICOLON
+"end" @ 343:10-343:13 is KEYWORD(End)
+";" @ 343:13-343:14 is SEMICOLON
+"end" @ 344:4-344:7 is KEYWORD(End)
+"end" @ 345:2-345:5 is KEYWORD(End)
+"return" @ 347:2-347:8 is KEYWORD(Return)
+"best_intersection" @ 347:9-347:26 is IDENTIFIER(best_intersection)
+";" @ 347:26-347:27 is SEMICOLON
+"end" @ 348:0-348:3 is KEYWORD(End)
+"routine" @ 350:0-350:7 is KEYWORD(Routine)
+"trace_rays" @ 350:8-350:18 is IDENTIFIER(trace_rays)
+"(" @ 350:18-350:19 is LEFT PARENTHESIS
+"h" @ 350:19-350:20 is IDENTIFIER(h)
+":" @ 350:21-350:22 is COLON
+"integer" @ 350:23-350:30 is TYPENAME(Integer)
+"," @ 350:30-350:31 is COMMA
+"w" @ 350:32-350:33 is IDENTIFIER(w)
+":" @ 350:34-350:35 is COLON
+"integer" @ 350:36-350:43 is TYPENAME(Integer)
+"," @ 350:43-350:44 is COMMA
+"scene" @ 350:45-350:50 is IDENTIFIER(scene)
+":" @ 350:51-350:52 is COLON
+"array" @ 350:53-350:58 is KEYWORD(Array)
+"[" @ 350:59-350:60 is LEFT BRACKET
+"]" @ 350:60-350:61 is RIGHT BRACKET
+"object" @ 350:62-350:68 is IDENTIFIER(object)
+")" @ 350:68-350:69 is RIGHT PARENTHESIS
+":" @ 350:70-350:71 is COLON
+"canvas" @ 350:72-350:78 is IDENTIFIER(canvas)
+"is" @ 350:79-350:81 is KEYWORD(Is)
+"var" @ 351:2-351:5 is KEYWORD(Var)
+"c" @ 351:6-351:7 is IDENTIFIER(c)
+"is" @ 351:8-351:10 is KEYWORD(Is)
+"new_canvas" @ 351:11-351:21 is IDENTIFIER(new_canvas)
+"(" @ 351:21-351:22 is LEFT PARENTHESIS
+"h" @ 351:22-351:23 is IDENTIFIER(h)
+"," @ 351:23-351:24 is COMMA
+"w" @ 351:25-351:26 is IDENTIFIER(w)
+"," @ 351:26-351:27 is COMMA
+"BLACK" @ 351:28-351:33 is IDENTIFIER(BLACK)
+")" @ 351:33-351:34 is RIGHT PARENTHESIS
+";" @ 351:34-351:35 is SEMICOLON
+"var" @ 353:2-353:5 is KEYWORD(Var)
+"virtual_screen_height" @ 353:6-353:27 is IDENTIFIER(virtual_screen_height)
+":" @ 353:28-353:29 is COLON
+"real" @ 353:30-353:34 is TYPENAME(Real)
+"is" @ 353:35-353:37 is KEYWORD(Is)
+"2" @ 353:38-353:39 is INTEGER LITERAL(2)
+";" @ 353:39-353:40 is SEMICOLON
+"var" @ 354:2-354:5 is KEYWORD(Var)
+"virtual_screen_width" @ 354:6-354:26 is IDENTIFIER(virtual_screen_width)
+":" @ 354:27-354:28 is COLON
+"real" @ 354:29-354:33 is TYPENAME(Real)
+"is" @ 354:34-354:36 is KEYWORD(Is)
+"virtual_screen_height" @ 355:4-355:25 is IDENTIFIER(virtual_screen_height)
+"*" @ 355:26-355:27 is OPERATOR(Mul)
+"16" @ 355:28-355:30 is INTEGER LITERAL(16)
+"/" @ 355:31-355:32 is OPERATOR(Div)
+"9" @ 355:33-355:34 is INTEGER LITERAL(9)
+";" @ 355:34-355:35 is SEMICOLON
+"var" @ 357:2-357:5 is KEYWORD(Var)
+"base" @ 357:6-357:10 is IDENTIFIER(base)
+":" @ 357:11-357:12 is COLON
+"vector" @ 357:13-357:19 is IDENTIFIER(vector)
+"is" @ 357:20-357:22 is KEYWORD(Is)
+"vector_of" @ 358:4-358:13 is IDENTIFIER(vector_of)
+"(" @ 358:13-358:14 is LEFT PARENTHESIS
+"0" @ 358:14-358:15 is INTEGER LITERAL(0)
+"," @ 358:15-358:16 is COMMA
+"0" @ 358:17-358:18 is INTEGER LITERAL(0)
+"," @ 358:18-358:19 is COMMA
+"-2" @ 358:20-358:22 is INTEGER LITERAL(-2)
+")" @ 358:22-358:23 is RIGHT PARENTHESIS
+";" @ 358:23-358:24 is SEMICOLON
+"var" @ 359:2-359:5 is KEYWORD(Var)
+"x_orth" @ 359:6-359:12 is IDENTIFIER(x_orth)
+":" @ 359:13-359:14 is COLON
+"vector" @ 359:15-359:21 is IDENTIFIER(vector)
+"is" @ 359:22-359:24 is KEYWORD(Is)
+"vector_of" @ 360:4-360:13 is IDENTIFIER(vector_of)
+"(" @ 360:13-360:14 is LEFT PARENTHESIS
+"1" @ 360:14-360:15 is INTEGER LITERAL(1)
+"," @ 360:15-360:16 is COMMA
+"0" @ 360:17-360:18 is INTEGER LITERAL(0)
+"," @ 360:18-360:19 is COMMA
+"0" @ 360:20-360:21 is INTEGER LITERAL(0)
+")" @ 360:21-360:22 is RIGHT PARENTHESIS
+";" @ 360:22-360:23 is SEMICOLON
+"var" @ 361:2-361:5 is KEYWORD(Var)
+"y_orth" @ 361:6-361:12 is IDENTIFIER(y_orth)
+":" @ 361:13-361:14 is COLON
+"vector" @ 361:15-361:21 is IDENTIFIER(vector)
+"is" @ 361:22-361:24 is KEYWORD(Is)
+"vector_of" @ 362:4-362:13 is IDENTIFIER(vector_of)
+"(" @ 362:13-362:14 is LEFT PARENTHESIS
+"0" @ 362:14-362:15 is INTEGER LITERAL(0)
+"," @ 362:15-362:16 is COMMA
+"1" @ 362:17-362:18 is INTEGER LITERAL(1)
+"," @ 362:18-362:19 is COMMA
+"0" @ 362:20-362:21 is INTEGER LITERAL(0)
+")" @ 362:21-362:22 is RIGHT PARENTHESIS
+";" @ 362:22-362:23 is SEMICOLON
+"var" @ 363:2-363:5 is KEYWORD(Var)
+"left_bottom" @ 363:6-363:17 is IDENTIFIER(left_bottom)
+":" @ 363:18-363:19 is COLON
+"vector" @ 363:20-363:26 is IDENTIFIER(vector)
+"is" @ 363:27-363:29 is KEYWORD(Is)
+"vector_of" @ 364:4-364:13 is IDENTIFIER(vector_of)
+"(" @ 364:13-364:14 is LEFT PARENTHESIS
+"-" @ 364:14-364:15 is OPERATOR(Minus)
+"virtual_screen_width" @ 364:15-364:35 is IDENTIFIER(virtual_screen_width)
+"/" @ 364:36-364:37 is OPERATOR(Div)
+"2" @ 364:38-364:39 is INTEGER LITERAL(2)
+"," @ 364:39-364:40 is COMMA
+"-" @ 364:41-364:42 is OPERATOR(Minus)
+"virtual_screen_height" @ 364:42-364:63 is IDENTIFIER(virtual_screen_height)
+"/" @ 364:64-364:65 is OPERATOR(Div)
+"2" @ 364:66-364:67 is INTEGER LITERAL(2)
+"," @ 364:67-364:68 is COMMA
+"0" @ 364:69-364:70 is INTEGER LITERAL(0)
+")" @ 364:70-364:71 is RIGHT PARENTHESIS
+";" @ 364:71-364:72 is SEMICOLON
+"for" @ 366:2-366:5 is KEYWORD(For)
+"x" @ 366:6-366:7 is IDENTIFIER(x)
+"in" @ 366:8-366:10 is KEYWORD(In)
+"0" @ 366:11-366:12 is INTEGER LITERAL(0)
+".." @ 366:13-366:15 is RANGE
+"c" @ 366:16-366:17 is IDENTIFIER(c)
+"." @ 366:17-366:18 is DOT
+"width" @ 366:18-366:23 is IDENTIFIER(width)
+"-" @ 366:24-366:25 is OPERATOR(Minus)
+"1" @ 366:26-366:27 is INTEGER LITERAL(1)
+"loop" @ 366:28-366:32 is KEYWORD(Loop)
+"for" @ 367:4-367:7 is KEYWORD(For)
+"y" @ 367:8-367:9 is IDENTIFIER(y)
+"in" @ 367:10-367:12 is KEYWORD(In)
+"0" @ 367:13-367:14 is INTEGER LITERAL(0)
+".." @ 367:15-367:17 is RANGE
+"c" @ 367:18-367:19 is IDENTIFIER(c)
+"." @ 367:19-367:20 is DOT
+"height" @ 367:20-367:26 is IDENTIFIER(height)
+"-" @ 367:27-367:28 is OPERATOR(Minus)
+"1" @ 367:29-367:30 is INTEGER LITERAL(1)
+"loop" @ 367:31-367:35 is KEYWORD(Loop)
+"var" @ 368:6-368:9 is KEYWORD(Var)
+"virtual_screen_point" @ 368:10-368:30 is IDENTIFIER(virtual_screen_point)
+":" @ 368:31-368:32 is COLON
+"vector" @ 368:33-368:39 is IDENTIFIER(vector)
+"is" @ 368:40-368:42 is KEYWORD(Is)
+"vector_add" @ 369:8-369:18 is IDENTIFIER(vector_add)
+"(" @ 369:18-369:19 is LEFT PARENTHESIS
+"left_bottom" @ 370:10-370:21 is IDENTIFIER(left_bottom)
+"," @ 370:21-370:22 is COMMA
+"vector_add" @ 371:10-371:20 is IDENTIFIER(vector_add)
+"(" @ 371:20-371:21 is LEFT PARENTHESIS
+"vector_mul" @ 372:12-372:22 is IDENTIFIER(vector_mul)
+"(" @ 372:22-372:23 is LEFT PARENTHESIS
+"virtual_screen_width" @ 372:23-372:43 is IDENTIFIER(virtual_screen_width)
+"*" @ 372:44-372:45 is OPERATOR(Mul)
+"x" @ 372:46-372:47 is IDENTIFIER(x)
+"/" @ 372:48-372:49 is OPERATOR(Div)
+"(" @ 372:50-372:51 is LEFT PARENTHESIS
+"1.0" @ 372:51-372:54 is REAL LITERAL(1)
+"*" @ 372:55-372:56 is OPERATOR(Mul)
+"c" @ 372:57-372:58 is IDENTIFIER(c)
+"." @ 372:58-372:59 is DOT
+"width" @ 372:59-372:64 is IDENTIFIER(width)
+")" @ 372:64-372:65 is RIGHT PARENTHESIS
+"," @ 372:65-372:66 is COMMA
+"x_orth" @ 372:67-372:73 is IDENTIFIER(x_orth)
+")" @ 372:73-372:74 is RIGHT PARENTHESIS
+"," @ 372:74-372:75 is COMMA
+"vector_mul" @ 373:12-373:22 is IDENTIFIER(vector_mul)
+"(" @ 373:22-373:23 is LEFT PARENTHESIS
+"virtual_screen_height" @ 373:23-373:44 is IDENTIFIER(virtual_screen_height)
+"*" @ 373:45-373:46 is OPERATOR(Mul)
+"y" @ 373:47-373:48 is IDENTIFIER(y)
+"/" @ 373:49-373:50 is OPERATOR(Div)
+"(" @ 373:51-373:52 is LEFT PARENTHESIS
+"1.0" @ 373:52-373:55 is REAL LITERAL(1)
+"*" @ 373:56-373:57 is OPERATOR(Mul)
+"c" @ 373:58-373:59 is IDENTIFIER(c)
+"." @ 373:59-373:60 is DOT
+"height" @ 373:60-373:66 is IDENTIFIER(height)
+")" @ 373:66-373:67 is RIGHT PARENTHESIS
+"," @ 373:67-373:68 is COMMA
+"y_orth" @ 373:69-373:75 is IDENTIFIER(y_orth)
+")" @ 373:75-373:76 is RIGHT PARENTHESIS
+")" @ 374:10-374:11 is RIGHT PARENTHESIS
+")" @ 375:8-375:9 is RIGHT PARENTHESIS
+";" @ 375:9-375:10 is SEMICOLON
+"var" @ 377:6-377:9 is KEYWORD(Var)
+"r" @ 377:10-377:11 is IDENTIFIER(r)
+"is" @ 377:12-377:14 is KEYWORD(Is)
+"ray_from_to" @ 378:8-378:19 is IDENTIFIER(ray_from_to)
+"(" @ 378:19-378:20 is LEFT PARENTHESIS
+"base" @ 378:20-378:24 is IDENTIFIER(base)
+"," @ 378:24-378:25 is COMMA
+"virtual_screen_point" @ 378:26-378:46 is IDENTIFIER(virtual_screen_point)
+")" @ 378:46-378:47 is RIGHT PARENTHESIS
+";" @ 378:47-378:48 is SEMICOLON
+"var" @ 380:6-380:9 is KEYWORD(Var)
+"intersection" @ 380:10-380:22 is IDENTIFIER(intersection)
+"is" @ 380:23-380:25 is KEYWORD(Is)
+"trace_ray" @ 381:8-381:17 is IDENTIFIER(trace_ray)
+"(" @ 381:17-381:18 is LEFT PARENTHESIS
+"r" @ 381:18-381:19 is IDENTIFIER(r)
+"," @ 381:19-381:20 is COMMA
+"scene" @ 381:21-381:26 is IDENTIFIER(scene)
+")" @ 381:26-381:27 is RIGHT PARENTHESIS
+";" @ 381:27-381:28 is SEMICOLON
+"if" @ 384:6-384:8 is KEYWORD(If)
+"not" @ 384:9-384:12 is OPERATOR(Not)
+"is_nan" @ 384:13-384:19 is IDENTIFIER(is_nan)
+"(" @ 384:19-384:20 is LEFT PARENTHESIS
+"intersection" @ 384:20-384:32 is IDENTIFIER(intersection)
+"." @ 384:32-384:33 is DOT
+"t" @ 384:33-384:34 is IDENTIFIER(t)
+")" @ 384:34-384:35 is RIGHT PARENTHESIS
+"then" @ 384:36-384:40 is KEYWORD(Then)
+"var" @ 385:8-385:11 is KEYWORD(Var)
+"colour_ratio" @ 385:12-385:24 is IDENTIFIER(colour_ratio)
+":" @ 385:25-385:26 is COLON
+"real" @ 385:27-385:31 is TYPENAME(Real)
+"is" @ 385:32-385:34 is KEYWORD(Is)
+"vector_dot" @ 386:10-386:20 is IDENTIFIER(vector_dot)
+"(" @ 386:20-386:21 is LEFT PARENTHESIS
+"normal_at_object" @ 387:12-387:28 is IDENTIFIER(normal_at_object)
+"(" @ 387:28-387:29 is LEFT PARENTHESIS
+"intersection" @ 387:29-387:41 is IDENTIFIER(intersection)
+"." @ 387:41-387:42 is DOT
+"object" @ 387:42-387:48 is IDENTIFIER(object)
+"," @ 387:48-387:49 is COMMA
+"ray_cut" @ 387:50-387:57 is IDENTIFIER(ray_cut)
+"(" @ 387:57-387:58 is LEFT PARENTHESIS
+"r" @ 387:58-387:59 is IDENTIFIER(r)
+"," @ 387:59-387:60 is COMMA
+"intersection" @ 387:61-387:73 is IDENTIFIER(intersection)
+"." @ 387:73-387:74 is DOT
+"t" @ 387:74-387:75 is IDENTIFIER(t)
+")" @ 387:75-387:76 is RIGHT PARENTHESIS
+")" @ 387:76-387:77 is RIGHT PARENTHESIS
+"," @ 387:77-387:78 is COMMA
+"vector_mul" @ 388:12-388:22 is IDENTIFIER(vector_mul)
+"(" @ 388:22-388:23 is LEFT PARENTHESIS
+"-1" @ 388:23-388:25 is INTEGER LITERAL(-1)
+"," @ 388:25-388:26 is COMMA
+"r" @ 388:27-388:28 is IDENTIFIER(r)
+"." @ 388:28-388:29 is DOT
+"dest" @ 388:29-388:33 is IDENTIFIER(dest)
+")" @ 388:33-388:34 is RIGHT PARENTHESIS
+")" @ 389:10-389:11 is RIGHT PARENTHESIS
+";" @ 389:11-389:12 is SEMICOLON
+"if" @ 390:8-390:10 is KEYWORD(If)
+"colour_ratio" @ 390:11-390:23 is IDENTIFIER(colour_ratio)
+"<" @ 390:24-390:25 is OPERATOR(Lt)
+"0" @ 390:26-390:27 is INTEGER LITERAL(0)
+"then" @ 390:28-390:32 is KEYWORD(Then)
+"colour_ratio" @ 390:33-390:45 is IDENTIFIER(colour_ratio)
+":=" @ 390:46-390:48 is ASSIGNMENT OPERATOR
+"1" @ 390:49-390:50 is INTEGER LITERAL(1)
+";" @ 390:50-390:51 is SEMICOLON
+"end" @ 390:52-390:55 is KEYWORD(End)
+"var" @ 392:8-392:11 is KEYWORD(Var)
+"paint" @ 392:12-392:17 is IDENTIFIER(paint)
+"is" @ 392:18-392:20 is KEYWORD(Is)
+"colour_at_object" @ 393:10-393:26 is IDENTIFIER(colour_at_object)
+"(" @ 393:26-393:27 is LEFT PARENTHESIS
+"intersection" @ 393:27-393:39 is IDENTIFIER(intersection)
+"." @ 393:39-393:40 is DOT
+"object" @ 393:40-393:46 is IDENTIFIER(object)
+"," @ 393:46-393:47 is COMMA
+"ray_cut" @ 393:48-393:55 is IDENTIFIER(ray_cut)
+"(" @ 393:55-393:56 is LEFT PARENTHESIS
+"r" @ 393:56-393:57 is IDENTIFIER(r)
+"," @ 393:57-393:58 is COMMA
+"intersection" @ 393:59-393:71 is IDENTIFIER(intersection)
+"." @ 393:71-393:72 is DOT
+"t" @ 393:72-393:73 is IDENTIFIER(t)
+")" @ 393:73-393:74 is RIGHT PARENTHESIS
+")" @ 393:74-393:75 is RIGHT PARENTHESIS
+";" @ 393:75-393:76 is SEMICOLON
+"set_canvas_at" @ 395:8-395:21 is IDENTIFIER(set_canvas_at)
+"(" @ 395:21-395:22 is LEFT PARENTHESIS
+"c" @ 395:22-395:23 is IDENTIFIER(c)
+"," @ 395:23-395:24 is COMMA
+"x" @ 395:25-395:26 is IDENTIFIER(x)
+"," @ 395:26-395:27 is COMMA
+"y" @ 395:28-395:29 is IDENTIFIER(y)
+"," @ 395:29-395:30 is COMMA
+"colour_mix_with_ratio" @ 395:31-395:52 is IDENTIFIER(colour_mix_with_ratio)
+"(" @ 395:52-395:53 is LEFT PARENTHESIS
+"BLACK" @ 395:53-395:58 is IDENTIFIER(BLACK)
+"," @ 395:58-395:59 is COMMA
+"paint" @ 395:60-395:65 is IDENTIFIER(paint)
+"," @ 395:65-395:66 is COMMA
+"colour_ratio" @ 395:67-395:79 is IDENTIFIER(colour_ratio)
+")" @ 395:79-395:80 is RIGHT PARENTHESIS
+")" @ 395:80-395:81 is RIGHT PARENTHESIS
+";" @ 395:81-395:82 is SEMICOLON
+"end" @ 396:6-396:9 is KEYWORD(End)
+"end" @ 397:4-397:7 is KEYWORD(End)
+"end" @ 398:2-398:5 is KEYWORD(End)
+"return" @ 400:2-400:8 is KEYWORD(Return)
+"c" @ 400:9-400:10 is IDENTIFIER(c)
+";" @ 400:10-400:11 is SEMICOLON
+"end" @ 401:0-401:3 is KEYWORD(End)
+"routine" @ 403:0-403:7 is KEYWORD(Routine)
+"main" @ 403:8-403:12 is IDENTIFIER(main)
+"(" @ 403:12-403:13 is LEFT PARENTHESIS
+")" @ 403:13-403:14 is RIGHT PARENTHESIS
+"is" @ 403:15-403:17 is KEYWORD(Is)
+"var" @ 404:2-404:5 is KEYWORD(Var)
+"red_sphere" @ 404:6-404:16 is IDENTIFIER(red_sphere)
+"is" @ 404:17-404:19 is KEYWORD(Is)
+"new" @ 405:4-405:7 is KEYWORD(New)
+"sphere" @ 405:8-405:14 is IDENTIFIER(sphere)
+"where" @ 405:15-405:20 is KEYWORD(Where)
+"centre" @ 406:6-406:12 is IDENTIFIER(centre)
+"is" @ 406:13-406:15 is KEYWORD(Is)
+"vector_of" @ 406:16-406:25 is IDENTIFIER(vector_of)
+"(" @ 406:25-406:26 is LEFT PARENTHESIS
+"0.5" @ 406:26-406:29 is REAL LITERAL(0.5)
+"," @ 406:29-406:30 is COMMA
+"0.5" @ 406:31-406:34 is REAL LITERAL(0.5)
+"," @ 406:34-406:35 is COMMA
+"3" @ 406:36-406:37 is INTEGER LITERAL(3)
+")" @ 406:37-406:38 is RIGHT PARENTHESIS
+";" @ 406:38-406:39 is SEMICOLON
+"radius" @ 407:6-407:12 is IDENTIFIER(radius)
+"is" @ 407:13-407:15 is KEYWORD(Is)
+"1" @ 407:16-407:17 is INTEGER LITERAL(1)
+";" @ 407:17-407:18 is SEMICOLON
+"colour" @ 408:6-408:12 is IDENTIFIER(colour)
+"is" @ 408:13-408:15 is KEYWORD(Is)
+"RED" @ 408:16-408:19 is IDENTIFIER(RED)
+";" @ 408:19-408:20 is SEMICOLON
+"end" @ 409:4-409:7 is KEYWORD(End)
+";" @ 409:7-409:8 is SEMICOLON
+"var" @ 410:2-410:5 is KEYWORD(Var)
+"green_sphere" @ 410:6-410:18 is IDENTIFIER(green_sphere)
+"is" @ 410:19-410:21 is KEYWORD(Is)
+"new" @ 411:4-411:7 is KEYWORD(New)
+"sphere" @ 411:8-411:14 is IDENTIFIER(sphere)
+"where" @ 411:15-411:20 is KEYWORD(Where)
+"centre" @ 412:6-412:12 is IDENTIFIER(centre)
+"is" @ 412:13-412:15 is KEYWORD(Is)
+"vector_of" @ 412:16-412:25 is IDENTIFIER(vector_of)
+"(" @ 412:25-412:26 is LEFT PARENTHESIS
+"-0.8" @ 412:26-412:30 is REAL LITERAL(-0.8)
+"," @ 412:30-412:31 is COMMA
+"-0.5" @ 412:32-412:36 is REAL LITERAL(-0.5)
+"," @ 412:36-412:37 is COMMA
+"4" @ 412:38-412:39 is INTEGER LITERAL(4)
+")" @ 412:39-412:40 is RIGHT PARENTHESIS
+";" @ 412:40-412:41 is SEMICOLON
+"radius" @ 413:6-413:12 is IDENTIFIER(radius)
+"is" @ 413:13-413:15 is KEYWORD(Is)
+"3" @ 413:16-413:17 is INTEGER LITERAL(3)
+";" @ 413:17-413:18 is SEMICOLON
+"colour" @ 414:6-414:12 is IDENTIFIER(colour)
+"is" @ 414:13-414:15 is KEYWORD(Is)
+"GREEN" @ 414:16-414:21 is IDENTIFIER(GREEN)
+";" @ 414:21-414:22 is SEMICOLON
+"end" @ 415:4-415:7 is KEYWORD(End)
+";" @ 415:7-415:8 is SEMICOLON
+"var" @ 416:2-416:5 is KEYWORD(Var)
+"blue_plane" @ 416:6-416:16 is IDENTIFIER(blue_plane)
+"is" @ 416:17-416:19 is KEYWORD(Is)
+"new" @ 417:4-417:7 is KEYWORD(New)
+"plane" @ 417:8-417:13 is IDENTIFIER(plane)
+"where" @ 417:14-417:19 is KEYWORD(Where)
+"point" @ 418:6-418:11 is IDENTIFIER(point)
+"is" @ 418:12-418:14 is KEYWORD(Is)
+"vector_of" @ 418:15-418:24 is IDENTIFIER(vector_of)
+"(" @ 418:24-418:25 is LEFT PARENTHESIS
+"0" @ 418:25-418:26 is INTEGER LITERAL(0)
+"," @ 418:26-418:27 is COMMA
+"-1.5" @ 418:28-418:32 is REAL LITERAL(-1.5)
+"," @ 418:32-418:33 is COMMA
+"5" @ 418:34-418:35 is INTEGER LITERAL(5)
+")" @ 418:35-418:36 is RIGHT PARENTHESIS
+";" @ 418:36-418:37 is SEMICOLON
+"normal" @ 419:6-419:12 is IDENTIFIER(normal)
+"is" @ 419:13-419:15 is KEYWORD(Is)
+"vector_of" @ 419:16-419:25 is IDENTIFIER(vector_of)
+"(" @ 419:25-419:26 is LEFT PARENTHESIS
+"0.2" @ 419:26-419:29 is REAL LITERAL(0.2)
+"," @ 419:29-419:30 is COMMA
+"1" @ 419:31-419:32 is INTEGER LITERAL(1)
+"," @ 419:32-419:33 is COMMA
+"-0.1" @ 419:34-419:38 is REAL LITERAL(-0.1)
+")" @ 419:38-419:39 is RIGHT PARENTHESIS
+";" @ 419:39-419:40 is SEMICOLON
+"colour" @ 420:6-420:12 is IDENTIFIER(colour)
+"is" @ 420:13-420:15 is KEYWORD(Is)
+"BLUE" @ 420:16-420:20 is IDENTIFIER(BLUE)
+";" @ 420:20-420:21 is SEMICOLON
+"end" @ 421:4-421:7 is KEYWORD(End)
+";" @ 421:7-421:8 is SEMICOLON
+"var" @ 423:2-423:5 is KEYWORD(Var)
+"scene" @ 423:6-423:11 is IDENTIFIER(scene)
+"is" @ 423:12-423:14 is KEYWORD(Is)
+"new" @ 423:15-423:18 is KEYWORD(New)
+"array" @ 423:19-423:24 is KEYWORD(Array)
+"[" @ 423:25-423:26 is LEFT BRACKET
+"3" @ 423:26-423:27 is INTEGER LITERAL(3)
+"]" @ 423:27-423:28 is RIGHT BRACKET
+"object" @ 423:29-423:35 is IDENTIFIER(object)
+";" @ 423:35-423:36 is SEMICOLON
+"scene" @ 424:2-424:7 is IDENTIFIER(scene)
+"[" @ 424:7-424:8 is LEFT BRACKET
+"1" @ 424:8-424:9 is INTEGER LITERAL(1)
+"]" @ 424:9-424:10 is RIGHT BRACKET
+":=" @ 424:11-424:13 is ASSIGNMENT OPERATOR
+"sphere_to_object" @ 424:14-424:30 is IDENTIFIER(sphere_to_object)
+"(" @ 424:30-424:31 is LEFT PARENTHESIS
+"red_sphere" @ 424:31-424:41 is IDENTIFIER(red_sphere)
+")" @ 424:41-424:42 is RIGHT PARENTHESIS
+";" @ 424:42-424:43 is SEMICOLON
+"scene" @ 425:2-425:7 is IDENTIFIER(scene)
+"[" @ 425:7-425:8 is LEFT BRACKET
+"2" @ 425:8-425:9 is INTEGER LITERAL(2)
+"]" @ 425:9-425:10 is RIGHT BRACKET
+":=" @ 425:11-425:13 is ASSIGNMENT OPERATOR
+"sphere_to_object" @ 425:14-425:30 is IDENTIFIER(sphere_to_object)
+"(" @ 425:30-425:31 is LEFT PARENTHESIS
+"green_sphere" @ 425:31-425:43 is IDENTIFIER(green_sphere)
+")" @ 425:43-425:44 is RIGHT PARENTHESIS
+";" @ 425:44-425:45 is SEMICOLON
+"scene" @ 426:2-426:7 is IDENTIFIER(scene)
+"[" @ 426:7-426:8 is LEFT BRACKET
+"3" @ 426:8-426:9 is INTEGER LITERAL(3)
+"]" @ 426:9-426:10 is RIGHT BRACKET
+":=" @ 426:11-426:13 is ASSIGNMENT OPERATOR
+"plane_to_object" @ 426:14-426:29 is IDENTIFIER(plane_to_object)
+"(" @ 426:29-426:30 is LEFT PARENTHESIS
+"blue_plane" @ 426:30-426:40 is IDENTIFIER(blue_plane)
+")" @ 426:40-426:41 is RIGHT PARENTHESIS
+";" @ 426:41-426:42 is SEMICOLON
+"var" @ 428:2-428:5 is KEYWORD(Var)
+"height" @ 428:6-428:12 is IDENTIFIER(height)
+"is" @ 428:13-428:15 is KEYWORD(Is)
+"36" @ 428:16-428:18 is INTEGER LITERAL(36)
+";" @ 428:18-428:19 is SEMICOLON
+"render_canvas" @ 430:2-430:15 is IDENTIFIER(render_canvas)
+"(" @ 430:15-430:16 is LEFT PARENTHESIS
+"trace_rays" @ 430:16-430:26 is IDENTIFIER(trace_rays)
+"(" @ 430:26-430:27 is LEFT PARENTHESIS
+"height" @ 430:27-430:33 is IDENTIFIER(height)
+"," @ 430:33-430:34 is COMMA
+"height" @ 430:35-430:41 is IDENTIFIER(height)
+"/" @ 430:42-430:43 is OPERATOR(Div)
+"9" @ 430:44-430:45 is INTEGER LITERAL(9)
+"*" @ 430:46-430:47 is OPERATOR(Mul)
+"16" @ 430:48-430:50 is INTEGER LITERAL(16)
+"," @ 430:50-430:51 is COMMA
+"scene" @ 430:52-430:57 is IDENTIFIER(scene)
+")" @ 430:57-430:58 is RIGHT PARENTHESIS
+")" @ 430:58-430:59 is RIGHT PARENTHESIS
+";" @ 430:59-430:60 is SEMICOLON
+"end" @ 431:0-431:3 is KEYWORD(End)
