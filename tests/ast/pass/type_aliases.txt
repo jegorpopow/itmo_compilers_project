@@ -92,8 +92,8 @@
                             },
                             args_bindings: [],
                             body: Block(
-                                Block(
-                                    [
+                                Block {
+                                    elems: [
                                         Decl(
                                             SimpleBinding {
                                                 name: dist(5),
@@ -159,7 +159,8 @@
                                             },
                                         ),
                                     ],
-                                ),
+                                    locals_count: 2,
+                                },
                             ),
                         },
                     ),
@@ -274,8 +275,8 @@
                             },
                             args_bindings: [],
                             body: Block(
-                                Block(
-                                    [
+                                Block {
+                                    elems: [
                                         Decl(
                                             SimpleBinding {
                                                 name: dist(5),
@@ -341,7 +342,8 @@
                                             },
                                         ),
                                     ],
-                                ),
+                                    locals_count: 2,
+                                },
                             ),
                         },
                     ),

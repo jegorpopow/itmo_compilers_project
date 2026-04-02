@@ -12,8 +12,8 @@
                             },
                             args_bindings: [],
                             body: Block(
-                                Block(
-                                    [
+                                Block {
+                                    elems: [
                                         Decl(
                                             SimpleBinding {
                                                 name: i(1),
@@ -53,8 +53,8 @@
                                                         },
                                                     ),
                                                 },
-                                                body: Block(
-                                                    [
+                                                body: Block {
+                                                    elems: [
                                                         Decl(
                                                             SimpleBinding {
                                                                 name: j(2),
@@ -94,8 +94,8 @@
                                                                         },
                                                                     ),
                                                                 },
-                                                                body: Block(
-                                                                    [
+                                                                body: Block {
+                                                                    elems: [
                                                                         Decl(
                                                                             SimpleBinding {
                                                                                 name: k(3),
@@ -135,8 +135,8 @@
                                                                                         },
                                                                                     ),
                                                                                 },
-                                                                                body: Block(
-                                                                                    [
+                                                                                body: Block {
+                                                                                    elems: [
                                                                                         Decl(
                                                                                             SimpleBinding {
                                                                                                 name: w(4),
@@ -176,8 +176,8 @@
                                                                                                         },
                                                                                                     ),
                                                                                                 },
-                                                                                                body: Block(
-                                                                                                    [
+                                                                                                body: Block {
+                                                                                                    elems: [
                                                                                                         Decl(
                                                                                                             SimpleBinding {
                                                                                                                 name: v(5),
@@ -217,8 +217,8 @@
                                                                                                                         },
                                                                                                                     ),
                                                                                                                 },
-                                                                                                                body: Block(
-                                                                                                                    [
+                                                                                                                body: Block {
+                                                                                                                    elems: [
                                                                                                                         Stmt(
                                                                                                                             Print {
                                                                                                                                 value: LvalueToRvalue(
@@ -288,7 +288,8 @@
                                                                                                                             },
                                                                                                                         ),
                                                                                                                     ],
-                                                                                                                ),
+                                                                                                                    locals_count: 0,
+                                                                                                                },
                                                                                                             },
                                                                                                         ),
                                                                                                         Stmt(
@@ -315,7 +316,8 @@
                                                                                                             },
                                                                                                         ),
                                                                                                     ],
-                                                                                                ),
+                                                                                                    locals_count: 1,
+                                                                                                },
                                                                                             },
                                                                                         ),
                                                                                         Stmt(
@@ -342,7 +344,8 @@
                                                                                             },
                                                                                         ),
                                                                                     ],
-                                                                                ),
+                                                                                    locals_count: 1,
+                                                                                },
                                                                             },
                                                                         ),
                                                                         Stmt(
@@ -369,7 +372,8 @@
                                                                             },
                                                                         ),
                                                                     ],
-                                                                ),
+                                                                    locals_count: 1,
+                                                                },
                                                             },
                                                         ),
                                                         Stmt(
@@ -396,11 +400,13 @@
                                                             },
                                                         ),
                                                     ],
-                                                ),
+                                                    locals_count: 1,
+                                                },
                                             },
                                         ),
                                     ],
-                                ),
+                                    locals_count: 1,
+                                },
                             ),
                         },
                     ),
@@ -421,8 +427,8 @@
                             },
                             args_bindings: [],
                             body: Block(
-                                Block(
-                                    [
+                                Block {
+                                    elems: [
                                         Decl(
                                             SimpleBinding {
                                                 name: i(1),
@@ -462,8 +468,8 @@
                                                         },
                                                     ),
                                                 },
-                                                body: Block(
-                                                    [
+                                                body: Block {
+                                                    elems: [
                                                         Decl(
                                                             SimpleBinding {
                                                                 name: j(2),
@@ -503,8 +509,8 @@
                                                                         },
                                                                     ),
                                                                 },
-                                                                body: Block(
-                                                                    [
+                                                                body: Block {
+                                                                    elems: [
                                                                         Decl(
                                                                             SimpleBinding {
                                                                                 name: k(3),
@@ -544,8 +550,8 @@
                                                                                         },
                                                                                     ),
                                                                                 },
-                                                                                body: Block(
-                                                                                    [
+                                                                                body: Block {
+                                                                                    elems: [
                                                                                         Decl(
                                                                                             SimpleBinding {
                                                                                                 name: w(4),
@@ -585,8 +591,8 @@
                                                                                                         },
                                                                                                     ),
                                                                                                 },
-                                                                                                body: Block(
-                                                                                                    [
+                                                                                                body: Block {
+                                                                                                    elems: [
                                                                                                         Decl(
                                                                                                             SimpleBinding {
                                                                                                                 name: v(5),
@@ -626,8 +632,8 @@
                                                                                                                         },
                                                                                                                     ),
                                                                                                                 },
-                                                                                                                body: Block(
-                                                                                                                    [
+                                                                                                                body: Block {
+                                                                                                                    elems: [
                                                                                                                         Stmt(
                                                                                                                             Print {
                                                                                                                                 value: LvalueToRvalue(
@@ -697,7 +703,8 @@
                                                                                                                             },
                                                                                                                         ),
                                                                                                                     ],
-                                                                                                                ),
+                                                                                                                    locals_count: 0,
+                                                                                                                },
                                                                                                             },
                                                                                                         ),
                                                                                                         Stmt(
@@ -724,7 +731,8 @@
                                                                                                             },
                                                                                                         ),
                                                                                                     ],
-                                                                                                ),
+                                                                                                    locals_count: 1,
+                                                                                                },
                                                                                             },
                                                                                         ),
                                                                                         Stmt(
@@ -751,7 +759,8 @@
                                                                                             },
                                                                                         ),
                                                                                     ],
-                                                                                ),
+                                                                                    locals_count: 1,
+                                                                                },
                                                                             },
                                                                         ),
                                                                         Stmt(
@@ -778,7 +787,8 @@
                                                                             },
                                                                         ),
                                                                     ],
-                                                                ),
+                                                                    locals_count: 1,
+                                                                },
                                                             },
                                                         ),
                                                         Stmt(
@@ -805,11 +815,13 @@
                                                             },
                                                         ),
                                                     ],
-                                                ),
+                                                    locals_count: 1,
+                                                },
                                             },
                                         ),
                                     ],
-                                ),
+                                    locals_count: 1,
+                                },
                             ),
                         },
                     ),

@@ -220,8 +220,8 @@
                                 },
                             ],
                             body: Block(
-                                Block(
-                                    [
+                                Block {
+                                    elems: [
                                         Decl(
                                             SimpleBinding {
                                                 name: result(9),
@@ -258,8 +258,8 @@
                                                         ],
                                                     },
                                                 },
-                                                body: Block(
-                                                    [
+                                                body: Block {
+                                                    elems: [
                                                         Stmt(
                                                             Assignment {
                                                                 lhs: Identifier(
@@ -299,7 +299,8 @@
                                                             },
                                                         ),
                                                     ],
-                                                ),
+                                                    locals_count: 0,
+                                                },
                                             },
                                         ),
                                         Stmt(
@@ -312,7 +313,8 @@
                                             },
                                         ),
                                     ],
-                                ),
+                                    locals_count: 1,
+                                },
                             ),
                         },
                     ),
@@ -351,8 +353,8 @@
                                 },
                             ],
                             body: Block(
-                                Block(
-                                    [
+                                Block {
+                                    elems: [
                                         Decl(
                                             SimpleBinding {
                                                 name: result(12),
@@ -389,8 +391,8 @@
                                                         ],
                                                     },
                                                 },
-                                                body: Block(
-                                                    [
+                                                body: Block {
+                                                    elems: [
                                                         Stmt(
                                                             Assignment {
                                                                 lhs: Identifier(
@@ -442,7 +444,8 @@
                                                             },
                                                         ),
                                                     ],
-                                                ),
+                                                    locals_count: 0,
+                                                },
                                             },
                                         ),
                                         Stmt(
@@ -455,7 +458,8 @@
                                             },
                                         ),
                                     ],
-                                ),
+                                    locals_count: 1,
+                                },
                             ),
                         },
                     ),
@@ -472,8 +476,8 @@
                             },
                             args_bindings: [],
                             body: Block(
-                                Block(
-                                    [
+                                Block {
+                                    elems: [
                                         Decl(
                                             SimpleBinding {
                                                 name: list(14),
@@ -517,7 +521,8 @@
                                             },
                                         ),
                                     ],
-                                ),
+                                    locals_count: 1,
+                                },
                             ),
                         },
                     ),
@@ -772,8 +777,8 @@
                                 },
                             ],
                             body: Block(
-                                Block(
-                                    [
+                                Block {
+                                    elems: [
                                         Decl(
                                             SimpleBinding {
                                                 name: result(9),
@@ -810,8 +815,8 @@
                                                         ],
                                                     },
                                                 },
-                                                body: Block(
-                                                    [
+                                                body: Block {
+                                                    elems: [
                                                         Stmt(
                                                             Assignment {
                                                                 lhs: Identifier(
@@ -851,7 +856,8 @@
                                                             },
                                                         ),
                                                     ],
-                                                ),
+                                                    locals_count: 0,
+                                                },
                                             },
                                         ),
                                         Stmt(
@@ -864,7 +870,8 @@
                                             },
                                         ),
                                     ],
-                                ),
+                                    locals_count: 1,
+                                },
                             ),
                         },
                     ),
@@ -936,8 +943,8 @@
                                 },
                             ],
                             body: Block(
-                                Block(
-                                    [
+                                Block {
+                                    elems: [
                                         Decl(
                                             SimpleBinding {
                                                 name: result(12),
@@ -974,8 +981,8 @@
                                                         ],
                                                     },
                                                 },
-                                                body: Block(
-                                                    [
+                                                body: Block {
+                                                    elems: [
                                                         Stmt(
                                                             Assignment {
                                                                 lhs: Identifier(
@@ -1027,7 +1034,8 @@
                                                             },
                                                         ),
                                                     ],
-                                                ),
+                                                    locals_count: 0,
+                                                },
                                             },
                                         ),
                                         Stmt(
@@ -1040,7 +1048,8 @@
                                             },
                                         ),
                                     ],
-                                ),
+                                    locals_count: 1,
+                                },
                             ),
                         },
                     ),
@@ -1090,8 +1099,8 @@
                             },
                             args_bindings: [],
                             body: Block(
-                                Block(
-                                    [
+                                Block {
+                                    elems: [
                                         Decl(
                                             SimpleBinding {
                                                 name: list(14),
@@ -1135,7 +1144,8 @@
                                             },
                                         ),
                                     ],
-                                ),
+                                    locals_count: 1,
+                                },
                             ),
                         },
                     ),

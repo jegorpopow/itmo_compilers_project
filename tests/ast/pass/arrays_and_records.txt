@@ -246,8 +246,8 @@
                                 },
                             ],
                             body: Block(
-                                Block(
-                                    [
+                                Block {
+                                    elems: [
                                         Stmt(
                                             Return {
                                                 value: BinOp {
@@ -352,7 +352,8 @@
                                             },
                                         ),
                                     ],
-                                ),
+                                    locals_count: 0,
+                                },
                             ),
                         },
                     ),
@@ -739,8 +740,8 @@
                             },
                             args_bindings: [],
                             body: Block(
-                                Block(
-                                    [
+                                Block {
+                                    elems: [
                                         Decl(
                                             SimpleBinding {
                                                 name: t(13),
@@ -992,7 +993,8 @@
                                             },
                                         ),
                                     ],
-                                ),
+                                    locals_count: 1,
+                                },
                             ),
                         },
                     ),
@@ -1283,8 +1285,8 @@
                                 },
                             ],
                             body: Block(
-                                Block(
-                                    [
+                                Block {
+                                    elems: [
                                         Stmt(
                                             Return {
                                                 value: BinOp {
@@ -1389,7 +1391,8 @@
                                             },
                                         ),
                                     ],
-                                ),
+                                    locals_count: 0,
+                                },
                             ),
                         },
                     ),
@@ -1818,8 +1821,8 @@
                             },
                             args_bindings: [],
                             body: Block(
-                                Block(
-                                    [
+                                Block {
+                                    elems: [
                                         Decl(
                                             SimpleBinding {
                                                 name: t(13),
@@ -2071,7 +2074,8 @@
                                             },
                                         ),
                                     ],
-                                ),
+                                    locals_count: 1,
+                                },
                             ),
                         },
                     ),
