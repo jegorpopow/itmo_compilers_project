@@ -695,7 +695,11 @@ impl Converter {
             }
         };
 
-        assert!(self.leave_block() == 1, "Inmternal compiler error");
+        assert_eq!(
+            self.leave_block(),
+            1,
+            "Internal compiler error: mismatched number of locals in `for` counter block"
+        );
 
         Ok(stmt)
     }
@@ -1036,7 +1040,11 @@ impl Converter {
 
         let converted_body = self.convert_block(block)?;
 
-        assert!(self.leave_block() == 0, "Internal compiler error");
+        assert_eq!(
+            self.leave_block(),
+            0,
+            "Internal compiler error: locals found in function arguments block"
+        );
         self.current_routine = None;
 
         let decl = RoutineDecl::Full(Routine {
@@ -1084,7 +1092,11 @@ impl Converter {
             ty: expr_type,
         } = self.convert_expr(expression)?;
 
-        assert!(self.leave_block() == 0);
+        assert_eq!(
+            self.leave_block(),
+            0,
+            "Internal compiler error: locals found in function arguments block"
+        );
 
         let expr = match &return_type {
             Some(ty) => cast_to(expr, &expr_type, ty)?,

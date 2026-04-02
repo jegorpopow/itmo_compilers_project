@@ -1,8 +1,8 @@
 use core::fmt;
 
-pub mod convert;
-pub mod tree;
-pub mod types;
+mod convert;
+mod tree;
+mod types;
 
 #[cfg(test)]
 mod tests;

@@ -153,35 +153,11 @@ routine colour_mix_with_ratio(base : colour, paint : colour, ratio : real) =>
     round(real_interpolate(base.blue :: integer, paint.blue :: integer, ratio))
   );
 
-var RED is new colour where
-  red is int_to_byte(255);
-  green is int_to_byte(0);
-  blue is int_to_byte(0); 
-end;
-
-var GREEN is new colour where
-  red is int_to_byte(0);
-  green is int_to_byte(255);
-  blue is int_to_byte(0); 
-end;
-
-var BLUE is new colour where
-  red is int_to_byte(0);
-  green is int_to_byte(0);
-  blue is int_to_byte(255); 
-end;
-
-var BLACK is new colour where
-  red is int_to_byte(0);
-  green is int_to_byte(0);
-  blue is int_to_byte(0); 
-end;
-
-var WHITE is new colour where
-  red is int_to_byte(255);
-  green is int_to_byte(255);
-  blue is int_to_byte(255); 
-end;
+var RED is colour_of(255, 0, 0);
+var GREEN is colour_of(0, 255, 0);
+var BLUE is colour_of(0, 0, 255);
+var BLACK is colour_of(0, 0, 0);
+var WHITE is colour_of(255, 255, 255);
 
 type canvas is record
   var pixels is array [360 * 640] colour;

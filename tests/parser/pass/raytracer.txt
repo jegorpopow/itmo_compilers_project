@@ -1717,56 +1717,28 @@
                     name: r"RED",
                     t: None,
                     initialiser: Some(
-                        New {
-                            t: Alias(
-                                r"colour",
-                            ),
-                            fields: Some(
-                                [
-                                    (
-                                        r"red",
-                                        Call {
-                                            callee: r"int_to_byte",
-                                            args: [
-                                                IntegerLiteral(
-                                                    IntegerLiteral {
-                                                        repr: "255",
-                                                        value: 255,
-                                                    },
-                                                ),
-                                            ],
-                                        },
-                                    ),
-                                    (
-                                        r"green",
-                                        Call {
-                                            callee: r"int_to_byte",
-                                            args: [
-                                                IntegerLiteral(
-                                                    IntegerLiteral {
-                                                        repr: "0",
-                                                        value: 0,
-                                                    },
-                                                ),
-                                            ],
-                                        },
-                                    ),
-                                    (
-                                        r"blue",
-                                        Call {
-                                            callee: r"int_to_byte",
-                                            args: [
-                                                IntegerLiteral(
-                                                    IntegerLiteral {
-                                                        repr: "0",
-                                                        value: 0,
-                                                    },
-                                                ),
-                                            ],
-                                        },
-                                    ),
-                                ],
-                            ),
+                        Call {
+                            callee: r"colour_of",
+                            args: [
+                                IntegerLiteral(
+                                    IntegerLiteral {
+                                        repr: "255",
+                                        value: 255,
+                                    },
+                                ),
+                                IntegerLiteral(
+                                    IntegerLiteral {
+                                        repr: "0",
+                                        value: 0,
+                                    },
+                                ),
+                                IntegerLiteral(
+                                    IntegerLiteral {
+                                        repr: "0",
+                                        value: 0,
+                                    },
+                                ),
+                            ],
                         },
                     ),
                 },
@@ -1776,56 +1748,28 @@
                     name: r"GREEN",
                     t: None,
                     initialiser: Some(
-                        New {
-                            t: Alias(
-                                r"colour",
-                            ),
-                            fields: Some(
-                                [
-                                    (
-                                        r"red",
-                                        Call {
-                                            callee: r"int_to_byte",
-                                            args: [
-                                                IntegerLiteral(
-                                                    IntegerLiteral {
-                                                        repr: "0",
-                                                        value: 0,
-                                                    },
-                                                ),
-                                            ],
-                                        },
-                                    ),
-                                    (
-                                        r"green",
-                                        Call {
-                                            callee: r"int_to_byte",
-                                            args: [
-                                                IntegerLiteral(
-                                                    IntegerLiteral {
-                                                        repr: "255",
-                                                        value: 255,
-                                                    },
-                                                ),
-                                            ],
-                                        },
-                                    ),
-                                    (
-                                        r"blue",
-                                        Call {
-                                            callee: r"int_to_byte",
-                                            args: [
-                                                IntegerLiteral(
-                                                    IntegerLiteral {
-                                                        repr: "0",
-                                                        value: 0,
-                                                    },
-                                                ),
-                                            ],
-                                        },
-                                    ),
-                                ],
-                            ),
+                        Call {
+                            callee: r"colour_of",
+                            args: [
+                                IntegerLiteral(
+                                    IntegerLiteral {
+                                        repr: "0",
+                                        value: 0,
+                                    },
+                                ),
+                                IntegerLiteral(
+                                    IntegerLiteral {
+                                        repr: "255",
+                                        value: 255,
+                                    },
+                                ),
+                                IntegerLiteral(
+                                    IntegerLiteral {
+                                        repr: "0",
+                                        value: 0,
+                                    },
+                                ),
+                            ],
                         },
                     ),
                 },
@@ -1835,56 +1779,28 @@
                     name: r"BLUE",
                     t: None,
                     initialiser: Some(
-                        New {
-                            t: Alias(
-                                r"colour",
-                            ),
-                            fields: Some(
-                                [
-                                    (
-                                        r"red",
-                                        Call {
-                                            callee: r"int_to_byte",
-                                            args: [
-                                                IntegerLiteral(
-                                                    IntegerLiteral {
-                                                        repr: "0",
-                                                        value: 0,
-                                                    },
-                                                ),
-                                            ],
-                                        },
-                                    ),
-                                    (
-                                        r"green",
-                                        Call {
-                                            callee: r"int_to_byte",
-                                            args: [
-                                                IntegerLiteral(
-                                                    IntegerLiteral {
-                                                        repr: "0",
-                                                        value: 0,
-                                                    },
-                                                ),
-                                            ],
-                                        },
-                                    ),
-                                    (
-                                        r"blue",
-                                        Call {
-                                            callee: r"int_to_byte",
-                                            args: [
-                                                IntegerLiteral(
-                                                    IntegerLiteral {
-                                                        repr: "255",
-                                                        value: 255,
-                                                    },
-                                                ),
-                                            ],
-                                        },
-                                    ),
-                                ],
-                            ),
+                        Call {
+                            callee: r"colour_of",
+                            args: [
+                                IntegerLiteral(
+                                    IntegerLiteral {
+                                        repr: "0",
+                                        value: 0,
+                                    },
+                                ),
+                                IntegerLiteral(
+                                    IntegerLiteral {
+                                        repr: "0",
+                                        value: 0,
+                                    },
+                                ),
+                                IntegerLiteral(
+                                    IntegerLiteral {
+                                        repr: "255",
+                                        value: 255,
+                                    },
+                                ),
+                            ],
                         },
                     ),
                 },
@@ -1894,56 +1810,28 @@
                     name: r"BLACK",
                     t: None,
                     initialiser: Some(
-                        New {
-                            t: Alias(
-                                r"colour",
-                            ),
-                            fields: Some(
-                                [
-                                    (
-                                        r"red",
-                                        Call {
-                                            callee: r"int_to_byte",
-                                            args: [
-                                                IntegerLiteral(
-                                                    IntegerLiteral {
-                                                        repr: "0",
-                                                        value: 0,
-                                                    },
-                                                ),
-                                            ],
-                                        },
-                                    ),
-                                    (
-                                        r"green",
-                                        Call {
-                                            callee: r"int_to_byte",
-                                            args: [
-                                                IntegerLiteral(
-                                                    IntegerLiteral {
-                                                        repr: "0",
-                                                        value: 0,
-                                                    },
-                                                ),
-                                            ],
-                                        },
-                                    ),
-                                    (
-                                        r"blue",
-                                        Call {
-                                            callee: r"int_to_byte",
-                                            args: [
-                                                IntegerLiteral(
-                                                    IntegerLiteral {
-                                                        repr: "0",
-                                                        value: 0,
-                                                    },
-                                                ),
-                                            ],
-                                        },
-                                    ),
-                                ],
-                            ),
+                        Call {
+                            callee: r"colour_of",
+                            args: [
+                                IntegerLiteral(
+                                    IntegerLiteral {
+                                        repr: "0",
+                                        value: 0,
+                                    },
+                                ),
+                                IntegerLiteral(
+                                    IntegerLiteral {
+                                        repr: "0",
+                                        value: 0,
+                                    },
+                                ),
+                                IntegerLiteral(
+                                    IntegerLiteral {
+                                        repr: "0",
+                                        value: 0,
+                                    },
+                                ),
+                            ],
                         },
                     ),
                 },
@@ -1953,56 +1841,28 @@
                     name: r"WHITE",
                     t: None,
                     initialiser: Some(
-                        New {
-                            t: Alias(
-                                r"colour",
-                            ),
-                            fields: Some(
-                                [
-                                    (
-                                        r"red",
-                                        Call {
-                                            callee: r"int_to_byte",
-                                            args: [
-                                                IntegerLiteral(
-                                                    IntegerLiteral {
-                                                        repr: "255",
-                                                        value: 255,
-                                                    },
-                                                ),
-                                            ],
-                                        },
-                                    ),
-                                    (
-                                        r"green",
-                                        Call {
-                                            callee: r"int_to_byte",
-                                            args: [
-                                                IntegerLiteral(
-                                                    IntegerLiteral {
-                                                        repr: "255",
-                                                        value: 255,
-                                                    },
-                                                ),
-                                            ],
-                                        },
-                                    ),
-                                    (
-                                        r"blue",
-                                        Call {
-                                            callee: r"int_to_byte",
-                                            args: [
-                                                IntegerLiteral(
-                                                    IntegerLiteral {
-                                                        repr: "255",
-                                                        value: 255,
-                                                    },
-                                                ),
-                                            ],
-                                        },
-                                    ),
-                                ],
-                            ),
+                        Call {
+                            callee: r"colour_of",
+                            args: [
+                                IntegerLiteral(
+                                    IntegerLiteral {
+                                        repr: "255",
+                                        value: 255,
+                                    },
+                                ),
+                                IntegerLiteral(
+                                    IntegerLiteral {
+                                        repr: "255",
+                                        value: 255,
+                                    },
+                                ),
+                                IntegerLiteral(
+                                    IntegerLiteral {
+                                        repr: "255",
+                                        value: 255,
+                                    },
+                                ),
+                            ],
                         },
                     ),
                 },

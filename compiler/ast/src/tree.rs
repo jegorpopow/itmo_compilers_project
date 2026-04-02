@@ -68,7 +68,7 @@ impl From<BoolLiteral> for bool {
     }
 }
 
-impl From<BoolLiteral> for i64 {
+impl From<BoolLiteral> for Integer {
     fn from(value: BoolLiteral) -> Self {
         match value {
             BoolLiteral::True => 1,
@@ -524,7 +524,7 @@ impl IdentifierTable {
         identifier
     }
 
-    pub fn get_default_intialiser(&self, ty: &Type) -> AnalysisResult<Rc<Expression>> {
+    pub fn get_default_intialiser(&self, ty: &Rc<Type>) -> AnalysisResult<Rc<Expression>> {
         match &*self.get_effective_type(ty)? {
             Type::Int => Ok(Expression::IntegerLiteral(IntegerLiteral {
                 repr: "0".to_string(),
@@ -560,8 +560,8 @@ impl IdentifierTable {
         &self.bindings[id]
     }
 
-    pub fn get_effective_type(&self, t: &Type) -> AnalysisResult<Rc<Type>> {
-        match t {
+    pub fn get_effective_type(&self, t: &Rc<Type>) -> AnalysisResult<Rc<Type>> {
+        match &**t {
             Type::Alias(identifier) => self
                 .get_binding(identifier)
                 .ensure_is_type()
@@ -572,7 +572,7 @@ impl IdentifierTable {
             | Type::Record(_)
             | Type::Array(_)
             | Type::Null
-            | Type::Unit => Ok(Rc::new(t.clone())),
+            | Type::Unit => Ok(Rc::clone(t)),
         }
     }
 }

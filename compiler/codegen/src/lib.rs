@@ -1,9 +1,9 @@
-#![expect(unused_variables, reason = "Just because I can, man")]
-#![expect(unreachable_pub, reason = "Just because I can, man")]
-#![expect(dead_code, reason = "Just because I can, man")]
+#![expect(dead_code, reason = "WIP")]
+#![expect(unreachable_pub, reason = "WIP")]
+#![expect(unused_variables, reason = "WIP")]
 
 use crate::bytecode::{Instruction, TypeId};
-use ast::tree::IdentifierTable;
+use ast::IdentifierTable;
 use ast::{AnalysisError, AnalysisResult, Block, Expression, LvalueExpression, Statement};
 
 pub mod bytecode;
@@ -85,7 +85,7 @@ impl<'a> Compiler<'a> {
             }
             Expression::BoolLiteral(bool_literal) => {
                 self.bytecode.push(Instruction::IntConst {
-                    value: i64::from(bool::from(*bool_literal)),
+                    value: i64::from(*bool_literal),
                 });
             }
             Expression::Call { callee, args } => {
