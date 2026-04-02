@@ -9,22 +9,26 @@ use common::{
 
 use crate::{AnalysisError, AnalysisResult};
 
-#[derive(Debug, Hash, PartialEq, Eq)]
+#[derive(Debug, Hash, PartialEq, Eq, Clone)]
 pub struct FieldDescription {
     pub name: RawIdentifier,
     pub t: Rc<Type>,
 }
 
-#[derive(Debug, Hash, PartialEq, Eq)]
+#[derive(Debug, Hash, PartialEq, Eq, Clone)]
 pub struct RecordDescription {
     pub fields: Vec<FieldDescription>,
 }
 
 impl RecordDescription {
-    fn get_field_type(&self, name: &RawIdentifier) -> AnalysisResult<Rc<Type>> {
-        for field in &self.fields {
+    pub fn get_field_type(&self, name: &RawIdentifier) -> AnalysisResult<Rc<Type>> {
+        Ok(Rc::clone(&self.fields[self.get_field_index(name)?].t))
+    }
+
+    pub fn get_field_index(&self, name: &RawIdentifier) -> AnalysisResult<usize> {
+        for (i, field) in self.fields.iter().enumerate() {
             if field.name == *name {
-                return Ok(Rc::clone(&field.t));
+                return Ok(i);
             }
         }
 
@@ -34,13 +38,13 @@ impl RecordDescription {
     }
 }
 
-#[derive(Debug, Hash, PartialEq, Eq)]
+#[derive(Debug, Hash, PartialEq, Eq, Clone)]
 pub struct ArrayDescription {
     pub t: Rc<Type>,
     pub length: Option<usize>,
 }
 
-#[derive(Debug, Hash, PartialEq, Eq)]
+#[derive(Debug, Hash, PartialEq, Eq, Clone)]
 pub enum Type {
     Int,
     Real,

@@ -26,7 +26,7 @@ impl Encode for Location {
     }
 }
 
-pub(crate) struct TypeId(u32);
+pub(crate) struct TypeId(pub u32);
 
 pub(crate) enum Instruction {
     /// push int / bool onto stack
@@ -37,6 +37,8 @@ pub(crate) enum Instruction {
     RealConst {
         value: Real,
     },
+    /// push null onto stack
+    NullConst,
     /// push to stack
     Load {
         loc: Location,
@@ -53,6 +55,8 @@ pub(crate) enum Instruction {
     Dup,
     /// drop stack top
     Drop,
+    // drop n elements from stack
+    DropMany(usize),
     /// swaps top and second elements of stack
     Swap,
     /// apply binary operator to stack top
@@ -62,7 +66,9 @@ pub(crate) enum Instruction {
     UnOp {
         op: SemanticUnaryOperator,
     },
-    /// pop address from stack, pop and write referenced value
+    /// pop value and address from stack, write referenced value
+    /// FIXME(Andrew Vlasenkov): ensure pop's order is correct in VM:
+    /// value should be on top of a stack and address just below value
     StoreAddress,
     /// pop address from stack, read and push referenced value
     LoadAddress,
@@ -78,7 +84,7 @@ pub(crate) enum Instruction {
     }, // TODO: add TypeId ?
     /// pop array ref from stack, push its size
     ArraySize, // TODO: add built-in function call
-    /// pop array ref and index from stack, push address of array[index]
+    /// pop element index and array ref from stack, push address of array[index]
     ElementAddress,
     /// pop record ref from stack, push its field address
     FieldAddress {
@@ -162,6 +168,7 @@ impl Encode for SemanticBinaryOperator {
     }
 }
 
+#[expect(clippy::too_many_lines, reason = "Cause that lint is really stupid")]
 impl Encode for Instruction {
     type Output = Bytecode;
     fn encode(&self) -> Bytecode {
@@ -194,6 +201,14 @@ impl Encode for Instruction {
             Instruction::RealConst { value } => Bytecode {
                 opcode: 10,
                 arg64: value.to_le_bytes(),
+                ..zero
+            },
+
+            Instruction::NullConst => Bytecode { opcode: 28, ..zero },
+
+            Instruction::DropMany(n) => Bytecode {
+                opcode: 29,
+                arg64: n.to_le_bytes(),
                 ..zero
             },
 

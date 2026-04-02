@@ -1,8 +1,8 @@
 use core::fmt;
 
-mod convert;
-mod tree;
-mod types;
+pub mod convert;
+pub mod tree;
+pub mod types;
 
 #[cfg(test)]
 mod tests;
@@ -19,7 +19,7 @@ pub use crate::{
 
 #[derive(Debug)]
 pub struct AnalysisError {
-    what: String,
+    pub what: String,
 }
 
 pub type AnalysisResult<T> = Result<T, AnalysisError>;

@@ -400,15 +400,37 @@ impl<'a, W: Write> Interpreter<'a, W> {
                 }
             }
             Value::Null => writeln!(self.out, "null"),
-            Value::Array { .. } => todo!(),
-            Value::Struct { .. } => todo!(),
+            Value::Array { elements } => {
+                write!(self.out, "[")?;
+                for idx in elements {
+                    let val = self.heap[*idx].clone();
+                    self.print(&val)?;
+                    write!(self.out, ", ")?;
+                }
+                write!(self.out, "]")
+            }
+            Value::Struct { fields } => {
+                write!(self.out, "{{ ")?;
+
+                let mut sorted_entries: Vec<_> = fields.iter().collect();
+                sorted_entries.sort_by_key(|&(key, _value)| key);
+
+                for (name, idx) in sorted_entries {
+                    write!(self.out, "{name} : ")?;
+                    let val = self.heap[*idx].clone();
+                    self.print(&val)?;
+                    write!(self.out, ", ")?;
+                }
+
+                writeln!(self.out, " }}")
+            }
         }
         .context("IO error")?
     }
 
     #[throws(BlockError<'a>)]
     fn block(&mut self, bindings: &mut Bindings<'a>, block: &'a Block) {
-        let Block(stmts) = block;
+        let Block { elems: stmts, .. } = block;
         for stmt in stmts {
             match stmt {
                 BlockElem::Decl(SimpleBinding { name, decl }) => match decl {

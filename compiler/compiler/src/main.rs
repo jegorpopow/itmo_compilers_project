@@ -6,8 +6,6 @@ use ast::convert;
 use lexer::Lexer;
 use parser::parse_program;
 
-mod bytecode;
-
 // TODO: create a Driver module
 
 fn main() -> anyhow::Result<()> {

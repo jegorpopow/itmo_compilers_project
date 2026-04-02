@@ -34,6 +34,7 @@ testing::tests! {
         nested_control => "nested_control"
         operator_precedence => "operator_precedence"
         parse_minus => "parse_minus"
+        raytracer => "raytracer"
         real_comparisons => "real_comparisons"
         real_literals => "real_literals"
         records => "records"
