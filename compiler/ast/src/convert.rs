@@ -93,11 +93,10 @@ impl Converter {
 
         let current_block_locals = self
             .current_scope
-            .last()
+            .pop()
             .expect("At least global context is always present")
             .locals_in_block;
         self.local_count -= current_block_locals;
-        drop(self.current_scope.pop());
         current_block_locals
     }
 
