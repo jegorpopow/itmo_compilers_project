@@ -41,23 +41,6 @@ struct RoutinePrototype {
 }
 
 #[derive(Debug)]
-struct Typed<T = Expression> {
-    value: Rc<T>,
-    ty: Rc<Type>,
-}
-
-impl<T> Typed<T> {
-    #[must_use]
-    fn map<U>(self, f: impl FnOnce(Rc<T>) -> Rc<U>) -> Typed<U> {
-        let Self { value, ty } = self;
-        Typed {
-            value: f(value),
-            ty,
-        }
-    }
-}
-
-#[derive(Debug)]
 struct Converter {
     ident_table: IdentifierTable,
     current_scope: Vec<ScopeBlock>,
@@ -433,15 +416,7 @@ impl Converter {
             })
         } else {
             let converted_args = std::iter::zip(arguments_types, converted_expressions)
-                .map(
-                    |(
-                        arg_type,
-                        Typed {
-                            value: expr,
-                            ty: expr_type,
-                        },
-                    )| cast_to(expr, &expr_type, &arg_type),
-                )
+                .map(|(arg_type, expr)| cast_to(expr, &arg_type))
                 .collect::<AnalysisResult<Vec<Rc<Expression>>>>()?;
             Ok(Typed {
                 value: Rc::new(Expression::Call {
@@ -471,21 +446,15 @@ impl Converter {
                     .unwrap_or_default()
                     .iter()
                     .map(|(name, expr)| {
-                        self.convert_expr(expr).and_then(
-                            |Typed {
-                                 value: converted_expr,
-                                 ty: expr_type,
-                             }| {
-                                Ok((
-                                    name.clone(),
-                                    cast_to(
-                                        converted_expr,
-                                        &expr_type,
-                                        &*converted_effective_type.get_field_type(name)?,
-                                    )?,
-                                ))
-                            },
-                        )
+                        self.convert_expr(expr).and_then(|converted_expr| {
+                            Ok((
+                                name.clone(),
+                                cast_to(
+                                    converted_expr,
+                                    &*converted_effective_type.get_field_type(name)?,
+                                )?,
+                            ))
+                        })
                     })
                     .collect::<AnalysisResult<_>>()?;
 
@@ -572,22 +541,16 @@ impl Converter {
             },
             parser::Expression::Call { callee, args } => self.convert_call(callee, args)?,
             parser::Expression::BinOp { op, lhs, rhs } => {
-                let Typed {
-                    value: converted_lhs,
-                    ty: lhs_type,
-                } = self.convert_expr(lhs)?;
-                let Typed {
-                    value: converted_rhs,
-                    ty: rhs_type,
-                } = self.convert_expr(rhs)?;
+                let lhs = self.convert_expr(lhs)?;
+                let rhs = self.convert_expr(rhs)?;
                 let BinOpAdjustment {
                     result: result_type,
                     operand: operand_type,
                     operator: semantic_op,
-                } = infer_binary_operator_type(&lhs_type, &rhs_type, *op)?;
+                } = infer_binary_operator_type(&lhs.ty, &rhs.ty, *op)?;
 
-                let actual_lhs = cast_to(converted_lhs, &lhs_type, &operand_type)?;
-                let actual_rhs = cast_to(converted_rhs, &rhs_type, &operand_type)?;
+                let actual_lhs = cast_to(lhs, &operand_type)?;
+                let actual_rhs = cast_to(rhs, &operand_type)?;
 
                 Typed {
                     value: Rc::new(Expression::BinOp {
@@ -669,14 +632,8 @@ impl Converter {
                 }
             }
             Some(to) => {
-                let Typed {
-                    value: lower_bound,
-                    ty: lower_bound_type,
-                } = self.convert_expr(from)?;
-                let Typed {
-                    value: upper_bound,
-                    ty: upper_bound_type,
-                } = self.convert_expr(to)?;
+                let from = self.convert_expr(from)?;
+                let to = self.convert_expr(to)?;
                 let int_type = Rc::new(Type::Int);
                 let counter_decl = Decl::Var(VarDecl {
                     t: Rc::clone(&int_type),
@@ -687,8 +644,8 @@ impl Converter {
                 let body = self.convert_block(body)?;
                 Statement::For {
                     counter: counter_ident,
-                    lower_bound: cast_to(lower_bound, &lower_bound_type, &int_type)?,
-                    upper_bound: cast_to(upper_bound, &upper_bound_type, &int_type)?,
+                    lower_bound: cast_to(from, &int_type)?,
+                    upper_bound: cast_to(to, &int_type)?,
                     order,
                     body,
                 }
@@ -711,30 +668,15 @@ impl Converter {
                     value: lhs,
                     ty: target_type,
                 } = self.convert_lvalue_expr(lhs)?;
-                let Typed {
-                    value: rhs,
-                    ty: own_type,
-                } = self.convert_expr(rhs)?;
-                let converted_rhs = cast_to(rhs, &own_type, &target_type)?;
-
                 Statement::Assignment {
                     lhs,
-                    rhs: converted_rhs,
+                    rhs: cast_to(self.convert_expr(rhs)?, &target_type)?,
                 }
             }
-            parser::Statement::While { condition, body } => {
-                let Typed {
-                    value: condition_expr,
-                    ty: condition_type,
-                } = self.convert_expr(condition)?;
-                let converted_condition_expr =
-                    cast_to(condition_expr, &condition_type, &Type::Bool)?;
-                let body = self.convert_block(body)?;
-                Statement::While {
-                    condition: converted_condition_expr,
-                    body,
-                }
-            }
+            parser::Statement::While { condition, body } => Statement::While {
+                condition: cast_to(self.convert_expr(condition)?, &Type::Bool)?,
+                body: self.convert_block(body)?,
+            },
             parser::Statement::Expr(expression) => {
                 let Typed { value: expr, ty: _ } = self.convert_expr(expression)?;
 
@@ -744,26 +686,14 @@ impl Converter {
                 condition,
                 on_true,
                 on_false,
-            } => {
-                let Typed {
-                    value: condition_expr,
-                    ty: condition_type,
-                } = self.convert_expr(condition)?;
-                let converted_condition_expr =
-                    cast_to(condition_expr, &condition_type, &Type::Bool)?;
-
-                let converted_then = self.convert_block(on_true)?;
-                let converted_else = on_false
+            } => Statement::If {
+                condition: cast_to(self.convert_expr(condition)?, &Type::Bool)?,
+                on_true: self.convert_block(on_true)?,
+                on_false: on_false
                     .as_ref()
                     .map(|block| self.convert_block(block))
-                    .transpose()?;
-
-                Statement::If {
-                    condition: converted_condition_expr,
-                    on_true: converted_then,
-                    on_false: converted_else,
-                }
-            }
+                    .transpose()?,
+            },
             parser::Statement::For {
                 counter,
                 from,
@@ -773,26 +703,17 @@ impl Converter {
             } => self.convert_for(counter, from, to.as_deref(), *order, body)?,
 
             parser::Statement::Print { value } => {
-                let Typed { value: expr, ty: _ } = self.convert_expr(value)?;
-                Statement::Print { value: expr }
+                let Typed { value, ty: _ } = self.convert_expr(value)?;
+                Statement::Print { value }
             }
-            parser::Statement::Return { value } => {
-                let Typed {
-                    value: expr,
-                    ty: own_type,
-                } = self.convert_expr(value)?;
-                match &self.current_routine {
-                    Some(RoutinePrototype { return_type, .. }) => {
-                        let converted_expr = cast_to(expr, &own_type, return_type)?;
-                        Statement::Return {
-                            value: converted_expr,
-                        }
-                    }
-                    None => Err(AnalysisError {
-                        what: "Return outside of routine".to_string(),
-                    })?,
-                }
-            }
+            parser::Statement::Return { value } => match &self.current_routine {
+                Some(RoutinePrototype { return_type, .. }) => Statement::Return {
+                    value: cast_to(self.convert_expr(value)?, return_type)?,
+                },
+                None => Err(AnalysisError {
+                    what: "Return outside of routine".to_string(),
+                })?,
+            },
         })
     }
 
@@ -865,16 +786,8 @@ impl Converter {
                     }
                     (Some(t), Some(expr)) => {
                         let converted_type = self.convert_type(t)?;
-                        let Typed {
-                            value: converted_initialiser,
-                            ty: init_type,
-                        } = self.convert_expr(expr)?;
                         Decl::Var(VarDecl {
-                            initialiser: Some(cast_to(
-                                converted_initialiser,
-                                &init_type,
-                                &converted_type,
-                            )?),
+                            initialiser: Some(cast_to(self.convert_expr(expr)?, &converted_type)?),
                             t: converted_type,
                             relative_location: loc,
                         })
@@ -1087,10 +1000,7 @@ impl Converter {
 
         let args_bindings = self.bind_args(args_decls);
 
-        let Typed {
-            value: expr,
-            ty: expr_type,
-        } = self.convert_expr(expression)?;
+        let expr = self.convert_expr(expression)?;
 
         assert_eq!(
             self.leave_block(),
@@ -1098,14 +1008,14 @@ impl Converter {
             "Internal compiler error: locals found in function arguments block"
         );
 
-        let expr = match &return_type {
-            Some(ty) => cast_to(expr, &expr_type, ty)?,
-            None => expr,
+        let (expr, return_type) = match return_type {
+            Some(ty) => (cast_to(expr, &ty)?, ty),
+            None => (expr.value, expr.ty),
         };
 
         let signature = RoutineSignature {
             args: converted_arguments_types,
-            return_type: return_type.unwrap_or(expr_type),
+            return_type,
         };
 
         let decl = RoutineDecl::Full(Routine {
