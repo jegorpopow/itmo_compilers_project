@@ -45,6 +45,7 @@ class ConversionError : public RuntimeError {
   using RuntimeError::RuntimeError;
 };
 
+// FIXME: add position info
 // Explicit Panic instruction or fatal VM state.
 class PanicError : public RuntimeError {
  public:

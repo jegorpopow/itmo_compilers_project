@@ -4,7 +4,7 @@ use ast::{
     AnalysisError, AnalysisResult, Binding, Block, Decl, Expression, IdentifierTable,
     LvalueExpression, Program, Routine, RoutineBody, RoutineDecl, Statement, Type,
 };
-use common::{Integer, RawIdentifier};
+use common::{Integer, Position, RawIdentifier};
 
 pub mod bytecode;
 
@@ -226,7 +226,16 @@ impl<'a> Compiler<'a> {
 
     fn compile_statement(&mut self, stmt: &Statement) -> AnalysisResult<()> {
         match stmt {
-            Statement::Panic { pos } => todo!("panic @ {pos}"),
+            &Statement::Panic {
+                pos: Position { line, column },
+            } => self.bytecode.push(Instruction::Panic {
+                code: 1,
+                line: line.try_into().expect("Over 4 billion lines of code?"),
+                column: column.try_into().expect(
+                    "I understand choosing 120 for your line width instead of 80, \
+                    but over 65 thousand characters in a single line? Really?",
+                ),
+            }),
             Statement::Assignment { lhs, rhs } => match &**lhs {
                 LvalueExpression::Identifier(identifier) => {
                     // Microoptimisation: use direct Store instruction instead of calculating address
