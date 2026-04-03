@@ -1,1 +1,5 @@
-# itmo_compilers_project
+# ¡compilador!
+
+¡compilador! is a compiler for a `¡` (inversed exclamation sign) programming language. 
+
+This project is a course project for an ITMO Devtools compilers course.

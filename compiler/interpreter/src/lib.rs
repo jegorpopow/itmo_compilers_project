@@ -1,14 +1,18 @@
-use core::iter;
-use std::{collections::HashMap, fmt::Debug, io::Write, rc::Rc};
+use core::{fmt, iter};
+use std::{
+    collections::HashMap,
+    fmt::Debug,
+    io::{self, Write},
+    rc::Rc,
+};
 
-use anyhow::{Context as _, Error, bail, ensure};
 use ast::{
     ArrayDescription, Binding, Block, BlockElem, Decl, Expression, FieldDescription,
     IntegerLiteral, LvalueExpression, Program, RealLiteral, RecordDescription, Routine,
     RoutineBody, RoutineDecl, SimpleBinding, SimpleDecl, Type, TypeDecl, VarDecl,
 };
 use common::{
-    Identifier, Integer, LoopOrder, RawIdentifier, Real, integer_to_real,
+    Identifier, Integer, LoopOrder, Position, RawIdentifier, Real, integer_to_real,
     operators::{
         BoolBinOp, EqBinOp, IntBinOp, RealBinOp, SemanticBinaryOperator, SemanticUnaryOperator,
     },
@@ -48,15 +52,37 @@ struct Interpreter<'a, W: Write> {
     globals: Bindings<'a>,
 }
 
+#[derive(Debug, Clone, Copy)]
+pub enum RuntimeError {
+    IndexOutOfBounds { index: Integer, len: usize },
+    Panic { pos: Position },
+}
+
+impl fmt::Display for RuntimeError {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Self::IndexOutOfBounds { index, len } => {
+                write!(
+                    f,
+                    "Index {index} is out of bounds for array of length {len}"
+                )
+            }
+            Self::Panic { pos } => write!(f, "Panic @ {pos}"),
+        }
+    }
+}
+
+impl core::error::Error for RuntimeError {}
+
 // Sadly, Rust's `?` does not work well when you try to combine a `ControlFlow` and a `Result`.
 // This is a hack around it.
 enum BlockError<'a> {
     Return(Value<'a>),
-    Error(Error),
+    Error(RuntimeError),
 }
 
-impl From<Error> for BlockError<'_> {
-    fn from(e: Error) -> Self {
+impl From<RuntimeError> for BlockError<'_> {
+    fn from(e: RuntimeError) -> Self {
         Self::Error(e)
     }
 }
@@ -83,15 +109,15 @@ impl IdentSelector for Identifier {
     reason = "essentially an if-let but with better error reporting"
 )]
 impl<'a, W: Write> Interpreter<'a, W> {
-    #[throws]
+    #[throws(RuntimeError)]
     fn bool_expression(&mut self, bindings: &mut Bindings<'a>, expression: &'a Expression) -> bool {
         match self.expression(bindings, expression)? {
             Value::Bool(value) => value,
-            value => bail!("Expected bool, got {value:?}"),
+            value => unreachable!("Expected bool, got {value:?}"),
         }
     }
 
-    #[throws]
+    #[throws(RuntimeError)]
     fn integer_expression(
         &mut self,
         bindings: &mut Bindings<'a>,
@@ -99,19 +125,19 @@ impl<'a, W: Write> Interpreter<'a, W> {
     ) -> Integer {
         match self.expression(bindings, expression)? {
             Value::Integer(value) => value,
-            value => bail!("Expected integer, got {value:?}"),
+            value => unreachable!("Expected integer, got {value:?}"),
         }
     }
 
-    #[throws]
+    #[throws(RuntimeError)]
     fn real_expression(&mut self, bindings: &mut Bindings<'a>, expression: &'a Expression) -> Real {
         match self.expression(bindings, expression)? {
             Value::Real(value) => value,
-            value => bail!("Expected real, got {value:?}"),
+            value => unreachable!("Expected real, got {value:?}"),
         }
     }
 
-    #[throws]
+    #[throws(RuntimeError)]
     fn array_expression(
         &mut self,
         bindings: &mut Bindings<'a>,
@@ -119,78 +145,80 @@ impl<'a, W: Write> Interpreter<'a, W> {
     ) -> Vec<Address<'a>> {
         match self.expression(bindings, expression)? {
             Value::Array { elements } => elements,
-            value => bail!("Expected array, got {value:?}"),
+            value => unreachable!("Expected array, got {value:?}"),
         }
     }
 }
 
 impl<'a, W: Write> Interpreter<'a, W> {
-    #[throws]
-    fn default_value_for_type(&mut self, ty: &Type) -> Value<'a> {
+    fn default_value_for_type(&self, ty: &Type) -> Value<'a> {
         match ty {
             Type::Int => Value::Integer(0),
             Type::Real => Value::Real(0.0),
             Type::Bool => Value::Bool(false),
-            Type::Alias(ty) => self.default_value_for_type(self.find_type(ty)?)?,
+            Type::Alias(ty) => self.default_value_for_type(self.find_type(ty)),
             Type::Record(_) | Type::Array(_) | Type::Null | Type::Unit => Value::Null,
         }
     }
 
-    #[throws]
     fn find_routine<I: IdentSelector + ?Sized>(&self, routine: &I) -> &'a Routine {
-        self.program
-            .0
-            .iter()
-            .find_map(|Binding { name, decl }| {
-                if let Decl::Routine(RoutineDecl::Full(r)) = decl
-                    && routine.matches(name)
-                {
-                    Some(r)
-                } else {
-                    None
-                }
-            })
-            .with_context(|| format!("Could not find routine {routine:?}"))?
+        let Some(routine) = self.program.0.iter().find_map(|Binding { name, decl }| {
+            if let Decl::Routine(RoutineDecl::Full(r)) = decl
+                && routine.matches(name)
+            {
+                Some(r)
+            } else {
+                None
+            }
+        }) else {
+            unreachable!("Could not find routine {routine:?}")
+        };
+        routine
     }
 
-    #[throws]
     fn find_type(&self, ty: &Identifier) -> &'a Type {
-        self.program
-            .0
-            .iter()
-            .find_map(|Binding { name, decl }| {
-                if let Decl::Type(TypeDecl::Full {
-                    prescribed: _,
-                    effective,
-                }) = decl
-                    && name == ty
-                {
-                    Some(effective.as_ref())
-                } else {
-                    None
-                }
-            })
-            .with_context(|| format!("Could not find type {ty:?}"))?
+        let Some(ty) = self.program.0.iter().find_map(|Binding { name, decl }| {
+            if let Decl::Type(TypeDecl::Full {
+                prescribed: _,
+                effective,
+            }) = decl
+                && name == ty
+            {
+                Some(effective.as_ref())
+            } else {
+                None
+            }
+        }) else {
+            unreachable!("Could not find type {ty:?}")
+        };
+        ty
     }
 
-    #[throws]
+    #[throws(RuntimeError)]
     fn lvalue(&mut self, bindings: &mut Bindings<'a>, lvalue: &'a LvalueExpression) -> Address<'a> {
         match lvalue {
-            LvalueExpression::Identifier(ident) => *bindings
-                .get(ident)
-                .with_context(|| format!("Could not find variable {ident:?}"))?,
+            LvalueExpression::Identifier(ident) => {
+                let Some(&var) = bindings.get(ident) else {
+                    unreachable!("Could not find variable {ident:?}")
+                };
 
+                var
+            }
             LvalueExpression::Member { lhs, member_name } => {
                 let lhs = self.lvalue(bindings, lhs)?;
                 match &self.heap[lhs] {
-                    Value::Struct { fields } => *fields
-                        .get(&member_name)
-                        .with_context(|| format!("No field {member_name:?}"))?,
+                    Value::Struct { fields } => {
+                        let Some(&val) = fields.get(&member_name) else {
+                            unreachable!("No field {member_name:?}")
+                        };
+                        val
+                    }
+
                     e @ (Value::Null
                     | Value::Bool(_)
                     | Value::Integer(_)
                     | Value::Real(_)
-                    | Value::Array { .. }) => bail!("{e:?} is not a struct"),
+                    | Value::Array { .. }) => unreachable!("{e:?} is not a struct"),
                 }
             }
             LvalueExpression::Index { lhs, index } => {
@@ -204,21 +232,19 @@ impl<'a, W: Write> Interpreter<'a, W> {
                             .try_into()
                             .ok()
                             .and_then(|i: usize| elements.get(i))
-                            .with_context(|| {
-                                format!("Index {index} is out of bounds for array of length {len}")
-                            })?
+                            .ok_or(RuntimeError::IndexOutOfBounds { index, len })?
                     }
                     e @ (Value::Null
                     | Value::Bool(_)
                     | Value::Integer(_)
                     | Value::Real(_)
-                    | Value::Struct { .. }) => bail!("{e:?} is not an array"),
+                    | Value::Struct { .. }) => unreachable!("{e:?} is not an array"),
                 }
             }
         }
     }
 
-    #[throws]
+    #[throws(RuntimeError)]
     fn binop(
         &mut self,
         bindings: &mut Bindings<'a>,
@@ -283,7 +309,7 @@ impl<'a, W: Write> Interpreter<'a, W> {
         clippy::new_ret_no_self,
         reason = "`new` as in `Expression::New`"
     )]
-    #[throws]
+    #[throws(RuntimeError)]
     fn new(
         &mut self,
         bindings: &mut Bindings<'a>,
@@ -294,7 +320,7 @@ impl<'a, W: Write> Interpreter<'a, W> {
             Type::Array(ArrayDescription { t, length }) => Value::Array {
                 elements: match (*length, field_values) {
                     (Some(n), None) => {
-                        let value = self.default_value_for_type(t)?;
+                        let value = self.default_value_for_type(t);
                         iter::repeat_n(value, n)
                             .map(|v| self.heap.alloc(v))
                             .collect()
@@ -303,21 +329,21 @@ impl<'a, W: Write> Interpreter<'a, W> {
                 },
             },
 
-            Type::Alias(ty) => self.new(bindings, self.find_type(ty)?, field_values)?,
+            Type::Alias(ty) => self.new(bindings, self.find_type(ty), field_values)?,
             Type::Record(RecordDescription {
                 fields: expected_fields,
             }) => {
                 let fields: HashMap<&'a RawIdentifier, Address<'a>> = expected_fields
                     .iter()
                     .map(|FieldDescription { name, t }| {
-                        self.default_value_for_type(t)
-                            .map(|val| (name, self.heap.alloc(val)))
+                        let val = self.default_value_for_type(t);
+                        (name, self.heap.alloc(val))
                     })
-                    .collect::<Result<_, _>>()?;
+                    .collect();
                 for (name, val) in field_values.unwrap_or_default() {
-                    let addr = *fields
-                        .get(name)
-                        .with_context(|| format!("No field {name:?} in {ty}"))?;
+                    let Some(&addr) = fields.get(name) else {
+                        unreachable!("No field {name:?} in {ty}")
+                    };
                     let val = self.expression(bindings, val)?;
                     self.heap[addr] = val;
                 }
@@ -325,12 +351,12 @@ impl<'a, W: Write> Interpreter<'a, W> {
             }
 
             Type::Int | Type::Real | Type::Bool | Type::Null | Type::Unit => {
-                bail!("Unsupported type for `new` expression: {ty}")
+                unreachable!("Unsupported type for `new` expression: {ty}")
             }
         }
     }
 
-    #[throws]
+    #[throws(RuntimeError)]
     fn expression(&mut self, bindings: &mut Bindings<'a>, expression: &'a Expression) -> Value<'a> {
         match expression {
             Expression::Null => Value::Null,
@@ -387,8 +413,7 @@ impl<'a, W: Write> Interpreter<'a, W> {
         }
     }
 
-    #[throws]
-    fn print(&mut self, value: &Value<'_>) {
+    fn print(&mut self, value: &Value<'_>) -> io::Result<()> {
         match value {
             Value::Bool(value) => writeln!(self.out, "{value}"),
             Value::Integer(value) => writeln!(self.out, "{value}"),
@@ -425,7 +450,6 @@ impl<'a, W: Write> Interpreter<'a, W> {
                 writeln!(self.out, " }}")
             }
         }
-        .context("IO error")?
     }
 
     #[throws(BlockError<'a>)]
@@ -441,9 +465,10 @@ impl<'a, W: Write> Interpreter<'a, W> {
                         relative_location: _,
                     }) => {
                         let e = match initialiser {
-                            Some(e) => self.expression(bindings, e),
+                            Some(e) => self.expression(bindings, e)?,
+
                             None => self.default_value_for_type(t),
-                        }?;
+                        };
                         let e = self.heap.alloc(e);
                         if let Some(prev) = bindings.insert(name, e) {
                             eprintln!(
@@ -523,7 +548,7 @@ impl<'a, W: Write> Interpreter<'a, W> {
 
                     ast::Statement::Print { value } => {
                         let value = self.expression(bindings, value)?;
-                        self.print(&value)?
+                        self.print(&value).expect("IO Error")
                     }
 
                     ast::Statement::Return { value } => {
@@ -531,25 +556,25 @@ impl<'a, W: Write> Interpreter<'a, W> {
                     }
 
                     &ast::Statement::Panic { pos } => {
-                        todo!("panic @ {pos}")
+                        throw!(BlockError::Error(RuntimeError::Panic { pos }))
                     }
                 },
             }
         }
     }
 
-    #[throws]
+    #[throws(RuntimeError)]
     fn call<I: IdentSelector + ?Sized>(&mut self, routine: &I, args: Vec<Value<'a>>) -> Value<'a> {
         let Routine {
             signature: _,
             args_bindings,
             body,
-        } = self.find_routine(routine)?;
+        } = self.find_routine(routine);
         {
             let expected = args_bindings.len();
             let actual = args.len();
-            ensure!(
-                expected == actual,
+            assert_eq!(
+                expected, actual,
                 "Expected {expected} for {routine:?} args but got {actual}"
             )
         }
@@ -565,11 +590,10 @@ impl<'a, W: Write> Interpreter<'a, W> {
                 Err(BlockError::Return(v)) => Ok(v),
                 Err(BlockError::Error(e)) => Err(e),
             },
-        }
-        .with_context(|| format!("Error interpreting {routine:?}"))?
+        }?
     }
 
-    #[throws]
+    #[throws(RuntimeError)]
     fn run(mut self) {
         for Binding { name, decl } in &self.program.0 {
             match decl {
@@ -581,17 +605,16 @@ impl<'a, W: Write> Interpreter<'a, W> {
                 }) => {
                     // FIXME: globals referencing other globals are not supported
                     let value = match initialiser.as_deref() {
-                        None => self.default_value_for_type(t)?,
+                        None => self.default_value_for_type(t),
                         Some(expression) => {
                             self.expression(&mut Bindings::default(), expression)?
                         }
                     };
                     let value = self.heap.alloc(value);
                     if let Some(prev) = self.globals.insert(name, value) {
-                        bail!(
+                        unreachable!(
                             "Redefinition of global {name:?}: {:?} => {:?}",
-                            self.heap[prev],
-                            self.heap[value]
+                            self.heap[prev], self.heap[value]
                         )
                     }
                 }
@@ -599,12 +622,12 @@ impl<'a, W: Write> Interpreter<'a, W> {
         }
         let value = self.call("main", vec![])?;
         let Value::Null = value else {
-            bail!("main returned non-null value: {value:?}")
+            unreachable!("main returned non-null value: {value:?}")
         };
     }
 }
 
-pub fn interpret(out: impl Write, program: &Program) -> anyhow::Result<()> {
+pub fn interpret(out: impl Write, program: &Program) -> Result<(), RuntimeError> {
     Interpreter {
         out,
         program,
