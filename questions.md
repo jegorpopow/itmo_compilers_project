@@ -7,7 +7,7 @@
 
 ## Types and type conversions
 
-* The `type` alias declaration for predefined types creates some kind of `newtype`, which is incompatible with its carrier in terms of assignemnts. Maybe we need to add something like C++ `to_underlying`
+* The `type` alias declaration for predefined types creates some kind of `newtype`, which is incompatible with its carrier in terms of assignments. Maybe we need to add something like C++ `to_underlying`
 ```
 type kilometers is real;
 type miles is real;
@@ -27,4 +27,4 @@ end;
 * What `==` for reference type stands for? *It is identity check in examples now*
 
 ## Runtime
-* Shall we implemet garbage collector?
+* Shall we implement garbage collector?

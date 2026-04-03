@@ -201,15 +201,15 @@ impl<'a> Compiler<'a> {
                 ast::BlockElem::Stmt(statement) => self.compile_statement(statement)?,
                 ast::BlockElem::Decl(simple_binding) => match &simple_binding.decl {
                     ast::SimpleDecl::Var(var_decl) => {
-                        let intialiser = var_decl
+                        let initialiser = var_decl
                             .initialiser
                             .clone()
                             .ok_or(AnalysisError {
                                 what: "placeholder".to_string(),
                             })
-                            .or_else(|_| self.identifiers.get_default_intialiser(&var_decl.t))?;
-                        // Local variable intialisation is just a `push`
-                        self.compile_expr(&intialiser)?;
+                            .or_else(|_| self.identifiers.get_default_initialiser(&var_decl.t))?;
+                        // Local variable initialisation is just a `push`
+                        self.compile_expr(&initialiser)?;
                     }
 
                     ast::SimpleDecl::Type(_) => (),
