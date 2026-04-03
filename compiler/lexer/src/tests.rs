@@ -35,6 +35,7 @@ testing::tests! {
         oob_neg => "oob_neg"
         oob_zero => "oob_zero"
         operator_precedence => "operator_precedence"
+        panic => "panic"
         parse_minus => "parse_minus"
         raytracer => "raytracer"
         real_comparisons => "real_comparisons"

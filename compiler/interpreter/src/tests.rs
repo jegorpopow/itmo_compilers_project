@@ -68,5 +68,6 @@ testing::tests! {
         oob_big => "oob_big"
         oob_neg => "oob_neg"
         oob_zero => "oob_zero"
+        panic => "panic"
     ]
 }
