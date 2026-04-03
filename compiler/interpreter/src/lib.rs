@@ -1,7 +1,7 @@
 use core::iter;
 use std::{collections::HashMap, fmt::Debug, io::Write, rc::Rc};
 
-use anyhow::{Context as _, Error, bail, ensure};
+use anyhow::{Context as _, Error, anyhow, bail, ensure};
 use ast::{
     ArrayDescription, Binding, Block, BlockElem, Decl, Expression, FieldDescription,
     IntegerLiteral, LvalueExpression, Program, RealLiteral, RecordDescription, Routine,
@@ -455,6 +455,11 @@ impl<'a, W: Write> Interpreter<'a, W> {
                 },
 
                 BlockElem::Stmt(stmt) => match stmt {
+                    ast::Statement::Assert(value) => {
+                        let true = self.bool_expression(bindings, value)? else {
+                            Err(anyhow!("Assertion failed: {value:?}"))?
+                        };
+                    }
                     ast::Statement::Assignment { lhs, rhs } => {
                         let lhs = self.lvalue(bindings, lhs)?;
                         let rhs = self.expression(bindings, rhs)?;

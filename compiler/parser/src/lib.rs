@@ -992,6 +992,17 @@ impl Parser {
             }
 
             Some(Token {
+                kind: TokenKind::Keyword(Keyword::Assert),
+                ..
+            }) => {
+                let next = self.next(i);
+                let (expr, next) = self.parse_expr(next)?;
+                let ((), next) = self.parse_semicolon(next)?;
+
+                Ok((Statement::Assert { value: expr }, next))
+            }
+
+            Some(Token {
                 kind: TokenKind::Keyword(Keyword::For),
                 ..
             }) => {

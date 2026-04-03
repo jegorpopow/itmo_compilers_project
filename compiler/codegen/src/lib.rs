@@ -226,6 +226,7 @@ impl<'a> Compiler<'a> {
 
     fn compile_statement(&mut self, stmt: &Statement) -> AnalysisResult<()> {
         match stmt {
+            Statement::Assert(expr) => todo!("assert {expr:?}"),
             Statement::Assignment { lhs, rhs } => match &**lhs {
                 LvalueExpression::Identifier(identifier) => {
                     // Microoptimisation: use direct Store instruction instead of calculating address

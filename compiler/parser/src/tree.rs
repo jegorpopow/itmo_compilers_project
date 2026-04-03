@@ -137,6 +137,9 @@ pub enum Statement {
     Return {
         value: Rc<Expression>,
     },
+    Assert {
+        value: Rc<Expression>,
+    },
 }
 
 #[derive(Debug)]

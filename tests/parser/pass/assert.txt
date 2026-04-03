@@ -1,0 +1,57 @@
+(
+    Program(
+        [
+            Routine(
+                RoutineDecl {
+                    name: r"main",
+                    arguments: [],
+                    return_type: None,
+                    body: Some(
+                        Block(
+                            Block(
+                                [
+                                    Stmt(
+                                        Assert {
+                                            value: BoolLiteral(
+                                                True,
+                                            ),
+                                        },
+                                    ),
+                                    Stmt(
+                                        Assert {
+                                            value: BinOp {
+                                                op: Eq,
+                                                lhs: BinOp {
+                                                    op: Plus,
+                                                    lhs: IntegerLiteral(
+                                                        IntegerLiteral {
+                                                            repr: "2",
+                                                            value: 2,
+                                                        },
+                                                    ),
+                                                    rhs: IntegerLiteral(
+                                                        IntegerLiteral {
+                                                            repr: "2",
+                                                            value: 2,
+                                                        },
+                                                    ),
+                                                },
+                                                rhs: IntegerLiteral(
+                                                    IntegerLiteral {
+                                                        repr: "5",
+                                                        value: 5,
+                                                    },
+                                                ),
+                                            },
+                                        },
+                                    ),
+                                ],
+                            ),
+                        ),
+                    ),
+                },
+            ),
+        ],
+    ),
+    [],
+)

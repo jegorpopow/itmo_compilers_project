@@ -663,6 +663,9 @@ impl Converter {
 
     fn convert_stmt(&mut self, stmt: &parser::Statement) -> AnalysisResult<Statement> {
         Ok(match stmt {
+            parser::Statement::Assert { value } => {
+                Statement::Assert(self.convert_expr(value)?.value)
+            }
             parser::Statement::Assignment { lhs, rhs } => {
                 let Typed {
                     value: lhs,

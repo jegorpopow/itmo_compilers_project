@@ -399,6 +399,7 @@ pub struct Block {
 
 #[derive(Debug, Clone)]
 pub enum Statement {
+    Assert(Rc<Expression>),
     Assignment {
         lhs: Rc<LvalueExpression>,
         rhs: Rc<Expression>,

@@ -48,6 +48,7 @@ testing::tests! {
         while_loops => "while_loops"
     ]
     fail = [
+        assert => "assert"
         parse_minus => "parse_minus"
     ]
 }
