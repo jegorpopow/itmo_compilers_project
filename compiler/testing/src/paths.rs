@@ -40,11 +40,8 @@ pub fn src_dir() -> PathBuf {
 
 #[must_use]
 #[cfg(feature = "testing")]
-pub(crate) fn src_for(stem: &str) -> PathBuf {
-    let mut result = tests_dir().append(&["src", stem]);
-    let set = result.add_extension("i");
-    assert!(set, "Failed to set extension");
-    result
+pub(crate) fn src_for(name: &str) -> PathBuf {
+    tests_dir().append(&["src", &format!("¡{name}!")])
 }
 
 #[must_use]

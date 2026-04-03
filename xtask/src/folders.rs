@@ -1,4 +1,4 @@
-use core::cmp::Ordering;
+use core::{cmp::Ordering, fmt};
 use std::{
     collections::BTreeSet,
     fs::{File, read_dir},
@@ -12,10 +12,25 @@ use testing::Mode;
 
 use crate::{Both, Stage};
 
+#[derive(Debug, PartialEq, Eq)]
+pub(crate) enum Extension {
+    Hola,
+    Boring(String),
+}
+
+impl fmt::Display for Extension {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Self::Hola => f.write_str("¡…!"),
+            Self::Boring(e) => write!(f, ".{e}"),
+        }
+    }
+}
+
 #[derive(Debug)]
 pub(crate) struct TestDirContents {
     pub dir: PathBuf,
-    pub extension: String,
+    pub extension: Extension,
     pub stems: BTreeSet<String>,
 }
 
@@ -27,7 +42,11 @@ impl TestDirContents {
             extension,
             stems: _,
         } = self;
-        dir.join(format!("{stem}.{extension}"))
+
+        dir.join(match extension {
+            Extension::Hola => format!("¡{stem}!"),
+            Extension::Boring(extension) => format!("{stem}.{extension}"),
+        })
     }
 
     #[throws]
@@ -37,30 +56,42 @@ impl TestDirContents {
         if !dir.exists() {
             return Self {
                 dir,
-                extension: "*".into(),
+                extension: Extension::Hola,
                 stems,
             };
         }
 
-        let mut expected_extension: Option<String> = None;
+        let mut expected_extension: Option<Extension> = None;
 
         for entry in read_dir(&dir).with_context(|| format!("failed to ls {}", dir.display()))? {
             let entry = entry.with_context(|| format!("Error traversing {}", dir.display()))?;
             let filename = entry.file_name().into_string().map_err(|e| {
                 anyhow!("Non-unicode file name? Come on! {}", dir.join(e).display())
             })?;
-            let (name, extension) = filename.rsplit_once('.').with_context(|| {
-                format!(
-                    "{} does not have an extension",
-                    dir.join(&filename).display()
-                )
-            })?;
-            let expected = expected_extension.get_or_insert_with(|| extension.to_owned());
-            ensure!(
-                expected == extension,
-                "Expected {} to have extension .{expected}",
-                dir.join(filename).display()
-            );
+            let (name, extension) = match filename.rsplit_once('.') {
+                Some((name, extension)) => (name, Extension::Boring(extension.to_owned())),
+                None => (
+                    filename
+                        .strip_suffix("!")
+                        .and_then(|name| name.strip_prefix("¡"))
+                        .with_context(|| {
+                            format!(
+                                "{} does not have an extension",
+                                dir.join(&filename).display()
+                            )
+                        })?,
+                    Extension::Hola,
+                ),
+            };
+            match &expected_extension {
+                Some(expected) => ensure!(
+                    expected == &extension,
+                    "Expected {} to have extension {expected}",
+                    dir.join(filename).display()
+                ),
+                None => expected_extension = Some(extension),
+            }
+
             let inserted = stems.insert(name.to_owned());
             debug_assert!(
                 inserted,
