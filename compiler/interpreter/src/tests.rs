@@ -1,18 +1,33 @@
-use anyhow::{Context, Error, ensure};
-use culpa::throws;
+use core::fmt;
 
-#[throws]
-fn interpret(src: &str) -> String {
+struct DebugDisplay<T: fmt::Display>(T);
+
+impl<T: fmt::Display> fmt::Debug for DebugDisplay<T> {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        let Self(inner) = self;
+        fmt::Display::fmt(&inner, f)
+    }
+}
+
+fn interpret(src: &str) -> Result<String, DebugDisplay<String>> {
     let tokens: Vec<_> = lexer::Lexer::from(src).collect();
     let (program, parsing_errors) = parser::parse_program(&tokens).expect("Failed to parse");
-    ensure!(
+    assert!(
         parsing_errors.is_empty(),
         "Parsing errors: {parsing_errors:?}"
     );
     let (program, _) = ast::convert(&program).expect("Failed to typecheck");
-    let mut result: Vec<u8> = vec![];
-    crate::interpret(&mut result, &program).context("Interpreter error")?;
-    String::from_utf8(result).context("Somehow got non-UTF8 output")?
+    let mut output: Vec<u8> = vec![];
+    let result = crate::interpret(&mut output, &program);
+    let mut output = String::from_utf8(output).expect("Somehow got non-UTF8 output");
+    match result {
+        Ok(()) => Ok(output),
+        Err(e) => {
+            use fmt::Write;
+            writeln!(output, "{e}").expect("Error formatting shouldn't fail");
+            Err(DebugDisplay(output))
+        }
+    }
 }
 
 testing::tests! {
