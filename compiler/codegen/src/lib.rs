@@ -1,20 +1,24 @@
-#![expect(dead_code, reason = "WIP")]
-#![expect(unreachable_pub, reason = "WIP")]
-#![expect(unused_variables, reason = "WIP")]
+use std::rc::Rc;
 
-use crate::bytecode::{Instruction, TypeId};
-use ast::IdentifierTable;
-use ast::{AnalysisError, AnalysisResult, Block, Expression, LvalueExpression, Statement};
+use ast::{
+    AnalysisError, AnalysisResult, Binding, Block, Decl, Expression, IdentifierTable,
+    LvalueExpression, Program, Routine, RoutineBody, RoutineDecl, Statement, Type,
+};
+use common::{Integer, RawIdentifier};
 
 pub mod bytecode;
 
-struct Compiler<'a> {
+use bytecode::{Instruction, TypeId};
+
+#[derive(Debug)]
+pub struct Compiler<'a> {
     identifiers: &'a IdentifierTable,
     bytecode: Vec<Instruction>,
     fresh_label_counter: u64,
 }
 
 impl<'a> Compiler<'a> {
+    #[must_use]
     pub fn new(table: &'a IdentifierTable) -> Self {
         Compiler {
             identifiers: table,
@@ -44,8 +48,8 @@ impl<'a> Compiler<'a> {
             LvalueExpression::Member { lhs, member_name } => {
                 self.compile_lvalue_expr(lhs)?;
                 self.bytecode
-                    .push(Instruction::FieldAddress { field_offset: 0 }); // TODO
-                Ok(())
+                    .push(Instruction::FieldAddress { field_offset: 0 });
+                todo!("Compute field offset for {member_name:?}")
             }
             LvalueExpression::Index { lhs, index } => {
                 self.compile_expr(index)?;
@@ -54,6 +58,60 @@ impl<'a> Compiler<'a> {
                 Ok(())
             }
         }
+    }
+
+    fn compiler_new(
+        &mut self,
+        t: &Rc<Type>,
+        fields: &[(RawIdentifier, Rc<Expression>)],
+    ) -> AnalysisResult<()> {
+        let effective_type = self.identifiers.get_effective_type(t)?;
+
+        match &*effective_type {
+            Type::Int | Type::Real | Type::Bool | Type::Null | Type::Unit => {
+                return Err(AnalysisError {
+                    what: "Unboxed types can not be new-constructed".to_string(),
+                });
+            }
+            Type::Alias(_) => {
+                return Err(AnalysisError {
+                    what: "Effective type can not be alias".to_string(),
+                });
+            }
+            Type::Record(record_description) => {
+                self.bytecode.push(Instruction::AllocRecord {
+                    type_id: TypeId(0), // TODO: make types interning to build a
+                    size: 0,
+                });
+
+                // Fields initialisation
+                for (name, expr) in fields {
+                    self.bytecode.push(Instruction::Dup);
+                    self.bytecode.push(Instruction::IntConst {
+                        value: Integer::try_from(record_description.get_field_index(name)?)
+                            .expect("Internal compiler error: to big structure type"),
+                    });
+                    self.bytecode.push(Instruction::ElementAddress);
+                    self.compile_expr(expr)?;
+                    self.bytecode.push(Instruction::StoreAddress);
+                }
+            }
+            Type::Array(array_description) => {
+                let Some(length) = array_description.length else {
+                    // TODO: Support `array [] T`` type for allocation ???
+                    return Err(AnalysisError {
+                        what: "Allocation of array of unknown size is not supported".to_string(),
+                    });
+                };
+                self.bytecode.push(Instruction::AllocArray {
+                    type_id: TypeId(0),
+                    size: length
+                        .try_into()
+                        .expect("Internal compiler error, too long array"),
+                })
+            }
+        }
+        Ok(())
     }
 
     fn compile_expr(&mut self, expr: &Expression) -> AnalysisResult<()> {
@@ -68,7 +126,7 @@ impl<'a> Compiler<'a> {
                             .relative_location,
                     });
                 }
-                default @ (LvalueExpression::Member { .. } | LvalueExpression::Index { .. }) => {
+                LvalueExpression::Member { .. } | LvalueExpression::Index { .. } => {
                     self.compile_lvalue_expr(lvalue_expression)?;
                     self.bytecode.push(Instruction::LoadAddress);
                 }
@@ -85,14 +143,15 @@ impl<'a> Compiler<'a> {
             }
             Expression::BoolLiteral(bool_literal) => {
                 self.bytecode.push(Instruction::IntConst {
-                    value: i64::from(*bool_literal),
+                    value: Integer::from(*bool_literal),
                 });
             }
             Expression::Call { callee, args } => {
                 for arg in args.iter().rev() {
                     self.compile_expr(arg)?;
                 }
-                self.bytecode.push(Instruction::Call { function_label: 0 }); // FIXME(!)
+                self.bytecode.push(Instruction::Call { function_label: 0 });
+                todo!("Compute function label for {callee:?}")
             }
             Expression::BinOp { op, lhs, rhs } => {
                 self.compile_expr(lhs)?;
@@ -103,62 +162,11 @@ impl<'a> Compiler<'a> {
                 self.compile_expr(operand)?;
                 self.bytecode.push(Instruction::UnOp { op: *op });
             }
-            Expression::Cast { operand, target } => {
+            Expression::Cast { operand, target: _ } => {
                 self.compile_expr(operand)?;
             }
             Expression::New { t, fields } => {
-                let effective_type = self.identifiers.get_effective_type(t)?;
-
-                match &*effective_type {
-                    ast::Type::Int
-                    | ast::Type::Real
-                    | ast::Type::Bool
-                    | ast::Type::Null
-                    | ast::Type::Unit => {
-                        return Err(AnalysisError {
-                            what: "Unboxed types can not be new-constructed".to_string(),
-                        });
-                    }
-                    ast::Type::Alias(_) => {
-                        return Err(AnalysisError {
-                            what: "Effective type can not be alias".to_string(),
-                        });
-                    }
-                    ast::Type::Record(record_description) => {
-                        self.bytecode.push(Instruction::AllocRecord {
-                            type_id: TypeId(0), // TODO: make types interning to build a
-                            size: 0,
-                        });
-
-                        // Fields initialisation
-                        for (name, expr) in fields.clone().unwrap_or_default() {
-                            self.bytecode.push(Instruction::Dup);
-                            self.bytecode.push(Instruction::IntConst {
-                                value: i64::try_from(record_description.get_field_index(&name)?)
-                                    .expect("Internal compiler error: to big structure type"),
-                            });
-                            self.bytecode.push(Instruction::ElementAddress);
-                            self.compile_expr(&expr)?;
-                            self.bytecode.push(Instruction::StoreAddress);
-                        }
-                    }
-                    ast::Type::Array(array_description) => {
-                        if let Some(length) = array_description.length {
-                            self.bytecode.push(Instruction::AllocArray {
-                                type_id: TypeId(0),
-                                size: length
-                                    .try_into()
-                                    .expect("Internal compiler error, too long array"),
-                            });
-                        } else {
-                            // TODO: Support `array [] T`` type for allocation ???
-                            return Err(AnalysisError {
-                                what: "Allocation of array of unknown size is not supported"
-                                    .to_string(),
-                            });
-                        }
-                    }
-                }
+                self.compiler_new(t, fields.as_deref().unwrap_or_default())?
             }
             Expression::LengthOf { arr } => {
                 self.compile_expr(arr)?;
@@ -204,7 +212,7 @@ impl<'a> Compiler<'a> {
                         self.compile_expr(&intialiser)?;
                     }
 
-                    ast::SimpleDecl::Type(type_decl) => (),
+                    ast::SimpleDecl::Type(_) => (),
                 },
             }
         }
@@ -273,19 +281,8 @@ impl<'a> Compiler<'a> {
                     self.compile_block(on_false)?;
                 }
             }
-            Statement::For {
-                counter,
-                lower_bound,
-                upper_bound,
-                order,
-                body,
-            } => todo!(),
-            Statement::ForEach {
-                counter,
-                collection,
-                order,
-                body,
-            } => todo!(),
+            Statement::For { .. } => todo!(),
+            Statement::ForEach { .. } => todo!(),
             Statement::Print { value } => {
                 self.compile_expr(value)?;
                 self.bytecode
@@ -297,6 +294,33 @@ impl<'a> Compiler<'a> {
             }
         }
 
+        Ok(())
+    }
+
+    pub fn compile(&mut self, program: &Program) -> AnalysisResult<()> {
+        for Binding { name, decl } in &program.0 {
+            match decl {
+                Decl::Var(v) => todo!("var {name:?} = {v:?}"),
+                Decl::Type(t) => todo!("type {name:?} = {t:?}"),
+                Decl::Routine(r) => match r {
+                    RoutineDecl::Forward { .. } => todo!(),
+                    RoutineDecl::Full(Routine {
+                        signature,
+                        args_bindings,
+                        body,
+                    }) => {
+                        match body {
+                            RoutineBody::Block(block) => self.compile_block(block)?,
+
+                            RoutineBody::Expression(expression) => self.compile_expr(expression)?,
+                        }
+                        todo!(
+                            "Do something with signature {signature:?} and args {args_bindings:?}"
+                        )
+                    }
+                },
+            }
+        }
         Ok(())
     }
 }

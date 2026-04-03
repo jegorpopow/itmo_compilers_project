@@ -26,8 +26,10 @@ impl Encode for Location {
     }
 }
 
+#[derive(Debug)]
 pub(crate) struct TypeId(pub u32);
 
+#[derive(Debug)]
 pub(crate) enum Instruction {
     /// push int / bool onto stack
     IntConst {
