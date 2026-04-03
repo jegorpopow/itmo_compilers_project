@@ -19,6 +19,16 @@
                                     ),
                                     Stmt(
                                         Assert {
+                                            value: IntegerLiteral(
+                                                IntegerLiteral {
+                                                    repr: "1",
+                                                    value: 1,
+                                                },
+                                            ),
+                                        },
+                                    ),
+                                    Stmt(
+                                        Assert {
                                             value: BinOp {
                                                 op: Eq,
                                                 lhs: BinOp {

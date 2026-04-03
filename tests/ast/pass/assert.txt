@@ -23,6 +23,18 @@
                                         ),
                                         Stmt(
                                             Assert(
+                                                IntToBool(
+                                                    IntegerLiteral(
+                                                        IntegerLiteral {
+                                                            repr: "1",
+                                                            value: 1,
+                                                        },
+                                                    ),
+                                                ),
+                                            ),
+                                        ),
+                                        Stmt(
+                                            Assert(
                                                 BinOp {
                                                     op: Eq(
                                                         Eq,
@@ -82,6 +94,18 @@
                                             Assert(
                                                 BoolLiteral(
                                                     True,
+                                                ),
+                                            ),
+                                        ),
+                                        Stmt(
+                                            Assert(
+                                                IntToBool(
+                                                    IntegerLiteral(
+                                                        IntegerLiteral {
+                                                            repr: "1",
+                                                            value: 1,
+                                                        },
+                                                    ),
                                                 ),
                                             ),
                                         ),
