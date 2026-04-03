@@ -61,7 +61,7 @@ type vector is record
   var z is real;
 end;
 
--- constructor for simplier literals
+-- constructor for simpler literals
 routine vector_of(x : real, y : real, z : real) => 
   new vector where
     x is x; 

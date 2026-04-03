@@ -1,4 +1,4 @@
-type point is record -- reprsents a point
+type point is record -- represents a point
   var x is real;
   var y is real;
 end;

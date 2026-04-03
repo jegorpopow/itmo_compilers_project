@@ -524,7 +524,7 @@ impl IdentifierTable {
         identifier
     }
 
-    pub fn get_default_intialiser(&self, ty: &Rc<Type>) -> AnalysisResult<Rc<Expression>> {
+    pub fn get_default_initialiser(&self, ty: &Rc<Type>) -> AnalysisResult<Rc<Expression>> {
         match &*self.get_effective_type(ty)? {
             Type::Int => Ok(Expression::IntegerLiteral(IntegerLiteral {
                 repr: "0".to_string(),
