@@ -35,6 +35,7 @@ testing::tests! {
         logical_operators => "logical_operators"
         nested_control => "nested_control"
         operator_precedence => "operator_precedence"
+        parse_minus => "parse_minus"
         raytracer => "raytracer"
         real_comparisons => "real_comparisons"
         real_literals => "real_literals"
@@ -48,6 +49,5 @@ testing::tests! {
         while_loops => "while_loops"
     ]
     fail = [
-        parse_minus => "parse_minus"
     ]
 }
