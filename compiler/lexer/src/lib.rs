@@ -168,6 +168,7 @@ fn name_disambiguation(lexeme: &str) -> TokenKind<'_> {
         "where" => TokenKind::Keyword(Keyword::Where),
         "null" => TokenKind::Keyword(Keyword::Null),
         "new" => TokenKind::Keyword(Keyword::New),
+        "constant" => TokenKind::Keyword(Keyword::Constant),
         "and" => TokenKind::Operator(SyntacticOperator::And),
         "or" => TokenKind::Operator(SyntacticOperator::Or),
         "xor" => TokenKind::Operator(SyntacticOperator::Xor),

@@ -6,7 +6,7 @@ use common::{
 };
 
 use crate::{
-    tree::cast_to,
+    tree::{ConstDecl, cast_to},
     types::{BinOpAdjustment, infer_binary_operator_type},
     *,
 };
@@ -175,7 +175,7 @@ impl Converter {
 
             Ok(Binding {
                 name: _,
-                decl: Decl::Type(_) | Decl::Var(_),
+                decl: Decl::Type(_) | Decl::Var(_) | Decl::Const(_),
             })
             | Err(_) => {
                 // function just shadows previous global variable or type with the same name
@@ -487,37 +487,74 @@ impl Converter {
         }
     }
 
+    fn convert_lvalue_expr_in_rvalue_context(
+        &self,
+        lvalue: &parser::LvalueExpression,
+    ) -> AnalysisResult<Typed> {
+        match lvalue {
+            parser::LvalueExpression::Member { lhs, member_name }
+                if member_name.name == "length" =>
+            {
+                let Typed {
+                    value: lhs,
+                    ty: lhs_type,
+                } = self.convert_lvalue_expr(lhs)?;
+
+                if lhs_type.get_element_type().is_ok() {
+                    // Length of array
+                    Ok(Typed {
+                        value: Rc::new(Expression::LengthOf {
+                            arr: Rc::new(Expression::LvalueToRvalue(lhs)),
+                        }),
+                        ty: Rc::new(Type::Int),
+                    })
+                } else {
+                    // Just field named `length`
+                    Ok(self
+                        .convert_lvalue_expr(lvalue)?
+                        .map(|lvalue| Rc::new(Expression::LvalueToRvalue(lvalue))))
+                }
+            }
+            parser::LvalueExpression::Identifier(raw_identifier) => {
+                match self.lookup(raw_identifier)? {
+                    Binding {
+                        name,
+                        decl: Decl::Var(VarDecl { t, .. }),
+                    } => Ok(Typed {
+                        value: Rc::new(Expression::LvalueToRvalue(Rc::new(
+                            LvalueExpression::Identifier(name.clone()),
+                        ))),
+                        ty: Rc::clone(t),
+                    }),
+                    Binding {
+                        decl: Decl::Const(ConstDecl { value, t }),
+                        ..
+                    } => Ok(Typed {
+                        value: Rc::clone(value), // Constants are immediately propagated
+                        ty: Rc::clone(t),
+                    }),
+
+                    t => Err(AnalysisError {
+                        what: format!(
+                            "{:?} is not a name of variable in lvalue expression",
+                            t.name
+                        ),
+                    })?,
+                }
+            }
+            parser::LvalueExpression::Member { .. } | parser::LvalueExpression::Index { .. } => {
+                Ok(self
+                    .convert_lvalue_expr(lvalue)?
+                    .map(|lvalue| Rc::new(Expression::LvalueToRvalue(lvalue))))
+            }
+        }
+    }
+
     fn convert_expr(&self, tree: &parser::Expression) -> AnalysisResult<Typed> {
         Ok(match tree {
-            parser::Expression::LvalueToRvalue(lvalue_expression) => match &**lvalue_expression {
-                parser::LvalueExpression::Member { lhs, member_name }
-                    if member_name.name == "length" =>
-                {
-                    let Typed {
-                        value: lhs,
-                        ty: lhs_type,
-                    } = self.convert_lvalue_expr(lhs)?;
-
-                    if lhs_type.get_element_type().is_ok() {
-                        // Length of array
-                        Typed {
-                            value: Rc::new(Expression::LengthOf {
-                                arr: Rc::new(Expression::LvalueToRvalue(lhs)),
-                            }),
-                            ty: Rc::new(Type::Int),
-                        }
-                    } else {
-                        // Just field named `length`
-                        self.convert_lvalue_expr(lvalue_expression)?
-                            .map(|lvalue| Rc::new(Expression::LvalueToRvalue(lvalue)))
-                    }
-                }
-                parser::LvalueExpression::Member { .. }
-                | parser::LvalueExpression::Index { .. }
-                | parser::LvalueExpression::Identifier(_) => self
-                    .convert_lvalue_expr(lvalue_expression)?
-                    .map(|lvalue| Rc::new(Expression::LvalueToRvalue(lvalue))),
-            },
+            parser::Expression::LvalueToRvalue(lvalue_expression) => {
+                self.convert_lvalue_expr_in_rvalue_context(lvalue_expression)?
+            }
             parser::Expression::IntegerLiteral(integer_literal) => Typed {
                 value: Rc::new(Expression::IntegerLiteral(IntegerLiteral {
                     repr: integer_literal.repr.clone(),
@@ -742,6 +779,10 @@ impl Converter {
                     self.convert_decl(&parser::Declaration::Var(var_decl.clone()), false)
                         .and_then(TryInto::try_into)?,
                 ),
+                parser::BlockElem::ConstDecl(const_decl) => BlockElem::Decl(
+                    self.convert_decl(&parser::Declaration::Const(const_decl.clone()), false)
+                        .and_then(TryInto::try_into)?,
+                ),
                 parser::BlockElem::TypeDecl(type_decl) => BlockElem::Decl(
                     self.convert_decl(&parser::Declaration::Type(type_decl.clone()), false)
                         .and_then(TryInto::try_into)?,
@@ -809,6 +850,34 @@ impl Converter {
                 Binding {
                     name: ident,
                     decl: var_decl,
+                }
+            }
+
+            parser::Declaration::Const(parser::ConstDecl {
+                name,
+                t,
+                initialiser,
+            }) => {
+                let converted_expr = self.convert_expr(initialiser)?;
+                let const_decl: Decl = match t {
+                    Some(t) => {
+                        let converted_type = self.convert_type(t)?;
+                        let converted_expr = cast_to(converted_expr, &converted_type)?;
+                        Decl::Const(ConstDecl {
+                            t: converted_type,
+                            value: converted_expr.try_constexpr_evaluate()?.as_literal(),
+                        })
+                    }
+                    None => Decl::Const(ConstDecl {
+                        t: converted_expr.ty,
+                        value: converted_expr.value.try_constexpr_evaluate()?.as_literal(),
+                    }),
+                };
+
+                let ident = self.bind_decl(is_global, name, const_decl.clone());
+                Binding {
+                    name: ident,
+                    decl: const_decl,
                 }
             }
             parser::Declaration::Type(parser::TypeDecl { name, t }) => {

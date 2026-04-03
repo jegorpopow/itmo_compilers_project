@@ -79,6 +79,13 @@ pub struct VarDecl {
 }
 
 #[derive(Debug, Hash, Clone)]
+pub struct ConstDecl {
+    pub name: RawIdentifier,
+    pub t: Option<Rc<Type>>,
+    pub initialiser: Rc<Expression>,
+}
+
+#[derive(Debug, Hash, Clone)]
 pub struct TypeDecl {
     pub name: RawIdentifier,
     pub t: Rc<Type>,
@@ -102,6 +109,7 @@ pub struct RoutineDecl {
 pub enum BlockElem {
     Stmt(Statement),
     VarDecl(VarDecl),
+    ConstDecl(ConstDecl),
     TypeDecl(TypeDecl),
 }
 
@@ -149,6 +157,7 @@ pub enum Statement {
 #[derive(Debug)]
 pub enum Declaration {
     Var(VarDecl),
+    Const(ConstDecl),
     Type(TypeDecl),
     Routine(RoutineDecl),
 }

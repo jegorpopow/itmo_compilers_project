@@ -458,7 +458,7 @@ impl<'a, W: Write> Interpreter<'a, W> {
         for stmt in stmts {
             match stmt {
                 BlockElem::Decl(SimpleBinding { name, decl }) => match decl {
-                    SimpleDecl::Type(_) => {}
+                    SimpleDecl::Const(_) | SimpleDecl::Type(_) => {}
                     SimpleDecl::Var(VarDecl {
                         t,
                         initialiser,
@@ -597,7 +597,7 @@ impl<'a, W: Write> Interpreter<'a, W> {
     fn run(mut self) {
         for Binding { name, decl } in &self.program.0 {
             match decl {
-                Decl::Type(_) | Decl::Routine(_) => {}
+                Decl::Type(_) | Decl::Routine(_) | Decl::Const(_) => {}
                 Decl::Var(VarDecl {
                     t,
                     initialiser,

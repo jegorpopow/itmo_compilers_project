@@ -30,6 +30,7 @@ pub enum Keyword {
     Where,
     Assert,
     Panic,
+    Constant,
 }
 
 #[derive(PartialEq, Eq, Hash, fmt::Debug, Clone)]

@@ -211,8 +211,7 @@ impl<'a> Compiler<'a> {
                         // Local variable initialisation is just a `push`
                         self.compile_expr(&initialiser)?;
                     }
-
-                    ast::SimpleDecl::Type(_) => (),
+                    ast::SimpleDecl::Type(_) | ast::SimpleDecl::Const(_) => (), // Type is compile-time entity (TODO: RTTI?)
                 },
             }
         }
@@ -311,6 +310,7 @@ impl<'a> Compiler<'a> {
         for Binding { name, decl } in &program.0 {
             match decl {
                 Decl::Var(v) => todo!("var {name:?} = {v:?}"),
+                Decl::Const(v) => todo!("const {name:?} = {v:?}"),
                 Decl::Type(t) => todo!("type {name:?} = {t:?}"),
                 Decl::Routine(r) => match r {
                     RoutineDecl::Forward { .. } => todo!(),

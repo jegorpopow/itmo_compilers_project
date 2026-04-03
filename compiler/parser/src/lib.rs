@@ -16,8 +16,9 @@ mod tests;
 
 pub use crate::{
     tree::{
-        Block, BlockElem, BoolLiteral, Declaration, Expression, IntegerLiteral, LvalueExpression,
-        Program, RealLiteral, RoutineBody, RoutineDecl, Statement, TypeDecl, VarDecl,
+        Block, BlockElem, BoolLiteral, ConstDecl, Declaration, Expression, IntegerLiteral,
+        LvalueExpression, Program, RealLiteral, RoutineBody, RoutineDecl, Statement, TypeDecl,
+        VarDecl,
     },
     types::{ArrayDescription, FieldDescription, RecordDescription, Type},
 };
@@ -892,6 +893,32 @@ impl Parser {
             next,
         ))
     }
+
+    pub fn parse_const_decl<'a, 'b: 'a>(
+        &mut self,
+        i: IndexedIterator<'a, 'b>,
+    ) -> ParsingResult<'a, 'b, ConstDecl> {
+        let ((), next) = self.parse_keyword(Keyword::Constant, i)?;
+        let (name, next) = self.parse_identifier(next)?;
+        let (t, next) = self.try_parse(
+            |ctx, i: IndexedIterator<'_, '_>| {
+                ctx.parse_after(Self::parse_colon, Self::parse_type, i)
+            },
+            next,
+        )?;
+        let (initialiser, next) = self.parse_after(Self::parse_kw_is, Self::parse_expr, next)?;
+        let ((), next) = self.parse_semicolon(next)?;
+
+        Ok((
+            ConstDecl {
+                name,
+                t,
+                initialiser,
+            },
+            next,
+        ))
+    }
+
     pub fn parse_type_decl<'a, 'b: 'a>(
         &mut self,
         i: IndexedIterator<'a, 'b>,
@@ -1089,6 +1116,13 @@ impl Parser {
                 .map(|(decl, next)| (BlockElem::VarDecl(decl), next)),
 
             Some(Token {
+                kind: TokenKind::Keyword(Keyword::Constant),
+                ..
+            }) => self
+                .parse_const_decl(i)
+                .map(|(decl, next)| (BlockElem::ConstDecl(decl), next)),
+
+            Some(Token {
                 kind: TokenKind::Keyword(Keyword::Type),
                 ..
             }) => self
@@ -1219,6 +1253,13 @@ impl Parser {
             }) => self
                 .parse_var_decl(i)
                 .map(|(decl, next)| (Declaration::Var(decl), next)),
+
+            Some(Token {
+                kind: TokenKind::Keyword(Keyword::Constant),
+                ..
+            }) => self
+                .parse_const_decl(i)
+                .map(|(decl, next)| (Declaration::Const(decl), next)),
 
             Some(Token {
                 kind: TokenKind::Keyword(Keyword::Type),

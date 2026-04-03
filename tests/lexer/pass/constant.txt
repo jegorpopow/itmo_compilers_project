@@ -1,0 +1,99 @@
+"constant" @ 1:0-1:8 is KEYWORD(Constant)
+"LENGTH" @ 1:9-1:15 is IDENTIFIER(LENGTH)
+"is" @ 1:16-1:18 is KEYWORD(Is)
+"100" @ 1:19-1:22 is INTEGER LITERAL(100)
+";" @ 1:22-1:23 is SEMICOLON
+"constant" @ 2:0-2:8 is KEYWORD(Constant)
+"DOUBLE_LENGTH" @ 2:9-2:22 is IDENTIFIER(DOUBLE_LENGTH)
+":" @ 2:23-2:24 is COLON
+"integer" @ 2:25-2:32 is TYPENAME(Integer)
+"is" @ 2:33-2:35 is KEYWORD(Is)
+"LENGTH" @ 2:36-2:42 is IDENTIFIER(LENGTH)
+"*" @ 2:43-2:44 is OPERATOR(Mul)
+"2" @ 2:45-2:46 is INTEGER LITERAL(2)
+";" @ 2:46-2:47 is SEMICOLON
+"type" @ 4:0-4:4 is KEYWORD(Type)
+"table" @ 4:5-4:10 is IDENTIFIER(table)
+"is" @ 4:11-4:13 is KEYWORD(Is)
+"array" @ 4:14-4:19 is KEYWORD(Array)
+"[" @ 4:19-4:20 is LEFT BRACKET
+"LENGTH" @ 4:20-4:26 is IDENTIFIER(LENGTH)
+"*" @ 4:27-4:28 is OPERATOR(Mul)
+"DOUBLE_LENGTH" @ 4:29-4:42 is IDENTIFIER(DOUBLE_LENGTH)
+"]" @ 4:42-4:43 is RIGHT BRACKET
+"integer" @ 4:44-4:51 is TYPENAME(Integer)
+";" @ 4:51-4:52 is SEMICOLON
+"routine" @ 6:0-6:7 is KEYWORD(Routine)
+"meow" @ 6:8-6:12 is IDENTIFIER(meow)
+"(" @ 6:12-6:13 is LEFT PARENTHESIS
+"arr" @ 6:13-6:16 is IDENTIFIER(arr)
+":" @ 6:17-6:18 is COLON
+"array" @ 6:19-6:24 is KEYWORD(Array)
+"[" @ 6:25-6:26 is LEFT BRACKET
+"LENGTH" @ 6:26-6:32 is IDENTIFIER(LENGTH)
+"]" @ 6:32-6:33 is RIGHT BRACKET
+"real" @ 6:34-6:38 is TYPENAME(Real)
+")" @ 6:38-6:39 is RIGHT PARENTHESIS
+":" @ 6:39-6:40 is COLON
+"real" @ 6:41-6:45 is TYPENAME(Real)
+"is" @ 6:46-6:48 is KEYWORD(Is)
+"return" @ 7:2-7:8 is KEYWORD(Return)
+"arr" @ 7:9-7:12 is IDENTIFIER(arr)
+"[" @ 7:12-7:13 is LEFT BRACKET
+"1" @ 7:13-7:14 is INTEGER LITERAL(1)
+"]" @ 7:14-7:15 is RIGHT BRACKET
+";" @ 7:15-7:16 is SEMICOLON
+"end" @ 8:0-8:3 is KEYWORD(End)
+"routine" @ 10:0-10:7 is KEYWORD(Routine)
+"table_receiver" @ 10:8-10:22 is IDENTIFIER(table_receiver)
+"(" @ 10:22-10:23 is LEFT PARENTHESIS
+"t" @ 10:23-10:24 is IDENTIFIER(t)
+":" @ 10:25-10:26 is COLON
+"table" @ 10:27-10:32 is IDENTIFIER(table)
+")" @ 10:32-10:33 is RIGHT PARENTHESIS
+":" @ 10:34-10:35 is COLON
+"integer" @ 10:36-10:43 is TYPENAME(Integer)
+"is" @ 10:44-10:46 is KEYWORD(Is)
+"print" @ 11:2-11:7 is KEYWORD(Print)
+"t" @ 11:8-11:9 is IDENTIFIER(t)
+"[" @ 11:9-11:10 is LEFT BRACKET
+"LENGTH" @ 11:10-11:16 is IDENTIFIER(LENGTH)
+"*" @ 11:17-11:18 is OPERATOR(Mul)
+"2" @ 11:19-11:20 is INTEGER LITERAL(2)
+"]" @ 11:20-11:21 is RIGHT BRACKET
+";" @ 11:21-11:22 is SEMICOLON
+"return" @ 12:2-12:8 is KEYWORD(Return)
+"t" @ 12:9-12:10 is IDENTIFIER(t)
+"[" @ 12:10-12:11 is LEFT BRACKET
+"DOUBLE_LENGTH" @ 12:11-12:24 is IDENTIFIER(DOUBLE_LENGTH)
+"-" @ 12:25-12:26 is OPERATOR(Minus)
+"LENGTH" @ 12:27-12:33 is IDENTIFIER(LENGTH)
+"]" @ 12:33-12:34 is RIGHT BRACKET
+";" @ 12:34-12:35 is SEMICOLON
+"end" @ 13:0-13:3 is KEYWORD(End)
+"routine" @ 15:0-15:7 is KEYWORD(Routine)
+"main" @ 15:8-15:12 is IDENTIFIER(main)
+"(" @ 15:12-15:13 is LEFT PARENTHESIS
+")" @ 15:13-15:14 is RIGHT PARENTHESIS
+":" @ 15:15-15:16 is COLON
+"integer" @ 15:17-15:24 is TYPENAME(Integer)
+"is" @ 15:25-15:27 is KEYWORD(Is)
+"var" @ 16:2-16:5 is KEYWORD(Var)
+"t" @ 16:6-16:7 is IDENTIFIER(t)
+"is" @ 16:8-16:10 is KEYWORD(Is)
+"new" @ 16:11-16:14 is KEYWORD(New)
+"table" @ 16:15-16:20 is IDENTIFIER(table)
+";" @ 16:20-16:21 is SEMICOLON
+"table_receiver" @ 17:2-17:16 is IDENTIFIER(table_receiver)
+"(" @ 17:16-17:17 is LEFT PARENTHESIS
+"new" @ 17:17-17:20 is KEYWORD(New)
+"table" @ 17:21-17:26 is IDENTIFIER(table)
+")" @ 17:26-17:27 is RIGHT PARENTHESIS
+";" @ 17:27-17:28 is SEMICOLON
+"print" @ 18:2-18:7 is KEYWORD(Print)
+"t" @ 18:8-18:9 is IDENTIFIER(t)
+"[" @ 18:9-18:10 is LEFT BRACKET
+"1" @ 18:10-18:11 is INTEGER LITERAL(1)
+"]" @ 18:11-18:12 is RIGHT BRACKET
+";" @ 18:12-18:13 is SEMICOLON
+"end" @ 19:0-19:3 is KEYWORD(End)
