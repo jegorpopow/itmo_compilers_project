@@ -1,4 +1,5 @@
 use core::fmt;
+use std::rc::Rc;
 
 mod convert;
 mod tree;
@@ -16,6 +17,23 @@ pub use crate::{
     },
     types::{ArrayDescription, FieldDescription, RecordDescription, Type},
 };
+
+#[derive(Debug)]
+struct Typed<T = Expression> {
+    value: Rc<T>,
+    ty: Rc<Type>,
+}
+
+impl<T> Typed<T> {
+    #[must_use]
+    fn map<U>(self, f: impl FnOnce(Rc<T>) -> Rc<U>) -> Typed<U> {
+        let Self { value, ty } = self;
+        Typed {
+            value: f(value),
+            ty,
+        }
+    }
+}
 
 #[derive(Debug)]
 pub struct AnalysisError {

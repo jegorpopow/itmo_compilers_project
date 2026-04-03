@@ -11,7 +11,7 @@ use common::{
 };
 
 use crate::{
-    AnalysisError, AnalysisResult,
+    AnalysisError, AnalysisResult, Typed,
     types::{ArrayDescription, Type},
 };
 
@@ -579,10 +579,14 @@ impl IdentifierTable {
 
 // FIXME: add target effective type
 pub(crate) fn cast_to(
-    expr: Rc<Expression>,
-    own_type: &Type,
+    expr: Typed<Expression>,
     target_type: &Type,
 ) -> AnalysisResult<Rc<Expression>> {
+    let Typed {
+        value: expr,
+        ty: own_type,
+    } = expr;
+    let own_type = &*own_type;
     match target_type {
         Type::Int => match own_type {
             Type::Int => Ok(expr),
@@ -638,7 +642,7 @@ pub(crate) fn cast_to(
         }
 
         Type::Alias(_) | Type::Record(_) | Type::Array(_) | Type::Null | Type::Unit => {
-            if *own_type == *target_type || *own_type == Type::Null {
+            if own_type == target_type || *own_type == Type::Null {
                 Ok(expr)
             } else {
                 Err(AnalysisError {
