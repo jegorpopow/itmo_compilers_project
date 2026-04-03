@@ -64,5 +64,8 @@ testing::tests! {
         while_loops => "while_loops"
     ]
     fail = [
+        oob_big => "oob_big"
+        oob_neg => "oob_neg"
+        oob_zero => "oob_zero"
     ]
 }
