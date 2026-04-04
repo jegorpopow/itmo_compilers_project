@@ -3,7 +3,7 @@ use std::rc::Rc;
 use derive_where::derive_where;
 
 use common::{
-    Identifier, Integer, Location, LoopOrder, Position, RawIdentifier, Real, VarLoc,
+    BindingId, Identifier, Integer, Location, LoopOrder, Position, RawIdentifier, Real, VarLoc,
     integer_to_real, real_to_integer,
 };
 
@@ -547,10 +547,9 @@ pub struct IdentifierTable {
 
 impl IdentifierTable {
     pub fn create_binding(&mut self, name: &RawIdentifier, decl: Decl) -> Identifier {
-        let id = self.bindings.len();
         let identifier = Identifier {
             raw: name.clone(),
-            id,
+            id: BindingId(self.bindings.len()),
         };
         self.bindings.push(Binding {
             name: identifier.clone(),
@@ -582,16 +581,18 @@ impl IdentifierTable {
     }
 
     pub fn rebind(&mut self, ident: &Identifier, new_decl: Decl) {
-        self.bindings[ident.id].decl = new_decl;
+        self.bindings[ident.id.0].decl = new_decl;
     }
 
     #[must_use]
     pub fn get_binding(&self, ident: &Identifier) -> &Binding {
-        &self.bindings[ident.id]
+        let &Identifier { raw: _, id } = ident;
+        self.get_binding_by_id(id)
     }
 
     #[must_use]
-    pub fn get_binding_by_id(&self, id: usize) -> &Binding {
+    pub fn get_binding_by_id(&self, id: BindingId) -> &Binding {
+        let BindingId(id) = id;
         &self.bindings[id]
     }
 

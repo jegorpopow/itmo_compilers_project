@@ -1,6 +1,6 @@
 use std::{collections::HashMap, rc::Rc};
 
-use common::{Identifier, Location, LoopOrder, RawIdentifier, VarLoc};
+use common::{BindingId, Identifier, Location, LoopOrder, RawIdentifier, VarLoc};
 
 use crate::{
     operators::UnaryOperator,
@@ -10,23 +10,25 @@ use crate::{
 };
 
 #[derive(Debug, Default)]
-struct ScopeBlock {
-    binders: HashMap<RawIdentifier, usize>,
+struct Scope {
+    binders: HashMap<RawIdentifier, BindingId>,
     locals_in_block: VarLoc,
 }
 
-impl ScopeBlock {
+impl Scope {
     #[must_use]
     fn new() -> Self {
         Self::default()
     }
 
-    fn lookup(&self, name: &RawIdentifier) -> Option<usize> {
+    fn lookup(&self, name: &RawIdentifier) -> Option<BindingId> {
         self.binders.get(name).copied()
     }
 
-    fn bind(&mut self, name: &RawIdentifier, ident: &Identifier) {
-        let _: Option<usize> = self.binders.insert(name.clone(), ident.id);
+    fn bind(&mut self, ident: &Identifier) {
+        let Identifier { raw, id } = ident;
+        let previous = self.binders.insert(raw.to_owned(), *id);
+        debug_assert_eq!(previous, None, "We support rebinds?");
     }
 }
 
@@ -42,7 +44,7 @@ struct RoutinePrototype {
 #[derive(Debug)]
 struct Converter {
     ident_table: IdentifierTable,
-    current_scope: Vec<ScopeBlock>,
+    current_scope: Vec<Scope>,
     global_count: VarLoc,
     local_count: VarLoc,
     current_routine: Option<RoutinePrototype>,
@@ -52,7 +54,7 @@ impl Converter {
     fn new() -> Self {
         Converter {
             ident_table: IdentifierTable::default(),
-            current_scope: vec![ScopeBlock::new()],
+            current_scope: vec![Scope::new()],
             global_count: 0,
             local_count: 0,
             current_routine: None,
@@ -64,7 +66,7 @@ impl Converter {
     }
 
     fn enter_block(&mut self) {
-        self.current_scope.push(ScopeBlock::new())
+        self.current_scope.push(Scope::new())
     }
 
     fn leave_block(&mut self) -> VarLoc {
@@ -106,7 +108,7 @@ impl Converter {
     fn bind_global_decl(&mut self, name: &RawIdentifier, decl: Decl) -> Identifier {
         // TODO: process function forward declaration
         let ident = self.ident_table.create_binding(name, decl);
-        self.current_scope[0].bind(name, &ident);
+        self.current_scope[0].bind(&ident);
 
         ident
     }
@@ -126,7 +128,7 @@ impl Converter {
         self.current_scope
             .last_mut()
             .expect("At least global context is always present")
-            .bind(name, &ident);
+            .bind(&ident);
 
         ident
     }
