@@ -604,20 +604,21 @@ impl Parser {
         let ((), next) = self.parse_keyword(Keyword::Array, i)?;
         let (length, next) =
             self.parse_in_brackets(|ctx, i| ctx.try_parse(Self::parse_expr, i), next)?;
-        let (element_type, next) = self.parse_type(next)?;
-        Ok((
-            ArrayDescription {
-                length,
-                t: element_type,
-            },
-            next,
-        ))
+        self.parse_type(next).map(|(element_type, next)| {
+            (
+                ArrayDescription {
+                    length,
+                    t: element_type.into(),
+                },
+                next,
+            )
+        })
     }
 
     fn parse_type<'a, 'b: 'a>(
         &mut self,
         i: IndexedIterator<'a, 'b>,
-    ) -> ParsingResult<'a, 'b, Rc<Type>> {
+    ) -> ParsingResult<'a, 'b, Type> {
         self.parse_identifier(i)
             .map(|(ident, next)| (Type::Alias(ident), next))
             .or_else(|_| {
@@ -644,7 +645,6 @@ impl Parser {
                 what: "Type expected, but not found".to_owned(),
                 position: i.position(),
             })
-            .map(|(ty, next)| (Rc::new(ty), next))
     }
 
     fn parse_operators<'a, 'b: 'a>(

@@ -63,10 +63,10 @@ pub enum Expression {
     },
     Cast {
         operand: Rc<Expression>,
-        target: Rc<Type>,
+        target: Type,
     },
     New {
-        t: Rc<Type>,
+        t: Type,
         fields: Option<Vec<(RawIdentifier, Rc<Expression>)>>,
     },
     Null,
@@ -75,21 +75,21 @@ pub enum Expression {
 #[derive(Debug, Hash)]
 pub struct VarDecl {
     pub name: RawIdentifier,
-    pub t: Option<Rc<Type>>,
+    pub t: Option<Type>,
     pub initialiser: Option<Rc<Expression>>,
 }
 
 #[derive(Debug, Hash)]
 pub struct ConstDecl {
     pub name: RawIdentifier,
-    pub t: Option<Rc<Type>>,
+    pub t: Option<Type>,
     pub initialiser: Rc<Expression>,
 }
 
 #[derive(Debug, Hash)]
 pub struct TypeDecl {
     pub name: RawIdentifier,
-    pub t: Rc<Type>,
+    pub t: Type,
 }
 
 #[derive(Debug)]
@@ -101,8 +101,8 @@ pub enum RoutineBody {
 #[derive(Debug)]
 pub struct RoutineDecl {
     pub name: RawIdentifier,
-    pub arguments: Vec<(RawIdentifier, Rc<Type>)>,
-    pub return_type: Option<Rc<Type>>,
+    pub arguments: Vec<(RawIdentifier, Type)>,
+    pub return_type: Option<Type>,
     pub body: Option<RoutineBody>,
 }
 
