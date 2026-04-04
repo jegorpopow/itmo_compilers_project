@@ -1,8 +1,8 @@
 use std::rc::Rc;
 
 use ast::{
-    AnalysisError, AnalysisResult, Binding, Block, Decl, Expression, IdentifierTable,
-    LvalueExpression, Program, Routine, RoutineBody, RoutineDecl, Statement, Type,
+    AnalysisError, AnalysisResult, Binding, Bindings, Block, Decl, Expression, LvalueExpression,
+    Program, Routine, RoutineBody, RoutineDecl, Statement, Type,
 };
 use common::{Integer, Position, RawIdentifier};
 
@@ -12,16 +12,16 @@ use bytecode::{Instruction, TypeId};
 
 #[derive(Debug)]
 pub struct Compiler<'a> {
-    identifiers: &'a IdentifierTable,
+    bindings: &'a Bindings,
     bytecode: Vec<Instruction>,
     fresh_label_counter: u64,
 }
 
 impl<'a> Compiler<'a> {
     #[must_use]
-    pub fn new(table: &'a IdentifierTable) -> Self {
+    pub fn new(table: &'a Bindings) -> Self {
         Compiler {
-            identifiers: table,
+            bindings: table,
             bytecode: Vec::new(),
             fresh_label_counter: 0,
         }
@@ -37,9 +37,7 @@ impl<'a> Compiler<'a> {
         match expr {
             LvalueExpression::Identifier(identifier) => {
                 self.bytecode.push(Instruction::AddressOf {
-                    loc: self.identifiers[identifier]
-                        .ensure_is_var()?
-                        .relative_location,
+                    loc: self.bindings[identifier].ensure_is_var()?.relative_location,
                 });
                 Ok(())
             }
@@ -63,7 +61,7 @@ impl<'a> Compiler<'a> {
         t: &Rc<Type>,
         fields: &[(RawIdentifier, Rc<Expression>)],
     ) -> AnalysisResult<()> {
-        let effective_type = self.identifiers.get_effective_type(t)?;
+        let effective_type = self.bindings.get_effective_type(t)?;
 
         match &*effective_type {
             Type::Int | Type::Real | Type::Bool | Type::Null | Type::Unit => {
@@ -117,9 +115,7 @@ impl<'a> Compiler<'a> {
             Expression::LvalueToRvalue(lvalue_expression) => match &**lvalue_expression {
                 LvalueExpression::Identifier(identifier) => {
                     self.bytecode.push(Instruction::Load {
-                        loc: self.identifiers[identifier]
-                            .ensure_is_var()?
-                            .relative_location,
+                        loc: self.bindings[identifier].ensure_is_var()?.relative_location,
                     });
                 }
                 LvalueExpression::Member { .. } | LvalueExpression::Index { .. } => {
@@ -220,9 +216,7 @@ impl<'a> Compiler<'a> {
                     // Microoptimisation: use direct Store instruction instead of calculating address
                     self.compile_expr(rhs)?;
                     self.bytecode.push(Instruction::Store {
-                        loc: self.identifiers[identifier]
-                            .ensure_is_var()?
-                            .relative_location,
+                        loc: self.bindings[identifier].ensure_is_var()?.relative_location,
                     });
                 }
                 LvalueExpression::Index { .. } | LvalueExpression::Member { .. } => {
@@ -288,7 +282,7 @@ impl<'a> Compiler<'a> {
                         .ok_or(AnalysisError {
                             what: "placeholder".to_string(),
                         })
-                        .or_else(|_| self.identifiers.get_default_initialiser(&var_decl.t))?;
+                        .or_else(|_| self.bindings.get_default_initialiser(&var_decl.t))?;
                     // Local variable initialisation is just a `push`
                     self.compile_expr(&initialiser)?;
                 }

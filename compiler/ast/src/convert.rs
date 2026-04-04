@@ -43,7 +43,7 @@ struct RoutinePrototype {
 
 #[derive(Debug)]
 struct Converter {
-    ident_table: IdentifierTable,
+    bindings: Bindings,
     current_scope: Vec<Scope>,
     global_count: VarLoc,
     local_count: VarLoc,
@@ -53,16 +53,12 @@ struct Converter {
 impl Converter {
     fn new() -> Self {
         Converter {
-            ident_table: IdentifierTable::default(),
+            bindings: Bindings::default(),
             current_scope: vec![Scope::new()],
             global_count: 0,
             local_count: 0,
             current_routine: None,
         }
-    }
-
-    fn extract_table(self) -> IdentifierTable {
-        self.ident_table
     }
 
     fn enter_block(&mut self) {
@@ -107,14 +103,14 @@ impl Converter {
 
     fn bind_global_decl(&mut self, name: &RawIdentifier, decl: Decl) -> Identifier {
         // TODO: process function forward declaration
-        let ident = self.ident_table.create_binding(name, decl);
+        let ident = self.bindings.create(name, decl);
         self.current_scope[0].bind(&ident);
 
         ident
     }
 
     fn rebind_decl(&mut self, ident: &Identifier, new_decl: Decl) {
-        self.ident_table.rebind(ident, new_decl);
+        self.bindings.rebind(ident, new_decl);
     }
 
     // FIXME: accept `LocalDecl`
@@ -124,7 +120,7 @@ impl Converter {
             "Local name binding in global context"
         );
 
-        let ident = self.ident_table.create_binding(name, decl);
+        let ident = self.bindings.create(name, decl);
         self.current_scope
             .last_mut()
             .expect("At least global context is always present")
@@ -191,7 +187,7 @@ impl Converter {
             .iter()
             .rev()
             .find_map(|scope_block| scope_block.lookup(name))
-            .map(|id| &self.ident_table[id])
+            .map(|id| &self.bindings[id])
             .ok_or(AnalysisError {
                 what: format!("Unknown name `{name}`"),
             })
@@ -276,7 +272,7 @@ impl Converter {
                     value: converted_lhs,
                     ty: t,
                 } = self.convert_lvalue_expr(lhs)?;
-                let effective_lhs_type = self.ident_table.get_effective_type(&t)?;
+                let effective_lhs_type = self.bindings.get_effective_type(&t)?;
                 let member_type = effective_lhs_type.get_field_type(member_name)?;
 
                 Typed {
@@ -297,7 +293,7 @@ impl Converter {
                     ty: rhs_t,
                 } = self.convert_expr(index)?;
                 rhs_t.ensure_is(&Type::Int)?;
-                let effective_lhs_type = self.ident_table.get_effective_type(&lhs_t)?;
+                let effective_lhs_type = self.bindings.get_effective_type(&lhs_t)?;
                 let resulting_type = effective_lhs_type.get_element_type()?;
 
                 Typed {
@@ -436,7 +432,7 @@ impl Converter {
         fields: Option<&[(RawIdentifier, Rc<parser::Expression>)]>,
     ) -> AnalysisResult<Typed> {
         let converted_type = self.convert_type(t)?;
-        let converted_effective_type = self.ident_table.get_effective_type(&converted_type)?;
+        let converted_effective_type = self.bindings.get_effective_type(&converted_type)?;
 
         match &*converted_effective_type {
             Type::Int | Type::Real | Type::Bool | Type::Null | Type::Unit => Err(AnalysisError {
@@ -609,10 +605,9 @@ impl Converter {
                     ty: operand_type,
                 } = self.convert_expr(operand)?;
                 let converted_target_type = self.convert_type(target)?;
-                let operand_effective_type = self.ident_table.get_effective_type(&operand_type)?;
-                let target_effective_type = self
-                    .ident_table
-                    .get_effective_type(&converted_target_type)?;
+                let operand_effective_type = self.bindings.get_effective_type(&operand_type)?;
+                let target_effective_type =
+                    self.bindings.get_effective_type(&converted_target_type)?;
 
                 if operand_effective_type == target_effective_type {
                     Typed {
@@ -900,7 +895,7 @@ impl Converter {
         );
 
         let converted_type = self.convert_type(t)?;
-        let effective_type = self.ident_table.get_effective_type(&converted_type)?;
+        let effective_type = self.bindings.get_effective_type(&converted_type)?;
         let type_decl = TypeDecl::Full {
             prescribed: converted_type,
             effective: effective_type,
@@ -1138,7 +1133,7 @@ impl Converter {
     }
 }
 
-pub fn convert(program: &parser::Program) -> AnalysisResult<(Program, IdentifierTable)> {
+pub fn convert(program: &parser::Program) -> AnalysisResult<(Program, Bindings)> {
     let mut converter = Converter::new();
 
     let converted_program = program
@@ -1148,5 +1143,6 @@ pub fn convert(program: &parser::Program) -> AnalysisResult<(Program, Identifier
         .collect::<AnalysisResult<Vec<Binding>>>()
         .map(Program)?;
 
-    Ok((converted_program, converter.extract_table()))
+    let Converter { bindings, .. } = converter;
+    Ok((converted_program, bindings))
 }

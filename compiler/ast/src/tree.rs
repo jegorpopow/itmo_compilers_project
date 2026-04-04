@@ -542,17 +542,17 @@ impl TryFrom<Binding> for LocalBinding {
 pub struct Program(pub Vec<Binding>);
 
 #[derive(Debug, Default)]
-pub struct IdentifierTable {
-    bindings: Vec<Binding>,
+pub struct Bindings {
+    arena: Vec<Binding>,
 }
 
-impl IdentifierTable {
-    pub fn create_binding(&mut self, name: &RawIdentifier, decl: Decl) -> Identifier {
+impl Bindings {
+    pub fn create(&mut self, name: &RawIdentifier, decl: Decl) -> Identifier {
         let identifier = Identifier {
             raw: name.clone(),
-            id: BindingId(self.bindings.len()),
+            id: BindingId(self.arena.len()),
         };
-        self.bindings.push(Binding {
+        self.arena.push(Binding {
             name: identifier.clone(),
             decl,
         });
@@ -582,7 +582,7 @@ impl IdentifierTable {
     }
 
     pub fn rebind(&mut self, ident: &Identifier, new_decl: Decl) {
-        self.bindings[ident.id.0].decl = new_decl;
+        self.arena[ident.id.0].decl = new_decl;
     }
 
     pub fn get_effective_type(&self, t: &Rc<Type>) -> AnalysisResult<Rc<Type>> {
@@ -601,16 +601,16 @@ impl IdentifierTable {
     }
 }
 
-impl Index<BindingId> for IdentifierTable {
+impl Index<BindingId> for Bindings {
     type Output = Binding;
 
     fn index(&self, id: BindingId) -> &Self::Output {
         let BindingId(id) = id;
-        &self.bindings[id]
+        &self.arena[id]
     }
 }
 
-impl Index<&Identifier> for IdentifierTable {
+impl Index<&Identifier> for Bindings {
     type Output = Binding;
 
     fn index(&self, ident: &Identifier) -> &Self::Output {
