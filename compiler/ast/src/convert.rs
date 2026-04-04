@@ -33,9 +33,10 @@ impl ScopeBlock {
 }
 
 #[derive(Debug)]
-#[expect(dead_code, reason = "FIXME")]
 struct RoutinePrototype {
+    #[expect(dead_code, reason = "FIXME")]
     name: RawIdentifier,
+    #[expect(dead_code, reason = "FIXME")]
     args: Vec<Rc<Type>>,
     return_type: Rc<Type>,
 }
