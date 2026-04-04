@@ -701,15 +701,15 @@ impl Converter {
     fn convert_stmt(&mut self, stmt: &parser::Statement) -> AnalysisResult<Statement> {
         Ok(match stmt {
             &parser::Statement::Assert { ref value, pos } => Statement::If {
-                condition: cast_to(self.convert_expr(value)?, &Type::Bool)?,
+                condition: Rc::new(Expression::UnOp {
+                    op: UnaryOperator::BoolNeg,
+                    operand: cast_to(self.convert_expr(value)?, &Type::Bool)?,
+                }),
                 on_true: Block {
-                    elems: Vec::new(),
+                    stmts: vec![Statement::Panic { pos }],
                     locals_count: 0,
                 },
-                on_false: Some(Block {
-                    elems: vec![BlockElem::Stmt(Statement::Panic { pos })],
-                    locals_count: 0,
-                }),
+                on_false: None,
             },
             &parser::Statement::Panic { pos } => Statement::Panic { pos },
             parser::Statement::Assignment { lhs, rhs } => {
@@ -767,23 +767,21 @@ impl Converter {
     }
 
     fn convert_block(&mut self, block: &parser::Block) -> AnalysisResult<Block> {
-        let mut result: Vec<BlockElem> = Vec::new();
+        let mut stmts: Vec<Statement> = Vec::new();
 
         self.enter_block();
 
         for block_elem in &block.0 {
-            result.push(match block_elem {
-                parser::BlockElem::Stmt(statement) => {
-                    BlockElem::Stmt(self.convert_stmt(statement)?)
-                }
-                parser::BlockElem::VarDecl(var_decl) => {
-                    BlockElem::Decl(self.convert_var_decl(var_decl, false)?.map(LocalDecl::Var))
-                }
-                parser::BlockElem::ConstDecl(const_decl) => BlockElem::Decl(
+            stmts.push(match block_elem {
+                parser::BlockElem::Stmt(statement) => self.convert_stmt(statement)?,
+                parser::BlockElem::VarDecl(var_decl) => Statement::Declaration(
+                    self.convert_var_decl(var_decl, false)?.map(LocalDecl::Var),
+                ),
+                parser::BlockElem::ConstDecl(const_decl) => Statement::Declaration(
                     self.convert_const_decl(const_decl, false)?
                         .map(LocalDecl::Const),
                 ),
-                parser::BlockElem::TypeDecl(type_decl) => BlockElem::Decl(
+                parser::BlockElem::TypeDecl(type_decl) => Statement::Declaration(
                     self.convert_type_decl(type_decl, false)?
                         .map(LocalDecl::Type),
                 ),
@@ -791,7 +789,7 @@ impl Converter {
         }
 
         Ok(Block {
-            elems: result,
+            stmts,
             locals_count: self.leave_block(),
         })
     }

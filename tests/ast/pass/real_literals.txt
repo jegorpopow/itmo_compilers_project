@@ -13,8 +13,8 @@
                             args_bindings: [],
                             body: Block(
                                 Block {
-                                    elems: [
-                                        Decl(
+                                    stmts: [
+                                        Declaration(
                                             Binding {
                                                 name: a(1),
                                                 decl: Var(
@@ -35,16 +35,14 @@
                                                 ),
                                             },
                                         ),
-                                        Stmt(
-                                            Print {
-                                                value: LvalueToRvalue(
-                                                    Identifier(
-                                                        a(1),
-                                                    ),
+                                        Print {
+                                            value: LvalueToRvalue(
+                                                Identifier(
+                                                    a(1),
                                                 ),
-                                            },
-                                        ),
-                                        Decl(
+                                            ),
+                                        },
+                                        Declaration(
                                             Binding {
                                                 name: b(2),
                                                 decl: Var(
@@ -65,16 +63,14 @@
                                                 ),
                                             },
                                         ),
-                                        Stmt(
-                                            Print {
-                                                value: LvalueToRvalue(
-                                                    Identifier(
-                                                        b(2),
-                                                    ),
+                                        Print {
+                                            value: LvalueToRvalue(
+                                                Identifier(
+                                                    b(2),
                                                 ),
-                                            },
-                                        ),
-                                        Decl(
+                                            ),
+                                        },
+                                        Declaration(
                                             Binding {
                                                 name: c(3),
                                                 decl: Var(
@@ -95,16 +91,14 @@
                                                 ),
                                             },
                                         ),
-                                        Stmt(
-                                            Print {
-                                                value: LvalueToRvalue(
-                                                    Identifier(
-                                                        c(3),
-                                                    ),
+                                        Print {
+                                            value: LvalueToRvalue(
+                                                Identifier(
+                                                    c(3),
                                                 ),
-                                            },
-                                        ),
-                                        Decl(
+                                            ),
+                                        },
+                                        Declaration(
                                             Binding {
                                                 name: d(4),
                                                 decl: Var(
@@ -125,16 +119,14 @@
                                                 ),
                                             },
                                         ),
-                                        Stmt(
-                                            Print {
-                                                value: LvalueToRvalue(
-                                                    Identifier(
-                                                        d(4),
-                                                    ),
+                                        Print {
+                                            value: LvalueToRvalue(
+                                                Identifier(
+                                                    d(4),
                                                 ),
-                                            },
-                                        ),
-                                        Decl(
+                                            ),
+                                        },
+                                        Declaration(
                                             Binding {
                                                 name: e(5),
                                                 decl: Var(
@@ -155,16 +147,14 @@
                                                 ),
                                             },
                                         ),
-                                        Stmt(
-                                            Print {
-                                                value: LvalueToRvalue(
-                                                    Identifier(
-                                                        e(5),
-                                                    ),
+                                        Print {
+                                            value: LvalueToRvalue(
+                                                Identifier(
+                                                    e(5),
                                                 ),
-                                            },
-                                        ),
-                                        Decl(
+                                            ),
+                                        },
+                                        Declaration(
                                             Binding {
                                                 name: f(6),
                                                 decl: Var(
@@ -185,16 +175,14 @@
                                                 ),
                                             },
                                         ),
-                                        Stmt(
-                                            Print {
-                                                value: LvalueToRvalue(
-                                                    Identifier(
-                                                        f(6),
-                                                    ),
+                                        Print {
+                                            value: LvalueToRvalue(
+                                                Identifier(
+                                                    f(6),
                                                 ),
-                                            },
-                                        ),
-                                        Decl(
+                                            ),
+                                        },
+                                        Declaration(
                                             Binding {
                                                 name: g(7),
                                                 decl: Var(
@@ -215,16 +203,14 @@
                                                 ),
                                             },
                                         ),
-                                        Stmt(
-                                            Print {
-                                                value: LvalueToRvalue(
-                                                    Identifier(
-                                                        g(7),
-                                                    ),
+                                        Print {
+                                            value: LvalueToRvalue(
+                                                Identifier(
+                                                    g(7),
                                                 ),
-                                            },
-                                        ),
-                                        Decl(
+                                            ),
+                                        },
+                                        Declaration(
                                             Binding {
                                                 name: h(8),
                                                 decl: Var(
@@ -245,16 +231,14 @@
                                                 ),
                                             },
                                         ),
-                                        Stmt(
-                                            Print {
-                                                value: LvalueToRvalue(
-                                                    Identifier(
-                                                        h(8),
-                                                    ),
+                                        Print {
+                                            value: LvalueToRvalue(
+                                                Identifier(
+                                                    h(8),
                                                 ),
-                                            },
-                                        ),
-                                        Decl(
+                                            ),
+                                        },
+                                        Declaration(
                                             Binding {
                                                 name: i(9),
                                                 decl: Var(
@@ -275,16 +259,14 @@
                                                 ),
                                             },
                                         ),
-                                        Stmt(
-                                            Print {
-                                                value: LvalueToRvalue(
-                                                    Identifier(
-                                                        i(9),
-                                                    ),
+                                        Print {
+                                            value: LvalueToRvalue(
+                                                Identifier(
+                                                    i(9),
                                                 ),
-                                            },
-                                        ),
-                                        Decl(
+                                            ),
+                                        },
+                                        Declaration(
                                             Binding {
                                                 name: j(10),
                                                 decl: Var(
@@ -305,16 +287,14 @@
                                                 ),
                                             },
                                         ),
-                                        Stmt(
-                                            Print {
-                                                value: LvalueToRvalue(
-                                                    Identifier(
-                                                        j(10),
-                                                    ),
+                                        Print {
+                                            value: LvalueToRvalue(
+                                                Identifier(
+                                                    j(10),
                                                 ),
-                                            },
-                                        ),
-                                        Decl(
+                                            ),
+                                        },
+                                        Declaration(
                                             Binding {
                                                 name: k(11),
                                                 decl: Var(
@@ -335,16 +315,14 @@
                                                 ),
                                             },
                                         ),
-                                        Stmt(
-                                            Print {
-                                                value: LvalueToRvalue(
-                                                    Identifier(
-                                                        k(11),
-                                                    ),
+                                        Print {
+                                            value: LvalueToRvalue(
+                                                Identifier(
+                                                    k(11),
                                                 ),
-                                            },
-                                        ),
-                                        Decl(
+                                            ),
+                                        },
+                                        Declaration(
                                             Binding {
                                                 name: l(12),
                                                 decl: Var(
@@ -365,16 +343,14 @@
                                                 ),
                                             },
                                         ),
-                                        Stmt(
-                                            Print {
-                                                value: LvalueToRvalue(
-                                                    Identifier(
-                                                        l(12),
-                                                    ),
+                                        Print {
+                                            value: LvalueToRvalue(
+                                                Identifier(
+                                                    l(12),
                                                 ),
-                                            },
-                                        ),
-                                        Decl(
+                                            ),
+                                        },
+                                        Declaration(
                                             Binding {
                                                 name: m(13),
                                                 decl: Var(
@@ -395,16 +371,14 @@
                                                 ),
                                             },
                                         ),
-                                        Stmt(
-                                            Print {
-                                                value: LvalueToRvalue(
-                                                    Identifier(
-                                                        m(13),
-                                                    ),
+                                        Print {
+                                            value: LvalueToRvalue(
+                                                Identifier(
+                                                    m(13),
                                                 ),
-                                            },
-                                        ),
-                                        Decl(
+                                            ),
+                                        },
+                                        Declaration(
                                             Binding {
                                                 name: n(14),
                                                 decl: Var(
@@ -425,16 +399,14 @@
                                                 ),
                                             },
                                         ),
-                                        Stmt(
-                                            Print {
-                                                value: LvalueToRvalue(
-                                                    Identifier(
-                                                        n(14),
-                                                    ),
+                                        Print {
+                                            value: LvalueToRvalue(
+                                                Identifier(
+                                                    n(14),
                                                 ),
-                                            },
-                                        ),
-                                        Decl(
+                                            ),
+                                        },
+                                        Declaration(
                                             Binding {
                                                 name: o(15),
                                                 decl: Var(
@@ -455,16 +427,14 @@
                                                 ),
                                             },
                                         ),
-                                        Stmt(
-                                            Print {
-                                                value: LvalueToRvalue(
-                                                    Identifier(
-                                                        o(15),
-                                                    ),
+                                        Print {
+                                            value: LvalueToRvalue(
+                                                Identifier(
+                                                    o(15),
                                                 ),
-                                            },
-                                        ),
-                                        Decl(
+                                            ),
+                                        },
+                                        Declaration(
                                             Binding {
                                                 name: p(16),
                                                 decl: Var(
@@ -485,16 +455,14 @@
                                                 ),
                                             },
                                         ),
-                                        Stmt(
-                                            Print {
-                                                value: LvalueToRvalue(
-                                                    Identifier(
-                                                        p(16),
-                                                    ),
+                                        Print {
+                                            value: LvalueToRvalue(
+                                                Identifier(
+                                                    p(16),
                                                 ),
-                                            },
-                                        ),
-                                        Decl(
+                                            ),
+                                        },
+                                        Declaration(
                                             Binding {
                                                 name: q(17),
                                                 decl: Var(
@@ -518,16 +486,14 @@
                                                 ),
                                             },
                                         ),
-                                        Stmt(
-                                            Print {
-                                                value: LvalueToRvalue(
-                                                    Identifier(
-                                                        q(17),
-                                                    ),
+                                        Print {
+                                            value: LvalueToRvalue(
+                                                Identifier(
+                                                    q(17),
                                                 ),
-                                            },
-                                        ),
-                                        Decl(
+                                            ),
+                                        },
+                                        Declaration(
                                             Binding {
                                                 name: r(18),
                                                 decl: Var(
@@ -548,16 +514,14 @@
                                                 ),
                                             },
                                         ),
-                                        Stmt(
-                                            Print {
-                                                value: LvalueToRvalue(
-                                                    Identifier(
-                                                        r(18),
-                                                    ),
+                                        Print {
+                                            value: LvalueToRvalue(
+                                                Identifier(
+                                                    r(18),
                                                 ),
-                                            },
-                                        ),
-                                        Decl(
+                                            ),
+                                        },
+                                        Declaration(
                                             Binding {
                                                 name: s(19),
                                                 decl: Var(
@@ -581,15 +545,13 @@
                                                 ),
                                             },
                                         ),
-                                        Stmt(
-                                            Print {
-                                                value: LvalueToRvalue(
-                                                    Identifier(
-                                                        s(19),
-                                                    ),
+                                        Print {
+                                            value: LvalueToRvalue(
+                                                Identifier(
+                                                    s(19),
                                                 ),
-                                            },
-                                        ),
+                                            ),
+                                        },
                                     ],
                                     locals_count: 19,
                                 },
@@ -614,8 +576,8 @@
                             args_bindings: [],
                             body: Block(
                                 Block {
-                                    elems: [
-                                        Decl(
+                                    stmts: [
+                                        Declaration(
                                             Binding {
                                                 name: a(1),
                                                 decl: Var(
@@ -636,16 +598,14 @@
                                                 ),
                                             },
                                         ),
-                                        Stmt(
-                                            Print {
-                                                value: LvalueToRvalue(
-                                                    Identifier(
-                                                        a(1),
-                                                    ),
+                                        Print {
+                                            value: LvalueToRvalue(
+                                                Identifier(
+                                                    a(1),
                                                 ),
-                                            },
-                                        ),
-                                        Decl(
+                                            ),
+                                        },
+                                        Declaration(
                                             Binding {
                                                 name: b(2),
                                                 decl: Var(
@@ -666,16 +626,14 @@
                                                 ),
                                             },
                                         ),
-                                        Stmt(
-                                            Print {
-                                                value: LvalueToRvalue(
-                                                    Identifier(
-                                                        b(2),
-                                                    ),
+                                        Print {
+                                            value: LvalueToRvalue(
+                                                Identifier(
+                                                    b(2),
                                                 ),
-                                            },
-                                        ),
-                                        Decl(
+                                            ),
+                                        },
+                                        Declaration(
                                             Binding {
                                                 name: c(3),
                                                 decl: Var(
@@ -696,16 +654,14 @@
                                                 ),
                                             },
                                         ),
-                                        Stmt(
-                                            Print {
-                                                value: LvalueToRvalue(
-                                                    Identifier(
-                                                        c(3),
-                                                    ),
+                                        Print {
+                                            value: LvalueToRvalue(
+                                                Identifier(
+                                                    c(3),
                                                 ),
-                                            },
-                                        ),
-                                        Decl(
+                                            ),
+                                        },
+                                        Declaration(
                                             Binding {
                                                 name: d(4),
                                                 decl: Var(
@@ -726,16 +682,14 @@
                                                 ),
                                             },
                                         ),
-                                        Stmt(
-                                            Print {
-                                                value: LvalueToRvalue(
-                                                    Identifier(
-                                                        d(4),
-                                                    ),
+                                        Print {
+                                            value: LvalueToRvalue(
+                                                Identifier(
+                                                    d(4),
                                                 ),
-                                            },
-                                        ),
-                                        Decl(
+                                            ),
+                                        },
+                                        Declaration(
                                             Binding {
                                                 name: e(5),
                                                 decl: Var(
@@ -756,16 +710,14 @@
                                                 ),
                                             },
                                         ),
-                                        Stmt(
-                                            Print {
-                                                value: LvalueToRvalue(
-                                                    Identifier(
-                                                        e(5),
-                                                    ),
+                                        Print {
+                                            value: LvalueToRvalue(
+                                                Identifier(
+                                                    e(5),
                                                 ),
-                                            },
-                                        ),
-                                        Decl(
+                                            ),
+                                        },
+                                        Declaration(
                                             Binding {
                                                 name: f(6),
                                                 decl: Var(
@@ -786,16 +738,14 @@
                                                 ),
                                             },
                                         ),
-                                        Stmt(
-                                            Print {
-                                                value: LvalueToRvalue(
-                                                    Identifier(
-                                                        f(6),
-                                                    ),
+                                        Print {
+                                            value: LvalueToRvalue(
+                                                Identifier(
+                                                    f(6),
                                                 ),
-                                            },
-                                        ),
-                                        Decl(
+                                            ),
+                                        },
+                                        Declaration(
                                             Binding {
                                                 name: g(7),
                                                 decl: Var(
@@ -816,16 +766,14 @@
                                                 ),
                                             },
                                         ),
-                                        Stmt(
-                                            Print {
-                                                value: LvalueToRvalue(
-                                                    Identifier(
-                                                        g(7),
-                                                    ),
+                                        Print {
+                                            value: LvalueToRvalue(
+                                                Identifier(
+                                                    g(7),
                                                 ),
-                                            },
-                                        ),
-                                        Decl(
+                                            ),
+                                        },
+                                        Declaration(
                                             Binding {
                                                 name: h(8),
                                                 decl: Var(
@@ -846,16 +794,14 @@
                                                 ),
                                             },
                                         ),
-                                        Stmt(
-                                            Print {
-                                                value: LvalueToRvalue(
-                                                    Identifier(
-                                                        h(8),
-                                                    ),
+                                        Print {
+                                            value: LvalueToRvalue(
+                                                Identifier(
+                                                    h(8),
                                                 ),
-                                            },
-                                        ),
-                                        Decl(
+                                            ),
+                                        },
+                                        Declaration(
                                             Binding {
                                                 name: i(9),
                                                 decl: Var(
@@ -876,16 +822,14 @@
                                                 ),
                                             },
                                         ),
-                                        Stmt(
-                                            Print {
-                                                value: LvalueToRvalue(
-                                                    Identifier(
-                                                        i(9),
-                                                    ),
+                                        Print {
+                                            value: LvalueToRvalue(
+                                                Identifier(
+                                                    i(9),
                                                 ),
-                                            },
-                                        ),
-                                        Decl(
+                                            ),
+                                        },
+                                        Declaration(
                                             Binding {
                                                 name: j(10),
                                                 decl: Var(
@@ -906,16 +850,14 @@
                                                 ),
                                             },
                                         ),
-                                        Stmt(
-                                            Print {
-                                                value: LvalueToRvalue(
-                                                    Identifier(
-                                                        j(10),
-                                                    ),
+                                        Print {
+                                            value: LvalueToRvalue(
+                                                Identifier(
+                                                    j(10),
                                                 ),
-                                            },
-                                        ),
-                                        Decl(
+                                            ),
+                                        },
+                                        Declaration(
                                             Binding {
                                                 name: k(11),
                                                 decl: Var(
@@ -936,16 +878,14 @@
                                                 ),
                                             },
                                         ),
-                                        Stmt(
-                                            Print {
-                                                value: LvalueToRvalue(
-                                                    Identifier(
-                                                        k(11),
-                                                    ),
+                                        Print {
+                                            value: LvalueToRvalue(
+                                                Identifier(
+                                                    k(11),
                                                 ),
-                                            },
-                                        ),
-                                        Decl(
+                                            ),
+                                        },
+                                        Declaration(
                                             Binding {
                                                 name: l(12),
                                                 decl: Var(
@@ -966,16 +906,14 @@
                                                 ),
                                             },
                                         ),
-                                        Stmt(
-                                            Print {
-                                                value: LvalueToRvalue(
-                                                    Identifier(
-                                                        l(12),
-                                                    ),
+                                        Print {
+                                            value: LvalueToRvalue(
+                                                Identifier(
+                                                    l(12),
                                                 ),
-                                            },
-                                        ),
-                                        Decl(
+                                            ),
+                                        },
+                                        Declaration(
                                             Binding {
                                                 name: m(13),
                                                 decl: Var(
@@ -996,16 +934,14 @@
                                                 ),
                                             },
                                         ),
-                                        Stmt(
-                                            Print {
-                                                value: LvalueToRvalue(
-                                                    Identifier(
-                                                        m(13),
-                                                    ),
+                                        Print {
+                                            value: LvalueToRvalue(
+                                                Identifier(
+                                                    m(13),
                                                 ),
-                                            },
-                                        ),
-                                        Decl(
+                                            ),
+                                        },
+                                        Declaration(
                                             Binding {
                                                 name: n(14),
                                                 decl: Var(
@@ -1026,16 +962,14 @@
                                                 ),
                                             },
                                         ),
-                                        Stmt(
-                                            Print {
-                                                value: LvalueToRvalue(
-                                                    Identifier(
-                                                        n(14),
-                                                    ),
+                                        Print {
+                                            value: LvalueToRvalue(
+                                                Identifier(
+                                                    n(14),
                                                 ),
-                                            },
-                                        ),
-                                        Decl(
+                                            ),
+                                        },
+                                        Declaration(
                                             Binding {
                                                 name: o(15),
                                                 decl: Var(
@@ -1056,16 +990,14 @@
                                                 ),
                                             },
                                         ),
-                                        Stmt(
-                                            Print {
-                                                value: LvalueToRvalue(
-                                                    Identifier(
-                                                        o(15),
-                                                    ),
+                                        Print {
+                                            value: LvalueToRvalue(
+                                                Identifier(
+                                                    o(15),
                                                 ),
-                                            },
-                                        ),
-                                        Decl(
+                                            ),
+                                        },
+                                        Declaration(
                                             Binding {
                                                 name: p(16),
                                                 decl: Var(
@@ -1086,16 +1018,14 @@
                                                 ),
                                             },
                                         ),
-                                        Stmt(
-                                            Print {
-                                                value: LvalueToRvalue(
-                                                    Identifier(
-                                                        p(16),
-                                                    ),
+                                        Print {
+                                            value: LvalueToRvalue(
+                                                Identifier(
+                                                    p(16),
                                                 ),
-                                            },
-                                        ),
-                                        Decl(
+                                            ),
+                                        },
+                                        Declaration(
                                             Binding {
                                                 name: q(17),
                                                 decl: Var(
@@ -1119,16 +1049,14 @@
                                                 ),
                                             },
                                         ),
-                                        Stmt(
-                                            Print {
-                                                value: LvalueToRvalue(
-                                                    Identifier(
-                                                        q(17),
-                                                    ),
+                                        Print {
+                                            value: LvalueToRvalue(
+                                                Identifier(
+                                                    q(17),
                                                 ),
-                                            },
-                                        ),
-                                        Decl(
+                                            ),
+                                        },
+                                        Declaration(
                                             Binding {
                                                 name: r(18),
                                                 decl: Var(
@@ -1149,16 +1077,14 @@
                                                 ),
                                             },
                                         ),
-                                        Stmt(
-                                            Print {
-                                                value: LvalueToRvalue(
-                                                    Identifier(
-                                                        r(18),
-                                                    ),
+                                        Print {
+                                            value: LvalueToRvalue(
+                                                Identifier(
+                                                    r(18),
                                                 ),
-                                            },
-                                        ),
-                                        Decl(
+                                            ),
+                                        },
+                                        Declaration(
                                             Binding {
                                                 name: s(19),
                                                 decl: Var(
@@ -1182,15 +1108,13 @@
                                                 ),
                                             },
                                         ),
-                                        Stmt(
-                                            Print {
-                                                value: LvalueToRvalue(
-                                                    Identifier(
-                                                        s(19),
-                                                    ),
+                                        Print {
+                                            value: LvalueToRvalue(
+                                                Identifier(
+                                                    s(19),
                                                 ),
-                                            },
-                                        ),
+                                            ),
+                                        },
                                     ],
                                     locals_count: 19,
                                 },

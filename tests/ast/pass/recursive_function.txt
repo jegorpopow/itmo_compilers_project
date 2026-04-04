@@ -29,100 +29,94 @@
                             ],
                             body: Block(
                                 Block {
-                                    elems: [
-                                        Stmt(
-                                            If {
-                                                condition: BinOp {
-                                                    op: Int(
-                                                        Le,
+                                    stmts: [
+                                        If {
+                                            condition: BinOp {
+                                                op: Int(
+                                                    Le,
+                                                ),
+                                                lhs: LvalueToRvalue(
+                                                    Identifier(
+                                                        n(1),
                                                     ),
-                                                    lhs: LvalueToRvalue(
-                                                        Identifier(
-                                                            n(1),
-                                                        ),
-                                                    ),
-                                                    rhs: IntegerLiteral(
-                                                        IntegerLiteral {
-                                                            repr: "2",
-                                                            value: 2,
-                                                        },
-                                                    ),
-                                                },
-                                                on_true: Block {
-                                                    elems: [
-                                                        Stmt(
-                                                            Return {
-                                                                value: IntegerLiteral(
-                                                                    IntegerLiteral {
-                                                                        repr: "1",
-                                                                        value: 1,
-                                                                    },
-                                                                ),
-                                                            },
-                                                        ),
-                                                    ],
-                                                    locals_count: 0,
-                                                },
-                                                on_false: Some(
-                                                    Block {
-                                                        elems: [
-                                                            Stmt(
-                                                                Return {
-                                                                    value: BinOp {
-                                                                        op: Int(
-                                                                            Add,
-                                                                        ),
-                                                                        lhs: Call {
-                                                                            callee: fibonacci(0),
-                                                                            args: [
-                                                                                BinOp {
-                                                                                    op: Int(
-                                                                                        Sub,
-                                                                                    ),
-                                                                                    lhs: LvalueToRvalue(
-                                                                                        Identifier(
-                                                                                            n(1),
-                                                                                        ),
-                                                                                    ),
-                                                                                    rhs: IntegerLiteral(
-                                                                                        IntegerLiteral {
-                                                                                            repr: "1",
-                                                                                            value: 1,
-                                                                                        },
-                                                                                    ),
-                                                                                },
-                                                                            ],
-                                                                        },
-                                                                        rhs: Call {
-                                                                            callee: fibonacci(0),
-                                                                            args: [
-                                                                                BinOp {
-                                                                                    op: Int(
-                                                                                        Sub,
-                                                                                    ),
-                                                                                    lhs: LvalueToRvalue(
-                                                                                        Identifier(
-                                                                                            n(1),
-                                                                                        ),
-                                                                                    ),
-                                                                                    rhs: IntegerLiteral(
-                                                                                        IntegerLiteral {
-                                                                                            repr: "2",
-                                                                                            value: 2,
-                                                                                        },
-                                                                                    ),
-                                                                                },
-                                                                            ],
-                                                                        },
-                                                                    },
-                                                                },
-                                                            ),
-                                                        ],
-                                                        locals_count: 0,
+                                                ),
+                                                rhs: IntegerLiteral(
+                                                    IntegerLiteral {
+                                                        repr: "2",
+                                                        value: 2,
                                                     },
                                                 ),
                                             },
-                                        ),
+                                            on_true: Block {
+                                                stmts: [
+                                                    Return {
+                                                        value: IntegerLiteral(
+                                                            IntegerLiteral {
+                                                                repr: "1",
+                                                                value: 1,
+                                                            },
+                                                        ),
+                                                    },
+                                                ],
+                                                locals_count: 0,
+                                            },
+                                            on_false: Some(
+                                                Block {
+                                                    stmts: [
+                                                        Return {
+                                                            value: BinOp {
+                                                                op: Int(
+                                                                    Add,
+                                                                ),
+                                                                lhs: Call {
+                                                                    callee: fibonacci(0),
+                                                                    args: [
+                                                                        BinOp {
+                                                                            op: Int(
+                                                                                Sub,
+                                                                            ),
+                                                                            lhs: LvalueToRvalue(
+                                                                                Identifier(
+                                                                                    n(1),
+                                                                                ),
+                                                                            ),
+                                                                            rhs: IntegerLiteral(
+                                                                                IntegerLiteral {
+                                                                                    repr: "1",
+                                                                                    value: 1,
+                                                                                },
+                                                                            ),
+                                                                        },
+                                                                    ],
+                                                                },
+                                                                rhs: Call {
+                                                                    callee: fibonacci(0),
+                                                                    args: [
+                                                                        BinOp {
+                                                                            op: Int(
+                                                                                Sub,
+                                                                            ),
+                                                                            lhs: LvalueToRvalue(
+                                                                                Identifier(
+                                                                                    n(1),
+                                                                                ),
+                                                                            ),
+                                                                            rhs: IntegerLiteral(
+                                                                                IntegerLiteral {
+                                                                                    repr: "2",
+                                                                                    value: 2,
+                                                                                },
+                                                                            ),
+                                                                        },
+                                                                    ],
+                                                                },
+                                                            },
+                                                        },
+                                                    ],
+                                                    locals_count: 0,
+                                                },
+                                            ),
+                                        },
                                     ],
                                     locals_count: 0,
                                 },
@@ -143,22 +137,20 @@
                             args_bindings: [],
                             body: Block(
                                 Block {
-                                    elems: [
-                                        Stmt(
-                                            Print {
-                                                value: Call {
-                                                    callee: fibonacci(0),
-                                                    args: [
-                                                        IntegerLiteral(
-                                                            IntegerLiteral {
-                                                                repr: "10",
-                                                                value: 10,
-                                                            },
-                                                        ),
-                                                    ],
-                                                },
+                                    stmts: [
+                                        Print {
+                                            value: Call {
+                                                callee: fibonacci(0),
+                                                args: [
+                                                    IntegerLiteral(
+                                                        IntegerLiteral {
+                                                            repr: "10",
+                                                            value: 10,
+                                                        },
+                                                    ),
+                                                ],
                                             },
-                                        ),
+                                        },
                                     ],
                                     locals_count: 0,
                                 },
@@ -199,100 +191,94 @@
                             ],
                             body: Block(
                                 Block {
-                                    elems: [
-                                        Stmt(
-                                            If {
-                                                condition: BinOp {
-                                                    op: Int(
-                                                        Le,
+                                    stmts: [
+                                        If {
+                                            condition: BinOp {
+                                                op: Int(
+                                                    Le,
+                                                ),
+                                                lhs: LvalueToRvalue(
+                                                    Identifier(
+                                                        n(1),
                                                     ),
-                                                    lhs: LvalueToRvalue(
-                                                        Identifier(
-                                                            n(1),
-                                                        ),
-                                                    ),
-                                                    rhs: IntegerLiteral(
-                                                        IntegerLiteral {
-                                                            repr: "2",
-                                                            value: 2,
-                                                        },
-                                                    ),
-                                                },
-                                                on_true: Block {
-                                                    elems: [
-                                                        Stmt(
-                                                            Return {
-                                                                value: IntegerLiteral(
-                                                                    IntegerLiteral {
-                                                                        repr: "1",
-                                                                        value: 1,
-                                                                    },
-                                                                ),
-                                                            },
-                                                        ),
-                                                    ],
-                                                    locals_count: 0,
-                                                },
-                                                on_false: Some(
-                                                    Block {
-                                                        elems: [
-                                                            Stmt(
-                                                                Return {
-                                                                    value: BinOp {
-                                                                        op: Int(
-                                                                            Add,
-                                                                        ),
-                                                                        lhs: Call {
-                                                                            callee: fibonacci(0),
-                                                                            args: [
-                                                                                BinOp {
-                                                                                    op: Int(
-                                                                                        Sub,
-                                                                                    ),
-                                                                                    lhs: LvalueToRvalue(
-                                                                                        Identifier(
-                                                                                            n(1),
-                                                                                        ),
-                                                                                    ),
-                                                                                    rhs: IntegerLiteral(
-                                                                                        IntegerLiteral {
-                                                                                            repr: "1",
-                                                                                            value: 1,
-                                                                                        },
-                                                                                    ),
-                                                                                },
-                                                                            ],
-                                                                        },
-                                                                        rhs: Call {
-                                                                            callee: fibonacci(0),
-                                                                            args: [
-                                                                                BinOp {
-                                                                                    op: Int(
-                                                                                        Sub,
-                                                                                    ),
-                                                                                    lhs: LvalueToRvalue(
-                                                                                        Identifier(
-                                                                                            n(1),
-                                                                                        ),
-                                                                                    ),
-                                                                                    rhs: IntegerLiteral(
-                                                                                        IntegerLiteral {
-                                                                                            repr: "2",
-                                                                                            value: 2,
-                                                                                        },
-                                                                                    ),
-                                                                                },
-                                                                            ],
-                                                                        },
-                                                                    },
-                                                                },
-                                                            ),
-                                                        ],
-                                                        locals_count: 0,
+                                                ),
+                                                rhs: IntegerLiteral(
+                                                    IntegerLiteral {
+                                                        repr: "2",
+                                                        value: 2,
                                                     },
                                                 ),
                                             },
-                                        ),
+                                            on_true: Block {
+                                                stmts: [
+                                                    Return {
+                                                        value: IntegerLiteral(
+                                                            IntegerLiteral {
+                                                                repr: "1",
+                                                                value: 1,
+                                                            },
+                                                        ),
+                                                    },
+                                                ],
+                                                locals_count: 0,
+                                            },
+                                            on_false: Some(
+                                                Block {
+                                                    stmts: [
+                                                        Return {
+                                                            value: BinOp {
+                                                                op: Int(
+                                                                    Add,
+                                                                ),
+                                                                lhs: Call {
+                                                                    callee: fibonacci(0),
+                                                                    args: [
+                                                                        BinOp {
+                                                                            op: Int(
+                                                                                Sub,
+                                                                            ),
+                                                                            lhs: LvalueToRvalue(
+                                                                                Identifier(
+                                                                                    n(1),
+                                                                                ),
+                                                                            ),
+                                                                            rhs: IntegerLiteral(
+                                                                                IntegerLiteral {
+                                                                                    repr: "1",
+                                                                                    value: 1,
+                                                                                },
+                                                                            ),
+                                                                        },
+                                                                    ],
+                                                                },
+                                                                rhs: Call {
+                                                                    callee: fibonacci(0),
+                                                                    args: [
+                                                                        BinOp {
+                                                                            op: Int(
+                                                                                Sub,
+                                                                            ),
+                                                                            lhs: LvalueToRvalue(
+                                                                                Identifier(
+                                                                                    n(1),
+                                                                                ),
+                                                                            ),
+                                                                            rhs: IntegerLiteral(
+                                                                                IntegerLiteral {
+                                                                                    repr: "2",
+                                                                                    value: 2,
+                                                                                },
+                                                                            ),
+                                                                        },
+                                                                    ],
+                                                                },
+                                                            },
+                                                        },
+                                                    ],
+                                                    locals_count: 0,
+                                                },
+                                            ),
+                                        },
                                     ],
                                     locals_count: 0,
                                 },
@@ -325,22 +311,20 @@
                             args_bindings: [],
                             body: Block(
                                 Block {
-                                    elems: [
-                                        Stmt(
-                                            Print {
-                                                value: Call {
-                                                    callee: fibonacci(0),
-                                                    args: [
-                                                        IntegerLiteral(
-                                                            IntegerLiteral {
-                                                                repr: "10",
-                                                                value: 10,
-                                                            },
-                                                        ),
-                                                    ],
-                                                },
+                                    stmts: [
+                                        Print {
+                                            value: Call {
+                                                callee: fibonacci(0),
+                                                args: [
+                                                    IntegerLiteral(
+                                                        IntegerLiteral {
+                                                            repr: "10",
+                                                            value: 10,
+                                                        },
+                                                    ),
+                                                ],
                                             },
-                                        ),
+                                        },
                                     ],
                                     locals_count: 0,
                                 },

@@ -13,8 +13,8 @@
                             args_bindings: [],
                             body: Block(
                                 Block {
-                                    elems: [
-                                        Decl(
+                                    stmts: [
+                                        Declaration(
                                             Binding {
                                                 name: result(1),
                                                 decl: Var(
@@ -32,24 +32,20 @@
                                                 ),
                                             },
                                         ),
-                                        Stmt(
-                                            Print {
-                                                value: LvalueToRvalue(
-                                                    Identifier(
-                                                        result(1),
-                                                    ),
+                                        Print {
+                                            value: LvalueToRvalue(
+                                                Identifier(
+                                                    result(1),
                                                 ),
-                                            },
-                                        ),
-                                        Stmt(
-                                            Return {
-                                                value: LvalueToRvalue(
-                                                    Identifier(
-                                                        result(1),
-                                                    ),
+                                            ),
+                                        },
+                                        Return {
+                                            value: LvalueToRvalue(
+                                                Identifier(
+                                                    result(1),
                                                 ),
-                                            },
-                                        ),
+                                            ),
+                                        },
                                     ],
                                     locals_count: 1,
                                 },
@@ -70,8 +66,8 @@
                             args_bindings: [],
                             body: Block(
                                 Block {
-                                    elems: [
-                                        Decl(
+                                    stmts: [
+                                        Declaration(
                                             Binding {
                                                 name: result(3),
                                                 decl: Var(
@@ -89,24 +85,20 @@
                                                 ),
                                             },
                                         ),
-                                        Stmt(
-                                            Print {
-                                                value: LvalueToRvalue(
-                                                    Identifier(
-                                                        result(3),
-                                                    ),
+                                        Print {
+                                            value: LvalueToRvalue(
+                                                Identifier(
+                                                    result(3),
                                                 ),
-                                            },
-                                        ),
-                                        Stmt(
-                                            Return {
-                                                value: LvalueToRvalue(
-                                                    Identifier(
-                                                        result(3),
-                                                    ),
+                                            ),
+                                        },
+                                        Return {
+                                            value: LvalueToRvalue(
+                                                Identifier(
+                                                    result(3),
                                                 ),
-                                            },
-                                        ),
+                                            ),
+                                        },
                                     ],
                                     locals_count: 1,
                                 },
@@ -127,169 +119,145 @@
                             args_bindings: [],
                             body: Block(
                                 Block {
-                                    elems: [
-                                        Stmt(
-                                            Print {
-                                                value: IntegerLiteral(
-                                                    IntegerLiteral {
-                                                        repr: "0",
-                                                        value: 0,
-                                                    },
+                                    stmts: [
+                                        Print {
+                                            value: IntegerLiteral(
+                                                IntegerLiteral {
+                                                    repr: "0",
+                                                    value: 0,
+                                                },
+                                            ),
+                                        },
+                                        Print {
+                                            value: BinOp {
+                                                op: Bool(
+                                                    And,
                                                 ),
-                                            },
-                                        ),
-                                        Stmt(
-                                            Print {
-                                                value: BinOp {
-                                                    op: Bool(
-                                                        And,
-                                                    ),
-                                                    lhs: Call {
-                                                        callee: True(2),
-                                                        args: [],
-                                                    },
-                                                    rhs: Call {
-                                                        callee: False(0),
-                                                        args: [],
-                                                    },
+                                                lhs: Call {
+                                                    callee: True(2),
+                                                    args: [],
+                                                },
+                                                rhs: Call {
+                                                    callee: False(0),
+                                                    args: [],
                                                 },
                                             },
-                                        ),
-                                        Stmt(
-                                            Print {
-                                                value: IntegerLiteral(
-                                                    IntegerLiteral {
-                                                        repr: "1",
-                                                        value: 1,
-                                                    },
+                                        },
+                                        Print {
+                                            value: IntegerLiteral(
+                                                IntegerLiteral {
+                                                    repr: "1",
+                                                    value: 1,
+                                                },
+                                            ),
+                                        },
+                                        Print {
+                                            value: BinOp {
+                                                op: Bool(
+                                                    And,
                                                 ),
-                                            },
-                                        ),
-                                        Stmt(
-                                            Print {
-                                                value: BinOp {
-                                                    op: Bool(
-                                                        And,
-                                                    ),
-                                                    lhs: Call {
-                                                        callee: False(0),
-                                                        args: [],
-                                                    },
-                                                    rhs: Call {
-                                                        callee: True(2),
-                                                        args: [],
-                                                    },
+                                                lhs: Call {
+                                                    callee: False(0),
+                                                    args: [],
+                                                },
+                                                rhs: Call {
+                                                    callee: True(2),
+                                                    args: [],
                                                 },
                                             },
-                                        ),
-                                        Stmt(
-                                            Print {
-                                                value: IntegerLiteral(
-                                                    IntegerLiteral {
-                                                        repr: "2",
-                                                        value: 2,
-                                                    },
+                                        },
+                                        Print {
+                                            value: IntegerLiteral(
+                                                IntegerLiteral {
+                                                    repr: "2",
+                                                    value: 2,
+                                                },
+                                            ),
+                                        },
+                                        Print {
+                                            value: BinOp {
+                                                op: Bool(
+                                                    Or,
                                                 ),
-                                            },
-                                        ),
-                                        Stmt(
-                                            Print {
-                                                value: BinOp {
-                                                    op: Bool(
-                                                        Or,
-                                                    ),
-                                                    lhs: Call {
-                                                        callee: True(2),
-                                                        args: [],
-                                                    },
-                                                    rhs: Call {
-                                                        callee: False(0),
-                                                        args: [],
-                                                    },
+                                                lhs: Call {
+                                                    callee: True(2),
+                                                    args: [],
+                                                },
+                                                rhs: Call {
+                                                    callee: False(0),
+                                                    args: [],
                                                 },
                                             },
-                                        ),
-                                        Stmt(
-                                            Print {
-                                                value: IntegerLiteral(
-                                                    IntegerLiteral {
-                                                        repr: "3",
-                                                        value: 3,
-                                                    },
+                                        },
+                                        Print {
+                                            value: IntegerLiteral(
+                                                IntegerLiteral {
+                                                    repr: "3",
+                                                    value: 3,
+                                                },
+                                            ),
+                                        },
+                                        Print {
+                                            value: BinOp {
+                                                op: Bool(
+                                                    Or,
                                                 ),
-                                            },
-                                        ),
-                                        Stmt(
-                                            Print {
-                                                value: BinOp {
-                                                    op: Bool(
-                                                        Or,
-                                                    ),
-                                                    lhs: Call {
-                                                        callee: False(0),
-                                                        args: [],
-                                                    },
-                                                    rhs: Call {
-                                                        callee: True(2),
-                                                        args: [],
-                                                    },
+                                                lhs: Call {
+                                                    callee: False(0),
+                                                    args: [],
+                                                },
+                                                rhs: Call {
+                                                    callee: True(2),
+                                                    args: [],
                                                 },
                                             },
-                                        ),
-                                        Stmt(
-                                            Print {
-                                                value: IntegerLiteral(
-                                                    IntegerLiteral {
-                                                        repr: "4",
-                                                        value: 4,
-                                                    },
+                                        },
+                                        Print {
+                                            value: IntegerLiteral(
+                                                IntegerLiteral {
+                                                    repr: "4",
+                                                    value: 4,
+                                                },
+                                            ),
+                                        },
+                                        Print {
+                                            value: BinOp {
+                                                op: Bool(
+                                                    Xor,
                                                 ),
-                                            },
-                                        ),
-                                        Stmt(
-                                            Print {
-                                                value: BinOp {
-                                                    op: Bool(
-                                                        Xor,
-                                                    ),
-                                                    lhs: Call {
-                                                        callee: True(2),
-                                                        args: [],
-                                                    },
-                                                    rhs: Call {
-                                                        callee: False(0),
-                                                        args: [],
-                                                    },
+                                                lhs: Call {
+                                                    callee: True(2),
+                                                    args: [],
+                                                },
+                                                rhs: Call {
+                                                    callee: False(0),
+                                                    args: [],
                                                 },
                                             },
-                                        ),
-                                        Stmt(
-                                            Print {
-                                                value: IntegerLiteral(
-                                                    IntegerLiteral {
-                                                        repr: "5",
-                                                        value: 5,
-                                                    },
+                                        },
+                                        Print {
+                                            value: IntegerLiteral(
+                                                IntegerLiteral {
+                                                    repr: "5",
+                                                    value: 5,
+                                                },
+                                            ),
+                                        },
+                                        Print {
+                                            value: BinOp {
+                                                op: Bool(
+                                                    Xor,
                                                 ),
-                                            },
-                                        ),
-                                        Stmt(
-                                            Print {
-                                                value: BinOp {
-                                                    op: Bool(
-                                                        Xor,
-                                                    ),
-                                                    lhs: Call {
-                                                        callee: False(0),
-                                                        args: [],
-                                                    },
-                                                    rhs: Call {
-                                                        callee: True(2),
-                                                        args: [],
-                                                    },
+                                                lhs: Call {
+                                                    callee: False(0),
+                                                    args: [],
+                                                },
+                                                rhs: Call {
+                                                    callee: True(2),
+                                                    args: [],
                                                 },
                                             },
-                                        ),
+                                        },
                                     ],
                                     locals_count: 0,
                                 },
@@ -314,8 +282,8 @@
                             args_bindings: [],
                             body: Block(
                                 Block {
-                                    elems: [
-                                        Decl(
+                                    stmts: [
+                                        Declaration(
                                             Binding {
                                                 name: result(1),
                                                 decl: Var(
@@ -333,24 +301,20 @@
                                                 ),
                                             },
                                         ),
-                                        Stmt(
-                                            Print {
-                                                value: LvalueToRvalue(
-                                                    Identifier(
-                                                        result(1),
-                                                    ),
+                                        Print {
+                                            value: LvalueToRvalue(
+                                                Identifier(
+                                                    result(1),
                                                 ),
-                                            },
-                                        ),
-                                        Stmt(
-                                            Return {
-                                                value: LvalueToRvalue(
-                                                    Identifier(
-                                                        result(1),
-                                                    ),
+                                            ),
+                                        },
+                                        Return {
+                                            value: LvalueToRvalue(
+                                                Identifier(
+                                                    result(1),
                                                 ),
-                                            },
-                                        ),
+                                            ),
+                                        },
                                     ],
                                     locals_count: 1,
                                 },
@@ -387,8 +351,8 @@
                             args_bindings: [],
                             body: Block(
                                 Block {
-                                    elems: [
-                                        Decl(
+                                    stmts: [
+                                        Declaration(
                                             Binding {
                                                 name: result(3),
                                                 decl: Var(
@@ -406,24 +370,20 @@
                                                 ),
                                             },
                                         ),
-                                        Stmt(
-                                            Print {
-                                                value: LvalueToRvalue(
-                                                    Identifier(
-                                                        result(3),
-                                                    ),
+                                        Print {
+                                            value: LvalueToRvalue(
+                                                Identifier(
+                                                    result(3),
                                                 ),
-                                            },
-                                        ),
-                                        Stmt(
-                                            Return {
-                                                value: LvalueToRvalue(
-                                                    Identifier(
-                                                        result(3),
-                                                    ),
+                                            ),
+                                        },
+                                        Return {
+                                            value: LvalueToRvalue(
+                                                Identifier(
+                                                    result(3),
                                                 ),
-                                            },
-                                        ),
+                                            ),
+                                        },
                                     ],
                                     locals_count: 1,
                                 },
@@ -460,169 +420,145 @@
                             args_bindings: [],
                             body: Block(
                                 Block {
-                                    elems: [
-                                        Stmt(
-                                            Print {
-                                                value: IntegerLiteral(
-                                                    IntegerLiteral {
-                                                        repr: "0",
-                                                        value: 0,
-                                                    },
+                                    stmts: [
+                                        Print {
+                                            value: IntegerLiteral(
+                                                IntegerLiteral {
+                                                    repr: "0",
+                                                    value: 0,
+                                                },
+                                            ),
+                                        },
+                                        Print {
+                                            value: BinOp {
+                                                op: Bool(
+                                                    And,
                                                 ),
-                                            },
-                                        ),
-                                        Stmt(
-                                            Print {
-                                                value: BinOp {
-                                                    op: Bool(
-                                                        And,
-                                                    ),
-                                                    lhs: Call {
-                                                        callee: True(2),
-                                                        args: [],
-                                                    },
-                                                    rhs: Call {
-                                                        callee: False(0),
-                                                        args: [],
-                                                    },
+                                                lhs: Call {
+                                                    callee: True(2),
+                                                    args: [],
+                                                },
+                                                rhs: Call {
+                                                    callee: False(0),
+                                                    args: [],
                                                 },
                                             },
-                                        ),
-                                        Stmt(
-                                            Print {
-                                                value: IntegerLiteral(
-                                                    IntegerLiteral {
-                                                        repr: "1",
-                                                        value: 1,
-                                                    },
+                                        },
+                                        Print {
+                                            value: IntegerLiteral(
+                                                IntegerLiteral {
+                                                    repr: "1",
+                                                    value: 1,
+                                                },
+                                            ),
+                                        },
+                                        Print {
+                                            value: BinOp {
+                                                op: Bool(
+                                                    And,
                                                 ),
-                                            },
-                                        ),
-                                        Stmt(
-                                            Print {
-                                                value: BinOp {
-                                                    op: Bool(
-                                                        And,
-                                                    ),
-                                                    lhs: Call {
-                                                        callee: False(0),
-                                                        args: [],
-                                                    },
-                                                    rhs: Call {
-                                                        callee: True(2),
-                                                        args: [],
-                                                    },
+                                                lhs: Call {
+                                                    callee: False(0),
+                                                    args: [],
+                                                },
+                                                rhs: Call {
+                                                    callee: True(2),
+                                                    args: [],
                                                 },
                                             },
-                                        ),
-                                        Stmt(
-                                            Print {
-                                                value: IntegerLiteral(
-                                                    IntegerLiteral {
-                                                        repr: "2",
-                                                        value: 2,
-                                                    },
+                                        },
+                                        Print {
+                                            value: IntegerLiteral(
+                                                IntegerLiteral {
+                                                    repr: "2",
+                                                    value: 2,
+                                                },
+                                            ),
+                                        },
+                                        Print {
+                                            value: BinOp {
+                                                op: Bool(
+                                                    Or,
                                                 ),
-                                            },
-                                        ),
-                                        Stmt(
-                                            Print {
-                                                value: BinOp {
-                                                    op: Bool(
-                                                        Or,
-                                                    ),
-                                                    lhs: Call {
-                                                        callee: True(2),
-                                                        args: [],
-                                                    },
-                                                    rhs: Call {
-                                                        callee: False(0),
-                                                        args: [],
-                                                    },
+                                                lhs: Call {
+                                                    callee: True(2),
+                                                    args: [],
+                                                },
+                                                rhs: Call {
+                                                    callee: False(0),
+                                                    args: [],
                                                 },
                                             },
-                                        ),
-                                        Stmt(
-                                            Print {
-                                                value: IntegerLiteral(
-                                                    IntegerLiteral {
-                                                        repr: "3",
-                                                        value: 3,
-                                                    },
+                                        },
+                                        Print {
+                                            value: IntegerLiteral(
+                                                IntegerLiteral {
+                                                    repr: "3",
+                                                    value: 3,
+                                                },
+                                            ),
+                                        },
+                                        Print {
+                                            value: BinOp {
+                                                op: Bool(
+                                                    Or,
                                                 ),
-                                            },
-                                        ),
-                                        Stmt(
-                                            Print {
-                                                value: BinOp {
-                                                    op: Bool(
-                                                        Or,
-                                                    ),
-                                                    lhs: Call {
-                                                        callee: False(0),
-                                                        args: [],
-                                                    },
-                                                    rhs: Call {
-                                                        callee: True(2),
-                                                        args: [],
-                                                    },
+                                                lhs: Call {
+                                                    callee: False(0),
+                                                    args: [],
+                                                },
+                                                rhs: Call {
+                                                    callee: True(2),
+                                                    args: [],
                                                 },
                                             },
-                                        ),
-                                        Stmt(
-                                            Print {
-                                                value: IntegerLiteral(
-                                                    IntegerLiteral {
-                                                        repr: "4",
-                                                        value: 4,
-                                                    },
+                                        },
+                                        Print {
+                                            value: IntegerLiteral(
+                                                IntegerLiteral {
+                                                    repr: "4",
+                                                    value: 4,
+                                                },
+                                            ),
+                                        },
+                                        Print {
+                                            value: BinOp {
+                                                op: Bool(
+                                                    Xor,
                                                 ),
-                                            },
-                                        ),
-                                        Stmt(
-                                            Print {
-                                                value: BinOp {
-                                                    op: Bool(
-                                                        Xor,
-                                                    ),
-                                                    lhs: Call {
-                                                        callee: True(2),
-                                                        args: [],
-                                                    },
-                                                    rhs: Call {
-                                                        callee: False(0),
-                                                        args: [],
-                                                    },
+                                                lhs: Call {
+                                                    callee: True(2),
+                                                    args: [],
+                                                },
+                                                rhs: Call {
+                                                    callee: False(0),
+                                                    args: [],
                                                 },
                                             },
-                                        ),
-                                        Stmt(
-                                            Print {
-                                                value: IntegerLiteral(
-                                                    IntegerLiteral {
-                                                        repr: "5",
-                                                        value: 5,
-                                                    },
+                                        },
+                                        Print {
+                                            value: IntegerLiteral(
+                                                IntegerLiteral {
+                                                    repr: "5",
+                                                    value: 5,
+                                                },
+                                            ),
+                                        },
+                                        Print {
+                                            value: BinOp {
+                                                op: Bool(
+                                                    Xor,
                                                 ),
-                                            },
-                                        ),
-                                        Stmt(
-                                            Print {
-                                                value: BinOp {
-                                                    op: Bool(
-                                                        Xor,
-                                                    ),
-                                                    lhs: Call {
-                                                        callee: False(0),
-                                                        args: [],
-                                                    },
-                                                    rhs: Call {
-                                                        callee: True(2),
-                                                        args: [],
-                                                    },
+                                                lhs: Call {
+                                                    callee: False(0),
+                                                    args: [],
+                                                },
+                                                rhs: Call {
+                                                    callee: True(2),
+                                                    args: [],
                                                 },
                                             },
-                                        ),
+                                        },
                                     ],
                                     locals_count: 0,
                                 },

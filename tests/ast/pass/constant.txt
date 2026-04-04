@@ -94,24 +94,22 @@
                             ],
                             body: Block(
                                 Block {
-                                    elems: [
-                                        Stmt(
-                                            Return {
-                                                value: LvalueToRvalue(
-                                                    Index {
-                                                        lhs: Identifier(
-                                                            arr(4),
-                                                        ),
-                                                        index: IntegerLiteral(
-                                                            IntegerLiteral {
-                                                                repr: "1",
-                                                                value: 1,
-                                                            },
-                                                        ),
-                                                    },
-                                                ),
-                                            },
-                                        ),
+                                    stmts: [
+                                        Return {
+                                            value: LvalueToRvalue(
+                                                Index {
+                                                    lhs: Identifier(
+                                                        arr(4),
+                                                    ),
+                                                    index: IntegerLiteral(
+                                                        IntegerLiteral {
+                                                            repr: "1",
+                                                            value: 1,
+                                                        },
+                                                    ),
+                                                },
+                                            ),
+                                        },
                                     ],
                                     locals_count: 0,
                                 },
@@ -152,63 +150,59 @@
                             ],
                             body: Block(
                                 Block {
-                                    elems: [
-                                        Stmt(
-                                            Print {
-                                                value: LvalueToRvalue(
-                                                    Index {
-                                                        lhs: Identifier(
-                                                            t(6),
+                                    stmts: [
+                                        Print {
+                                            value: LvalueToRvalue(
+                                                Index {
+                                                    lhs: Identifier(
+                                                        t(6),
+                                                    ),
+                                                    index: BinOp {
+                                                        op: Int(
+                                                            Mul,
                                                         ),
-                                                        index: BinOp {
-                                                            op: Int(
-                                                                Mul,
-                                                            ),
-                                                            lhs: IntegerLiteral(
-                                                                IntegerLiteral {
-                                                                    repr: "100",
-                                                                    value: 100,
-                                                                },
-                                                            ),
-                                                            rhs: IntegerLiteral(
-                                                                IntegerLiteral {
-                                                                    repr: "2",
-                                                                    value: 2,
-                                                                },
-                                                            ),
-                                                        },
-                                                    },
-                                                ),
-                                            },
-                                        ),
-                                        Stmt(
-                                            Return {
-                                                value: LvalueToRvalue(
-                                                    Index {
-                                                        lhs: Identifier(
-                                                            t(6),
+                                                        lhs: IntegerLiteral(
+                                                            IntegerLiteral {
+                                                                repr: "100",
+                                                                value: 100,
+                                                            },
                                                         ),
-                                                        index: BinOp {
-                                                            op: Int(
-                                                                Sub,
-                                                            ),
-                                                            lhs: IntegerLiteral(
-                                                                IntegerLiteral {
-                                                                    repr: "200",
-                                                                    value: 200,
-                                                                },
-                                                            ),
-                                                            rhs: IntegerLiteral(
-                                                                IntegerLiteral {
-                                                                    repr: "100",
-                                                                    value: 100,
-                                                                },
-                                                            ),
-                                                        },
+                                                        rhs: IntegerLiteral(
+                                                            IntegerLiteral {
+                                                                repr: "2",
+                                                                value: 2,
+                                                            },
+                                                        ),
                                                     },
-                                                ),
-                                            },
-                                        ),
+                                                },
+                                            ),
+                                        },
+                                        Return {
+                                            value: LvalueToRvalue(
+                                                Index {
+                                                    lhs: Identifier(
+                                                        t(6),
+                                                    ),
+                                                    index: BinOp {
+                                                        op: Int(
+                                                            Sub,
+                                                        ),
+                                                        lhs: IntegerLiteral(
+                                                            IntegerLiteral {
+                                                                repr: "200",
+                                                                value: 200,
+                                                            },
+                                                        ),
+                                                        rhs: IntegerLiteral(
+                                                            IntegerLiteral {
+                                                                repr: "100",
+                                                                value: 100,
+                                                            },
+                                                        ),
+                                                    },
+                                                },
+                                            ),
+                                        },
                                     ],
                                     locals_count: 0,
                                 },
@@ -229,8 +223,8 @@
                             args_bindings: [],
                             body: Block(
                                 Block {
-                                    elems: [
-                                        Decl(
+                                    stmts: [
+                                        Declaration(
                                             Binding {
                                                 name: t(8),
                                                 decl: Var(
@@ -253,39 +247,35 @@
                                                 ),
                                             },
                                         ),
-                                        Stmt(
-                                            Expr(
-                                                Call {
-                                                    callee: table_receiver(5),
-                                                    args: [
-                                                        New {
-                                                            t: Alias(
-                                                                table(2),
-                                                            ),
-                                                            fields: None,
-                                                        },
-                                                    ],
-                                                },
-                                            ),
-                                        ),
-                                        Stmt(
-                                            Print {
-                                                value: LvalueToRvalue(
-                                                    Index {
-                                                        lhs: Identifier(
-                                                            t(8),
+                                        Expr(
+                                            Call {
+                                                callee: table_receiver(5),
+                                                args: [
+                                                    New {
+                                                        t: Alias(
+                                                            table(2),
                                                         ),
-                                                        index: IntegerLiteral(
-                                                            IntegerLiteral {
-                                                                repr: "1",
-                                                                value: 1,
-                                                            },
-                                                        ),
+                                                        fields: None,
                                                     },
-                                                ),
+                                                ],
                                             },
                                         ),
-                                        Decl(
+                                        Print {
+                                            value: LvalueToRvalue(
+                                                Index {
+                                                    lhs: Identifier(
+                                                        t(8),
+                                                    ),
+                                                    index: IntegerLiteral(
+                                                        IntegerLiteral {
+                                                            repr: "1",
+                                                            value: 1,
+                                                        },
+                                                    ),
+                                                },
+                                            ),
+                                        },
+                                        Declaration(
                                             Binding {
                                                 name: LENGTH(9),
                                                 decl: Const(
@@ -301,79 +291,71 @@
                                                 ),
                                             },
                                         ),
-                                        Stmt(
-                                            If {
-                                                condition: BinOp {
-                                                    op: Int(
-                                                        Gt,
-                                                    ),
-                                                    lhs: IntegerLiteral(
-                                                        IntegerLiteral {
-                                                            repr: "300",
-                                                            value: 300,
-                                                        },
-                                                    ),
-                                                    rhs: IntegerLiteral(
-                                                        IntegerLiteral {
-                                                            repr: "200",
-                                                            value: 200,
-                                                        },
-                                                    ),
-                                                },
-                                                on_true: Block {
-                                                    elems: [
-                                                        Stmt(
-                                                            Print {
-                                                                value: IntegerLiteral(
-                                                                    IntegerLiteral {
-                                                                        repr: "300",
-                                                                        value: 300,
-                                                                    },
-                                                                ),
-                                                            },
-                                                        ),
-                                                        Decl(
-                                                            Binding {
-                                                                name: LENGTH(10),
-                                                                decl: Const(
-                                                                    ConstDecl {
-                                                                        t: Int,
-                                                                        value: IntegerLiteral(
-                                                                            IntegerLiteral {
-                                                                                repr: "400",
-                                                                                value: 400,
-                                                                            },
-                                                                        ),
-                                                                    },
-                                                                ),
-                                                            },
-                                                        ),
-                                                        Stmt(
-                                                            Print {
-                                                                value: IntegerLiteral(
-                                                                    IntegerLiteral {
-                                                                        repr: "400",
-                                                                        value: 400,
-                                                                    },
-                                                                ),
-                                                            },
-                                                        ),
-                                                    ],
-                                                    locals_count: 0,
-                                                },
-                                                on_false: None,
-                                            },
-                                        ),
-                                        Stmt(
-                                            Print {
-                                                value: IntegerLiteral(
+                                        If {
+                                            condition: BinOp {
+                                                op: Int(
+                                                    Gt,
+                                                ),
+                                                lhs: IntegerLiteral(
                                                     IntegerLiteral {
                                                         repr: "300",
                                                         value: 300,
                                                     },
                                                 ),
+                                                rhs: IntegerLiteral(
+                                                    IntegerLiteral {
+                                                        repr: "200",
+                                                        value: 200,
+                                                    },
+                                                ),
                                             },
-                                        ),
+                                            on_true: Block {
+                                                stmts: [
+                                                    Print {
+                                                        value: IntegerLiteral(
+                                                            IntegerLiteral {
+                                                                repr: "300",
+                                                                value: 300,
+                                                            },
+                                                        ),
+                                                    },
+                                                    Declaration(
+                                                        Binding {
+                                                            name: LENGTH(10),
+                                                            decl: Const(
+                                                                ConstDecl {
+                                                                    t: Int,
+                                                                    value: IntegerLiteral(
+                                                                        IntegerLiteral {
+                                                                            repr: "400",
+                                                                            value: 400,
+                                                                        },
+                                                                    ),
+                                                                },
+                                                            ),
+                                                        },
+                                                    ),
+                                                    Print {
+                                                        value: IntegerLiteral(
+                                                            IntegerLiteral {
+                                                                repr: "400",
+                                                                value: 400,
+                                                            },
+                                                        ),
+                                                    },
+                                                ],
+                                                locals_count: 0,
+                                            },
+                                            on_false: None,
+                                        },
+                                        Print {
+                                            value: IntegerLiteral(
+                                                IntegerLiteral {
+                                                    repr: "300",
+                                                    value: 300,
+                                                },
+                                            ),
+                                        },
                                     ],
                                     locals_count: 1,
                                 },
@@ -479,24 +461,22 @@
                             ],
                             body: Block(
                                 Block {
-                                    elems: [
-                                        Stmt(
-                                            Return {
-                                                value: LvalueToRvalue(
-                                                    Index {
-                                                        lhs: Identifier(
-                                                            arr(4),
-                                                        ),
-                                                        index: IntegerLiteral(
-                                                            IntegerLiteral {
-                                                                repr: "1",
-                                                                value: 1,
-                                                            },
-                                                        ),
-                                                    },
-                                                ),
-                                            },
-                                        ),
+                                    stmts: [
+                                        Return {
+                                            value: LvalueToRvalue(
+                                                Index {
+                                                    lhs: Identifier(
+                                                        arr(4),
+                                                    ),
+                                                    index: IntegerLiteral(
+                                                        IntegerLiteral {
+                                                            repr: "1",
+                                                            value: 1,
+                                                        },
+                                                    ),
+                                                },
+                                            ),
+                                        },
                                     ],
                                     locals_count: 0,
                                 },
@@ -556,63 +536,59 @@
                             ],
                             body: Block(
                                 Block {
-                                    elems: [
-                                        Stmt(
-                                            Print {
-                                                value: LvalueToRvalue(
-                                                    Index {
-                                                        lhs: Identifier(
-                                                            t(6),
+                                    stmts: [
+                                        Print {
+                                            value: LvalueToRvalue(
+                                                Index {
+                                                    lhs: Identifier(
+                                                        t(6),
+                                                    ),
+                                                    index: BinOp {
+                                                        op: Int(
+                                                            Mul,
                                                         ),
-                                                        index: BinOp {
-                                                            op: Int(
-                                                                Mul,
-                                                            ),
-                                                            lhs: IntegerLiteral(
-                                                                IntegerLiteral {
-                                                                    repr: "100",
-                                                                    value: 100,
-                                                                },
-                                                            ),
-                                                            rhs: IntegerLiteral(
-                                                                IntegerLiteral {
-                                                                    repr: "2",
-                                                                    value: 2,
-                                                                },
-                                                            ),
-                                                        },
-                                                    },
-                                                ),
-                                            },
-                                        ),
-                                        Stmt(
-                                            Return {
-                                                value: LvalueToRvalue(
-                                                    Index {
-                                                        lhs: Identifier(
-                                                            t(6),
+                                                        lhs: IntegerLiteral(
+                                                            IntegerLiteral {
+                                                                repr: "100",
+                                                                value: 100,
+                                                            },
                                                         ),
-                                                        index: BinOp {
-                                                            op: Int(
-                                                                Sub,
-                                                            ),
-                                                            lhs: IntegerLiteral(
-                                                                IntegerLiteral {
-                                                                    repr: "200",
-                                                                    value: 200,
-                                                                },
-                                                            ),
-                                                            rhs: IntegerLiteral(
-                                                                IntegerLiteral {
-                                                                    repr: "100",
-                                                                    value: 100,
-                                                                },
-                                                            ),
-                                                        },
+                                                        rhs: IntegerLiteral(
+                                                            IntegerLiteral {
+                                                                repr: "2",
+                                                                value: 2,
+                                                            },
+                                                        ),
                                                     },
-                                                ),
-                                            },
-                                        ),
+                                                },
+                                            ),
+                                        },
+                                        Return {
+                                            value: LvalueToRvalue(
+                                                Index {
+                                                    lhs: Identifier(
+                                                        t(6),
+                                                    ),
+                                                    index: BinOp {
+                                                        op: Int(
+                                                            Sub,
+                                                        ),
+                                                        lhs: IntegerLiteral(
+                                                            IntegerLiteral {
+                                                                repr: "200",
+                                                                value: 200,
+                                                            },
+                                                        ),
+                                                        rhs: IntegerLiteral(
+                                                            IntegerLiteral {
+                                                                repr: "100",
+                                                                value: 100,
+                                                            },
+                                                        ),
+                                                    },
+                                                },
+                                            ),
+                                        },
                                     ],
                                     locals_count: 0,
                                 },
@@ -647,8 +623,8 @@
                             args_bindings: [],
                             body: Block(
                                 Block {
-                                    elems: [
-                                        Decl(
+                                    stmts: [
+                                        Declaration(
                                             Binding {
                                                 name: t(8),
                                                 decl: Var(
@@ -671,39 +647,35 @@
                                                 ),
                                             },
                                         ),
-                                        Stmt(
-                                            Expr(
-                                                Call {
-                                                    callee: table_receiver(5),
-                                                    args: [
-                                                        New {
-                                                            t: Alias(
-                                                                table(2),
-                                                            ),
-                                                            fields: None,
-                                                        },
-                                                    ],
-                                                },
-                                            ),
-                                        ),
-                                        Stmt(
-                                            Print {
-                                                value: LvalueToRvalue(
-                                                    Index {
-                                                        lhs: Identifier(
-                                                            t(8),
+                                        Expr(
+                                            Call {
+                                                callee: table_receiver(5),
+                                                args: [
+                                                    New {
+                                                        t: Alias(
+                                                            table(2),
                                                         ),
-                                                        index: IntegerLiteral(
-                                                            IntegerLiteral {
-                                                                repr: "1",
-                                                                value: 1,
-                                                            },
-                                                        ),
+                                                        fields: None,
                                                     },
-                                                ),
+                                                ],
                                             },
                                         ),
-                                        Decl(
+                                        Print {
+                                            value: LvalueToRvalue(
+                                                Index {
+                                                    lhs: Identifier(
+                                                        t(8),
+                                                    ),
+                                                    index: IntegerLiteral(
+                                                        IntegerLiteral {
+                                                            repr: "1",
+                                                            value: 1,
+                                                        },
+                                                    ),
+                                                },
+                                            ),
+                                        },
+                                        Declaration(
                                             Binding {
                                                 name: LENGTH(9),
                                                 decl: Const(
@@ -719,79 +691,71 @@
                                                 ),
                                             },
                                         ),
-                                        Stmt(
-                                            If {
-                                                condition: BinOp {
-                                                    op: Int(
-                                                        Gt,
-                                                    ),
-                                                    lhs: IntegerLiteral(
-                                                        IntegerLiteral {
-                                                            repr: "300",
-                                                            value: 300,
-                                                        },
-                                                    ),
-                                                    rhs: IntegerLiteral(
-                                                        IntegerLiteral {
-                                                            repr: "200",
-                                                            value: 200,
-                                                        },
-                                                    ),
-                                                },
-                                                on_true: Block {
-                                                    elems: [
-                                                        Stmt(
-                                                            Print {
-                                                                value: IntegerLiteral(
-                                                                    IntegerLiteral {
-                                                                        repr: "300",
-                                                                        value: 300,
-                                                                    },
-                                                                ),
-                                                            },
-                                                        ),
-                                                        Decl(
-                                                            Binding {
-                                                                name: LENGTH(10),
-                                                                decl: Const(
-                                                                    ConstDecl {
-                                                                        t: Int,
-                                                                        value: IntegerLiteral(
-                                                                            IntegerLiteral {
-                                                                                repr: "400",
-                                                                                value: 400,
-                                                                            },
-                                                                        ),
-                                                                    },
-                                                                ),
-                                                            },
-                                                        ),
-                                                        Stmt(
-                                                            Print {
-                                                                value: IntegerLiteral(
-                                                                    IntegerLiteral {
-                                                                        repr: "400",
-                                                                        value: 400,
-                                                                    },
-                                                                ),
-                                                            },
-                                                        ),
-                                                    ],
-                                                    locals_count: 0,
-                                                },
-                                                on_false: None,
-                                            },
-                                        ),
-                                        Stmt(
-                                            Print {
-                                                value: IntegerLiteral(
+                                        If {
+                                            condition: BinOp {
+                                                op: Int(
+                                                    Gt,
+                                                ),
+                                                lhs: IntegerLiteral(
                                                     IntegerLiteral {
                                                         repr: "300",
                                                         value: 300,
                                                     },
                                                 ),
+                                                rhs: IntegerLiteral(
+                                                    IntegerLiteral {
+                                                        repr: "200",
+                                                        value: 200,
+                                                    },
+                                                ),
                                             },
-                                        ),
+                                            on_true: Block {
+                                                stmts: [
+                                                    Print {
+                                                        value: IntegerLiteral(
+                                                            IntegerLiteral {
+                                                                repr: "300",
+                                                                value: 300,
+                                                            },
+                                                        ),
+                                                    },
+                                                    Declaration(
+                                                        Binding {
+                                                            name: LENGTH(10),
+                                                            decl: Const(
+                                                                ConstDecl {
+                                                                    t: Int,
+                                                                    value: IntegerLiteral(
+                                                                        IntegerLiteral {
+                                                                            repr: "400",
+                                                                            value: 400,
+                                                                        },
+                                                                    ),
+                                                                },
+                                                            ),
+                                                        },
+                                                    ),
+                                                    Print {
+                                                        value: IntegerLiteral(
+                                                            IntegerLiteral {
+                                                                repr: "400",
+                                                                value: 400,
+                                                            },
+                                                        ),
+                                                    },
+                                                ],
+                                                locals_count: 0,
+                                            },
+                                            on_false: None,
+                                        },
+                                        Print {
+                                            value: IntegerLiteral(
+                                                IntegerLiteral {
+                                                    repr: "300",
+                                                    value: 300,
+                                                },
+                                            ),
+                                        },
                                     ],
                                     locals_count: 1,
                                 },

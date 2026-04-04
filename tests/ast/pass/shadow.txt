@@ -32,17 +32,15 @@
                             args_bindings: [],
                             body: Block(
                                 Block {
-                                    elems: [
-                                        Stmt(
-                                            Print {
-                                                value: LvalueToRvalue(
-                                                    Identifier(
-                                                        x(0),
-                                                    ),
+                                    stmts: [
+                                        Print {
+                                            value: LvalueToRvalue(
+                                                Identifier(
+                                                    x(0),
                                                 ),
-                                            },
-                                        ),
-                                        Decl(
+                                            ),
+                                        },
+                                        Declaration(
                                             Binding {
                                                 name: x(2),
                                                 decl: Var(
@@ -63,55 +61,49 @@
                                                 ),
                                             },
                                         ),
-                                        Stmt(
-                                            Print {
-                                                value: LvalueToRvalue(
-                                                    Identifier(
-                                                        x(2),
-                                                    ),
+                                        Print {
+                                            value: LvalueToRvalue(
+                                                Identifier(
+                                                    x(2),
                                                 ),
-                                            },
-                                        ),
-                                        Stmt(
-                                            If {
-                                                condition: BoolLiteral(
-                                                    True,
-                                                ),
-                                                on_true: Block {
-                                                    elems: [
-                                                        Decl(
-                                                            Binding {
-                                                                name: x(3),
-                                                                decl: Var(
-                                                                    VarDecl {
-                                                                        t: Bool,
-                                                                        initialiser: Some(
-                                                                            BoolLiteral(
-                                                                                True,
-                                                                            ),
+                                            ),
+                                        },
+                                        If {
+                                            condition: BoolLiteral(
+                                                True,
+                                            ),
+                                            on_true: Block {
+                                                stmts: [
+                                                    Declaration(
+                                                        Binding {
+                                                            name: x(3),
+                                                            decl: Var(
+                                                                VarDecl {
+                                                                    t: Bool,
+                                                                    initialiser: Some(
+                                                                        BoolLiteral(
+                                                                            True,
                                                                         ),
-                                                                        relative_location: Local(
-                                                                            1,
-                                                                        ),
-                                                                    },
-                                                                ),
-                                                            },
-                                                        ),
-                                                        Stmt(
-                                                            Print {
-                                                                value: LvalueToRvalue(
-                                                                    Identifier(
-                                                                        x(3),
                                                                     ),
-                                                                ),
-                                                            },
+                                                                    relative_location: Local(
+                                                                        1,
+                                                                    ),
+                                                                },
+                                                            ),
+                                                        },
+                                                    ),
+                                                    Print {
+                                                        value: LvalueToRvalue(
+                                                            Identifier(
+                                                                x(3),
+                                                            ),
                                                         ),
-                                                    ],
-                                                    locals_count: 1,
-                                                },
-                                                on_false: None,
+                                                    },
+                                                ],
+                                                locals_count: 1,
                                             },
-                                        ),
+                                            on_false: None,
+                                        },
                                     ],
                                     locals_count: 1,
                                 },
@@ -155,17 +147,15 @@
                             args_bindings: [],
                             body: Block(
                                 Block {
-                                    elems: [
-                                        Stmt(
-                                            Print {
-                                                value: LvalueToRvalue(
-                                                    Identifier(
-                                                        x(0),
-                                                    ),
+                                    stmts: [
+                                        Print {
+                                            value: LvalueToRvalue(
+                                                Identifier(
+                                                    x(0),
                                                 ),
-                                            },
-                                        ),
-                                        Decl(
+                                            ),
+                                        },
+                                        Declaration(
                                             Binding {
                                                 name: x(2),
                                                 decl: Var(
@@ -186,55 +176,49 @@
                                                 ),
                                             },
                                         ),
-                                        Stmt(
-                                            Print {
-                                                value: LvalueToRvalue(
-                                                    Identifier(
-                                                        x(2),
-                                                    ),
+                                        Print {
+                                            value: LvalueToRvalue(
+                                                Identifier(
+                                                    x(2),
                                                 ),
-                                            },
-                                        ),
-                                        Stmt(
-                                            If {
-                                                condition: BoolLiteral(
-                                                    True,
-                                                ),
-                                                on_true: Block {
-                                                    elems: [
-                                                        Decl(
-                                                            Binding {
-                                                                name: x(3),
-                                                                decl: Var(
-                                                                    VarDecl {
-                                                                        t: Bool,
-                                                                        initialiser: Some(
-                                                                            BoolLiteral(
-                                                                                True,
-                                                                            ),
+                                            ),
+                                        },
+                                        If {
+                                            condition: BoolLiteral(
+                                                True,
+                                            ),
+                                            on_true: Block {
+                                                stmts: [
+                                                    Declaration(
+                                                        Binding {
+                                                            name: x(3),
+                                                            decl: Var(
+                                                                VarDecl {
+                                                                    t: Bool,
+                                                                    initialiser: Some(
+                                                                        BoolLiteral(
+                                                                            True,
                                                                         ),
-                                                                        relative_location: Local(
-                                                                            1,
-                                                                        ),
-                                                                    },
-                                                                ),
-                                                            },
-                                                        ),
-                                                        Stmt(
-                                                            Print {
-                                                                value: LvalueToRvalue(
-                                                                    Identifier(
-                                                                        x(3),
                                                                     ),
-                                                                ),
-                                                            },
+                                                                    relative_location: Local(
+                                                                        1,
+                                                                    ),
+                                                                },
+                                                            ),
+                                                        },
+                                                    ),
+                                                    Print {
+                                                        value: LvalueToRvalue(
+                                                            Identifier(
+                                                                x(3),
+                                                            ),
                                                         ),
-                                                    ],
-                                                    locals_count: 1,
-                                                },
-                                                on_false: None,
+                                                    },
+                                                ],
+                                                locals_count: 1,
                                             },
-                                        ),
+                                            on_false: None,
+                                        },
                                     ],
                                     locals_count: 1,
                                 },

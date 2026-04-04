@@ -247,110 +247,108 @@
                             ],
                             body: Block(
                                 Block {
-                                    elems: [
-                                        Stmt(
-                                            Return {
-                                                value: BinOp {
+                                    stmts: [
+                                        Return {
+                                            value: BinOp {
+                                                op: Real(
+                                                    Add,
+                                                ),
+                                                lhs: BinOp {
                                                     op: Real(
-                                                        Add,
+                                                        Mul,
                                                     ),
                                                     lhs: BinOp {
                                                         op: Real(
-                                                            Mul,
+                                                            Sub,
                                                         ),
-                                                        lhs: BinOp {
-                                                            op: Real(
-                                                                Sub,
-                                                            ),
-                                                            lhs: LvalueToRvalue(
-                                                                Member {
-                                                                    lhs: Identifier(
-                                                                        from(8),
-                                                                    ),
-                                                                    member_name: r"x",
-                                                                },
-                                                            ),
-                                                            rhs: LvalueToRvalue(
-                                                                Member {
-                                                                    lhs: Identifier(
-                                                                        to(9),
-                                                                    ),
-                                                                    member_name: r"x",
-                                                                },
-                                                            ),
-                                                        },
-                                                        rhs: BinOp {
-                                                            op: Real(
-                                                                Sub,
-                                                            ),
-                                                            lhs: LvalueToRvalue(
-                                                                Member {
-                                                                    lhs: Identifier(
-                                                                        from(8),
-                                                                    ),
-                                                                    member_name: r"x",
-                                                                },
-                                                            ),
-                                                            rhs: LvalueToRvalue(
-                                                                Member {
-                                                                    lhs: Identifier(
-                                                                        to(9),
-                                                                    ),
-                                                                    member_name: r"x",
-                                                                },
-                                                            ),
-                                                        },
+                                                        lhs: LvalueToRvalue(
+                                                            Member {
+                                                                lhs: Identifier(
+                                                                    from(8),
+                                                                ),
+                                                                member_name: r"x",
+                                                            },
+                                                        ),
+                                                        rhs: LvalueToRvalue(
+                                                            Member {
+                                                                lhs: Identifier(
+                                                                    to(9),
+                                                                ),
+                                                                member_name: r"x",
+                                                            },
+                                                        ),
                                                     },
                                                     rhs: BinOp {
                                                         op: Real(
-                                                            Mul,
+                                                            Sub,
                                                         ),
-                                                        lhs: BinOp {
-                                                            op: Real(
-                                                                Sub,
-                                                            ),
-                                                            lhs: LvalueToRvalue(
-                                                                Member {
-                                                                    lhs: Identifier(
-                                                                        from(8),
-                                                                    ),
-                                                                    member_name: r"y",
-                                                                },
-                                                            ),
-                                                            rhs: LvalueToRvalue(
-                                                                Member {
-                                                                    lhs: Identifier(
-                                                                        to(9),
-                                                                    ),
-                                                                    member_name: r"y",
-                                                                },
-                                                            ),
-                                                        },
-                                                        rhs: BinOp {
-                                                            op: Real(
-                                                                Sub,
-                                                            ),
-                                                            lhs: LvalueToRvalue(
-                                                                Member {
-                                                                    lhs: Identifier(
-                                                                        from(8),
-                                                                    ),
-                                                                    member_name: r"y",
-                                                                },
-                                                            ),
-                                                            rhs: LvalueToRvalue(
-                                                                Member {
-                                                                    lhs: Identifier(
-                                                                        to(9),
-                                                                    ),
-                                                                    member_name: r"y",
-                                                                },
-                                                            ),
-                                                        },
+                                                        lhs: LvalueToRvalue(
+                                                            Member {
+                                                                lhs: Identifier(
+                                                                    from(8),
+                                                                ),
+                                                                member_name: r"x",
+                                                            },
+                                                        ),
+                                                        rhs: LvalueToRvalue(
+                                                            Member {
+                                                                lhs: Identifier(
+                                                                    to(9),
+                                                                ),
+                                                                member_name: r"x",
+                                                            },
+                                                        ),
+                                                    },
+                                                },
+                                                rhs: BinOp {
+                                                    op: Real(
+                                                        Mul,
+                                                    ),
+                                                    lhs: BinOp {
+                                                        op: Real(
+                                                            Sub,
+                                                        ),
+                                                        lhs: LvalueToRvalue(
+                                                            Member {
+                                                                lhs: Identifier(
+                                                                    from(8),
+                                                                ),
+                                                                member_name: r"y",
+                                                            },
+                                                        ),
+                                                        rhs: LvalueToRvalue(
+                                                            Member {
+                                                                lhs: Identifier(
+                                                                    to(9),
+                                                                ),
+                                                                member_name: r"y",
+                                                            },
+                                                        ),
+                                                    },
+                                                    rhs: BinOp {
+                                                        op: Real(
+                                                            Sub,
+                                                        ),
+                                                        lhs: LvalueToRvalue(
+                                                            Member {
+                                                                lhs: Identifier(
+                                                                    from(8),
+                                                                ),
+                                                                member_name: r"y",
+                                                            },
+                                                        ),
+                                                        rhs: LvalueToRvalue(
+                                                            Member {
+                                                                lhs: Identifier(
+                                                                    to(9),
+                                                                ),
+                                                                member_name: r"y",
+                                                            },
+                                                        ),
                                                     },
                                                 },
                                             },
-                                        ),
+                                        },
                                     ],
                                     locals_count: 0,
                                 },
@@ -741,8 +739,8 @@
                             args_bindings: [],
                             body: Block(
                                 Block {
-                                    elems: [
-                                        Decl(
+                                    stmts: [
+                                        Declaration(
                                             Binding {
                                                 name: t(13),
                                                 decl: Var(
@@ -765,8 +763,29 @@
                                                 ),
                                             },
                                         ),
-                                        Stmt(
-                                            Assignment {
+                                        Assignment {
+                                            lhs: Index {
+                                                lhs: Identifier(
+                                                    t(13),
+                                                ),
+                                                index: IntegerLiteral(
+                                                    IntegerLiteral {
+                                                        repr: "1",
+                                                        value: 1,
+                                                    },
+                                                ),
+                                            },
+                                            rhs: New {
+                                                t: Alias(
+                                                    point(0),
+                                                ),
+                                                fields: Some(
+                                                    [],
+                                                ),
+                                            },
+                                        },
+                                        Assignment {
+                                            lhs: Member {
                                                 lhs: Index {
                                                     lhs: Identifier(
                                                         t(13),
@@ -778,66 +797,60 @@
                                                         },
                                                     ),
                                                 },
-                                                rhs: New {
-                                                    t: Alias(
-                                                        point(0),
-                                                    ),
-                                                    fields: Some(
-                                                        [],
-                                                    ),
-                                                },
+                                                member_name: r"x",
                                             },
-                                        ),
-                                        Stmt(
-                                            Assignment {
-                                                lhs: Member {
-                                                    lhs: Index {
-                                                        lhs: Identifier(
-                                                            t(13),
-                                                        ),
-                                                        index: IntegerLiteral(
-                                                            IntegerLiteral {
-                                                                repr: "1",
-                                                                value: 1,
-                                                            },
-                                                        ),
-                                                    },
-                                                    member_name: r"x",
+                                            rhs: RealLiteral(
+                                                RealLiteral {
+                                                    repr: "0.0",
+                                                    value: 0.0,
                                                 },
-                                                rhs: RealLiteral(
-                                                    RealLiteral {
-                                                        repr: "0.0",
-                                                        value: 0.0,
+                                            ),
+                                        },
+                                        Assignment {
+                                            lhs: Member {
+                                                lhs: Index {
+                                                    lhs: Identifier(
+                                                        t(13),
+                                                    ),
+                                                    index: IntegerLiteral(
+                                                        IntegerLiteral {
+                                                            repr: "1",
+                                                            value: 1,
+                                                        },
+                                                    ),
+                                                },
+                                                member_name: r"y",
+                                            },
+                                            rhs: RealLiteral(
+                                                RealLiteral {
+                                                    repr: "0.0",
+                                                    value: 0.0,
+                                                },
+                                            ),
+                                        },
+                                        Assignment {
+                                            lhs: Index {
+                                                lhs: Identifier(
+                                                    t(13),
+                                                ),
+                                                index: IntegerLiteral(
+                                                    IntegerLiteral {
+                                                        repr: "2",
+                                                        value: 2,
                                                     },
                                                 ),
                                             },
-                                        ),
-                                        Stmt(
-                                            Assignment {
-                                                lhs: Member {
-                                                    lhs: Index {
-                                                        lhs: Identifier(
-                                                            t(13),
-                                                        ),
-                                                        index: IntegerLiteral(
-                                                            IntegerLiteral {
-                                                                repr: "1",
-                                                                value: 1,
-                                                            },
-                                                        ),
-                                                    },
-                                                    member_name: r"y",
-                                                },
-                                                rhs: RealLiteral(
-                                                    RealLiteral {
-                                                        repr: "0.0",
-                                                        value: 0.0,
-                                                    },
+                                            rhs: New {
+                                                t: Alias(
+                                                    point(0),
+                                                ),
+                                                fields: Some(
+                                                    [],
                                                 ),
                                             },
-                                        ),
-                                        Stmt(
-                                            Assignment {
+                                        },
+                                        Assignment {
+                                            lhs: Member {
                                                 lhs: Index {
                                                     lhs: Identifier(
                                                         t(13),
@@ -849,66 +862,60 @@
                                                         },
                                                     ),
                                                 },
-                                                rhs: New {
-                                                    t: Alias(
-                                                        point(0),
-                                                    ),
-                                                    fields: Some(
-                                                        [],
-                                                    ),
-                                                },
+                                                member_name: r"x",
                                             },
-                                        ),
-                                        Stmt(
-                                            Assignment {
-                                                lhs: Member {
-                                                    lhs: Index {
-                                                        lhs: Identifier(
-                                                            t(13),
-                                                        ),
-                                                        index: IntegerLiteral(
-                                                            IntegerLiteral {
-                                                                repr: "2",
-                                                                value: 2,
-                                                            },
-                                                        ),
-                                                    },
-                                                    member_name: r"x",
+                                            rhs: RealLiteral(
+                                                RealLiteral {
+                                                    repr: "3.0",
+                                                    value: 3.0,
                                                 },
-                                                rhs: RealLiteral(
-                                                    RealLiteral {
-                                                        repr: "3.0",
-                                                        value: 3.0,
+                                            ),
+                                        },
+                                        Assignment {
+                                            lhs: Member {
+                                                lhs: Index {
+                                                    lhs: Identifier(
+                                                        t(13),
+                                                    ),
+                                                    index: IntegerLiteral(
+                                                        IntegerLiteral {
+                                                            repr: "2",
+                                                            value: 2,
+                                                        },
+                                                    ),
+                                                },
+                                                member_name: r"y",
+                                            },
+                                            rhs: RealLiteral(
+                                                RealLiteral {
+                                                    repr: "0.0",
+                                                    value: 0.0,
+                                                },
+                                            ),
+                                        },
+                                        Assignment {
+                                            lhs: Index {
+                                                lhs: Identifier(
+                                                    t(13),
+                                                ),
+                                                index: IntegerLiteral(
+                                                    IntegerLiteral {
+                                                        repr: "3",
+                                                        value: 3,
                                                     },
                                                 ),
                                             },
-                                        ),
-                                        Stmt(
-                                            Assignment {
-                                                lhs: Member {
-                                                    lhs: Index {
-                                                        lhs: Identifier(
-                                                            t(13),
-                                                        ),
-                                                        index: IntegerLiteral(
-                                                            IntegerLiteral {
-                                                                repr: "2",
-                                                                value: 2,
-                                                            },
-                                                        ),
-                                                    },
-                                                    member_name: r"y",
-                                                },
-                                                rhs: RealLiteral(
-                                                    RealLiteral {
-                                                        repr: "0.0",
-                                                        value: 0.0,
-                                                    },
+                                            rhs: New {
+                                                t: Alias(
+                                                    point(0),
+                                                ),
+                                                fields: Some(
+                                                    [],
                                                 ),
                                             },
-                                        ),
-                                        Stmt(
-                                            Assignment {
+                                        },
+                                        Assignment {
+                                            lhs: Member {
                                                 lhs: Index {
                                                     lhs: Identifier(
                                                         t(13),
@@ -920,78 +927,49 @@
                                                         },
                                                     ),
                                                 },
-                                                rhs: New {
-                                                    t: Alias(
-                                                        point(0),
+                                                member_name: r"x",
+                                            },
+                                            rhs: RealLiteral(
+                                                RealLiteral {
+                                                    repr: "0.0",
+                                                    value: 0.0,
+                                                },
+                                            ),
+                                        },
+                                        Assignment {
+                                            lhs: Member {
+                                                lhs: Index {
+                                                    lhs: Identifier(
+                                                        t(13),
                                                     ),
-                                                    fields: Some(
-                                                        [],
+                                                    index: IntegerLiteral(
+                                                        IntegerLiteral {
+                                                            repr: "3",
+                                                            value: 3,
+                                                        },
                                                     ),
                                                 },
+                                                member_name: r"y",
                                             },
-                                        ),
-                                        Stmt(
-                                            Assignment {
-                                                lhs: Member {
-                                                    lhs: Index {
-                                                        lhs: Identifier(
+                                            rhs: RealLiteral(
+                                                RealLiteral {
+                                                    repr: "4.0",
+                                                    value: 4.0,
+                                                },
+                                            ),
+                                        },
+                                        Print {
+                                            value: Call {
+                                                callee: is_right(11),
+                                                args: [
+                                                    LvalueToRvalue(
+                                                        Identifier(
                                                             t(13),
                                                         ),
-                                                        index: IntegerLiteral(
-                                                            IntegerLiteral {
-                                                                repr: "3",
-                                                                value: 3,
-                                                            },
-                                                        ),
-                                                    },
-                                                    member_name: r"x",
-                                                },
-                                                rhs: RealLiteral(
-                                                    RealLiteral {
-                                                        repr: "0.0",
-                                                        value: 0.0,
-                                                    },
-                                                ),
+                                                    ),
+                                                ],
                                             },
-                                        ),
-                                        Stmt(
-                                            Assignment {
-                                                lhs: Member {
-                                                    lhs: Index {
-                                                        lhs: Identifier(
-                                                            t(13),
-                                                        ),
-                                                        index: IntegerLiteral(
-                                                            IntegerLiteral {
-                                                                repr: "3",
-                                                                value: 3,
-                                                            },
-                                                        ),
-                                                    },
-                                                    member_name: r"y",
-                                                },
-                                                rhs: RealLiteral(
-                                                    RealLiteral {
-                                                        repr: "4.0",
-                                                        value: 4.0,
-                                                    },
-                                                ),
-                                            },
-                                        ),
-                                        Stmt(
-                                            Print {
-                                                value: Call {
-                                                    callee: is_right(11),
-                                                    args: [
-                                                        LvalueToRvalue(
-                                                            Identifier(
-                                                                t(13),
-                                                            ),
-                                                        ),
-                                                    ],
-                                                },
-                                            },
-                                        ),
+                                        },
                                     ],
                                     locals_count: 1,
                                 },
@@ -1286,110 +1264,108 @@
                             ],
                             body: Block(
                                 Block {
-                                    elems: [
-                                        Stmt(
-                                            Return {
-                                                value: BinOp {
+                                    stmts: [
+                                        Return {
+                                            value: BinOp {
+                                                op: Real(
+                                                    Add,
+                                                ),
+                                                lhs: BinOp {
                                                     op: Real(
-                                                        Add,
+                                                        Mul,
                                                     ),
                                                     lhs: BinOp {
                                                         op: Real(
-                                                            Mul,
+                                                            Sub,
                                                         ),
-                                                        lhs: BinOp {
-                                                            op: Real(
-                                                                Sub,
-                                                            ),
-                                                            lhs: LvalueToRvalue(
-                                                                Member {
-                                                                    lhs: Identifier(
-                                                                        from(8),
-                                                                    ),
-                                                                    member_name: r"x",
-                                                                },
-                                                            ),
-                                                            rhs: LvalueToRvalue(
-                                                                Member {
-                                                                    lhs: Identifier(
-                                                                        to(9),
-                                                                    ),
-                                                                    member_name: r"x",
-                                                                },
-                                                            ),
-                                                        },
-                                                        rhs: BinOp {
-                                                            op: Real(
-                                                                Sub,
-                                                            ),
-                                                            lhs: LvalueToRvalue(
-                                                                Member {
-                                                                    lhs: Identifier(
-                                                                        from(8),
-                                                                    ),
-                                                                    member_name: r"x",
-                                                                },
-                                                            ),
-                                                            rhs: LvalueToRvalue(
-                                                                Member {
-                                                                    lhs: Identifier(
-                                                                        to(9),
-                                                                    ),
-                                                                    member_name: r"x",
-                                                                },
-                                                            ),
-                                                        },
+                                                        lhs: LvalueToRvalue(
+                                                            Member {
+                                                                lhs: Identifier(
+                                                                    from(8),
+                                                                ),
+                                                                member_name: r"x",
+                                                            },
+                                                        ),
+                                                        rhs: LvalueToRvalue(
+                                                            Member {
+                                                                lhs: Identifier(
+                                                                    to(9),
+                                                                ),
+                                                                member_name: r"x",
+                                                            },
+                                                        ),
                                                     },
                                                     rhs: BinOp {
                                                         op: Real(
-                                                            Mul,
+                                                            Sub,
                                                         ),
-                                                        lhs: BinOp {
-                                                            op: Real(
-                                                                Sub,
-                                                            ),
-                                                            lhs: LvalueToRvalue(
-                                                                Member {
-                                                                    lhs: Identifier(
-                                                                        from(8),
-                                                                    ),
-                                                                    member_name: r"y",
-                                                                },
-                                                            ),
-                                                            rhs: LvalueToRvalue(
-                                                                Member {
-                                                                    lhs: Identifier(
-                                                                        to(9),
-                                                                    ),
-                                                                    member_name: r"y",
-                                                                },
-                                                            ),
-                                                        },
-                                                        rhs: BinOp {
-                                                            op: Real(
-                                                                Sub,
-                                                            ),
-                                                            lhs: LvalueToRvalue(
-                                                                Member {
-                                                                    lhs: Identifier(
-                                                                        from(8),
-                                                                    ),
-                                                                    member_name: r"y",
-                                                                },
-                                                            ),
-                                                            rhs: LvalueToRvalue(
-                                                                Member {
-                                                                    lhs: Identifier(
-                                                                        to(9),
-                                                                    ),
-                                                                    member_name: r"y",
-                                                                },
-                                                            ),
-                                                        },
+                                                        lhs: LvalueToRvalue(
+                                                            Member {
+                                                                lhs: Identifier(
+                                                                    from(8),
+                                                                ),
+                                                                member_name: r"x",
+                                                            },
+                                                        ),
+                                                        rhs: LvalueToRvalue(
+                                                            Member {
+                                                                lhs: Identifier(
+                                                                    to(9),
+                                                                ),
+                                                                member_name: r"x",
+                                                            },
+                                                        ),
+                                                    },
+                                                },
+                                                rhs: BinOp {
+                                                    op: Real(
+                                                        Mul,
+                                                    ),
+                                                    lhs: BinOp {
+                                                        op: Real(
+                                                            Sub,
+                                                        ),
+                                                        lhs: LvalueToRvalue(
+                                                            Member {
+                                                                lhs: Identifier(
+                                                                    from(8),
+                                                                ),
+                                                                member_name: r"y",
+                                                            },
+                                                        ),
+                                                        rhs: LvalueToRvalue(
+                                                            Member {
+                                                                lhs: Identifier(
+                                                                    to(9),
+                                                                ),
+                                                                member_name: r"y",
+                                                            },
+                                                        ),
+                                                    },
+                                                    rhs: BinOp {
+                                                        op: Real(
+                                                            Sub,
+                                                        ),
+                                                        lhs: LvalueToRvalue(
+                                                            Member {
+                                                                lhs: Identifier(
+                                                                    from(8),
+                                                                ),
+                                                                member_name: r"y",
+                                                            },
+                                                        ),
+                                                        rhs: LvalueToRvalue(
+                                                            Member {
+                                                                lhs: Identifier(
+                                                                    to(9),
+                                                                ),
+                                                                member_name: r"y",
+                                                            },
+                                                        ),
                                                     },
                                                 },
                                             },
-                                        ),
+                                        },
                                     ],
                                     locals_count: 0,
                                 },
@@ -1822,8 +1798,8 @@
                             args_bindings: [],
                             body: Block(
                                 Block {
-                                    elems: [
-                                        Decl(
+                                    stmts: [
+                                        Declaration(
                                             Binding {
                                                 name: t(13),
                                                 decl: Var(
@@ -1846,8 +1822,29 @@
                                                 ),
                                             },
                                         ),
-                                        Stmt(
-                                            Assignment {
+                                        Assignment {
+                                            lhs: Index {
+                                                lhs: Identifier(
+                                                    t(13),
+                                                ),
+                                                index: IntegerLiteral(
+                                                    IntegerLiteral {
+                                                        repr: "1",
+                                                        value: 1,
+                                                    },
+                                                ),
+                                            },
+                                            rhs: New {
+                                                t: Alias(
+                                                    point(0),
+                                                ),
+                                                fields: Some(
+                                                    [],
+                                                ),
+                                            },
+                                        },
+                                        Assignment {
+                                            lhs: Member {
                                                 lhs: Index {
                                                     lhs: Identifier(
                                                         t(13),
@@ -1859,66 +1856,60 @@
                                                         },
                                                     ),
                                                 },
-                                                rhs: New {
-                                                    t: Alias(
-                                                        point(0),
-                                                    ),
-                                                    fields: Some(
-                                                        [],
-                                                    ),
-                                                },
+                                                member_name: r"x",
                                             },
-                                        ),
-                                        Stmt(
-                                            Assignment {
-                                                lhs: Member {
-                                                    lhs: Index {
-                                                        lhs: Identifier(
-                                                            t(13),
-                                                        ),
-                                                        index: IntegerLiteral(
-                                                            IntegerLiteral {
-                                                                repr: "1",
-                                                                value: 1,
-                                                            },
-                                                        ),
-                                                    },
-                                                    member_name: r"x",
+                                            rhs: RealLiteral(
+                                                RealLiteral {
+                                                    repr: "0.0",
+                                                    value: 0.0,
                                                 },
-                                                rhs: RealLiteral(
-                                                    RealLiteral {
-                                                        repr: "0.0",
-                                                        value: 0.0,
+                                            ),
+                                        },
+                                        Assignment {
+                                            lhs: Member {
+                                                lhs: Index {
+                                                    lhs: Identifier(
+                                                        t(13),
+                                                    ),
+                                                    index: IntegerLiteral(
+                                                        IntegerLiteral {
+                                                            repr: "1",
+                                                            value: 1,
+                                                        },
+                                                    ),
+                                                },
+                                                member_name: r"y",
+                                            },
+                                            rhs: RealLiteral(
+                                                RealLiteral {
+                                                    repr: "0.0",
+                                                    value: 0.0,
+                                                },
+                                            ),
+                                        },
+                                        Assignment {
+                                            lhs: Index {
+                                                lhs: Identifier(
+                                                    t(13),
+                                                ),
+                                                index: IntegerLiteral(
+                                                    IntegerLiteral {
+                                                        repr: "2",
+                                                        value: 2,
                                                     },
                                                 ),
                                             },
-                                        ),
-                                        Stmt(
-                                            Assignment {
-                                                lhs: Member {
-                                                    lhs: Index {
-                                                        lhs: Identifier(
-                                                            t(13),
-                                                        ),
-                                                        index: IntegerLiteral(
-                                                            IntegerLiteral {
-                                                                repr: "1",
-                                                                value: 1,
-                                                            },
-                                                        ),
-                                                    },
-                                                    member_name: r"y",
-                                                },
-                                                rhs: RealLiteral(
-                                                    RealLiteral {
-                                                        repr: "0.0",
-                                                        value: 0.0,
-                                                    },
+                                            rhs: New {
+                                                t: Alias(
+                                                    point(0),
+                                                ),
+                                                fields: Some(
+                                                    [],
                                                 ),
                                             },
-                                        ),
-                                        Stmt(
-                                            Assignment {
+                                        },
+                                        Assignment {
+                                            lhs: Member {
                                                 lhs: Index {
                                                     lhs: Identifier(
                                                         t(13),
@@ -1930,66 +1921,60 @@
                                                         },
                                                     ),
                                                 },
-                                                rhs: New {
-                                                    t: Alias(
-                                                        point(0),
-                                                    ),
-                                                    fields: Some(
-                                                        [],
-                                                    ),
-                                                },
+                                                member_name: r"x",
                                             },
-                                        ),
-                                        Stmt(
-                                            Assignment {
-                                                lhs: Member {
-                                                    lhs: Index {
-                                                        lhs: Identifier(
-                                                            t(13),
-                                                        ),
-                                                        index: IntegerLiteral(
-                                                            IntegerLiteral {
-                                                                repr: "2",
-                                                                value: 2,
-                                                            },
-                                                        ),
-                                                    },
-                                                    member_name: r"x",
+                                            rhs: RealLiteral(
+                                                RealLiteral {
+                                                    repr: "3.0",
+                                                    value: 3.0,
                                                 },
-                                                rhs: RealLiteral(
-                                                    RealLiteral {
-                                                        repr: "3.0",
-                                                        value: 3.0,
+                                            ),
+                                        },
+                                        Assignment {
+                                            lhs: Member {
+                                                lhs: Index {
+                                                    lhs: Identifier(
+                                                        t(13),
+                                                    ),
+                                                    index: IntegerLiteral(
+                                                        IntegerLiteral {
+                                                            repr: "2",
+                                                            value: 2,
+                                                        },
+                                                    ),
+                                                },
+                                                member_name: r"y",
+                                            },
+                                            rhs: RealLiteral(
+                                                RealLiteral {
+                                                    repr: "0.0",
+                                                    value: 0.0,
+                                                },
+                                            ),
+                                        },
+                                        Assignment {
+                                            lhs: Index {
+                                                lhs: Identifier(
+                                                    t(13),
+                                                ),
+                                                index: IntegerLiteral(
+                                                    IntegerLiteral {
+                                                        repr: "3",
+                                                        value: 3,
                                                     },
                                                 ),
                                             },
-                                        ),
-                                        Stmt(
-                                            Assignment {
-                                                lhs: Member {
-                                                    lhs: Index {
-                                                        lhs: Identifier(
-                                                            t(13),
-                                                        ),
-                                                        index: IntegerLiteral(
-                                                            IntegerLiteral {
-                                                                repr: "2",
-                                                                value: 2,
-                                                            },
-                                                        ),
-                                                    },
-                                                    member_name: r"y",
-                                                },
-                                                rhs: RealLiteral(
-                                                    RealLiteral {
-                                                        repr: "0.0",
-                                                        value: 0.0,
-                                                    },
+                                            rhs: New {
+                                                t: Alias(
+                                                    point(0),
+                                                ),
+                                                fields: Some(
+                                                    [],
                                                 ),
                                             },
-                                        ),
-                                        Stmt(
-                                            Assignment {
+                                        },
+                                        Assignment {
+                                            lhs: Member {
                                                 lhs: Index {
                                                     lhs: Identifier(
                                                         t(13),
@@ -2001,78 +1986,49 @@
                                                         },
                                                     ),
                                                 },
-                                                rhs: New {
-                                                    t: Alias(
-                                                        point(0),
+                                                member_name: r"x",
+                                            },
+                                            rhs: RealLiteral(
+                                                RealLiteral {
+                                                    repr: "0.0",
+                                                    value: 0.0,
+                                                },
+                                            ),
+                                        },
+                                        Assignment {
+                                            lhs: Member {
+                                                lhs: Index {
+                                                    lhs: Identifier(
+                                                        t(13),
                                                     ),
-                                                    fields: Some(
-                                                        [],
+                                                    index: IntegerLiteral(
+                                                        IntegerLiteral {
+                                                            repr: "3",
+                                                            value: 3,
+                                                        },
                                                     ),
                                                 },
+                                                member_name: r"y",
                                             },
-                                        ),
-                                        Stmt(
-                                            Assignment {
-                                                lhs: Member {
-                                                    lhs: Index {
-                                                        lhs: Identifier(
+                                            rhs: RealLiteral(
+                                                RealLiteral {
+                                                    repr: "4.0",
+                                                    value: 4.0,
+                                                },
+                                            ),
+                                        },
+                                        Print {
+                                            value: Call {
+                                                callee: is_right(11),
+                                                args: [
+                                                    LvalueToRvalue(
+                                                        Identifier(
                                                             t(13),
                                                         ),
-                                                        index: IntegerLiteral(
-                                                            IntegerLiteral {
-                                                                repr: "3",
-                                                                value: 3,
-                                                            },
-                                                        ),
-                                                    },
-                                                    member_name: r"x",
-                                                },
-                                                rhs: RealLiteral(
-                                                    RealLiteral {
-                                                        repr: "0.0",
-                                                        value: 0.0,
-                                                    },
-                                                ),
+                                                    ),
+                                                ],
                                             },
-                                        ),
-                                        Stmt(
-                                            Assignment {
-                                                lhs: Member {
-                                                    lhs: Index {
-                                                        lhs: Identifier(
-                                                            t(13),
-                                                        ),
-                                                        index: IntegerLiteral(
-                                                            IntegerLiteral {
-                                                                repr: "3",
-                                                                value: 3,
-                                                            },
-                                                        ),
-                                                    },
-                                                    member_name: r"y",
-                                                },
-                                                rhs: RealLiteral(
-                                                    RealLiteral {
-                                                        repr: "4.0",
-                                                        value: 4.0,
-                                                    },
-                                                ),
-                                            },
-                                        ),
-                                        Stmt(
-                                            Print {
-                                                value: Call {
-                                                    callee: is_right(11),
-                                                    args: [
-                                                        LvalueToRvalue(
-                                                            Identifier(
-                                                                t(13),
-                                                            ),
-                                                        ),
-                                                    ],
-                                                },
-                                            },
-                                        ),
+                                        },
                                     ],
                                     locals_count: 1,
                                 },

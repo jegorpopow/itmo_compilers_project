@@ -63,8 +63,8 @@
                             args_bindings: [],
                             body: Block(
                                 Block {
-                                    elems: [
-                                        Decl(
+                                    stmts: [
+                                        Declaration(
                                             Binding {
                                                 name: local(4),
                                                 decl: Var(
@@ -82,20 +82,18 @@
                                                 ),
                                             },
                                         ),
-                                        Stmt(
-                                            Assignment {
-                                                lhs: Identifier(
-                                                    c(2),
-                                                ),
-                                                rhs: IntegerLiteral(
-                                                    IntegerLiteral {
-                                                        repr: "0",
-                                                        value: 0,
-                                                    },
-                                                ),
-                                            },
-                                        ),
-                                        Decl(
+                                        Assignment {
+                                            lhs: Identifier(
+                                                c(2),
+                                            ),
+                                            rhs: IntegerLiteral(
+                                                IntegerLiteral {
+                                                    repr: "0",
+                                                    value: 0,
+                                                },
+                                            ),
+                                        },
+                                        Declaration(
                                             Binding {
                                                 name: another_local(5),
                                                 decl: Var(
@@ -116,42 +114,34 @@
                                                 ),
                                             },
                                         ),
-                                        Stmt(
-                                            Print {
-                                                value: LvalueToRvalue(
-                                                    Identifier(
-                                                        c(2),
-                                                    ),
+                                        Print {
+                                            value: LvalueToRvalue(
+                                                Identifier(
+                                                    c(2),
                                                 ),
-                                            },
-                                        ),
-                                        Stmt(
-                                            Print {
-                                                value: LvalueToRvalue(
-                                                    Identifier(
-                                                        local(4),
-                                                    ),
+                                            ),
+                                        },
+                                        Print {
+                                            value: LvalueToRvalue(
+                                                Identifier(
+                                                    local(4),
                                                 ),
-                                            },
-                                        ),
-                                        Stmt(
-                                            Print {
-                                                value: LvalueToRvalue(
-                                                    Identifier(
-                                                        a(0),
-                                                    ),
+                                            ),
+                                        },
+                                        Print {
+                                            value: LvalueToRvalue(
+                                                Identifier(
+                                                    a(0),
                                                 ),
-                                            },
-                                        ),
-                                        Stmt(
-                                            Print {
-                                                value: LvalueToRvalue(
-                                                    Identifier(
-                                                        b(1),
-                                                    ),
+                                            ),
+                                        },
+                                        Print {
+                                            value: LvalueToRvalue(
+                                                Identifier(
+                                                    b(1),
                                                 ),
-                                            },
-                                        ),
+                                            ),
+                                        },
                                     ],
                                     locals_count: 2,
                                 },
@@ -226,8 +216,8 @@
                             args_bindings: [],
                             body: Block(
                                 Block {
-                                    elems: [
-                                        Decl(
+                                    stmts: [
+                                        Declaration(
                                             Binding {
                                                 name: local(4),
                                                 decl: Var(
@@ -245,20 +235,18 @@
                                                 ),
                                             },
                                         ),
-                                        Stmt(
-                                            Assignment {
-                                                lhs: Identifier(
-                                                    c(2),
-                                                ),
-                                                rhs: IntegerLiteral(
-                                                    IntegerLiteral {
-                                                        repr: "0",
-                                                        value: 0,
-                                                    },
-                                                ),
-                                            },
-                                        ),
-                                        Decl(
+                                        Assignment {
+                                            lhs: Identifier(
+                                                c(2),
+                                            ),
+                                            rhs: IntegerLiteral(
+                                                IntegerLiteral {
+                                                    repr: "0",
+                                                    value: 0,
+                                                },
+                                            ),
+                                        },
+                                        Declaration(
                                             Binding {
                                                 name: another_local(5),
                                                 decl: Var(
@@ -279,42 +267,34 @@
                                                 ),
                                             },
                                         ),
-                                        Stmt(
-                                            Print {
-                                                value: LvalueToRvalue(
-                                                    Identifier(
-                                                        c(2),
-                                                    ),
+                                        Print {
+                                            value: LvalueToRvalue(
+                                                Identifier(
+                                                    c(2),
                                                 ),
-                                            },
-                                        ),
-                                        Stmt(
-                                            Print {
-                                                value: LvalueToRvalue(
-                                                    Identifier(
-                                                        local(4),
-                                                    ),
+                                            ),
+                                        },
+                                        Print {
+                                            value: LvalueToRvalue(
+                                                Identifier(
+                                                    local(4),
                                                 ),
-                                            },
-                                        ),
-                                        Stmt(
-                                            Print {
-                                                value: LvalueToRvalue(
-                                                    Identifier(
-                                                        a(0),
-                                                    ),
+                                            ),
+                                        },
+                                        Print {
+                                            value: LvalueToRvalue(
+                                                Identifier(
+                                                    a(0),
                                                 ),
-                                            },
-                                        ),
-                                        Stmt(
-                                            Print {
-                                                value: LvalueToRvalue(
-                                                    Identifier(
-                                                        b(1),
-                                                    ),
+                                            ),
+                                        },
+                                        Print {
+                                            value: LvalueToRvalue(
+                                                Identifier(
+                                                    b(1),
                                                 ),
-                                            },
-                                        ),
+                                            ),
+                                        },
                                     ],
                                     locals_count: 2,
                                 },

@@ -196,25 +196,8 @@ impl<'a> Compiler<'a> {
     }
 
     fn compile_block(&mut self, block: &Block) -> AnalysisResult<()> {
-        for block_elem in &block.elems {
-            match block_elem {
-                ast::BlockElem::Stmt(statement) => self.compile_statement(statement)?,
-                ast::BlockElem::Decl(simple_binding) => match &simple_binding.decl {
-                    ast::LocalDecl::Var(var_decl) => {
-                        let initialiser = var_decl
-                            .initialiser
-                            .clone()
-                            .ok_or(AnalysisError {
-                                what: "placeholder".to_string(),
-                            })
-                            .or_else(|_| self.identifiers.get_default_initialiser(&var_decl.t))?;
-                        // Local variable initialisation is just a `push`
-                        self.compile_expr(&initialiser)?;
-                    }
-                    // Type is compile-time entity (TODO: RTTI?)
-                    ast::LocalDecl::Type(_) | ast::LocalDecl::Const(_) => (),
-                },
-            }
+        for statement in &block.stmts {
+            self.compile_statement(statement)?
         }
 
         // Discard local variables
@@ -302,6 +285,22 @@ impl<'a> Compiler<'a> {
                 self.compile_expr(value)?;
                 self.bytecode.push(Instruction::Ret);
             }
+
+            Statement::Declaration(Binding { name: _, decl }) => match decl {
+                ast::LocalDecl::Var(var_decl) => {
+                    let initialiser = var_decl
+                        .initialiser
+                        .clone()
+                        .ok_or(AnalysisError {
+                            what: "placeholder".to_string(),
+                        })
+                        .or_else(|_| self.identifiers.get_default_initialiser(&var_decl.t))?;
+                    // Local variable initialisation is just a `push`
+                    self.compile_expr(&initialiser)?;
+                }
+
+                ast::LocalDecl::Type(_) | ast::LocalDecl::Const(_) => (),
+            },
         }
 
         Ok(())

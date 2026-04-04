@@ -13,8 +13,8 @@
                             args_bindings: [],
                             body: Block(
                                 Block {
-                                    elems: [
-                                        Decl(
+                                    stmts: [
+                                        Declaration(
                                             Binding {
                                                 name: a(1),
                                                 decl: Var(
@@ -32,7 +32,7 @@
                                                 ),
                                             },
                                         ),
-                                        Decl(
+                                        Declaration(
                                             Binding {
                                                 name: b(2),
                                                 decl: Var(
@@ -50,7 +50,7 @@
                                                 ),
                                             },
                                         ),
-                                        Decl(
+                                        Declaration(
                                             Binding {
                                                 name: x(3),
                                                 decl: Var(
@@ -71,7 +71,7 @@
                                                 ),
                                             },
                                         ),
-                                        Decl(
+                                        Declaration(
                                             Binding {
                                                 name: y(4),
                                                 decl: Var(
@@ -92,130 +92,114 @@
                                                 ),
                                             },
                                         ),
-                                        Stmt(
-                                            Print {
-                                                value: BinOp {
-                                                    op: Bool(
-                                                        And,
+                                        Print {
+                                            value: BinOp {
+                                                op: Bool(
+                                                    And,
+                                                ),
+                                                lhs: LvalueToRvalue(
+                                                    Identifier(
+                                                        a(1),
                                                     ),
-                                                    lhs: LvalueToRvalue(
-                                                        Identifier(
-                                                            a(1),
-                                                        ),
+                                                ),
+                                                rhs: LvalueToRvalue(
+                                                    Identifier(
+                                                        b(2),
                                                     ),
-                                                    rhs: LvalueToRvalue(
-                                                        Identifier(
-                                                            b(2),
-                                                        ),
-                                                    ),
-                                                },
+                                                ),
                                             },
-                                        ),
-                                        Stmt(
-                                            Print {
-                                                value: BinOp {
-                                                    op: Bool(
-                                                        And,
+                                        },
+                                        Print {
+                                            value: BinOp {
+                                                op: Bool(
+                                                    And,
+                                                ),
+                                                lhs: LvalueToRvalue(
+                                                    Identifier(
+                                                        a(1),
                                                     ),
-                                                    lhs: LvalueToRvalue(
+                                                ),
+                                                rhs: BoolLiteral(
+                                                    True,
+                                                ),
+                                            },
+                                        },
+                                        Print {
+                                            value: BinOp {
+                                                op: Bool(
+                                                    Or,
+                                                ),
+                                                lhs: LvalueToRvalue(
+                                                    Identifier(
+                                                        a(1),
+                                                    ),
+                                                ),
+                                                rhs: LvalueToRvalue(
+                                                    Identifier(
+                                                        b(2),
+                                                    ),
+                                                ),
+                                            },
+                                        },
+                                        Print {
+                                            value: BinOp {
+                                                op: Bool(
+                                                    Or,
+                                                ),
+                                                lhs: BoolLiteral(
+                                                    False,
+                                                ),
+                                                rhs: LvalueToRvalue(
+                                                    Identifier(
+                                                        b(2),
+                                                    ),
+                                                ),
+                                            },
+                                        },
+                                        Print {
+                                            value: UnOp {
+                                                op: BoolNeg,
+                                                operand: LvalueToRvalue(
+                                                    Identifier(
+                                                        a(1),
+                                                    ),
+                                                ),
+                                            },
+                                        },
+                                        Print {
+                                            value: UnOp {
+                                                op: BoolNeg,
+                                                operand: LvalueToRvalue(
+                                                    Identifier(
+                                                        b(2),
+                                                    ),
+                                                ),
+                                            },
+                                        },
+                                        Print {
+                                            value: UnOp {
+                                                op: BoolNeg,
+                                                operand: IntToBool(
+                                                    LvalueToRvalue(
                                                         Identifier(
-                                                            a(1),
+                                                            x(3),
                                                         ),
                                                     ),
-                                                    rhs: BoolLiteral(
-                                                        True,
-                                                    ),
-                                                },
+                                                ),
                                             },
-                                        ),
-                                        Stmt(
-                                            Print {
-                                                value: BinOp {
-                                                    op: Bool(
-                                                        Or,
-                                                    ),
-                                                    lhs: LvalueToRvalue(
+                                        },
+                                        Print {
+                                            value: UnOp {
+                                                op: BoolNeg,
+                                                operand: IntToBool(
+                                                    LvalueToRvalue(
                                                         Identifier(
-                                                            a(1),
+                                                            y(4),
                                                         ),
                                                     ),
-                                                    rhs: LvalueToRvalue(
-                                                        Identifier(
-                                                            b(2),
-                                                        ),
-                                                    ),
-                                                },
+                                                ),
                                             },
-                                        ),
-                                        Stmt(
-                                            Print {
-                                                value: BinOp {
-                                                    op: Bool(
-                                                        Or,
-                                                    ),
-                                                    lhs: BoolLiteral(
-                                                        False,
-                                                    ),
-                                                    rhs: LvalueToRvalue(
-                                                        Identifier(
-                                                            b(2),
-                                                        ),
-                                                    ),
-                                                },
-                                            },
-                                        ),
-                                        Stmt(
-                                            Print {
-                                                value: UnOp {
-                                                    op: BoolNeg,
-                                                    operand: LvalueToRvalue(
-                                                        Identifier(
-                                                            a(1),
-                                                        ),
-                                                    ),
-                                                },
-                                            },
-                                        ),
-                                        Stmt(
-                                            Print {
-                                                value: UnOp {
-                                                    op: BoolNeg,
-                                                    operand: LvalueToRvalue(
-                                                        Identifier(
-                                                            b(2),
-                                                        ),
-                                                    ),
-                                                },
-                                            },
-                                        ),
-                                        Stmt(
-                                            Print {
-                                                value: UnOp {
-                                                    op: BoolNeg,
-                                                    operand: IntToBool(
-                                                        LvalueToRvalue(
-                                                            Identifier(
-                                                                x(3),
-                                                            ),
-                                                        ),
-                                                    ),
-                                                },
-                                            },
-                                        ),
-                                        Stmt(
-                                            Print {
-                                                value: UnOp {
-                                                    op: BoolNeg,
-                                                    operand: IntToBool(
-                                                        LvalueToRvalue(
-                                                            Identifier(
-                                                                y(4),
-                                                            ),
-                                                        ),
-                                                    ),
-                                                },
-                                            },
-                                        ),
+                                        },
                                     ],
                                     locals_count: 4,
                                 },
@@ -240,8 +224,8 @@
                             args_bindings: [],
                             body: Block(
                                 Block {
-                                    elems: [
-                                        Decl(
+                                    stmts: [
+                                        Declaration(
                                             Binding {
                                                 name: a(1),
                                                 decl: Var(
@@ -259,7 +243,7 @@
                                                 ),
                                             },
                                         ),
-                                        Decl(
+                                        Declaration(
                                             Binding {
                                                 name: b(2),
                                                 decl: Var(
@@ -277,7 +261,7 @@
                                                 ),
                                             },
                                         ),
-                                        Decl(
+                                        Declaration(
                                             Binding {
                                                 name: x(3),
                                                 decl: Var(
@@ -298,7 +282,7 @@
                                                 ),
                                             },
                                         ),
-                                        Decl(
+                                        Declaration(
                                             Binding {
                                                 name: y(4),
                                                 decl: Var(
@@ -319,130 +303,114 @@
                                                 ),
                                             },
                                         ),
-                                        Stmt(
-                                            Print {
-                                                value: BinOp {
-                                                    op: Bool(
-                                                        And,
+                                        Print {
+                                            value: BinOp {
+                                                op: Bool(
+                                                    And,
+                                                ),
+                                                lhs: LvalueToRvalue(
+                                                    Identifier(
+                                                        a(1),
                                                     ),
-                                                    lhs: LvalueToRvalue(
-                                                        Identifier(
-                                                            a(1),
-                                                        ),
+                                                ),
+                                                rhs: LvalueToRvalue(
+                                                    Identifier(
+                                                        b(2),
                                                     ),
-                                                    rhs: LvalueToRvalue(
-                                                        Identifier(
-                                                            b(2),
-                                                        ),
-                                                    ),
-                                                },
+                                                ),
                                             },
-                                        ),
-                                        Stmt(
-                                            Print {
-                                                value: BinOp {
-                                                    op: Bool(
-                                                        And,
+                                        },
+                                        Print {
+                                            value: BinOp {
+                                                op: Bool(
+                                                    And,
+                                                ),
+                                                lhs: LvalueToRvalue(
+                                                    Identifier(
+                                                        a(1),
                                                     ),
-                                                    lhs: LvalueToRvalue(
+                                                ),
+                                                rhs: BoolLiteral(
+                                                    True,
+                                                ),
+                                            },
+                                        },
+                                        Print {
+                                            value: BinOp {
+                                                op: Bool(
+                                                    Or,
+                                                ),
+                                                lhs: LvalueToRvalue(
+                                                    Identifier(
+                                                        a(1),
+                                                    ),
+                                                ),
+                                                rhs: LvalueToRvalue(
+                                                    Identifier(
+                                                        b(2),
+                                                    ),
+                                                ),
+                                            },
+                                        },
+                                        Print {
+                                            value: BinOp {
+                                                op: Bool(
+                                                    Or,
+                                                ),
+                                                lhs: BoolLiteral(
+                                                    False,
+                                                ),
+                                                rhs: LvalueToRvalue(
+                                                    Identifier(
+                                                        b(2),
+                                                    ),
+                                                ),
+                                            },
+                                        },
+                                        Print {
+                                            value: UnOp {
+                                                op: BoolNeg,
+                                                operand: LvalueToRvalue(
+                                                    Identifier(
+                                                        a(1),
+                                                    ),
+                                                ),
+                                            },
+                                        },
+                                        Print {
+                                            value: UnOp {
+                                                op: BoolNeg,
+                                                operand: LvalueToRvalue(
+                                                    Identifier(
+                                                        b(2),
+                                                    ),
+                                                ),
+                                            },
+                                        },
+                                        Print {
+                                            value: UnOp {
+                                                op: BoolNeg,
+                                                operand: IntToBool(
+                                                    LvalueToRvalue(
                                                         Identifier(
-                                                            a(1),
+                                                            x(3),
                                                         ),
                                                     ),
-                                                    rhs: BoolLiteral(
-                                                        True,
-                                                    ),
-                                                },
+                                                ),
                                             },
-                                        ),
-                                        Stmt(
-                                            Print {
-                                                value: BinOp {
-                                                    op: Bool(
-                                                        Or,
-                                                    ),
-                                                    lhs: LvalueToRvalue(
+                                        },
+                                        Print {
+                                            value: UnOp {
+                                                op: BoolNeg,
+                                                operand: IntToBool(
+                                                    LvalueToRvalue(
                                                         Identifier(
-                                                            a(1),
+                                                            y(4),
                                                         ),
                                                     ),
-                                                    rhs: LvalueToRvalue(
-                                                        Identifier(
-                                                            b(2),
-                                                        ),
-                                                    ),
-                                                },
+                                                ),
                                             },
-                                        ),
-                                        Stmt(
-                                            Print {
-                                                value: BinOp {
-                                                    op: Bool(
-                                                        Or,
-                                                    ),
-                                                    lhs: BoolLiteral(
-                                                        False,
-                                                    ),
-                                                    rhs: LvalueToRvalue(
-                                                        Identifier(
-                                                            b(2),
-                                                        ),
-                                                    ),
-                                                },
-                                            },
-                                        ),
-                                        Stmt(
-                                            Print {
-                                                value: UnOp {
-                                                    op: BoolNeg,
-                                                    operand: LvalueToRvalue(
-                                                        Identifier(
-                                                            a(1),
-                                                        ),
-                                                    ),
-                                                },
-                                            },
-                                        ),
-                                        Stmt(
-                                            Print {
-                                                value: UnOp {
-                                                    op: BoolNeg,
-                                                    operand: LvalueToRvalue(
-                                                        Identifier(
-                                                            b(2),
-                                                        ),
-                                                    ),
-                                                },
-                                            },
-                                        ),
-                                        Stmt(
-                                            Print {
-                                                value: UnOp {
-                                                    op: BoolNeg,
-                                                    operand: IntToBool(
-                                                        LvalueToRvalue(
-                                                            Identifier(
-                                                                x(3),
-                                                            ),
-                                                        ),
-                                                    ),
-                                                },
-                                            },
-                                        ),
-                                        Stmt(
-                                            Print {
-                                                value: UnOp {
-                                                    op: BoolNeg,
-                                                    operand: IntToBool(
-                                                        LvalueToRvalue(
-                                                            Identifier(
-                                                                y(4),
-                                                            ),
-                                                        ),
-                                                    ),
-                                                },
-                                            },
-                                        ),
+                                        },
                                     ],
                                     locals_count: 4,
                                 },
