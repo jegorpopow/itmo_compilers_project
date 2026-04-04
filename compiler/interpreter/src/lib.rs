@@ -12,7 +12,7 @@ use ast::{
     RoutineBody, RoutineDecl, SimpleBinding, SimpleDecl, Type, TypeDecl, VarDecl,
 };
 use common::{
-    Identifier, Integer, LoopOrder, RawIdentifier, Real, integer_to_real,
+    Identifier, Integer, LoopOrder, Position, RawIdentifier, Real, integer_to_real,
     operators::{
         BoolBinOp, EqBinOp, IntBinOp, RealBinOp, SemanticBinaryOperator, SemanticUnaryOperator,
     },
@@ -55,6 +55,7 @@ struct Interpreter<'a, W: Write> {
 #[derive(Debug, Clone, Copy)]
 pub enum RuntimeError {
     IndexOutOfBounds { index: Integer, len: usize },
+    Panic { pos: Position },
 }
 
 impl fmt::Display for RuntimeError {
@@ -66,6 +67,7 @@ impl fmt::Display for RuntimeError {
                     "Index {index} is out of bounds for array of length {len}"
                 )
             }
+            Self::Panic { pos } => write!(f, "Panic @ {pos}"),
         }
     }
 }
@@ -551,6 +553,10 @@ impl<'a, W: Write> Interpreter<'a, W> {
 
                     ast::Statement::Return { value } => {
                         throw!(BlockError::Return(self.expression(bindings, value)?))
+                    }
+
+                    &ast::Statement::Panic { pos } => {
+                        throw!(BlockError::Error(RuntimeError::Panic { pos }))
                     }
                 },
             }

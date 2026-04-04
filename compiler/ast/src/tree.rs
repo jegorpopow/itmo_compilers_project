@@ -3,7 +3,7 @@ use std::rc::Rc;
 use derive_where::derive_where;
 
 use common::{
-    Identifier, Integer, Location, LoopOrder, RawIdentifier, Real, integer_to_real,
+    Identifier, Integer, Location, LoopOrder, Position, RawIdentifier, Real, integer_to_real,
     operators::{
         BoolBinOp, EqBinOp, IntBinOp, RealBinOp, SemanticBinaryOperator, SemanticUnaryOperator,
     },
@@ -431,6 +431,9 @@ pub enum Statement {
     },
     Return {
         value: Rc<Expression>,
+    },
+    Panic {
+        pos: Position,
     },
 }
 

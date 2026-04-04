@@ -121,6 +121,8 @@ pub(crate) enum Instruction {
     /// Terminate program
     Panic {
         code: u64,
+        line: u32,
+        column: u16,
     },
     IntToBool, // All of it may be just a built-in call
     RealToInt, // All of it may be just a built-in call
@@ -309,9 +311,11 @@ impl Encode for Instruction {
                 arg32: type_id.to_le_bytes(),
                 ..zero
             },
-            Instruction::Panic { code } => Bytecode {
+            Instruction::Panic { code, line, column } => Bytecode {
                 opcode: 27,
                 arg64: code.to_le_bytes(),
+                arg32: line.to_le_bytes(),
+                arg16: column.to_le_bytes(),
                 ..zero
             },
         }

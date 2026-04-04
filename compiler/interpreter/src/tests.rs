@@ -64,8 +64,10 @@ testing::tests! {
         while_loops => "while_loops"
     ]
     fail = [
+        assert => "assert"
         oob_big => "oob_big"
         oob_neg => "oob_neg"
         oob_zero => "oob_zero"
+        panic => "panic"
     ]
 }

@@ -16,6 +16,7 @@ testing::tests! {
     pass = [
         arithmetic_operations => "arithmetic_operations"
         arrays_and_records => "arrays_and_records"
+        assert => "assert"
         comparison_operators => "comparison_operators"
         complex_expressions => "complex_expressions"
         conditionals => "conditionals"
@@ -34,6 +35,7 @@ testing::tests! {
         oob_neg => "oob_neg"
         oob_zero => "oob_zero"
         operator_precedence => "operator_precedence"
+        panic => "panic"
         parse_minus => "parse_minus"
         raytracer => "raytracer"
         real_comparisons => "real_comparisons"

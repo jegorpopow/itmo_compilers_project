@@ -915,6 +915,36 @@ impl Parser {
 
         Ok((Statement::Assignment { lhs, rhs }, next))
     }
+    fn parse_if<'a, 'b: 'a>(
+        &mut self,
+        i: IndexedIterator<'a, 'b>,
+    ) -> ParsingResult<'a, 'b, Statement> {
+        let next = self.next(i);
+        let (condition, next) = self.parse_expr(next)?;
+        let ((), next) = self.parse_keyword(Keyword::Then, next)?;
+        let (on_true, next) = self.parse_block(next)?;
+        let (on_false, next) = self.try_parse(
+            |ctx, i| {
+                ctx.parse_after(
+                    |ctx, i| ctx.parse_keyword(Keyword::Else, i),
+                    Self::parse_block,
+                    i,
+                )
+            },
+            next,
+        )?;
+
+        let ((), next) = self.parse_kw_end(next)?;
+
+        Ok((
+            Statement::If {
+                condition,
+                on_true,
+                on_false,
+            },
+            next,
+        ))
+    }
 
     pub fn parse_statement<'a, 'b: 'a>(
         &mut self,
@@ -924,33 +954,7 @@ impl Parser {
             Some(Token {
                 kind: TokenKind::Keyword(Keyword::If),
                 ..
-            }) => {
-                let next = self.next(i);
-                let (condition, next) = self.parse_expr(next)?;
-                let ((), next) = self.parse_keyword(Keyword::Then, next)?;
-                let (on_true, next) = self.parse_block(next)?;
-                let (on_false, next) = self.try_parse(
-                    |ctx, i| {
-                        ctx.parse_after(
-                            |ctx, i| ctx.parse_keyword(Keyword::Else, i),
-                            Self::parse_block,
-                            i,
-                        )
-                    },
-                    next,
-                )?;
-
-                let ((), next) = self.parse_kw_end(next)?;
-
-                Ok((
-                    Statement::If {
-                        condition,
-                        on_true,
-                        on_false,
-                    },
-                    next,
-                ))
-            }
+            }) => self.parse_if(i),
 
             Some(Token {
                 kind: TokenKind::Keyword(Keyword::While),
@@ -989,6 +993,26 @@ impl Parser {
                 let ((), next) = self.parse_semicolon(next)?;
 
                 Ok((Statement::Return { value: expr }, next))
+            }
+            Some(&Token {
+                kind: TokenKind::Keyword(Keyword::Panic),
+                extent: Extent { start: pos, end: _ },
+                lexeme: _,
+            }) => {
+                let next = self.next(i);
+                let ((), next) = self.parse_semicolon(next)?;
+                Ok((Statement::Panic { pos }, next))
+            }
+
+            Some(&Token {
+                kind: TokenKind::Keyword(Keyword::Assert),
+                extent: Extent { start: pos, end: _ },
+                lexeme: _,
+            }) => {
+                let next = self.next(i);
+                let (value, next) = self.parse_expr(next)?;
+                let ((), next) = self.parse_semicolon(next)?;
+                Ok((Statement::Assert { value, pos }, next))
             }
 
             Some(Token {
