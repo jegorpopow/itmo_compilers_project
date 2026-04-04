@@ -784,8 +784,8 @@ impl Converter {
                         .and_then(TryInto::try_into)?,
                 ),
                 parser::BlockElem::TypeDecl(type_decl) => BlockElem::Decl(
-                    self.convert_decl(&parser::Declaration::Type(type_decl.clone()), false)
-                        .and_then(TryInto::try_into)?,
+                    self.convert_type_decl(type_decl, false)?
+                        .map(LocalDecl::Type),
                 ),
             })
         }
@@ -793,6 +793,35 @@ impl Converter {
         Ok(Block {
             elems: result,
             locals_count: self.leave_block(),
+        })
+    }
+
+    fn convert_type_decl(
+        &mut self,
+        decl: &parser::TypeDecl,
+        is_global: bool,
+    ) -> AnalysisResult<Binding<TypeDecl>> {
+        let parser::TypeDecl { name, t } = decl;
+        // Binding forward declaration of type for possible recursive usage
+        let ident = self.bind_decl(
+            is_global,
+            name,
+            Decl::Type(TypeDecl::Forward {
+                alias: name.clone(),
+            }),
+        );
+
+        let converted_type = self.convert_type(t)?;
+        let effective_type = self.ident_table.get_effective_type(&converted_type)?;
+        let type_decl = TypeDecl::Full {
+            prescribed: converted_type,
+            effective: effective_type,
+        };
+        // Overriding forward declaration with full one
+        self.rebind_decl(&ident, Decl::Type(type_decl.clone()));
+        Ok(Binding {
+            name: ident,
+            decl: type_decl,
         })
     }
 
@@ -880,28 +909,8 @@ impl Converter {
                     decl: const_decl,
                 }
             }
-            parser::Declaration::Type(parser::TypeDecl { name, t }) => {
-                // Binding forward declaration of type for possible recursive usage
-                let ident = self.bind_decl(
-                    is_global,
-                    name,
-                    Decl::Type(TypeDecl::Forward {
-                        alias: name.clone(),
-                    }),
-                );
-
-                let converted_type = self.convert_type(t)?;
-                let effective_type = self.ident_table.get_effective_type(&converted_type)?;
-                let type_decl = Decl::Type(TypeDecl::Full {
-                    prescribed: converted_type,
-                    effective: effective_type,
-                });
-                // Overriding forward declaration with full one
-                self.rebind_decl(&ident, type_decl.clone());
-                Binding {
-                    name: ident,
-                    decl: type_decl,
-                }
+            parser::Declaration::Type(decl) => {
+                self.convert_type_decl(decl, is_global)?.map(Decl::Type)
             }
             parser::Declaration::Routine(decl) => {
                 if is_global {

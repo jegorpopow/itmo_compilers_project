@@ -489,6 +489,16 @@ pub struct Binding<T = Decl> {
     pub decl: T,
 }
 
+impl<T> Binding<T> {
+    pub fn map<U>(self, f: impl FnOnce(T) -> U) -> Binding<U> {
+        let Self { name, decl } = self;
+        Binding {
+            name,
+            decl: f(decl),
+        }
+    }
+}
+
 impl Binding {
     pub fn ensure_is_type(&self) -> AnalysisResult<&TypeDecl> {
         match &self.decl {
