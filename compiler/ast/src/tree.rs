@@ -396,11 +396,7 @@ impl From<SimpleDecl> for Decl {
     }
 }
 
-#[derive(Debug, Clone)]
-pub struct SimpleBinding {
-    pub name: Identifier,
-    pub decl: SimpleDecl,
-}
+pub type SimpleBinding = Binding<SimpleDecl>;
 
 impl From<SimpleBinding> for Binding {
     fn from(sb: SimpleBinding) -> Self {
