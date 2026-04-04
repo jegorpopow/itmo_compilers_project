@@ -44,7 +44,7 @@ enum class LocationKind : uint8_t {
   kArgument = 2,
 };
 
-// Subopcode values for BinOp (SemanticBinaryOperator::encode()).
+// Subopcode values for BinOp (BinaryOperator::encode()).
 namespace binop {
 // Equality
 inline constexpr uint8_t kEqEq = 0x00;
@@ -74,7 +74,7 @@ inline constexpr uint8_t kBoolOr  = 0x31;
 inline constexpr uint8_t kBoolXor = 0x32;
 }  // namespace binop
 
-// Subopcode values for UnOp (SemanticUnaryOperator as u8, repr(u8)).
+// Subopcode values for UnOp (UnaryOperator as u8, repr(u8)).
 namespace unop {
 inline constexpr uint8_t kIntNeg  = 25;
 inline constexpr uint8_t kRealNeg = 26;

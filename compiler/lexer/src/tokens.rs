@@ -1,8 +1,7 @@
 use core::num::{ParseFloatError, ParseIntError};
 use core::{error, fmt};
 
-use common::{Extent, operators::SyntacticOperator};
-use common::{Integer, Real};
+use common::{Extent, Integer, Real};
 
 // Token types
 
@@ -114,16 +113,20 @@ pub enum TokenKind<'a> {
     RealLiteral(RealLiteral),
     BoolLiteral(BoolLiteral),
     BuiltinTypename(BuiltinTypename),
-    Operator(SyntacticOperator),
+    Operator(Operator),
     Comment(Comment<'a>),
     Invalid(InvalidToken),
     LeftBracket,
     RightBracket,
     LeftParenthesis,
     RightParenthesis,
+    /// `=>`
     RightArrow,
+    /// `::`
     Cast,
+    /// `:=`
     Assignment,
+    /// `..`
     RangeSymbol,
     Dot,
     Comma,
@@ -184,4 +187,29 @@ impl fmt::Display for Token<'_> {
         } = self;
         write!(f, "{lexeme:?} @ {extent} is {kind}")
     }
+}
+
+#[derive(PartialEq, Eq, Hash, Debug, Clone, Copy)]
+pub enum Operator {
+    Plus,  // Either binary or unary one
+    Minus, // Either binary or unary one
+    Mul,
+    Div,
+    Mod,
+    /// `=`
+    Eq,
+    /// `/=`
+    Ne,
+    Lt,
+    Le,
+    Gt,
+    Ge,
+    /// `and`
+    And,
+    /// `or`
+    Or,
+    /// `xor`
+    Xor,
+    /// `not`
+    Not,
 }

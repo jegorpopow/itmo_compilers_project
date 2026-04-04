@@ -2,7 +2,8 @@ use std::rc::Rc;
 
 use derive_where::derive_where;
 
-use common::{Integer, LoopOrder, Position, RawIdentifier, Real, operators::SyntacticOperator};
+use common::{Integer, LoopOrder, Position, RawIdentifier, Real};
+pub use lexer::Operator;
 
 use crate::Type;
 
@@ -52,12 +53,12 @@ pub enum Expression {
         args: Vec<Rc<Expression>>,
     },
     BinOp {
-        op: SyntacticOperator,
+        op: Operator,
         lhs: Rc<Expression>,
         rhs: Rc<Expression>,
     },
     UnOp {
-        op: SyntacticOperator,
+        op: Operator,
         operand: Rc<Expression>,
     },
     Cast {

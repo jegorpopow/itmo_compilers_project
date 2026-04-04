@@ -7,16 +7,13 @@ use std::{
 };
 
 use ast::{
-    ArrayDescription, Binding, Block, BlockElem, Decl, Expression, FieldDescription,
-    IntegerLiteral, LvalueExpression, Program, RealLiteral, RecordDescription, Routine,
-    RoutineBody, RoutineDecl, SimpleBinding, SimpleDecl, Type, TypeDecl, VarDecl,
+    ArrayDescription, BinaryOperator, Binding, Block, BlockElem, BoolBinOp, Decl, EqBinOp,
+    Expression, FieldDescription, IntBinOp, IntegerLiteral, LvalueExpression, Program, RealBinOp,
+    RealLiteral, RecordDescription, Routine, RoutineBody, RoutineDecl, SimpleBinding, SimpleDecl,
+    Type, TypeDecl, UnaryOperator, VarDecl,
 };
 use common::{
-    Identifier, Integer, LoopOrder, Position, RawIdentifier, Real, integer_to_real,
-    operators::{
-        BoolBinOp, EqBinOp, IntBinOp, RealBinOp, SemanticBinaryOperator, SemanticUnaryOperator,
-    },
-    real_to_integer,
+    Identifier, Integer, LoopOrder, Position, RawIdentifier, Real, integer_to_real, real_to_integer,
 };
 use culpa::{throw, throws};
 use indexed_arena::{Arena, Idx};
@@ -248,12 +245,12 @@ impl<'a, W: Write> Interpreter<'a, W> {
     fn binop(
         &mut self,
         bindings: &mut Bindings<'a>,
-        op: SemanticBinaryOperator,
+        op: BinaryOperator,
         lhs: &'a Expression,
         rhs: &'a Expression,
     ) -> Value<'a> {
         match op {
-            SemanticBinaryOperator::Eq(op) => {
+            BinaryOperator::Eq(op) => {
                 let lhs = self.expression(bindings, lhs)?;
                 let rhs = self.expression(bindings, rhs)?;
                 Value::Bool(match op {
@@ -261,7 +258,7 @@ impl<'a, W: Write> Interpreter<'a, W> {
                     EqBinOp::Ne => lhs != rhs,
                 })
             }
-            SemanticBinaryOperator::Real(op) => {
+            BinaryOperator::Real(op) => {
                 let lhs = self.real_expression(bindings, lhs)?;
                 let rhs = self.real_expression(bindings, rhs)?;
                 match op {
@@ -275,7 +272,7 @@ impl<'a, W: Write> Interpreter<'a, W> {
                     RealBinOp::Ge => Value::Bool(lhs >= rhs),
                 }
             }
-            SemanticBinaryOperator::Int(op) => {
+            BinaryOperator::Int(op) => {
                 let lhs = self.integer_expression(bindings, lhs)?;
                 let rhs = self.integer_expression(bindings, rhs)?;
                 match op {
@@ -290,7 +287,7 @@ impl<'a, W: Write> Interpreter<'a, W> {
                     IntBinOp::Ge => Value::Bool(lhs >= rhs),
                 }
             }
-            SemanticBinaryOperator::Bool(op) => Value::Bool(match op {
+            BinaryOperator::Bool(op) => Value::Bool(match op {
                 BoolBinOp::And => {
                     self.bool_expression(bindings, lhs)? && self.bool_expression(bindings, rhs)?
                 }
@@ -378,15 +375,11 @@ impl<'a, W: Write> Interpreter<'a, W> {
             }
             Expression::BinOp { op, lhs, rhs } => self.binop(bindings, *op, lhs, rhs)?,
             Expression::UnOp { op, operand } => match op {
-                SemanticUnaryOperator::IntNeg => {
+                UnaryOperator::IntNeg => {
                     Value::Integer(-self.integer_expression(bindings, operand)?)
                 }
-                SemanticUnaryOperator::RealNeg => {
-                    Value::Real(-self.real_expression(bindings, operand)?)
-                }
-                SemanticUnaryOperator::BoolNeg => {
-                    Value::Bool(!self.bool_expression(bindings, operand)?)
-                }
+                UnaryOperator::RealNeg => Value::Real(-self.real_expression(bindings, operand)?),
+                UnaryOperator::BoolNeg => Value::Bool(!self.bool_expression(bindings, operand)?),
             },
             Expression::Cast { operand, target: _ } => self.expression(bindings, operand)?,
             Expression::New { t, fields } => self.new(bindings, t, fields.as_deref())?,

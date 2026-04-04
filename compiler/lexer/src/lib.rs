@@ -1,6 +1,5 @@
 use phf::phf_map;
 
-use common::operators::SyntacticOperator;
 use common::{Extent, Position, Real};
 
 mod tokens;
@@ -10,7 +9,7 @@ mod tests;
 
 pub use crate::tokens::{
     BoolLiteral, BuiltinTypename, Comment, Identifier, IntegerLiteral, InvalidToken, Keyword,
-    RealLiteral, Token, TokenKind,
+    Operator, RealLiteral, Token, TokenKind,
 };
 
 trait ImmutableIterator<'a>: Sized + Clone + From<&'a str> {
@@ -169,10 +168,10 @@ fn name_disambiguation(lexeme: &str) -> TokenKind<'_> {
         "null" => TokenKind::Keyword(Keyword::Null),
         "new" => TokenKind::Keyword(Keyword::New),
         "constant" => TokenKind::Keyword(Keyword::Constant),
-        "and" => TokenKind::Operator(SyntacticOperator::And),
-        "or" => TokenKind::Operator(SyntacticOperator::Or),
-        "xor" => TokenKind::Operator(SyntacticOperator::Xor),
-        "not" => TokenKind::Operator(SyntacticOperator::Not),
+        "and" => TokenKind::Operator(Operator::And),
+        "or" => TokenKind::Operator(Operator::Or),
+        "xor" => TokenKind::Operator(Operator::Xor),
+        "not" => TokenKind::Operator(Operator::Not),
         "true" => TokenKind::BoolLiteral(BoolLiteral { value: true }),
         "false" => TokenKind::BoolLiteral(BoolLiteral { value: false }),
         "integer" => TokenKind::BuiltinTypename(BuiltinTypename::Integer),
@@ -211,9 +210,9 @@ fn symbolic_token<'a>(start: &IndexIterator<'a>) -> Option<(TokenKind<'a>, Index
         (":=", TokenKind::Assignment),
         ("::", TokenKind::Cast),
         ("..", TokenKind::RangeSymbol),
-        ("/=", TokenKind::Operator(SyntacticOperator::Ne)),
-        ("<=", TokenKind::Operator(SyntacticOperator::Le)),
-        (">=", TokenKind::Operator(SyntacticOperator::Ge)),
+        ("/=", TokenKind::Operator(Operator::Ne)),
+        ("<=", TokenKind::Operator(Operator::Le)),
+        (">=", TokenKind::Operator(Operator::Ge)),
         ("=>", TokenKind::RightArrow),
         ("(", TokenKind::LeftParenthesis),
         (")", TokenKind::RightParenthesis),
@@ -223,14 +222,14 @@ fn symbolic_token<'a>(start: &IndexIterator<'a>) -> Option<(TokenKind<'a>, Index
         (".", TokenKind::Dot),
         (";", TokenKind::Semicolon),
         (":", TokenKind::Colon),
-        ("+", TokenKind::Operator(SyntacticOperator::Plus)),
-        ("-", TokenKind::Operator(SyntacticOperator::Minus)),
-        ("*", TokenKind::Operator(SyntacticOperator::Mul)),
-        ("/", TokenKind::Operator(SyntacticOperator::Div)),
-        ("%", TokenKind::Operator(SyntacticOperator::Mod)),
-        ("=", TokenKind::Operator(SyntacticOperator::Eq)),
-        ("<", TokenKind::Operator(SyntacticOperator::Lt)),
-        (">", TokenKind::Operator(SyntacticOperator::Gt)),
+        ("+", TokenKind::Operator(Operator::Plus)),
+        ("-", TokenKind::Operator(Operator::Minus)),
+        ("*", TokenKind::Operator(Operator::Mul)),
+        ("/", TokenKind::Operator(Operator::Div)),
+        ("%", TokenKind::Operator(Operator::Mod)),
+        ("=", TokenKind::Operator(Operator::Eq)),
+        ("<", TokenKind::Operator(Operator::Lt)),
+        (">", TokenKind::Operator(Operator::Gt)),
     ];
 
     KNOWN_TOKENS

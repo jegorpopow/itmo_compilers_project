@@ -1,11 +1,9 @@
 use std::{collections::HashMap, rc::Rc};
 
-use common::{
-    Identifier, Location, LoopOrder, RawIdentifier,
-    operators::{SemanticUnaryOperator, SyntacticOperator},
-};
+use common::{Identifier, Location, LoopOrder, RawIdentifier};
 
 use crate::{
+    operators::UnaryOperator,
     tree::{ConstDecl, cast_to},
     types::{BinOpAdjustment, infer_binary_operator_type},
     *,
@@ -309,24 +307,24 @@ impl Converter {
         })
     }
 
-    fn convert_unary(op: SyntacticOperator, operand: Typed) -> AnalysisResult<Typed> {
+    fn convert_unary(op: parser::Operator, operand: Typed) -> AnalysisResult<Typed> {
         let Typed {
             value: converted_operand,
             ty: operand_type,
         } = operand;
 
         Ok(match op {
-            SyntacticOperator::Not => match &*operand_type {
+            parser::Operator::Not => match &*operand_type {
                 Type::Bool => Typed {
                     value: Rc::new(Expression::UnOp {
-                        op: SemanticUnaryOperator::BoolNeg,
+                        op: UnaryOperator::BoolNeg,
                         operand: converted_operand,
                     }),
                     ty: Rc::new(Type::Bool),
                 },
                 Type::Int => Typed {
                     value: Rc::new(Expression::UnOp {
-                        op: SemanticUnaryOperator::BoolNeg,
+                        op: UnaryOperator::BoolNeg,
                         operand: Rc::new(Expression::IntToBool(converted_operand)),
                     }),
                     ty: Rc::new(Type::Bool),
@@ -343,17 +341,17 @@ impl Converter {
                     ),
                 })?,
             },
-            SyntacticOperator::Minus => match &*operand_type {
+            parser::Operator::Minus => match &*operand_type {
                 Type::Int => Typed {
                     value: Rc::new(Expression::UnOp {
-                        op: SemanticUnaryOperator::IntNeg,
+                        op: UnaryOperator::IntNeg,
                         operand: converted_operand,
                     }),
                     ty: Rc::new(Type::Int),
                 },
                 Type::Real => Typed {
                     value: Rc::new(Expression::UnOp {
-                        op: SemanticUnaryOperator::RealNeg,
+                        op: UnaryOperator::RealNeg,
                         operand: converted_operand,
                     }),
                     ty: Rc::new(Type::Real),
@@ -369,19 +367,19 @@ impl Converter {
                     ),
                 })?,
             },
-            SyntacticOperator::Plus
-            | SyntacticOperator::Mul
-            | SyntacticOperator::Div
-            | SyntacticOperator::Mod
-            | SyntacticOperator::Eq
-            | SyntacticOperator::Ne
-            | SyntacticOperator::Lt
-            | SyntacticOperator::Le
-            | SyntacticOperator::Gt
-            | SyntacticOperator::Ge
-            | SyntacticOperator::And
-            | SyntacticOperator::Or
-            | SyntacticOperator::Xor => Err(AnalysisError {
+            parser::Operator::Plus
+            | parser::Operator::Mul
+            | parser::Operator::Div
+            | parser::Operator::Mod
+            | parser::Operator::Eq
+            | parser::Operator::Ne
+            | parser::Operator::Lt
+            | parser::Operator::Le
+            | parser::Operator::Gt
+            | parser::Operator::Ge
+            | parser::Operator::And
+            | parser::Operator::Or
+            | parser::Operator::Xor => Err(AnalysisError {
                 what: format!("Operator {op:?} can not be applied as unary"),
             })?,
         })
