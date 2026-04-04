@@ -28,6 +28,8 @@ pub enum Keyword {
     New,
     Null,
     Where,
+    Assert,
+    Panic,
 }
 
 #[derive(PartialEq, Eq, Hash, fmt::Debug, Clone)]

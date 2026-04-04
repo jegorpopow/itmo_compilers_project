@@ -143,6 +143,26 @@
                     },
                 ),
             },
+            Binding {
+                name: main(5),
+                decl: Routine(
+                    Full(
+                        Routine {
+                            signature: RoutineSignature {
+                                args: [],
+                                return_type: Unit,
+                            },
+                            args_bindings: [],
+                            body: Block(
+                                Block {
+                                    elems: [],
+                                    locals_count: 0,
+                                },
+                            ),
+                        },
+                    ),
+                ),
+            },
         ],
     ),
     IdentifierTable {
@@ -287,6 +307,26 @@
                             4,
                         ),
                     },
+                ),
+            },
+            Binding {
+                name: main(5),
+                decl: Routine(
+                    Full(
+                        Routine {
+                            signature: RoutineSignature {
+                                args: [],
+                                return_type: Unit,
+                            },
+                            args_bindings: [],
+                            body: Block(
+                                Block {
+                                    elems: [],
+                                    locals_count: 0,
+                                },
+                            ),
+                        },
+                    ),
                 ),
             },
         ],

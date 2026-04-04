@@ -1,0 +1,79 @@
+(
+    Program(
+        [
+            Routine(
+                RoutineDecl {
+                    name: r"main",
+                    arguments: [],
+                    return_type: None,
+                    body: Some(
+                        Block(
+                            Block(
+                                [
+                                    Stmt(
+                                        Assert {
+                                            pos: Position {
+                                                line: 2,
+                                                column: 1,
+                                            },
+                                            value: BoolLiteral(
+                                                True,
+                                            ),
+                                        },
+                                    ),
+                                    Stmt(
+                                        Assert {
+                                            pos: Position {
+                                                line: 3,
+                                                column: 1,
+                                            },
+                                            value: IntegerLiteral(
+                                                IntegerLiteral {
+                                                    repr: "1",
+                                                    value: 1,
+                                                },
+                                            ),
+                                        },
+                                    ),
+                                    Stmt(
+                                        Assert {
+                                            pos: Position {
+                                                line: 4,
+                                                column: 1,
+                                            },
+                                            value: BinOp {
+                                                op: Eq,
+                                                lhs: BinOp {
+                                                    op: Plus,
+                                                    lhs: IntegerLiteral(
+                                                        IntegerLiteral {
+                                                            repr: "2",
+                                                            value: 2,
+                                                        },
+                                                    ),
+                                                    rhs: IntegerLiteral(
+                                                        IntegerLiteral {
+                                                            repr: "2",
+                                                            value: 2,
+                                                        },
+                                                    ),
+                                                },
+                                                rhs: IntegerLiteral(
+                                                    IntegerLiteral {
+                                                        repr: "5",
+                                                        value: 5,
+                                                    },
+                                                ),
+                                            },
+                                        },
+                                    ),
+                                ],
+                            ),
+                        ),
+                    ),
+                },
+            ),
+        ],
+    ),
+    [],
+)

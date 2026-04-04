@@ -1,0 +1,238 @@
+(
+    Program(
+        [
+            Binding {
+                name: main(0),
+                decl: Routine(
+                    Full(
+                        Routine {
+                            signature: RoutineSignature {
+                                args: [],
+                                return_type: Unit,
+                            },
+                            args_bindings: [],
+                            body: Block(
+                                Block {
+                                    elems: [
+                                        Stmt(
+                                            If {
+                                                condition: BoolLiteral(
+                                                    True,
+                                                ),
+                                                on_true: Block {
+                                                    elems: [
+                                                        Stmt(
+                                                            Panic {
+                                                                pos: Position {
+                                                                    line: 2,
+                                                                    column: 1,
+                                                                },
+                                                            },
+                                                        ),
+                                                    ],
+                                                    locals_count: 0,
+                                                },
+                                                on_false: None,
+                                            },
+                                        ),
+                                        Stmt(
+                                            If {
+                                                condition: IntToBool(
+                                                    IntegerLiteral(
+                                                        IntegerLiteral {
+                                                            repr: "1",
+                                                            value: 1,
+                                                        },
+                                                    ),
+                                                ),
+                                                on_true: Block {
+                                                    elems: [
+                                                        Stmt(
+                                                            Panic {
+                                                                pos: Position {
+                                                                    line: 3,
+                                                                    column: 1,
+                                                                },
+                                                            },
+                                                        ),
+                                                    ],
+                                                    locals_count: 0,
+                                                },
+                                                on_false: None,
+                                            },
+                                        ),
+                                        Stmt(
+                                            If {
+                                                condition: BinOp {
+                                                    op: Eq(
+                                                        Eq,
+                                                    ),
+                                                    lhs: BinOp {
+                                                        op: Int(
+                                                            Add,
+                                                        ),
+                                                        lhs: IntegerLiteral(
+                                                            IntegerLiteral {
+                                                                repr: "2",
+                                                                value: 2,
+                                                            },
+                                                        ),
+                                                        rhs: IntegerLiteral(
+                                                            IntegerLiteral {
+                                                                repr: "2",
+                                                                value: 2,
+                                                            },
+                                                        ),
+                                                    },
+                                                    rhs: IntegerLiteral(
+                                                        IntegerLiteral {
+                                                            repr: "5",
+                                                            value: 5,
+                                                        },
+                                                    ),
+                                                },
+                                                on_true: Block {
+                                                    elems: [
+                                                        Stmt(
+                                                            Panic {
+                                                                pos: Position {
+                                                                    line: 4,
+                                                                    column: 1,
+                                                                },
+                                                            },
+                                                        ),
+                                                    ],
+                                                    locals_count: 0,
+                                                },
+                                                on_false: None,
+                                            },
+                                        ),
+                                    ],
+                                    locals_count: 0,
+                                },
+                            ),
+                        },
+                    ),
+                ),
+            },
+        ],
+    ),
+    IdentifierTable {
+        bindings: [
+            Binding {
+                name: main(0),
+                decl: Routine(
+                    Full(
+                        Routine {
+                            signature: RoutineSignature {
+                                args: [],
+                                return_type: Unit,
+                            },
+                            args_bindings: [],
+                            body: Block(
+                                Block {
+                                    elems: [
+                                        Stmt(
+                                            If {
+                                                condition: BoolLiteral(
+                                                    True,
+                                                ),
+                                                on_true: Block {
+                                                    elems: [
+                                                        Stmt(
+                                                            Panic {
+                                                                pos: Position {
+                                                                    line: 2,
+                                                                    column: 1,
+                                                                },
+                                                            },
+                                                        ),
+                                                    ],
+                                                    locals_count: 0,
+                                                },
+                                                on_false: None,
+                                            },
+                                        ),
+                                        Stmt(
+                                            If {
+                                                condition: IntToBool(
+                                                    IntegerLiteral(
+                                                        IntegerLiteral {
+                                                            repr: "1",
+                                                            value: 1,
+                                                        },
+                                                    ),
+                                                ),
+                                                on_true: Block {
+                                                    elems: [
+                                                        Stmt(
+                                                            Panic {
+                                                                pos: Position {
+                                                                    line: 3,
+                                                                    column: 1,
+                                                                },
+                                                            },
+                                                        ),
+                                                    ],
+                                                    locals_count: 0,
+                                                },
+                                                on_false: None,
+                                            },
+                                        ),
+                                        Stmt(
+                                            If {
+                                                condition: BinOp {
+                                                    op: Eq(
+                                                        Eq,
+                                                    ),
+                                                    lhs: BinOp {
+                                                        op: Int(
+                                                            Add,
+                                                        ),
+                                                        lhs: IntegerLiteral(
+                                                            IntegerLiteral {
+                                                                repr: "2",
+                                                                value: 2,
+                                                            },
+                                                        ),
+                                                        rhs: IntegerLiteral(
+                                                            IntegerLiteral {
+                                                                repr: "2",
+                                                                value: 2,
+                                                            },
+                                                        ),
+                                                    },
+                                                    rhs: IntegerLiteral(
+                                                        IntegerLiteral {
+                                                            repr: "5",
+                                                            value: 5,
+                                                        },
+                                                    ),
+                                                },
+                                                on_true: Block {
+                                                    elems: [
+                                                        Stmt(
+                                                            Panic {
+                                                                pos: Position {
+                                                                    line: 4,
+                                                                    column: 1,
+                                                                },
+                                                            },
+                                                        ),
+                                                    ],
+                                                    locals_count: 0,
+                                                },
+                                                on_false: None,
+                                            },
+                                        ),
+                                    ],
+                                    locals_count: 0,
+                                },
+                            ),
+                        },
+                    ),
+                ),
+            },
+        ],
+    },
+)

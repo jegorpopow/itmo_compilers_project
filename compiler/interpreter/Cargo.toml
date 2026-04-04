@@ -14,12 +14,10 @@ workspace = true
 [dependencies]
 ast.path = "../ast"
 common.path = "../common"
-anyhow.workspace = true
 culpa.workspace = true
 indexed_arena = "0.4.2"
 
 [dev-dependencies]
 lexer.path = "../lexer"
 parser.path = "../parser"
-anyhow.workspace = true
 testing.path = "../testing"

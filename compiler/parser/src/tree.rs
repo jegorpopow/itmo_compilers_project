@@ -2,7 +2,7 @@ use std::rc::Rc;
 
 use derive_where::derive_where;
 
-use common::{Integer, LoopOrder, RawIdentifier, Real, operators::SyntacticOperator};
+use common::{Integer, LoopOrder, Position, RawIdentifier, Real, operators::SyntacticOperator};
 
 use crate::Type;
 
@@ -135,6 +135,13 @@ pub enum Statement {
         value: Rc<Expression>,
     },
     Return {
+        value: Rc<Expression>,
+    },
+    Panic {
+        pos: Position,
+    },
+    Assert {
+        pos: Position,
         value: Rc<Expression>,
     },
 }
