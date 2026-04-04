@@ -34,6 +34,8 @@ enum class Opcode : uint8_t {
   kRet           = 25,
   kPrint         = 26,
   kPanic         = 27,
+  // TODO: NullConst
+  // TODO: DropMany
 };
 
 // Location kind for Load/Store/AddressOf subopcode.

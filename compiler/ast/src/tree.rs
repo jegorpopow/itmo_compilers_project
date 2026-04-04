@@ -3,8 +3,8 @@ use std::rc::Rc;
 use derive_where::derive_where;
 
 use common::{
-    Identifier, Integer, Location, LoopOrder, Position, RawIdentifier, Real, integer_to_real,
-    real_to_integer,
+    Identifier, Integer, Location, LoopOrder, Position, RawIdentifier, Real, VarLoc,
+    integer_to_real, real_to_integer,
 };
 
 use crate::{
@@ -413,7 +413,7 @@ impl From<LocalBinding> for Binding {
 #[derive(Debug, Clone)]
 pub struct Block {
     pub stmts: Vec<Statement>,
-    pub locals_count: usize,
+    pub locals_count: VarLoc,
 }
 
 #[derive(Debug, Clone)]

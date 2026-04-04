@@ -89,12 +89,14 @@ impl Display for Extent {
     }
 }
 
-///  Variable location and id
+pub type VarLoc = u16;
+
+/// Variable location and id
 #[derive(Debug, Clone, Copy, Hash)]
 pub enum Location {
-    Global(u16),
-    Local(u16),
-    Argument(u16),
+    Global(VarLoc),
+    Local(VarLoc),
+    Argument(VarLoc),
 }
 
 pub type Integer = i64;

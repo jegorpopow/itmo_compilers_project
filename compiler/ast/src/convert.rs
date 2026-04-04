@@ -1,6 +1,6 @@
 use std::{collections::HashMap, rc::Rc};
 
-use common::{Identifier, Location, LoopOrder, RawIdentifier};
+use common::{Identifier, Location, LoopOrder, RawIdentifier, VarLoc};
 
 use crate::{
     operators::UnaryOperator,
@@ -12,7 +12,7 @@ use crate::{
 #[derive(Debug, Default)]
 struct ScopeBlock {
     binders: HashMap<RawIdentifier, usize>,
-    locals_in_block: usize,
+    locals_in_block: VarLoc,
 }
 
 impl ScopeBlock {
@@ -43,8 +43,8 @@ struct RoutinePrototype {
 struct Converter {
     ident_table: IdentifierTable,
     current_scope: Vec<ScopeBlock>,
-    global_count: usize,
-    local_count: usize,
+    global_count: VarLoc,
+    local_count: VarLoc,
     current_routine: Option<RoutinePrototype>,
 }
 
@@ -67,7 +67,7 @@ impl Converter {
         self.current_scope.push(ScopeBlock::new())
     }
 
-    fn leave_block(&mut self) -> usize {
+    fn leave_block(&mut self) -> VarLoc {
         assert!(
             self.current_scope.len() > 1,
             "No non-global contexts to leave"
@@ -83,8 +83,9 @@ impl Converter {
     }
 
     fn get_fresh_global_location(&mut self) -> Location {
+        let res = self.global_count;
         self.global_count += 1;
-        Location::Global(u16::try_from(self.global_count - 1).expect("Too many global variables"))
+        Location::Global(res)
     }
 
     fn get_fresh_local_location(&mut self) -> Location {
@@ -93,14 +94,13 @@ impl Converter {
             "Local name binding in global context"
         );
 
+        let res = self.local_count;
         self.local_count += 1;
         self.current_scope
             .last_mut()
             .expect("At least global context is always present")
             .locals_in_block += 1;
-        Location::Local(
-            u16::try_from(self.local_count - 1).expect("Too many local variables in function"),
-        )
+        Location::Local(res)
     }
 
     fn bind_global_decl(&mut self, name: &RawIdentifier, decl: Decl) -> Identifier {
@@ -988,7 +988,7 @@ impl Converter {
                         t: Rc::clone(t),
                         initialiser: None,
                         relative_location: Location::Argument(
-                            u16::try_from(index).expect("Too many arguments for function"),
+                            index.try_into().expect("Too many arguments for function"),
                         ),
                     },
                 )
