@@ -115,6 +115,7 @@ impl Converter {
         self.ident_table.rebind(ident, new_decl);
     }
 
+    // FIXME: accept `LocalDecl`
     fn bind_local_decl(&mut self, name: &RawIdentifier, decl: Decl) -> Identifier {
         assert!(
             self.current_scope.len() > 1,
@@ -775,10 +776,9 @@ impl Converter {
                 parser::BlockElem::Stmt(statement) => {
                     BlockElem::Stmt(self.convert_stmt(statement)?)
                 }
-                parser::BlockElem::VarDecl(var_decl) => BlockElem::Decl(
-                    self.convert_decl(&parser::Declaration::Var(var_decl.clone()), false)
-                        .and_then(TryInto::try_into)?,
-                ),
+                parser::BlockElem::VarDecl(var_decl) => {
+                    BlockElem::Decl(self.convert_var_decl(var_decl, false)?.map(LocalDecl::Var))
+                }
                 parser::BlockElem::ConstDecl(const_decl) => BlockElem::Decl(
                     self.convert_decl(&parser::Declaration::Const(const_decl.clone()), false)
                         .and_then(TryInto::try_into)?,
@@ -793,6 +793,62 @@ impl Converter {
         Ok(Block {
             elems: result,
             locals_count: self.leave_block(),
+        })
+    }
+
+    fn convert_var_decl(
+        &mut self,
+        decl: &parser::VarDecl,
+        is_global: bool,
+    ) -> AnalysisResult<Binding<VarDecl>> {
+        let parser::VarDecl {
+            name,
+            t,
+            initialiser,
+        } = decl;
+
+        let loc = if is_global {
+            self.get_fresh_global_location()
+        } else {
+            self.get_fresh_local_location()
+        };
+
+        let decl = match (t, initialiser) {
+            (None, None) => Err(AnalysisError {
+                what: format!("Can not deduce type for variable {name:?}"),
+            })?,
+            (None, Some(expr)) => {
+                let Typed {
+                    value: converted_initialiser,
+                    ty: t,
+                } = self.convert_expr(expr)?;
+                VarDecl {
+                    t,
+                    initialiser: Some(converted_initialiser),
+                    relative_location: loc,
+                }
+            }
+            (Some(t), None) => {
+                let converted_type = self.convert_type(t)?;
+                VarDecl {
+                    t: converted_type,
+                    initialiser: None,
+                    relative_location: loc,
+                }
+            }
+            (Some(t), Some(expr)) => {
+                let converted_type = self.convert_type(t)?;
+                VarDecl {
+                    initialiser: Some(cast_to(self.convert_expr(expr)?, &converted_type)?),
+                    t: converted_type,
+                    relative_location: loc,
+                }
+            }
+        };
+
+        Ok(Binding {
+            name: self.bind_decl(is_global, name, Decl::Var(decl.clone())),
+            decl,
         })
     }
 
@@ -831,55 +887,8 @@ impl Converter {
         is_global: bool,
     ) -> AnalysisResult<Binding> {
         Ok(match decl {
-            parser::Declaration::Var(parser::VarDecl {
-                name,
-                t,
-                initialiser,
-            }) => {
-                let loc = if is_global {
-                    self.get_fresh_global_location()
-                } else {
-                    self.get_fresh_local_location()
-                };
-
-                let var_decl: Decl = match (t, initialiser) {
-                    (None, None) => Err(AnalysisError {
-                        what: format!("Can not deduce type for variable {name:?}"),
-                    })?,
-                    (None, Some(expr)) => {
-                        let Typed {
-                            value: converted_initialiser,
-                            ty: t,
-                        } = self.convert_expr(expr)?;
-                        Decl::Var(VarDecl {
-                            t,
-                            initialiser: Some(converted_initialiser),
-                            relative_location: loc,
-                        })
-                    }
-                    (Some(t), None) => {
-                        let converted_type = self.convert_type(t)?;
-                        Decl::Var(VarDecl {
-                            t: converted_type,
-                            initialiser: None,
-                            relative_location: loc,
-                        })
-                    }
-                    (Some(t), Some(expr)) => {
-                        let converted_type = self.convert_type(t)?;
-                        Decl::Var(VarDecl {
-                            initialiser: Some(cast_to(self.convert_expr(expr)?, &converted_type)?),
-                            t: converted_type,
-                            relative_location: loc,
-                        })
-                    }
-                };
-
-                let ident = self.bind_decl(is_global, name, var_decl.clone());
-                Binding {
-                    name: ident,
-                    decl: var_decl,
-                }
+            parser::Declaration::Var(decl) => {
+                self.convert_var_decl(decl, is_global)?.map(Decl::Var)
             }
 
             parser::Declaration::Const(parser::ConstDecl {
