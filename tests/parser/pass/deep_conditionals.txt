@@ -1,176 +1,251 @@
-(
-    Program(
-        [
-            Routine(
-                RoutineDecl {
-                    name: r"main",
-                    arguments: [],
-                    return_type: None,
-                    body: Some(
+Program(
+    [
+        Routine(
+            RoutineDecl {
+                name: r"main",
+                arguments: [],
+                return_type: None,
+                body: Some(
+                    Block(
                         Block(
-                            Block(
-                                [
-                                    VarDecl(
-                                        VarDecl {
-                                            name: r"a",
-                                            t: None,
-                                            initialiser: Some(
-                                                IntegerLiteral(
-                                                    IntegerLiteral {
-                                                        repr: "1",
-                                                        value: 1,
-                                                    },
+                            [
+                                VarDecl(
+                                    VarDecl {
+                                        name: r"a",
+                                        t: None,
+                                        initialiser: Some(
+                                            IntegerLiteral(
+                                                IntegerLiteral {
+                                                    repr: "1",
+                                                    value: 1,
+                                                },
+                                            ),
+                                        ),
+                                    },
+                                ),
+                                VarDecl(
+                                    VarDecl {
+                                        name: r"b",
+                                        t: None,
+                                        initialiser: Some(
+                                            IntegerLiteral(
+                                                IntegerLiteral {
+                                                    repr: "1",
+                                                    value: 1,
+                                                },
+                                            ),
+                                        ),
+                                    },
+                                ),
+                                VarDecl(
+                                    VarDecl {
+                                        name: r"c",
+                                        t: None,
+                                        initialiser: Some(
+                                            IntegerLiteral(
+                                                IntegerLiteral {
+                                                    repr: "1",
+                                                    value: 1,
+                                                },
+                                            ),
+                                        ),
+                                    },
+                                ),
+                                VarDecl(
+                                    VarDecl {
+                                        name: r"d",
+                                        t: None,
+                                        initialiser: Some(
+                                            IntegerLiteral(
+                                                IntegerLiteral {
+                                                    repr: "1",
+                                                    value: 1,
+                                                },
+                                            ),
+                                        ),
+                                    },
+                                ),
+                                VarDecl(
+                                    VarDecl {
+                                        name: r"e",
+                                        t: None,
+                                        initialiser: Some(
+                                            IntegerLiteral(
+                                                IntegerLiteral {
+                                                    repr: "1",
+                                                    value: 1,
+                                                },
+                                            ),
+                                        ),
+                                    },
+                                ),
+                                VarDecl(
+                                    VarDecl {
+                                        name: r"f",
+                                        t: None,
+                                        initialiser: Some(
+                                            IntegerLiteral(
+                                                IntegerLiteral {
+                                                    repr: "1",
+                                                    value: 1,
+                                                },
+                                            ),
+                                        ),
+                                    },
+                                ),
+                                VarDecl(
+                                    VarDecl {
+                                        name: r"g",
+                                        t: None,
+                                        initialiser: Some(
+                                            IntegerLiteral(
+                                                IntegerLiteral {
+                                                    repr: "1",
+                                                    value: 1,
+                                                },
+                                            ),
+                                        ),
+                                    },
+                                ),
+                                Stmt(
+                                    If {
+                                        condition: BinOp {
+                                            op: Eq,
+                                            lhs: LvalueToRvalue(
+                                                Identifier(
+                                                    r"a",
                                                 ),
                                             ),
-                                        },
-                                    ),
-                                    VarDecl(
-                                        VarDecl {
-                                            name: r"b",
-                                            t: None,
-                                            initialiser: Some(
-                                                IntegerLiteral(
-                                                    IntegerLiteral {
-                                                        repr: "1",
-                                                        value: 1,
-                                                    },
-                                                ),
+                                            rhs: IntegerLiteral(
+                                                IntegerLiteral {
+                                                    repr: "1",
+                                                    value: 1,
+                                                },
                                             ),
                                         },
-                                    ),
-                                    VarDecl(
-                                        VarDecl {
-                                            name: r"c",
-                                            t: None,
-                                            initialiser: Some(
-                                                IntegerLiteral(
-                                                    IntegerLiteral {
-                                                        repr: "1",
-                                                        value: 1,
+                                        on_true: Block(
+                                            [
+                                                Stmt(
+                                                    Print {
+                                                        value: IntegerLiteral(
+                                                            IntegerLiteral {
+                                                                repr: "1",
+                                                                value: 1,
+                                                            },
+                                                        ),
                                                     },
                                                 ),
-                                            ),
-                                        },
-                                    ),
-                                    VarDecl(
-                                        VarDecl {
-                                            name: r"d",
-                                            t: None,
-                                            initialiser: Some(
-                                                IntegerLiteral(
-                                                    IntegerLiteral {
-                                                        repr: "1",
-                                                        value: 1,
-                                                    },
-                                                ),
-                                            ),
-                                        },
-                                    ),
-                                    VarDecl(
-                                        VarDecl {
-                                            name: r"e",
-                                            t: None,
-                                            initialiser: Some(
-                                                IntegerLiteral(
-                                                    IntegerLiteral {
-                                                        repr: "1",
-                                                        value: 1,
-                                                    },
-                                                ),
-                                            ),
-                                        },
-                                    ),
-                                    VarDecl(
-                                        VarDecl {
-                                            name: r"f",
-                                            t: None,
-                                            initialiser: Some(
-                                                IntegerLiteral(
-                                                    IntegerLiteral {
-                                                        repr: "1",
-                                                        value: 1,
-                                                    },
-                                                ),
-                                            ),
-                                        },
-                                    ),
-                                    VarDecl(
-                                        VarDecl {
-                                            name: r"g",
-                                            t: None,
-                                            initialiser: Some(
-                                                IntegerLiteral(
-                                                    IntegerLiteral {
-                                                        repr: "1",
-                                                        value: 1,
-                                                    },
-                                                ),
-                                            ),
-                                        },
-                                    ),
-                                    Stmt(
-                                        If {
-                                            condition: BinOp {
-                                                op: Eq,
-                                                lhs: LvalueToRvalue(
-                                                    Identifier(
-                                                        r"a",
-                                                    ),
-                                                ),
-                                                rhs: IntegerLiteral(
-                                                    IntegerLiteral {
-                                                        repr: "1",
-                                                        value: 1,
-                                                    },
-                                                ),
-                                            },
-                                            on_true: Block(
-                                                [
-                                                    Stmt(
-                                                        Print {
-                                                            value: IntegerLiteral(
+                                                Stmt(
+                                                    If {
+                                                        condition: BinOp {
+                                                            op: Eq,
+                                                            lhs: LvalueToRvalue(
+                                                                Identifier(
+                                                                    r"b",
+                                                                ),
+                                                            ),
+                                                            rhs: IntegerLiteral(
                                                                 IntegerLiteral {
                                                                     repr: "1",
                                                                     value: 1,
                                                                 },
                                                             ),
                                                         },
-                                                    ),
-                                                    Stmt(
-                                                        If {
-                                                            condition: BinOp {
-                                                                op: Eq,
-                                                                lhs: LvalueToRvalue(
-                                                                    Identifier(
-                                                                        r"b",
-                                                                    ),
-                                                                ),
-                                                                rhs: IntegerLiteral(
-                                                                    IntegerLiteral {
-                                                                        repr: "1",
-                                                                        value: 1,
+                                                        on_true: Block(
+                                                            [
+                                                                Stmt(
+                                                                    Print {
+                                                                        value: IntegerLiteral(
+                                                                            IntegerLiteral {
+                                                                                repr: "2",
+                                                                                value: 2,
+                                                                            },
+                                                                        ),
                                                                     },
                                                                 ),
-                                                            },
-                                                            on_true: Block(
-                                                                [
-                                                                    Stmt(
-                                                                        Print {
-                                                                            value: IntegerLiteral(
+                                                                Stmt(
+                                                                    If {
+                                                                        condition: BinOp {
+                                                                            op: Eq,
+                                                                            lhs: LvalueToRvalue(
+                                                                                Identifier(
+                                                                                    r"c",
+                                                                                ),
+                                                                            ),
+                                                                            rhs: IntegerLiteral(
                                                                                 IntegerLiteral {
-                                                                                    repr: "2",
-                                                                                    value: 2,
+                                                                                    repr: "1",
+                                                                                    value: 1,
                                                                                 },
                                                                             ),
                                                                         },
-                                                                    ),
+                                                                        on_true: Block(
+                                                                            [
+                                                                                Stmt(
+                                                                                    Print {
+                                                                                        value: IntegerLiteral(
+                                                                                            IntegerLiteral {
+                                                                                                repr: "3",
+                                                                                                value: 3,
+                                                                                            },
+                                                                                        ),
+                                                                                    },
+                                                                                ),
+                                                                            ],
+                                                                        ),
+                                                                        on_false: Some(
+                                                                            Block(
+                                                                                [
+                                                                                    Stmt(
+                                                                                        If {
+                                                                                            condition: BinOp {
+                                                                                                op: Eq,
+                                                                                                lhs: LvalueToRvalue(
+                                                                                                    Identifier(
+                                                                                                        r"d",
+                                                                                                    ),
+                                                                                                ),
+                                                                                                rhs: IntegerLiteral(
+                                                                                                    IntegerLiteral {
+                                                                                                        repr: "1",
+                                                                                                        value: 1,
+                                                                                                    },
+                                                                                                ),
+                                                                                            },
+                                                                                            on_true: Block(
+                                                                                                [
+                                                                                                    Stmt(
+                                                                                                        Print {
+                                                                                                            value: IntegerLiteral(
+                                                                                                                IntegerLiteral {
+                                                                                                                    repr: "0",
+                                                                                                                    value: 0,
+                                                                                                                },
+                                                                                                            ),
+                                                                                                        },
+                                                                                                    ),
+                                                                                                ],
+                                                                                            ),
+                                                                                            on_false: None,
+                                                                                        },
+                                                                                    ),
+                                                                                ],
+                                                                            ),
+                                                                        ),
+                                                                    },
+                                                                ),
+                                                            ],
+                                                        ),
+                                                        on_false: Some(
+                                                            Block(
+                                                                [
                                                                     Stmt(
                                                                         If {
                                                                             condition: BinOp {
                                                                                 op: Eq,
                                                                                 lhs: LvalueToRvalue(
                                                                                     Identifier(
-                                                                                        r"c",
+                                                                                        r"e",
                                                                                     ),
                                                                                 ),
                                                                                 rhs: IntegerLiteral(
@@ -186,8 +261,8 @@
                                                                                         Print {
                                                                                             value: IntegerLiteral(
                                                                                                 IntegerLiteral {
-                                                                                                    repr: "3",
-                                                                                                    value: 3,
+                                                                                                    repr: "0",
+                                                                                                    value: 0,
                                                                                                 },
                                                                                             ),
                                                                                         },
@@ -203,7 +278,7 @@
                                                                                                     op: Eq,
                                                                                                     lhs: LvalueToRvalue(
                                                                                                         Identifier(
-                                                                                                            r"d",
+                                                                                                            r"f",
                                                                                                         ),
                                                                                                     ),
                                                                                                     rhs: IntegerLiteral(
@@ -237,120 +312,193 @@
                                                                     ),
                                                                 ],
                                                             ),
-                                                            on_false: Some(
-                                                                Block(
-                                                                    [
-                                                                        Stmt(
-                                                                            If {
-                                                                                condition: BinOp {
-                                                                                    op: Eq,
-                                                                                    lhs: LvalueToRvalue(
-                                                                                        Identifier(
-                                                                                            r"e",
-                                                                                        ),
-                                                                                    ),
-                                                                                    rhs: IntegerLiteral(
-                                                                                        IntegerLiteral {
-                                                                                            repr: "1",
-                                                                                            value: 1,
-                                                                                        },
-                                                                                    ),
-                                                                                },
-                                                                                on_true: Block(
-                                                                                    [
-                                                                                        Stmt(
-                                                                                            Print {
-                                                                                                value: IntegerLiteral(
-                                                                                                    IntegerLiteral {
-                                                                                                        repr: "0",
-                                                                                                        value: 0,
-                                                                                                    },
-                                                                                                ),
-                                                                                            },
-                                                                                        ),
-                                                                                    ],
-                                                                                ),
-                                                                                on_false: Some(
-                                                                                    Block(
-                                                                                        [
-                                                                                            Stmt(
-                                                                                                If {
-                                                                                                    condition: BinOp {
-                                                                                                        op: Eq,
-                                                                                                        lhs: LvalueToRvalue(
-                                                                                                            Identifier(
-                                                                                                                r"f",
-                                                                                                            ),
-                                                                                                        ),
-                                                                                                        rhs: IntegerLiteral(
-                                                                                                            IntegerLiteral {
-                                                                                                                repr: "1",
-                                                                                                                value: 1,
-                                                                                                            },
-                                                                                                        ),
-                                                                                                    },
-                                                                                                    on_true: Block(
-                                                                                                        [
-                                                                                                            Stmt(
-                                                                                                                Print {
-                                                                                                                    value: IntegerLiteral(
-                                                                                                                        IntegerLiteral {
-                                                                                                                            repr: "0",
-                                                                                                                            value: 0,
-                                                                                                                        },
-                                                                                                                    ),
-                                                                                                                },
-                                                                                                            ),
-                                                                                                        ],
-                                                                                                    ),
-                                                                                                    on_false: None,
-                                                                                                },
-                                                                                            ),
-                                                                                        ],
-                                                                                    ),
-                                                                                ),
-                                                                            },
-                                                                        ),
-                                                                    ],
+                                                        ),
+                                                    },
+                                                ),
+                                                Stmt(
+                                                    If {
+                                                        condition: BinOp {
+                                                            op: Eq,
+                                                            lhs: LvalueToRvalue(
+                                                                Identifier(
+                                                                    r"d",
                                                                 ),
                                                             ),
+                                                            rhs: IntegerLiteral(
+                                                                IntegerLiteral {
+                                                                    repr: "1",
+                                                                    value: 1,
+                                                                },
+                                                            ),
                                                         },
-                                                    ),
-                                                    Stmt(
-                                                        If {
-                                                            condition: BinOp {
-                                                                op: Eq,
-                                                                lhs: LvalueToRvalue(
-                                                                    Identifier(
-                                                                        r"d",
-                                                                    ),
-                                                                ),
-                                                                rhs: IntegerLiteral(
-                                                                    IntegerLiteral {
-                                                                        repr: "1",
-                                                                        value: 1,
+                                                        on_true: Block(
+                                                            [
+                                                                Stmt(
+                                                                    Print {
+                                                                        value: IntegerLiteral(
+                                                                            IntegerLiteral {
+                                                                                repr: "4",
+                                                                                value: 4,
+                                                                            },
+                                                                        ),
                                                                     },
                                                                 ),
-                                                            },
-                                                            on_true: Block(
-                                                                [
-                                                                    Stmt(
-                                                                        Print {
-                                                                            value: IntegerLiteral(
+                                                                Stmt(
+                                                                    If {
+                                                                        condition: BinOp {
+                                                                            op: Eq,
+                                                                            lhs: LvalueToRvalue(
+                                                                                Identifier(
+                                                                                    r"e",
+                                                                                ),
+                                                                            ),
+                                                                            rhs: IntegerLiteral(
                                                                                 IntegerLiteral {
-                                                                                    repr: "4",
-                                                                                    value: 4,
+                                                                                    repr: "1",
+                                                                                    value: 1,
                                                                                 },
                                                                             ),
                                                                         },
-                                                                    ),
+                                                                        on_true: Block(
+                                                                            [
+                                                                                Stmt(
+                                                                                    Print {
+                                                                                        value: IntegerLiteral(
+                                                                                            IntegerLiteral {
+                                                                                                repr: "5",
+                                                                                                value: 5,
+                                                                                            },
+                                                                                        ),
+                                                                                    },
+                                                                                ),
+                                                                                Stmt(
+                                                                                    If {
+                                                                                        condition: BinOp {
+                                                                                            op: Eq,
+                                                                                            lhs: LvalueToRvalue(
+                                                                                                Identifier(
+                                                                                                    r"f",
+                                                                                                ),
+                                                                                            ),
+                                                                                            rhs: IntegerLiteral(
+                                                                                                IntegerLiteral {
+                                                                                                    repr: "1",
+                                                                                                    value: 1,
+                                                                                                },
+                                                                                            ),
+                                                                                        },
+                                                                                        on_true: Block(
+                                                                                            [
+                                                                                                Stmt(
+                                                                                                    Print {
+                                                                                                        value: IntegerLiteral(
+                                                                                                            IntegerLiteral {
+                                                                                                                repr: "6",
+                                                                                                                value: 6,
+                                                                                                            },
+                                                                                                        ),
+                                                                                                    },
+                                                                                                ),
+                                                                                                Stmt(
+                                                                                                    If {
+                                                                                                        condition: BinOp {
+                                                                                                            op: Eq,
+                                                                                                            lhs: LvalueToRvalue(
+                                                                                                                Identifier(
+                                                                                                                    r"g",
+                                                                                                                ),
+                                                                                                            ),
+                                                                                                            rhs: IntegerLiteral(
+                                                                                                                IntegerLiteral {
+                                                                                                                    repr: "1",
+                                                                                                                    value: 1,
+                                                                                                                },
+                                                                                                            ),
+                                                                                                        },
+                                                                                                        on_true: Block(
+                                                                                                            [
+                                                                                                                Stmt(
+                                                                                                                    Print {
+                                                                                                                        value: IntegerLiteral(
+                                                                                                                            IntegerLiteral {
+                                                                                                                                repr: "7",
+                                                                                                                                value: 7,
+                                                                                                                            },
+                                                                                                                        ),
+                                                                                                                    },
+                                                                                                                ),
+                                                                                                            ],
+                                                                                                        ),
+                                                                                                        on_false: Some(
+                                                                                                            Block(
+                                                                                                                [
+                                                                                                                    Stmt(
+                                                                                                                        Print {
+                                                                                                                            value: IntegerLiteral(
+                                                                                                                                IntegerLiteral {
+                                                                                                                                    repr: "0",
+                                                                                                                                    value: 0,
+                                                                                                                                },
+                                                                                                                            ),
+                                                                                                                        },
+                                                                                                                    ),
+                                                                                                                ],
+                                                                                                            ),
+                                                                                                        ),
+                                                                                                    },
+                                                                                                ),
+                                                                                            ],
+                                                                                        ),
+                                                                                        on_false: Some(
+                                                                                            Block(
+                                                                                                [
+                                                                                                    Stmt(
+                                                                                                        Print {
+                                                                                                            value: IntegerLiteral(
+                                                                                                                IntegerLiteral {
+                                                                                                                    repr: "0",
+                                                                                                                    value: 0,
+                                                                                                                },
+                                                                                                            ),
+                                                                                                        },
+                                                                                                    ),
+                                                                                                ],
+                                                                                            ),
+                                                                                        ),
+                                                                                    },
+                                                                                ),
+                                                                            ],
+                                                                        ),
+                                                                        on_false: Some(
+                                                                            Block(
+                                                                                [
+                                                                                    Stmt(
+                                                                                        Print {
+                                                                                            value: IntegerLiteral(
+                                                                                                IntegerLiteral {
+                                                                                                    repr: "0",
+                                                                                                    value: 0,
+                                                                                                },
+                                                                                            ),
+                                                                                        },
+                                                                                    ),
+                                                                                ],
+                                                                            ),
+                                                                        ),
+                                                                    },
+                                                                ),
+                                                            ],
+                                                        ),
+                                                        on_false: Some(
+                                                            Block(
+                                                                [
                                                                     Stmt(
                                                                         If {
                                                                             condition: BinOp {
                                                                                 op: Eq,
                                                                                 lhs: LvalueToRvalue(
                                                                                     Identifier(
-                                                                                        r"e",
+                                                                                        r"b",
                                                                                     ),
                                                                                 ),
                                                                                 rhs: IntegerLiteral(
@@ -366,92 +514,34 @@
                                                                                         Print {
                                                                                             value: IntegerLiteral(
                                                                                                 IntegerLiteral {
-                                                                                                    repr: "5",
-                                                                                                    value: 5,
+                                                                                                    repr: "0",
+                                                                                                    value: 0,
                                                                                                 },
                                                                                             ),
                                                                                         },
                                                                                     ),
-                                                                                    Stmt(
-                                                                                        If {
-                                                                                            condition: BinOp {
-                                                                                                op: Eq,
-                                                                                                lhs: LvalueToRvalue(
-                                                                                                    Identifier(
-                                                                                                        r"f",
+                                                                                ],
+                                                                            ),
+                                                                            on_false: Some(
+                                                                                Block(
+                                                                                    [
+                                                                                        Stmt(
+                                                                                            If {
+                                                                                                condition: BinOp {
+                                                                                                    op: Eq,
+                                                                                                    lhs: LvalueToRvalue(
+                                                                                                        Identifier(
+                                                                                                            r"c",
+                                                                                                        ),
                                                                                                     ),
-                                                                                                ),
-                                                                                                rhs: IntegerLiteral(
-                                                                                                    IntegerLiteral {
-                                                                                                        repr: "1",
-                                                                                                        value: 1,
-                                                                                                    },
-                                                                                                ),
-                                                                                            },
-                                                                                            on_true: Block(
-                                                                                                [
-                                                                                                    Stmt(
-                                                                                                        Print {
-                                                                                                            value: IntegerLiteral(
-                                                                                                                IntegerLiteral {
-                                                                                                                    repr: "6",
-                                                                                                                    value: 6,
-                                                                                                                },
-                                                                                                            ),
+                                                                                                    rhs: IntegerLiteral(
+                                                                                                        IntegerLiteral {
+                                                                                                            repr: "1",
+                                                                                                            value: 1,
                                                                                                         },
                                                                                                     ),
-                                                                                                    Stmt(
-                                                                                                        If {
-                                                                                                            condition: BinOp {
-                                                                                                                op: Eq,
-                                                                                                                lhs: LvalueToRvalue(
-                                                                                                                    Identifier(
-                                                                                                                        r"g",
-                                                                                                                    ),
-                                                                                                                ),
-                                                                                                                rhs: IntegerLiteral(
-                                                                                                                    IntegerLiteral {
-                                                                                                                        repr: "1",
-                                                                                                                        value: 1,
-                                                                                                                    },
-                                                                                                                ),
-                                                                                                            },
-                                                                                                            on_true: Block(
-                                                                                                                [
-                                                                                                                    Stmt(
-                                                                                                                        Print {
-                                                                                                                            value: IntegerLiteral(
-                                                                                                                                IntegerLiteral {
-                                                                                                                                    repr: "7",
-                                                                                                                                    value: 7,
-                                                                                                                                },
-                                                                                                                            ),
-                                                                                                                        },
-                                                                                                                    ),
-                                                                                                                ],
-                                                                                                            ),
-                                                                                                            on_false: Some(
-                                                                                                                Block(
-                                                                                                                    [
-                                                                                                                        Stmt(
-                                                                                                                            Print {
-                                                                                                                                value: IntegerLiteral(
-                                                                                                                                    IntegerLiteral {
-                                                                                                                                        repr: "0",
-                                                                                                                                        value: 0,
-                                                                                                                                    },
-                                                                                                                                ),
-                                                                                                                            },
-                                                                                                                        ),
-                                                                                                                    ],
-                                                                                                                ),
-                                                                                                            ),
-                                                                                                        },
-                                                                                                    ),
-                                                                                                ],
-                                                                                            ),
-                                                                                            on_false: Some(
-                                                                                                Block(
+                                                                                                },
+                                                                                                on_true: Block(
                                                                                                     [
                                                                                                         Stmt(
                                                                                                             Print {
@@ -465,26 +555,49 @@
                                                                                                         ),
                                                                                                     ],
                                                                                                 ),
-                                                                                            ),
-                                                                                        },
-                                                                                    ),
-                                                                                ],
-                                                                            ),
-                                                                            on_false: Some(
-                                                                                Block(
-                                                                                    [
-                                                                                        Stmt(
-                                                                                            Print {
-                                                                                                value: IntegerLiteral(
-                                                                                                    IntegerLiteral {
-                                                                                                        repr: "0",
-                                                                                                        value: 0,
-                                                                                                    },
-                                                                                                ),
+                                                                                                on_false: None,
                                                                                             },
                                                                                         ),
                                                                                     ],
                                                                                 ),
+                                                                            ),
+                                                                        },
+                                                                    ),
+                                                                ],
+                                                            ),
+                                                        ),
+                                                    },
+                                                ),
+                                            ],
+                                        ),
+                                        on_false: Some(
+                                            Block(
+                                                [
+                                                    Stmt(
+                                                        If {
+                                                            condition: BinOp {
+                                                                op: Eq,
+                                                                lhs: LvalueToRvalue(
+                                                                    Identifier(
+                                                                        r"e",
+                                                                    ),
+                                                                ),
+                                                                rhs: IntegerLiteral(
+                                                                    IntegerLiteral {
+                                                                        repr: "1",
+                                                                        value: 1,
+                                                                    },
+                                                                ),
+                                                            },
+                                                            on_true: Block(
+                                                                [
+                                                                    Stmt(
+                                                                        Print {
+                                                                            value: IntegerLiteral(
+                                                                                IntegerLiteral {
+                                                                                    repr: "0",
+                                                                                    value: 0,
+                                                                                },
                                                                             ),
                                                                         },
                                                                     ),
@@ -499,7 +612,7 @@
                                                                                     op: Eq,
                                                                                     lhs: LvalueToRvalue(
                                                                                         Identifier(
-                                                                                            r"b",
+                                                                                            r"g",
                                                                                         ),
                                                                                     ),
                                                                                     rhs: IntegerLiteral(
@@ -523,45 +636,7 @@
                                                                                         ),
                                                                                     ],
                                                                                 ),
-                                                                                on_false: Some(
-                                                                                    Block(
-                                                                                        [
-                                                                                            Stmt(
-                                                                                                If {
-                                                                                                    condition: BinOp {
-                                                                                                        op: Eq,
-                                                                                                        lhs: LvalueToRvalue(
-                                                                                                            Identifier(
-                                                                                                                r"c",
-                                                                                                            ),
-                                                                                                        ),
-                                                                                                        rhs: IntegerLiteral(
-                                                                                                            IntegerLiteral {
-                                                                                                                repr: "1",
-                                                                                                                value: 1,
-                                                                                                            },
-                                                                                                        ),
-                                                                                                    },
-                                                                                                    on_true: Block(
-                                                                                                        [
-                                                                                                            Stmt(
-                                                                                                                Print {
-                                                                                                                    value: IntegerLiteral(
-                                                                                                                        IntegerLiteral {
-                                                                                                                            repr: "0",
-                                                                                                                            value: 0,
-                                                                                                                        },
-                                                                                                                    ),
-                                                                                                                },
-                                                                                                            ),
-                                                                                                        ],
-                                                                                                    ),
-                                                                                                    on_false: None,
-                                                                                                },
-                                                                                            ),
-                                                                                        ],
-                                                                                    ),
-                                                                                ),
+                                                                                on_false: None,
                                                                             },
                                                                         ),
                                                                     ],
@@ -571,92 +646,14 @@
                                                     ),
                                                 ],
                                             ),
-                                            on_false: Some(
-                                                Block(
-                                                    [
-                                                        Stmt(
-                                                            If {
-                                                                condition: BinOp {
-                                                                    op: Eq,
-                                                                    lhs: LvalueToRvalue(
-                                                                        Identifier(
-                                                                            r"e",
-                                                                        ),
-                                                                    ),
-                                                                    rhs: IntegerLiteral(
-                                                                        IntegerLiteral {
-                                                                            repr: "1",
-                                                                            value: 1,
-                                                                        },
-                                                                    ),
-                                                                },
-                                                                on_true: Block(
-                                                                    [
-                                                                        Stmt(
-                                                                            Print {
-                                                                                value: IntegerLiteral(
-                                                                                    IntegerLiteral {
-                                                                                        repr: "0",
-                                                                                        value: 0,
-                                                                                    },
-                                                                                ),
-                                                                            },
-                                                                        ),
-                                                                    ],
-                                                                ),
-                                                                on_false: Some(
-                                                                    Block(
-                                                                        [
-                                                                            Stmt(
-                                                                                If {
-                                                                                    condition: BinOp {
-                                                                                        op: Eq,
-                                                                                        lhs: LvalueToRvalue(
-                                                                                            Identifier(
-                                                                                                r"g",
-                                                                                            ),
-                                                                                        ),
-                                                                                        rhs: IntegerLiteral(
-                                                                                            IntegerLiteral {
-                                                                                                repr: "1",
-                                                                                                value: 1,
-                                                                                            },
-                                                                                        ),
-                                                                                    },
-                                                                                    on_true: Block(
-                                                                                        [
-                                                                                            Stmt(
-                                                                                                Print {
-                                                                                                    value: IntegerLiteral(
-                                                                                                        IntegerLiteral {
-                                                                                                            repr: "0",
-                                                                                                            value: 0,
-                                                                                                        },
-                                                                                                    ),
-                                                                                                },
-                                                                                            ),
-                                                                                        ],
-                                                                                    ),
-                                                                                    on_false: None,
-                                                                                },
-                                                                            ),
-                                                                        ],
-                                                                    ),
-                                                                ),
-                                                            },
-                                                        ),
-                                                    ],
-                                                ),
-                                            ),
-                                        },
-                                    ),
-                                ],
-                            ),
+                                        ),
+                                    },
+                                ),
+                            ],
                         ),
                     ),
-                },
-            ),
-        ],
-    ),
-    [],
+                ),
+            },
+        ),
+    ],
 )

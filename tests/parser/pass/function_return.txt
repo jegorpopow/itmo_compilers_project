@@ -1,77 +1,74 @@
-(
-    Program(
-        [
-            Routine(
-                RoutineDecl {
-                    name: r"echo",
-                    arguments: [
-                        (
-                            r"data",
-                            Int,
-                        ),
-                    ],
-                    return_type: Some(
+Program(
+    [
+        Routine(
+            RoutineDecl {
+                name: r"echo",
+                arguments: [
+                    (
+                        r"data",
                         Int,
                     ),
-                    body: Some(
+                ],
+                return_type: Some(
+                    Int,
+                ),
+                body: Some(
+                    Block(
                         Block(
-                            Block(
-                                [
-                                    Stmt(
-                                        Print {
-                                            value: LvalueToRvalue(
-                                                Identifier(
-                                                    r"data",
-                                                ),
+                            [
+                                Stmt(
+                                    Print {
+                                        value: LvalueToRvalue(
+                                            Identifier(
+                                                r"data",
                                             ),
-                                        },
-                                    ),
-                                    Stmt(
-                                        Return {
-                                            value: LvalueToRvalue(
-                                                Identifier(
-                                                    r"data",
-                                                ),
+                                        ),
+                                    },
+                                ),
+                                Stmt(
+                                    Return {
+                                        value: LvalueToRvalue(
+                                            Identifier(
+                                                r"data",
                                             ),
-                                        },
-                                    ),
-                                ],
-                            ),
+                                        ),
+                                    },
+                                ),
+                            ],
                         ),
                     ),
-                },
-            ),
-            Routine(
-                RoutineDecl {
-                    name: r"main",
-                    arguments: [],
-                    return_type: None,
-                    body: Some(
+                ),
+            },
+        ),
+        Routine(
+            RoutineDecl {
+                name: r"main",
+                arguments: [],
+                return_type: None,
+                body: Some(
+                    Block(
                         Block(
-                            Block(
-                                [
-                                    Stmt(
-                                        Print {
-                                            value: Call {
-                                                callee: r"echo",
-                                                args: [
-                                                    IntegerLiteral(
-                                                        IntegerLiteral {
-                                                            repr: "42",
-                                                            value: 42,
-                                                        },
-                                                    ),
-                                                ],
-                                            },
+                            [
+                                Stmt(
+                                    Print {
+                                        value: Call {
+                                            callee: r"echo",
+                                            args: [
+                                                IntegerLiteral(
+                                                    IntegerLiteral {
+                                                        repr: "42",
+                                                        value: 42,
+                                                    },
+                                                ),
+                                            ],
                                         },
-                                    ),
-                                ],
-                            ),
+                                    },
+                                ),
+                            ],
                         ),
                     ),
-                },
-            ),
-        ],
-    ),
-    [],
+                ),
+            },
+        ),
+    ],
 )

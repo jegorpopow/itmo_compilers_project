@@ -23,9 +23,10 @@ pub use crate::{
     types::{ArrayDescription, FieldDescription, RecordDescription, Type},
 };
 
-trait TokenIterator<'a, 'b: 'a>: Clone + Copy {
+pub trait TokenIterator<'a, 'b: 'a>: Clone + Copy {
     fn current(&self) -> Option<&'a Token<'b>>;
     fn position(&self) -> Position;
+    #[must_use]
     fn next(&self) -> Self;
 }
 
@@ -85,13 +86,12 @@ impl fmt::Display for ParsingError {
 
 impl core::error::Error for ParsingError {}
 
-#[derive(Debug)]
+#[derive(Debug, Default)]
 pub struct Parser {
     pub recovered_errors: Vec<ParsingError>,
 }
 
-pub type ParsingResult<'a, 'b, T> = Result<(T, IndexedIterator<'a, 'b>), ParsingError>; // For hard errors
-pub type PureParsingResult<T> = Result<T, ParsingError>;
+type ParsingResult<'a, 'b, T> = Result<(T, IndexedIterator<'a, 'b>), ParsingError>; // For hard errors
 
 trait ParsingFunction<'a, 'b: 'a, T>:
     FnMut(&mut Parser, IndexedIterator<'a, 'b>) -> ParsingResult<'a, 'b, T>
@@ -103,18 +103,10 @@ impl<'a, 'b: 'a, T, F> ParsingFunction<'a, 'b, T> for F where
 {
 }
 
-impl Default for Parser {
-    fn default() -> Self {
-        Self::new()
-    }
-}
-
 impl Parser {
     #[must_use]
     pub fn new() -> Self {
-        Parser {
-            recovered_errors: vec![],
-        }
+        Self::default()
     }
 
     fn report_recovered(&mut self, reason: String, position: Position) {
@@ -1277,12 +1269,60 @@ impl Parser {
             }),
         }
     }
+
+    pub fn finish<T>(self, parsed: T) -> ParserResult<T> {
+        let Self { recovered_errors } = self;
+        if recovered_errors.is_empty() {
+            Ok(parsed)
+        } else {
+            Err(ParserError::Recoverable {
+                errors: recovered_errors,
+                parsed,
+            })
+        }
+    }
 }
 
-pub fn parse_program(tokens: &[Token<'_>]) -> PureParsingResult<(Program, Vec<ParsingError>)> {
+#[derive(Debug)]
+pub enum ParserError<T> {
+    Unrecoverable {
+        error: ParsingError,
+    },
+    Recoverable {
+        errors: Vec<ParsingError>,
+        parsed: T,
+    },
+}
+
+pub type ParserResult<T> = Result<T, ParserError<T>>;
+
+impl<T> From<ParsingError> for ParserError<T> {
+    fn from(error: ParsingError) -> Self {
+        Self::Unrecoverable { error }
+    }
+}
+
+impl<T: fmt::Debug> fmt::Display for ParserError<T> {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Self::Unrecoverable { error } => write!(f, "unrecoverable error: {error}"),
+            Self::Recoverable { errors, parsed } => {
+                writeln!(f, "Some recoverable errors occurred during parsing:")?;
+                for err in errors {
+                    writeln!(f, "- {err}")?
+                }
+                writeln!(f, "But managed to parse: {parsed:#?}")
+            }
+        }
+    }
+}
+
+impl<T: fmt::Debug> core::error::Error for ParserError<T> {}
+
+pub fn parse_program(tokens: &[Token<'_>]) -> ParserResult<Program> {
     let mut parser = Parser::new();
     let start = parser.skip_unused(IndexedIterator::from(tokens));
-    let (decls, _) = parser.parse_all(Parser::parse_declaration, start)?;
-
-    Ok((Program(decls), parser.recovered_errors))
+    let (decls, tail) = parser.parse_all(Parser::parse_declaration, start)?;
+    debug_assert_eq!(tail.current(), None, "EOF not reached during parsing");
+    parser.finish(Program(decls))
 }

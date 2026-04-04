@@ -1,308 +1,305 @@
-(
-    Program(
-        [
-            Routine(
-                RoutineDecl {
-                    name: r"main",
-                    arguments: [],
-                    return_type: None,
-                    body: Some(
+Program(
+    [
+        Routine(
+            RoutineDecl {
+                name: r"main",
+                arguments: [],
+                return_type: None,
+                body: Some(
+                    Block(
                         Block(
-                            Block(
-                                [
-                                    VarDecl(
-                                        VarDecl {
-                                            name: r"a",
-                                            t: None,
-                                            initialiser: Some(
-                                                IntegerLiteral(
-                                                    IntegerLiteral {
-                                                        repr: "5",
-                                                        value: 5,
-                                                    },
+                            [
+                                VarDecl(
+                                    VarDecl {
+                                        name: r"a",
+                                        t: None,
+                                        initialiser: Some(
+                                            IntegerLiteral(
+                                                IntegerLiteral {
+                                                    repr: "5",
+                                                    value: 5,
+                                                },
+                                            ),
+                                        ),
+                                    },
+                                ),
+                                VarDecl(
+                                    VarDecl {
+                                        name: r"b",
+                                        t: None,
+                                        initialiser: Some(
+                                            IntegerLiteral(
+                                                IntegerLiteral {
+                                                    repr: "3",
+                                                    value: 3,
+                                                },
+                                            ),
+                                        ),
+                                    },
+                                ),
+                                VarDecl(
+                                    VarDecl {
+                                        name: r"x",
+                                        t: None,
+                                        initialiser: Some(
+                                            RealLiteral(
+                                                RealLiteral {
+                                                    repr: "2.5",
+                                                    value: 2.5,
+                                                },
+                                            ),
+                                        ),
+                                    },
+                                ),
+                                VarDecl(
+                                    VarDecl {
+                                        name: r"y",
+                                        t: None,
+                                        initialiser: Some(
+                                            RealLiteral(
+                                                RealLiteral {
+                                                    repr: "5.0",
+                                                    value: 5.0,
+                                                },
+                                            ),
+                                        ),
+                                    },
+                                ),
+                                Stmt(
+                                    Print {
+                                        value: BinOp {
+                                            op: Lt,
+                                            lhs: LvalueToRvalue(
+                                                Identifier(
+                                                    r"a",
+                                                ),
+                                            ),
+                                            rhs: LvalueToRvalue(
+                                                Identifier(
+                                                    r"b",
                                                 ),
                                             ),
                                         },
-                                    ),
-                                    VarDecl(
-                                        VarDecl {
-                                            name: r"b",
-                                            t: None,
-                                            initialiser: Some(
-                                                IntegerLiteral(
-                                                    IntegerLiteral {
-                                                        repr: "3",
-                                                        value: 3,
-                                                    },
+                                    },
+                                ),
+                                Stmt(
+                                    Print {
+                                        value: BinOp {
+                                            op: Le,
+                                            lhs: LvalueToRvalue(
+                                                Identifier(
+                                                    r"a",
+                                                ),
+                                            ),
+                                            rhs: LvalueToRvalue(
+                                                Identifier(
+                                                    r"b",
                                                 ),
                                             ),
                                         },
-                                    ),
-                                    VarDecl(
-                                        VarDecl {
-                                            name: r"x",
-                                            t: None,
-                                            initialiser: Some(
-                                                RealLiteral(
-                                                    RealLiteral {
-                                                        repr: "2.5",
-                                                        value: 2.5,
-                                                    },
+                                    },
+                                ),
+                                Stmt(
+                                    Print {
+                                        value: BinOp {
+                                            op: Gt,
+                                            lhs: LvalueToRvalue(
+                                                Identifier(
+                                                    r"a",
+                                                ),
+                                            ),
+                                            rhs: LvalueToRvalue(
+                                                Identifier(
+                                                    r"b",
                                                 ),
                                             ),
                                         },
-                                    ),
-                                    VarDecl(
-                                        VarDecl {
-                                            name: r"y",
-                                            t: None,
-                                            initialiser: Some(
-                                                RealLiteral(
-                                                    RealLiteral {
-                                                        repr: "5.0",
-                                                        value: 5.0,
-                                                    },
+                                    },
+                                ),
+                                Stmt(
+                                    Print {
+                                        value: BinOp {
+                                            op: Ge,
+                                            lhs: LvalueToRvalue(
+                                                Identifier(
+                                                    r"a",
+                                                ),
+                                            ),
+                                            rhs: LvalueToRvalue(
+                                                Identifier(
+                                                    r"b",
                                                 ),
                                             ),
                                         },
-                                    ),
-                                    Stmt(
-                                        Print {
-                                            value: BinOp {
-                                                op: Lt,
-                                                lhs: LvalueToRvalue(
-                                                    Identifier(
-                                                        r"a",
-                                                    ),
+                                    },
+                                ),
+                                Stmt(
+                                    Print {
+                                        value: BinOp {
+                                            op: Eq,
+                                            lhs: LvalueToRvalue(
+                                                Identifier(
+                                                    r"a",
                                                 ),
-                                                rhs: LvalueToRvalue(
-                                                    Identifier(
-                                                        r"b",
-                                                    ),
+                                            ),
+                                            rhs: LvalueToRvalue(
+                                                Identifier(
+                                                    r"b",
                                                 ),
-                                            },
+                                            ),
                                         },
-                                    ),
-                                    Stmt(
-                                        Print {
-                                            value: BinOp {
-                                                op: Le,
-                                                lhs: LvalueToRvalue(
-                                                    Identifier(
-                                                        r"a",
-                                                    ),
+                                    },
+                                ),
+                                Stmt(
+                                    Print {
+                                        value: BinOp {
+                                            op: Ne,
+                                            lhs: LvalueToRvalue(
+                                                Identifier(
+                                                    r"a",
                                                 ),
-                                                rhs: LvalueToRvalue(
-                                                    Identifier(
-                                                        r"b",
-                                                    ),
+                                            ),
+                                            rhs: LvalueToRvalue(
+                                                Identifier(
+                                                    r"b",
                                                 ),
-                                            },
+                                            ),
                                         },
-                                    ),
-                                    Stmt(
-                                        Print {
-                                            value: BinOp {
-                                                op: Gt,
-                                                lhs: LvalueToRvalue(
-                                                    Identifier(
-                                                        r"a",
-                                                    ),
+                                    },
+                                ),
+                                Stmt(
+                                    Print {
+                                        value: BinOp {
+                                            op: Lt,
+                                            lhs: LvalueToRvalue(
+                                                Identifier(
+                                                    r"x",
                                                 ),
-                                                rhs: LvalueToRvalue(
-                                                    Identifier(
-                                                        r"b",
-                                                    ),
+                                            ),
+                                            rhs: LvalueToRvalue(
+                                                Identifier(
+                                                    r"y",
                                                 ),
-                                            },
+                                            ),
                                         },
-                                    ),
-                                    Stmt(
-                                        Print {
-                                            value: BinOp {
-                                                op: Ge,
-                                                lhs: LvalueToRvalue(
-                                                    Identifier(
-                                                        r"a",
-                                                    ),
+                                    },
+                                ),
+                                Stmt(
+                                    Print {
+                                        value: BinOp {
+                                            op: Le,
+                                            lhs: LvalueToRvalue(
+                                                Identifier(
+                                                    r"x",
                                                 ),
-                                                rhs: LvalueToRvalue(
-                                                    Identifier(
-                                                        r"b",
-                                                    ),
+                                            ),
+                                            rhs: LvalueToRvalue(
+                                                Identifier(
+                                                    r"y",
                                                 ),
-                                            },
+                                            ),
                                         },
-                                    ),
-                                    Stmt(
-                                        Print {
-                                            value: BinOp {
-                                                op: Eq,
-                                                lhs: LvalueToRvalue(
-                                                    Identifier(
-                                                        r"a",
-                                                    ),
+                                    },
+                                ),
+                                Stmt(
+                                    Print {
+                                        value: BinOp {
+                                            op: Gt,
+                                            lhs: LvalueToRvalue(
+                                                Identifier(
+                                                    r"x",
                                                 ),
-                                                rhs: LvalueToRvalue(
-                                                    Identifier(
-                                                        r"b",
-                                                    ),
+                                            ),
+                                            rhs: LvalueToRvalue(
+                                                Identifier(
+                                                    r"y",
                                                 ),
-                                            },
+                                            ),
                                         },
-                                    ),
-                                    Stmt(
-                                        Print {
-                                            value: BinOp {
-                                                op: Ne,
-                                                lhs: LvalueToRvalue(
-                                                    Identifier(
-                                                        r"a",
-                                                    ),
+                                    },
+                                ),
+                                Stmt(
+                                    Print {
+                                        value: BinOp {
+                                            op: Ge,
+                                            lhs: LvalueToRvalue(
+                                                Identifier(
+                                                    r"x",
                                                 ),
-                                                rhs: LvalueToRvalue(
-                                                    Identifier(
-                                                        r"b",
-                                                    ),
+                                            ),
+                                            rhs: LvalueToRvalue(
+                                                Identifier(
+                                                    r"y",
                                                 ),
-                                            },
+                                            ),
                                         },
-                                    ),
-                                    Stmt(
-                                        Print {
-                                            value: BinOp {
-                                                op: Lt,
-                                                lhs: LvalueToRvalue(
-                                                    Identifier(
-                                                        r"x",
-                                                    ),
+                                    },
+                                ),
+                                Stmt(
+                                    Print {
+                                        value: BinOp {
+                                            op: Eq,
+                                            lhs: LvalueToRvalue(
+                                                Identifier(
+                                                    r"x",
                                                 ),
-                                                rhs: LvalueToRvalue(
-                                                    Identifier(
-                                                        r"y",
-                                                    ),
+                                            ),
+                                            rhs: LvalueToRvalue(
+                                                Identifier(
+                                                    r"y",
                                                 ),
-                                            },
+                                            ),
                                         },
-                                    ),
-                                    Stmt(
-                                        Print {
-                                            value: BinOp {
-                                                op: Le,
-                                                lhs: LvalueToRvalue(
-                                                    Identifier(
-                                                        r"x",
-                                                    ),
+                                    },
+                                ),
+                                Stmt(
+                                    Print {
+                                        value: BinOp {
+                                            op: Ne,
+                                            lhs: LvalueToRvalue(
+                                                Identifier(
+                                                    r"x",
                                                 ),
-                                                rhs: LvalueToRvalue(
-                                                    Identifier(
-                                                        r"y",
-                                                    ),
+                                            ),
+                                            rhs: LvalueToRvalue(
+                                                Identifier(
+                                                    r"y",
                                                 ),
-                                            },
+                                            ),
                                         },
-                                    ),
-                                    Stmt(
-                                        Print {
-                                            value: BinOp {
-                                                op: Gt,
-                                                lhs: LvalueToRvalue(
-                                                    Identifier(
-                                                        r"x",
-                                                    ),
-                                                ),
-                                                rhs: LvalueToRvalue(
-                                                    Identifier(
-                                                        r"y",
-                                                    ),
-                                                ),
-                                            },
+                                    },
+                                ),
+                                Stmt(
+                                    Print {
+                                        value: BinOp {
+                                            op: Eq,
+                                            lhs: BoolLiteral(
+                                                True,
+                                            ),
+                                            rhs: BoolLiteral(
+                                                False,
+                                            ),
                                         },
-                                    ),
-                                    Stmt(
-                                        Print {
-                                            value: BinOp {
-                                                op: Ge,
-                                                lhs: LvalueToRvalue(
-                                                    Identifier(
-                                                        r"x",
-                                                    ),
-                                                ),
-                                                rhs: LvalueToRvalue(
-                                                    Identifier(
-                                                        r"y",
-                                                    ),
-                                                ),
-                                            },
+                                    },
+                                ),
+                                Stmt(
+                                    Print {
+                                        value: BinOp {
+                                            op: Ne,
+                                            lhs: BoolLiteral(
+                                                True,
+                                            ),
+                                            rhs: BoolLiteral(
+                                                False,
+                                            ),
                                         },
-                                    ),
-                                    Stmt(
-                                        Print {
-                                            value: BinOp {
-                                                op: Eq,
-                                                lhs: LvalueToRvalue(
-                                                    Identifier(
-                                                        r"x",
-                                                    ),
-                                                ),
-                                                rhs: LvalueToRvalue(
-                                                    Identifier(
-                                                        r"y",
-                                                    ),
-                                                ),
-                                            },
-                                        },
-                                    ),
-                                    Stmt(
-                                        Print {
-                                            value: BinOp {
-                                                op: Ne,
-                                                lhs: LvalueToRvalue(
-                                                    Identifier(
-                                                        r"x",
-                                                    ),
-                                                ),
-                                                rhs: LvalueToRvalue(
-                                                    Identifier(
-                                                        r"y",
-                                                    ),
-                                                ),
-                                            },
-                                        },
-                                    ),
-                                    Stmt(
-                                        Print {
-                                            value: BinOp {
-                                                op: Eq,
-                                                lhs: BoolLiteral(
-                                                    True,
-                                                ),
-                                                rhs: BoolLiteral(
-                                                    False,
-                                                ),
-                                            },
-                                        },
-                                    ),
-                                    Stmt(
-                                        Print {
-                                            value: BinOp {
-                                                op: Ne,
-                                                lhs: BoolLiteral(
-                                                    True,
-                                                ),
-                                                rhs: BoolLiteral(
-                                                    False,
-                                                ),
-                                            },
-                                        },
-                                    ),
-                                ],
-                            ),
+                                    },
+                                ),
+                            ],
                         ),
                     ),
-                },
-            ),
-        ],
-    ),
-    [],
+                ),
+            },
+        ),
+    ],
 )

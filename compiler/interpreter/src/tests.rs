@@ -11,11 +11,7 @@ impl<T: fmt::Display> fmt::Debug for DebugDisplay<T> {
 
 fn interpret(src: &str) -> Result<String, DebugDisplay<String>> {
     let tokens: Vec<_> = lexer::Lexer::from(src).collect();
-    let (program, parsing_errors) = parser::parse_program(&tokens).expect("Failed to parse");
-    assert!(
-        parsing_errors.is_empty(),
-        "Parsing errors: {parsing_errors:?}"
-    );
+    let program = parser::parse_program(&tokens).expect("Failed to parse");
     let (program, _) = ast::convert(&program).expect("Failed to typecheck");
     let mut output: Vec<u8> = vec![];
     let result = crate::interpret(&mut output, &program);

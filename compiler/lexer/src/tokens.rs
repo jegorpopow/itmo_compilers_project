@@ -171,7 +171,7 @@ impl fmt::Display for TokenKind<'_> {
 }
 
 // Token description
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct Token<'a> {
     pub extent: Extent,
     pub lexeme: &'a str,

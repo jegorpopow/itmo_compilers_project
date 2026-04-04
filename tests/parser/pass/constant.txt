@@ -1,325 +1,322 @@
-(
-    Program(
-        [
-            Const(
-                ConstDecl {
-                    name: r"LENGTH",
-                    t: None,
-                    initialiser: IntegerLiteral(
+Program(
+    [
+        Const(
+            ConstDecl {
+                name: r"LENGTH",
+                t: None,
+                initialiser: IntegerLiteral(
+                    IntegerLiteral {
+                        repr: "100",
+                        value: 100,
+                    },
+                ),
+            },
+        ),
+        Const(
+            ConstDecl {
+                name: r"DOUBLE_LENGTH",
+                t: Some(
+                    Int,
+                ),
+                initialiser: BinOp {
+                    op: Mul,
+                    lhs: LvalueToRvalue(
+                        Identifier(
+                            r"LENGTH",
+                        ),
+                    ),
+                    rhs: IntegerLiteral(
                         IntegerLiteral {
-                            repr: "100",
-                            value: 100,
+                            repr: "2",
+                            value: 2,
                         },
                     ),
                 },
-            ),
-            Const(
-                ConstDecl {
-                    name: r"DOUBLE_LENGTH",
-                    t: Some(
-                        Int,
-                    ),
-                    initialiser: BinOp {
-                        op: Mul,
-                        lhs: LvalueToRvalue(
-                            Identifier(
-                                r"LENGTH",
-                            ),
-                        ),
-                        rhs: IntegerLiteral(
-                            IntegerLiteral {
-                                repr: "2",
-                                value: 2,
+            },
+        ),
+        Type(
+            TypeDecl {
+                name: r"table",
+                t: Array(
+                    ArrayDescription {
+                        t: Int,
+                        length: Some(
+                            BinOp {
+                                op: Mul,
+                                lhs: LvalueToRvalue(
+                                    Identifier(
+                                        r"LENGTH",
+                                    ),
+                                ),
+                                rhs: LvalueToRvalue(
+                                    Identifier(
+                                        r"DOUBLE_LENGTH",
+                                    ),
+                                ),
                             },
                         ),
                     },
-                },
-            ),
-            Type(
-                TypeDecl {
-                    name: r"table",
-                    t: Array(
-                        ArrayDescription {
-                            t: Int,
-                            length: Some(
-                                BinOp {
-                                    op: Mul,
-                                    lhs: LvalueToRvalue(
+                ),
+            },
+        ),
+        Routine(
+            RoutineDecl {
+                name: r"meow",
+                arguments: [
+                    (
+                        r"arr",
+                        Array(
+                            ArrayDescription {
+                                t: Real,
+                                length: Some(
+                                    LvalueToRvalue(
                                         Identifier(
                                             r"LENGTH",
                                         ),
                                     ),
-                                    rhs: LvalueToRvalue(
-                                        Identifier(
-                                            r"DOUBLE_LENGTH",
-                                        ),
-                                    ),
-                                },
-                            ),
-                        },
-                    ),
-                },
-            ),
-            Routine(
-                RoutineDecl {
-                    name: r"meow",
-                    arguments: [
-                        (
-                            r"arr",
-                            Array(
-                                ArrayDescription {
-                                    t: Real,
-                                    length: Some(
-                                        LvalueToRvalue(
-                                            Identifier(
-                                                r"LENGTH",
-                                            ),
-                                        ),
-                                    ),
-                                },
-                            ),
+                                ),
+                            },
                         ),
-                    ],
-                    return_type: Some(
-                        Real,
                     ),
-                    body: Some(
+                ],
+                return_type: Some(
+                    Real,
+                ),
+                body: Some(
+                    Block(
                         Block(
-                            Block(
-                                [
-                                    Stmt(
-                                        Return {
-                                            value: LvalueToRvalue(
-                                                Index {
-                                                    lhs: Identifier(
-                                                        r"arr",
+                            [
+                                Stmt(
+                                    Return {
+                                        value: LvalueToRvalue(
+                                            Index {
+                                                lhs: Identifier(
+                                                    r"arr",
+                                                ),
+                                                index: IntegerLiteral(
+                                                    IntegerLiteral {
+                                                        repr: "1",
+                                                        value: 1,
+                                                    },
+                                                ),
+                                            },
+                                        ),
+                                    },
+                                ),
+                            ],
+                        ),
+                    ),
+                ),
+            },
+        ),
+        Routine(
+            RoutineDecl {
+                name: r"table_receiver",
+                arguments: [
+                    (
+                        r"t",
+                        Alias(
+                            r"table",
+                        ),
+                    ),
+                ],
+                return_type: Some(
+                    Int,
+                ),
+                body: Some(
+                    Block(
+                        Block(
+                            [
+                                Stmt(
+                                    Print {
+                                        value: LvalueToRvalue(
+                                            Index {
+                                                lhs: Identifier(
+                                                    r"t",
+                                                ),
+                                                index: BinOp {
+                                                    op: Mul,
+                                                    lhs: LvalueToRvalue(
+                                                        Identifier(
+                                                            r"LENGTH",
+                                                        ),
                                                     ),
-                                                    index: IntegerLiteral(
+                                                    rhs: IntegerLiteral(
                                                         IntegerLiteral {
-                                                            repr: "1",
-                                                            value: 1,
+                                                            repr: "2",
+                                                            value: 2,
                                                         },
                                                     ),
                                                 },
-                                            ),
-                                        },
-                                    ),
-                                ],
-                            ),
-                        ),
-                    ),
-                },
-            ),
-            Routine(
-                RoutineDecl {
-                    name: r"table_receiver",
-                    arguments: [
-                        (
-                            r"t",
-                            Alias(
-                                r"table",
-                            ),
-                        ),
-                    ],
-                    return_type: Some(
-                        Int,
-                    ),
-                    body: Some(
-                        Block(
-                            Block(
-                                [
-                                    Stmt(
-                                        Print {
-                                            value: LvalueToRvalue(
-                                                Index {
-                                                    lhs: Identifier(
-                                                        r"t",
+                                            },
+                                        ),
+                                    },
+                                ),
+                                Stmt(
+                                    Return {
+                                        value: LvalueToRvalue(
+                                            Index {
+                                                lhs: Identifier(
+                                                    r"t",
+                                                ),
+                                                index: BinOp {
+                                                    op: Minus,
+                                                    lhs: LvalueToRvalue(
+                                                        Identifier(
+                                                            r"DOUBLE_LENGTH",
+                                                        ),
                                                     ),
-                                                    index: BinOp {
-                                                        op: Mul,
-                                                        lhs: LvalueToRvalue(
-                                                            Identifier(
-                                                                r"LENGTH",
-                                                            ),
+                                                    rhs: LvalueToRvalue(
+                                                        Identifier(
+                                                            r"LENGTH",
                                                         ),
-                                                        rhs: IntegerLiteral(
-                                                            IntegerLiteral {
-                                                                repr: "2",
-                                                                value: 2,
-                                                            },
-                                                        ),
-                                                    },
-                                                },
-                                            ),
-                                        },
-                                    ),
-                                    Stmt(
-                                        Return {
-                                            value: LvalueToRvalue(
-                                                Index {
-                                                    lhs: Identifier(
-                                                        r"t",
                                                     ),
-                                                    index: BinOp {
-                                                        op: Minus,
-                                                        lhs: LvalueToRvalue(
-                                                            Identifier(
-                                                                r"DOUBLE_LENGTH",
-                                                            ),
-                                                        ),
-                                                        rhs: LvalueToRvalue(
-                                                            Identifier(
-                                                                r"LENGTH",
-                                                            ),
-                                                        ),
-                                                    },
                                                 },
-                                            ),
-                                        },
-                                    ),
-                                ],
-                            ),
+                                            },
+                                        ),
+                                    },
+                                ),
+                            ],
                         ),
                     ),
-                },
-            ),
-            Routine(
-                RoutineDecl {
-                    name: r"main",
-                    arguments: [],
-                    return_type: Some(
-                        Int,
-                    ),
-                    body: Some(
+                ),
+            },
+        ),
+        Routine(
+            RoutineDecl {
+                name: r"main",
+                arguments: [],
+                return_type: Some(
+                    Int,
+                ),
+                body: Some(
+                    Block(
                         Block(
-                            Block(
-                                [
-                                    VarDecl(
-                                        VarDecl {
-                                            name: r"t",
-                                            t: None,
-                                            initialiser: Some(
+                            [
+                                VarDecl(
+                                    VarDecl {
+                                        name: r"t",
+                                        t: None,
+                                        initialiser: Some(
+                                            New {
+                                                t: Alias(
+                                                    r"table",
+                                                ),
+                                                fields: None,
+                                            },
+                                        ),
+                                    },
+                                ),
+                                Stmt(
+                                    Expr(
+                                        Call {
+                                            callee: r"table_receiver",
+                                            args: [
                                                 New {
                                                     t: Alias(
                                                         r"table",
                                                     ),
                                                     fields: None,
                                                 },
-                                            ),
+                                            ],
                                         },
                                     ),
-                                    Stmt(
-                                        Expr(
-                                            Call {
-                                                callee: r"table_receiver",
-                                                args: [
-                                                    New {
-                                                        t: Alias(
-                                                            r"table",
-                                                        ),
-                                                        fields: None,
+                                ),
+                                Stmt(
+                                    Print {
+                                        value: LvalueToRvalue(
+                                            Index {
+                                                lhs: Identifier(
+                                                    r"t",
+                                                ),
+                                                index: IntegerLiteral(
+                                                    IntegerLiteral {
+                                                        repr: "1",
+                                                        value: 1,
                                                     },
-                                                ],
+                                                ),
                                             },
                                         ),
-                                    ),
-                                    Stmt(
-                                        Print {
-                                            value: LvalueToRvalue(
-                                                Index {
-                                                    lhs: Identifier(
-                                                        r"t",
-                                                    ),
-                                                    index: IntegerLiteral(
-                                                        IntegerLiteral {
-                                                            repr: "1",
-                                                            value: 1,
-                                                        },
-                                                    ),
-                                                },
-                                            ),
-                                        },
-                                    ),
-                                    ConstDecl(
-                                        ConstDecl {
-                                            name: r"LENGTH",
-                                            t: None,
-                                            initialiser: IntegerLiteral(
-                                                IntegerLiteral {
-                                                    repr: "300",
-                                                    value: 300,
-                                                },
-                                            ),
-                                        },
-                                    ),
-                                    Stmt(
-                                        If {
-                                            condition: BinOp {
-                                                op: Gt,
-                                                lhs: LvalueToRvalue(
-                                                    Identifier(
-                                                        r"LENGTH",
-                                                    ),
-                                                ),
-                                                rhs: LvalueToRvalue(
-                                                    Identifier(
-                                                        r"DOUBLE_LENGTH",
-                                                    ),
-                                                ),
+                                    },
+                                ),
+                                ConstDecl(
+                                    ConstDecl {
+                                        name: r"LENGTH",
+                                        t: None,
+                                        initialiser: IntegerLiteral(
+                                            IntegerLiteral {
+                                                repr: "300",
+                                                value: 300,
                                             },
-                                            on_true: Block(
-                                                [
-                                                    Stmt(
-                                                        Print {
-                                                            value: LvalueToRvalue(
-                                                                Identifier(
-                                                                    r"LENGTH",
-                                                                ),
-                                                            ),
-                                                        },
-                                                    ),
-                                                    ConstDecl(
-                                                        ConstDecl {
-                                                            name: r"LENGTH",
-                                                            t: None,
-                                                            initialiser: IntegerLiteral(
-                                                                IntegerLiteral {
-                                                                    repr: "400",
-                                                                    value: 400,
-                                                                },
-                                                            ),
-                                                        },
-                                                    ),
-                                                    Stmt(
-                                                        Print {
-                                                            value: LvalueToRvalue(
-                                                                Identifier(
-                                                                    r"LENGTH",
-                                                                ),
-                                                            ),
-                                                        },
-                                                    ),
-                                                ],
-                                            ),
-                                            on_false: None,
-                                        },
-                                    ),
-                                    Stmt(
-                                        Print {
-                                            value: LvalueToRvalue(
+                                        ),
+                                    },
+                                ),
+                                Stmt(
+                                    If {
+                                        condition: BinOp {
+                                            op: Gt,
+                                            lhs: LvalueToRvalue(
                                                 Identifier(
                                                     r"LENGTH",
                                                 ),
                                             ),
+                                            rhs: LvalueToRvalue(
+                                                Identifier(
+                                                    r"DOUBLE_LENGTH",
+                                                ),
+                                            ),
                                         },
-                                    ),
-                                ],
-                            ),
+                                        on_true: Block(
+                                            [
+                                                Stmt(
+                                                    Print {
+                                                        value: LvalueToRvalue(
+                                                            Identifier(
+                                                                r"LENGTH",
+                                                            ),
+                                                        ),
+                                                    },
+                                                ),
+                                                ConstDecl(
+                                                    ConstDecl {
+                                                        name: r"LENGTH",
+                                                        t: None,
+                                                        initialiser: IntegerLiteral(
+                                                            IntegerLiteral {
+                                                                repr: "400",
+                                                                value: 400,
+                                                            },
+                                                        ),
+                                                    },
+                                                ),
+                                                Stmt(
+                                                    Print {
+                                                        value: LvalueToRvalue(
+                                                            Identifier(
+                                                                r"LENGTH",
+                                                            ),
+                                                        ),
+                                                    },
+                                                ),
+                                            ],
+                                        ),
+                                        on_false: None,
+                                    },
+                                ),
+                                Stmt(
+                                    Print {
+                                        value: LvalueToRvalue(
+                                            Identifier(
+                                                r"LENGTH",
+                                            ),
+                                        ),
+                                    },
+                                ),
+                            ],
                         ),
                     ),
-                },
-            ),
-        ],
-    ),
-    [],
+                ),
+            },
+        ),
+    ],
 )

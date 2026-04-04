@@ -1,10 +1,10 @@
 use lexer::Lexer;
 
-use crate::{PureParsingResult, parse_program};
+use crate::{ParserError, Program, parse_program};
 
-fn parse(src: &str) -> PureParsingResult<String> {
+fn parse(src: &str) -> Result<String, ParserError<Program>> {
     let tokens: Vec<_> = Lexer::from(src).collect();
-    parse_program(&tokens).map(|res| format!("{res:#?}\n"))
+    parse_program(&tokens).map(|program| format!("{program:#?}"))
 }
 
 testing::tests! {
