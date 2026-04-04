@@ -8,9 +8,9 @@ use std::{
 
 use ast::{
     ArrayDescription, BinaryOperator, Binding, Block, BlockElem, BoolBinOp, Decl, EqBinOp,
-    Expression, FieldDescription, IntBinOp, IntegerLiteral, LvalueExpression, Program, RealBinOp,
-    RealLiteral, RecordDescription, Routine, RoutineBody, RoutineDecl, SimpleBinding, SimpleDecl,
-    Type, TypeDecl, UnaryOperator, VarDecl,
+    Expression, FieldDescription, IntBinOp, IntegerLiteral, LocalBinding, LocalDecl,
+    LvalueExpression, Program, RealBinOp, RealLiteral, RecordDescription, Routine, RoutineBody,
+    RoutineDecl, Type, TypeDecl, UnaryOperator, VarDecl,
 };
 use common::{
     Identifier, Integer, LoopOrder, Position, RawIdentifier, Real, integer_to_real, real_to_integer,
@@ -450,9 +450,9 @@ impl<'a, W: Write> Interpreter<'a, W> {
         let Block { elems: stmts, .. } = block;
         for stmt in stmts {
             match stmt {
-                BlockElem::Decl(SimpleBinding { name, decl }) => match decl {
-                    SimpleDecl::Const(_) | SimpleDecl::Type(_) => {}
-                    SimpleDecl::Var(VarDecl {
+                BlockElem::Decl(LocalBinding { name, decl }) => match decl {
+                    LocalDecl::Const(_) | LocalDecl::Type(_) => {}
+                    LocalDecl::Var(VarDecl {
                         t,
                         initialiser,
                         relative_location: _,
