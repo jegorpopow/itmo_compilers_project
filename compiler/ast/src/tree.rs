@@ -1,3 +1,4 @@
+use core::ops::Index;
 use std::rc::Rc;
 
 use derive_where::derive_where;
@@ -584,22 +585,9 @@ impl IdentifierTable {
         self.bindings[ident.id.0].decl = new_decl;
     }
 
-    #[must_use]
-    pub fn get_binding(&self, ident: &Identifier) -> &Binding {
-        let &Identifier { raw: _, id } = ident;
-        self.get_binding_by_id(id)
-    }
-
-    #[must_use]
-    pub fn get_binding_by_id(&self, id: BindingId) -> &Binding {
-        let BindingId(id) = id;
-        &self.bindings[id]
-    }
-
     pub fn get_effective_type(&self, t: &Rc<Type>) -> AnalysisResult<Rc<Type>> {
         match &**t {
-            Type::Alias(identifier) => self
-                .get_binding(identifier)
+            Type::Alias(identifier) => self[identifier]
                 .ensure_is_type()
                 .and_then(TypeDecl::get_effective),
             Type::Int
@@ -610,6 +598,23 @@ impl IdentifierTable {
             | Type::Null
             | Type::Unit => Ok(Rc::clone(t)),
         }
+    }
+}
+
+impl Index<BindingId> for IdentifierTable {
+    type Output = Binding;
+
+    fn index(&self, id: BindingId) -> &Self::Output {
+        let BindingId(id) = id;
+        &self.bindings[id]
+    }
+}
+
+impl Index<&Identifier> for IdentifierTable {
+    type Output = Binding;
+
+    fn index(&self, ident: &Identifier) -> &Self::Output {
+        &self[ident.id]
     }
 }
 

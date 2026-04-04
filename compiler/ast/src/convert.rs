@@ -191,7 +191,7 @@ impl Converter {
             .iter()
             .rev()
             .find_map(|scope_block| scope_block.lookup(name))
-            .map(|id| self.ident_table.get_binding_by_id(id))
+            .map(|id| &self.ident_table[id])
             .ok_or(AnalysisError {
                 what: format!("Unknown name `{name}`"),
             })

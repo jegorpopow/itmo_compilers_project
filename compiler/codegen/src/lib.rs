@@ -37,9 +37,7 @@ impl<'a> Compiler<'a> {
         match expr {
             LvalueExpression::Identifier(identifier) => {
                 self.bytecode.push(Instruction::AddressOf {
-                    loc: self
-                        .identifiers
-                        .get_binding(identifier)
+                    loc: self.identifiers[identifier]
                         .ensure_is_var()?
                         .relative_location,
                 });
@@ -119,9 +117,7 @@ impl<'a> Compiler<'a> {
             Expression::LvalueToRvalue(lvalue_expression) => match &**lvalue_expression {
                 LvalueExpression::Identifier(identifier) => {
                     self.bytecode.push(Instruction::Load {
-                        loc: self
-                            .identifiers
-                            .get_binding(identifier)
+                        loc: self.identifiers[identifier]
                             .ensure_is_var()?
                             .relative_location,
                     });
@@ -224,9 +220,7 @@ impl<'a> Compiler<'a> {
                     // Microoptimisation: use direct Store instruction instead of calculating address
                     self.compile_expr(rhs)?;
                     self.bytecode.push(Instruction::Store {
-                        loc: self
-                            .identifiers
-                            .get_binding(identifier)
+                        loc: self.identifiers[identifier]
                             .ensure_is_var()?
                             .relative_location,
                     });
