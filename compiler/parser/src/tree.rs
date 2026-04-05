@@ -23,7 +23,7 @@ pub struct RealLiteral {
     pub value: Real,
 }
 
-#[derive(Debug, Hash, PartialEq, Eq, Clone, Copy)]
+#[derive(Debug, Hash, PartialEq, Eq, Copy, Clone)]
 pub enum BoolLiteral {
     True,
     False,
@@ -63,50 +63,50 @@ pub enum Expression {
     },
     Cast {
         operand: Rc<Expression>,
-        target: Rc<Type>,
+        target: Type,
     },
     New {
-        t: Rc<Type>,
+        t: Type,
         fields: Option<Vec<(RawIdentifier, Rc<Expression>)>>,
     },
     Null,
 }
 
-#[derive(Debug, Hash, Clone)]
+#[derive(Debug, Hash)]
 pub struct VarDecl {
     pub name: RawIdentifier,
-    pub t: Option<Rc<Type>>,
+    pub t: Option<Type>,
     pub initialiser: Option<Rc<Expression>>,
 }
 
-#[derive(Debug, Hash, Clone)]
+#[derive(Debug, Hash)]
 pub struct ConstDecl {
     pub name: RawIdentifier,
-    pub t: Option<Rc<Type>>,
+    pub t: Option<Type>,
     pub initialiser: Rc<Expression>,
 }
 
-#[derive(Debug, Hash, Clone)]
+#[derive(Debug, Hash)]
 pub struct TypeDecl {
     pub name: RawIdentifier,
-    pub t: Rc<Type>,
+    pub t: Type,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug)]
 pub enum RoutineBody {
     Block(Block),
     Expression(Rc<Expression>),
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug)]
 pub struct RoutineDecl {
     pub name: RawIdentifier,
-    pub arguments: Vec<(RawIdentifier, Rc<Type>)>,
-    pub return_type: Option<Rc<Type>>,
+    pub arguments: Vec<(RawIdentifier, Type)>,
+    pub return_type: Option<Type>,
     pub body: Option<RoutineBody>,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug)]
 pub enum BlockElem {
     Stmt(Statement),
     VarDecl(VarDecl),
@@ -114,10 +114,10 @@ pub enum BlockElem {
     TypeDecl(TypeDecl),
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug)]
 pub struct Block(pub Vec<BlockElem>);
 
-#[derive(Debug, Clone)]
+#[derive(Debug)]
 pub enum Statement {
     Assignment {
         lhs: Rc<LvalueExpression>,

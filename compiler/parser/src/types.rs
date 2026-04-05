@@ -8,7 +8,7 @@ use crate::Expression;
 #[derive(Debug, Hash, PartialEq, Eq)]
 pub struct FieldDescription {
     pub name: RawIdentifier,
-    pub t: Rc<Type>,
+    pub t: Type,
 }
 
 #[derive(Debug, Hash, PartialEq, Eq)]
@@ -18,7 +18,7 @@ pub struct RecordDescription {
 
 #[derive(Debug, Hash, PartialEq, Eq)]
 pub struct ArrayDescription {
-    pub t: Rc<Type>,
+    pub t: Box<Type>,
     pub length: Option<Rc<Expression>>,
 }
 

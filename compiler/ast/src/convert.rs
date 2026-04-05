@@ -948,6 +948,8 @@ impl Converter {
             return_type,
             body,
         } = decl;
+        let return_type = return_type.as_ref();
+
         let converted_arguments_types = arguments
             .iter()
             .map(|(name, arg_type)| {
@@ -996,8 +998,6 @@ impl Converter {
                 )
             })
             .collect();
-
-        let return_type = return_type.as_deref();
 
         match body {
             parser::RoutineBody::Block(block) => self.convert_routine_block(
