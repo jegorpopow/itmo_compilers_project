@@ -1,6 +1,6 @@
 use std::{collections::HashMap, rc::Rc};
 
-use common::{Identifier, Location, LoopOrder, RawIdentifier};
+use common::{BindingId, Identifier, Location, LoopOrder, RawIdentifier, VarLoc};
 
 use crate::{
     operators::UnaryOperator,
@@ -10,23 +10,25 @@ use crate::{
 };
 
 #[derive(Debug, Default)]
-struct ScopeBlock {
-    binders: HashMap<RawIdentifier, usize>,
-    locals_in_block: usize,
+struct Scope {
+    binders: HashMap<RawIdentifier, BindingId>,
+    locals_in_block: VarLoc,
 }
 
-impl ScopeBlock {
+impl Scope {
     #[must_use]
     fn new() -> Self {
         Self::default()
     }
 
-    fn lookup(&self, name: &RawIdentifier) -> Option<usize> {
+    fn lookup(&self, name: &RawIdentifier) -> Option<BindingId> {
         self.binders.get(name).copied()
     }
 
-    fn bind(&mut self, name: &RawIdentifier, ident: &Identifier) {
-        let _: Option<usize> = self.binders.insert(name.clone(), ident.id);
+    fn bind(&mut self, ident: &Identifier) {
+        let Identifier { raw, id } = ident;
+        let previous = self.binders.insert(raw.to_owned(), *id);
+        debug_assert_eq!(previous, None, "We support rebinds?");
     }
 }
 
@@ -41,50 +43,45 @@ struct RoutinePrototype {
 
 #[derive(Debug)]
 struct Converter {
-    ident_table: IdentifierTable,
-    current_scope: Vec<ScopeBlock>,
-    global_count: usize,
-    local_count: usize,
+    bindings: Bindings,
+    current_scope: Vec<Scope>,
+    global_count: VarLoc,
+    local_count: VarLoc,
     current_routine: Option<RoutinePrototype>,
 }
 
 impl Converter {
     fn new() -> Self {
         Converter {
-            ident_table: IdentifierTable::default(),
-            current_scope: vec![ScopeBlock::new()],
+            bindings: Bindings::default(),
+            current_scope: vec![Scope::new()],
             global_count: 0,
             local_count: 0,
             current_routine: None,
         }
     }
 
-    fn extract_table(self) -> IdentifierTable {
-        self.ident_table
-    }
+    fn scoped<T>(&mut self, callback: impl FnOnce(&mut Self) -> T) -> (T, VarLoc) {
+        self.current_scope.push(Scope::new());
 
-    fn enter_block(&mut self) {
-        self.current_scope.push(ScopeBlock::new())
-    }
+        let result = callback(self);
 
-    fn leave_block(&mut self) -> usize {
-        assert!(
-            self.current_scope.len() > 1,
-            "No non-global contexts to leave"
-        );
-
-        let current_block_locals = self
+        let Scope {
+            binders: _,
+            locals_in_block,
+        } = self
             .current_scope
             .pop()
-            .expect("At least global context is always present")
-            .locals_in_block;
-        self.local_count -= current_block_locals;
-        current_block_locals
+            .expect("Scopes should not be pushed/popped outside of this method");
+
+        self.local_count -= locals_in_block;
+        (result, locals_in_block)
     }
 
     fn get_fresh_global_location(&mut self) -> Location {
+        let res = self.global_count;
         self.global_count += 1;
-        Location::Global(u16::try_from(self.global_count - 1).expect("Too many global variables"))
+        Location::Global(res)
     }
 
     fn get_fresh_local_location(&mut self) -> Location {
@@ -93,26 +90,25 @@ impl Converter {
             "Local name binding in global context"
         );
 
+        let res = self.local_count;
         self.local_count += 1;
         self.current_scope
             .last_mut()
             .expect("At least global context is always present")
             .locals_in_block += 1;
-        Location::Local(
-            u16::try_from(self.local_count - 1).expect("Too many local variables in function"),
-        )
+        Location::Local(res)
     }
 
     fn bind_global_decl(&mut self, name: &RawIdentifier, decl: Decl) -> Identifier {
         // TODO: process function forward declaration
-        let ident = self.ident_table.create_binding(name, decl);
-        self.current_scope[0].bind(name, &ident);
+        let ident = self.bindings.create(name, decl);
+        self.current_scope[0].bind(&ident);
 
         ident
     }
 
     fn rebind_decl(&mut self, ident: &Identifier, new_decl: Decl) {
-        self.ident_table.rebind(ident, new_decl);
+        self.bindings.rebind(ident, new_decl);
     }
 
     // FIXME: accept `LocalDecl`
@@ -122,11 +118,11 @@ impl Converter {
             "Local name binding in global context"
         );
 
-        let ident = self.ident_table.create_binding(name, decl);
+        let ident = self.bindings.create(name, decl);
         self.current_scope
             .last_mut()
             .expect("At least global context is always present")
-            .bind(name, &ident);
+            .bind(&ident);
 
         ident
     }
@@ -189,7 +185,7 @@ impl Converter {
             .iter()
             .rev()
             .find_map(|scope_block| scope_block.lookup(name))
-            .map(|id| self.ident_table.get_binding_by_id(id))
+            .map(|id| &self.bindings[id])
             .ok_or(AnalysisError {
                 what: format!("Unknown name `{name}`"),
             })
@@ -274,7 +270,7 @@ impl Converter {
                     value: converted_lhs,
                     ty: t,
                 } = self.convert_lvalue_expr(lhs)?;
-                let effective_lhs_type = self.ident_table.get_effective_type(&t)?;
+                let effective_lhs_type = self.bindings.get_effective_type(&t)?;
                 let member_type = effective_lhs_type.get_field_type(member_name)?;
 
                 Typed {
@@ -295,7 +291,7 @@ impl Converter {
                     ty: rhs_t,
                 } = self.convert_expr(index)?;
                 rhs_t.ensure_is(&Type::Int)?;
-                let effective_lhs_type = self.ident_table.get_effective_type(&lhs_t)?;
+                let effective_lhs_type = self.bindings.get_effective_type(&lhs_t)?;
                 let resulting_type = effective_lhs_type.get_element_type()?;
 
                 Typed {
@@ -434,7 +430,7 @@ impl Converter {
         fields: Option<&[(RawIdentifier, Rc<parser::Expression>)]>,
     ) -> AnalysisResult<Typed> {
         let converted_type = self.convert_type(t)?;
-        let converted_effective_type = self.ident_table.get_effective_type(&converted_type)?;
+        let converted_effective_type = self.bindings.get_effective_type(&converted_type)?;
 
         match &*converted_effective_type {
             Type::Int | Type::Real | Type::Bool | Type::Null | Type::Unit => Err(AnalysisError {
@@ -607,10 +603,9 @@ impl Converter {
                     ty: operand_type,
                 } = self.convert_expr(operand)?;
                 let converted_target_type = self.convert_type(target)?;
-                let operand_effective_type = self.ident_table.get_effective_type(&operand_type)?;
-                let target_effective_type = self
-                    .ident_table
-                    .get_effective_type(&converted_target_type)?;
+                let operand_effective_type = self.bindings.get_effective_type(&operand_type)?;
+                let target_effective_type =
+                    self.bindings.get_effective_type(&converted_target_type)?;
 
                 if operand_effective_type == target_effective_type {
                     Typed {
@@ -642,60 +637,58 @@ impl Converter {
         order: LoopOrder,
         body: &parser::Block,
     ) -> AnalysisResult<Statement> {
-        self.enter_block(); // For counter is in it's own block
+        let (result, locals_count) = self.scoped(|this| {
+            let counter_loc = this.get_fresh_local_location();
+            Ok(match to {
+                None => {
+                    let Typed {
+                        value: array_expr,
+                        ty: array_type,
+                    } = this.convert_expr(from)?;
+                    let element_type = array_type.get_element_type()?;
+                    let counter_decl = Decl::Var(VarDecl {
+                        t: Rc::clone(element_type),
+                        initialiser: None,
+                        relative_location: counter_loc,
+                    });
 
-        let counter_loc = self.get_fresh_local_location();
-
-        let stmt = match to {
-            None => {
-                let Typed {
-                    value: array_expr,
-                    ty: array_type,
-                } = self.convert_expr(from)?;
-                let element_type = array_type.get_element_type()?;
-                let counter_decl = Decl::Var(VarDecl {
-                    t: Rc::clone(element_type),
-                    initialiser: None,
-                    relative_location: counter_loc,
-                });
-
-                let counter_ident = self.bind_local_decl(counter, counter_decl);
-                let body = self.convert_block(body)?;
-                Statement::ForEach {
-                    counter: counter_ident,
-                    collection: array_expr,
-                    order,
-                    body,
+                    let counter_ident = this.bind_local_decl(counter, counter_decl);
+                    let body = this.convert_block(body)?;
+                    Statement::ForEach {
+                        counter: counter_ident,
+                        collection: array_expr,
+                        order,
+                        body,
+                    }
                 }
-            }
-            Some(to) => {
-                let from = self.convert_expr(from)?;
-                let to = self.convert_expr(to)?;
-                let int_type = Rc::new(Type::Int);
-                let counter_decl = Decl::Var(VarDecl {
-                    t: Rc::clone(&int_type),
-                    initialiser: None,
-                    relative_location: counter_loc,
-                });
-                let counter_ident = self.bind_local_decl(counter, counter_decl);
-                let body = self.convert_block(body)?;
-                Statement::For {
-                    counter: counter_ident,
-                    lower_bound: cast_to(from, &int_type)?,
-                    upper_bound: cast_to(to, &int_type)?,
-                    order,
-                    body,
+                Some(to) => {
+                    let from = this.convert_expr(from)?;
+                    let to = this.convert_expr(to)?;
+                    let int_type = Rc::new(Type::Int);
+                    let counter_decl = Decl::Var(VarDecl {
+                        t: Rc::clone(&int_type),
+                        initialiser: None,
+                        relative_location: counter_loc,
+                    });
+                    let counter_ident = this.bind_local_decl(counter, counter_decl);
+                    let body = this.convert_block(body)?;
+                    Statement::For {
+                        counter: counter_ident,
+                        lower_bound: cast_to(from, &int_type)?,
+                        upper_bound: cast_to(to, &int_type)?,
+                        order,
+                        body,
+                    }
                 }
-            }
-        };
+            })
+        });
 
         assert_eq!(
-            self.leave_block(),
-            1,
+            locals_count, 1,
             "Internal compiler error: mismatched number of locals in `for` counter block"
         );
 
-        Ok(stmt)
+        result
     }
 
     fn convert_stmt(&mut self, stmt: &parser::Statement) -> AnalysisResult<Statement> {
@@ -767,30 +760,31 @@ impl Converter {
     }
 
     fn convert_block(&mut self, block: &parser::Block) -> AnalysisResult<Block> {
-        let mut stmts: Vec<Statement> = Vec::new();
-
-        self.enter_block();
-
-        for block_elem in &block.0 {
-            stmts.push(match block_elem {
-                parser::BlockElem::Stmt(statement) => self.convert_stmt(statement)?,
-                parser::BlockElem::VarDecl(var_decl) => Statement::Declaration(
-                    self.convert_var_decl(var_decl, false)?.map(LocalDecl::Var),
-                ),
-                parser::BlockElem::ConstDecl(const_decl) => Statement::Declaration(
-                    self.convert_const_decl(const_decl, false)?
-                        .map(LocalDecl::Const),
-                ),
-                parser::BlockElem::TypeDecl(type_decl) => Statement::Declaration(
-                    self.convert_type_decl(type_decl, false)?
-                        .map(LocalDecl::Type),
-                ),
-            })
-        }
-
-        Ok(Block {
+        let (result, locals_count) = self.scoped(|this| -> AnalysisResult<_> {
+            block
+                .0
+                .iter()
+                .map(|elem| {
+                    Ok(match elem {
+                        parser::BlockElem::Stmt(statement) => this.convert_stmt(statement)?,
+                        parser::BlockElem::VarDecl(var_decl) => Statement::Declaration(
+                            this.convert_var_decl(var_decl, false)?.map(LocalDecl::Var),
+                        ),
+                        parser::BlockElem::ConstDecl(const_decl) => Statement::Declaration(
+                            this.convert_const_decl(const_decl, false)?
+                                .map(LocalDecl::Const),
+                        ),
+                        parser::BlockElem::TypeDecl(type_decl) => Statement::Declaration(
+                            this.convert_type_decl(type_decl, false)?
+                                .map(LocalDecl::Type),
+                        ),
+                    })
+                })
+                .collect()
+        });
+        result.map(|stmts| Block {
             stmts,
-            locals_count: self.leave_block(),
+            locals_count,
         })
     }
 
@@ -898,7 +892,7 @@ impl Converter {
         );
 
         let converted_type = self.convert_type(t)?;
-        let effective_type = self.ident_table.get_effective_type(&converted_type)?;
+        let effective_type = self.bindings.get_effective_type(&converted_type)?;
         let type_decl = TypeDecl::Full {
             prescribed: converted_type,
             effective: effective_type,
@@ -990,7 +984,7 @@ impl Converter {
                         t: Rc::clone(t),
                         initialiser: None,
                         relative_location: Location::Argument(
-                            u16::try_from(index).expect("Too many arguments for function"),
+                            index.try_into().expect("Too many arguments for function"),
                         ),
                     },
                 )
@@ -1051,15 +1045,10 @@ impl Converter {
         });
 
         // create a function scope
-        self.enter_block();
-
-        let args_bindings = self.bind_args(args_decls);
-
-        let converted_body = self.convert_block(block)?;
-
+        let ((args_bindings, converted_body), locals_count) =
+            self.scoped(|this| (this.bind_args(args_decls), this.convert_block(block)));
         assert_eq!(
-            self.leave_block(),
-            0,
+            locals_count, 0,
             "Internal compiler error: locals found in function arguments block"
         );
         self.current_routine = None;
@@ -1067,7 +1056,7 @@ impl Converter {
         let decl = RoutineDecl::Full(Routine {
             signature,
             args_bindings,
-            body: RoutineBody::Block(converted_body),
+            body: RoutineBody::Block(converted_body?),
         });
         Ok(Binding {
             name: self.bind_routine(name, decl.clone())?,
@@ -1100,15 +1089,12 @@ impl Converter {
         let return_type = return_type.map(|t| self.convert_type(t)).transpose()?;
 
         // No recursive calls for expression function
-        self.enter_block();
 
-        let args_bindings = self.bind_args(args_decls);
-
-        let expr = self.convert_expr(expression)?;
-
+        let ((args_bindings, expr), locals_count) =
+            self.scoped(|this| (this.bind_args(args_decls), this.convert_expr(expression)));
+        let expr = expr?;
         assert_eq!(
-            self.leave_block(),
-            0,
+            locals_count, 0,
             "Internal compiler error: locals found in function arguments block"
         );
 
@@ -1136,7 +1122,7 @@ impl Converter {
     }
 }
 
-pub fn convert(program: &parser::Program) -> AnalysisResult<(Program, IdentifierTable)> {
+pub fn convert(program: &parser::Program) -> AnalysisResult<(Program, Bindings)> {
     let mut converter = Converter::new();
 
     let converted_program = program
@@ -1146,5 +1132,6 @@ pub fn convert(program: &parser::Program) -> AnalysisResult<(Program, Identifier
         .collect::<AnalysisResult<Vec<Binding>>>()
         .map(Program)?;
 
-    Ok((converted_program, converter.extract_table()))
+    let Converter { bindings, .. } = converter;
+    Ok((converted_program, bindings))
 }

@@ -3,7 +3,7 @@
 use core::alloc::Layout;
 
 use ast::{BinaryOperator, BoolBinOp, EqBinOp, IntBinOp, RealBinOp, UnaryOperator};
-use common::{Integer, Location, Real};
+use common::{Integer, Location, Real, VarLoc};
 
 trait Encode {
     type Output: Copy;
@@ -54,7 +54,7 @@ pub(crate) enum Instruction {
     /// drop stack top
     Drop,
     // drop n elements from stack
-    DropMany(usize),
+    DropMany(VarLoc),
     /// swaps top and second elements of stack
     Swap,
     /// apply binary operator to stack top
@@ -208,7 +208,7 @@ impl Encode for Instruction {
 
             Instruction::DropMany(n) => Bytecode {
                 opcode: 29,
-                arg64: n.to_le_bytes(),
+                arg16: n.to_le_bytes(),
                 ..zero
             },
 

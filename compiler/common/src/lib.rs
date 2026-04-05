@@ -23,10 +23,20 @@ impl Display for RawIdentifier {
     }
 }
 
+#[derive(Debug, Hash, PartialEq, Eq, Clone, Copy)]
+pub struct BindingId(pub usize);
+
+impl Display for BindingId {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        let Self(id) = self;
+        Display::fmt(id, f)
+    }
+}
+
 #[derive(Hash, PartialEq, Eq, Clone)]
 pub struct Identifier {
     pub raw: RawIdentifier,
-    pub id: usize,
+    pub id: BindingId,
 }
 
 impl Debug for Identifier {
@@ -89,12 +99,14 @@ impl Display for Extent {
     }
 }
 
-///  Variable location and id
+pub type VarLoc = u16;
+
+/// Variable location and id
 #[derive(Debug, Clone, Copy, Hash)]
 pub enum Location {
-    Global(u16),
-    Local(u16),
-    Argument(u16),
+    Global(VarLoc),
+    Local(VarLoc),
+    Argument(VarLoc),
 }
 
 pub type Integer = i64;

@@ -13,7 +13,7 @@ pub use crate::{
     convert::convert,
     operators::{BinaryOperator, BoolBinOp, EqBinOp, IntBinOp, RealBinOp, UnaryOperator},
     tree::{
-        Binding, Block, BoolLiteral, ConstDecl, Decl, Expression, IdentifierTable, IntegerLiteral,
+        Binding, Bindings, Block, BoolLiteral, ConstDecl, Decl, Expression, IntegerLiteral,
         LocalBinding, LocalDecl, LvalueExpression, Program, RealLiteral, Routine, RoutineBody,
         RoutineDecl, RoutineSignature, Statement, TypeDecl, VarDecl,
     },

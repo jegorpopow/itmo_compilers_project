@@ -1,10 +1,11 @@
+use core::ops::Index;
 use std::rc::Rc;
 
 use derive_where::derive_where;
 
 use common::{
-    Identifier, Integer, Location, LoopOrder, Position, RawIdentifier, Real, integer_to_real,
-    real_to_integer,
+    BindingId, Identifier, Integer, Location, LoopOrder, Position, RawIdentifier, Real, VarLoc,
+    integer_to_real, real_to_integer,
 };
 
 use crate::{
@@ -413,7 +414,7 @@ impl From<LocalBinding> for Binding {
 #[derive(Debug, Clone)]
 pub struct Block {
     pub stmts: Vec<Statement>,
-    pub locals_count: usize,
+    pub locals_count: VarLoc,
 }
 
 #[derive(Debug, Clone)]
@@ -541,18 +542,17 @@ impl TryFrom<Binding> for LocalBinding {
 pub struct Program(pub Vec<Binding>);
 
 #[derive(Debug, Default)]
-pub struct IdentifierTable {
-    bindings: Vec<Binding>,
+pub struct Bindings {
+    arena: Vec<Binding>,
 }
 
-impl IdentifierTable {
-    pub fn create_binding(&mut self, name: &RawIdentifier, decl: Decl) -> Identifier {
-        let id = self.bindings.len();
+impl Bindings {
+    pub fn create(&mut self, name: &RawIdentifier, decl: Decl) -> Identifier {
         let identifier = Identifier {
             raw: name.clone(),
-            id,
+            id: BindingId(self.arena.len()),
         };
-        self.bindings.push(Binding {
+        self.arena.push(Binding {
             name: identifier.clone(),
             decl,
         });
@@ -582,23 +582,12 @@ impl IdentifierTable {
     }
 
     pub fn rebind(&mut self, ident: &Identifier, new_decl: Decl) {
-        self.bindings[ident.id].decl = new_decl;
-    }
-
-    #[must_use]
-    pub fn get_binding(&self, ident: &Identifier) -> &Binding {
-        &self.bindings[ident.id]
-    }
-
-    #[must_use]
-    pub fn get_binding_by_id(&self, id: usize) -> &Binding {
-        &self.bindings[id]
+        self.arena[ident.id.0].decl = new_decl;
     }
 
     pub fn get_effective_type(&self, t: &Rc<Type>) -> AnalysisResult<Rc<Type>> {
         match &**t {
-            Type::Alias(identifier) => self
-                .get_binding(identifier)
+            Type::Alias(identifier) => self[identifier]
                 .ensure_is_type()
                 .and_then(TypeDecl::get_effective),
             Type::Int
@@ -609,6 +598,23 @@ impl IdentifierTable {
             | Type::Null
             | Type::Unit => Ok(Rc::clone(t)),
         }
+    }
+}
+
+impl Index<BindingId> for Bindings {
+    type Output = Binding;
+
+    fn index(&self, id: BindingId) -> &Self::Output {
+        let BindingId(id) = id;
+        &self.arena[id]
+    }
+}
+
+impl Index<&Identifier> for Bindings {
+    type Output = Binding;
+
+    fn index(&self, ident: &Identifier) -> &Self::Output {
+        &self[ident.id]
     }
 }
 
