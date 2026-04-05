@@ -221,8 +221,8 @@
                             ],
                             body: Block(
                                 Block {
-                                    elems: [
-                                        Decl(
+                                    stmts: [
+                                        Declaration(
                                             Binding {
                                                 name: result(9),
                                                 decl: Var(
@@ -243,75 +243,67 @@
                                                 ),
                                             },
                                         ),
-                                        Stmt(
-                                            While {
-                                                condition: UnOp {
-                                                    op: BoolNeg,
-                                                    operand: Call {
-                                                        callee: is_empty(6),
-                                                        args: [
-                                                            LvalueToRvalue(
-                                                                Identifier(
-                                                                    l(8),
-                                                                ),
+                                        While {
+                                            condition: UnOp {
+                                                op: BoolNeg,
+                                                operand: Call {
+                                                    callee: is_empty(6),
+                                                    args: [
+                                                        LvalueToRvalue(
+                                                            Identifier(
+                                                                l(8),
                                                             ),
-                                                        ],
-                                                    },
-                                                },
-                                                body: Block {
-                                                    elems: [
-                                                        Stmt(
-                                                            Assignment {
-                                                                lhs: Identifier(
-                                                                    result(9),
-                                                                ),
-                                                                rhs: BinOp {
-                                                                    op: Int(
-                                                                        Add,
-                                                                    ),
-                                                                    lhs: LvalueToRvalue(
-                                                                        Identifier(
-                                                                            result(9),
-                                                                        ),
-                                                                    ),
-                                                                    rhs: IntegerLiteral(
-                                                                        IntegerLiteral {
-                                                                            repr: "1",
-                                                                            value: 1,
-                                                                        },
-                                                                    ),
-                                                                },
-                                                            },
-                                                        ),
-                                                        Stmt(
-                                                            Assignment {
-                                                                lhs: Identifier(
-                                                                    l(8),
-                                                                ),
-                                                                rhs: LvalueToRvalue(
-                                                                    Member {
-                                                                        lhs: Identifier(
-                                                                            l(8),
-                                                                        ),
-                                                                        member_name: r"tail",
-                                                                    },
-                                                                ),
-                                                            },
                                                         ),
                                                     ],
-                                                    locals_count: 0,
                                                 },
                                             },
-                                        ),
-                                        Stmt(
-                                            Return {
-                                                value: LvalueToRvalue(
-                                                    Identifier(
-                                                        result(9),
-                                                    ),
-                                                ),
+                                            body: Block {
+                                                stmts: [
+                                                    Assignment {
+                                                        lhs: Identifier(
+                                                            result(9),
+                                                        ),
+                                                        rhs: BinOp {
+                                                            op: Int(
+                                                                Add,
+                                                            ),
+                                                            lhs: LvalueToRvalue(
+                                                                Identifier(
+                                                                    result(9),
+                                                                ),
+                                                            ),
+                                                            rhs: IntegerLiteral(
+                                                                IntegerLiteral {
+                                                                    repr: "1",
+                                                                    value: 1,
+                                                                },
+                                                            ),
+                                                        },
+                                                    },
+                                                    Assignment {
+                                                        lhs: Identifier(
+                                                            l(8),
+                                                        ),
+                                                        rhs: LvalueToRvalue(
+                                                            Member {
+                                                                lhs: Identifier(
+                                                                    l(8),
+                                                                ),
+                                                                member_name: r"tail",
+                                                            },
+                                                        ),
+                                                    },
+                                                ],
+                                                locals_count: 0,
                                             },
-                                        ),
+                                        },
+                                        Return {
+                                            value: LvalueToRvalue(
+                                                Identifier(
+                                                    result(9),
+                                                ),
+                                            ),
+                                        },
                                     ],
                                     locals_count: 1,
                                 },
@@ -354,8 +346,8 @@
                             ],
                             body: Block(
                                 Block {
-                                    elems: [
-                                        Decl(
+                                    stmts: [
+                                        Declaration(
                                             Binding {
                                                 name: result(12),
                                                 decl: Var(
@@ -376,87 +368,79 @@
                                                 ),
                                             },
                                         ),
-                                        Stmt(
-                                            While {
-                                                condition: UnOp {
-                                                    op: BoolNeg,
-                                                    operand: Call {
-                                                        callee: is_empty(6),
-                                                        args: [
-                                                            LvalueToRvalue(
-                                                                Identifier(
-                                                                    l(11),
-                                                                ),
+                                        While {
+                                            condition: UnOp {
+                                                op: BoolNeg,
+                                                operand: Call {
+                                                    callee: is_empty(6),
+                                                    args: [
+                                                        LvalueToRvalue(
+                                                            Identifier(
+                                                                l(11),
                                                             ),
-                                                        ],
-                                                    },
-                                                },
-                                                body: Block {
-                                                    elems: [
-                                                        Stmt(
-                                                            Assignment {
-                                                                lhs: Identifier(
-                                                                    result(12),
-                                                                ),
-                                                                rhs: New {
-                                                                    t: Alias(
-                                                                        linked_list(0),
-                                                                    ),
-                                                                    fields: Some(
-                                                                        [
-                                                                            (
-                                                                                r"data",
-                                                                                LvalueToRvalue(
-                                                                                    Member {
-                                                                                        lhs: Identifier(
-                                                                                            l(11),
-                                                                                        ),
-                                                                                        member_name: r"data",
-                                                                                    },
-                                                                                ),
-                                                                            ),
-                                                                            (
-                                                                                r"tail",
-                                                                                LvalueToRvalue(
-                                                                                    Identifier(
-                                                                                        result(12),
-                                                                                    ),
-                                                                                ),
-                                                                            ),
-                                                                        ],
-                                                                    ),
-                                                                },
-                                                            },
-                                                        ),
-                                                        Stmt(
-                                                            Assignment {
-                                                                lhs: Identifier(
-                                                                    l(11),
-                                                                ),
-                                                                rhs: LvalueToRvalue(
-                                                                    Member {
-                                                                        lhs: Identifier(
-                                                                            l(11),
-                                                                        ),
-                                                                        member_name: r"tail",
-                                                                    },
-                                                                ),
-                                                            },
                                                         ),
                                                     ],
-                                                    locals_count: 0,
                                                 },
                                             },
-                                        ),
-                                        Stmt(
-                                            Return {
-                                                value: LvalueToRvalue(
-                                                    Identifier(
-                                                        result(12),
-                                                    ),
-                                                ),
+                                            body: Block {
+                                                stmts: [
+                                                    Assignment {
+                                                        lhs: Identifier(
+                                                            result(12),
+                                                        ),
+                                                        rhs: New {
+                                                            t: Alias(
+                                                                linked_list(0),
+                                                            ),
+                                                            fields: Some(
+                                                                [
+                                                                    (
+                                                                        r"data",
+                                                                        LvalueToRvalue(
+                                                                            Member {
+                                                                                lhs: Identifier(
+                                                                                    l(11),
+                                                                                ),
+                                                                                member_name: r"data",
+                                                                            },
+                                                                        ),
+                                                                    ),
+                                                                    (
+                                                                        r"tail",
+                                                                        LvalueToRvalue(
+                                                                            Identifier(
+                                                                                result(12),
+                                                                            ),
+                                                                        ),
+                                                                    ),
+                                                                ],
+                                                            ),
+                                                        },
+                                                    },
+                                                    Assignment {
+                                                        lhs: Identifier(
+                                                            l(11),
+                                                        ),
+                                                        rhs: LvalueToRvalue(
+                                                            Member {
+                                                                lhs: Identifier(
+                                                                    l(11),
+                                                                ),
+                                                                member_name: r"tail",
+                                                            },
+                                                        ),
+                                                    },
+                                                ],
+                                                locals_count: 0,
                                             },
-                                        ),
+                                        },
+                                        Return {
+                                            value: LvalueToRvalue(
+                                                Identifier(
+                                                    result(12),
+                                                ),
+                                            ),
+                                        },
                                     ],
                                     locals_count: 1,
                                 },
@@ -477,8 +461,8 @@
                             args_bindings: [],
                             body: Block(
                                 Block {
-                                    elems: [
-                                        Decl(
+                                    stmts: [
+                                        Declaration(
                                             Binding {
                                                 name: list(14),
                                                 decl: Var(
@@ -506,20 +490,18 @@
                                                 ),
                                             },
                                         ),
-                                        Stmt(
-                                            Print {
-                                                value: Call {
-                                                    callee: length(7),
-                                                    args: [
-                                                        LvalueToRvalue(
-                                                            Identifier(
-                                                                list(14),
-                                                            ),
+                                        Print {
+                                            value: Call {
+                                                callee: length(7),
+                                                args: [
+                                                    LvalueToRvalue(
+                                                        Identifier(
+                                                            list(14),
                                                         ),
-                                                    ],
-                                                },
+                                                    ),
+                                                ],
                                             },
-                                        ),
+                                        },
                                     ],
                                     locals_count: 1,
                                 },
@@ -778,8 +760,8 @@
                             ],
                             body: Block(
                                 Block {
-                                    elems: [
-                                        Decl(
+                                    stmts: [
+                                        Declaration(
                                             Binding {
                                                 name: result(9),
                                                 decl: Var(
@@ -800,75 +782,67 @@
                                                 ),
                                             },
                                         ),
-                                        Stmt(
-                                            While {
-                                                condition: UnOp {
-                                                    op: BoolNeg,
-                                                    operand: Call {
-                                                        callee: is_empty(6),
-                                                        args: [
-                                                            LvalueToRvalue(
-                                                                Identifier(
-                                                                    l(8),
-                                                                ),
+                                        While {
+                                            condition: UnOp {
+                                                op: BoolNeg,
+                                                operand: Call {
+                                                    callee: is_empty(6),
+                                                    args: [
+                                                        LvalueToRvalue(
+                                                            Identifier(
+                                                                l(8),
                                                             ),
-                                                        ],
-                                                    },
-                                                },
-                                                body: Block {
-                                                    elems: [
-                                                        Stmt(
-                                                            Assignment {
-                                                                lhs: Identifier(
-                                                                    result(9),
-                                                                ),
-                                                                rhs: BinOp {
-                                                                    op: Int(
-                                                                        Add,
-                                                                    ),
-                                                                    lhs: LvalueToRvalue(
-                                                                        Identifier(
-                                                                            result(9),
-                                                                        ),
-                                                                    ),
-                                                                    rhs: IntegerLiteral(
-                                                                        IntegerLiteral {
-                                                                            repr: "1",
-                                                                            value: 1,
-                                                                        },
-                                                                    ),
-                                                                },
-                                                            },
-                                                        ),
-                                                        Stmt(
-                                                            Assignment {
-                                                                lhs: Identifier(
-                                                                    l(8),
-                                                                ),
-                                                                rhs: LvalueToRvalue(
-                                                                    Member {
-                                                                        lhs: Identifier(
-                                                                            l(8),
-                                                                        ),
-                                                                        member_name: r"tail",
-                                                                    },
-                                                                ),
-                                                            },
                                                         ),
                                                     ],
-                                                    locals_count: 0,
                                                 },
                                             },
-                                        ),
-                                        Stmt(
-                                            Return {
-                                                value: LvalueToRvalue(
-                                                    Identifier(
-                                                        result(9),
-                                                    ),
-                                                ),
+                                            body: Block {
+                                                stmts: [
+                                                    Assignment {
+                                                        lhs: Identifier(
+                                                            result(9),
+                                                        ),
+                                                        rhs: BinOp {
+                                                            op: Int(
+                                                                Add,
+                                                            ),
+                                                            lhs: LvalueToRvalue(
+                                                                Identifier(
+                                                                    result(9),
+                                                                ),
+                                                            ),
+                                                            rhs: IntegerLiteral(
+                                                                IntegerLiteral {
+                                                                    repr: "1",
+                                                                    value: 1,
+                                                                },
+                                                            ),
+                                                        },
+                                                    },
+                                                    Assignment {
+                                                        lhs: Identifier(
+                                                            l(8),
+                                                        ),
+                                                        rhs: LvalueToRvalue(
+                                                            Member {
+                                                                lhs: Identifier(
+                                                                    l(8),
+                                                                ),
+                                                                member_name: r"tail",
+                                                            },
+                                                        ),
+                                                    },
+                                                ],
+                                                locals_count: 0,
                                             },
-                                        ),
+                                        },
+                                        Return {
+                                            value: LvalueToRvalue(
+                                                Identifier(
+                                                    result(9),
+                                                ),
+                                            ),
+                                        },
                                     ],
                                     locals_count: 1,
                                 },
@@ -944,8 +918,8 @@
                             ],
                             body: Block(
                                 Block {
-                                    elems: [
-                                        Decl(
+                                    stmts: [
+                                        Declaration(
                                             Binding {
                                                 name: result(12),
                                                 decl: Var(
@@ -966,87 +940,79 @@
                                                 ),
                                             },
                                         ),
-                                        Stmt(
-                                            While {
-                                                condition: UnOp {
-                                                    op: BoolNeg,
-                                                    operand: Call {
-                                                        callee: is_empty(6),
-                                                        args: [
-                                                            LvalueToRvalue(
-                                                                Identifier(
-                                                                    l(11),
-                                                                ),
+                                        While {
+                                            condition: UnOp {
+                                                op: BoolNeg,
+                                                operand: Call {
+                                                    callee: is_empty(6),
+                                                    args: [
+                                                        LvalueToRvalue(
+                                                            Identifier(
+                                                                l(11),
                                                             ),
-                                                        ],
-                                                    },
-                                                },
-                                                body: Block {
-                                                    elems: [
-                                                        Stmt(
-                                                            Assignment {
-                                                                lhs: Identifier(
-                                                                    result(12),
-                                                                ),
-                                                                rhs: New {
-                                                                    t: Alias(
-                                                                        linked_list(0),
-                                                                    ),
-                                                                    fields: Some(
-                                                                        [
-                                                                            (
-                                                                                r"data",
-                                                                                LvalueToRvalue(
-                                                                                    Member {
-                                                                                        lhs: Identifier(
-                                                                                            l(11),
-                                                                                        ),
-                                                                                        member_name: r"data",
-                                                                                    },
-                                                                                ),
-                                                                            ),
-                                                                            (
-                                                                                r"tail",
-                                                                                LvalueToRvalue(
-                                                                                    Identifier(
-                                                                                        result(12),
-                                                                                    ),
-                                                                                ),
-                                                                            ),
-                                                                        ],
-                                                                    ),
-                                                                },
-                                                            },
-                                                        ),
-                                                        Stmt(
-                                                            Assignment {
-                                                                lhs: Identifier(
-                                                                    l(11),
-                                                                ),
-                                                                rhs: LvalueToRvalue(
-                                                                    Member {
-                                                                        lhs: Identifier(
-                                                                            l(11),
-                                                                        ),
-                                                                        member_name: r"tail",
-                                                                    },
-                                                                ),
-                                                            },
                                                         ),
                                                     ],
-                                                    locals_count: 0,
                                                 },
                                             },
-                                        ),
-                                        Stmt(
-                                            Return {
-                                                value: LvalueToRvalue(
-                                                    Identifier(
-                                                        result(12),
-                                                    ),
-                                                ),
+                                            body: Block {
+                                                stmts: [
+                                                    Assignment {
+                                                        lhs: Identifier(
+                                                            result(12),
+                                                        ),
+                                                        rhs: New {
+                                                            t: Alias(
+                                                                linked_list(0),
+                                                            ),
+                                                            fields: Some(
+                                                                [
+                                                                    (
+                                                                        r"data",
+                                                                        LvalueToRvalue(
+                                                                            Member {
+                                                                                lhs: Identifier(
+                                                                                    l(11),
+                                                                                ),
+                                                                                member_name: r"data",
+                                                                            },
+                                                                        ),
+                                                                    ),
+                                                                    (
+                                                                        r"tail",
+                                                                        LvalueToRvalue(
+                                                                            Identifier(
+                                                                                result(12),
+                                                                            ),
+                                                                        ),
+                                                                    ),
+                                                                ],
+                                                            ),
+                                                        },
+                                                    },
+                                                    Assignment {
+                                                        lhs: Identifier(
+                                                            l(11),
+                                                        ),
+                                                        rhs: LvalueToRvalue(
+                                                            Member {
+                                                                lhs: Identifier(
+                                                                    l(11),
+                                                                ),
+                                                                member_name: r"tail",
+                                                            },
+                                                        ),
+                                                    },
+                                                ],
+                                                locals_count: 0,
                                             },
-                                        ),
+                                        },
+                                        Return {
+                                            value: LvalueToRvalue(
+                                                Identifier(
+                                                    result(12),
+                                                ),
+                                            ),
+                                        },
                                     ],
                                     locals_count: 1,
                                 },
@@ -1100,8 +1066,8 @@
                             args_bindings: [],
                             body: Block(
                                 Block {
-                                    elems: [
-                                        Decl(
+                                    stmts: [
+                                        Declaration(
                                             Binding {
                                                 name: list(14),
                                                 decl: Var(
@@ -1129,20 +1095,18 @@
                                                 ),
                                             },
                                         ),
-                                        Stmt(
-                                            Print {
-                                                value: Call {
-                                                    callee: length(7),
-                                                    args: [
-                                                        LvalueToRvalue(
-                                                            Identifier(
-                                                                list(14),
-                                                            ),
+                                        Print {
+                                            value: Call {
+                                                callee: length(7),
+                                                args: [
+                                                    LvalueToRvalue(
+                                                        Identifier(
+                                                            list(14),
                                                         ),
-                                                    ],
-                                                },
+                                                    ),
+                                                ],
                                             },
-                                        ),
+                                        },
                                     ],
                                     locals_count: 1,
                                 },

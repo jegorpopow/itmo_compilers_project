@@ -29,65 +29,59 @@
                             ],
                             body: Block(
                                 Block {
-                                    elems: [
-                                        Stmt(
-                                            If {
-                                                condition: BinOp {
-                                                    op: Real(
-                                                        Lt,
-                                                    ),
-                                                    lhs: LvalueToRvalue(
-                                                        Identifier(
-                                                            value(1),
-                                                        ),
-                                                    ),
-                                                    rhs: RealLiteral(
-                                                        RealLiteral {
-                                                            repr: "0.0",
-                                                            value: 0.0,
-                                                        },
-                                                    ),
-                                                },
-                                                on_true: Block {
-                                                    elems: [
-                                                        Stmt(
-                                                            Assignment {
-                                                                lhs: Identifier(
-                                                                    value(1),
-                                                                ),
-                                                                rhs: BinOp {
-                                                                    op: Real(
-                                                                        Sub,
-                                                                    ),
-                                                                    lhs: RealLiteral(
-                                                                        RealLiteral {
-                                                                            repr: "0.0",
-                                                                            value: 0.0,
-                                                                        },
-                                                                    ),
-                                                                    rhs: LvalueToRvalue(
-                                                                        Identifier(
-                                                                            value(1),
-                                                                        ),
-                                                                    ),
-                                                                },
-                                                            },
-                                                        ),
-                                                    ],
-                                                    locals_count: 0,
-                                                },
-                                                on_false: None,
-                                            },
-                                        ),
-                                        Stmt(
-                                            Return {
-                                                value: LvalueToRvalue(
+                                    stmts: [
+                                        If {
+                                            condition: BinOp {
+                                                op: Real(
+                                                    Lt,
+                                                ),
+                                                lhs: LvalueToRvalue(
                                                     Identifier(
                                                         value(1),
                                                     ),
                                                 ),
+                                                rhs: RealLiteral(
+                                                    RealLiteral {
+                                                        repr: "0.0",
+                                                        value: 0.0,
+                                                    },
+                                                ),
                                             },
-                                        ),
+                                            on_true: Block {
+                                                stmts: [
+                                                    Assignment {
+                                                        lhs: Identifier(
+                                                            value(1),
+                                                        ),
+                                                        rhs: BinOp {
+                                                            op: Real(
+                                                                Sub,
+                                                            ),
+                                                            lhs: RealLiteral(
+                                                                RealLiteral {
+                                                                    repr: "0.0",
+                                                                    value: 0.0,
+                                                                },
+                                                            ),
+                                                            rhs: LvalueToRvalue(
+                                                                Identifier(
+                                                                    value(1),
+                                                                ),
+                                                            ),
+                                                        },
+                                                    },
+                                                ],
+                                                locals_count: 0,
+                                            },
+                                            on_false: None,
+                                        },
+                                        Return {
+                                            value: LvalueToRvalue(
+                                                Identifier(
+                                                    value(1),
+                                                ),
+                                            ),
+                                        },
                                     ],
                                     locals_count: 0,
                                 },
@@ -108,8 +102,8 @@
                             args_bindings: [],
                             body: Block(
                                 Block {
-                                    elems: [
-                                        Decl(
+                                    stmts: [
+                                        Declaration(
                                             Binding {
                                                 name: a(3),
                                                 decl: Var(
@@ -130,99 +124,91 @@
                                                 ),
                                             },
                                         ),
-                                        Stmt(
-                                            If {
-                                                condition: BinOp {
-                                                    op: Eq(
-                                                        Eq,
+                                        If {
+                                            condition: BinOp {
+                                                op: Eq(
+                                                    Eq,
+                                                ),
+                                                lhs: BinOp {
+                                                    op: Int(
+                                                        Mod,
                                                     ),
-                                                    lhs: BinOp {
-                                                        op: Int(
-                                                            Mod,
+                                                    lhs: LvalueToRvalue(
+                                                        Identifier(
+                                                            a(3),
                                                         ),
-                                                        lhs: LvalueToRvalue(
-                                                            Identifier(
-                                                                a(3),
-                                                            ),
-                                                        ),
-                                                        rhs: IntegerLiteral(
-                                                            IntegerLiteral {
-                                                                repr: "2",
-                                                                value: 2,
-                                                            },
-                                                        ),
-                                                    },
+                                                    ),
                                                     rhs: IntegerLiteral(
                                                         IntegerLiteral {
-                                                            repr: "0",
-                                                            value: 0,
+                                                            repr: "2",
+                                                            value: 2,
                                                         },
                                                     ),
                                                 },
-                                                on_true: Block {
-                                                    elems: [
-                                                        Decl(
-                                                            Binding {
-                                                                name: dummy(4),
-                                                                decl: Var(
-                                                                    VarDecl {
-                                                                        t: Int,
-                                                                        initialiser: Some(
-                                                                            IntegerLiteral(
-                                                                                IntegerLiteral {
-                                                                                    repr: "0",
-                                                                                    value: 0,
-                                                                                },
-                                                                            ),
-                                                                        ),
-                                                                        relative_location: Local(
-                                                                            1,
-                                                                        ),
-                                                                    },
-                                                                ),
-                                                            },
-                                                        ),
-                                                        Stmt(
-                                                            Print {
-                                                                value: IntegerLiteral(
-                                                                    IntegerLiteral {
-                                                                        repr: "0",
-                                                                        value: 0,
-                                                                    },
-                                                                ),
-                                                            },
-                                                        ),
-                                                        Stmt(
-                                                            Print {
-                                                                value: LvalueToRvalue(
-                                                                    Identifier(
-                                                                        dummy(4),
-                                                                    ),
-                                                                ),
-                                                            },
-                                                        ),
-                                                    ],
-                                                    locals_count: 1,
-                                                },
-                                                on_false: Some(
-                                                    Block {
-                                                        elems: [
-                                                            Stmt(
-                                                                Print {
-                                                                    value: IntegerLiteral(
-                                                                        IntegerLiteral {
-                                                                            repr: "1",
-                                                                            value: 1,
-                                                                        },
-                                                                    ),
-                                                                },
-                                                            ),
-                                                        ],
-                                                        locals_count: 0,
+                                                rhs: IntegerLiteral(
+                                                    IntegerLiteral {
+                                                        repr: "0",
+                                                        value: 0,
                                                     },
                                                 ),
                                             },
-                                        ),
+                                            on_true: Block {
+                                                stmts: [
+                                                    Declaration(
+                                                        Binding {
+                                                            name: dummy(4),
+                                                            decl: Var(
+                                                                VarDecl {
+                                                                    t: Int,
+                                                                    initialiser: Some(
+                                                                        IntegerLiteral(
+                                                                            IntegerLiteral {
+                                                                                repr: "0",
+                                                                                value: 0,
+                                                                            },
+                                                                        ),
+                                                                    ),
+                                                                    relative_location: Local(
+                                                                        1,
+                                                                    ),
+                                                                },
+                                                            ),
+                                                        },
+                                                    ),
+                                                    Print {
+                                                        value: IntegerLiteral(
+                                                            IntegerLiteral {
+                                                                repr: "0",
+                                                                value: 0,
+                                                            },
+                                                        ),
+                                                    },
+                                                    Print {
+                                                        value: LvalueToRvalue(
+                                                            Identifier(
+                                                                dummy(4),
+                                                            ),
+                                                        ),
+                                                    },
+                                                ],
+                                                locals_count: 1,
+                                            },
+                                            on_false: Some(
+                                                Block {
+                                                    stmts: [
+                                                        Print {
+                                                            value: IntegerLiteral(
+                                                                IntegerLiteral {
+                                                                    repr: "1",
+                                                                    value: 1,
+                                                                },
+                                                            ),
+                                                        },
+                                                    ],
+                                                    locals_count: 0,
+                                                },
+                                            ),
+                                        },
                                     ],
                                     locals_count: 1,
                                 },
@@ -263,65 +249,59 @@
                             ],
                             body: Block(
                                 Block {
-                                    elems: [
-                                        Stmt(
-                                            If {
-                                                condition: BinOp {
-                                                    op: Real(
-                                                        Lt,
-                                                    ),
-                                                    lhs: LvalueToRvalue(
-                                                        Identifier(
-                                                            value(1),
-                                                        ),
-                                                    ),
-                                                    rhs: RealLiteral(
-                                                        RealLiteral {
-                                                            repr: "0.0",
-                                                            value: 0.0,
-                                                        },
-                                                    ),
-                                                },
-                                                on_true: Block {
-                                                    elems: [
-                                                        Stmt(
-                                                            Assignment {
-                                                                lhs: Identifier(
-                                                                    value(1),
-                                                                ),
-                                                                rhs: BinOp {
-                                                                    op: Real(
-                                                                        Sub,
-                                                                    ),
-                                                                    lhs: RealLiteral(
-                                                                        RealLiteral {
-                                                                            repr: "0.0",
-                                                                            value: 0.0,
-                                                                        },
-                                                                    ),
-                                                                    rhs: LvalueToRvalue(
-                                                                        Identifier(
-                                                                            value(1),
-                                                                        ),
-                                                                    ),
-                                                                },
-                                                            },
-                                                        ),
-                                                    ],
-                                                    locals_count: 0,
-                                                },
-                                                on_false: None,
-                                            },
-                                        ),
-                                        Stmt(
-                                            Return {
-                                                value: LvalueToRvalue(
+                                    stmts: [
+                                        If {
+                                            condition: BinOp {
+                                                op: Real(
+                                                    Lt,
+                                                ),
+                                                lhs: LvalueToRvalue(
                                                     Identifier(
                                                         value(1),
                                                     ),
                                                 ),
+                                                rhs: RealLiteral(
+                                                    RealLiteral {
+                                                        repr: "0.0",
+                                                        value: 0.0,
+                                                    },
+                                                ),
                                             },
-                                        ),
+                                            on_true: Block {
+                                                stmts: [
+                                                    Assignment {
+                                                        lhs: Identifier(
+                                                            value(1),
+                                                        ),
+                                                        rhs: BinOp {
+                                                            op: Real(
+                                                                Sub,
+                                                            ),
+                                                            lhs: RealLiteral(
+                                                                RealLiteral {
+                                                                    repr: "0.0",
+                                                                    value: 0.0,
+                                                                },
+                                                            ),
+                                                            rhs: LvalueToRvalue(
+                                                                Identifier(
+                                                                    value(1),
+                                                                ),
+                                                            ),
+                                                        },
+                                                    },
+                                                ],
+                                                locals_count: 0,
+                                            },
+                                            on_false: None,
+                                        },
+                                        Return {
+                                            value: LvalueToRvalue(
+                                                Identifier(
+                                                    value(1),
+                                                ),
+                                            ),
+                                        },
                                     ],
                                     locals_count: 0,
                                 },
@@ -354,8 +334,8 @@
                             args_bindings: [],
                             body: Block(
                                 Block {
-                                    elems: [
-                                        Decl(
+                                    stmts: [
+                                        Declaration(
                                             Binding {
                                                 name: a(3),
                                                 decl: Var(
@@ -376,99 +356,91 @@
                                                 ),
                                             },
                                         ),
-                                        Stmt(
-                                            If {
-                                                condition: BinOp {
-                                                    op: Eq(
-                                                        Eq,
+                                        If {
+                                            condition: BinOp {
+                                                op: Eq(
+                                                    Eq,
+                                                ),
+                                                lhs: BinOp {
+                                                    op: Int(
+                                                        Mod,
                                                     ),
-                                                    lhs: BinOp {
-                                                        op: Int(
-                                                            Mod,
+                                                    lhs: LvalueToRvalue(
+                                                        Identifier(
+                                                            a(3),
                                                         ),
-                                                        lhs: LvalueToRvalue(
-                                                            Identifier(
-                                                                a(3),
-                                                            ),
-                                                        ),
-                                                        rhs: IntegerLiteral(
-                                                            IntegerLiteral {
-                                                                repr: "2",
-                                                                value: 2,
-                                                            },
-                                                        ),
-                                                    },
+                                                    ),
                                                     rhs: IntegerLiteral(
                                                         IntegerLiteral {
-                                                            repr: "0",
-                                                            value: 0,
+                                                            repr: "2",
+                                                            value: 2,
                                                         },
                                                     ),
                                                 },
-                                                on_true: Block {
-                                                    elems: [
-                                                        Decl(
-                                                            Binding {
-                                                                name: dummy(4),
-                                                                decl: Var(
-                                                                    VarDecl {
-                                                                        t: Int,
-                                                                        initialiser: Some(
-                                                                            IntegerLiteral(
-                                                                                IntegerLiteral {
-                                                                                    repr: "0",
-                                                                                    value: 0,
-                                                                                },
-                                                                            ),
-                                                                        ),
-                                                                        relative_location: Local(
-                                                                            1,
-                                                                        ),
-                                                                    },
-                                                                ),
-                                                            },
-                                                        ),
-                                                        Stmt(
-                                                            Print {
-                                                                value: IntegerLiteral(
-                                                                    IntegerLiteral {
-                                                                        repr: "0",
-                                                                        value: 0,
-                                                                    },
-                                                                ),
-                                                            },
-                                                        ),
-                                                        Stmt(
-                                                            Print {
-                                                                value: LvalueToRvalue(
-                                                                    Identifier(
-                                                                        dummy(4),
-                                                                    ),
-                                                                ),
-                                                            },
-                                                        ),
-                                                    ],
-                                                    locals_count: 1,
-                                                },
-                                                on_false: Some(
-                                                    Block {
-                                                        elems: [
-                                                            Stmt(
-                                                                Print {
-                                                                    value: IntegerLiteral(
-                                                                        IntegerLiteral {
-                                                                            repr: "1",
-                                                                            value: 1,
-                                                                        },
-                                                                    ),
-                                                                },
-                                                            ),
-                                                        ],
-                                                        locals_count: 0,
+                                                rhs: IntegerLiteral(
+                                                    IntegerLiteral {
+                                                        repr: "0",
+                                                        value: 0,
                                                     },
                                                 ),
                                             },
-                                        ),
+                                            on_true: Block {
+                                                stmts: [
+                                                    Declaration(
+                                                        Binding {
+                                                            name: dummy(4),
+                                                            decl: Var(
+                                                                VarDecl {
+                                                                    t: Int,
+                                                                    initialiser: Some(
+                                                                        IntegerLiteral(
+                                                                            IntegerLiteral {
+                                                                                repr: "0",
+                                                                                value: 0,
+                                                                            },
+                                                                        ),
+                                                                    ),
+                                                                    relative_location: Local(
+                                                                        1,
+                                                                    ),
+                                                                },
+                                                            ),
+                                                        },
+                                                    ),
+                                                    Print {
+                                                        value: IntegerLiteral(
+                                                            IntegerLiteral {
+                                                                repr: "0",
+                                                                value: 0,
+                                                            },
+                                                        ),
+                                                    },
+                                                    Print {
+                                                        value: LvalueToRvalue(
+                                                            Identifier(
+                                                                dummy(4),
+                                                            ),
+                                                        ),
+                                                    },
+                                                ],
+                                                locals_count: 1,
+                                            },
+                                            on_false: Some(
+                                                Block {
+                                                    stmts: [
+                                                        Print {
+                                                            value: IntegerLiteral(
+                                                                IntegerLiteral {
+                                                                    repr: "1",
+                                                                    value: 1,
+                                                                },
+                                                            ),
+                                                        },
+                                                    ],
+                                                    locals_count: 0,
+                                                },
+                                            ),
+                                        },
                                     ],
                                     locals_count: 1,
                                 },

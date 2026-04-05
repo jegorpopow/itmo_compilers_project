@@ -13,36 +13,31 @@
                             args_bindings: [],
                             body: Block(
                                 Block {
-                                    elems: [
-                                        Stmt(
-                                            If {
-                                                condition: BoolLiteral(
+                                    stmts: [
+                                        If {
+                                            condition: UnOp {
+                                                op: BoolNeg,
+                                                operand: BoolLiteral(
                                                     True,
                                                 ),
-                                                on_true: Block {
-                                                    elems: [],
-                                                    locals_count: 0,
-                                                },
-                                                on_false: Some(
-                                                    Block {
-                                                        elems: [
-                                                            Stmt(
-                                                                Panic {
-                                                                    pos: Position {
-                                                                        line: 2,
-                                                                        column: 1,
-                                                                    },
-                                                                },
-                                                            ),
-                                                        ],
-                                                        locals_count: 0,
-                                                    },
-                                                ),
                                             },
-                                        ),
-                                        Stmt(
-                                            If {
-                                                condition: IntToBool(
+                                            on_true: Block {
+                                                stmts: [
+                                                    Panic {
+                                                        pos: Position {
+                                                            line: 2,
+                                                            column: 1,
+                                                        },
+                                                    },
+                                                ],
+                                                locals_count: 0,
+                                            },
+                                            on_false: None,
+                                        },
+                                        If {
+                                            condition: UnOp {
+                                                op: BoolNeg,
+                                                operand: IntToBool(
                                                     IntegerLiteral(
                                                         IntegerLiteral {
                                                             repr: "1",
@@ -50,30 +45,24 @@
                                                         },
                                                     ),
                                                 ),
-                                                on_true: Block {
-                                                    elems: [],
-                                                    locals_count: 0,
-                                                },
-                                                on_false: Some(
-                                                    Block {
-                                                        elems: [
-                                                            Stmt(
-                                                                Panic {
-                                                                    pos: Position {
-                                                                        line: 3,
-                                                                        column: 1,
-                                                                    },
-                                                                },
-                                                            ),
-                                                        ],
-                                                        locals_count: 0,
-                                                    },
-                                                ),
                                             },
-                                        ),
-                                        Stmt(
-                                            If {
-                                                condition: BinOp {
+                                            on_true: Block {
+                                                stmts: [
+                                                    Panic {
+                                                        pos: Position {
+                                                            line: 3,
+                                                            column: 1,
+                                                        },
+                                                    },
+                                                ],
+                                                locals_count: 0,
+                                            },
+                                            on_false: None,
+                                        },
+                                        If {
+                                            condition: UnOp {
+                                                op: BoolNeg,
+                                                operand: BinOp {
                                                     op: Eq(
                                                         Eq,
                                                     ),
@@ -101,27 +90,20 @@
                                                         },
                                                     ),
                                                 },
-                                                on_true: Block {
-                                                    elems: [],
-                                                    locals_count: 0,
-                                                },
-                                                on_false: Some(
-                                                    Block {
-                                                        elems: [
-                                                            Stmt(
-                                                                Panic {
-                                                                    pos: Position {
-                                                                        line: 4,
-                                                                        column: 1,
-                                                                    },
-                                                                },
-                                                            ),
-                                                        ],
-                                                        locals_count: 0,
-                                                    },
-                                                ),
                                             },
-                                        ),
+                                            on_true: Block {
+                                                stmts: [
+                                                    Panic {
+                                                        pos: Position {
+                                                            line: 4,
+                                                            column: 1,
+                                                        },
+                                                    },
+                                                ],
+                                                locals_count: 0,
+                                            },
+                                            on_false: None,
+                                        },
                                     ],
                                     locals_count: 0,
                                 },
@@ -146,36 +128,31 @@
                             args_bindings: [],
                             body: Block(
                                 Block {
-                                    elems: [
-                                        Stmt(
-                                            If {
-                                                condition: BoolLiteral(
+                                    stmts: [
+                                        If {
+                                            condition: UnOp {
+                                                op: BoolNeg,
+                                                operand: BoolLiteral(
                                                     True,
                                                 ),
-                                                on_true: Block {
-                                                    elems: [],
-                                                    locals_count: 0,
-                                                },
-                                                on_false: Some(
-                                                    Block {
-                                                        elems: [
-                                                            Stmt(
-                                                                Panic {
-                                                                    pos: Position {
-                                                                        line: 2,
-                                                                        column: 1,
-                                                                    },
-                                                                },
-                                                            ),
-                                                        ],
-                                                        locals_count: 0,
-                                                    },
-                                                ),
                                             },
-                                        ),
-                                        Stmt(
-                                            If {
-                                                condition: IntToBool(
+                                            on_true: Block {
+                                                stmts: [
+                                                    Panic {
+                                                        pos: Position {
+                                                            line: 2,
+                                                            column: 1,
+                                                        },
+                                                    },
+                                                ],
+                                                locals_count: 0,
+                                            },
+                                            on_false: None,
+                                        },
+                                        If {
+                                            condition: UnOp {
+                                                op: BoolNeg,
+                                                operand: IntToBool(
                                                     IntegerLiteral(
                                                         IntegerLiteral {
                                                             repr: "1",
@@ -183,30 +160,24 @@
                                                         },
                                                     ),
                                                 ),
-                                                on_true: Block {
-                                                    elems: [],
-                                                    locals_count: 0,
-                                                },
-                                                on_false: Some(
-                                                    Block {
-                                                        elems: [
-                                                            Stmt(
-                                                                Panic {
-                                                                    pos: Position {
-                                                                        line: 3,
-                                                                        column: 1,
-                                                                    },
-                                                                },
-                                                            ),
-                                                        ],
-                                                        locals_count: 0,
-                                                    },
-                                                ),
                                             },
-                                        ),
-                                        Stmt(
-                                            If {
-                                                condition: BinOp {
+                                            on_true: Block {
+                                                stmts: [
+                                                    Panic {
+                                                        pos: Position {
+                                                            line: 3,
+                                                            column: 1,
+                                                        },
+                                                    },
+                                                ],
+                                                locals_count: 0,
+                                            },
+                                            on_false: None,
+                                        },
+                                        If {
+                                            condition: UnOp {
+                                                op: BoolNeg,
+                                                operand: BinOp {
                                                     op: Eq(
                                                         Eq,
                                                     ),
@@ -234,27 +205,20 @@
                                                         },
                                                     ),
                                                 },
-                                                on_true: Block {
-                                                    elems: [],
-                                                    locals_count: 0,
-                                                },
-                                                on_false: Some(
-                                                    Block {
-                                                        elems: [
-                                                            Stmt(
-                                                                Panic {
-                                                                    pos: Position {
-                                                                        line: 4,
-                                                                        column: 1,
-                                                                    },
-                                                                },
-                                                            ),
-                                                        ],
-                                                        locals_count: 0,
-                                                    },
-                                                ),
                                             },
-                                        ),
+                                            on_true: Block {
+                                                stmts: [
+                                                    Panic {
+                                                        pos: Position {
+                                                            line: 4,
+                                                            column: 1,
+                                                        },
+                                                    },
+                                                ],
+                                                locals_count: 0,
+                                            },
+                                            on_false: None,
+                                        },
                                     ],
                                     locals_count: 0,
                                 },

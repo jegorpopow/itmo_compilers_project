@@ -159,110 +159,108 @@
                             ],
                             body: Block(
                                 Block {
-                                    elems: [
-                                        Stmt(
-                                            Return {
-                                                value: BinOp {
+                                    stmts: [
+                                        Return {
+                                            value: BinOp {
+                                                op: Real(
+                                                    Add,
+                                                ),
+                                                lhs: BinOp {
                                                     op: Real(
-                                                        Add,
+                                                        Mul,
                                                     ),
                                                     lhs: BinOp {
                                                         op: Real(
-                                                            Mul,
+                                                            Sub,
                                                         ),
-                                                        lhs: BinOp {
-                                                            op: Real(
-                                                                Sub,
-                                                            ),
-                                                            lhs: LvalueToRvalue(
-                                                                Member {
-                                                                    lhs: Identifier(
-                                                                        from(5),
-                                                                    ),
-                                                                    member_name: r"x",
-                                                                },
-                                                            ),
-                                                            rhs: LvalueToRvalue(
-                                                                Member {
-                                                                    lhs: Identifier(
-                                                                        to(6),
-                                                                    ),
-                                                                    member_name: r"x",
-                                                                },
-                                                            ),
-                                                        },
-                                                        rhs: BinOp {
-                                                            op: Real(
-                                                                Sub,
-                                                            ),
-                                                            lhs: LvalueToRvalue(
-                                                                Member {
-                                                                    lhs: Identifier(
-                                                                        from(5),
-                                                                    ),
-                                                                    member_name: r"x",
-                                                                },
-                                                            ),
-                                                            rhs: LvalueToRvalue(
-                                                                Member {
-                                                                    lhs: Identifier(
-                                                                        to(6),
-                                                                    ),
-                                                                    member_name: r"x",
-                                                                },
-                                                            ),
-                                                        },
+                                                        lhs: LvalueToRvalue(
+                                                            Member {
+                                                                lhs: Identifier(
+                                                                    from(5),
+                                                                ),
+                                                                member_name: r"x",
+                                                            },
+                                                        ),
+                                                        rhs: LvalueToRvalue(
+                                                            Member {
+                                                                lhs: Identifier(
+                                                                    to(6),
+                                                                ),
+                                                                member_name: r"x",
+                                                            },
+                                                        ),
                                                     },
                                                     rhs: BinOp {
                                                         op: Real(
-                                                            Mul,
+                                                            Sub,
                                                         ),
-                                                        lhs: BinOp {
-                                                            op: Real(
-                                                                Sub,
-                                                            ),
-                                                            lhs: LvalueToRvalue(
-                                                                Member {
-                                                                    lhs: Identifier(
-                                                                        from(5),
-                                                                    ),
-                                                                    member_name: r"y",
-                                                                },
-                                                            ),
-                                                            rhs: LvalueToRvalue(
-                                                                Member {
-                                                                    lhs: Identifier(
-                                                                        to(6),
-                                                                    ),
-                                                                    member_name: r"y",
-                                                                },
-                                                            ),
-                                                        },
-                                                        rhs: BinOp {
-                                                            op: Real(
-                                                                Sub,
-                                                            ),
-                                                            lhs: LvalueToRvalue(
-                                                                Member {
-                                                                    lhs: Identifier(
-                                                                        from(5),
-                                                                    ),
-                                                                    member_name: r"y",
-                                                                },
-                                                            ),
-                                                            rhs: LvalueToRvalue(
-                                                                Member {
-                                                                    lhs: Identifier(
-                                                                        to(6),
-                                                                    ),
-                                                                    member_name: r"y",
-                                                                },
-                                                            ),
-                                                        },
+                                                        lhs: LvalueToRvalue(
+                                                            Member {
+                                                                lhs: Identifier(
+                                                                    from(5),
+                                                                ),
+                                                                member_name: r"x",
+                                                            },
+                                                        ),
+                                                        rhs: LvalueToRvalue(
+                                                            Member {
+                                                                lhs: Identifier(
+                                                                    to(6),
+                                                                ),
+                                                                member_name: r"x",
+                                                            },
+                                                        ),
+                                                    },
+                                                },
+                                                rhs: BinOp {
+                                                    op: Real(
+                                                        Mul,
+                                                    ),
+                                                    lhs: BinOp {
+                                                        op: Real(
+                                                            Sub,
+                                                        ),
+                                                        lhs: LvalueToRvalue(
+                                                            Member {
+                                                                lhs: Identifier(
+                                                                    from(5),
+                                                                ),
+                                                                member_name: r"y",
+                                                            },
+                                                        ),
+                                                        rhs: LvalueToRvalue(
+                                                            Member {
+                                                                lhs: Identifier(
+                                                                    to(6),
+                                                                ),
+                                                                member_name: r"y",
+                                                            },
+                                                        ),
+                                                    },
+                                                    rhs: BinOp {
+                                                        op: Real(
+                                                            Sub,
+                                                        ),
+                                                        lhs: LvalueToRvalue(
+                                                            Member {
+                                                                lhs: Identifier(
+                                                                    from(5),
+                                                                ),
+                                                                member_name: r"y",
+                                                            },
+                                                        ),
+                                                        rhs: LvalueToRvalue(
+                                                            Member {
+                                                                lhs: Identifier(
+                                                                    to(6),
+                                                                ),
+                                                                member_name: r"y",
+                                                            },
+                                                        ),
                                                     },
                                                 },
                                             },
-                                        ),
+                                        },
                                     ],
                                     locals_count: 0,
                                 },
@@ -412,8 +410,8 @@
                             args_bindings: [],
                             body: Block(
                                 Block {
-                                    elems: [
-                                        Decl(
+                                    stmts: [
+                                        Declaration(
                                             Binding {
                                                 name: p1(11),
                                                 decl: Var(
@@ -447,7 +445,7 @@
                                                 ),
                                             },
                                         ),
-                                        Decl(
+                                        Declaration(
                                             Binding {
                                                 name: p2(12),
                                                 decl: Var(
@@ -481,7 +479,7 @@
                                                 ),
                                             },
                                         ),
-                                        Decl(
+                                        Declaration(
                                             Binding {
                                                 name: mid(13),
                                                 decl: Var(
@@ -513,25 +511,23 @@
                                                 ),
                                             },
                                         ),
-                                        Stmt(
-                                            Print {
-                                                value: Call {
-                                                    callee: squared_distance(4),
-                                                    args: [
-                                                        LvalueToRvalue(
-                                                            Identifier(
-                                                                p1(11),
-                                                            ),
+                                        Print {
+                                            value: Call {
+                                                callee: squared_distance(4),
+                                                args: [
+                                                    LvalueToRvalue(
+                                                        Identifier(
+                                                            p1(11),
                                                         ),
-                                                        LvalueToRvalue(
-                                                            Identifier(
-                                                                p2(12),
-                                                            ),
+                                                    ),
+                                                    LvalueToRvalue(
+                                                        Identifier(
+                                                            p2(12),
                                                         ),
-                                                    ],
-                                                },
+                                                    ),
+                                                ],
                                             },
-                                        ),
+                                        },
                                     ],
                                     locals_count: 3,
                                 },
@@ -726,110 +722,108 @@
                             ],
                             body: Block(
                                 Block {
-                                    elems: [
-                                        Stmt(
-                                            Return {
-                                                value: BinOp {
+                                    stmts: [
+                                        Return {
+                                            value: BinOp {
+                                                op: Real(
+                                                    Add,
+                                                ),
+                                                lhs: BinOp {
                                                     op: Real(
-                                                        Add,
+                                                        Mul,
                                                     ),
                                                     lhs: BinOp {
                                                         op: Real(
-                                                            Mul,
+                                                            Sub,
                                                         ),
-                                                        lhs: BinOp {
-                                                            op: Real(
-                                                                Sub,
-                                                            ),
-                                                            lhs: LvalueToRvalue(
-                                                                Member {
-                                                                    lhs: Identifier(
-                                                                        from(5),
-                                                                    ),
-                                                                    member_name: r"x",
-                                                                },
-                                                            ),
-                                                            rhs: LvalueToRvalue(
-                                                                Member {
-                                                                    lhs: Identifier(
-                                                                        to(6),
-                                                                    ),
-                                                                    member_name: r"x",
-                                                                },
-                                                            ),
-                                                        },
-                                                        rhs: BinOp {
-                                                            op: Real(
-                                                                Sub,
-                                                            ),
-                                                            lhs: LvalueToRvalue(
-                                                                Member {
-                                                                    lhs: Identifier(
-                                                                        from(5),
-                                                                    ),
-                                                                    member_name: r"x",
-                                                                },
-                                                            ),
-                                                            rhs: LvalueToRvalue(
-                                                                Member {
-                                                                    lhs: Identifier(
-                                                                        to(6),
-                                                                    ),
-                                                                    member_name: r"x",
-                                                                },
-                                                            ),
-                                                        },
+                                                        lhs: LvalueToRvalue(
+                                                            Member {
+                                                                lhs: Identifier(
+                                                                    from(5),
+                                                                ),
+                                                                member_name: r"x",
+                                                            },
+                                                        ),
+                                                        rhs: LvalueToRvalue(
+                                                            Member {
+                                                                lhs: Identifier(
+                                                                    to(6),
+                                                                ),
+                                                                member_name: r"x",
+                                                            },
+                                                        ),
                                                     },
                                                     rhs: BinOp {
                                                         op: Real(
-                                                            Mul,
+                                                            Sub,
                                                         ),
-                                                        lhs: BinOp {
-                                                            op: Real(
-                                                                Sub,
-                                                            ),
-                                                            lhs: LvalueToRvalue(
-                                                                Member {
-                                                                    lhs: Identifier(
-                                                                        from(5),
-                                                                    ),
-                                                                    member_name: r"y",
-                                                                },
-                                                            ),
-                                                            rhs: LvalueToRvalue(
-                                                                Member {
-                                                                    lhs: Identifier(
-                                                                        to(6),
-                                                                    ),
-                                                                    member_name: r"y",
-                                                                },
-                                                            ),
-                                                        },
-                                                        rhs: BinOp {
-                                                            op: Real(
-                                                                Sub,
-                                                            ),
-                                                            lhs: LvalueToRvalue(
-                                                                Member {
-                                                                    lhs: Identifier(
-                                                                        from(5),
-                                                                    ),
-                                                                    member_name: r"y",
-                                                                },
-                                                            ),
-                                                            rhs: LvalueToRvalue(
-                                                                Member {
-                                                                    lhs: Identifier(
-                                                                        to(6),
-                                                                    ),
-                                                                    member_name: r"y",
-                                                                },
-                                                            ),
-                                                        },
+                                                        lhs: LvalueToRvalue(
+                                                            Member {
+                                                                lhs: Identifier(
+                                                                    from(5),
+                                                                ),
+                                                                member_name: r"x",
+                                                            },
+                                                        ),
+                                                        rhs: LvalueToRvalue(
+                                                            Member {
+                                                                lhs: Identifier(
+                                                                    to(6),
+                                                                ),
+                                                                member_name: r"x",
+                                                            },
+                                                        ),
+                                                    },
+                                                },
+                                                rhs: BinOp {
+                                                    op: Real(
+                                                        Mul,
+                                                    ),
+                                                    lhs: BinOp {
+                                                        op: Real(
+                                                            Sub,
+                                                        ),
+                                                        lhs: LvalueToRvalue(
+                                                            Member {
+                                                                lhs: Identifier(
+                                                                    from(5),
+                                                                ),
+                                                                member_name: r"y",
+                                                            },
+                                                        ),
+                                                        rhs: LvalueToRvalue(
+                                                            Member {
+                                                                lhs: Identifier(
+                                                                    to(6),
+                                                                ),
+                                                                member_name: r"y",
+                                                            },
+                                                        ),
+                                                    },
+                                                    rhs: BinOp {
+                                                        op: Real(
+                                                            Sub,
+                                                        ),
+                                                        lhs: LvalueToRvalue(
+                                                            Member {
+                                                                lhs: Identifier(
+                                                                    from(5),
+                                                                ),
+                                                                member_name: r"y",
+                                                            },
+                                                        ),
+                                                        rhs: LvalueToRvalue(
+                                                            Member {
+                                                                lhs: Identifier(
+                                                                    to(6),
+                                                                ),
+                                                                member_name: r"y",
+                                                            },
+                                                        ),
                                                     },
                                                 },
                                             },
-                                        ),
+                                        },
                                     ],
                                     locals_count: 0,
                                 },
@@ -1035,8 +1029,8 @@
                             args_bindings: [],
                             body: Block(
                                 Block {
-                                    elems: [
-                                        Decl(
+                                    stmts: [
+                                        Declaration(
                                             Binding {
                                                 name: p1(11),
                                                 decl: Var(
@@ -1070,7 +1064,7 @@
                                                 ),
                                             },
                                         ),
-                                        Decl(
+                                        Declaration(
                                             Binding {
                                                 name: p2(12),
                                                 decl: Var(
@@ -1104,7 +1098,7 @@
                                                 ),
                                             },
                                         ),
-                                        Decl(
+                                        Declaration(
                                             Binding {
                                                 name: mid(13),
                                                 decl: Var(
@@ -1136,25 +1130,23 @@
                                                 ),
                                             },
                                         ),
-                                        Stmt(
-                                            Print {
-                                                value: Call {
-                                                    callee: squared_distance(4),
-                                                    args: [
-                                                        LvalueToRvalue(
-                                                            Identifier(
-                                                                p1(11),
-                                                            ),
+                                        Print {
+                                            value: Call {
+                                                callee: squared_distance(4),
+                                                args: [
+                                                    LvalueToRvalue(
+                                                        Identifier(
+                                                            p1(11),
                                                         ),
-                                                        LvalueToRvalue(
-                                                            Identifier(
-                                                                p2(12),
-                                                            ),
+                                                    ),
+                                                    LvalueToRvalue(
+                                                        Identifier(
+                                                            p2(12),
                                                         ),
-                                                    ],
-                                                },
+                                                    ),
+                                                ],
                                             },
-                                        ),
+                                        },
                                     ],
                                     locals_count: 3,
                                 },

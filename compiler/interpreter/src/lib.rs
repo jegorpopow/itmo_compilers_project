@@ -7,10 +7,10 @@ use std::{
 };
 
 use ast::{
-    ArrayDescription, BinaryOperator, Binding, Block, BlockElem, BoolBinOp, Decl, EqBinOp,
-    Expression, FieldDescription, IntBinOp, IntegerLiteral, LocalBinding, LocalDecl,
-    LvalueExpression, Program, RealBinOp, RealLiteral, RecordDescription, Routine, RoutineBody,
-    RoutineDecl, Type, TypeDecl, UnaryOperator, VarDecl,
+    ArrayDescription, BinaryOperator, Binding, Block, BoolBinOp, Decl, EqBinOp, Expression,
+    FieldDescription, IntBinOp, IntegerLiteral, LocalBinding, LocalDecl, LvalueExpression, Program,
+    RealBinOp, RealLiteral, RecordDescription, Routine, RoutineBody, RoutineDecl, Type, TypeDecl,
+    UnaryOperator, VarDecl,
 };
 use common::{
     Identifier, Integer, LoopOrder, Position, RawIdentifier, Real, integer_to_real, real_to_integer,
@@ -447,10 +447,10 @@ impl<'a, W: Write> Interpreter<'a, W> {
 
     #[throws(BlockError<'a>)]
     fn block(&mut self, bindings: &mut Bindings<'a>, block: &'a Block) {
-        let Block { elems: stmts, .. } = block;
+        let Block { stmts, .. } = block;
         for stmt in stmts {
             match stmt {
-                BlockElem::Decl(LocalBinding { name, decl }) => match decl {
+                ast::Statement::Declaration(LocalBinding { name, decl }) => match decl {
                     LocalDecl::Const(_) | LocalDecl::Type(_) => {}
                     LocalDecl::Var(VarDecl {
                         t,
@@ -472,86 +472,84 @@ impl<'a, W: Write> Interpreter<'a, W> {
                     }
                 },
 
-                BlockElem::Stmt(stmt) => match stmt {
-                    ast::Statement::Assignment { lhs, rhs } => {
-                        let lhs = self.lvalue(bindings, lhs)?;
-                        let rhs = self.expression(bindings, rhs)?;
-                        self.heap[lhs] = rhs;
-                    }
+                ast::Statement::Assignment { lhs, rhs } => {
+                    let lhs = self.lvalue(bindings, lhs)?;
+                    let rhs = self.expression(bindings, rhs)?;
+                    self.heap[lhs] = rhs;
+                }
 
-                    ast::Statement::While { condition, body } => {
-                        while self.bool_expression(bindings, condition)? {
-                            self.block(bindings, body)?
-                        }
+                ast::Statement::While { condition, body } => {
+                    while self.bool_expression(bindings, condition)? {
+                        self.block(bindings, body)?
                     }
+                }
 
-                    ast::Statement::Expr(expression) => {
-                        let value: Value<'a> = self.expression(bindings, expression)?;
-                        drop(value);
-                    }
+                ast::Statement::Expr(expression) => {
+                    let value: Value<'a> = self.expression(bindings, expression)?;
+                    drop(value);
+                }
 
-                    ast::Statement::If {
-                        condition,
-                        on_true,
-                        on_false,
-                    } => {
-                        if self.bool_expression(bindings, condition)? {
-                            self.block(bindings, on_true)?
-                        } else if let Some(on_false) = on_false {
-                            self.block(bindings, on_false)?
-                        }
+                ast::Statement::If {
+                    condition,
+                    on_true,
+                    on_false,
+                } => {
+                    if self.bool_expression(bindings, condition)? {
+                        self.block(bindings, on_true)?
+                    } else if let Some(on_false) = on_false {
+                        self.block(bindings, on_false)?
                     }
+                }
 
-                    ast::Statement::For {
-                        counter,
-                        lower_bound,
-                        upper_bound,
-                        order,
-                        body,
-                    } => {
-                        let lower = self.integer_expression(bindings, lower_bound)?;
-                        let upper = self.integer_expression(bindings, upper_bound)?;
-                        let range: &mut dyn Iterator<Item = Integer> = match order {
-                            LoopOrder::Direct => &mut (lower..=upper),
-                            LoopOrder::Reversed => &mut (upper..=lower).rev(),
-                        };
-                        for value in range {
-                            let _: Option<Address<'a>> =
-                                bindings.insert(counter, self.heap.alloc(Value::Integer(value)));
-                            self.block(bindings, body)?
-                        }
+                ast::Statement::For {
+                    counter,
+                    lower_bound,
+                    upper_bound,
+                    order,
+                    body,
+                } => {
+                    let lower = self.integer_expression(bindings, lower_bound)?;
+                    let upper = self.integer_expression(bindings, upper_bound)?;
+                    let range: &mut dyn Iterator<Item = Integer> = match order {
+                        LoopOrder::Direct => &mut (lower..=upper),
+                        LoopOrder::Reversed => &mut (upper..=lower).rev(),
+                    };
+                    for value in range {
+                        let _: Option<Address<'a>> =
+                            bindings.insert(counter, self.heap.alloc(Value::Integer(value)));
+                        self.block(bindings, body)?
                     }
+                }
 
-                    ast::Statement::ForEach {
-                        counter,
-                        collection,
-                        order,
-                        body,
-                    } => {
-                        let mut collection = self.array_expression(bindings, collection)?;
-                        match order {
-                            LoopOrder::Direct => {}
-                            LoopOrder::Reversed => collection.reverse(),
-                        }
-                        for value in collection {
-                            let _: Option<Address<'a>> = bindings.insert(counter, value);
-                            self.block(bindings, body)?
-                        }
+                ast::Statement::ForEach {
+                    counter,
+                    collection,
+                    order,
+                    body,
+                } => {
+                    let mut collection = self.array_expression(bindings, collection)?;
+                    match order {
+                        LoopOrder::Direct => {}
+                        LoopOrder::Reversed => collection.reverse(),
                     }
+                    for value in collection {
+                        let _: Option<Address<'a>> = bindings.insert(counter, value);
+                        self.block(bindings, body)?
+                    }
+                }
 
-                    ast::Statement::Print { value } => {
-                        let value = self.expression(bindings, value)?;
-                        self.print(&value).expect("IO Error")
-                    }
+                ast::Statement::Print { value } => {
+                    let value = self.expression(bindings, value)?;
+                    self.print(&value).expect("IO Error")
+                }
 
-                    ast::Statement::Return { value } => {
-                        throw!(BlockError::Return(self.expression(bindings, value)?))
-                    }
+                ast::Statement::Return { value } => {
+                    throw!(BlockError::Return(self.expression(bindings, value)?))
+                }
 
-                    &ast::Statement::Panic { pos } => {
-                        throw!(BlockError::Error(RuntimeError::Panic { pos }))
-                    }
-                },
+                &ast::Statement::Panic { pos } => {
+                    throw!(BlockError::Error(RuntimeError::Panic { pos }))
+                }
             }
         }
     }

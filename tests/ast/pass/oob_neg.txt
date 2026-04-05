@@ -13,8 +13,8 @@
                             args_bindings: [],
                             body: Block(
                                 Block {
-                                    elems: [
-                                        Decl(
+                                    stmts: [
+                                        Declaration(
                                             Binding {
                                                 name: a(1),
                                                 decl: Var(
@@ -47,26 +47,24 @@
                                                 ),
                                             },
                                         ),
-                                        Stmt(
-                                            Print {
-                                                value: LvalueToRvalue(
-                                                    Index {
-                                                        lhs: Identifier(
-                                                            a(1),
+                                        Print {
+                                            value: LvalueToRvalue(
+                                                Index {
+                                                    lhs: Identifier(
+                                                        a(1),
+                                                    ),
+                                                    index: UnOp {
+                                                        op: IntNeg,
+                                                        operand: IntegerLiteral(
+                                                            IntegerLiteral {
+                                                                repr: "2",
+                                                                value: 2,
+                                                            },
                                                         ),
-                                                        index: UnOp {
-                                                            op: IntNeg,
-                                                            operand: IntegerLiteral(
-                                                                IntegerLiteral {
-                                                                    repr: "2",
-                                                                    value: 2,
-                                                                },
-                                                            ),
-                                                        },
                                                     },
-                                                ),
-                                            },
-                                        ),
+                                                },
+                                            ),
+                                        },
                                     ],
                                     locals_count: 1,
                                 },
@@ -91,8 +89,8 @@
                             args_bindings: [],
                             body: Block(
                                 Block {
-                                    elems: [
-                                        Decl(
+                                    stmts: [
+                                        Declaration(
                                             Binding {
                                                 name: a(1),
                                                 decl: Var(
@@ -125,26 +123,24 @@
                                                 ),
                                             },
                                         ),
-                                        Stmt(
-                                            Print {
-                                                value: LvalueToRvalue(
-                                                    Index {
-                                                        lhs: Identifier(
-                                                            a(1),
+                                        Print {
+                                            value: LvalueToRvalue(
+                                                Index {
+                                                    lhs: Identifier(
+                                                        a(1),
+                                                    ),
+                                                    index: UnOp {
+                                                        op: IntNeg,
+                                                        operand: IntegerLiteral(
+                                                            IntegerLiteral {
+                                                                repr: "2",
+                                                                value: 2,
+                                                            },
                                                         ),
-                                                        index: UnOp {
-                                                            op: IntNeg,
-                                                            operand: IntegerLiteral(
-                                                                IntegerLiteral {
-                                                                    repr: "2",
-                                                                    value: 2,
-                                                                },
-                                                            ),
-                                                        },
                                                     },
-                                                ),
-                                            },
-                                        ),
+                                                },
+                                            ),
+                                        },
                                     ],
                                     locals_count: 1,
                                 },

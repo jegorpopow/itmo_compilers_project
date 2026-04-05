@@ -93,8 +93,8 @@
                             args_bindings: [],
                             body: Block(
                                 Block {
-                                    elems: [
-                                        Decl(
+                                    stmts: [
+                                        Declaration(
                                             Binding {
                                                 name: dist(5),
                                                 decl: Var(
@@ -122,7 +122,7 @@
                                                 ),
                                             },
                                         ),
-                                        Decl(
+                                        Declaration(
                                             Binding {
                                                 name: result(6),
                                                 decl: Var(
@@ -149,15 +149,13 @@
                                                 ),
                                             },
                                         ),
-                                        Stmt(
-                                            Print {
-                                                value: LvalueToRvalue(
-                                                    Identifier(
-                                                        result(6),
-                                                    ),
+                                        Print {
+                                            value: LvalueToRvalue(
+                                                Identifier(
+                                                    result(6),
                                                 ),
-                                            },
-                                        ),
+                                            ),
+                                        },
                                     ],
                                     locals_count: 2,
                                 },
@@ -276,8 +274,8 @@
                             args_bindings: [],
                             body: Block(
                                 Block {
-                                    elems: [
-                                        Decl(
+                                    stmts: [
+                                        Declaration(
                                             Binding {
                                                 name: dist(5),
                                                 decl: Var(
@@ -305,7 +303,7 @@
                                                 ),
                                             },
                                         ),
-                                        Decl(
+                                        Declaration(
                                             Binding {
                                                 name: result(6),
                                                 decl: Var(
@@ -332,15 +330,13 @@
                                                 ),
                                             },
                                         ),
-                                        Stmt(
-                                            Print {
-                                                value: LvalueToRvalue(
-                                                    Identifier(
-                                                        result(6),
-                                                    ),
+                                        Print {
+                                            value: LvalueToRvalue(
+                                                Identifier(
+                                                    result(6),
                                                 ),
-                                            },
-                                        ),
+                                            ),
+                                        },
                                     ],
                                     locals_count: 2,
                                 },

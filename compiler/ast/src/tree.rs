@@ -411,19 +411,14 @@ impl From<LocalBinding> for Binding {
 }
 
 #[derive(Debug, Clone)]
-pub enum BlockElem {
-    Stmt(Statement),
-    Decl(LocalBinding),
-}
-
-#[derive(Debug, Clone)]
 pub struct Block {
-    pub elems: Vec<BlockElem>,
+    pub stmts: Vec<Statement>,
     pub locals_count: usize,
 }
 
 #[derive(Debug, Clone)]
 pub enum Statement {
+    Declaration(LocalBinding),
     Assignment {
         lhs: Rc<LvalueExpression>,
         rhs: Rc<Expression>,

@@ -84,30 +84,26 @@
                             ],
                             body: Block(
                                 Block {
-                                    elems: [
-                                        Stmt(
-                                            Print {
-                                                value: LengthOf {
-                                                    arr: LvalueToRvalue(
-                                                        Identifier(
-                                                            a(2),
-                                                        ),
+                                    stmts: [
+                                        Print {
+                                            value: LengthOf {
+                                                arr: LvalueToRvalue(
+                                                    Identifier(
+                                                        a(2),
                                                     ),
-                                                },
-                                            },
-                                        ),
-                                        Stmt(
-                                            Print {
-                                                value: LvalueToRvalue(
-                                                    Member {
-                                                        lhs: Identifier(
-                                                            s(3),
-                                                        ),
-                                                        member_name: r"length",
-                                                    },
                                                 ),
                                             },
-                                        ),
+                                        },
+                                        Print {
+                                            value: LvalueToRvalue(
+                                                Member {
+                                                    lhs: Identifier(
+                                                        s(3),
+                                                    ),
+                                                    member_name: r"length",
+                                                },
+                                            ),
+                                        },
                                     ],
                                     locals_count: 0,
                                 },
@@ -128,8 +124,8 @@
                             args_bindings: [],
                             body: Block(
                                 Block {
-                                    elems: [
-                                        Decl(
+                                    stmts: [
+                                        Declaration(
                                             Binding {
                                                 name: a(5),
                                                 decl: Var(
@@ -162,7 +158,7 @@
                                                 ),
                                             },
                                         ),
-                                        Decl(
+                                        Declaration(
                                             Binding {
                                                 name: s(6),
                                                 decl: Var(
@@ -199,24 +195,22 @@
                                                 ),
                                             },
                                         ),
-                                        Stmt(
-                                            Expr(
-                                                Call {
-                                                    callee: print_length(1),
-                                                    args: [
-                                                        LvalueToRvalue(
-                                                            Identifier(
-                                                                a(5),
-                                                            ),
+                                        Expr(
+                                            Call {
+                                                callee: print_length(1),
+                                                args: [
+                                                    LvalueToRvalue(
+                                                        Identifier(
+                                                            a(5),
                                                         ),
-                                                        LvalueToRvalue(
-                                                            Identifier(
-                                                                s(6),
-                                                            ),
+                                                    ),
+                                                    LvalueToRvalue(
+                                                        Identifier(
+                                                            s(6),
                                                         ),
-                                                    ],
-                                                },
-                                            ),
+                                                    ),
+                                                ],
+                                            },
                                         ),
                                     ],
                                     locals_count: 2,
@@ -313,30 +307,26 @@
                             ],
                             body: Block(
                                 Block {
-                                    elems: [
-                                        Stmt(
-                                            Print {
-                                                value: LengthOf {
-                                                    arr: LvalueToRvalue(
-                                                        Identifier(
-                                                            a(2),
-                                                        ),
+                                    stmts: [
+                                        Print {
+                                            value: LengthOf {
+                                                arr: LvalueToRvalue(
+                                                    Identifier(
+                                                        a(2),
                                                     ),
-                                                },
-                                            },
-                                        ),
-                                        Stmt(
-                                            Print {
-                                                value: LvalueToRvalue(
-                                                    Member {
-                                                        lhs: Identifier(
-                                                            s(3),
-                                                        ),
-                                                        member_name: r"length",
-                                                    },
                                                 ),
                                             },
-                                        ),
+                                        },
+                                        Print {
+                                            value: LvalueToRvalue(
+                                                Member {
+                                                    lhs: Identifier(
+                                                        s(3),
+                                                    ),
+                                                    member_name: r"length",
+                                                },
+                                            ),
+                                        },
                                     ],
                                     locals_count: 0,
                                 },
@@ -388,8 +378,8 @@
                             args_bindings: [],
                             body: Block(
                                 Block {
-                                    elems: [
-                                        Decl(
+                                    stmts: [
+                                        Declaration(
                                             Binding {
                                                 name: a(5),
                                                 decl: Var(
@@ -422,7 +412,7 @@
                                                 ),
                                             },
                                         ),
-                                        Decl(
+                                        Declaration(
                                             Binding {
                                                 name: s(6),
                                                 decl: Var(
@@ -459,24 +449,22 @@
                                                 ),
                                             },
                                         ),
-                                        Stmt(
-                                            Expr(
-                                                Call {
-                                                    callee: print_length(1),
-                                                    args: [
-                                                        LvalueToRvalue(
-                                                            Identifier(
-                                                                a(5),
-                                                            ),
+                                        Expr(
+                                            Call {
+                                                callee: print_length(1),
+                                                args: [
+                                                    LvalueToRvalue(
+                                                        Identifier(
+                                                            a(5),
                                                         ),
-                                                        LvalueToRvalue(
-                                                            Identifier(
-                                                                s(6),
-                                                            ),
+                                                    ),
+                                                    LvalueToRvalue(
+                                                        Identifier(
+                                                            s(6),
                                                         ),
-                                                    ],
-                                                },
-                                            ),
+                                                    ),
+                                                ],
+                                            },
                                         ),
                                     ],
                                     locals_count: 2,

@@ -29,25 +29,21 @@
                             ],
                             body: Block(
                                 Block {
-                                    elems: [
-                                        Stmt(
-                                            Print {
-                                                value: LvalueToRvalue(
-                                                    Identifier(
-                                                        data(1),
-                                                    ),
+                                    stmts: [
+                                        Print {
+                                            value: LvalueToRvalue(
+                                                Identifier(
+                                                    data(1),
                                                 ),
-                                            },
-                                        ),
-                                        Stmt(
-                                            Return {
-                                                value: LvalueToRvalue(
-                                                    Identifier(
-                                                        data(1),
-                                                    ),
+                                            ),
+                                        },
+                                        Return {
+                                            value: LvalueToRvalue(
+                                                Identifier(
+                                                    data(1),
                                                 ),
-                                            },
-                                        ),
+                                            ),
+                                        },
                                     ],
                                     locals_count: 0,
                                 },
@@ -68,22 +64,20 @@
                             args_bindings: [],
                             body: Block(
                                 Block {
-                                    elems: [
-                                        Stmt(
-                                            Print {
-                                                value: Call {
-                                                    callee: echo(0),
-                                                    args: [
-                                                        IntegerLiteral(
-                                                            IntegerLiteral {
-                                                                repr: "42",
-                                                                value: 42,
-                                                            },
-                                                        ),
-                                                    ],
-                                                },
+                                    stmts: [
+                                        Print {
+                                            value: Call {
+                                                callee: echo(0),
+                                                args: [
+                                                    IntegerLiteral(
+                                                        IntegerLiteral {
+                                                            repr: "42",
+                                                            value: 42,
+                                                        },
+                                                    ),
+                                                ],
                                             },
-                                        ),
+                                        },
                                     ],
                                     locals_count: 0,
                                 },
@@ -124,25 +118,21 @@
                             ],
                             body: Block(
                                 Block {
-                                    elems: [
-                                        Stmt(
-                                            Print {
-                                                value: LvalueToRvalue(
-                                                    Identifier(
-                                                        data(1),
-                                                    ),
+                                    stmts: [
+                                        Print {
+                                            value: LvalueToRvalue(
+                                                Identifier(
+                                                    data(1),
                                                 ),
-                                            },
-                                        ),
-                                        Stmt(
-                                            Return {
-                                                value: LvalueToRvalue(
-                                                    Identifier(
-                                                        data(1),
-                                                    ),
+                                            ),
+                                        },
+                                        Return {
+                                            value: LvalueToRvalue(
+                                                Identifier(
+                                                    data(1),
                                                 ),
-                                            },
-                                        ),
+                                            ),
+                                        },
                                     ],
                                     locals_count: 0,
                                 },
@@ -175,22 +165,20 @@
                             args_bindings: [],
                             body: Block(
                                 Block {
-                                    elems: [
-                                        Stmt(
-                                            Print {
-                                                value: Call {
-                                                    callee: echo(0),
-                                                    args: [
-                                                        IntegerLiteral(
-                                                            IntegerLiteral {
-                                                                repr: "42",
-                                                                value: 42,
-                                                            },
-                                                        ),
-                                                    ],
-                                                },
+                                    stmts: [
+                                        Print {
+                                            value: Call {
+                                                callee: echo(0),
+                                                args: [
+                                                    IntegerLiteral(
+                                                        IntegerLiteral {
+                                                            repr: "42",
+                                                            value: 42,
+                                                        },
+                                                    ),
+                                                ],
                                             },
-                                        ),
+                                        },
                                     ],
                                     locals_count: 0,
                                 },
