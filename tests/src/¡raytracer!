@@ -119,18 +119,11 @@ routine ray_cut(r : ray, k : real) =>
 
 -- canvas supplementary
 
-type error is record end;
-
 type byte is integer;
 
 routine int_to_byte(val : integer) : byte is
-  if val < 0 or val > 255 then 
-    print new error; -- kind of error reporting, maybe we should add `panic` statement to language
-    return 0 :: byte;
-  end
-
+  assert val >= 0 and val < 256; 
   return val :: byte;
-
 end
 
 type colour is record
@@ -159,8 +152,12 @@ var BLUE is colour_of(0, 0, 255);
 var BLACK is colour_of(0, 0, 0);
 var WHITE is colour_of(255, 255, 255);
 
+constant CANVAS_MAX_HEIGHT is 360; 
+constant CANVAS_MAX_WIDTH is 640; 
+constant CANVAS_MAX_PIXELS is CANVAS_MAX_HEIGHT * CANVAS_MAX_WIDTH;
+
 type canvas is record
-  var pixels is array [360 * 640] colour;
+  var pixels is array [CANVAS_MAX_PIXELS] colour;
   var height is integer; 
   var width is integer; 
 end;
@@ -173,13 +170,11 @@ routine set_canvas_at(c : canvas, x : integer, y : integer, nc : colour) is
 end
 
 routine new_canvas(h : integer, w : integer, background : colour): canvas is
-  if h <= 0 or h > 360 or w <= 0 or 2 >= 640 then
-    print new error;
-    return new canvas;
-  end
+  assert h >= 0 and h <= CANVAS_MAX_HEIGHT;
+  assert w >= 0 and w <= CANVAS_MAX_WIDTH;
 
   var res is new canvas where 
-    pixels is new array [360 * 640] colour;
+    pixels is new array [CANVAS_MAX_PIXELS] colour;
     height is h; 
     width is w;
   end; 
@@ -197,13 +192,12 @@ routine render_canvas(c : canvas) is
   print c.height; 
   print c.width; 
 
-  for x in 0 .. c.height - 1 loop 
+  for x in c.height - 1 .. 0  reverse loop 
     for y in 0 .. c.width - 1 loop 
       print get_canvas_at(c, x, y);
     end
   end
 end
-
 
 
 type sphere is record 

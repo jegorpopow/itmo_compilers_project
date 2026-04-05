@@ -240,6 +240,79 @@
                                             ),
                                         },
                                     ),
+                                    ConstDecl(
+                                        ConstDecl {
+                                            name: r"LENGTH",
+                                            t: None,
+                                            initialiser: IntegerLiteral(
+                                                IntegerLiteral {
+                                                    repr: "300",
+                                                    value: 300,
+                                                },
+                                            ),
+                                        },
+                                    ),
+                                    Stmt(
+                                        If {
+                                            condition: BinOp {
+                                                op: Gt,
+                                                lhs: LvalueToRvalue(
+                                                    Identifier(
+                                                        r"LENGTH",
+                                                    ),
+                                                ),
+                                                rhs: LvalueToRvalue(
+                                                    Identifier(
+                                                        r"DOUBLE_LENGTH",
+                                                    ),
+                                                ),
+                                            },
+                                            on_true: Block(
+                                                [
+                                                    Stmt(
+                                                        Print {
+                                                            value: LvalueToRvalue(
+                                                                Identifier(
+                                                                    r"LENGTH",
+                                                                ),
+                                                            ),
+                                                        },
+                                                    ),
+                                                    ConstDecl(
+                                                        ConstDecl {
+                                                            name: r"LENGTH",
+                                                            t: None,
+                                                            initialiser: IntegerLiteral(
+                                                                IntegerLiteral {
+                                                                    repr: "400",
+                                                                    value: 400,
+                                                                },
+                                                            ),
+                                                        },
+                                                    ),
+                                                    Stmt(
+                                                        Print {
+                                                            value: LvalueToRvalue(
+                                                                Identifier(
+                                                                    r"LENGTH",
+                                                                ),
+                                                            ),
+                                                        },
+                                                    ),
+                                                ],
+                                            ),
+                                            on_false: None,
+                                        },
+                                    ),
+                                    Stmt(
+                                        Print {
+                                            value: LvalueToRvalue(
+                                                Identifier(
+                                                    r"LENGTH",
+                                                ),
+                                            ),
+                                        },
+                                    ),
                                 ],
                             ),
                         ),

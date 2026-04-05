@@ -16,4 +16,13 @@ routine main() : integer is
   var t is new table; 
   table_receiver(new table);
   print t[1];
+
+  constant LENGTH is 300; 
+  if LENGTH > DOUBLE_LENGTH then 
+    print LENGTH;
+    constant LENGTH is 400;
+    print LENGTH;
+  end
+
+  print LENGTH;
 end

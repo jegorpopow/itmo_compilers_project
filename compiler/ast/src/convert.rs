@@ -703,12 +703,13 @@ impl Converter {
             &parser::Statement::Assert { ref value, pos } => Statement::If {
                 condition: cast_to(self.convert_expr(value)?, &Type::Bool)?,
                 on_true: Block {
-                    elems: vec![BlockElem::Stmt(Statement::Panic { pos })],
-
+                    elems: Vec::new(),
                     locals_count: 0,
                 },
-
-                on_false: None,
+                on_false: Some(Block {
+                    elems: vec![BlockElem::Stmt(Statement::Panic { pos })],
+                    locals_count: 0,
+                }),
             },
             &parser::Statement::Panic { pos } => Statement::Panic { pos },
             parser::Statement::Assignment { lhs, rhs } => {

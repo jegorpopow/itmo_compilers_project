@@ -285,6 +285,95 @@
                                                 ),
                                             },
                                         ),
+                                        Decl(
+                                            SimpleBinding {
+                                                name: LENGTH(9),
+                                                decl: Const(
+                                                    ConstDecl {
+                                                        t: Int,
+                                                        value: IntegerLiteral(
+                                                            IntegerLiteral {
+                                                                repr: "300",
+                                                                value: 300,
+                                                            },
+                                                        ),
+                                                    },
+                                                ),
+                                            },
+                                        ),
+                                        Stmt(
+                                            If {
+                                                condition: BinOp {
+                                                    op: Int(
+                                                        Gt,
+                                                    ),
+                                                    lhs: IntegerLiteral(
+                                                        IntegerLiteral {
+                                                            repr: "300",
+                                                            value: 300,
+                                                        },
+                                                    ),
+                                                    rhs: IntegerLiteral(
+                                                        IntegerLiteral {
+                                                            repr: "200",
+                                                            value: 200,
+                                                        },
+                                                    ),
+                                                },
+                                                on_true: Block {
+                                                    elems: [
+                                                        Stmt(
+                                                            Print {
+                                                                value: IntegerLiteral(
+                                                                    IntegerLiteral {
+                                                                        repr: "300",
+                                                                        value: 300,
+                                                                    },
+                                                                ),
+                                                            },
+                                                        ),
+                                                        Decl(
+                                                            SimpleBinding {
+                                                                name: LENGTH(10),
+                                                                decl: Const(
+                                                                    ConstDecl {
+                                                                        t: Int,
+                                                                        value: IntegerLiteral(
+                                                                            IntegerLiteral {
+                                                                                repr: "400",
+                                                                                value: 400,
+                                                                            },
+                                                                        ),
+                                                                    },
+                                                                ),
+                                                            },
+                                                        ),
+                                                        Stmt(
+                                                            Print {
+                                                                value: IntegerLiteral(
+                                                                    IntegerLiteral {
+                                                                        repr: "400",
+                                                                        value: 400,
+                                                                    },
+                                                                ),
+                                                            },
+                                                        ),
+                                                    ],
+                                                    locals_count: 0,
+                                                },
+                                                on_false: None,
+                                            },
+                                        ),
+                                        Stmt(
+                                            Print {
+                                                value: IntegerLiteral(
+                                                    IntegerLiteral {
+                                                        repr: "300",
+                                                        value: 300,
+                                                    },
+                                                ),
+                                            },
+                                        ),
                                     ],
                                     locals_count: 1,
                                 },
@@ -614,6 +703,95 @@
                                                 ),
                                             },
                                         ),
+                                        Decl(
+                                            SimpleBinding {
+                                                name: LENGTH(9),
+                                                decl: Const(
+                                                    ConstDecl {
+                                                        t: Int,
+                                                        value: IntegerLiteral(
+                                                            IntegerLiteral {
+                                                                repr: "300",
+                                                                value: 300,
+                                                            },
+                                                        ),
+                                                    },
+                                                ),
+                                            },
+                                        ),
+                                        Stmt(
+                                            If {
+                                                condition: BinOp {
+                                                    op: Int(
+                                                        Gt,
+                                                    ),
+                                                    lhs: IntegerLiteral(
+                                                        IntegerLiteral {
+                                                            repr: "300",
+                                                            value: 300,
+                                                        },
+                                                    ),
+                                                    rhs: IntegerLiteral(
+                                                        IntegerLiteral {
+                                                            repr: "200",
+                                                            value: 200,
+                                                        },
+                                                    ),
+                                                },
+                                                on_true: Block {
+                                                    elems: [
+                                                        Stmt(
+                                                            Print {
+                                                                value: IntegerLiteral(
+                                                                    IntegerLiteral {
+                                                                        repr: "300",
+                                                                        value: 300,
+                                                                    },
+                                                                ),
+                                                            },
+                                                        ),
+                                                        Decl(
+                                                            SimpleBinding {
+                                                                name: LENGTH(10),
+                                                                decl: Const(
+                                                                    ConstDecl {
+                                                                        t: Int,
+                                                                        value: IntegerLiteral(
+                                                                            IntegerLiteral {
+                                                                                repr: "400",
+                                                                                value: 400,
+                                                                            },
+                                                                        ),
+                                                                    },
+                                                                ),
+                                                            },
+                                                        ),
+                                                        Stmt(
+                                                            Print {
+                                                                value: IntegerLiteral(
+                                                                    IntegerLiteral {
+                                                                        repr: "400",
+                                                                        value: 400,
+                                                                    },
+                                                                ),
+                                                            },
+                                                        ),
+                                                    ],
+                                                    locals_count: 0,
+                                                },
+                                                on_false: None,
+                                            },
+                                        ),
+                                        Stmt(
+                                            Print {
+                                                value: IntegerLiteral(
+                                                    IntegerLiteral {
+                                                        repr: "300",
+                                                        value: 300,
+                                                    },
+                                                ),
+                                            },
+                                        ),
                                     ],
                                     locals_count: 1,
                                 },
@@ -639,6 +817,34 @@
                         ),
                         relative_location: Local(
                             0,
+                        ),
+                    },
+                ),
+            },
+            Binding {
+                name: LENGTH(9),
+                decl: Const(
+                    ConstDecl {
+                        t: Int,
+                        value: IntegerLiteral(
+                            IntegerLiteral {
+                                repr: "300",
+                                value: 300,
+                            },
+                        ),
+                    },
+                ),
+            },
+            Binding {
+                name: LENGTH(10),
+                decl: Const(
+                    ConstDecl {
+                        t: Int,
+                        value: IntegerLiteral(
+                            IntegerLiteral {
+                                repr: "400",
+                                value: 400,
+                            },
                         ),
                     },
                 ),
