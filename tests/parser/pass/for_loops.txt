@@ -1,366 +1,341 @@
-(
-    Program(
-        [
-            Routine(
-                RoutineDecl {
-                    name: r"array_length",
-                    arguments: [
-                        (
-                            r"a",
-                            Array(
-                                ArrayDescription {
-                                    t: Int,
-                                    length: None,
-                                },
-                            ),
+Program(
+    [
+        Routine(
+            RoutineDecl {
+                name: r"array_length",
+                arguments: [
+                    (
+                        r"a",
+                        Array(
+                            ArrayDescription {
+                                t: Int,
+                                length: None,
+                            },
                         ),
-                    ],
-                    return_type: Some(
+                    ),
+                ],
+                return_type: Some(
+                    Int,
+                ),
+                body: None,
+            },
+        ),
+        Routine(
+            RoutineDecl {
+                name: r"bubble_sort",
+                arguments: [
+                    (
+                        r"a",
+                        Array(
+                            ArrayDescription {
+                                t: Int,
+                                length: None,
+                            },
+                        ),
+                    ),
+                    (
+                        r"length",
                         Int,
                     ),
-                    body: None,
-                },
-            ),
-            Routine(
-                RoutineDecl {
-                    name: r"bubble_sort",
-                    arguments: [
-                        (
-                            r"a",
-                            Array(
-                                ArrayDescription {
-                                    t: Int,
-                                    length: None,
-                                },
-                            ),
-                        ),
-                        (
-                            r"length",
-                            Int,
-                        ),
-                    ],
-                    return_type: None,
-                    body: None,
-                },
-            ),
-            Routine(
-                RoutineDecl {
-                    name: r"sort_and_print_reversed_array",
-                    arguments: [
-                        (
-                            r"a",
-                            Array(
-                                ArrayDescription {
-                                    t: Int,
-                                    length: None,
-                                },
-                            ),
-                        ),
-                    ],
-                    return_type: None,
-                    body: Some(
-                        Block(
-                            Block(
-                                [
-                                    Stmt(
-                                        Expr(
-                                            Call {
-                                                callee: r"bubble_sort",
-                                                args: [
-                                                    LvalueToRvalue(
-                                                        Identifier(
-                                                            r"a",
-                                                        ),
-                                                    ),
-                                                    LvalueToRvalue(
-                                                        Member {
-                                                            lhs: Identifier(
-                                                                r"a",
-                                                            ),
-                                                            member_name: r"length",
-                                                        },
-                                                    ),
-                                                ],
-                                            },
-                                        ),
-                                    ),
-                                    Stmt(
-                                        For {
-                                            counter: r"elem",
-                                            from: LvalueToRvalue(
-                                                Identifier(
-                                                    r"a",
-                                                ),
-                                            ),
-                                            to: None,
-                                            order: Reversed,
-                                            body: Block(
-                                                [
-                                                    Stmt(
-                                                        Print {
-                                                            value: LvalueToRvalue(
-                                                                Identifier(
-                                                                    r"elem",
-                                                                ),
-                                                            ),
-                                                        },
-                                                    ),
-                                                ],
-                                            ),
-                                        },
-                                    ),
-                                ],
-                            ),
+                ],
+                return_type: None,
+                body: None,
+            },
+        ),
+        Routine(
+            RoutineDecl {
+                name: r"sort_and_print_reversed_array",
+                arguments: [
+                    (
+                        r"a",
+                        Array(
+                            ArrayDescription {
+                                t: Int,
+                                length: None,
+                            },
                         ),
                     ),
-                },
-            ),
-            Routine(
-                RoutineDecl {
-                    name: r"array_length",
-                    arguments: [
-                        (
-                            r"a",
-                            Array(
-                                ArrayDescription {
-                                    t: Int,
-                                    length: None,
-                                },
-                            ),
-                        ),
-                    ],
-                    return_type: Some(
-                        Int,
-                    ),
-                    body: Some(
+                ],
+                return_type: None,
+                body: Some(
+                    Block(
                         Block(
-                            Block(
-                                [
-                                    VarDecl(
-                                        VarDecl {
-                                            name: r"result",
-                                            t: None,
-                                            initialiser: Some(
-                                                IntegerLiteral(
-                                                    IntegerLiteral {
-                                                        repr: "0",
-                                                        value: 0,
-                                                    },
-                                                ),
-                                            ),
-                                        },
-                                    ),
-                                    Stmt(
-                                        For {
-                                            counter: r"_",
-                                            from: LvalueToRvalue(
-                                                Identifier(
-                                                    r"a",
-                                                ),
-                                            ),
-                                            to: None,
-                                            order: Direct,
-                                            body: Block(
-                                                [
-                                                    Stmt(
-                                                        Assignment {
-                                                            lhs: Identifier(
-                                                                r"result",
-                                                            ),
-                                                            rhs: BinOp {
-                                                                op: Plus,
-                                                                lhs: LvalueToRvalue(
-                                                                    Identifier(
-                                                                        r"result",
-                                                                    ),
-                                                                ),
-                                                                rhs: IntegerLiteral(
-                                                                    IntegerLiteral {
-                                                                        repr: "1",
-                                                                        value: 1,
-                                                                    },
-                                                                ),
-                                                            },
-                                                        },
-                                                    ),
-                                                ],
-                                            ),
-                                        },
-                                    ),
-                                    Stmt(
-                                        Return {
-                                            value: LvalueToRvalue(
-                                                Identifier(
-                                                    r"result",
-                                                ),
-                                            ),
-                                        },
-                                    ),
-                                ],
-                            ),
-                        ),
-                    ),
-                },
-            ),
-            Routine(
-                RoutineDecl {
-                    name: r"bubble_sort",
-                    arguments: [
-                        (
-                            r"a",
-                            Array(
-                                ArrayDescription {
-                                    t: Int,
-                                    length: None,
-                                },
-                            ),
-                        ),
-                        (
-                            r"length",
-                            Int,
-                        ),
-                    ],
-                    return_type: None,
-                    body: Some(
-                        Block(
-                            Block(
-                                [
-                                    Stmt(
-                                        For {
-                                            counter: r"i",
-                                            from: IntegerLiteral(
-                                                IntegerLiteral {
-                                                    repr: "1",
-                                                    value: 1,
-                                                },
-                                            ),
-                                            to: Some(
+                            [
+                                Stmt(
+                                    Expr(
+                                        Call {
+                                            callee: r"bubble_sort",
+                                            args: [
                                                 LvalueToRvalue(
                                                     Identifier(
-                                                        r"length",
+                                                        r"a",
                                                     ),
                                                 ),
+                                                LvalueToRvalue(
+                                                    Member {
+                                                        lhs: Identifier(
+                                                            r"a",
+                                                        ),
+                                                        member_name: r"length",
+                                                    },
+                                                ),
+                                            ],
+                                        },
+                                    ),
+                                ),
+                                Stmt(
+                                    For {
+                                        counter: r"elem",
+                                        from: LvalueToRvalue(
+                                            Identifier(
+                                                r"a",
                                             ),
-                                            order: Direct,
-                                            body: Block(
-                                                [
-                                                    Stmt(
-                                                        For {
-                                                            counter: r"j",
-                                                            from: IntegerLiteral(
-                                                                IntegerLiteral {
-                                                                    repr: "2",
-                                                                    value: 2,
-                                                                },
+                                        ),
+                                        to: None,
+                                        order: Reversed,
+                                        body: Block(
+                                            [
+                                                Stmt(
+                                                    Print {
+                                                        value: LvalueToRvalue(
+                                                            Identifier(
+                                                                r"elem",
                                                             ),
-                                                            to: Some(
-                                                                LvalueToRvalue(
-                                                                    Identifier(
-                                                                        r"i",
-                                                                    ),
+                                                        ),
+                                                    },
+                                                ),
+                                            ],
+                                        ),
+                                    },
+                                ),
+                            ],
+                        ),
+                    ),
+                ),
+            },
+        ),
+        Routine(
+            RoutineDecl {
+                name: r"array_length",
+                arguments: [
+                    (
+                        r"a",
+                        Array(
+                            ArrayDescription {
+                                t: Int,
+                                length: None,
+                            },
+                        ),
+                    ),
+                ],
+                return_type: Some(
+                    Int,
+                ),
+                body: Some(
+                    Block(
+                        Block(
+                            [
+                                VarDecl(
+                                    VarDecl {
+                                        name: r"result",
+                                        t: None,
+                                        initialiser: Some(
+                                            IntegerLiteral(
+                                                IntegerLiteral {
+                                                    repr: "0",
+                                                    value: 0,
+                                                },
+                                            ),
+                                        ),
+                                    },
+                                ),
+                                Stmt(
+                                    For {
+                                        counter: r"_",
+                                        from: LvalueToRvalue(
+                                            Identifier(
+                                                r"a",
+                                            ),
+                                        ),
+                                        to: None,
+                                        order: Direct,
+                                        body: Block(
+                                            [
+                                                Stmt(
+                                                    Assignment {
+                                                        lhs: Identifier(
+                                                            r"result",
+                                                        ),
+                                                        rhs: BinOp {
+                                                            op: Plus,
+                                                            lhs: LvalueToRvalue(
+                                                                Identifier(
+                                                                    r"result",
                                                                 ),
                                                             ),
-                                                            order: Direct,
-                                                            body: Block(
-                                                                [
-                                                                    Stmt(
-                                                                        If {
-                                                                            condition: BinOp {
-                                                                                op: Gt,
-                                                                                lhs: LvalueToRvalue(
-                                                                                    Index {
-                                                                                        lhs: Identifier(
-                                                                                            r"a",
-                                                                                        ),
-                                                                                        index: BinOp {
-                                                                                            op: Minus,
-                                                                                            lhs: LvalueToRvalue(
-                                                                                                Identifier(
-                                                                                                    r"j",
-                                                                                                ),
-                                                                                            ),
-                                                                                            rhs: IntegerLiteral(
-                                                                                                IntegerLiteral {
-                                                                                                    repr: "1",
-                                                                                                    value: 1,
-                                                                                                },
-                                                                                            ),
-                                                                                        },
-                                                                                    },
-                                                                                ),
-                                                                                rhs: LvalueToRvalue(
-                                                                                    Index {
-                                                                                        lhs: Identifier(
-                                                                                            r"a",
-                                                                                        ),
-                                                                                        index: LvalueToRvalue(
+                                                            rhs: IntegerLiteral(
+                                                                IntegerLiteral {
+                                                                    repr: "1",
+                                                                    value: 1,
+                                                                },
+                                                            ),
+                                                        },
+                                                    },
+                                                ),
+                                            ],
+                                        ),
+                                    },
+                                ),
+                                Stmt(
+                                    Return {
+                                        value: LvalueToRvalue(
+                                            Identifier(
+                                                r"result",
+                                            ),
+                                        ),
+                                    },
+                                ),
+                            ],
+                        ),
+                    ),
+                ),
+            },
+        ),
+        Routine(
+            RoutineDecl {
+                name: r"bubble_sort",
+                arguments: [
+                    (
+                        r"a",
+                        Array(
+                            ArrayDescription {
+                                t: Int,
+                                length: None,
+                            },
+                        ),
+                    ),
+                    (
+                        r"length",
+                        Int,
+                    ),
+                ],
+                return_type: None,
+                body: Some(
+                    Block(
+                        Block(
+                            [
+                                Stmt(
+                                    For {
+                                        counter: r"i",
+                                        from: IntegerLiteral(
+                                            IntegerLiteral {
+                                                repr: "1",
+                                                value: 1,
+                                            },
+                                        ),
+                                        to: Some(
+                                            LvalueToRvalue(
+                                                Identifier(
+                                                    r"length",
+                                                ),
+                                            ),
+                                        ),
+                                        order: Direct,
+                                        body: Block(
+                                            [
+                                                Stmt(
+                                                    For {
+                                                        counter: r"j",
+                                                        from: IntegerLiteral(
+                                                            IntegerLiteral {
+                                                                repr: "2",
+                                                                value: 2,
+                                                            },
+                                                        ),
+                                                        to: Some(
+                                                            LvalueToRvalue(
+                                                                Identifier(
+                                                                    r"i",
+                                                                ),
+                                                            ),
+                                                        ),
+                                                        order: Direct,
+                                                        body: Block(
+                                                            [
+                                                                Stmt(
+                                                                    If {
+                                                                        condition: BinOp {
+                                                                            op: Gt,
+                                                                            lhs: LvalueToRvalue(
+                                                                                Index {
+                                                                                    lhs: Identifier(
+                                                                                        r"a",
+                                                                                    ),
+                                                                                    index: BinOp {
+                                                                                        op: Minus,
+                                                                                        lhs: LvalueToRvalue(
                                                                                             Identifier(
                                                                                                 r"j",
                                                                                             ),
                                                                                         ),
-                                                                                    },
-                                                                                ),
-                                                                            },
-                                                                            on_true: Block(
-                                                                                [
-                                                                                    VarDecl(
-                                                                                        VarDecl {
-                                                                                            name: r"t",
-                                                                                            t: None,
-                                                                                            initialiser: Some(
-                                                                                                LvalueToRvalue(
-                                                                                                    Index {
-                                                                                                        lhs: Identifier(
-                                                                                                            r"a",
-                                                                                                        ),
-                                                                                                        index: LvalueToRvalue(
-                                                                                                            Identifier(
-                                                                                                                r"j",
-                                                                                                            ),
-                                                                                                        ),
-                                                                                                    },
-                                                                                                ),
-                                                                                            ),
-                                                                                        },
-                                                                                    ),
-                                                                                    Stmt(
-                                                                                        Assignment {
-                                                                                            lhs: Index {
-                                                                                                lhs: Identifier(
-                                                                                                    r"a",
-                                                                                                ),
-                                                                                                index: LvalueToRvalue(
-                                                                                                    Identifier(
-                                                                                                        r"j",
-                                                                                                    ),
-                                                                                                ),
+                                                                                        rhs: IntegerLiteral(
+                                                                                            IntegerLiteral {
+                                                                                                repr: "1",
+                                                                                                value: 1,
                                                                                             },
-                                                                                            rhs: LvalueToRvalue(
+                                                                                        ),
+                                                                                    },
+                                                                                },
+                                                                            ),
+                                                                            rhs: LvalueToRvalue(
+                                                                                Index {
+                                                                                    lhs: Identifier(
+                                                                                        r"a",
+                                                                                    ),
+                                                                                    index: LvalueToRvalue(
+                                                                                        Identifier(
+                                                                                            r"j",
+                                                                                        ),
+                                                                                    ),
+                                                                                },
+                                                                            ),
+                                                                        },
+                                                                        on_true: Block(
+                                                                            [
+                                                                                VarDecl(
+                                                                                    VarDecl {
+                                                                                        name: r"t",
+                                                                                        t: None,
+                                                                                        initialiser: Some(
+                                                                                            LvalueToRvalue(
                                                                                                 Index {
                                                                                                     lhs: Identifier(
                                                                                                         r"a",
                                                                                                     ),
-                                                                                                    index: BinOp {
-                                                                                                        op: Minus,
-                                                                                                        lhs: LvalueToRvalue(
-                                                                                                            Identifier(
-                                                                                                                r"j",
-                                                                                                            ),
+                                                                                                    index: LvalueToRvalue(
+                                                                                                        Identifier(
+                                                                                                            r"j",
                                                                                                         ),
-                                                                                                        rhs: IntegerLiteral(
-                                                                                                            IntegerLiteral {
-                                                                                                                repr: "1",
-                                                                                                                value: 1,
-                                                                                                            },
-                                                                                                        ),
-                                                                                                    },
+                                                                                                    ),
                                                                                                 },
                                                                                             ),
+                                                                                        ),
+                                                                                    },
+                                                                                ),
+                                                                                Stmt(
+                                                                                    Assignment {
+                                                                                        lhs: Index {
+                                                                                            lhs: Identifier(
+                                                                                                r"a",
+                                                                                            ),
+                                                                                            index: LvalueToRvalue(
+                                                                                                Identifier(
+                                                                                                    r"j",
+                                                                                                ),
+                                                                                            ),
                                                                                         },
-                                                                                    ),
-                                                                                    Stmt(
-                                                                                        Assignment {
-                                                                                            lhs: Index {
+                                                                                        rhs: LvalueToRvalue(
+                                                                                            Index {
                                                                                                 lhs: Identifier(
                                                                                                     r"a",
                                                                                                 ),
@@ -379,150 +354,190 @@
                                                                                                     ),
                                                                                                 },
                                                                                             },
-                                                                                            rhs: LvalueToRvalue(
-                                                                                                Identifier(
-                                                                                                    r"t",
-                                                                                                ),
+                                                                                        ),
+                                                                                    },
+                                                                                ),
+                                                                                Stmt(
+                                                                                    Assignment {
+                                                                                        lhs: Index {
+                                                                                            lhs: Identifier(
+                                                                                                r"a",
                                                                                             ),
+                                                                                            index: BinOp {
+                                                                                                op: Minus,
+                                                                                                lhs: LvalueToRvalue(
+                                                                                                    Identifier(
+                                                                                                        r"j",
+                                                                                                    ),
+                                                                                                ),
+                                                                                                rhs: IntegerLiteral(
+                                                                                                    IntegerLiteral {
+                                                                                                        repr: "1",
+                                                                                                        value: 1,
+                                                                                                    },
+                                                                                                ),
+                                                                                            },
                                                                                         },
-                                                                                    ),
-                                                                                ],
-                                                                            ),
-                                                                            on_false: None,
-                                                                        },
-                                                                    ),
-                                                                ],
-                                                            ),
-                                                        },
-                                                    ),
-                                                ],
-                                            ),
-                                        },
-                                    ),
-                                ],
-                            ),
-                        ),
-                    ),
-                },
-            ),
-            Routine(
-                RoutineDecl {
-                    name: r"countdown",
-                    arguments: [
-                        (
-                            r"n",
-                            Int,
-                        ),
-                    ],
-                    return_type: None,
-                    body: Some(
-                        Block(
-                            Block(
-                                [
-                                    Stmt(
-                                        For {
-                                            counter: r"i",
-                                            from: LvalueToRvalue(
-                                                Identifier(
-                                                    r"n",
-                                                ),
-                                            ),
-                                            to: Some(
-                                                IntegerLiteral(
-                                                    IntegerLiteral {
-                                                        repr: "0",
-                                                        value: 0,
+                                                                                        rhs: LvalueToRvalue(
+                                                                                            Identifier(
+                                                                                                r"t",
+                                                                                            ),
+                                                                                        ),
+                                                                                    },
+                                                                                ),
+                                                                            ],
+                                                                        ),
+                                                                        on_false: None,
+                                                                    },
+                                                                ),
+                                                            ],
+                                                        ),
                                                     },
                                                 ),
-                                            ),
-                                            order: Reversed,
-                                            body: Block(
-                                                [
-                                                    Stmt(
-                                                        Print {
-                                                            value: LvalueToRvalue(
-                                                                Identifier(
-                                                                    r"i",
-                                                                ),
-                                                            ),
-                                                        },
-                                                    ),
-                                                ],
-                                            ),
-                                        },
-                                    ),
-                                ],
-                            ),
+                                            ],
+                                        ),
+                                    },
+                                ),
+                            ],
                         ),
                     ),
-                },
-            ),
-            Routine(
-                RoutineDecl {
-                    name: r"count",
-                    arguments: [
-                        (
-                            r"n",
-                            Int,
-                        ),
-                    ],
-                    return_type: None,
-                    body: Some(
+                ),
+            },
+        ),
+        Routine(
+            RoutineDecl {
+                name: r"countdown",
+                arguments: [
+                    (
+                        r"n",
+                        Int,
+                    ),
+                ],
+                return_type: None,
+                body: Some(
+                    Block(
                         Block(
-                            Block(
-                                [
-                                    Stmt(
-                                        For {
-                                            counter: r"i",
-                                            from: IntegerLiteral(
+                            [
+                                Stmt(
+                                    For {
+                                        counter: r"i",
+                                        from: LvalueToRvalue(
+                                            Identifier(
+                                                r"n",
+                                            ),
+                                        ),
+                                        to: Some(
+                                            IntegerLiteral(
                                                 IntegerLiteral {
                                                     repr: "0",
                                                     value: 0,
                                                 },
                                             ),
-                                            to: Some(
-                                                LvalueToRvalue(
-                                                    Identifier(
-                                                        r"n",
-                                                    ),
-                                                ),
-                                            ),
-                                            order: Direct,
-                                            body: Block(
-                                                [
-                                                    Stmt(
-                                                        Print {
-                                                            value: LvalueToRvalue(
-                                                                Identifier(
-                                                                    r"i",
-                                                                ),
+                                        ),
+                                        order: Reversed,
+                                        body: Block(
+                                            [
+                                                Stmt(
+                                                    Print {
+                                                        value: LvalueToRvalue(
+                                                            Identifier(
+                                                                r"i",
                                                             ),
-                                                        },
-                                                    ),
-                                                ],
-                                            ),
-                                        },
-                                    ),
-                                ],
-                            ),
+                                                        ),
+                                                    },
+                                                ),
+                                            ],
+                                        ),
+                                    },
+                                ),
+                            ],
                         ),
                     ),
-                },
-            ),
-            Routine(
-                RoutineDecl {
-                    name: r"main",
-                    arguments: [],
-                    return_type: None,
-                    body: Some(
+                ),
+            },
+        ),
+        Routine(
+            RoutineDecl {
+                name: r"count",
+                arguments: [
+                    (
+                        r"n",
+                        Int,
+                    ),
+                ],
+                return_type: None,
+                body: Some(
+                    Block(
                         Block(
-                            Block(
-                                [
-                                    VarDecl(
-                                        VarDecl {
-                                            name: r"arr",
-                                            t: Some(
-                                                Array(
+                            [
+                                Stmt(
+                                    For {
+                                        counter: r"i",
+                                        from: IntegerLiteral(
+                                            IntegerLiteral {
+                                                repr: "0",
+                                                value: 0,
+                                            },
+                                        ),
+                                        to: Some(
+                                            LvalueToRvalue(
+                                                Identifier(
+                                                    r"n",
+                                                ),
+                                            ),
+                                        ),
+                                        order: Direct,
+                                        body: Block(
+                                            [
+                                                Stmt(
+                                                    Print {
+                                                        value: LvalueToRvalue(
+                                                            Identifier(
+                                                                r"i",
+                                                            ),
+                                                        ),
+                                                    },
+                                                ),
+                                            ],
+                                        ),
+                                    },
+                                ),
+                            ],
+                        ),
+                    ),
+                ),
+            },
+        ),
+        Routine(
+            RoutineDecl {
+                name: r"main",
+                arguments: [],
+                return_type: None,
+                body: Some(
+                    Block(
+                        Block(
+                            [
+                                VarDecl(
+                                    VarDecl {
+                                        name: r"arr",
+                                        t: Some(
+                                            Array(
+                                                ArrayDescription {
+                                                    t: Int,
+                                                    length: Some(
+                                                        IntegerLiteral(
+                                                            IntegerLiteral {
+                                                                repr: "5",
+                                                                value: 5,
+                                                            },
+                                                        ),
+                                                    ),
+                                                },
+                                            ),
+                                        ),
+                                        initialiser: Some(
+                                            New {
+                                                t: Array(
                                                     ArrayDescription {
                                                         t: Int,
                                                         length: Some(
@@ -535,183 +550,165 @@
                                                         ),
                                                     },
                                                 ),
-                                            ),
-                                            initialiser: Some(
-                                                New {
-                                                    t: Array(
-                                                        ArrayDescription {
-                                                            t: Int,
-                                                            length: Some(
-                                                                IntegerLiteral(
-                                                                    IntegerLiteral {
-                                                                        repr: "5",
-                                                                        value: 5,
-                                                                    },
-                                                                ),
-                                                            ),
-                                                        },
-                                                    ),
-                                                    fields: None,
-                                                },
-                                            ),
-                                        },
-                                    ),
-                                    Stmt(
-                                        Assignment {
-                                            lhs: Index {
-                                                lhs: Identifier(
-                                                    r"arr",
-                                                ),
-                                                index: IntegerLiteral(
-                                                    IntegerLiteral {
-                                                        repr: "1",
-                                                        value: 1,
-                                                    },
-                                                ),
+                                                fields: None,
                                             },
-                                            rhs: IntegerLiteral(
-                                                IntegerLiteral {
-                                                    repr: "3",
-                                                    value: 3,
-                                                },
+                                        ),
+                                    },
+                                ),
+                                Stmt(
+                                    Assignment {
+                                        lhs: Index {
+                                            lhs: Identifier(
+                                                r"arr",
                                             ),
-                                        },
-                                    ),
-                                    Stmt(
-                                        Assignment {
-                                            lhs: Index {
-                                                lhs: Identifier(
-                                                    r"arr",
-                                                ),
-                                                index: IntegerLiteral(
-                                                    IntegerLiteral {
-                                                        repr: "2",
-                                                        value: 2,
-                                                    },
-                                                ),
-                                            },
-                                            rhs: IntegerLiteral(
-                                                IntegerLiteral {
-                                                    repr: "5",
-                                                    value: 5,
-                                                },
-                                            ),
-                                        },
-                                    ),
-                                    Stmt(
-                                        Assignment {
-                                            lhs: Index {
-                                                lhs: Identifier(
-                                                    r"arr",
-                                                ),
-                                                index: IntegerLiteral(
-                                                    IntegerLiteral {
-                                                        repr: "3",
-                                                        value: 3,
-                                                    },
-                                                ),
-                                            },
-                                            rhs: IntegerLiteral(
+                                            index: IntegerLiteral(
                                                 IntegerLiteral {
                                                     repr: "1",
                                                     value: 1,
                                                 },
                                             ),
                                         },
-                                    ),
-                                    Stmt(
-                                        Assignment {
-                                            lhs: Index {
-                                                lhs: Identifier(
-                                                    r"arr",
-                                                ),
-                                                index: IntegerLiteral(
-                                                    IntegerLiteral {
-                                                        repr: "4",
-                                                        value: 4,
-                                                    },
-                                                ),
+                                        rhs: IntegerLiteral(
+                                            IntegerLiteral {
+                                                repr: "3",
+                                                value: 3,
                                             },
-                                            rhs: IntegerLiteral(
+                                        ),
+                                    },
+                                ),
+                                Stmt(
+                                    Assignment {
+                                        lhs: Index {
+                                            lhs: Identifier(
+                                                r"arr",
+                                            ),
+                                            index: IntegerLiteral(
                                                 IntegerLiteral {
                                                     repr: "2",
                                                     value: 2,
                                                 },
                                             ),
                                         },
-                                    ),
-                                    Stmt(
-                                        Assignment {
-                                            lhs: Index {
-                                                lhs: Identifier(
-                                                    r"arr",
-                                                ),
-                                                index: IntegerLiteral(
-                                                    IntegerLiteral {
-                                                        repr: "5",
-                                                        value: 5,
-                                                    },
-                                                ),
+                                        rhs: IntegerLiteral(
+                                            IntegerLiteral {
+                                                repr: "5",
+                                                value: 5,
                                             },
-                                            rhs: IntegerLiteral(
+                                        ),
+                                    },
+                                ),
+                                Stmt(
+                                    Assignment {
+                                        lhs: Index {
+                                            lhs: Identifier(
+                                                r"arr",
+                                            ),
+                                            index: IntegerLiteral(
+                                                IntegerLiteral {
+                                                    repr: "3",
+                                                    value: 3,
+                                                },
+                                            ),
+                                        },
+                                        rhs: IntegerLiteral(
+                                            IntegerLiteral {
+                                                repr: "1",
+                                                value: 1,
+                                            },
+                                        ),
+                                    },
+                                ),
+                                Stmt(
+                                    Assignment {
+                                        lhs: Index {
+                                            lhs: Identifier(
+                                                r"arr",
+                                            ),
+                                            index: IntegerLiteral(
                                                 IntegerLiteral {
                                                     repr: "4",
                                                     value: 4,
                                                 },
                                             ),
                                         },
-                                    ),
-                                    Stmt(
-                                        Expr(
-                                            Call {
-                                                callee: r"sort_and_print_reversed_array",
-                                                args: [
-                                                    LvalueToRvalue(
-                                                        Identifier(
-                                                            r"arr",
-                                                        ),
-                                                    ),
-                                                ],
+                                        rhs: IntegerLiteral(
+                                            IntegerLiteral {
+                                                repr: "2",
+                                                value: 2,
                                             },
                                         ),
-                                    ),
-                                    Stmt(
-                                        Expr(
-                                            Call {
-                                                callee: r"count",
-                                                args: [
-                                                    IntegerLiteral(
-                                                        IntegerLiteral {
-                                                            repr: "3",
-                                                            value: 3,
-                                                        },
-                                                    ),
-                                                ],
+                                    },
+                                ),
+                                Stmt(
+                                    Assignment {
+                                        lhs: Index {
+                                            lhs: Identifier(
+                                                r"arr",
+                                            ),
+                                            index: IntegerLiteral(
+                                                IntegerLiteral {
+                                                    repr: "5",
+                                                    value: 5,
+                                                },
+                                            ),
+                                        },
+                                        rhs: IntegerLiteral(
+                                            IntegerLiteral {
+                                                repr: "4",
+                                                value: 4,
                                             },
                                         ),
-                                    ),
-                                    Stmt(
-                                        Expr(
-                                            Call {
-                                                callee: r"countdown",
-                                                args: [
-                                                    IntegerLiteral(
-                                                        IntegerLiteral {
-                                                            repr: "5",
-                                                            value: 5,
-                                                        },
+                                    },
+                                ),
+                                Stmt(
+                                    Expr(
+                                        Call {
+                                            callee: r"sort_and_print_reversed_array",
+                                            args: [
+                                                LvalueToRvalue(
+                                                    Identifier(
+                                                        r"arr",
                                                     ),
-                                                ],
-                                            },
-                                        ),
+                                                ),
+                                            ],
+                                        },
                                     ),
-                                ],
-                            ),
+                                ),
+                                Stmt(
+                                    Expr(
+                                        Call {
+                                            callee: r"count",
+                                            args: [
+                                                IntegerLiteral(
+                                                    IntegerLiteral {
+                                                        repr: "3",
+                                                        value: 3,
+                                                    },
+                                                ),
+                                            ],
+                                        },
+                                    ),
+                                ),
+                                Stmt(
+                                    Expr(
+                                        Call {
+                                            callee: r"countdown",
+                                            args: [
+                                                IntegerLiteral(
+                                                    IntegerLiteral {
+                                                        repr: "5",
+                                                        value: 5,
+                                                    },
+                                                ),
+                                            ],
+                                        },
+                                    ),
+                                ),
+                            ],
                         ),
                     ),
-                },
-            ),
-        ],
-    ),
-    [],
+                ),
+            },
+        ),
+    ],
 )

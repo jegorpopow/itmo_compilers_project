@@ -1,67 +1,64 @@
-(
-    Program(
-        [
-            Routine(
-                RoutineDecl {
-                    name: r"main",
-                    arguments: [],
-                    return_type: None,
-                    body: Some(
+Program(
+    [
+        Routine(
+            RoutineDecl {
+                name: r"main",
+                arguments: [],
+                return_type: None,
+                body: Some(
+                    Block(
                         Block(
-                            Block(
-                                [
-                                    Stmt(
-                                        Print {
-                                            value: IntegerLiteral(
-                                                IntegerLiteral {
-                                                    repr: "0",
-                                                    value: 0,
-                                                },
-                                            ),
-                                        },
-                                    ),
-                                    Stmt(
-                                        If {
-                                            condition: BoolLiteral(
-                                                True,
-                                            ),
-                                            on_true: Block(
+                            [
+                                Stmt(
+                                    Print {
+                                        value: IntegerLiteral(
+                                            IntegerLiteral {
+                                                repr: "0",
+                                                value: 0,
+                                            },
+                                        ),
+                                    },
+                                ),
+                                Stmt(
+                                    If {
+                                        condition: BoolLiteral(
+                                            True,
+                                        ),
+                                        on_true: Block(
+                                            [
+                                                Stmt(
+                                                    Panic {
+                                                        pos: Position {
+                                                            line: 4,
+                                                            column: 2,
+                                                        },
+                                                    },
+                                                ),
+                                            ],
+                                        ),
+                                        on_false: Some(
+                                            Block(
                                                 [
                                                     Stmt(
-                                                        Panic {
-                                                            pos: Position {
-                                                                line: 4,
-                                                                column: 2,
-                                                            },
+                                                        Print {
+                                                            value: IntegerLiteral(
+                                                                IntegerLiteral {
+                                                                    repr: "1",
+                                                                    value: 1,
+                                                                },
+                                                            ),
                                                         },
                                                     ),
                                                 ],
                                             ),
-                                            on_false: Some(
-                                                Block(
-                                                    [
-                                                        Stmt(
-                                                            Print {
-                                                                value: IntegerLiteral(
-                                                                    IntegerLiteral {
-                                                                        repr: "1",
-                                                                        value: 1,
-                                                                    },
-                                                                ),
-                                                            },
-                                                        ),
-                                                    ],
-                                                ),
-                                            ),
-                                        },
-                                    ),
-                                ],
-                            ),
+                                        ),
+                                    },
+                                ),
+                            ],
                         ),
                     ),
-                },
-            ),
-        ],
-    ),
-    [],
+                ),
+            },
+        ),
+    ],
 )

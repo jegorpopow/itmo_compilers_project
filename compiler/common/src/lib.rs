@@ -41,7 +41,7 @@ impl Display for Identifier {
     }
 }
 
-#[derive(Clone, Copy, Debug)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct Position {
     pub line: usize,
     pub column: usize,
@@ -76,7 +76,7 @@ impl Display for Position {
     }
 }
 
-#[derive(Clone, Copy, Debug)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct Extent {
     pub start: Position,
     pub end: Position,

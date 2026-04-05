@@ -1,35 +1,32 @@
-(
-    Program(
-        [
-            Routine(
-                RoutineDecl {
-                    name: r"foo",
-                    arguments: [],
-                    return_type: None,
-                    body: Some(
+Program(
+    [
+        Routine(
+            RoutineDecl {
+                name: r"foo",
+                arguments: [],
+                return_type: None,
+                body: Some(
+                    Block(
                         Block(
-                            Block(
-                                [],
-                            ),
+                            [],
                         ),
                     ),
-                },
-            ),
-            Routine(
-                RoutineDecl {
-                    name: r"foo",
-                    arguments: [],
-                    return_type: None,
-                    body: Some(
+                ),
+            },
+        ),
+        Routine(
+            RoutineDecl {
+                name: r"foo",
+                arguments: [],
+                return_type: None,
+                body: Some(
+                    Block(
                         Block(
-                            Block(
-                                [],
-                            ),
+                            [],
                         ),
                     ),
-                },
-            ),
-        ],
-    ),
-    [],
+                ),
+            },
+        ),
+    ],
 )

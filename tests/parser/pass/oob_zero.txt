@@ -1,63 +1,60 @@
-(
-    Program(
-        [
-            Routine(
-                RoutineDecl {
-                    name: r"main",
-                    arguments: [],
-                    return_type: None,
-                    body: Some(
+Program(
+    [
+        Routine(
+            RoutineDecl {
+                name: r"main",
+                arguments: [],
+                return_type: None,
+                body: Some(
+                    Block(
                         Block(
-                            Block(
-                                [
-                                    VarDecl(
-                                        VarDecl {
-                                            name: r"a",
-                                            t: None,
-                                            initialiser: Some(
-                                                New {
-                                                    t: Array(
-                                                        ArrayDescription {
-                                                            t: Bool,
-                                                            length: Some(
-                                                                IntegerLiteral(
-                                                                    IntegerLiteral {
-                                                                        repr: "3",
-                                                                        value: 3,
-                                                                    },
-                                                                ),
+                            [
+                                VarDecl(
+                                    VarDecl {
+                                        name: r"a",
+                                        t: None,
+                                        initialiser: Some(
+                                            New {
+                                                t: Array(
+                                                    ArrayDescription {
+                                                        t: Bool,
+                                                        length: Some(
+                                                            IntegerLiteral(
+                                                                IntegerLiteral {
+                                                                    repr: "3",
+                                                                    value: 3,
+                                                                },
                                                             ),
-                                                        },
-                                                    ),
-                                                    fields: None,
-                                                },
-                                            ),
-                                        },
-                                    ),
-                                    Stmt(
-                                        Print {
-                                            value: LvalueToRvalue(
-                                                Index {
-                                                    lhs: Identifier(
-                                                        r"a",
-                                                    ),
-                                                    index: IntegerLiteral(
-                                                        IntegerLiteral {
-                                                            repr: "0",
-                                                            value: 0,
-                                                        },
-                                                    ),
-                                                },
-                                            ),
-                                        },
-                                    ),
-                                ],
-                            ),
+                                                        ),
+                                                    },
+                                                ),
+                                                fields: None,
+                                            },
+                                        ),
+                                    },
+                                ),
+                                Stmt(
+                                    Print {
+                                        value: LvalueToRvalue(
+                                            Index {
+                                                lhs: Identifier(
+                                                    r"a",
+                                                ),
+                                                index: IntegerLiteral(
+                                                    IntegerLiteral {
+                                                        repr: "0",
+                                                        value: 0,
+                                                    },
+                                                ),
+                                            },
+                                        ),
+                                    },
+                                ),
+                            ],
                         ),
                     ),
-                },
-            ),
-        ],
-    ),
-    [],
+                ),
+            },
+        ),
+    ],
 )

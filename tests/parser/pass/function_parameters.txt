@@ -1,84 +1,81 @@
-(
-    Program(
-        [
-            Routine(
-                RoutineDecl {
-                    name: r"a_plus_b",
-                    arguments: [
-                        (
-                            r"a",
-                            Int,
-                        ),
-                        (
-                            r"b",
-                            Int,
-                        ),
-                    ],
-                    return_type: None,
-                    body: Some(
+Program(
+    [
+        Routine(
+            RoutineDecl {
+                name: r"a_plus_b",
+                arguments: [
+                    (
+                        r"a",
+                        Int,
+                    ),
+                    (
+                        r"b",
+                        Int,
+                    ),
+                ],
+                return_type: None,
+                body: Some(
+                    Block(
                         Block(
-                            Block(
-                                [
-                                    Stmt(
-                                        Print {
-                                            value: BinOp {
-                                                op: Plus,
-                                                lhs: LvalueToRvalue(
-                                                    Identifier(
-                                                        r"a",
-                                                    ),
+                            [
+                                Stmt(
+                                    Print {
+                                        value: BinOp {
+                                            op: Plus,
+                                            lhs: LvalueToRvalue(
+                                                Identifier(
+                                                    r"a",
                                                 ),
-                                                rhs: LvalueToRvalue(
-                                                    Identifier(
-                                                        r"b",
-                                                    ),
+                                            ),
+                                            rhs: LvalueToRvalue(
+                                                Identifier(
+                                                    r"b",
                                                 ),
-                                            },
+                                            ),
+                                        },
+                                    },
+                                ),
+                            ],
+                        ),
+                    ),
+                ),
+            },
+        ),
+        Routine(
+            RoutineDecl {
+                name: r"main",
+                arguments: [],
+                return_type: None,
+                body: Some(
+                    Block(
+                        Block(
+                            [
+                                Stmt(
+                                    Expr(
+                                        Call {
+                                            callee: r"a_plus_b",
+                                            args: [
+                                                IntegerLiteral(
+                                                    IntegerLiteral {
+                                                        repr: "3",
+                                                        value: 3,
+                                                    },
+                                                ),
+                                                IntegerLiteral(
+                                                    IntegerLiteral {
+                                                        repr: "5",
+                                                        value: 5,
+                                                    },
+                                                ),
+                                            ],
                                         },
                                     ),
-                                ],
-                            ),
+                                ),
+                            ],
                         ),
                     ),
-                },
-            ),
-            Routine(
-                RoutineDecl {
-                    name: r"main",
-                    arguments: [],
-                    return_type: None,
-                    body: Some(
-                        Block(
-                            Block(
-                                [
-                                    Stmt(
-                                        Expr(
-                                            Call {
-                                                callee: r"a_plus_b",
-                                                args: [
-                                                    IntegerLiteral(
-                                                        IntegerLiteral {
-                                                            repr: "3",
-                                                            value: 3,
-                                                        },
-                                                    ),
-                                                    IntegerLiteral(
-                                                        IntegerLiteral {
-                                                            repr: "5",
-                                                            value: 5,
-                                                        },
-                                                    ),
-                                                ],
-                                            },
-                                        ),
-                                    ),
-                                ],
-                            ),
-                        ),
-                    ),
-                },
-            ),
-        ],
-    ),
-    [],
+                ),
+            },
+        ),
+    ],
 )

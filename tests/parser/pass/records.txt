@@ -1,360 +1,339 @@
-(
-    Program(
-        [
-            Type(
-                TypeDecl {
-                    name: r"point",
-                    t: Record(
-                        RecordDescription {
-                            fields: [
-                                FieldDescription {
-                                    name: r"x",
-                                    t: Real,
+Program(
+    [
+        Type(
+            TypeDecl {
+                name: r"point",
+                t: Record(
+                    RecordDescription {
+                        fields: [
+                            FieldDescription {
+                                name: r"x",
+                                t: Real,
+                            },
+                            FieldDescription {
+                                name: r"y",
+                                t: Real,
+                            },
+                        ],
+                    },
+                ),
+            },
+        ),
+        Routine(
+            RoutineDecl {
+                name: r"point_of",
+                arguments: [
+                    (
+                        r"x",
+                        Real,
+                    ),
+                    (
+                        r"y",
+                        Real,
+                    ),
+                ],
+                return_type: None,
+                body: Some(
+                    Expression(
+                        New {
+                            t: Alias(
+                                r"point",
+                            ),
+                            fields: Some(
+                                [
+                                    (
+                                        r"x",
+                                        LvalueToRvalue(
+                                            Identifier(
+                                                r"x",
+                                            ),
+                                        ),
+                                    ),
+                                    (
+                                        r"y",
+                                        LvalueToRvalue(
+                                            Identifier(
+                                                r"y",
+                                            ),
+                                        ),
+                                    ),
+                                ],
+                            ),
+                        },
+                    ),
+                ),
+            },
+        ),
+        Routine(
+            RoutineDecl {
+                name: r"squared_distance",
+                arguments: [
+                    (
+                        r"from",
+                        Alias(
+                            r"point",
+                        ),
+                    ),
+                    (
+                        r"to",
+                        Alias(
+                            r"point",
+                        ),
+                    ),
+                ],
+                return_type: Some(
+                    Real,
+                ),
+                body: Some(
+                    Block(
+                        Block(
+                            [
+                                Stmt(
+                                    Return {
+                                        value: BinOp {
+                                            op: Plus,
+                                            lhs: BinOp {
+                                                op: Mul,
+                                                lhs: BinOp {
+                                                    op: Minus,
+                                                    lhs: LvalueToRvalue(
+                                                        Member {
+                                                            lhs: Identifier(
+                                                                r"from",
+                                                            ),
+                                                            member_name: r"x",
+                                                        },
+                                                    ),
+                                                    rhs: LvalueToRvalue(
+                                                        Member {
+                                                            lhs: Identifier(
+                                                                r"to",
+                                                            ),
+                                                            member_name: r"x",
+                                                        },
+                                                    ),
+                                                },
+                                                rhs: BinOp {
+                                                    op: Minus,
+                                                    lhs: LvalueToRvalue(
+                                                        Member {
+                                                            lhs: Identifier(
+                                                                r"from",
+                                                            ),
+                                                            member_name: r"x",
+                                                        },
+                                                    ),
+                                                    rhs: LvalueToRvalue(
+                                                        Member {
+                                                            lhs: Identifier(
+                                                                r"to",
+                                                            ),
+                                                            member_name: r"x",
+                                                        },
+                                                    ),
+                                                },
+                                            },
+                                            rhs: BinOp {
+                                                op: Mul,
+                                                lhs: BinOp {
+                                                    op: Minus,
+                                                    lhs: LvalueToRvalue(
+                                                        Member {
+                                                            lhs: Identifier(
+                                                                r"from",
+                                                            ),
+                                                            member_name: r"y",
+                                                        },
+                                                    ),
+                                                    rhs: LvalueToRvalue(
+                                                        Member {
+                                                            lhs: Identifier(
+                                                                r"to",
+                                                            ),
+                                                            member_name: r"y",
+                                                        },
+                                                    ),
+                                                },
+                                                rhs: BinOp {
+                                                    op: Minus,
+                                                    lhs: LvalueToRvalue(
+                                                        Member {
+                                                            lhs: Identifier(
+                                                                r"from",
+                                                            ),
+                                                            member_name: r"y",
+                                                        },
+                                                    ),
+                                                    rhs: LvalueToRvalue(
+                                                        Member {
+                                                            lhs: Identifier(
+                                                                r"to",
+                                                            ),
+                                                            member_name: r"y",
+                                                        },
+                                                    ),
+                                                },
+                                            },
+                                        },
+                                    },
+                                ),
+                            ],
+                        ),
+                    ),
+                ),
+            },
+        ),
+        Routine(
+            RoutineDecl {
+                name: r"middle",
+                arguments: [
+                    (
+                        r"a",
+                        Alias(
+                            r"point",
+                        ),
+                    ),
+                    (
+                        r"b",
+                        Alias(
+                            r"point",
+                        ),
+                    ),
+                ],
+                return_type: None,
+                body: Some(
+                    Expression(
+                        Call {
+                            callee: r"point_of",
+                            args: [
+                                BinOp {
+                                    op: Div,
+                                    lhs: BinOp {
+                                        op: Plus,
+                                        lhs: LvalueToRvalue(
+                                            Member {
+                                                lhs: Identifier(
+                                                    r"a",
+                                                ),
+                                                member_name: r"x",
+                                            },
+                                        ),
+                                        rhs: LvalueToRvalue(
+                                            Member {
+                                                lhs: Identifier(
+                                                    r"b",
+                                                ),
+                                                member_name: r"x",
+                                            },
+                                        ),
+                                    },
+                                    rhs: IntegerLiteral(
+                                        IntegerLiteral {
+                                            repr: "2",
+                                            value: 2,
+                                        },
+                                    ),
                                 },
-                                FieldDescription {
-                                    name: r"y",
-                                    t: Real,
+                                BinOp {
+                                    op: Div,
+                                    lhs: BinOp {
+                                        op: Plus,
+                                        lhs: LvalueToRvalue(
+                                            Member {
+                                                lhs: Identifier(
+                                                    r"a",
+                                                ),
+                                                member_name: r"y",
+                                            },
+                                        ),
+                                        rhs: LvalueToRvalue(
+                                            Member {
+                                                lhs: Identifier(
+                                                    r"b",
+                                                ),
+                                                member_name: r"y",
+                                            },
+                                        ),
+                                    },
+                                    rhs: IntegerLiteral(
+                                        IntegerLiteral {
+                                            repr: "2",
+                                            value: 2,
+                                        },
+                                    ),
                                 },
                             ],
                         },
                     ),
-                },
-            ),
-            Routine(
-                RoutineDecl {
-                    name: r"point_of",
-                    arguments: [
-                        (
-                            r"x",
-                            Real,
-                        ),
-                        (
-                            r"y",
-                            Real,
-                        ),
-                    ],
-                    return_type: None,
-                    body: Some(
-                        Expression(
-                            New {
-                                t: Alias(
-                                    r"point",
-                                ),
-                                fields: Some(
-                                    [
-                                        (
-                                            r"x",
-                                            LvalueToRvalue(
-                                                Identifier(
-                                                    r"x",
-                                                ),
-                                            ),
-                                        ),
-                                        (
-                                            r"y",
-                                            LvalueToRvalue(
-                                                Identifier(
-                                                    r"y",
-                                                ),
-                                            ),
-                                        ),
-                                    ],
-                                ),
-                            },
-                        ),
-                    ),
-                },
-            ),
-            Routine(
-                RoutineDecl {
-                    name: r"squared_distance",
-                    arguments: [
-                        (
-                            r"from",
-                            Alias(
-                                r"point",
-                            ),
-                        ),
-                        (
-                            r"to",
-                            Alias(
-                                r"point",
-                            ),
-                        ),
-                    ],
-                    return_type: Some(
-                        Real,
-                    ),
-                    body: Some(
+                ),
+            },
+        ),
+        Routine(
+            RoutineDecl {
+                name: r"main",
+                arguments: [],
+                return_type: None,
+                body: Some(
+                    Block(
                         Block(
-                            Block(
-                                [
-                                    Stmt(
-                                        Return {
-                                            value: BinOp {
-                                                op: Plus,
-                                                lhs: BinOp {
-                                                    op: Mul,
-                                                    lhs: BinOp {
-                                                        op: Minus,
-                                                        lhs: LvalueToRvalue(
-                                                            Member {
-                                                                lhs: Identifier(
-                                                                    r"from",
-                                                                ),
-                                                                member_name: r"x",
-                                                            },
-                                                        ),
-                                                        rhs: LvalueToRvalue(
-                                                            Member {
-                                                                lhs: Identifier(
-                                                                    r"to",
-                                                                ),
-                                                                member_name: r"x",
-                                                            },
-                                                        ),
-                                                    },
-                                                    rhs: BinOp {
-                                                        op: Minus,
-                                                        lhs: LvalueToRvalue(
-                                                            Member {
-                                                                lhs: Identifier(
-                                                                    r"from",
-                                                                ),
-                                                                member_name: r"x",
-                                                            },
-                                                        ),
-                                                        rhs: LvalueToRvalue(
-                                                            Member {
-                                                                lhs: Identifier(
-                                                                    r"to",
-                                                                ),
-                                                                member_name: r"x",
-                                                            },
-                                                        ),
-                                                    },
-                                                },
-                                                rhs: BinOp {
-                                                    op: Mul,
-                                                    lhs: BinOp {
-                                                        op: Minus,
-                                                        lhs: LvalueToRvalue(
-                                                            Member {
-                                                                lhs: Identifier(
-                                                                    r"from",
-                                                                ),
-                                                                member_name: r"y",
-                                                            },
-                                                        ),
-                                                        rhs: LvalueToRvalue(
-                                                            Member {
-                                                                lhs: Identifier(
-                                                                    r"to",
-                                                                ),
-                                                                member_name: r"y",
-                                                            },
-                                                        ),
-                                                    },
-                                                    rhs: BinOp {
-                                                        op: Minus,
-                                                        lhs: LvalueToRvalue(
-                                                            Member {
-                                                                lhs: Identifier(
-                                                                    r"from",
-                                                                ),
-                                                                member_name: r"y",
-                                                            },
-                                                        ),
-                                                        rhs: LvalueToRvalue(
-                                                            Member {
-                                                                lhs: Identifier(
-                                                                    r"to",
-                                                                ),
-                                                                member_name: r"y",
-                                                            },
-                                                        ),
-                                                    },
-                                                },
-                                            },
-                                        },
-                                    ),
-                                ],
-                            ),
-                        ),
-                    ),
-                },
-            ),
-            Routine(
-                RoutineDecl {
-                    name: r"middle",
-                    arguments: [
-                        (
-                            r"a",
-                            Alias(
-                                r"point",
-                            ),
-                        ),
-                        (
-                            r"b",
-                            Alias(
-                                r"point",
-                            ),
-                        ),
-                    ],
-                    return_type: None,
-                    body: Some(
-                        Expression(
-                            Call {
-                                callee: r"point_of",
-                                args: [
-                                    BinOp {
-                                        op: Div,
-                                        lhs: BinOp {
-                                            op: Plus,
-                                            lhs: LvalueToRvalue(
-                                                Member {
-                                                    lhs: Identifier(
-                                                        r"a",
+                            [
+                                VarDecl(
+                                    VarDecl {
+                                        name: r"p1",
+                                        t: None,
+                                        initialiser: Some(
+                                            Call {
+                                                callee: r"point_of",
+                                                args: [
+                                                    RealLiteral(
+                                                        RealLiteral {
+                                                            repr: "0.0",
+                                                            value: 0.0,
+                                                        },
                                                     ),
-                                                    member_name: r"x",
-                                                },
-                                            ),
-                                            rhs: LvalueToRvalue(
-                                                Member {
-                                                    lhs: Identifier(
-                                                        r"b",
+                                                    RealLiteral(
+                                                        RealLiteral {
+                                                            repr: "0.0",
+                                                            value: 0.0,
+                                                        },
                                                     ),
-                                                    member_name: r"x",
-                                                },
-                                            ),
-                                        },
-                                        rhs: IntegerLiteral(
-                                            IntegerLiteral {
-                                                repr: "2",
-                                                value: 2,
+                                                ],
                                             },
                                         ),
                                     },
-                                    BinOp {
-                                        op: Div,
-                                        lhs: BinOp {
-                                            op: Plus,
-                                            lhs: LvalueToRvalue(
-                                                Member {
-                                                    lhs: Identifier(
-                                                        r"a",
+                                ),
+                                VarDecl(
+                                    VarDecl {
+                                        name: r"p2",
+                                        t: None,
+                                        initialiser: Some(
+                                            Call {
+                                                callee: r"point_of",
+                                                args: [
+                                                    RealLiteral(
+                                                        RealLiteral {
+                                                            repr: "3.0",
+                                                            value: 3.0,
+                                                        },
                                                     ),
-                                                    member_name: r"y",
-                                                },
-                                            ),
-                                            rhs: LvalueToRvalue(
-                                                Member {
-                                                    lhs: Identifier(
-                                                        r"b",
+                                                    RealLiteral(
+                                                        RealLiteral {
+                                                            repr: "4.0",
+                                                            value: 4.0,
+                                                        },
                                                     ),
-                                                    member_name: r"y",
-                                                },
-                                            ),
-                                        },
-                                        rhs: IntegerLiteral(
-                                            IntegerLiteral {
-                                                repr: "2",
-                                                value: 2,
+                                                ],
                                             },
                                         ),
                                     },
-                                ],
-                            },
-                        ),
-                    ),
-                },
-            ),
-            Routine(
-                RoutineDecl {
-                    name: r"main",
-                    arguments: [],
-                    return_type: None,
-                    body: Some(
-                        Block(
-                            Block(
-                                [
-                                    VarDecl(
-                                        VarDecl {
-                                            name: r"p1",
-                                            t: None,
-                                            initialiser: Some(
-                                                Call {
-                                                    callee: r"point_of",
-                                                    args: [
-                                                        RealLiteral(
-                                                            RealLiteral {
-                                                                repr: "0.0",
-                                                                value: 0.0,
-                                                            },
-                                                        ),
-                                                        RealLiteral(
-                                                            RealLiteral {
-                                                                repr: "0.0",
-                                                                value: 0.0,
-                                                            },
-                                                        ),
-                                                    ],
-                                                },
-                                            ),
-                                        },
-                                    ),
-                                    VarDecl(
-                                        VarDecl {
-                                            name: r"p2",
-                                            t: None,
-                                            initialiser: Some(
-                                                Call {
-                                                    callee: r"point_of",
-                                                    args: [
-                                                        RealLiteral(
-                                                            RealLiteral {
-                                                                repr: "3.0",
-                                                                value: 3.0,
-                                                            },
-                                                        ),
-                                                        RealLiteral(
-                                                            RealLiteral {
-                                                                repr: "4.0",
-                                                                value: 4.0,
-                                                            },
-                                                        ),
-                                                    ],
-                                                },
-                                            ),
-                                        },
-                                    ),
-                                    VarDecl(
-                                        VarDecl {
-                                            name: r"mid",
-                                            t: None,
-                                            initialiser: Some(
-                                                Call {
-                                                    callee: r"middle",
-                                                    args: [
-                                                        LvalueToRvalue(
-                                                            Identifier(
-                                                                r"p1",
-                                                            ),
-                                                        ),
-                                                        LvalueToRvalue(
-                                                            Identifier(
-                                                                r"p2",
-                                                            ),
-                                                        ),
-                                                    ],
-                                                },
-                                            ),
-                                        },
-                                    ),
-                                    Stmt(
-                                        Print {
-                                            value: Call {
-                                                callee: r"squared_distance",
+                                ),
+                                VarDecl(
+                                    VarDecl {
+                                        name: r"mid",
+                                        t: None,
+                                        initialiser: Some(
+                                            Call {
+                                                callee: r"middle",
                                                 args: [
                                                     LvalueToRvalue(
                                                         Identifier(
@@ -368,15 +347,33 @@
                                                     ),
                                                 ],
                                             },
+                                        ),
+                                    },
+                                ),
+                                Stmt(
+                                    Print {
+                                        value: Call {
+                                            callee: r"squared_distance",
+                                            args: [
+                                                LvalueToRvalue(
+                                                    Identifier(
+                                                        r"p1",
+                                                    ),
+                                                ),
+                                                LvalueToRvalue(
+                                                    Identifier(
+                                                        r"p2",
+                                                    ),
+                                                ),
+                                            ],
                                         },
-                                    ),
-                                ],
-                            ),
+                                    },
+                                ),
+                            ],
                         ),
                     ),
-                },
-            ),
-        ],
-    ),
-    [],
+                ),
+            },
+        ),
+    ],
 )

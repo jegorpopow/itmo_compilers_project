@@ -5,11 +5,7 @@ use crate::{AnalysisResult, convert};
 
 fn get_ast(src: &str) -> AnalysisResult<String> {
     let tokens: Vec<_> = Lexer::from(src).collect();
-    let (program, parsing_errors) = parse_program(&tokens).expect("Failed to parse");
-    assert!(
-        parsing_errors.is_empty(),
-        "Parsing errors: {parsing_errors:?}"
-    );
+    let program = parse_program(&tokens).expect("Failed to parse");
     convert(&program).map(|res| format!("{res:#?}\n"))
 }
 
