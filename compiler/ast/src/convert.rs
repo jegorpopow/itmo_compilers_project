@@ -102,23 +102,14 @@ impl Converter {
         self.bindings.rebind(ident, new_decl);
     }
 
-    // FIXME: accept `LocalDecl`
-    fn bind_local_decl(&mut self, name: &RawIdentifier, decl: Decl) -> Identifier {
-        let ident = self.bindings.create(name, decl);
+    fn bind_local_decl(&mut self, name: &RawIdentifier, decl: LocalDecl) -> Identifier {
+        let ident = self.bindings.create(name, decl.into());
         self.local_scopes
             .last_mut()
             .expect("Cannot bind a local decl outside of any local scopes")
             .add(&ident);
 
         ident
-    }
-
-    fn bind_decl(&mut self, is_global: bool, name: &RawIdentifier, decl: Decl) -> Identifier {
-        if is_global {
-            self.bind_global_decl(name, decl)
-        } else {
-            self.bind_local_decl(name, decl)
-        }
     }
 
     fn bind_routine(
@@ -633,7 +624,7 @@ impl Converter {
                         ty: array_type,
                     } = this.convert_expr(from)?;
                     let element_type = array_type.get_element_type()?;
-                    let counter_decl = Decl::Var(VarDecl {
+                    let counter_decl = LocalDecl::Var(VarDecl {
                         t: Rc::clone(element_type),
                         initialiser: None,
                         relative_location: counter_loc,
@@ -652,7 +643,7 @@ impl Converter {
                     let from = this.convert_expr(from)?;
                     let to = this.convert_expr(to)?;
                     let int_type = Rc::new(Type::Int);
-                    let counter_decl = Decl::Var(VarDecl {
+                    let counter_decl = LocalDecl::Var(VarDecl {
                         t: Rc::clone(&int_type),
                         initialiser: None,
                         relative_location: counter_loc,
@@ -802,8 +793,12 @@ impl Converter {
         };
 
         Ok(Binding {
-            name: self.bind_decl(is_global, name, Decl::Const(decl.clone())),
-            decl,
+            decl: decl.clone(),
+            name: if is_global {
+                self.bind_global_decl(name, Decl::Const(decl))
+            } else {
+                self.bind_local_decl(name, LocalDecl::Const(decl))
+            },
         })
     }
 
@@ -858,8 +853,12 @@ impl Converter {
         };
 
         Ok(Binding {
-            name: self.bind_decl(is_global, name, Decl::Var(decl.clone())),
-            decl,
+            decl: decl.clone(),
+            name: if is_global {
+                self.bind_global_decl(name, Decl::Var(decl))
+            } else {
+                self.bind_local_decl(name, LocalDecl::Var(decl))
+            },
         })
     }
 
@@ -870,13 +869,16 @@ impl Converter {
     ) -> AnalysisResult<Binding<TypeDecl>> {
         let parser::TypeDecl { name, t } = decl;
         // Binding forward declaration of type for possible recursive usage
-        let ident = self.bind_decl(
-            is_global,
-            name,
-            Decl::Type(TypeDecl::Forward {
+        let ident = {
+            let forward = TypeDecl::Forward {
                 alias: name.clone(),
-            }),
-        );
+            };
+            if is_global {
+                self.bind_global_decl(name, Decl::Type(forward))
+            } else {
+                self.bind_local_decl(name, LocalDecl::Type(forward))
+            }
+        };
 
         let converted_type = self.convert_type(t)?;
         let effective_type = self.bindings.get_effective_type(&converted_type)?;
@@ -892,31 +894,15 @@ impl Converter {
         })
     }
 
-    fn convert_decl(
-        &mut self,
-        decl: &parser::Declaration,
-        is_global: bool,
-    ) -> AnalysisResult<Binding> {
+    fn convert_global_decl(&mut self, decl: &parser::Declaration) -> AnalysisResult<Binding> {
         Ok(match decl {
-            parser::Declaration::Var(decl) => {
-                self.convert_var_decl(decl, is_global)?.map(Decl::Var)
-            }
+            parser::Declaration::Var(decl) => self.convert_var_decl(decl, true)?.map(Decl::Var),
 
             parser::Declaration::Const(decl) => {
-                self.convert_const_decl(decl, is_global)?.map(Decl::Const)
+                self.convert_const_decl(decl, true)?.map(Decl::Const)
             }
-            parser::Declaration::Type(decl) => {
-                self.convert_type_decl(decl, is_global)?.map(Decl::Type)
-            }
-            parser::Declaration::Routine(decl) => {
-                if is_global {
-                    self.convert_routine(decl)
-                } else {
-                    Err(AnalysisError {
-                        what: "Local routines declarations is not supported".to_string(),
-                    })
-                }?
-            }
+            parser::Declaration::Type(decl) => self.convert_type_decl(decl, true)?.map(Decl::Type),
+            parser::Declaration::Routine(decl) => self.convert_routine(decl)?,
         })
     }
 
@@ -1056,7 +1042,7 @@ impl Converter {
             .iter()
             .map(|(raw_name, decl)| {
                 let decl = decl.to_owned();
-                let arg_ident = self.bind_local_decl(raw_name, Decl::Var(decl.clone()));
+                let arg_ident = self.bind_local_decl(raw_name, LocalDecl::Var(decl.clone()));
                 Binding {
                     name: arg_ident,
                     decl,
@@ -1115,7 +1101,7 @@ pub fn convert(program: &parser::Program) -> AnalysisResult<(Program, Bindings)>
     let converted_program = program
         .0
         .iter()
-        .map(|decl| converter.convert_decl(decl, true))
+        .map(|decl| converter.convert_global_decl(decl))
         .collect::<AnalysisResult<Vec<Binding>>>()
         .map(Program)?;
 
