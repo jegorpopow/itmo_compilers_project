@@ -162,6 +162,7 @@ impl EvaluatedValue {
 }
 
 impl EvaluatedValue {
+    // FIXME(GrigorenkoPV): introduce Expression::Literal
     pub(crate) fn as_literal(&self) -> Rc<Expression> {
         match self {
             EvaluatedValue::Int(val) => Expression::IntegerLiteral(IntegerLiteral {
@@ -312,6 +313,7 @@ pub struct VarDecl {
     pub relative_location: Location,
 }
 
+/// FIXME(GrigorenkoPV): Typed<Literal>
 #[derive(Debug, Hash, Clone)]
 pub struct ConstDecl {
     pub t: Rc<Type>,

@@ -780,8 +780,8 @@ impl Converter {
                     BlockElem::Decl(self.convert_var_decl(var_decl, false)?.map(LocalDecl::Var))
                 }
                 parser::BlockElem::ConstDecl(const_decl) => BlockElem::Decl(
-                    self.convert_decl(&parser::Declaration::Const(const_decl.clone()), false)
-                        .and_then(TryInto::try_into)?,
+                    self.convert_const_decl(const_decl, false)?
+                        .map(LocalDecl::Const),
                 ),
                 parser::BlockElem::TypeDecl(type_decl) => BlockElem::Decl(
                     self.convert_type_decl(type_decl, false)?
@@ -793,6 +793,38 @@ impl Converter {
         Ok(Block {
             elems: result,
             locals_count: self.leave_block(),
+        })
+    }
+
+    fn convert_const_decl(
+        &mut self,
+        decl: &parser::ConstDecl,
+        is_global: bool,
+    ) -> AnalysisResult<Binding<ConstDecl>> {
+        let parser::ConstDecl {
+            name,
+            t,
+            initialiser,
+        } = decl;
+        let converted_expr = self.convert_expr(initialiser)?;
+        let decl = match t {
+            Some(t) => {
+                let converted_type = self.convert_type(t)?;
+                let converted_expr = cast_to(converted_expr, &converted_type)?;
+                ConstDecl {
+                    t: converted_type,
+                    value: converted_expr.try_constexpr_evaluate()?.as_literal(),
+                }
+            }
+            None => ConstDecl {
+                t: converted_expr.ty,
+                value: converted_expr.value.try_constexpr_evaluate()?.as_literal(),
+            },
+        };
+
+        Ok(Binding {
+            name: self.bind_decl(is_global, name, Decl::Const(decl.clone())),
+            decl,
         })
     }
 
@@ -891,32 +923,8 @@ impl Converter {
                 self.convert_var_decl(decl, is_global)?.map(Decl::Var)
             }
 
-            parser::Declaration::Const(parser::ConstDecl {
-                name,
-                t,
-                initialiser,
-            }) => {
-                let converted_expr = self.convert_expr(initialiser)?;
-                let const_decl: Decl = match t {
-                    Some(t) => {
-                        let converted_type = self.convert_type(t)?;
-                        let converted_expr = cast_to(converted_expr, &converted_type)?;
-                        Decl::Const(ConstDecl {
-                            t: converted_type,
-                            value: converted_expr.try_constexpr_evaluate()?.as_literal(),
-                        })
-                    }
-                    None => Decl::Const(ConstDecl {
-                        t: converted_expr.ty,
-                        value: converted_expr.value.try_constexpr_evaluate()?.as_literal(),
-                    }),
-                };
-
-                let ident = self.bind_decl(is_global, name, const_decl.clone());
-                Binding {
-                    name: ident,
-                    decl: const_decl,
-                }
+            parser::Declaration::Const(decl) => {
+                self.convert_const_decl(decl, is_global)?.map(Decl::Const)
             }
             parser::Declaration::Type(decl) => {
                 self.convert_type_decl(decl, is_global)?.map(Decl::Type)
