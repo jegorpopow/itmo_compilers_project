@@ -11,8 +11,8 @@ mod tests;
 pub use crate::{
     convert::convert,
     tree::{
-        Binding, Block, BlockElem, BoolLiteral, Decl, Expression, IdentifierTable, IntegerLiteral,
-        LvalueExpression, Program, RealLiteral, Routine, RoutineBody, RoutineDecl,
+        Binding, Block, BlockElem, BoolLiteral, ConstDecl, Decl, Expression, IdentifierTable,
+        IntegerLiteral, LvalueExpression, Program, RealLiteral, Routine, RoutineBody, RoutineDecl,
         RoutineSignature, SimpleBinding, SimpleDecl, Statement, TypeDecl, VarDecl,
     },
     types::{ArrayDescription, FieldDescription, RecordDescription, Type},

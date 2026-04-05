@@ -1350,16 +1350,6 @@
             ),
             Type(
                 TypeDecl {
-                    name: r"error",
-                    t: Record(
-                        RecordDescription {
-                            fields: [],
-                        },
-                    ),
-                },
-            ),
-            Type(
-                TypeDecl {
                     name: r"byte",
                     t: Int,
                 },
@@ -1383,11 +1373,15 @@
                             Block(
                                 [
                                     Stmt(
-                                        If {
-                                            condition: BinOp {
-                                                op: Or,
+                                        Assert {
+                                            pos: Position {
+                                                line: 125,
+                                                column: 2,
+                                            },
+                                            value: BinOp {
+                                                op: And,
                                                 lhs: BinOp {
-                                                    op: Lt,
+                                                    op: Ge,
                                                     lhs: LvalueToRvalue(
                                                         Identifier(
                                                             r"val",
@@ -1401,7 +1395,7 @@
                                                     ),
                                                 },
                                                 rhs: BinOp {
-                                                    op: Gt,
+                                                    op: Lt,
                                                     lhs: LvalueToRvalue(
                                                         Identifier(
                                                             r"val",
@@ -1409,42 +1403,12 @@
                                                     ),
                                                     rhs: IntegerLiteral(
                                                         IntegerLiteral {
-                                                            repr: "255",
-                                                            value: 255,
+                                                            repr: "256",
+                                                            value: 256,
                                                         },
                                                     ),
                                                 },
                                             },
-                                            on_true: Block(
-                                                [
-                                                    Stmt(
-                                                        Print {
-                                                            value: New {
-                                                                t: Alias(
-                                                                    r"error",
-                                                                ),
-                                                                fields: None,
-                                                            },
-                                                        },
-                                                    ),
-                                                    Stmt(
-                                                        Return {
-                                                            value: Cast {
-                                                                operand: IntegerLiteral(
-                                                                    IntegerLiteral {
-                                                                        repr: "0",
-                                                                        value: 0,
-                                                                    },
-                                                                ),
-                                                                target: Alias(
-                                                                    r"byte",
-                                                                ),
-                                                            },
-                                                        },
-                                                    ),
-                                                ],
-                                            ),
-                                            on_false: None,
                                         },
                                     ),
                                     Stmt(
@@ -1867,6 +1831,49 @@
                     ),
                 },
             ),
+            Const(
+                ConstDecl {
+                    name: r"CANVAS_MAX_HEIGHT",
+                    t: None,
+                    initialiser: IntegerLiteral(
+                        IntegerLiteral {
+                            repr: "360",
+                            value: 360,
+                        },
+                    ),
+                },
+            ),
+            Const(
+                ConstDecl {
+                    name: r"CANVAS_MAX_WIDTH",
+                    t: None,
+                    initialiser: IntegerLiteral(
+                        IntegerLiteral {
+                            repr: "640",
+                            value: 640,
+                        },
+                    ),
+                },
+            ),
+            Const(
+                ConstDecl {
+                    name: r"CANVAS_MAX_PIXELS",
+                    t: None,
+                    initialiser: BinOp {
+                        op: Mul,
+                        lhs: LvalueToRvalue(
+                            Identifier(
+                                r"CANVAS_MAX_HEIGHT",
+                            ),
+                        ),
+                        rhs: LvalueToRvalue(
+                            Identifier(
+                                r"CANVAS_MAX_WIDTH",
+                            ),
+                        ),
+                    },
+                },
+            ),
             Type(
                 TypeDecl {
                     name: r"canvas",
@@ -1881,21 +1888,11 @@
                                                 r"colour",
                                             ),
                                             length: Some(
-                                                BinOp {
-                                                    op: Mul,
-                                                    lhs: IntegerLiteral(
-                                                        IntegerLiteral {
-                                                            repr: "360",
-                                                            value: 360,
-                                                        },
+                                                LvalueToRvalue(
+                                                    Identifier(
+                                                        r"CANVAS_MAX_PIXELS",
                                                     ),
-                                                    rhs: IntegerLiteral(
-                                                        IntegerLiteral {
-                                                            repr: "640",
-                                                            value: 640,
-                                                        },
-                                                    ),
-                                                },
+                                                ),
                                             ),
                                         },
                                     ),
@@ -2097,98 +2094,79 @@
                             Block(
                                 [
                                     Stmt(
-                                        If {
-                                            condition: BinOp {
-                                                op: Or,
+                                        Assert {
+                                            pos: Position {
+                                                line: 173,
+                                                column: 2,
+                                            },
+                                            value: BinOp {
+                                                op: And,
                                                 lhs: BinOp {
-                                                    op: Or,
-                                                    lhs: BinOp {
-                                                        op: Or,
-                                                        lhs: BinOp {
-                                                            op: Le,
-                                                            lhs: LvalueToRvalue(
-                                                                Identifier(
-                                                                    r"h",
-                                                                ),
-                                                            ),
-                                                            rhs: IntegerLiteral(
-                                                                IntegerLiteral {
-                                                                    repr: "0",
-                                                                    value: 0,
-                                                                },
-                                                            ),
-                                                        },
-                                                        rhs: BinOp {
-                                                            op: Gt,
-                                                            lhs: LvalueToRvalue(
-                                                                Identifier(
-                                                                    r"h",
-                                                                ),
-                                                            ),
-                                                            rhs: IntegerLiteral(
-                                                                IntegerLiteral {
-                                                                    repr: "360",
-                                                                    value: 360,
-                                                                },
-                                                            ),
-                                                        },
-                                                    },
-                                                    rhs: BinOp {
-                                                        op: Le,
-                                                        lhs: LvalueToRvalue(
-                                                            Identifier(
-                                                                r"w",
-                                                            ),
-                                                        ),
-                                                        rhs: IntegerLiteral(
-                                                            IntegerLiteral {
-                                                                repr: "0",
-                                                                value: 0,
-                                                            },
-                                                        ),
-                                                    },
-                                                },
-                                                rhs: BinOp {
                                                     op: Ge,
-                                                    lhs: IntegerLiteral(
-                                                        IntegerLiteral {
-                                                            repr: "2",
-                                                            value: 2,
-                                                        },
+                                                    lhs: LvalueToRvalue(
+                                                        Identifier(
+                                                            r"h",
+                                                        ),
                                                     ),
                                                     rhs: IntegerLiteral(
                                                         IntegerLiteral {
-                                                            repr: "640",
-                                                            value: 640,
+                                                            repr: "0",
+                                                            value: 0,
                                                         },
                                                     ),
                                                 },
+                                                rhs: BinOp {
+                                                    op: Le,
+                                                    lhs: LvalueToRvalue(
+                                                        Identifier(
+                                                            r"h",
+                                                        ),
+                                                    ),
+                                                    rhs: LvalueToRvalue(
+                                                        Identifier(
+                                                            r"CANVAS_MAX_HEIGHT",
+                                                        ),
+                                                    ),
+                                                },
                                             },
-                                            on_true: Block(
-                                                [
-                                                    Stmt(
-                                                        Print {
-                                                            value: New {
-                                                                t: Alias(
-                                                                    r"error",
-                                                                ),
-                                                                fields: None,
-                                                            },
+                                        },
+                                    ),
+                                    Stmt(
+                                        Assert {
+                                            pos: Position {
+                                                line: 174,
+                                                column: 2,
+                                            },
+                                            value: BinOp {
+                                                op: And,
+                                                lhs: BinOp {
+                                                    op: Ge,
+                                                    lhs: LvalueToRvalue(
+                                                        Identifier(
+                                                            r"w",
+                                                        ),
+                                                    ),
+                                                    rhs: IntegerLiteral(
+                                                        IntegerLiteral {
+                                                            repr: "0",
+                                                            value: 0,
                                                         },
                                                     ),
-                                                    Stmt(
-                                                        Return {
-                                                            value: New {
-                                                                t: Alias(
-                                                                    r"canvas",
-                                                                ),
-                                                                fields: None,
-                                                            },
-                                                        },
+                                                },
+                                                rhs: BinOp {
+                                                    op: Le,
+                                                    lhs: LvalueToRvalue(
+                                                        Identifier(
+                                                            r"w",
+                                                        ),
                                                     ),
-                                                ],
-                                            ),
-                                            on_false: None,
+                                                    rhs: LvalueToRvalue(
+                                                        Identifier(
+                                                            r"CANVAS_MAX_WIDTH",
+                                                        ),
+                                                    ),
+                                                },
+                                            },
                                         },
                                     ),
                                     VarDecl(
@@ -2211,21 +2189,11 @@
                                                                                 r"colour",
                                                                             ),
                                                                             length: Some(
-                                                                                BinOp {
-                                                                                    op: Mul,
-                                                                                    lhs: IntegerLiteral(
-                                                                                        IntegerLiteral {
-                                                                                            repr: "360",
-                                                                                            value: 360,
-                                                                                        },
+                                                                                LvalueToRvalue(
+                                                                                    Identifier(
+                                                                                        r"CANVAS_MAX_PIXELS",
                                                                                     ),
-                                                                                    rhs: IntegerLiteral(
-                                                                                        IntegerLiteral {
-                                                                                            repr: "640",
-                                                                                            value: 640,
-                                                                                        },
-                                                                                    ),
-                                                                                },
+                                                                                ),
                                                                             ),
                                                                         },
                                                                     ),
@@ -2411,32 +2379,32 @@
                                     Stmt(
                                         For {
                                             counter: r"x",
-                                            from: IntegerLiteral(
-                                                IntegerLiteral {
-                                                    repr: "0",
-                                                    value: 0,
-                                                },
-                                            ),
+                                            from: BinOp {
+                                                op: Minus,
+                                                lhs: LvalueToRvalue(
+                                                    Member {
+                                                        lhs: Identifier(
+                                                            r"c",
+                                                        ),
+                                                        member_name: r"height",
+                                                    },
+                                                ),
+                                                rhs: IntegerLiteral(
+                                                    IntegerLiteral {
+                                                        repr: "1",
+                                                        value: 1,
+                                                    },
+                                                ),
+                                            },
                                             to: Some(
-                                                BinOp {
-                                                    op: Minus,
-                                                    lhs: LvalueToRvalue(
-                                                        Member {
-                                                            lhs: Identifier(
-                                                                r"c",
-                                                            ),
-                                                            member_name: r"height",
-                                                        },
-                                                    ),
-                                                    rhs: IntegerLiteral(
-                                                        IntegerLiteral {
-                                                            repr: "1",
-                                                            value: 1,
-                                                        },
-                                                    ),
-                                                },
+                                                IntegerLiteral(
+                                                    IntegerLiteral {
+                                                        repr: "0",
+                                                        value: 0,
+                                                    },
+                                                ),
                                             ),
-                                            order: Direct,
+                                            order: Reversed,
                                             body: Block(
                                                 [
                                                     Stmt(

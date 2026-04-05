@@ -1,8 +1,10 @@
 use std::env;
 use std::fs;
+use std::io;
 
 use anyhow::Context;
 use ast::convert;
+use interpreter::interpret;
 use lexer::Lexer;
 use parser::parse_program;
 
@@ -32,9 +34,11 @@ fn main() -> anyhow::Result<()> {
 
     let (program, _identifiers) = convert(&program).context("Typecheck error")?;
 
-    for decl in program.0 {
+    for decl in &program.0 {
         println!("{decl:?}");
     }
+
+    interpret(io::stdout(), &program).expect("Interpretation failed");
 
     Ok(())
 }

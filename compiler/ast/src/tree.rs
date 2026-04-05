@@ -164,6 +164,27 @@ impl EvaluatedValue {
 }
 
 impl EvaluatedValue {
+    pub(crate) fn as_literal(&self) -> Rc<Expression> {
+        match self {
+            EvaluatedValue::Int(val) => Expression::IntegerLiteral(IntegerLiteral {
+                repr: val.to_string(),
+                value: *val,
+            })
+            .into(),
+            EvaluatedValue::Real(val) => Expression::RealLiteral(RealLiteral {
+                repr: val.to_string(),
+                value: *val,
+            })
+            .into(),
+            EvaluatedValue::Bool(val) => Expression::BoolLiteral(if *val {
+                BoolLiteral::True
+            } else {
+                BoolLiteral::False
+            })
+            .into(),
+        }
+    }
+
     pub(crate) fn as_usize(&self) -> AnalysisResult<usize> {
         match self {
             &EvaluatedValue::Int(val) => val.try_into().map_err(|e| AnalysisError {
@@ -294,6 +315,12 @@ pub struct VarDecl {
 }
 
 #[derive(Debug, Hash, Clone)]
+pub struct ConstDecl {
+    pub t: Rc<Type>,
+    pub value: Rc<Expression>,
+}
+
+#[derive(Debug, Hash, Clone)]
 pub enum TypeDecl {
     Full {
         prescribed: Rc<Type>,
@@ -357,6 +384,7 @@ pub enum RoutineBody {
 #[derive(Debug, Clone)]
 pub enum SimpleDecl {
     Var(VarDecl),
+    Const(ConstDecl),
     Type(TypeDecl),
 }
 
@@ -365,6 +393,7 @@ impl From<SimpleDecl> for Decl {
         match value {
             SimpleDecl::Var(var_decl) => Decl::Var(var_decl),
             SimpleDecl::Type(type_decl) => Decl::Type(type_decl),
+            SimpleDecl::Const(const_decl) => Decl::Const(const_decl),
         }
     }
 }
@@ -440,6 +469,7 @@ pub enum Statement {
 #[derive(Debug, Clone)]
 pub enum Decl {
     Var(VarDecl),
+    Const(ConstDecl),
     Type(TypeDecl),
     Routine(RoutineDecl),
 }
@@ -451,6 +481,7 @@ impl TryFrom<Decl> for SimpleDecl {
         match value {
             Decl::Var(var_decl) => Ok(SimpleDecl::Var(var_decl)),
             Decl::Type(type_decl) => Ok(SimpleDecl::Type(type_decl)),
+            Decl::Const(const_decl) => Ok(SimpleDecl::Const(const_decl)),
             Decl::Routine(_) => Err(AnalysisError {
                 what: "nested functions are not supported".to_string(),
             }),
@@ -468,7 +499,7 @@ impl Binding {
     pub fn ensure_is_type(&self) -> AnalysisResult<&TypeDecl> {
         match &self.decl {
             Decl::Type(t) => Ok(t),
-            Decl::Var(_) | Decl::Routine(_) => Err(AnalysisError {
+            Decl::Var(_) | Decl::Const(_) | Decl::Routine(_) => Err(AnalysisError {
                 what: format!("Name {:?} does not name a type", self.name),
             }),
         }
@@ -477,7 +508,7 @@ impl Binding {
     pub fn ensure_is_var(&self) -> AnalysisResult<&VarDecl> {
         match &self.decl {
             Decl::Var(t) => Ok(t),
-            Decl::Routine(_) | Decl::Type(_) => Err(AnalysisError {
+            Decl::Routine(_) | Decl::Type(_) | Decl::Const(_) => Err(AnalysisError {
                 what: format!("Name {:?} does not name a variable", self.name),
             }),
         }
@@ -486,7 +517,7 @@ impl Binding {
     pub fn ensure_is_routine(&self) -> AnalysisResult<&RoutineDecl> {
         match &self.decl {
             Decl::Routine(t) => Ok(t),
-            Decl::Var(_) | Decl::Type(_) => Err(AnalysisError {
+            Decl::Var(_) | Decl::Type(_) | Decl::Const(_) => Err(AnalysisError {
                 what: format!("Name {:?} does not name a routine", self.name),
             }),
         }

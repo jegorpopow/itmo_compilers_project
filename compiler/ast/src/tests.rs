@@ -24,6 +24,7 @@ testing::tests! {
         comparison_operators => "comparison_operators"
         complex_expressions => "complex_expressions"
         conditionals => "conditionals"
+        constant => "constant"
         deep_conditionals => "deep_conditionals"
         for_loops => "for_loops"
         function_parameters => "function_parameters"

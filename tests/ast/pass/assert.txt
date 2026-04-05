@@ -20,19 +20,24 @@
                                                     True,
                                                 ),
                                                 on_true: Block {
-                                                    elems: [
-                                                        Stmt(
-                                                            Panic {
-                                                                pos: Position {
-                                                                    line: 2,
-                                                                    column: 1,
-                                                                },
-                                                            },
-                                                        ),
-                                                    ],
+                                                    elems: [],
                                                     locals_count: 0,
                                                 },
-                                                on_false: None,
+                                                on_false: Some(
+                                                    Block {
+                                                        elems: [
+                                                            Stmt(
+                                                                Panic {
+                                                                    pos: Position {
+                                                                        line: 2,
+                                                                        column: 1,
+                                                                    },
+                                                                },
+                                                            ),
+                                                        ],
+                                                        locals_count: 0,
+                                                    },
+                                                ),
                                             },
                                         ),
                                         Stmt(
@@ -46,19 +51,24 @@
                                                     ),
                                                 ),
                                                 on_true: Block {
-                                                    elems: [
-                                                        Stmt(
-                                                            Panic {
-                                                                pos: Position {
-                                                                    line: 3,
-                                                                    column: 1,
-                                                                },
-                                                            },
-                                                        ),
-                                                    ],
+                                                    elems: [],
                                                     locals_count: 0,
                                                 },
-                                                on_false: None,
+                                                on_false: Some(
+                                                    Block {
+                                                        elems: [
+                                                            Stmt(
+                                                                Panic {
+                                                                    pos: Position {
+                                                                        line: 3,
+                                                                        column: 1,
+                                                                    },
+                                                                },
+                                                            ),
+                                                        ],
+                                                        locals_count: 0,
+                                                    },
+                                                ),
                                             },
                                         ),
                                         Stmt(
@@ -92,19 +102,24 @@
                                                     ),
                                                 },
                                                 on_true: Block {
-                                                    elems: [
-                                                        Stmt(
-                                                            Panic {
-                                                                pos: Position {
-                                                                    line: 4,
-                                                                    column: 1,
-                                                                },
-                                                            },
-                                                        ),
-                                                    ],
+                                                    elems: [],
                                                     locals_count: 0,
                                                 },
-                                                on_false: None,
+                                                on_false: Some(
+                                                    Block {
+                                                        elems: [
+                                                            Stmt(
+                                                                Panic {
+                                                                    pos: Position {
+                                                                        line: 4,
+                                                                        column: 1,
+                                                                    },
+                                                                },
+                                                            ),
+                                                        ],
+                                                        locals_count: 0,
+                                                    },
+                                                ),
                                             },
                                         ),
                                     ],
@@ -138,19 +153,24 @@
                                                     True,
                                                 ),
                                                 on_true: Block {
-                                                    elems: [
-                                                        Stmt(
-                                                            Panic {
-                                                                pos: Position {
-                                                                    line: 2,
-                                                                    column: 1,
-                                                                },
-                                                            },
-                                                        ),
-                                                    ],
+                                                    elems: [],
                                                     locals_count: 0,
                                                 },
-                                                on_false: None,
+                                                on_false: Some(
+                                                    Block {
+                                                        elems: [
+                                                            Stmt(
+                                                                Panic {
+                                                                    pos: Position {
+                                                                        line: 2,
+                                                                        column: 1,
+                                                                    },
+                                                                },
+                                                            ),
+                                                        ],
+                                                        locals_count: 0,
+                                                    },
+                                                ),
                                             },
                                         ),
                                         Stmt(
@@ -164,19 +184,24 @@
                                                     ),
                                                 ),
                                                 on_true: Block {
-                                                    elems: [
-                                                        Stmt(
-                                                            Panic {
-                                                                pos: Position {
-                                                                    line: 3,
-                                                                    column: 1,
-                                                                },
-                                                            },
-                                                        ),
-                                                    ],
+                                                    elems: [],
                                                     locals_count: 0,
                                                 },
-                                                on_false: None,
+                                                on_false: Some(
+                                                    Block {
+                                                        elems: [
+                                                            Stmt(
+                                                                Panic {
+                                                                    pos: Position {
+                                                                        line: 3,
+                                                                        column: 1,
+                                                                    },
+                                                                },
+                                                            ),
+                                                        ],
+                                                        locals_count: 0,
+                                                    },
+                                                ),
                                             },
                                         ),
                                         Stmt(
@@ -210,19 +235,24 @@
                                                     ),
                                                 },
                                                 on_true: Block {
-                                                    elems: [
-                                                        Stmt(
-                                                            Panic {
-                                                                pos: Position {
-                                                                    line: 4,
-                                                                    column: 1,
-                                                                },
-                                                            },
-                                                        ),
-                                                    ],
+                                                    elems: [],
                                                     locals_count: 0,
                                                 },
-                                                on_false: None,
+                                                on_false: Some(
+                                                    Block {
+                                                        elems: [
+                                                            Stmt(
+                                                                Panic {
+                                                                    pos: Position {
+                                                                        line: 4,
+                                                                        column: 1,
+                                                                    },
+                                                                },
+                                                            ),
+                                                        ],
+                                                        locals_count: 0,
+                                                    },
+                                                ),
                                             },
                                         ),
                                     ],
