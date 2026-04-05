@@ -162,6 +162,7 @@ impl EvaluatedValue {
 }
 
 impl EvaluatedValue {
+    // FIXME(GrigorenkoPV): introduce Expression::Literal
     pub(crate) fn as_literal(&self) -> Rc<Expression> {
         match self {
             EvaluatedValue::Int(val) => Expression::IntegerLiteral(IntegerLiteral {
@@ -312,6 +313,7 @@ pub struct VarDecl {
     pub relative_location: Location,
 }
 
+/// FIXME(GrigorenkoPV): Typed<Literal>
 #[derive(Debug, Hash, Clone)]
 pub struct ConstDecl {
     pub t: Rc<Type>,
@@ -380,31 +382,27 @@ pub enum RoutineBody {
 }
 
 #[derive(Debug, Clone)]
-pub enum SimpleDecl {
+pub enum LocalDecl {
     Var(VarDecl),
     Const(ConstDecl),
     Type(TypeDecl),
 }
 
-impl From<SimpleDecl> for Decl {
-    fn from(value: SimpleDecl) -> Self {
+impl From<LocalDecl> for Decl {
+    fn from(value: LocalDecl) -> Self {
         match value {
-            SimpleDecl::Var(var_decl) => Decl::Var(var_decl),
-            SimpleDecl::Type(type_decl) => Decl::Type(type_decl),
-            SimpleDecl::Const(const_decl) => Decl::Const(const_decl),
+            LocalDecl::Var(var_decl) => Decl::Var(var_decl),
+            LocalDecl::Type(type_decl) => Decl::Type(type_decl),
+            LocalDecl::Const(const_decl) => Decl::Const(const_decl),
         }
     }
 }
 
-#[derive(Debug, Clone)]
-pub struct SimpleBinding {
-    pub name: Identifier,
-    pub decl: SimpleDecl,
-}
+pub type LocalBinding = Binding<LocalDecl>;
 
-impl From<SimpleBinding> for Binding {
-    fn from(sb: SimpleBinding) -> Self {
-        let SimpleBinding { name, decl } = sb;
+impl From<LocalBinding> for Binding {
+    fn from(sb: LocalBinding) -> Self {
+        let LocalBinding { name, decl } = sb;
         Binding {
             name,
             decl: decl.into(),
@@ -415,7 +413,7 @@ impl From<SimpleBinding> for Binding {
 #[derive(Debug, Clone)]
 pub enum BlockElem {
     Stmt(Statement),
-    Decl(SimpleBinding),
+    Decl(LocalBinding),
 }
 
 #[derive(Debug, Clone)]
@@ -472,14 +470,14 @@ pub enum Decl {
     Routine(RoutineDecl),
 }
 
-impl TryFrom<Decl> for SimpleDecl {
+impl TryFrom<Decl> for LocalDecl {
     type Error = AnalysisError;
 
-    fn try_from(value: Decl) -> AnalysisResult<SimpleDecl> {
+    fn try_from(value: Decl) -> AnalysisResult<LocalDecl> {
         match value {
-            Decl::Var(var_decl) => Ok(SimpleDecl::Var(var_decl)),
-            Decl::Type(type_decl) => Ok(SimpleDecl::Type(type_decl)),
-            Decl::Const(const_decl) => Ok(SimpleDecl::Const(const_decl)),
+            Decl::Var(var_decl) => Ok(LocalDecl::Var(var_decl)),
+            Decl::Type(type_decl) => Ok(LocalDecl::Type(type_decl)),
+            Decl::Const(const_decl) => Ok(LocalDecl::Const(const_decl)),
             Decl::Routine(_) => Err(AnalysisError {
                 what: "nested functions are not supported".to_string(),
             }),
@@ -491,6 +489,16 @@ impl TryFrom<Decl> for SimpleDecl {
 pub struct Binding<T = Decl> {
     pub name: Identifier,
     pub decl: T,
+}
+
+impl<T> Binding<T> {
+    pub fn map<U>(self, f: impl FnOnce(T) -> U) -> Binding<U> {
+        let Self { name, decl } = self;
+        Binding {
+            name,
+            decl: f(decl),
+        }
+    }
 }
 
 impl Binding {
@@ -522,12 +530,12 @@ impl Binding {
     }
 }
 
-impl TryFrom<Binding> for SimpleBinding {
+impl TryFrom<Binding> for LocalBinding {
     type Error = AnalysisError;
 
-    fn try_from(value: Binding) -> AnalysisResult<SimpleBinding> {
+    fn try_from(value: Binding) -> AnalysisResult<LocalBinding> {
         let Binding { name, decl } = value;
-        Ok(SimpleBinding {
+        Ok(LocalBinding {
             name,
             decl: decl.try_into()?,
         })

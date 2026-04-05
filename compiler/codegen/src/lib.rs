@@ -200,7 +200,7 @@ impl<'a> Compiler<'a> {
             match block_elem {
                 ast::BlockElem::Stmt(statement) => self.compile_statement(statement)?,
                 ast::BlockElem::Decl(simple_binding) => match &simple_binding.decl {
-                    ast::SimpleDecl::Var(var_decl) => {
+                    ast::LocalDecl::Var(var_decl) => {
                         let initialiser = var_decl
                             .initialiser
                             .clone()
@@ -211,7 +211,8 @@ impl<'a> Compiler<'a> {
                         // Local variable initialisation is just a `push`
                         self.compile_expr(&initialiser)?;
                     }
-                    ast::SimpleDecl::Type(_) | ast::SimpleDecl::Const(_) => (), // Type is compile-time entity (TODO: RTTI?)
+                    // Type is compile-time entity (TODO: RTTI?)
+                    ast::LocalDecl::Type(_) | ast::LocalDecl::Const(_) => (),
                 },
             }
         }

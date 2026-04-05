@@ -14,8 +14,8 @@ pub use crate::{
     operators::{BinaryOperator, BoolBinOp, EqBinOp, IntBinOp, RealBinOp, UnaryOperator},
     tree::{
         Binding, Block, BlockElem, BoolLiteral, ConstDecl, Decl, Expression, IdentifierTable,
-        IntegerLiteral, LvalueExpression, Program, RealLiteral, Routine, RoutineBody, RoutineDecl,
-        RoutineSignature, SimpleBinding, SimpleDecl, Statement, TypeDecl, VarDecl,
+        IntegerLiteral, LocalBinding, LocalDecl, LvalueExpression, Program, RealLiteral, Routine,
+        RoutineBody, RoutineDecl, RoutineSignature, Statement, TypeDecl, VarDecl,
     },
     types::{ArrayDescription, FieldDescription, RecordDescription, Type},
 };
