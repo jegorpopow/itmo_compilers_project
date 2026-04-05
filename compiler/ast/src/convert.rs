@@ -61,23 +61,21 @@ impl Converter {
         }
     }
 
-    fn enter_block(&mut self) {
-        self.current_scope.push(Scope::new())
-    }
+    fn scoped<T>(&mut self, callback: impl FnOnce(&mut Self) -> T) -> (T, VarLoc) {
+        self.current_scope.push(Scope::new());
 
-    fn leave_block(&mut self) -> VarLoc {
-        assert!(
-            self.current_scope.len() > 1,
-            "No non-global contexts to leave"
-        );
+        let result = callback(self);
 
-        let current_block_locals = self
+        let Scope {
+            binders: _,
+            locals_in_block,
+        } = self
             .current_scope
             .pop()
-            .expect("At least global context is always present")
-            .locals_in_block;
-        self.local_count -= current_block_locals;
-        current_block_locals
+            .expect("Scopes should not be pushed/popped outside of this method");
+
+        self.local_count -= locals_in_block;
+        (result, locals_in_block)
     }
 
     fn get_fresh_global_location(&mut self) -> Location {
@@ -639,60 +637,58 @@ impl Converter {
         order: LoopOrder,
         body: &parser::Block,
     ) -> AnalysisResult<Statement> {
-        self.enter_block(); // For counter is in it's own block
+        let (result, locals_count) = self.scoped(|this| {
+            let counter_loc = this.get_fresh_local_location();
+            Ok(match to {
+                None => {
+                    let Typed {
+                        value: array_expr,
+                        ty: array_type,
+                    } = this.convert_expr(from)?;
+                    let element_type = array_type.get_element_type()?;
+                    let counter_decl = Decl::Var(VarDecl {
+                        t: Rc::clone(element_type),
+                        initialiser: None,
+                        relative_location: counter_loc,
+                    });
 
-        let counter_loc = self.get_fresh_local_location();
-
-        let stmt = match to {
-            None => {
-                let Typed {
-                    value: array_expr,
-                    ty: array_type,
-                } = self.convert_expr(from)?;
-                let element_type = array_type.get_element_type()?;
-                let counter_decl = Decl::Var(VarDecl {
-                    t: Rc::clone(element_type),
-                    initialiser: None,
-                    relative_location: counter_loc,
-                });
-
-                let counter_ident = self.bind_local_decl(counter, counter_decl);
-                let body = self.convert_block(body)?;
-                Statement::ForEach {
-                    counter: counter_ident,
-                    collection: array_expr,
-                    order,
-                    body,
+                    let counter_ident = this.bind_local_decl(counter, counter_decl);
+                    let body = this.convert_block(body)?;
+                    Statement::ForEach {
+                        counter: counter_ident,
+                        collection: array_expr,
+                        order,
+                        body,
+                    }
                 }
-            }
-            Some(to) => {
-                let from = self.convert_expr(from)?;
-                let to = self.convert_expr(to)?;
-                let int_type = Rc::new(Type::Int);
-                let counter_decl = Decl::Var(VarDecl {
-                    t: Rc::clone(&int_type),
-                    initialiser: None,
-                    relative_location: counter_loc,
-                });
-                let counter_ident = self.bind_local_decl(counter, counter_decl);
-                let body = self.convert_block(body)?;
-                Statement::For {
-                    counter: counter_ident,
-                    lower_bound: cast_to(from, &int_type)?,
-                    upper_bound: cast_to(to, &int_type)?,
-                    order,
-                    body,
+                Some(to) => {
+                    let from = this.convert_expr(from)?;
+                    let to = this.convert_expr(to)?;
+                    let int_type = Rc::new(Type::Int);
+                    let counter_decl = Decl::Var(VarDecl {
+                        t: Rc::clone(&int_type),
+                        initialiser: None,
+                        relative_location: counter_loc,
+                    });
+                    let counter_ident = this.bind_local_decl(counter, counter_decl);
+                    let body = this.convert_block(body)?;
+                    Statement::For {
+                        counter: counter_ident,
+                        lower_bound: cast_to(from, &int_type)?,
+                        upper_bound: cast_to(to, &int_type)?,
+                        order,
+                        body,
+                    }
                 }
-            }
-        };
+            })
+        });
 
         assert_eq!(
-            self.leave_block(),
-            1,
+            locals_count, 1,
             "Internal compiler error: mismatched number of locals in `for` counter block"
         );
 
-        Ok(stmt)
+        result
     }
 
     fn convert_stmt(&mut self, stmt: &parser::Statement) -> AnalysisResult<Statement> {
@@ -764,30 +760,31 @@ impl Converter {
     }
 
     fn convert_block(&mut self, block: &parser::Block) -> AnalysisResult<Block> {
-        let mut stmts: Vec<Statement> = Vec::new();
-
-        self.enter_block();
-
-        for block_elem in &block.0 {
-            stmts.push(match block_elem {
-                parser::BlockElem::Stmt(statement) => self.convert_stmt(statement)?,
-                parser::BlockElem::VarDecl(var_decl) => Statement::Declaration(
-                    self.convert_var_decl(var_decl, false)?.map(LocalDecl::Var),
-                ),
-                parser::BlockElem::ConstDecl(const_decl) => Statement::Declaration(
-                    self.convert_const_decl(const_decl, false)?
-                        .map(LocalDecl::Const),
-                ),
-                parser::BlockElem::TypeDecl(type_decl) => Statement::Declaration(
-                    self.convert_type_decl(type_decl, false)?
-                        .map(LocalDecl::Type),
-                ),
-            })
-        }
-
-        Ok(Block {
+        let (result, locals_count) = self.scoped(|this| -> AnalysisResult<_> {
+            block
+                .0
+                .iter()
+                .map(|elem| {
+                    Ok(match elem {
+                        parser::BlockElem::Stmt(statement) => this.convert_stmt(statement)?,
+                        parser::BlockElem::VarDecl(var_decl) => Statement::Declaration(
+                            this.convert_var_decl(var_decl, false)?.map(LocalDecl::Var),
+                        ),
+                        parser::BlockElem::ConstDecl(const_decl) => Statement::Declaration(
+                            this.convert_const_decl(const_decl, false)?
+                                .map(LocalDecl::Const),
+                        ),
+                        parser::BlockElem::TypeDecl(type_decl) => Statement::Declaration(
+                            this.convert_type_decl(type_decl, false)?
+                                .map(LocalDecl::Type),
+                        ),
+                    })
+                })
+                .collect()
+        });
+        result.map(|stmts| Block {
             stmts,
-            locals_count: self.leave_block(),
+            locals_count,
         })
     }
 
@@ -1048,15 +1045,10 @@ impl Converter {
         });
 
         // create a function scope
-        self.enter_block();
-
-        let args_bindings = self.bind_args(args_decls);
-
-        let converted_body = self.convert_block(block)?;
-
+        let ((args_bindings, converted_body), locals_count) =
+            self.scoped(|this| (this.bind_args(args_decls), this.convert_block(block)));
         assert_eq!(
-            self.leave_block(),
-            0,
+            locals_count, 0,
             "Internal compiler error: locals found in function arguments block"
         );
         self.current_routine = None;
@@ -1064,7 +1056,7 @@ impl Converter {
         let decl = RoutineDecl::Full(Routine {
             signature,
             args_bindings,
-            body: RoutineBody::Block(converted_body),
+            body: RoutineBody::Block(converted_body?),
         });
         Ok(Binding {
             name: self.bind_routine(name, decl.clone())?,
@@ -1097,15 +1089,12 @@ impl Converter {
         let return_type = return_type.map(|t| self.convert_type(t)).transpose()?;
 
         // No recursive calls for expression function
-        self.enter_block();
 
-        let args_bindings = self.bind_args(args_decls);
-
-        let expr = self.convert_expr(expression)?;
-
+        let ((args_bindings, expr), locals_count) =
+            self.scoped(|this| (this.bind_args(args_decls), this.convert_expr(expression)));
+        let expr = expr?;
         assert_eq!(
-            self.leave_block(),
-            0,
+            locals_count, 0,
             "Internal compiler error: locals found in function arguments block"
         );
 
