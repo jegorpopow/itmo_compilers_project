@@ -1,3 +1,4 @@
+use core::iter;
 use std::{collections::HashMap, rc::Rc};
 
 use common::{BindingId, Identifier, Location, LoopOrder, RawIdentifier, VarLoc};
@@ -25,10 +26,11 @@ impl Scope {
         self.binders.get(name).copied()
     }
 
-    fn bind(&mut self, ident: &Identifier) {
+    fn add(&mut self, ident: &Identifier) {
         let Identifier { raw, id } = ident;
-        let previous = self.binders.insert(raw.to_owned(), *id);
-        debug_assert_eq!(previous, None, "We support rebinds?");
+        if let Some(prev) = self.binders.insert(raw.to_owned(), *id) {
+            unreachable!("Duplicate bindings for the same ident ({raw:?}): {prev} & {id}")
+        }
     }
 }
 
@@ -41,10 +43,11 @@ struct RoutinePrototype {
     return_type: Rc<Type>,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Default)]
 struct Converter {
     bindings: Bindings,
-    current_scope: Vec<Scope>,
+    global_scope: Scope,
+    local_scopes: Vec<Scope>,
     global_count: VarLoc,
     local_count: VarLoc,
     current_routine: Option<RoutinePrototype>,
@@ -52,17 +55,11 @@ struct Converter {
 
 impl Converter {
     fn new() -> Self {
-        Converter {
-            bindings: Bindings::default(),
-            current_scope: vec![Scope::new()],
-            global_count: 0,
-            local_count: 0,
-            current_routine: None,
-        }
+        Default::default()
     }
 
     fn scoped<T>(&mut self, callback: impl FnOnce(&mut Self) -> T) -> (T, VarLoc) {
-        self.current_scope.push(Scope::new());
+        self.local_scopes.push(Scope::new());
 
         let result = callback(self);
 
@@ -70,7 +67,7 @@ impl Converter {
             binders: _,
             locals_in_block,
         } = self
-            .current_scope
+            .local_scopes
             .pop()
             .expect("Scopes should not be pushed/popped outside of this method");
 
@@ -85,16 +82,11 @@ impl Converter {
     }
 
     fn get_fresh_local_location(&mut self) -> Location {
-        assert!(
-            self.current_scope.len() > 1,
-            "Local name binding in global context"
-        );
-
         let res = self.local_count;
         self.local_count += 1;
-        self.current_scope
+        self.local_scopes
             .last_mut()
-            .expect("At least global context is always present")
+            .expect("Cannot get a local location outside of any local scopes")
             .locals_in_block += 1;
         Location::Local(res)
     }
@@ -102,8 +94,7 @@ impl Converter {
     fn bind_global_decl(&mut self, name: &RawIdentifier, decl: Decl) -> Identifier {
         // TODO: process function forward declaration
         let ident = self.bindings.create(name, decl);
-        self.current_scope[0].bind(&ident);
-
+        self.global_scope.add(&ident);
         ident
     }
 
@@ -113,16 +104,11 @@ impl Converter {
 
     // FIXME: accept `LocalDecl`
     fn bind_local_decl(&mut self, name: &RawIdentifier, decl: Decl) -> Identifier {
-        assert!(
-            self.current_scope.len() > 1,
-            "Local name binding in global context"
-        );
-
         let ident = self.bindings.create(name, decl);
-        self.current_scope
+        self.local_scopes
             .last_mut()
-            .expect("At least global context is always present")
-            .bind(&ident);
+            .expect("Cannot bind a local decl outside of any local scopes")
+            .add(&ident);
 
         ident
     }
@@ -181,9 +167,10 @@ impl Converter {
     }
 
     fn lookup<'a>(&'a self, name: &RawIdentifier) -> AnalysisResult<&'a Binding> {
-        self.current_scope
+        self.local_scopes
             .iter()
             .rev()
+            .chain(iter::once(&self.global_scope))
             .find_map(|scope_block| scope_block.lookup(name))
             .map(|id| &self.bindings[id])
             .ok_or(AnalysisError {
@@ -411,7 +398,7 @@ impl Converter {
                 ),
             })
         } else {
-            let converted_args = std::iter::zip(arguments_types, converted_expressions)
+            let converted_args = iter::zip(arguments_types, converted_expressions)
                 .map(|(arg_type, expr)| cast_to(expr, &arg_type))
                 .collect::<AnalysisResult<Vec<Rc<Expression>>>>()?;
             Ok(Typed {
