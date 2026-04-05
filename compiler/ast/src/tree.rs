@@ -4,14 +4,12 @@ use derive_where::derive_where;
 
 use common::{
     Identifier, Integer, Location, LoopOrder, Position, RawIdentifier, Real, integer_to_real,
-    operators::{
-        BoolBinOp, EqBinOp, IntBinOp, RealBinOp, SemanticBinaryOperator, SemanticUnaryOperator,
-    },
     real_to_integer,
 };
 
 use crate::{
     AnalysisError, AnalysisResult, Typed,
+    operators::{BinaryOperator, BoolBinOp, EqBinOp, IntBinOp, RealBinOp, UnaryOperator},
     types::{ArrayDescription, Type},
 };
 
@@ -101,12 +99,12 @@ pub enum Expression {
         args: Vec<Rc<Expression>>,
     },
     BinOp {
-        op: SemanticBinaryOperator,
+        op: BinaryOperator,
         lhs: Rc<Expression>,
         rhs: Rc<Expression>,
     },
     UnOp {
-        op: SemanticUnaryOperator,
+        op: UnaryOperator,
         operand: Rc<Expression>,
     },
     Cast {
@@ -262,19 +260,19 @@ impl Expression {
                 let lhs = lhs.try_constexpr_evaluate()?;
                 let rhs = rhs.try_constexpr_evaluate()?;
                 match op {
-                    SemanticBinaryOperator::Eq(op) => op.apply(lhs, rhs),
-                    SemanticBinaryOperator::Real(op) => op.apply(lhs.as_real()?, rhs.as_real()?),
-                    SemanticBinaryOperator::Int(op) => op.apply(lhs.as_int()?, rhs.as_int()?),
-                    SemanticBinaryOperator::Bool(op) => op.apply(lhs.as_bool()?, rhs.as_bool()?),
+                    BinaryOperator::Eq(op) => op.apply(lhs, rhs),
+                    BinaryOperator::Real(op) => op.apply(lhs.as_real()?, rhs.as_real()?),
+                    BinaryOperator::Int(op) => op.apply(lhs.as_int()?, rhs.as_int()?),
+                    BinaryOperator::Bool(op) => op.apply(lhs.as_bool()?, rhs.as_bool()?),
                 }
             }
 
             Expression::UnOp { op, operand } => {
                 let operand = operand.try_constexpr_evaluate()?;
                 match op {
-                    SemanticUnaryOperator::IntNeg => EvaluatedValue::Int(-operand.as_int()?),
-                    SemanticUnaryOperator::RealNeg => EvaluatedValue::Real(-operand.as_real()?),
-                    SemanticUnaryOperator::BoolNeg => EvaluatedValue::Bool(!operand.as_bool()?),
+                    UnaryOperator::IntNeg => EvaluatedValue::Int(-operand.as_int()?),
+                    UnaryOperator::RealNeg => EvaluatedValue::Real(-operand.as_real()?),
+                    UnaryOperator::BoolNeg => EvaluatedValue::Bool(!operand.as_bool()?),
                 }
             }
 

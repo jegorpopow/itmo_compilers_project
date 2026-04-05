@@ -1,7 +1,5 @@
 use core::fmt::{self, Debug, Display};
 
-pub mod operators;
-
 #[derive(Debug, Clone, Copy)]
 pub enum LoopOrder {
     Direct,

@@ -2,11 +2,9 @@ use std::fmt::{Debug, Display};
 use std::hash::Hash;
 use std::rc::Rc;
 
-use common::{
-    Identifier, RawIdentifier,
-    operators::{SemanticBinaryOperator, SyntacticOperator},
-};
+use common::{Identifier, RawIdentifier};
 
+use crate::operators::BinaryOperator;
 use crate::{AnalysisError, AnalysisResult};
 
 #[derive(Debug, Hash, PartialEq, Eq, Clone)]
@@ -175,26 +173,26 @@ impl Type {
 pub(crate) struct BinOpAdjustment {
     pub result: Rc<Type>,
     pub operand: Rc<Type>,
-    pub operator: SemanticBinaryOperator,
+    pub operator: BinaryOperator,
 }
 
 // FIXME: rewrite
 pub(crate) fn infer_binary_operator_type(
     lhs_type: &Rc<Type>,
     rhs_type: &Rc<Type>,
-    op: SyntacticOperator,
+    op: parser::Operator,
 ) -> AnalysisResult<BinOpAdjustment> {
     match op {
-        SyntacticOperator::Not => Err(AnalysisError {
+        parser::Operator::Not => Err(AnalysisError {
             what: "Logical negation operator can not be applied as binary".to_string(),
         }),
 
-        SyntacticOperator::And | SyntacticOperator::Or | SyntacticOperator::Xor => {
+        parser::Operator::And | parser::Operator::Or | parser::Operator::Xor => {
             if lhs_type.is_logical() && rhs_type.is_logical() {
                 Ok(BinOpAdjustment {
                     operand: Type::bool(),
                     result: Type::bool(),
-                    operator: op.to_boolean_binary_semantic().expect("Already checked"),
+                    operator: BinaryOperator::try_as_bool_bin_op(op).expect("Already checked"),
                 })
             } else {
                 Err(AnalysisError {
@@ -205,7 +203,7 @@ pub(crate) fn infer_binary_operator_type(
             }
         }
 
-        SyntacticOperator::Eq | SyntacticOperator::Ne => {
+        parser::Operator::Eq | parser::Operator::Ne => {
             if **lhs_type == **rhs_type || **lhs_type == Type::Null || **rhs_type == Type::Null {
                 Ok(BinOpAdjustment {
                     result: Type::bool(),
@@ -214,7 +212,7 @@ pub(crate) fn infer_binary_operator_type(
                     } else {
                         Rc::clone(lhs_type)
                     },
-                    operator: op.to_semantic_compare().expect("already checked"),
+                    operator: BinaryOperator::try_as_eq_bin_op(op).expect("already checked"),
                 })
             } else {
                 Err(AnalysisError {
@@ -223,23 +221,23 @@ pub(crate) fn infer_binary_operator_type(
             }
         }
 
-        SyntacticOperator::Plus
-        | SyntacticOperator::Minus
-        | SyntacticOperator::Mul
-        | SyntacticOperator::Div => {
+        parser::Operator::Plus
+        | parser::Operator::Minus
+        | parser::Operator::Mul
+        | parser::Operator::Div => {
             if lhs_type.is_scalar() && rhs_type.is_scalar() {
                 let result_type = Type::most_precise(lhs_type, rhs_type)?;
                 if matches!(&*result_type, Type::Int) {
                     Ok(BinOpAdjustment {
                         operand: Rc::clone(&result_type),
                         result: result_type,
-                        operator: op.to_integer_binary_semantic().expect("Already checked"),
+                        operator: BinaryOperator::try_as_int_bin_op(op).expect("Already checked"),
                     })
                 } else if matches!(&*result_type, Type::Real) {
                     Ok(BinOpAdjustment {
                         operand: Rc::clone(&result_type),
                         result: result_type,
-                        operator: op.to_real_binary_semantic().expect("Already checked"),
+                        operator: BinaryOperator::try_as_real_bin_op(op).expect("Already checked"),
                     })
                 } else {
                     Err(AnalysisError {
@@ -257,12 +255,12 @@ pub(crate) fn infer_binary_operator_type(
             }
         }
 
-        SyntacticOperator::Mod => {
+        parser::Operator::Mod => {
             if **lhs_type == **rhs_type && matches!(&**lhs_type, Type::Int) {
                 Ok(BinOpAdjustment {
                     operand: Rc::clone(lhs_type),
                     result: Rc::clone(lhs_type),
-                    operator: op.to_integer_binary_semantic().expect("Already checked"),
+                    operator: BinaryOperator::try_as_int_bin_op(op).expect("Already checked"),
                 })
             } else {
                 Err(AnalysisError {
@@ -273,23 +271,23 @@ pub(crate) fn infer_binary_operator_type(
             }
         }
 
-        SyntacticOperator::Lt
-        | SyntacticOperator::Le
-        | SyntacticOperator::Gt
-        | SyntacticOperator::Ge => {
+        parser::Operator::Lt
+        | parser::Operator::Le
+        | parser::Operator::Gt
+        | parser::Operator::Ge => {
             if lhs_type.is_scalar() && rhs_type.is_scalar() {
                 let operand_type = Type::most_precise(lhs_type, rhs_type)?;
                 if matches!(&*operand_type, Type::Int) {
                     Ok(BinOpAdjustment {
                         result: Type::bool(),
                         operand: operand_type,
-                        operator: op.to_integer_binary_semantic().expect("Already checked"),
+                        operator: BinaryOperator::try_as_int_bin_op(op).expect("Already checked"),
                     })
                 } else if matches!(&*operand_type, Type::Real) {
                     Ok(BinOpAdjustment {
                         result: Type::bool(),
                         operand: operand_type,
-                        operator: op.to_real_binary_semantic().expect("Already checked"),
+                        operator: BinaryOperator::try_as_real_bin_op(op).expect("Already checked"),
                     })
                 } else {
                     Err(AnalysisError {

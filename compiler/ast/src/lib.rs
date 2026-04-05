@@ -2,6 +2,7 @@ use core::fmt;
 use std::rc::Rc;
 
 mod convert;
+mod operators;
 mod tree;
 mod types;
 
@@ -10,6 +11,7 @@ mod tests;
 
 pub use crate::{
     convert::convert,
+    operators::{BinaryOperator, BoolBinOp, EqBinOp, IntBinOp, RealBinOp, UnaryOperator},
     tree::{
         Binding, Block, BlockElem, BoolLiteral, ConstDecl, Decl, Expression, IdentifierTable,
         IntegerLiteral, LvalueExpression, Program, RealLiteral, Routine, RoutineBody, RoutineDecl,

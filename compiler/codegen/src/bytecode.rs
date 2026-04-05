@@ -2,12 +2,8 @@
 
 use core::alloc::Layout;
 
-use common::{
-    Integer, Location, Real,
-    operators::{
-        BoolBinOp, EqBinOp, IntBinOp, RealBinOp, SemanticBinaryOperator, SemanticUnaryOperator,
-    },
-};
+use ast::{BinaryOperator, BoolBinOp, EqBinOp, IntBinOp, RealBinOp, UnaryOperator};
+use common::{Integer, Location, Real};
 
 trait Encode {
     type Output: Copy;
@@ -63,10 +59,10 @@ pub(crate) enum Instruction {
     Swap,
     /// apply binary operator to stack top
     BinOp {
-        op: SemanticBinaryOperator,
+        op: BinaryOperator,
     },
     UnOp {
-        op: SemanticUnaryOperator,
+        op: UnaryOperator,
     },
     /// pop value and address from stack, write referenced value
     /// FIXME(Andrew Vlasenkov): ensure pop's order is correct in VM:
@@ -129,17 +125,17 @@ pub(crate) enum Instruction {
     IntToReal, // All of it may be just a built-in call
 }
 
-impl Encode for SemanticBinaryOperator {
+impl Encode for BinaryOperator {
     type Output = u8;
 
     fn encode(&self) -> Self::Output {
         match self {
-            SemanticBinaryOperator::Eq(op) => match op {
+            BinaryOperator::Eq(op) => match op {
                 EqBinOp::Eq => 0x00,
                 EqBinOp::Ne => 0x01,
             },
 
-            SemanticBinaryOperator::Real(op) => match op {
+            BinaryOperator::Real(op) => match op {
                 RealBinOp::Le => 0x10,
                 RealBinOp::Lt => 0x11,
                 RealBinOp::Gt => 0x12,
@@ -151,7 +147,7 @@ impl Encode for SemanticBinaryOperator {
                 RealBinOp::Div => 0x17,
             },
 
-            SemanticBinaryOperator::Int(op) => match op {
+            BinaryOperator::Int(op) => match op {
                 IntBinOp::Le => 0x20,
                 IntBinOp::Lt => 0x21,
                 IntBinOp::Gt => 0x22,
@@ -163,7 +159,7 @@ impl Encode for SemanticBinaryOperator {
                 IntBinOp::Mod => 0x28,
             },
 
-            SemanticBinaryOperator::Bool(op) => match op {
+            BinaryOperator::Bool(op) => match op {
                 BoolBinOp::And => 0x30,
                 BoolBinOp::Or => 0x31,
                 BoolBinOp::Xor => 0x32,

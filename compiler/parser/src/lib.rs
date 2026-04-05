@@ -1,7 +1,7 @@
 use core::fmt;
 use std::rc::Rc;
 
-use common::{Extent, LoopOrder, Position, RawIdentifier, Real, operators::SyntacticOperator};
+use common::{Extent, LoopOrder, Position, RawIdentifier, Real};
 use lexer::{
     BoolLiteral as TokenBoolLiteral, BuiltinTypename, Identifier as TokenIdentifier,
     IntegerLiteral as TokenIntegerLiteral, InvalidToken, Keyword, RealLiteral as TokenRealLiteral,
@@ -17,8 +17,8 @@ mod tests;
 pub use crate::{
     tree::{
         Block, BlockElem, BoolLiteral, ConstDecl, Declaration, Expression, IntegerLiteral,
-        LvalueExpression, Program, RealLiteral, RoutineBody, RoutineDecl, Statement, TypeDecl,
-        VarDecl,
+        LvalueExpression, Operator, Program, RealLiteral, RoutineBody, RoutineDecl, Statement,
+        TypeDecl, VarDecl,
     },
     types::{ArrayDescription, FieldDescription, RecordDescription, Type},
 };
@@ -649,7 +649,7 @@ impl Parser {
 
     fn parse_operators<'a, 'b: 'a>(
         &mut self,
-        mut ops: impl Iterator<Item = &'static [SyntacticOperator]> + Clone,
+        mut ops: impl Iterator<Item = &'static [Operator]> + Clone,
         mut atom: impl ParsingFunction<'a, 'b, Rc<Expression>> + Clone,
         i: IndexedIterator<'a, 'b>,
     ) -> ParsingResult<'a, 'b, Rc<Expression>> {
@@ -718,7 +718,7 @@ impl Parser {
 
     fn parse_unop<'a, 'b: 'a>(
         &mut self,
-        op: SyntacticOperator,
+        op: Operator,
         i: IndexedIterator<'a, 'b>,
     ) -> ParsingResult<'a, 'b, Rc<Expression>> {
         self.parse_after(
@@ -809,8 +809,8 @@ impl Parser {
                 self.parse_bool_literal(i)
                     .map(|(literal, next)| (Rc::new(Expression::BoolLiteral(literal)), next))
             })
-            .or_else(|_| self.parse_unop(SyntacticOperator::Not, i))
-            .or_else(|_| self.parse_unop(SyntacticOperator::Minus, i))
+            .or_else(|_| self.parse_unop(Operator::Not, i))
+            .or_else(|_| self.parse_unop(Operator::Minus, i))
             .or_else(|_| self.parse_new(i))
             .or_else(|_| self.parse_in_parentheses(Self::parse_expr, i))
             .or_else(|_| {
@@ -839,26 +839,18 @@ impl Parser {
         &mut self,
         i: IndexedIterator<'a, 'b>,
     ) -> ParsingResult<'a, 'b, Rc<Expression>> {
-        const OPERATORS_PRECEDENCE_TABLE: &[&[SyntacticOperator]] = &[
+        const OPERATORS_PRECEDENCE_TABLE: &[&[Operator]] = &[
+            &[Operator::And, Operator::Or, Operator::Xor],
             &[
-                SyntacticOperator::And,
-                SyntacticOperator::Or,
-                SyntacticOperator::Xor,
+                Operator::Lt,
+                Operator::Le,
+                Operator::Ne,
+                Operator::Eq,
+                Operator::Gt,
+                Operator::Ge,
             ],
-            &[
-                SyntacticOperator::Lt,
-                SyntacticOperator::Le,
-                SyntacticOperator::Ne,
-                SyntacticOperator::Eq,
-                SyntacticOperator::Gt,
-                SyntacticOperator::Ge,
-            ],
-            &[SyntacticOperator::Plus, SyntacticOperator::Minus],
-            &[
-                SyntacticOperator::Mul,
-                SyntacticOperator::Div,
-                SyntacticOperator::Mod,
-            ],
+            &[Operator::Plus, Operator::Minus],
+            &[Operator::Mul, Operator::Div, Operator::Mod],
         ];
 
         self.parse_operators(
