@@ -39,6 +39,7 @@ testing::tests! {
         operator_precedence => "operator_precedence"
         panic => "panic"
         parse_minus => "parse_minus"
+        print => "print"
         raytracer => "raytracer"
         real_comparisons => "real_comparisons"
         real_literals => "real_literals"

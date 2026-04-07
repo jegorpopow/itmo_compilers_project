@@ -1,0 +1,214 @@
+Program {
+    globals: [
+        Binding {
+            name: empty_struct(0),
+            decl: Type(
+                Full {
+                    prescribed: Record(
+                        RecordDescription {
+                            fields: [],
+                        },
+                    ),
+                    effective: Record(
+                        RecordDescription {
+                            fields: [],
+                        },
+                    ),
+                },
+            ),
+        },
+        Binding {
+            name: weird_names(1),
+            decl: Type(
+                Full {
+                    prescribed: Record(
+                        RecordDescription {
+                            fields: [
+                                FieldDescription {
+                                    name: r"'we'allow'this'",
+                                    t: Alias(
+                                        empty_struct(0),
+                                    ),
+                                },
+                                FieldDescription {
+                                    name: r"_",
+                                    t: Alias(
+                                        empty_struct(0),
+                                    ),
+                                },
+                            ],
+                        },
+                    ),
+                    effective: Record(
+                        RecordDescription {
+                            fields: [
+                                FieldDescription {
+                                    name: r"'we'allow'this'",
+                                    t: Alias(
+                                        empty_struct(0),
+                                    ),
+                                },
+                                FieldDescription {
+                                    name: r"_",
+                                    t: Alias(
+                                        empty_struct(0),
+                                    ),
+                                },
+                            ],
+                        },
+                    ),
+                },
+            ),
+        },
+        Binding {
+            name: main(2),
+            decl: Routine(
+                Full(
+                    Routine {
+                        signature: RoutineSignature {
+                            args: [],
+                            return_type: Unit,
+                        },
+                        args_bindings: [],
+                        body: Block(
+                            Block {
+                                stmts: [
+                                    Print {
+                                        value: New {
+                                            t: Alias(
+                                                weird_names(1),
+                                            ),
+                                            fields: Some(
+                                                [
+                                                    (
+                                                        r"_",
+                                                        New {
+                                                            t: Alias(
+                                                                empty_struct(0),
+                                                            ),
+                                                            fields: Some(
+                                                                [],
+                                                            ),
+                                                        },
+                                                    ),
+                                                ],
+                                            ),
+                                        },
+                                    },
+                                ],
+                                locals_count: 0,
+                            },
+                        ),
+                    },
+                ),
+            ),
+        },
+    ],
+    bindings: Bindings {
+        arena: [
+            Binding {
+                name: empty_struct(0),
+                decl: Type(
+                    Full {
+                        prescribed: Record(
+                            RecordDescription {
+                                fields: [],
+                            },
+                        ),
+                        effective: Record(
+                            RecordDescription {
+                                fields: [],
+                            },
+                        ),
+                    },
+                ),
+            },
+            Binding {
+                name: weird_names(1),
+                decl: Type(
+                    Full {
+                        prescribed: Record(
+                            RecordDescription {
+                                fields: [
+                                    FieldDescription {
+                                        name: r"'we'allow'this'",
+                                        t: Alias(
+                                            empty_struct(0),
+                                        ),
+                                    },
+                                    FieldDescription {
+                                        name: r"_",
+                                        t: Alias(
+                                            empty_struct(0),
+                                        ),
+                                    },
+                                ],
+                            },
+                        ),
+                        effective: Record(
+                            RecordDescription {
+                                fields: [
+                                    FieldDescription {
+                                        name: r"'we'allow'this'",
+                                        t: Alias(
+                                            empty_struct(0),
+                                        ),
+                                    },
+                                    FieldDescription {
+                                        name: r"_",
+                                        t: Alias(
+                                            empty_struct(0),
+                                        ),
+                                    },
+                                ],
+                            },
+                        ),
+                    },
+                ),
+            },
+            Binding {
+                name: main(2),
+                decl: Routine(
+                    Full(
+                        Routine {
+                            signature: RoutineSignature {
+                                args: [],
+                                return_type: Unit,
+                            },
+                            args_bindings: [],
+                            body: Block(
+                                Block {
+                                    stmts: [
+                                        Print {
+                                            value: New {
+                                                t: Alias(
+                                                    weird_names(1),
+                                                ),
+                                                fields: Some(
+                                                    [
+                                                        (
+                                                            r"_",
+                                                            New {
+                                                                t: Alias(
+                                                                    empty_struct(0),
+                                                                ),
+                                                                fields: Some(
+                                                                    [],
+                                                                ),
+                                                            },
+                                                        ),
+                                                    ],
+                                                ),
+                                            },
+                                        },
+                                    ],
+                                    locals_count: 0,
+                                },
+                            ),
+                        },
+                    ),
+                ),
+            },
+        ],
+    },
+}

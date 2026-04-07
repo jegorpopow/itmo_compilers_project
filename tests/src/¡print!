@@ -1,0 +1,12 @@
+type empty_struct is record end;
+
+type weird_names is record
+	var 'we'allow'this' is empty_struct;
+	var _ is empty_struct;
+end;
+
+routine main() is
+	print new weird_names where
+		_ is new empty_struct;
+	end;
+end

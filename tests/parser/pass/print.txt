@@ -1,0 +1,76 @@
+Program(
+    [
+        Type(
+            TypeDecl {
+                name: r"empty_struct",
+                t: Record(
+                    RecordDescription {
+                        fields: [],
+                    },
+                ),
+            },
+        ),
+        Type(
+            TypeDecl {
+                name: r"weird_names",
+                t: Record(
+                    RecordDescription {
+                        fields: [
+                            FieldDescription {
+                                name: r"'we'allow'this'",
+                                t: Alias(
+                                    r"empty_struct",
+                                ),
+                            },
+                            FieldDescription {
+                                name: r"_",
+                                t: Alias(
+                                    r"empty_struct",
+                                ),
+                            },
+                        ],
+                    },
+                ),
+            },
+        ),
+        Routine(
+            RoutineDecl {
+                name: r"main",
+                arguments: [],
+                return_type: None,
+                body: Some(
+                    Block(
+                        Block(
+                            [
+                                Stmt(
+                                    Print {
+                                        value: New {
+                                            t: Alias(
+                                                r"weird_names",
+                                            ),
+                                            fields: Some(
+                                                [
+                                                    (
+                                                        r"_",
+                                                        New {
+                                                            t: Alias(
+                                                                r"empty_struct",
+                                                            ),
+                                                            fields: None,
+                                                            array_length: None,
+                                                        },
+                                                    ),
+                                                ],
+                                            ),
+                                            array_length: None,
+                                        },
+                                    },
+                                ),
+                            ],
+                        ),
+                    ),
+                ),
+            },
+        ),
+    ],
+)
