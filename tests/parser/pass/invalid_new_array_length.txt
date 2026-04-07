@@ -1,0 +1,47 @@
+Program(
+    [
+        Routine(
+            RoutineDecl {
+                name: r"main",
+                arguments: [],
+                return_type: None,
+                body: Some(
+                    Block(
+                        Block(
+                            [
+                                VarDecl(
+                                    VarDecl {
+                                        name: r"a",
+                                        t: None,
+                                        initialiser: Some(
+                                            New {
+                                                t: Array(
+                                                    ArrayDescription {
+                                                        t: Real,
+                                                        length: None,
+                                                    },
+                                                ),
+                                                fields: None,
+                                                array_length: Some(
+                                                    UnOp {
+                                                        op: Minus,
+                                                        operand: IntegerLiteral(
+                                                            IntegerLiteral {
+                                                                repr: "1",
+                                                                value: 1,
+                                                            },
+                                                        ),
+                                                    },
+                                                ),
+                                            },
+                                        ),
+                                    },
+                                ),
+                            ],
+                        ),
+                    ),
+                ),
+            },
+        ),
+    ],
+)

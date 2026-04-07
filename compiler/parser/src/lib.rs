@@ -728,6 +728,8 @@ impl Parser {
         self.parse_after(
             |ctx, i| ctx.parse_keyword(Keyword::New, i),
             |ctx, i| {
+                let (array_length, i) =
+                    ctx.try_parse(|ctx, i| ctx.parse_in_brackets(Self::parse_expr, i), i)?;
                 let (t, next) = ctx.parse_type(i)?;
                 let (fields, next) = ctx.try_parse(
                     |ctx, i| {
@@ -759,7 +761,14 @@ impl Parser {
                     next,
                 )?;
 
-                Ok((Rc::new(Expression::New { t, fields }), next))
+                Ok((
+                    Rc::new(Expression::New {
+                        t,
+                        fields,
+                        array_length,
+                    }),
+                    next,
+                ))
             },
             i,
         )

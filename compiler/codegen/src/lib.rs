@@ -2,7 +2,7 @@ use std::rc::Rc;
 
 use ast::{
     AnalysisError, AnalysisResult, Binding, Bindings, Block, Decl, Expression, LvalueExpression,
-    Program, Routine, RoutineBody, RoutineDecl, Statement, Type,
+    Program, Routine, RoutineBody, RoutineDecl, Statement, Type, VarDecl,
 };
 use common::{Integer, Position, RawIdentifier};
 
@@ -94,10 +94,7 @@ impl<'a> Compiler<'a> {
             }
             Type::Array(array_description) => {
                 let Some(length) = array_description.length else {
-                    // TODO: Support `array [] T`` type for allocation ???
-                    return Err(AnalysisError {
-                        what: "Allocation of array of unknown size is not supported".to_string(),
-                    });
+                    unreachable!()
                 };
                 self.bytecode.push(Instruction::AllocArray {
                     type_id: TypeId(0),
@@ -112,7 +109,7 @@ impl<'a> Compiler<'a> {
 
     fn compile_expr(&mut self, expr: &Expression) -> AnalysisResult<()> {
         match expr {
-            Expression::LvalueToRvalue(lvalue_expression) => match &**lvalue_expression {
+            Expression::LvalueToRvalue(lvalue_expression) => match lvalue_expression.as_ref() {
                 LvalueExpression::Identifier(identifier) => {
                     self.bytecode.push(Instruction::Load {
                         loc: self.bindings[identifier].ensure_is_var()?.relative_location,
@@ -182,6 +179,7 @@ impl<'a> Compiler<'a> {
                 self.compile_expr(expression)?;
                 self.bytecode.push(Instruction::IntToReal);
             }
+            Expression::NewArray { .. } => todo!(),
         }
 
         Ok(())
@@ -211,7 +209,7 @@ impl<'a> Compiler<'a> {
                     but over 65 thousand characters in a single line? Really?",
                 ),
             }),
-            Statement::Assignment { lhs, rhs } => match &**lhs {
+            Statement::Assignment { lhs, rhs } => match lhs.as_ref() {
                 LvalueExpression::Identifier(identifier) => {
                     // Microoptimisation: use direct Store instruction instead of calculating address
                     self.compile_expr(rhs)?;
@@ -275,14 +273,16 @@ impl<'a> Compiler<'a> {
             }
 
             Statement::Declaration(Binding { name: _, decl }) => match decl {
-                ast::LocalDecl::Var(var_decl) => {
-                    let initialiser = var_decl
-                        .initialiser
-                        .clone()
-                        .ok_or(AnalysisError {
-                            what: "placeholder".to_string(),
-                        })
-                        .or_else(|_| self.bindings.get_default_initialiser(&var_decl.t))?;
+                ast::LocalDecl::Var(VarDecl {
+                    t,
+                    initialiser,
+                    relative_location: _,
+                }) => {
+                    let initialiser = match initialiser {
+                        Some(initialiser) => Rc::clone(initialiser),
+                        None => self.bindings.get_default_initialiser(t)?,
+                    };
+
                     // Local variable initialisation is just a `push`
                     self.compile_expr(&initialiser)?;
                 }

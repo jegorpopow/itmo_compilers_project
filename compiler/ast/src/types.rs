@@ -93,7 +93,7 @@ impl Display for Type {
 
 impl Type {
     fn most_precise(l: &Rc<Self>, r: &Rc<Self>) -> AnalysisResult<Rc<Self>> {
-        match (&**l, &**r) {
+        match (l.as_ref(), r.as_ref()) {
             (Type::Real, Type::Real | Type::Int | Type::Bool)
             | (Type::Int, Type::Int | Type::Bool)
             | (Type::Bool, Type::Bool) => Ok(Rc::clone(l)),
@@ -227,13 +227,13 @@ pub(crate) fn infer_binary_operator_type(
         | parser::Operator::Div => {
             if lhs_type.is_scalar() && rhs_type.is_scalar() {
                 let result_type = Type::most_precise(lhs_type, rhs_type)?;
-                if matches!(&*result_type, Type::Int) {
+                if let Type::Int = *result_type {
                     Ok(BinOpAdjustment {
                         operand: Rc::clone(&result_type),
                         result: result_type,
                         operator: BinaryOperator::try_as_int_bin_op(op).expect("Already checked"),
                     })
-                } else if matches!(&*result_type, Type::Real) {
+                } else if let Type::Real = *result_type {
                     Ok(BinOpAdjustment {
                         operand: Rc::clone(&result_type),
                         result: result_type,
@@ -256,7 +256,9 @@ pub(crate) fn infer_binary_operator_type(
         }
 
         parser::Operator::Mod => {
-            if **lhs_type == **rhs_type && matches!(&**lhs_type, Type::Int) {
+            if let Type::Int = lhs_type.as_ref()
+                && let Type::Int = rhs_type.as_ref()
+            {
                 Ok(BinOpAdjustment {
                     operand: Rc::clone(lhs_type),
                     result: Rc::clone(lhs_type),
@@ -277,13 +279,13 @@ pub(crate) fn infer_binary_operator_type(
         | parser::Operator::Ge => {
             if lhs_type.is_scalar() && rhs_type.is_scalar() {
                 let operand_type = Type::most_precise(lhs_type, rhs_type)?;
-                if matches!(&*operand_type, Type::Int) {
+                if let Type::Int = *operand_type {
                     Ok(BinOpAdjustment {
                         result: Type::bool(),
                         operand: operand_type,
                         operator: BinaryOperator::try_as_int_bin_op(op).expect("Already checked"),
                     })
-                } else if matches!(&*operand_type, Type::Real) {
+                } else if let Type::Real = *operand_type {
                     Ok(BinOpAdjustment {
                         result: Type::bool(),
                         operand: operand_type,

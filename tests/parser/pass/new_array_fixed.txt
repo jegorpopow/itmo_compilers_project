@@ -2,7 +2,7 @@ Program(
     [
         Routine(
             RoutineDecl {
-                name: r"main",
+                name: r"foo",
                 arguments: [],
                 return_type: None,
                 body: Some(
@@ -17,35 +17,25 @@ Program(
                                             New {
                                                 t: Array(
                                                     ArrayDescription {
-                                                        t: Bool,
+                                                        t: Real,
                                                         length: Some(
                                                             IntegerLiteral(
                                                                 IntegerLiteral {
-                                                                    repr: "3",
-                                                                    value: 3,
+                                                                    repr: "5",
+                                                                    value: 5,
                                                                 },
                                                             ),
                                                         ),
                                                     },
                                                 ),
                                                 fields: None,
-                                                array_length: None,
-                                            },
-                                        ),
-                                    },
-                                ),
-                                Stmt(
-                                    Print {
-                                        value: LvalueToRvalue(
-                                            Index {
-                                                lhs: Identifier(
-                                                    r"a",
-                                                ),
-                                                index: IntegerLiteral(
-                                                    IntegerLiteral {
-                                                        repr: "10",
-                                                        value: 10,
-                                                    },
+                                                array_length: Some(
+                                                    IntegerLiteral(
+                                                        IntegerLiteral {
+                                                            repr: "5",
+                                                            value: 5,
+                                                        },
+                                                    ),
                                                 ),
                                             },
                                         ),

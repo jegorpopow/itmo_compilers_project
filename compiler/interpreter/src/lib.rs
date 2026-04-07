@@ -53,6 +53,7 @@ struct Interpreter<'a, W: Write> {
 pub enum RuntimeError {
     IndexOutOfBounds { index: Integer, len: usize },
     Panic { pos: Position },
+    InvalidArrayLength { len: Integer },
 }
 
 impl fmt::Display for RuntimeError {
@@ -65,6 +66,7 @@ impl fmt::Display for RuntimeError {
                 )
             }
             Self::Panic { pos } => write!(f, "Panic @ {pos}"),
+            Self::InvalidArrayLength { len } => write!(f, "Cannot create array of length {len}"),
         }
     }
 }
@@ -354,6 +356,25 @@ impl<'a, W: Write> Interpreter<'a, W> {
     }
 
     #[throws(RuntimeError)]
+    fn new_array(
+        &mut self,
+        bindings: &mut Bindings<'a>,
+        element_ty: &'a Type,
+        len: &'a Expression,
+    ) -> Value<'a> {
+        let len = self.integer_expression(bindings, len)?;
+        Value::Array {
+            elements: iter::repeat_n(
+                self.default_value_for_type(element_ty),
+                len.try_into()
+                    .map_err(|_e| RuntimeError::InvalidArrayLength { len })?,
+            )
+            .map(|v| self.heap.alloc(v))
+            .collect(),
+        }
+    }
+
+    #[throws(RuntimeError)]
     fn expression(&mut self, bindings: &mut Bindings<'a>, expression: &'a Expression) -> Value<'a> {
         match expression {
             Expression::Null => Value::Null,
@@ -383,6 +404,9 @@ impl<'a, W: Write> Interpreter<'a, W> {
             },
             Expression::Cast { operand, target: _ } => self.expression(bindings, operand)?,
             Expression::New { t, fields } => self.new(bindings, t, fields.as_deref())?,
+            Expression::NewArray { elements, length } => {
+                self.new_array(bindings, elements, length)?
+            }
 
             Expression::LengthOf { arr } => Value::Integer(
                 self.array_expression(bindings, arr)?

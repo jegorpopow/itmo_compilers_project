@@ -46,6 +46,7 @@ testing::tests! {
         length => "length"
         logical_operators => "logical_operators"
         nested_control => "nested_control"
+        new_array => "new_array"
         operator_precedence => "operator_precedence"
         parse_minus => "parse_minus"
         raytracer => "raytracer"
@@ -62,6 +63,7 @@ testing::tests! {
     ]
     fail = [
         assert => "assert"
+        invalid_new_array_length => "invalid_new_array_length"
         oob_big => "oob_big"
         oob_neg => "oob_neg"
         oob_zero => "oob_zero"

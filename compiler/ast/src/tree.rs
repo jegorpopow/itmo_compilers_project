@@ -116,6 +116,10 @@ pub enum Expression {
         t: Rc<Type>,
         fields: Option<Vec<(RawIdentifier, Rc<Expression>)>>,
     },
+    NewArray {
+        elements: Rc<Type>,
+        length: Rc<Expression>,
+    },
     LengthOf {
         arr: Rc<Expression>,
     },
@@ -296,6 +300,7 @@ impl Expression {
             Expression::Call { .. }
             | Expression::Cast { .. }
             | Expression::New { .. }
+            | Expression::NewArray { .. }
             | Expression::LengthOf { .. }
             | Expression::Null
             | Expression::LvalueToRvalue(_) => Err(AnalysisError {
@@ -560,7 +565,7 @@ impl Bindings {
     }
 
     pub fn get_default_initialiser(&self, ty: &Rc<Type>) -> AnalysisResult<Rc<Expression>> {
-        match &*self.get_effective_type(ty)? {
+        match self.get_effective_type(ty)?.as_ref() {
             Type::Int => Ok(Expression::IntegerLiteral(IntegerLiteral {
                 repr: "0".to_string(),
                 value: 0,
@@ -586,7 +591,7 @@ impl Bindings {
     }
 
     pub fn get_effective_type(&self, t: &Rc<Type>) -> AnalysisResult<Rc<Type>> {
-        match &**t {
+        match t.as_ref() {
             Type::Alias(identifier) => self[identifier]
                 .ensure_is_type()
                 .and_then(TypeDecl::get_effective),
