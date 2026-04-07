@@ -33,6 +33,38 @@ Program(
                 ),
             },
         ),
+        Type(
+            TypeDecl {
+                name: r"recursive",
+                t: Record(
+                    RecordDescription {
+                        fields: [
+                            FieldDescription {
+                                name: r"id",
+                                t: Int,
+                            },
+                            FieldDescription {
+                                name: r"link",
+                                t: Alias(
+                                    r"recursive",
+                                ),
+                            },
+                            FieldDescription {
+                                name: r"links",
+                                t: Array(
+                                    ArrayDescription {
+                                        t: Alias(
+                                            r"recursive",
+                                        ),
+                                        length: None,
+                                    },
+                                ),
+                            },
+                        ],
+                    },
+                ),
+            },
+        ),
         Routine(
             RoutineDecl {
                 name: r"main",
@@ -64,6 +96,64 @@ Program(
                                             ),
                                             array_length: None,
                                         },
+                                    },
+                                ),
+                                VarDecl(
+                                    VarDecl {
+                                        name: r"root",
+                                        t: None,
+                                        initialiser: Some(
+                                            New {
+                                                t: Alias(
+                                                    r"recursive",
+                                                ),
+                                                fields: Some(
+                                                    [
+                                                        (
+                                                            r"id",
+                                                            IntegerLiteral(
+                                                                IntegerLiteral {
+                                                                    repr: "0",
+                                                                    value: 0,
+                                                                },
+                                                            ),
+                                                        ),
+                                                        (
+                                                            r"links",
+                                                            New {
+                                                                t: Array(
+                                                                    ArrayDescription {
+                                                                        t: Alias(
+                                                                            r"recursive",
+                                                                        ),
+                                                                        length: None,
+                                                                    },
+                                                                ),
+                                                                fields: None,
+                                                                array_length: Some(
+                                                                    IntegerLiteral(
+                                                                        IntegerLiteral {
+                                                                            repr: "3",
+                                                                            value: 3,
+                                                                        },
+                                                                    ),
+                                                                ),
+                                                            },
+                                                        ),
+                                                    ],
+                                                ),
+                                                array_length: None,
+                                            },
+                                        ),
+                                    },
+                                ),
+                                Stmt(
+                                    Print {
+                                        value: LvalueToRvalue(
+                                            Identifier(
+                                                r"root",
+                                            ),
+                                        ),
                                     },
                                 ),
                             ],
