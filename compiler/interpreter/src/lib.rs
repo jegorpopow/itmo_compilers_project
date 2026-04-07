@@ -438,8 +438,16 @@ impl<'a, W: Write> Interpreter<'a, W> {
                 fields.sort_unstable_by_key(|&(key, _value)| key);
 
                 for (name, idx) in fields {
-                    // FIXME: escapte `name` when needed
-                    write!(self.out, "{name}: ")?;
+                    let name = name.name.as_str();
+                    if name.contains('\'') {
+                        // This seems to be the only way that we have to get an identifier
+                        // that is not an identifier in ECMA (https://262.ecma-international.org/5.1/#sec-7.6).
+                        // And looks like Rust's `Debug for str` will be enough here to do all the escaping.
+                        write!(self.out, "{name:?}")?
+                    } else {
+                        write!(self.out, "{name}")?
+                    }
+                    write!(self.out, ": ")?;
                     self.print(&self.heap[idx].clone())?;
                     write!(self.out, ", ")?;
                 }
