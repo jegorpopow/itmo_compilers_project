@@ -180,36 +180,27 @@ impl Converter {
                 Rc::new(Type::Alias(decl.name.clone()))
             }
             parser::Type::Record(parser::RecordDescription { fields }) => {
-                let converted_fields: Vec<FieldDescription> = fields
+                let fields: Vec<FieldDescription> = fields
                     .iter()
-                    .map(|raw_desc| {
-                        self.convert_type(&raw_desc.t)
-                            .map(|converted_type| FieldDescription {
-                                name: raw_desc.name.clone(),
-                                t: converted_type,
-                            })
+                    .map(|parser::FieldDescription { name, t }| {
+                        self.convert_type(t).map(|t| FieldDescription {
+                            name: name.clone(),
+                            t,
+                        })
                     })
                     .collect::<AnalysisResult<_>>()?;
-                Rc::new(Type::Record(RecordDescription {
-                    fields: converted_fields,
-                }))
+                Rc::new(Type::Record(RecordDescription { fields }))
             }
             parser::Type::Array(parser::ArrayDescription { t, length }) => {
                 let element_type = self.convert_type(t)?;
 
                 match length {
                     Some(expr) => {
-                        let Typed {
-                            value: converted_expr,
-                            ty: expr_type,
-                        } = self.convert_expr(expr)?;
-                        expr_type.ensure_is(&Type::Int)?;
-                        let expr_value = converted_expr.try_constexpr_evaluate()?;
-                        let length = expr_value.as_usize()?;
-
+                        let Typed { value, ty: expr_ty } = self.convert_expr(expr)?;
+                        expr_ty.ensure_is(&Type::Int)?;
                         Rc::new(Type::Array(ArrayDescription {
                             t: element_type,
-                            length: Some(length),
+                            length: Some(value.try_constexpr_evaluate()?.as_usize()?),
                         }))
                     }
                     None => Rc::new(Type::Array(ArrayDescription {
@@ -244,40 +235,32 @@ impl Converter {
                 }
             }
             parser::LvalueExpression::Member { lhs, member_name } => {
-                let Typed {
-                    value: converted_lhs,
-                    ty: t,
-                } = self.convert_lvalue_expr(lhs)?;
-                let effective_lhs_type = self.bindings.get_effective_type(&t)?;
-                let member_type = effective_lhs_type.get_field_type(member_name)?;
-
+                let Typed { value: lhs, ty: t } = self.convert_lvalue_expr(lhs)?;
                 Typed {
                     value: Rc::new(LvalueExpression::Member {
-                        lhs: converted_lhs,
+                        lhs,
                         member_name: member_name.clone(),
                     }),
-                    ty: member_type,
+                    ty: self
+                        .bindings
+                        .get_effective_type(&t)?
+                        .get_field_type(member_name)?,
                 }
             }
             parser::LvalueExpression::Index { lhs, index } => {
                 let Typed {
-                    value: converted_lhs,
+                    value: lhs,
                     ty: lhs_t,
                 } = self.convert_lvalue_expr(lhs)?;
+                let effective_lhs_type = self.bindings.get_effective_type(&lhs_t)?;
                 let Typed {
-                    value: converted_index,
+                    value: index,
                     ty: rhs_t,
                 } = self.convert_expr(index)?;
                 rhs_t.ensure_is(&Type::Int)?;
-                let effective_lhs_type = self.bindings.get_effective_type(&lhs_t)?;
-                let resulting_type = effective_lhs_type.get_element_type()?;
-
                 Typed {
-                    value: Rc::new(LvalueExpression::Index {
-                        lhs: converted_lhs,
-                        index: converted_index,
-                    }),
-                    ty: Rc::clone(resulting_type),
+                    value: Rc::new(LvalueExpression::Index { lhs, index }),
+                    ty: Rc::clone(effective_lhs_type.get_element_type()?),
                 }
             }
         })
@@ -285,7 +268,7 @@ impl Converter {
 
     fn convert_unary(op: parser::Operator, operand: Typed) -> AnalysisResult<Typed> {
         let Typed {
-            value: converted_operand,
+            value: operand,
             ty: operand_type,
         } = operand;
 
@@ -294,14 +277,14 @@ impl Converter {
                 Type::Bool => Typed {
                     value: Rc::new(Expression::UnOp {
                         op: UnaryOperator::BoolNeg,
-                        operand: converted_operand,
+                        operand,
                     }),
                     ty: Rc::new(Type::Bool),
                 },
                 Type::Int => Typed {
                     value: Rc::new(Expression::UnOp {
                         op: UnaryOperator::BoolNeg,
-                        operand: Rc::new(Expression::IntToBool(converted_operand)),
+                        operand: Rc::new(Expression::IntToBool(operand)),
                     }),
                     ty: Rc::new(Type::Bool),
                 },
@@ -321,14 +304,14 @@ impl Converter {
                 Type::Int => Typed {
                     value: Rc::new(Expression::UnOp {
                         op: UnaryOperator::IntNeg,
-                        operand: converted_operand,
+                        operand,
                     }),
                     ty: Rc::new(Type::Int),
                 },
                 Type::Real => Typed {
                     value: Rc::new(Expression::UnOp {
                         op: UnaryOperator::RealNeg,
-                        operand: converted_operand,
+                        operand,
                     }),
                     ty: Rc::new(Type::Real),
                 },
@@ -375,31 +358,30 @@ impl Converter {
             .map(|(_, arg_type)| Rc::clone(arg_type))
             .collect();
 
-        let converted_expressions: Vec<Typed> = args
+        let args: Vec<Typed> = args
             .iter()
             .map(|arg| self.convert_expr(arg))
             .collect::<AnalysisResult<_>>()?;
 
-        if arguments_types.len() != converted_expressions.len() {
+        if arguments_types.len() != args.len() {
             Err(AnalysisError {
                 what: format!(
                     "routine `{callee}` expects {} arguments, but got {}",
                     arguments_types.len(),
-                    converted_expressions.len()
+                    args.len()
                 ),
-            })
-        } else {
-            let converted_args = iter::zip(arguments_types, converted_expressions)
-                .map(|(arg_type, expr)| cast_to(expr, &arg_type))
-                .collect::<AnalysisResult<Vec<Rc<Expression>>>>()?;
-            Ok(Typed {
-                value: Rc::new(Expression::Call {
-                    callee: self.lookup(callee)?.name.clone(),
-                    args: converted_args,
-                }),
-                ty: Rc::clone(return_type),
-            })
+            })?
         }
+
+        Ok(Typed {
+            value: Rc::new(Expression::Call {
+                callee: self.lookup(callee)?.name.clone(),
+                args: iter::zip(arguments_types, args)
+                    .map(|(arg_type, expr)| cast_to(expr, &arg_type))
+                    .collect::<AnalysisResult<_>>()?,
+            }),
+            ty: Rc::clone(return_type),
+        })
     }
 
     fn convert_new(
@@ -407,36 +389,34 @@ impl Converter {
         t: &parser::Type,
         fields: Option<&[(RawIdentifier, Rc<parser::Expression>)]>,
     ) -> AnalysisResult<Typed> {
-        let converted_type = self.convert_type(t)?;
-        let converted_effective_type = self.bindings.get_effective_type(&converted_type)?;
+        let ty = self.convert_type(t)?;
+        let effective = self.bindings.get_effective_type(&ty)?;
 
-        match &*converted_effective_type {
+        match effective.as_ref() {
             Type::Int | Type::Real | Type::Bool | Type::Null | Type::Unit => Err(AnalysisError {
                 what: format!("No new operator supported for built-in type {t:?}"),
             })?,
             Type::Alias(_) => unreachable!("Effective type can not be alias"),
-            Type::Record(record) => {
-                let converted_fields: Vec<(RawIdentifier, Rc<Expression>)> = fields
-                    .unwrap_or_default()
-                    .iter()
-                    .map(|(name, expr)| {
-                        self.convert_expr(expr).and_then(|converted_expr| {
-                            Ok((
-                                name.clone(),
-                                cast_to(converted_expr, record.get_field_type(name)?.as_ref())?,
-                            ))
-                        })
-                    })
-                    .collect::<AnalysisResult<_>>()?;
-
-                Ok(Typed {
-                    value: Rc::new(Expression::New {
-                        t: Rc::clone(&converted_type),
-                        fields: Some(converted_fields),
-                    }),
-                    ty: converted_type,
-                })
-            }
+            Type::Record(record) => Ok(Typed {
+                value: Rc::new(Expression::New {
+                    t: Rc::clone(&ty),
+                    fields: Some(
+                        fields
+                            .unwrap_or_default()
+                            .iter()
+                            .map(|(name, expr)| {
+                                self.convert_expr(expr).and_then(|expr| {
+                                    Ok((
+                                        name.clone(),
+                                        cast_to(expr, record.get_field_type(name)?.as_ref())?,
+                                    ))
+                                })
+                            })
+                            .collect::<AnalysisResult<_>>()?,
+                    ),
+                }),
+                ty,
+            }),
             Type::Array(_) if fields.is_some() => Err(AnalysisError {
                 what: format!("No field initialization possible for array type {t:?}"),
             }),
@@ -450,10 +430,10 @@ impl Converter {
                 t: _,
             }) => Ok(Typed {
                 value: Rc::new(Expression::New {
-                    t: Rc::clone(&converted_type),
+                    t: Rc::clone(&ty),
                     fields: None,
                 }),
-                ty: converted_type,
+                ty,
             }),
         }
     }
@@ -574,21 +554,20 @@ impl Converter {
             }
             parser::Expression::Cast { operand, target } => {
                 let Typed {
-                    value: converted_operand,
+                    value: operand,
                     ty: operand_type,
                 } = self.convert_expr(operand)?;
-                let converted_target_type = self.convert_type(target)?;
+                let target_ty = self.convert_type(target)?;
                 let operand_effective_type = self.bindings.get_effective_type(&operand_type)?;
-                let target_effective_type =
-                    self.bindings.get_effective_type(&converted_target_type)?;
+                let target_effective_type = self.bindings.get_effective_type(&target_ty)?;
 
                 if operand_effective_type == target_effective_type {
                     Typed {
                         value: Rc::new(Expression::Cast {
-                            operand: converted_operand,
-                            target: Rc::clone(&converted_target_type),
+                            operand,
+                            target: Rc::clone(&target_ty),
                         }),
-                        ty: converted_target_type,
+                        ty: target_ty,
                     }
                 } else {
                     Err(AnalysisError {
@@ -773,19 +752,19 @@ impl Converter {
             t,
             initialiser,
         } = decl;
-        let converted_expr = self.convert_expr(initialiser)?;
+        let expr = self.convert_expr(initialiser)?;
         let decl = match t {
             Some(t) => {
-                let converted_type = self.convert_type(t)?;
-                let converted_expr = cast_to(converted_expr, &converted_type)?;
+                let t = self.convert_type(t)?;
+                let expr = cast_to(expr, &t)?;
                 ConstDecl {
-                    t: converted_type,
-                    value: converted_expr.try_constexpr_evaluate()?.as_literal(),
+                    t,
+                    value: expr.try_constexpr_evaluate()?.as_literal(),
                 }
             }
             None => ConstDecl {
-                t: converted_expr.ty,
-                value: converted_expr.value.try_constexpr_evaluate()?.as_literal(),
+                t: expr.ty,
+                value: expr.value.try_constexpr_evaluate()?.as_literal(),
             },
         };
 
@@ -822,28 +801,25 @@ impl Converter {
             })?,
             (None, Some(expr)) => {
                 let Typed {
-                    value: converted_initialiser,
+                    value: initialiser,
                     ty: t,
                 } = self.convert_expr(expr)?;
                 VarDecl {
                     t,
-                    initialiser: Some(converted_initialiser),
+                    initialiser: Some(initialiser),
                     relative_location: loc,
                 }
             }
-            (Some(t), None) => {
-                let converted_type = self.convert_type(t)?;
-                VarDecl {
-                    t: converted_type,
-                    initialiser: None,
-                    relative_location: loc,
-                }
-            }
+            (Some(t), None) => VarDecl {
+                t: self.convert_type(t)?,
+                initialiser: None,
+                relative_location: loc,
+            },
             (Some(t), Some(expr)) => {
-                let converted_type = self.convert_type(t)?;
+                let t = self.convert_type(t)?;
                 VarDecl {
-                    initialiser: Some(cast_to(self.convert_expr(expr)?, &converted_type)?),
-                    t: converted_type,
+                    initialiser: Some(cast_to(self.convert_expr(expr)?, &t)?),
+                    t,
                     relative_location: loc,
                 }
             }
@@ -877,11 +853,10 @@ impl Converter {
             }
         };
 
-        let converted_type = self.convert_type(t)?;
-        let effective_type = self.bindings.get_effective_type(&converted_type)?;
+        let prescribed = self.convert_type(t)?;
         let type_decl = TypeDecl::Full {
-            prescribed: converted_type,
-            effective: effective_type,
+            effective: self.bindings.get_effective_type(&prescribed)?,
+            prescribed,
         };
         // Overriding forward declaration with full one
         self.rebind_decl(&ident, Decl::Type(type_decl.clone()));
@@ -912,12 +887,9 @@ impl Converter {
         } = decl;
         let return_type = return_type.as_ref();
 
-        let converted_arguments_types = arguments
+        let argument_types = arguments
             .iter()
-            .map(|(name, arg_type)| {
-                self.convert_type(arg_type)
-                    .map(|converted_arg_type| (name.clone(), converted_arg_type))
-            })
+            .map(|(name, arg_type)| self.convert_type(arg_type).map(|t| (name.clone(), t)))
             .collect::<AnalysisResult<Vec<(RawIdentifier, Rc<Type>)>>>()?;
 
         let Some(body) = body else {
@@ -927,7 +899,7 @@ impl Converter {
             };
 
             let signature = RoutineSignature {
-                args: converted_arguments_types,
+                args: argument_types,
                 return_type,
             };
 
@@ -944,7 +916,7 @@ impl Converter {
             });
         };
 
-        let args_decls: Vec<_> = converted_arguments_types
+        let args_decls: Vec<_> = argument_types
             .iter()
             .cloned()
             .enumerate()
@@ -963,18 +935,14 @@ impl Converter {
             .collect();
 
         match body {
-            parser::RoutineBody::Block(block) => self.convert_routine_block(
-                name,
-                return_type,
-                block,
-                converted_arguments_types,
-                &args_decls,
-            ),
+            parser::RoutineBody::Block(block) => {
+                self.convert_routine_block(name, return_type, block, argument_types, &args_decls)
+            }
             parser::RoutineBody::Expression(expression) => self.convert_routine_expression(
                 name,
                 return_type,
                 expression,
-                converted_arguments_types,
+                argument_types,
                 &args_decls,
             ),
         }
@@ -985,15 +953,14 @@ impl Converter {
         name: &RawIdentifier,
         return_type: Option<&parser::Type>,
         block: &parser::Block,
-        converted_arguments_types: Vec<(RawIdentifier, Rc<Type>)>,
+        argument_types: Vec<(RawIdentifier, Rc<Type>)>,
         args_decls: &[(RawIdentifier, VarDecl)],
     ) -> AnalysisResult<Binding> {
-        let converted_return_type =
-            return_type.map_or(Ok(Rc::new(Type::Unit)), |t| self.convert_type(t))?;
+        let return_type = return_type.map_or(Ok(Rc::new(Type::Unit)), |t| self.convert_type(t))?;
 
         let signature = RoutineSignature {
-            args: converted_arguments_types.clone(),
-            return_type: Rc::clone(&converted_return_type),
+            args: argument_types.clone(),
+            return_type: Rc::clone(&return_type),
         };
 
         // Firstly, create a forward declaration for possible recursive use
@@ -1008,15 +975,12 @@ impl Converter {
         // Memorise that routine for type-check of return statement
         self.current_routine = Some(RoutinePrototype {
             name: name.clone(),
-            args: converted_arguments_types
-                .into_iter()
-                .map(|(_, t)| t)
-                .collect(),
-            return_type: converted_return_type,
+            args: argument_types.into_iter().map(|(_, t)| t).collect(),
+            return_type,
         });
 
         // create a function scope
-        let ((args_bindings, converted_body), locals_count) =
+        let ((args_bindings, body), locals_count) =
             self.scoped(|this| (this.bind_args(args_decls), this.convert_block(block)));
         assert_eq!(
             locals_count, 0,
@@ -1027,7 +991,7 @@ impl Converter {
         let decl = RoutineDecl::Full(Routine {
             signature,
             args_bindings,
-            body: RoutineBody::Block(converted_body?),
+            body: RoutineBody::Block(body?),
         });
         Ok(Binding {
             name: self.bind_routine(name, decl.clone())?,
@@ -1054,7 +1018,7 @@ impl Converter {
         name: &RawIdentifier,
         return_type: Option<&parser::Type>,
         expression: &parser::Expression,
-        converted_arguments_types: Vec<(RawIdentifier, Rc<Type>)>,
+        argument_types: Vec<(RawIdentifier, Rc<Type>)>,
         args_decls: &[(RawIdentifier, VarDecl)],
     ) -> AnalysisResult<Binding> {
         let return_type = return_type.map(|t| self.convert_type(t)).transpose()?;
@@ -1075,7 +1039,7 @@ impl Converter {
         };
 
         let signature = RoutineSignature {
-            args: converted_arguments_types,
+            args: argument_types,
             return_type,
         };
 
@@ -1096,7 +1060,7 @@ impl Converter {
 pub fn convert(program: &parser::Program) -> AnalysisResult<(Program, Bindings)> {
     let mut converter = Converter::new();
 
-    let converted_program = program
+    let program = program
         .0
         .iter()
         .map(|decl| converter.convert_global_decl(decl))
@@ -1104,5 +1068,5 @@ pub fn convert(program: &parser::Program) -> AnalysisResult<(Program, Bindings)>
         .map(Program)?;
 
     let Converter { bindings, .. } = converter;
-    Ok((converted_program, bindings))
+    Ok((program, bindings))
 }
