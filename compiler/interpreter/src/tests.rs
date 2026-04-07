@@ -63,6 +63,7 @@ testing::tests! {
     ]
     fail = [
         assert => "assert"
+        invalid_new_array_length => "invalid_new_array_length"
         oob_big => "oob_big"
         oob_neg => "oob_neg"
         oob_zero => "oob_zero"

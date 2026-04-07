@@ -27,6 +27,8 @@ testing::tests! {
         function_return => "function_return"
         identifiers => "identifiers"
         invalid => "invalid"
+        invalid_array_length => "invalid_array_length"
+        invalid_new_array_length => "invalid_new_array_length"
         lazy_operators => "lazy_operators"
         length => "length"
         lexer_invalid => "lexer_invalid"

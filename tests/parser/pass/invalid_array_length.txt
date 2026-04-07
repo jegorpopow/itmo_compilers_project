@@ -1,0 +1,43 @@
+Program(
+    [
+        Routine(
+            RoutineDecl {
+                name: r"foo",
+                arguments: [],
+                return_type: None,
+                body: Some(
+                    Block(
+                        Block(
+                            [
+                                VarDecl(
+                                    VarDecl {
+                                        name: r"a",
+                                        t: Some(
+                                            Array(
+                                                ArrayDescription {
+                                                    t: Real,
+                                                    length: Some(
+                                                        UnOp {
+                                                            op: Minus,
+                                                            operand: IntegerLiteral(
+                                                                IntegerLiteral {
+                                                                    repr: "1",
+                                                                    value: 1,
+                                                                },
+                                                            ),
+                                                        },
+                                                    ),
+                                                },
+                                            ),
+                                        ),
+                                        initialiser: None,
+                                    },
+                                ),
+                            ],
+                        ),
+                    ),
+                ),
+            },
+        ),
+    ],
+)
