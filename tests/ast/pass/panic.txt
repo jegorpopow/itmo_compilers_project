@@ -1,69 +1,67 @@
-(
-    Program(
-        [
-            Binding {
-                name: main(0),
-                decl: Routine(
-                    Full(
-                        Routine {
-                            signature: RoutineSignature {
-                                args: [],
-                                return_type: Unit,
-                            },
-                            args_bindings: [],
-                            body: Block(
-                                Block {
-                                    stmts: [
-                                        Print {
-                                            value: IntegerLiteral(
-                                                IntegerLiteral {
-                                                    repr: "0",
-                                                    value: 0,
+Program {
+    globals: [
+        Binding {
+            name: main(0),
+            decl: Routine(
+                Full(
+                    Routine {
+                        signature: RoutineSignature {
+                            args: [],
+                            return_type: Unit,
+                        },
+                        args_bindings: [],
+                        body: Block(
+                            Block {
+                                stmts: [
+                                    Print {
+                                        value: IntegerLiteral(
+                                            IntegerLiteral {
+                                                repr: "0",
+                                                value: 0,
+                                            },
+                                        ),
+                                    },
+                                    If {
+                                        condition: BoolLiteral(
+                                            True,
+                                        ),
+                                        on_true: Block {
+                                            stmts: [
+                                                Panic {
+                                                    pos: Position {
+                                                        line: 4,
+                                                        column: 2,
+                                                    },
                                                 },
-                                            ),
+                                            ],
+                                            locals_count: 0,
                                         },
-                                        If {
-                                            condition: BoolLiteral(
-                                                True,
-                                            ),
-                                            on_true: Block {
+                                        on_false: Some(
+                                            Block {
                                                 stmts: [
-                                                    Panic {
-                                                        pos: Position {
-                                                            line: 4,
-                                                            column: 2,
-                                                        },
+                                                    Print {
+                                                        value: IntegerLiteral(
+                                                            IntegerLiteral {
+                                                                repr: "1",
+                                                                value: 1,
+                                                            },
+                                                        ),
                                                     },
                                                 ],
                                                 locals_count: 0,
                                             },
-                                            on_false: Some(
-                                                Block {
-                                                    stmts: [
-                                                        Print {
-                                                            value: IntegerLiteral(
-                                                                IntegerLiteral {
-                                                                    repr: "1",
-                                                                    value: 1,
-                                                                },
-                                                            ),
-                                                        },
-                                                    ],
-                                                    locals_count: 0,
-                                                },
-                                            ),
-                                        },
-                                    ],
-                                    locals_count: 0,
-                                },
-                            ),
-                        },
-                    ),
+                                        ),
+                                    },
+                                ],
+                                locals_count: 0,
+                            },
+                        ),
+                    },
                 ),
-            },
-        ],
-    ),
-    Bindings {
+            ),
+        },
+    ],
+    bindings: Bindings {
         arena: [
             Binding {
                 name: main(0),
@@ -127,4 +125,4 @@
             },
         ],
     },
-)
+}

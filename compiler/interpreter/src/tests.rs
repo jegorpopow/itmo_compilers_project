@@ -12,7 +12,7 @@ impl<T: fmt::Display> fmt::Debug for DebugDisplay<T> {
 fn interpret(src: &str) -> Result<String, DebugDisplay<String>> {
     let tokens: Vec<_> = lexer::Lexer::from(src).collect();
     let program = parser::parse_program(&tokens).expect("Failed to parse");
-    let (program, _) = ast::convert(&program).expect("Failed to typecheck");
+    let program = ast::convert(&program).expect("Failed to typecheck");
     let mut output: Vec<u8> = vec![];
     let result = crate::interpret(&mut output, &program);
     let mut output = String::from_utf8(output).expect("Somehow got non-UTF8 output");

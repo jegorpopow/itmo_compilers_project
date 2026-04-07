@@ -1,309 +1,307 @@
-(
-    Program(
-        [
-            Binding {
-                name: main(0),
-                decl: Routine(
-                    Full(
-                        Routine {
-                            signature: RoutineSignature {
-                                args: [],
-                                return_type: Unit,
-                            },
-                            args_bindings: [],
-                            body: Block(
-                                Block {
-                                    stmts: [
-                                        Declaration(
-                                            Binding {
-                                                name: кошка(1),
-                                                decl: Var(
-                                                    VarDecl {
-                                                        t: Int,
-                                                        initialiser: Some(
-                                                            IntegerLiteral(
-                                                                IntegerLiteral {
-                                                                    repr: "1",
-                                                                    value: 1,
-                                                                },
-                                                            ),
+Program {
+    globals: [
+        Binding {
+            name: main(0),
+            decl: Routine(
+                Full(
+                    Routine {
+                        signature: RoutineSignature {
+                            args: [],
+                            return_type: Unit,
+                        },
+                        args_bindings: [],
+                        body: Block(
+                            Block {
+                                stmts: [
+                                    Declaration(
+                                        Binding {
+                                            name: кошка(1),
+                                            decl: Var(
+                                                VarDecl {
+                                                    t: Int,
+                                                    initialiser: Some(
+                                                        IntegerLiteral(
+                                                            IntegerLiteral {
+                                                                repr: "1",
+                                                                value: 1,
+                                                            },
                                                         ),
-                                                        relative_location: Local(
-                                                            0,
+                                                    ),
+                                                    relative_location: Local(
+                                                        0,
+                                                    ),
+                                                },
+                                            ),
+                                        },
+                                    ),
+                                    Declaration(
+                                        Binding {
+                                            name: ねこ(2),
+                                            decl: Var(
+                                                VarDecl {
+                                                    t: Int,
+                                                    initialiser: Some(
+                                                        IntegerLiteral(
+                                                            IntegerLiteral {
+                                                                repr: "2",
+                                                                value: 2,
+                                                            },
                                                         ),
-                                                    },
-                                                ),
-                                            },
+                                                    ),
+                                                    relative_location: Local(
+                                                        1,
+                                                    ),
+                                                },
+                                            ),
+                                        },
+                                    ),
+                                    Declaration(
+                                        Binding {
+                                            name: π(3),
+                                            decl: Var(
+                                                VarDecl {
+                                                    t: Int,
+                                                    initialiser: Some(
+                                                        IntegerLiteral(
+                                                            IntegerLiteral {
+                                                                repr: "3",
+                                                                value: 3,
+                                                            },
+                                                        ),
+                                                    ),
+                                                    relative_location: Local(
+                                                        2,
+                                                    ),
+                                                },
+                                            ),
+                                        },
+                                    ),
+                                    Declaration(
+                                        Binding {
+                                            name: α(4),
+                                            decl: Var(
+                                                VarDecl {
+                                                    t: Int,
+                                                    initialiser: Some(
+                                                        IntegerLiteral(
+                                                            IntegerLiteral {
+                                                                repr: "0",
+                                                                value: 0,
+                                                            },
+                                                        ),
+                                                    ),
+                                                    relative_location: Local(
+                                                        3,
+                                                    ),
+                                                },
+                                            ),
+                                        },
+                                    ),
+                                    Declaration(
+                                        Binding {
+                                            name: 值(5),
+                                            decl: Var(
+                                                VarDecl {
+                                                    t: Int,
+                                                    initialiser: Some(
+                                                        IntegerLiteral(
+                                                            IntegerLiteral {
+                                                                repr: "4",
+                                                                value: 4,
+                                                            },
+                                                        ),
+                                                    ),
+                                                    relative_location: Local(
+                                                        4,
+                                                    ),
+                                                },
+                                            ),
+                                        },
+                                    ),
+                                    Declaration(
+                                        Binding {
+                                            name: 变量(6),
+                                            decl: Var(
+                                                VarDecl {
+                                                    t: Int,
+                                                    initialiser: Some(
+                                                        IntegerLiteral(
+                                                            IntegerLiteral {
+                                                                repr: "5",
+                                                                value: 5,
+                                                            },
+                                                        ),
+                                                    ),
+                                                    relative_location: Local(
+                                                        5,
+                                                    ),
+                                                },
+                                            ),
+                                        },
+                                    ),
+                                    Declaration(
+                                        Binding {
+                                            name: 고양이(7),
+                                            decl: Var(
+                                                VarDecl {
+                                                    t: Int,
+                                                    initialiser: Some(
+                                                        IntegerLiteral(
+                                                            IntegerLiteral {
+                                                                repr: "6",
+                                                                value: 6,
+                                                            },
+                                                        ),
+                                                    ),
+                                                    relative_location: Local(
+                                                        6,
+                                                    ),
+                                                },
+                                            ),
+                                        },
+                                    ),
+                                    Declaration(
+                                        Binding {
+                                            name: pequeño_pingüino(8),
+                                            decl: Var(
+                                                VarDecl {
+                                                    t: Int,
+                                                    initialiser: Some(
+                                                        IntegerLiteral(
+                                                            IntegerLiteral {
+                                                                repr: "7",
+                                                                value: 7,
+                                                            },
+                                                        ),
+                                                    ),
+                                                    relative_location: Local(
+                                                        7,
+                                                    ),
+                                                },
+                                            ),
+                                        },
+                                    ),
+                                    Declaration(
+                                        Binding {
+                                            name: 'no_strings(9),
+                                            decl: Var(
+                                                VarDecl {
+                                                    t: Int,
+                                                    initialiser: Some(
+                                                        IntegerLiteral(
+                                                            IntegerLiteral {
+                                                                repr: "8",
+                                                                value: 8,
+                                                            },
+                                                        ),
+                                                    ),
+                                                    relative_location: Local(
+                                                        8,
+                                                    ),
+                                                },
+                                            ),
+                                        },
+                                    ),
+                                    Declaration(
+                                        Binding {
+                                            name: _(10),
+                                            decl: Var(
+                                                VarDecl {
+                                                    t: Int,
+                                                    initialiser: Some(
+                                                        IntegerLiteral(
+                                                            IntegerLiteral {
+                                                                repr: "9",
+                                                                value: 9,
+                                                            },
+                                                        ),
+                                                    ),
+                                                    relative_location: Local(
+                                                        9,
+                                                    ),
+                                                },
+                                            ),
+                                        },
+                                    ),
+                                    Assignment {
+                                        lhs: Identifier(
+                                            α(4),
                                         ),
-                                        Declaration(
-                                            Binding {
-                                                name: ねこ(2),
-                                                decl: Var(
-                                                    VarDecl {
-                                                        t: Int,
-                                                        initialiser: Some(
-                                                            IntegerLiteral(
-                                                                IntegerLiteral {
-                                                                    repr: "2",
-                                                                    value: 2,
-                                                                },
-                                                            ),
-                                                        ),
-                                                        relative_location: Local(
-                                                            1,
-                                                        ),
-                                                    },
+                                        rhs: BinOp {
+                                            op: Int(
+                                                Add,
+                                            ),
+                                            lhs: LvalueToRvalue(
+                                                Identifier(
+                                                    кошка(1),
                                                 ),
-                                            },
-                                        ),
-                                        Declaration(
-                                            Binding {
-                                                name: π(3),
-                                                decl: Var(
-                                                    VarDecl {
-                                                        t: Int,
-                                                        initialiser: Some(
-                                                            IntegerLiteral(
-                                                                IntegerLiteral {
-                                                                    repr: "3",
-                                                                    value: 3,
-                                                                },
-                                                            ),
-                                                        ),
-                                                        relative_location: Local(
-                                                            2,
-                                                        ),
-                                                    },
+                                            ),
+                                            rhs: LvalueToRvalue(
+                                                Identifier(
+                                                    ねこ(2),
                                                 ),
-                                            },
-                                        ),
-                                        Declaration(
-                                            Binding {
-                                                name: α(4),
-                                                decl: Var(
-                                                    VarDecl {
-                                                        t: Int,
-                                                        initialiser: Some(
-                                                            IntegerLiteral(
-                                                                IntegerLiteral {
-                                                                    repr: "0",
-                                                                    value: 0,
-                                                                },
-                                                            ),
-                                                        ),
-                                                        relative_location: Local(
-                                                            3,
-                                                        ),
-                                                    },
-                                                ),
-                                            },
-                                        ),
-                                        Declaration(
-                                            Binding {
-                                                name: 值(5),
-                                                decl: Var(
-                                                    VarDecl {
-                                                        t: Int,
-                                                        initialiser: Some(
-                                                            IntegerLiteral(
-                                                                IntegerLiteral {
-                                                                    repr: "4",
-                                                                    value: 4,
-                                                                },
-                                                            ),
-                                                        ),
-                                                        relative_location: Local(
-                                                            4,
-                                                        ),
-                                                    },
-                                                ),
-                                            },
-                                        ),
-                                        Declaration(
-                                            Binding {
-                                                name: 变量(6),
-                                                decl: Var(
-                                                    VarDecl {
-                                                        t: Int,
-                                                        initialiser: Some(
-                                                            IntegerLiteral(
-                                                                IntegerLiteral {
-                                                                    repr: "5",
-                                                                    value: 5,
-                                                                },
-                                                            ),
-                                                        ),
-                                                        relative_location: Local(
-                                                            5,
-                                                        ),
-                                                    },
-                                                ),
-                                            },
-                                        ),
-                                        Declaration(
-                                            Binding {
-                                                name: 고양이(7),
-                                                decl: Var(
-                                                    VarDecl {
-                                                        t: Int,
-                                                        initialiser: Some(
-                                                            IntegerLiteral(
-                                                                IntegerLiteral {
-                                                                    repr: "6",
-                                                                    value: 6,
-                                                                },
-                                                            ),
-                                                        ),
-                                                        relative_location: Local(
-                                                            6,
-                                                        ),
-                                                    },
-                                                ),
-                                            },
-                                        ),
-                                        Declaration(
-                                            Binding {
-                                                name: pequeño_pingüino(8),
-                                                decl: Var(
-                                                    VarDecl {
-                                                        t: Int,
-                                                        initialiser: Some(
-                                                            IntegerLiteral(
-                                                                IntegerLiteral {
-                                                                    repr: "7",
-                                                                    value: 7,
-                                                                },
-                                                            ),
-                                                        ),
-                                                        relative_location: Local(
-                                                            7,
-                                                        ),
-                                                    },
-                                                ),
-                                            },
-                                        ),
-                                        Declaration(
-                                            Binding {
-                                                name: 'no_strings(9),
-                                                decl: Var(
-                                                    VarDecl {
-                                                        t: Int,
-                                                        initialiser: Some(
-                                                            IntegerLiteral(
-                                                                IntegerLiteral {
-                                                                    repr: "8",
-                                                                    value: 8,
-                                                                },
-                                                            ),
-                                                        ),
-                                                        relative_location: Local(
-                                                            8,
-                                                        ),
-                                                    },
-                                                ),
-                                            },
-                                        ),
-                                        Declaration(
-                                            Binding {
-                                                name: _(10),
-                                                decl: Var(
-                                                    VarDecl {
-                                                        t: Int,
-                                                        initialiser: Some(
-                                                            IntegerLiteral(
-                                                                IntegerLiteral {
-                                                                    repr: "9",
-                                                                    value: 9,
-                                                                },
-                                                            ),
-                                                        ),
-                                                        relative_location: Local(
-                                                            9,
-                                                        ),
-                                                    },
-                                                ),
-                                            },
-                                        ),
-                                        Assignment {
-                                            lhs: Identifier(
+                                            ),
+                                        },
+                                    },
+                                    Print {
+                                        value: LvalueToRvalue(
+                                            Identifier(
                                                 α(4),
                                             ),
-                                            rhs: BinOp {
-                                                op: Int(
-                                                    Add,
-                                                ),
-                                                lhs: LvalueToRvalue(
-                                                    Identifier(
-                                                        кошка(1),
-                                                    ),
-                                                ),
-                                                rhs: LvalueToRvalue(
-                                                    Identifier(
-                                                        ねこ(2),
-                                                    ),
-                                                ),
-                                            },
-                                        },
-                                        Print {
-                                            value: LvalueToRvalue(
-                                                Identifier(
-                                                    α(4),
-                                                ),
+                                        ),
+                                    },
+                                    Print {
+                                        value: LvalueToRvalue(
+                                            Identifier(
+                                                π(3),
                                             ),
-                                        },
-                                        Print {
-                                            value: LvalueToRvalue(
-                                                Identifier(
-                                                    π(3),
-                                                ),
+                                        ),
+                                    },
+                                    Print {
+                                        value: LvalueToRvalue(
+                                            Identifier(
+                                                值(5),
                                             ),
-                                        },
-                                        Print {
-                                            value: LvalueToRvalue(
-                                                Identifier(
-                                                    值(5),
-                                                ),
+                                        ),
+                                    },
+                                    Print {
+                                        value: LvalueToRvalue(
+                                            Identifier(
+                                                变量(6),
                                             ),
-                                        },
-                                        Print {
-                                            value: LvalueToRvalue(
-                                                Identifier(
-                                                    变量(6),
-                                                ),
+                                        ),
+                                    },
+                                    Print {
+                                        value: LvalueToRvalue(
+                                            Identifier(
+                                                고양이(7),
                                             ),
-                                        },
-                                        Print {
-                                            value: LvalueToRvalue(
-                                                Identifier(
-                                                    고양이(7),
-                                                ),
+                                        ),
+                                    },
+                                    Print {
+                                        value: LvalueToRvalue(
+                                            Identifier(
+                                                pequeño_pingüino(8),
                                             ),
-                                        },
-                                        Print {
-                                            value: LvalueToRvalue(
-                                                Identifier(
-                                                    pequeño_pingüino(8),
-                                                ),
+                                        ),
+                                    },
+                                    Print {
+                                        value: LvalueToRvalue(
+                                            Identifier(
+                                                'no_strings(9),
                                             ),
-                                        },
-                                        Print {
-                                            value: LvalueToRvalue(
-                                                Identifier(
-                                                    'no_strings(9),
-                                                ),
-                                            ),
-                                        },
-                                    ],
-                                    locals_count: 10,
-                                },
-                            ),
-                        },
-                    ),
+                                        ),
+                                    },
+                                ],
+                                locals_count: 10,
+                            },
+                        ),
+                    },
                 ),
-            },
-        ],
-    ),
-    Bindings {
+            ),
+        },
+    ],
+    bindings: Bindings {
         arena: [
             Binding {
                 name: main(0),
@@ -797,4 +795,4 @@
             },
         ],
     },
-)
+}

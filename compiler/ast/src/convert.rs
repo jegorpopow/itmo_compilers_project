@@ -1081,16 +1081,18 @@ impl Converter {
     }
 }
 
-pub fn convert(program: &parser::Program) -> AnalysisResult<(Program, Bindings)> {
+pub fn convert(program: &parser::Program) -> AnalysisResult<Program> {
     let mut converter = Converter::new();
 
     let program = program
         .0
         .iter()
         .map(|decl| converter.convert_global_decl(decl))
-        .collect::<AnalysisResult<Vec<Binding>>>()
-        .map(Program)?;
+        .collect::<AnalysisResult<Vec<Binding>>>()?;
 
     let Converter { bindings, .. } = converter;
-    Ok((program, bindings))
+    Ok(Program {
+        bindings,
+        globals: program,
+    })
 }

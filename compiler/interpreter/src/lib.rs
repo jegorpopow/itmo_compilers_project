@@ -161,33 +161,43 @@ impl<'a, W: Write> Interpreter<'a, W> {
     }
 
     fn find_routine<I: IdentSelector + ?Sized>(&self, routine: &I) -> &'a Routine {
-        let Some(routine) = self.program.0.iter().find_map(|Binding { name, decl }| {
-            if let Decl::Routine(RoutineDecl::Full(r)) = decl
-                && routine.matches(name)
-            {
-                Some(r)
-            } else {
-                None
-            }
-        }) else {
+        let Some(routine) = self
+            .program
+            .globals
+            .iter()
+            .find_map(|Binding { name, decl }| {
+                if let Decl::Routine(RoutineDecl::Full(r)) = decl
+                    && routine.matches(name)
+                {
+                    Some(r)
+                } else {
+                    None
+                }
+            })
+        else {
             unreachable!("Could not find routine {routine:?}")
         };
         routine
     }
 
     fn find_type(&self, ty: &Identifier) -> &'a Type {
-        let Some(ty) = self.program.0.iter().find_map(|Binding { name, decl }| {
-            if let Decl::Type(TypeDecl::Full {
-                prescribed: _,
-                effective,
-            }) = decl
-                && name == ty
-            {
-                Some(effective.as_ref())
-            } else {
-                None
-            }
-        }) else {
+        let Some(ty) = self
+            .program
+            .globals
+            .iter()
+            .find_map(|Binding { name, decl }| {
+                if let Decl::Type(TypeDecl::Full {
+                    prescribed: _,
+                    effective,
+                }) = decl
+                    && name == ty
+                {
+                    Some(effective.as_ref())
+                } else {
+                    None
+                }
+            })
+        else {
             unreachable!("Could not find type {ty:?}")
         };
         ty
@@ -627,7 +637,7 @@ impl<'a, W: Write> Interpreter<'a, W> {
 
     #[throws(RuntimeError)]
     fn run(mut self) {
-        for Binding { name, decl } in &self.program.0 {
+        for Binding { name, decl } in &self.program.globals {
             match decl {
                 Decl::Type(_) | Decl::Routine(_) | Decl::Const(_) => {}
                 Decl::Var(VarDecl {

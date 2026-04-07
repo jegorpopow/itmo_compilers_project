@@ -36,9 +36,9 @@ fn main() -> anyhow::Result<()> {
         eprintln!("{decl:?}");
     }
 
-    let (program, _identifiers) = convert(&program).context("Typecheck error")?;
+    let program = convert(&program).context("Typecheck error")?;
 
-    for decl in &program.0 {
+    for decl in &program.globals {
         eprintln!("{decl:?}");
     }
 
