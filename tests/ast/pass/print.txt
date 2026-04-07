@@ -212,8 +212,154 @@ Program {
                                             ),
                                         ),
                                     },
+                                    Assignment {
+                                        lhs: Member {
+                                            lhs: Identifier(
+                                                root(4),
+                                            ),
+                                            member_name: r"link",
+                                        },
+                                        rhs: LvalueToRvalue(
+                                            Identifier(
+                                                root(4),
+                                            ),
+                                        ),
+                                    },
+                                    Print {
+                                        value: LvalueToRvalue(
+                                            Identifier(
+                                                root(4),
+                                            ),
+                                        ),
+                                    },
+                                    Declaration(
+                                        Binding {
+                                            name: leaf(5),
+                                            decl: Var(
+                                                VarDecl {
+                                                    t: Alias(
+                                                        recursive(2),
+                                                    ),
+                                                    initialiser: Some(
+                                                        New {
+                                                            t: Alias(
+                                                                recursive(2),
+                                                            ),
+                                                            fields: Some(
+                                                                [
+                                                                    (
+                                                                        r"id",
+                                                                        IntegerLiteral(
+                                                                            IntegerLiteral {
+                                                                                repr: "0",
+                                                                                value: 0,
+                                                                            },
+                                                                        ),
+                                                                    ),
+                                                                    (
+                                                                        r"link",
+                                                                        LvalueToRvalue(
+                                                                            Identifier(
+                                                                                root(4),
+                                                                            ),
+                                                                        ),
+                                                                    ),
+                                                                    (
+                                                                        r"links",
+                                                                        NewArray {
+                                                                            elements: Alias(
+                                                                                recursive(2),
+                                                                            ),
+                                                                            length: IntegerLiteral(
+                                                                                IntegerLiteral {
+                                                                                    repr: "3",
+                                                                                    value: 3,
+                                                                                },
+                                                                            ),
+                                                                        },
+                                                                    ),
+                                                                ],
+                                                            ),
+                                                        },
+                                                    ),
+                                                    relative_location: Local(
+                                                        1,
+                                                    ),
+                                                },
+                                            ),
+                                        },
+                                    ),
+                                    Assignment {
+                                        lhs: Member {
+                                            lhs: Identifier(
+                                                root(4),
+                                            ),
+                                            member_name: r"link",
+                                        },
+                                        rhs: LvalueToRvalue(
+                                            Identifier(
+                                                leaf(5),
+                                            ),
+                                        ),
+                                    },
+                                    Print {
+                                        value: LvalueToRvalue(
+                                            Identifier(
+                                                root(4),
+                                            ),
+                                        ),
+                                    },
+                                    Assignment {
+                                        lhs: Index {
+                                            lhs: Member {
+                                                lhs: Identifier(
+                                                    leaf(5),
+                                                ),
+                                                member_name: r"links",
+                                            },
+                                            index: IntegerLiteral(
+                                                IntegerLiteral {
+                                                    repr: "1",
+                                                    value: 1,
+                                                },
+                                            ),
+                                        },
+                                        rhs: LvalueToRvalue(
+                                            Identifier(
+                                                leaf(5),
+                                            ),
+                                        ),
+                                    },
+                                    Assignment {
+                                        lhs: Index {
+                                            lhs: Member {
+                                                lhs: Identifier(
+                                                    leaf(5),
+                                                ),
+                                                member_name: r"links",
+                                            },
+                                            index: IntegerLiteral(
+                                                IntegerLiteral {
+                                                    repr: "3",
+                                                    value: 3,
+                                                },
+                                            ),
+                                        },
+                                        rhs: LvalueToRvalue(
+                                            Identifier(
+                                                root(4),
+                                            ),
+                                        ),
+                                    },
+                                    Print {
+                                        value: LvalueToRvalue(
+                                            Identifier(
+                                                root(4),
+                                            ),
+                                        ),
+                                    },
                                 ],
-                                locals_count: 1,
+                                locals_count: 2,
                             },
                         ),
                     },
@@ -435,8 +581,154 @@ Program {
                                                 ),
                                             ),
                                         },
+                                        Assignment {
+                                            lhs: Member {
+                                                lhs: Identifier(
+                                                    root(4),
+                                                ),
+                                                member_name: r"link",
+                                            },
+                                            rhs: LvalueToRvalue(
+                                                Identifier(
+                                                    root(4),
+                                                ),
+                                            ),
+                                        },
+                                        Print {
+                                            value: LvalueToRvalue(
+                                                Identifier(
+                                                    root(4),
+                                                ),
+                                            ),
+                                        },
+                                        Declaration(
+                                            Binding {
+                                                name: leaf(5),
+                                                decl: Var(
+                                                    VarDecl {
+                                                        t: Alias(
+                                                            recursive(2),
+                                                        ),
+                                                        initialiser: Some(
+                                                            New {
+                                                                t: Alias(
+                                                                    recursive(2),
+                                                                ),
+                                                                fields: Some(
+                                                                    [
+                                                                        (
+                                                                            r"id",
+                                                                            IntegerLiteral(
+                                                                                IntegerLiteral {
+                                                                                    repr: "0",
+                                                                                    value: 0,
+                                                                                },
+                                                                            ),
+                                                                        ),
+                                                                        (
+                                                                            r"link",
+                                                                            LvalueToRvalue(
+                                                                                Identifier(
+                                                                                    root(4),
+                                                                                ),
+                                                                            ),
+                                                                        ),
+                                                                        (
+                                                                            r"links",
+                                                                            NewArray {
+                                                                                elements: Alias(
+                                                                                    recursive(2),
+                                                                                ),
+                                                                                length: IntegerLiteral(
+                                                                                    IntegerLiteral {
+                                                                                        repr: "3",
+                                                                                        value: 3,
+                                                                                    },
+                                                                                ),
+                                                                            },
+                                                                        ),
+                                                                    ],
+                                                                ),
+                                                            },
+                                                        ),
+                                                        relative_location: Local(
+                                                            1,
+                                                        ),
+                                                    },
+                                                ),
+                                            },
+                                        ),
+                                        Assignment {
+                                            lhs: Member {
+                                                lhs: Identifier(
+                                                    root(4),
+                                                ),
+                                                member_name: r"link",
+                                            },
+                                            rhs: LvalueToRvalue(
+                                                Identifier(
+                                                    leaf(5),
+                                                ),
+                                            ),
+                                        },
+                                        Print {
+                                            value: LvalueToRvalue(
+                                                Identifier(
+                                                    root(4),
+                                                ),
+                                            ),
+                                        },
+                                        Assignment {
+                                            lhs: Index {
+                                                lhs: Member {
+                                                    lhs: Identifier(
+                                                        leaf(5),
+                                                    ),
+                                                    member_name: r"links",
+                                                },
+                                                index: IntegerLiteral(
+                                                    IntegerLiteral {
+                                                        repr: "1",
+                                                        value: 1,
+                                                    },
+                                                ),
+                                            },
+                                            rhs: LvalueToRvalue(
+                                                Identifier(
+                                                    leaf(5),
+                                                ),
+                                            ),
+                                        },
+                                        Assignment {
+                                            lhs: Index {
+                                                lhs: Member {
+                                                    lhs: Identifier(
+                                                        leaf(5),
+                                                    ),
+                                                    member_name: r"links",
+                                                },
+                                                index: IntegerLiteral(
+                                                    IntegerLiteral {
+                                                        repr: "3",
+                                                        value: 3,
+                                                    },
+                                                ),
+                                            },
+                                            rhs: LvalueToRvalue(
+                                                Identifier(
+                                                    root(4),
+                                                ),
+                                            ),
+                                        },
+                                        Print {
+                                            value: LvalueToRvalue(
+                                                Identifier(
+                                                    root(4),
+                                                ),
+                                            ),
+                                        },
                                     ],
-                                    locals_count: 1,
+                                    locals_count: 2,
                                 },
                             ),
                         },
@@ -486,6 +778,61 @@ Program {
                         ),
                         relative_location: Local(
                             0,
+                        ),
+                    },
+                ),
+            },
+            Binding {
+                name: leaf(5),
+                decl: Var(
+                    VarDecl {
+                        t: Alias(
+                            recursive(2),
+                        ),
+                        initialiser: Some(
+                            New {
+                                t: Alias(
+                                    recursive(2),
+                                ),
+                                fields: Some(
+                                    [
+                                        (
+                                            r"id",
+                                            IntegerLiteral(
+                                                IntegerLiteral {
+                                                    repr: "0",
+                                                    value: 0,
+                                                },
+                                            ),
+                                        ),
+                                        (
+                                            r"link",
+                                            LvalueToRvalue(
+                                                Identifier(
+                                                    root(4),
+                                                ),
+                                            ),
+                                        ),
+                                        (
+                                            r"links",
+                                            NewArray {
+                                                elements: Alias(
+                                                    recursive(2),
+                                                ),
+                                                length: IntegerLiteral(
+                                                    IntegerLiteral {
+                                                        repr: "3",
+                                                        value: 3,
+                                                    },
+                                                ),
+                                            },
+                                        ),
+                                    ],
+                                ),
+                            },
+                        ),
+                        relative_location: Local(
+                            1,
                         ),
                     },
                 ),

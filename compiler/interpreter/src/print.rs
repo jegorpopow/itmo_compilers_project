@@ -15,11 +15,25 @@ pub(super) fn print<'a>(out: &mut impl Write, heap: &Memory<'a>, arg: &impl Prin
 #[derive(Clone, Copy)]
 enum Recursion<'a, 's> {
     Start,
-    #[expect(dead_code, reason = "WIP")]
     Node {
         address: Address<'a>,
         parent: &'s Self,
     },
+}
+
+impl<'a> Recursion<'a, '_> {
+    fn find(self, target: Address<'a>) -> Option<usize> {
+        let mut depth = 1;
+        let mut current = self;
+        while let Self::Node { parent, address } = current {
+            if address == target {
+                return Some(depth);
+            }
+            current = *parent;
+            depth += 1;
+        }
+        None
+    }
 }
 
 trait Printable<'a> {
@@ -30,15 +44,21 @@ trait Printable<'a> {
 impl<'a> Printable<'a> for Address<'a> {
     #[throws]
     fn print(&self, out: &mut impl Write, heap: &Memory<'a>, recursion: Recursion<'a, '_>) {
-        // TODO: check for recursion
-        heap[*self].print(
-            out,
-            heap,
-            Recursion::Node {
-                address: *self,
-                parent: &recursion,
-            },
-        )?
+        match recursion.find(*self) {
+            Some(depth) => write!(
+                out,
+                "/* repeated {depth} level{} above */",
+                if depth == 1 { "" } else { "s" }
+            )?,
+            None => heap[*self].print(
+                out,
+                heap,
+                Recursion::Node {
+                    address: *self,
+                    parent: &recursion,
+                },
+            )?,
+        }
     }
 }
 

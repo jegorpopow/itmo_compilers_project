@@ -21,4 +21,19 @@ routine main() is
 		links is new[3] array [] recursive;
 	end;
 	print root;
+
+	root.link := root;
+	print root;
+
+	var leaf is new recursive where
+		id is 0;
+		link is root;
+		links is new[3] array [] recursive;
+	end;
+	root.link := leaf;
+	print root;
+
+	leaf.links[1] := leaf;
+	leaf.links[3] := root;
+	print root;
 end
