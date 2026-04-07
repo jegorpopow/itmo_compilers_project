@@ -502,7 +502,9 @@ impl<'a, W: Write> Interpreter<'a, W> {
                             None => self.default_value_for_type(t),
                         };
                         let e = self.heap.alloc(e);
-                        if let Some(prev) = bindings.insert(name, e) {
+                        if let Some(prev) = bindings.insert(name, e)
+                            && cfg!(debug_assertions)
+                        {
                             eprintln!(
                                 "Discarding previous value for {name}: {:?} => {:?}",
                                 self.heap[prev], self.heap[e]
