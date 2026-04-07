@@ -68,6 +68,7 @@ pub enum Expression {
     New {
         t: Type,
         fields: Option<Vec<(RawIdentifier, Rc<Expression>)>>,
+        array_length: Option<Rc<Expression>>,
     },
     Null,
 }

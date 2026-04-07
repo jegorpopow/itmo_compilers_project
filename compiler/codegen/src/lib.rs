@@ -94,10 +94,7 @@ impl<'a> Compiler<'a> {
             }
             Type::Array(array_description) => {
                 let Some(length) = array_description.length else {
-                    // TODO: Support `array [] T`` type for allocation ???
-                    return Err(AnalysisError {
-                        what: "Allocation of array of unknown size is not supported".to_string(),
-                    });
+                    unreachable!()
                 };
                 self.bytecode.push(Instruction::AllocArray {
                     type_id: TypeId(0),
@@ -182,6 +179,7 @@ impl<'a> Compiler<'a> {
                 self.compile_expr(expression)?;
                 self.bytecode.push(Instruction::IntToReal);
             }
+            Expression::NewArray { .. } => todo!(),
         }
 
         Ok(())

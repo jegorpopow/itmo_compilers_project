@@ -116,6 +116,10 @@ pub enum Expression {
         t: Rc<Type>,
         fields: Option<Vec<(RawIdentifier, Rc<Expression>)>>,
     },
+    NewArray {
+        elements: Rc<Type>,
+        length: Rc<Expression>,
+    },
     LengthOf {
         arr: Rc<Expression>,
     },
@@ -296,6 +300,7 @@ impl Expression {
             Expression::Call { .. }
             | Expression::Cast { .. }
             | Expression::New { .. }
+            | Expression::NewArray { .. }
             | Expression::LengthOf { .. }
             | Expression::Null
             | Expression::LvalueToRvalue(_) => Err(AnalysisError {

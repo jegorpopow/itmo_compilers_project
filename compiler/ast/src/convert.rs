@@ -388,9 +388,29 @@ impl Converter {
         &self,
         t: &parser::Type,
         fields: Option<&[(RawIdentifier, Rc<parser::Expression>)]>,
+        array_length: Option<&parser::Expression>,
     ) -> AnalysisResult<Typed> {
         let ty = self.convert_type(t)?;
         let effective = self.bindings.get_effective_type(&ty)?;
+
+        if let Some(length) = array_length {
+            let Type::Array(ArrayDescription {
+                t: elements,
+                length: None,
+            }) = Rc::unwrap_or_clone(effective)
+            else {
+                return Err(AnalysisError {
+                    what: "new[] is only supported for array[] types without length".to_string(),
+                });
+            };
+            return Ok(Typed {
+                value: Rc::new(Expression::NewArray {
+                    elements,
+                    length: cast_to(self.convert_expr(length)?, &Type::Int)?,
+                }),
+                ty,
+            });
+        }
 
         match effective.as_ref() {
             Type::Int | Type::Real | Type::Bool | Type::Null | Type::Unit => Err(AnalysisError {
@@ -575,7 +595,11 @@ impl Converter {
                     })?
                 }
             }
-            parser::Expression::New { t, fields } => self.convert_new(t, fields.as_deref())?,
+            parser::Expression::New {
+                t,
+                fields,
+                array_length,
+            } => self.convert_new(t, fields.as_deref(), array_length.as_deref())?,
             parser::Expression::Null => Typed {
                 value: Rc::new(Expression::Null),
                 ty: Rc::new(Type::Null),
