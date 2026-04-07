@@ -1887,11 +1887,20 @@ Program(
                                             r"colour",
                                         ),
                                         length: Some(
-                                            LvalueToRvalue(
-                                                Identifier(
-                                                    r"CANVAS_MAX_PIXELS",
+                                            BinOp {
+                                                op: Plus,
+                                                lhs: LvalueToRvalue(
+                                                    Identifier(
+                                                        r"CANVAS_MAX_PIXELS",
+                                                    ),
                                                 ),
-                                            ),
+                                                rhs: IntegerLiteral(
+                                                    IntegerLiteral {
+                                                        repr: "1",
+                                                        value: 1,
+                                                    },
+                                                ),
+                                            },
                                         ),
                                     },
                                 ),
@@ -2188,11 +2197,20 @@ Program(
                                                                             r"colour",
                                                                         ),
                                                                         length: Some(
-                                                                            LvalueToRvalue(
-                                                                                Identifier(
-                                                                                    r"CANVAS_MAX_PIXELS",
+                                                                            BinOp {
+                                                                                op: Plus,
+                                                                                lhs: LvalueToRvalue(
+                                                                                    Identifier(
+                                                                                        r"CANVAS_MAX_PIXELS",
+                                                                                    ),
                                                                                 ),
-                                                                            ),
+                                                                                rhs: IntegerLiteral(
+                                                                                    IntegerLiteral {
+                                                                                        repr: "1",
+                                                                                        value: 1,
+                                                                                    },
+                                                                                ),
+                                                                            },
                                                                         ),
                                                                     },
                                                                 ),

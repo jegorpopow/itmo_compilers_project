@@ -157,7 +157,7 @@ constant CANVAS_MAX_WIDTH is 640;
 constant CANVAS_MAX_PIXELS is CANVAS_MAX_HEIGHT * CANVAS_MAX_WIDTH;
 
 type canvas is record
-  var pixels is array [CANVAS_MAX_PIXELS] colour;
+  var pixels is array [CANVAS_MAX_PIXELS + 1] colour;
   var height is integer; 
   var width is integer; 
 end;
@@ -174,7 +174,7 @@ routine new_canvas(h : integer, w : integer, background : colour): canvas is
   assert w >= 0 and w <= CANVAS_MAX_WIDTH;
 
   var res is new canvas where 
-    pixels is new array [CANVAS_MAX_PIXELS] colour;
+    pixels is new array [CANVAS_MAX_PIXELS + 1] colour;
     height is h; 
     width is w;
   end; 
