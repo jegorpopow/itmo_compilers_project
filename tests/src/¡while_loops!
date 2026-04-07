@@ -1,10 +1,10 @@
 routine collatz(n : integer) : integer is
   var steps is 0;
 
-  while n /= 1 loop 
-    if n % 2 = 0 then 
+  while n /= 1 loop
+    if n % 2 = 0 then
       n := n / 2;
-    else 
+    else
       n := 3 * n + 1;
     end
     steps := steps + 1;

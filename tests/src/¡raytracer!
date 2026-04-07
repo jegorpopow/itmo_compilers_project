@@ -1,4 +1,4 @@
--- real arithmetics supplementary 
+-- real arithmetics supplementary
 
 var EPS : real is 0.0001;
 
@@ -8,7 +8,7 @@ routine real_min(a : real, b : real) : real is
   else
     return b;
   end
-end 
+end
 
 routine real_max(a : real, b : real) : real is
   if a >= b then
@@ -16,24 +16,24 @@ routine real_max(a : real, b : real) : real is
   else
     return b;
   end
-end 
+end
 
 routine is_nan(x : real) => x /= x;
 
 routine approx_eq(lhs : real, rhs : real) => (lhs - rhs) * (lhs - rhs) < EPS * EPS;
 
-routine real_interpolate(from : real, to : real, ratio : real) => 
+routine real_interpolate(from : real, to : real, ratio : real) =>
   from * (1 - ratio) + to * ratio;
 
-routine round(x : real) : integer is 
+routine round(x : real) : integer is
   var res : integer is x;
   if x - res >= 0.5 then res := res + 1; end
   return res;
 end
 
-routine sqrt(s : real) : real is 
+routine sqrt(s : real) : real is
   -- Newton approximation
-  if s < 0.0 then 
+  if s < 0.0 then
     return NaN;
   end
 
@@ -41,11 +41,11 @@ routine sqrt(s : real) : real is
 
   if s > 1.0 then x := s / 2; end
 
-  for i in 0 .. 100 loop 
+  for i in 0 .. 100 loop
     var prev_x is x;
     x := (x + s / x) / 2;
-    
-    if approx_eq(prev_x, x) or approx_eq(x * x, s) then 
+
+    if approx_eq(prev_x, x) or approx_eq(x * x, s) then
       return x;
     end
   end
@@ -55,65 +55,65 @@ end
 
 -- vectors supplementary
 
-type vector is record 
-  var x is real; 
-  var y is real; 
+type vector is record
+  var x is real;
+  var y is real;
   var z is real;
 end;
 
 -- constructor for simpler literals
-routine vector_of(x : real, y : real, z : real) => 
+routine vector_of(x : real, y : real, z : real) =>
   new vector where
-    x is x; 
+    x is x;
     y is y;
     z is z;
   end;
 
-routine vector_add(lhs : vector, rhs : vector) => 
-  new vector where 
-    x is lhs.x + rhs.x; 
-    y is lhs.y + rhs.y; 
-    z is lhs.z + rhs.z; 
+routine vector_add(lhs : vector, rhs : vector) =>
+  new vector where
+    x is lhs.x + rhs.x;
+    y is lhs.y + rhs.y;
+    z is lhs.z + rhs.z;
   end;
 
-routine vector_sub(lhs : vector, rhs : vector) => 
-  new vector where 
-    x is lhs.x - rhs.x; 
-    y is lhs.y - rhs.y; 
-    z is lhs.z - rhs.z; 
+routine vector_sub(lhs : vector, rhs : vector) =>
+  new vector where
+    x is lhs.x - rhs.x;
+    y is lhs.y - rhs.y;
+    z is lhs.z - rhs.z;
   end;
 
-routine vector_mul(k : real, rhs : vector) => 
-  new vector where 
+routine vector_mul(k : real, rhs : vector) =>
+  new vector where
     x is k * rhs.x;
-    y is k * rhs.y; 
-    z is k * rhs.z; 
+    y is k * rhs.y;
+    z is k * rhs.z;
   end;
 
-routine vector_dot(lhs : vector, rhs : vector) => 
+routine vector_dot(lhs : vector, rhs : vector) =>
   lhs.x * rhs.x + lhs.y * rhs.y + lhs.z * rhs.z;
 
-routine vector_norm(v : vector) => 
+routine vector_norm(v : vector) =>
   sqrt(vector_dot(v, v));
 
-routine vector_normalised(v : vector) => 
+routine vector_normalised(v : vector) =>
   vector_mul(1 / vector_norm(v), v);
 
 
 -- rays supplementary
 
-type ray is record 
-  var base is vector; 
-  var dest is vector; 
+type ray is record
+  var base is vector;
+  var dest is vector;
 end;
 
-routine ray_from_to(start : vector, point : vector) => 
-  new ray where 
-    base is start; 
-    dest is vector_normalised(vector_sub(point, start)); 
-  end; 
+routine ray_from_to(start : vector, point : vector) =>
+  new ray where
+    base is start;
+    dest is vector_normalised(vector_sub(point, start));
+  end;
 
-routine ray_cut(r : ray, k : real) => 
+routine ray_cut(r : ray, k : real) =>
   vector_add(r.base, vector_mul(k, r.dest));
 
 
@@ -122,7 +122,7 @@ routine ray_cut(r : ray, k : real) =>
 type byte is integer;
 
 routine int_to_byte(val : integer) : byte is
-  assert val >= 0 and val < 256; 
+  assert val >= 0 and val < 256;
   return val :: byte;
 end
 
@@ -136,13 +136,13 @@ routine colour_of(r : integer, g : integer, b : integer) =>
   new colour where
     red is int_to_byte(r);
     green is int_to_byte(g);
-    blue is int_to_byte(b); 
+    blue is int_to_byte(b);
   end;
 
-routine colour_mix_with_ratio(base : colour, paint : colour, ratio : real) => 
+routine colour_mix_with_ratio(base : colour, paint : colour, ratio : real) =>
   colour_of(
-    round(real_interpolate(base.red :: integer, paint.red :: integer, ratio)), 
-    round(real_interpolate(base.green :: integer, paint.green :: integer, ratio)), 
+    round(real_interpolate(base.red :: integer, paint.red :: integer, ratio)),
+    round(real_interpolate(base.green :: integer, paint.green :: integer, ratio)),
     round(real_interpolate(base.blue :: integer, paint.blue :: integer, ratio))
   );
 
@@ -152,20 +152,20 @@ var BLUE is colour_of(0, 0, 255);
 var BLACK is colour_of(0, 0, 0);
 var WHITE is colour_of(255, 255, 255);
 
-constant CANVAS_MAX_HEIGHT is 360; 
-constant CANVAS_MAX_WIDTH is 640; 
+constant CANVAS_MAX_HEIGHT is 360;
+constant CANVAS_MAX_WIDTH is 640;
 constant CANVAS_MAX_PIXELS is CANVAS_MAX_HEIGHT * CANVAS_MAX_WIDTH;
 
 type canvas is record
   var pixels is array [CANVAS_MAX_PIXELS] colour;
-  var height is integer; 
-  var width is integer; 
+  var height is integer;
+  var width is integer;
 end;
 
-routine get_canvas_at(c : canvas, x : integer, y : integer) => 
+routine get_canvas_at(c : canvas, x : integer, y : integer) =>
   c.pixels[c.width * y + x + 1];
 
-routine set_canvas_at(c : canvas, x : integer, y : integer, nc : colour) is 
+routine set_canvas_at(c : canvas, x : integer, y : integer, nc : colour) is
   c.pixels[c.width * y + x + 1] := nc;
 end
 
@@ -173,165 +173,165 @@ routine new_canvas(h : integer, w : integer, background : colour): canvas is
   assert h >= 0 and h <= CANVAS_MAX_HEIGHT;
   assert w >= 0 and w <= CANVAS_MAX_WIDTH;
 
-  var res is new canvas where 
+  var res is new canvas where
     pixels is new array [CANVAS_MAX_PIXELS] colour;
-    height is h; 
+    height is h;
     width is w;
-  end; 
+  end;
 
-  for x in 0 .. res.height - 1 loop 
-    for y in 0 .. res.width - 1 loop 
+  for x in 0 .. res.height - 1 loop
+    for y in 0 .. res.width - 1 loop
       set_canvas_at(res, x, y, background);
     end
-  end    
+  end
 
   return res;
 end
 
-routine render_canvas(c : canvas) is 
-  print c.height; 
-  print c.width; 
+routine render_canvas(c : canvas) is
+  print c.height;
+  print c.width;
 
-  for x in c.height - 1 .. 0  reverse loop 
-    for y in 0 .. c.width - 1 loop 
+  for x in c.height - 1 .. 0  reverse loop
+    for y in 0 .. c.width - 1 loop
       print get_canvas_at(c, x, y);
     end
   end
 end
 
 
-type sphere is record 
+type sphere is record
   var centre is vector;
   var radius is real;
-  var colour is colour; 
-end; 
+  var colour is colour;
+end;
 
-type plane is record 
+type plane is record
   var point is vector;
   var normal is vector;
-  var colour is colour; 
+  var colour is colour;
 end;
 
 
 -- So-called sum type :)
-type object is record 
+type object is record
   var kind is integer;
-  var s is sphere; 
+  var s is sphere;
   var p is plane;
 end;
 
 routine sphere_to_object(f : sphere) =>
-  new object where 
+  new object where
     kind is 1;
     s is f;
     p is null;
-  end; 
-  
+  end;
+
 routine plane_to_object(f : plane) =>
-  new object where 
+  new object where
     kind is 2;
     s is null;
     p is f;
-  end; 
+  end;
 
--- NaN stands for no intersection 
-routine intersect_sphere(s : sphere, r : ray) : real is 
-  var a : real is 
+-- NaN stands for no intersection
+routine intersect_sphere(s : sphere, r : ray) : real is
+  var a : real is
     vector_dot(r.dest, r.dest); -- almost always 1
-  var b : real is 
+  var b : real is
     2 * vector_dot(r.dest, vector_sub(r.base, s.centre));
-  var c : real is 
-    vector_dot(vector_sub(r.base, s.centre), vector_sub(r.base, s.centre)) - s.radius * s.radius; 
+  var c : real is
+    vector_dot(vector_sub(r.base, s.centre), vector_sub(r.base, s.centre)) - s.radius * s.radius;
 
-  var discriminant : real is 
-    b * b - 4 * a * c; 
+  var discriminant : real is
+    b * b - 4 * a * c;
 
   if discriminant < 0.0 then return NaN; end
 
-  var t1 : real is 
+  var t1 : real is
     (-b + sqrt(discriminant)) / (2 * a);
-  var t2 : real is 
+  var t2 : real is
     (-b - sqrt(discriminant)) / (2 * a);
 
   if real_min(t1, t2) > 0 then
     return real_min(t1, t2);
-  else 
-    if real_max(t1, t2) > 0 then 
-      return real_max(t1, t2); 
-    else 
+  else
+    if real_max(t1, t2) > 0 then
+      return real_max(t1, t2);
+    else
       return NaN;
     end
   end
 end
 
 
--- NaN stands for no intersection 
-routine intersect_plane(p : plane, r : ray) : real is 
-  if approx_eq(vector_dot(p.normal, r.dest), 0) then 
+-- NaN stands for no intersection
+routine intersect_plane(p : plane, r : ray) : real is
+  if approx_eq(vector_dot(p.normal, r.dest), 0) then
      return NaN;
   end
 
   var t : real is
     vector_dot(vector_sub(p.point, r.base), p.normal) / vector_dot(r.dest, p.normal);
 
-  if t > EPS then 
+  if t > EPS then
     return t;
-  else 
+  else
     return NaN;
   end
 end
 
--- NaN stands for no intersection 
-routine intersect_object(o : object, r : ray) : real is 
+-- NaN stands for no intersection
+routine intersect_object(o : object, r : ray) : real is
   if o.kind = 1 then return intersect_sphere(o.s, r); end
   if o.kind = 2 then return intersect_plane(o.p, r); end
   return NaN;
 end
 
 
-routine normal_at_sphere(s : sphere, point : vector) : vector => 
+routine normal_at_sphere(s : sphere, point : vector) : vector =>
   vector_normalised(vector_sub(point, s.centre));
 
-routine normal_at_plane(p : plane, point : vector) : vector => 
+routine normal_at_plane(p : plane, point : vector) : vector =>
   p.normal;
 
-routine normal_at_object(o : object, r : vector) : vector is 
+routine normal_at_object(o : object, r : vector) : vector is
   if o.kind = 1 then return normal_at_sphere(o.s, r); end
   if o.kind = 2 then return normal_at_plane(o.p, r); end
   return null;
 end
 
-routine colour_at_object(o : object, r : vector) : colour is 
+routine colour_at_object(o : object, r : vector) : colour is
   if o.kind = 1 then return o.s.colour; end
   if o.kind = 2 then return o.p.colour; end
   return null;
 end
 
 type intersection_desc is record
-  var t is real; -- NaN stands for no intersection 
-  var object is object; 
+  var t is real; -- NaN stands for no intersection
+  var object is object;
 end;
 
-routine empty_intersection_desc() => 
+routine empty_intersection_desc() =>
   new intersection_desc where
     t is NaN;
     object is null;
   end;
 
 
-routine trace_ray(r : ray, scene : array [] object) : intersection_desc is 
+routine trace_ray(r : ray, scene : array [] object) : intersection_desc is
   var best_intersection is empty_intersection_desc();
 
-  for obj in scene .. loop 
-    var intersection is intersect_object(obj, r); 
+  for obj in scene .. loop
+    var intersection is intersect_object(obj, r);
 
-    if not is_nan(intersection) 
+    if not is_nan(intersection)
        and (
-        is_nan(best_intersection.t) 
-        or best_intersection.t > intersection + EPS) then 
-       
-        best_intersection := 
-          new intersection_desc where 
+        is_nan(best_intersection.t)
+        or best_intersection.t > intersection + EPS) then
+
+        best_intersection :=
+          new intersection_desc where
             t is intersection;
             object is obj;
           end;
@@ -344,9 +344,9 @@ end
 routine trace_rays(h : integer, w : integer, scene : array [] object) : canvas is
   var c is new_canvas(h, w, BLACK);
 
-  var virtual_screen_height : real is 2; 
+  var virtual_screen_height : real is 2;
   var virtual_screen_width : real is
-    virtual_screen_height * 16 / 9; 
+    virtual_screen_height * 16 / 9;
 
   var base : vector is
     vector_of(0, 0, -2);
@@ -354,72 +354,72 @@ routine trace_rays(h : integer, w : integer, scene : array [] object) : canvas i
     vector_of(1, 0, 0);
   var y_orth : vector is
     vector_of(0, 1, 0);
-  var left_bottom : vector is 
-    vector_of(-virtual_screen_width / 2, -virtual_screen_height / 2, 0); 
+  var left_bottom : vector is
+    vector_of(-virtual_screen_width / 2, -virtual_screen_height / 2, 0);
 
   for x in 0 .. c.width - 1 loop
     for y in 0 .. c.height - 1 loop
       var virtual_screen_point : vector is
         vector_add(
-          left_bottom, 
+          left_bottom,
           vector_add(
             vector_mul(virtual_screen_width * x / (1.0 * c.width), x_orth),
-            vector_mul(virtual_screen_height * y / (1.0 * c.height), y_orth)    
+            vector_mul(virtual_screen_height * y / (1.0 * c.height), y_orth)
           )
-        ); 
+        );
 
-      var r is 
+      var r is
         ray_from_to(base, virtual_screen_point);
-    
-      var intersection is 
+
+      var intersection is
         trace_ray(r, scene);
 
-    
-      if not is_nan(intersection.t) then 
-        var colour_ratio : real is 
+
+      if not is_nan(intersection.t) then
+        var colour_ratio : real is
           vector_dot(
             normal_at_object(intersection.object, ray_cut(r, intersection.t)),
             vector_mul(-1, r.dest)
-          );        
+          );
         if colour_ratio < 0 then colour_ratio := 1; end
 
-        var paint is 
+        var paint is
           colour_at_object(intersection.object, ray_cut(r, intersection.t));
 
         set_canvas_at(c, x, y, colour_mix_with_ratio(BLACK, paint, colour_ratio));
-      end  
+      end
     end
   end
 
-  return c; 
+  return c;
 end
 
 routine main() is
-  var red_sphere is 
+  var red_sphere is
     new sphere where
       centre is vector_of(0.5, 0.5, 3);
       radius is 1;
-      colour is RED;   
+      colour is RED;
     end;
-  var green_sphere is 
+  var green_sphere is
     new sphere where
       centre is vector_of(-0.8, -0.5, 4);
       radius is 3;
-      colour is GREEN;   
+      colour is GREEN;
     end;
   var blue_plane is
-    new plane where 
+    new plane where
       point is vector_of(0, -1.5, 5);
       normal is vector_of(0.2, 1, -0.1);
       colour is BLUE;
     end;
-  
-  var scene is new array [3] object; 
+
+  var scene is new array [3] object;
   scene[1] := sphere_to_object(red_sphere);
   scene[2] := sphere_to_object(green_sphere);
   scene[3] := plane_to_object(blue_plane);
 
-  var height is 36; 
+  var height is 36;
 
   render_canvas(trace_rays(height, height / 9 * 16, scene));
 end
