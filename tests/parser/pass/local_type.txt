@@ -1,0 +1,76 @@
+Program(
+    [
+        Type(
+            TypeDecl {
+                name: r"point",
+                t: Real,
+            },
+        ),
+        Routine(
+            RoutineDecl {
+                name: r"main",
+                arguments: [],
+                return_type: None,
+                body: Some(
+                    Block(
+                        Block(
+                            [
+                                TypeDecl(
+                                    TypeDecl {
+                                        name: r"point",
+                                        t: Record(
+                                            RecordDescription {
+                                                fields: [
+                                                    FieldDescription {
+                                                        name: r"x",
+                                                        t: Real,
+                                                    },
+                                                    FieldDescription {
+                                                        name: r"y",
+                                                        t: Real,
+                                                    },
+                                                ],
+                                            },
+                                        ),
+                                    },
+                                ),
+                                Stmt(
+                                    Print {
+                                        value: New {
+                                            t: Alias(
+                                                r"point",
+                                            ),
+                                            fields: Some(
+                                                [
+                                                    (
+                                                        r"x",
+                                                        IntegerLiteral(
+                                                            IntegerLiteral {
+                                                                repr: "1",
+                                                                value: 1,
+                                                            },
+                                                        ),
+                                                    ),
+                                                    (
+                                                        r"y",
+                                                        IntegerLiteral(
+                                                            IntegerLiteral {
+                                                                repr: "2",
+                                                                value: 2,
+                                                            },
+                                                        ),
+                                                    ),
+                                                ],
+                                            ),
+                                            array_length: None,
+                                        },
+                                    },
+                                ),
+                            ],
+                        ),
+                    ),
+                ),
+            },
+        ),
+    ],
+)

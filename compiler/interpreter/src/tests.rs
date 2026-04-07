@@ -44,6 +44,7 @@ testing::tests! {
         identifiers => "identifiers"
         lazy_operators => "lazy_operators"
         length => "length"
+        local_type => "local_type"
         logical_operators => "logical_operators"
         nested_control => "nested_control"
         new_array => "new_array"
