@@ -172,8 +172,8 @@ routine new_canvas(h : integer, w : integer, background : colour): canvas is
     width is w;
   end;
 
-  for x in 0 .. res.height - 1 loop
-    for y in 0 .. res.width - 1 loop
+  for x in 0 .. res.width - 1 loop
+    for y in 0 .. res.height - 1 loop
       set_canvas_at(res, x, y, background);
     end
   end
@@ -185,8 +185,8 @@ routine render_canvas(c : canvas) is
   print c.height;
   print c.width;
 
-  for x in c.height - 1 .. 0  reverse loop
-    for y in 0 .. c.width - 1 loop
+  for y in c.height - 1 .. 0  reverse loop
+    for x in 0 .. c.width - 1 loop
       print get_canvas_at(c, x, y);
     end
   end

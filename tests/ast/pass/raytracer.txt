@@ -3011,7 +3011,7 @@ Program {
                                                     lhs: Identifier(
                                                         res(83),
                                                     ),
-                                                    member_name: r"height",
+                                                    member_name: r"width",
                                                 },
                                             ),
                                             rhs: IntegerLiteral(
@@ -3041,7 +3041,7 @@ Program {
                                                                 lhs: Identifier(
                                                                     res(83),
                                                                 ),
-                                                                member_name: r"width",
+                                                                member_name: r"height",
                                                             },
                                                         ),
                                                         rhs: IntegerLiteral(
@@ -3158,7 +3158,7 @@ Program {
                                         ),
                                     },
                                     For {
-                                        counter: x(88),
+                                        counter: y(88),
                                         lower_bound: BinOp {
                                             op: Int(
                                                 Sub,
@@ -3188,7 +3188,7 @@ Program {
                                         body: Block {
                                             stmts: [
                                                 For {
-                                                    counter: y(89),
+                                                    counter: x(89),
                                                     lower_bound: IntegerLiteral(
                                                         IntegerLiteral {
                                                             repr: "0",
@@ -3228,12 +3228,12 @@ Program {
                                                                         ),
                                                                         LvalueToRvalue(
                                                                             Identifier(
-                                                                                x(88),
+                                                                                x(89),
                                                                             ),
                                                                         ),
                                                                         LvalueToRvalue(
                                                                             Identifier(
-                                                                                y(89),
+                                                                                y(88),
                                                                             ),
                                                                         ),
                                                                     ],
@@ -10218,7 +10218,7 @@ Program {
                                                         lhs: Identifier(
                                                             res(83),
                                                         ),
-                                                        member_name: r"height",
+                                                        member_name: r"width",
                                                     },
                                                 ),
                                                 rhs: IntegerLiteral(
@@ -10248,7 +10248,7 @@ Program {
                                                                     lhs: Identifier(
                                                                         res(83),
                                                                     ),
-                                                                    member_name: r"width",
+                                                                    member_name: r"height",
                                                                 },
                                                             ),
                                                             rhs: IntegerLiteral(
@@ -10490,7 +10490,7 @@ Program {
                                             ),
                                         },
                                         For {
-                                            counter: x(88),
+                                            counter: y(88),
                                             lower_bound: BinOp {
                                                 op: Int(
                                                     Sub,
@@ -10520,7 +10520,7 @@ Program {
                                             body: Block {
                                                 stmts: [
                                                     For {
-                                                        counter: y(89),
+                                                        counter: x(89),
                                                         lower_bound: IntegerLiteral(
                                                             IntegerLiteral {
                                                                 repr: "0",
@@ -10560,12 +10560,12 @@ Program {
                                                                             ),
                                                                             LvalueToRvalue(
                                                                                 Identifier(
-                                                                                    x(88),
+                                                                                    x(89),
                                                                                 ),
                                                                             ),
                                                                             LvalueToRvalue(
                                                                                 Identifier(
-                                                                                    y(89),
+                                                                                    y(88),
                                                                                 ),
                                                                             ),
                                                                         ],
@@ -10602,7 +10602,7 @@ Program {
                 ),
             },
             Binding {
-                name: x(88),
+                name: y(88),
                 decl: Var(
                     VarDecl {
                         t: Int,
@@ -10614,7 +10614,7 @@ Program {
                 ),
             },
             Binding {
-                name: y(89),
+                name: x(89),
                 decl: Var(
                     VarDecl {
                         t: Int,

@@ -2129,7 +2129,7 @@ Program(
                                                         lhs: Identifier(
                                                             r"res",
                                                         ),
-                                                        member_name: r"height",
+                                                        member_name: r"width",
                                                     },
                                                 ),
                                                 rhs: IntegerLiteral(
@@ -2160,7 +2160,7 @@ Program(
                                                                         lhs: Identifier(
                                                                             r"res",
                                                                         ),
-                                                                        member_name: r"width",
+                                                                        member_name: r"height",
                                                                     },
                                                                 ),
                                                                 rhs: IntegerLiteral(
@@ -2268,7 +2268,7 @@ Program(
                                 ),
                                 Stmt(
                                     For {
-                                        counter: r"x",
+                                        counter: r"y",
                                         from: BinOp {
                                             op: Minus,
                                             lhs: LvalueToRvalue(
@@ -2299,7 +2299,7 @@ Program(
                                             [
                                                 Stmt(
                                                     For {
-                                                        counter: r"y",
+                                                        counter: r"x",
                                                         from: IntegerLiteral(
                                                             IntegerLiteral {
                                                                 repr: "0",
