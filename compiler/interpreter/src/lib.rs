@@ -419,7 +419,7 @@ impl<'a, W: Write> Interpreter<'a, W> {
                     write!(self.out, "{value}")
                 }
             }
-            Value::Null => writeln!(self.out, "null"),
+            Value::Null => write!(self.out, "null"),
             Value::Array { elements } => {
                 write!(self.out, "[ ")?;
                 for &idx in elements {
