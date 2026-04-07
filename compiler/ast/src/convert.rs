@@ -415,7 +415,7 @@ impl Converter {
                 what: format!("No new operator supported for built-in type {t:?}"),
             })?,
             Type::Alias(_) => unreachable!("Effective type can not be alias"),
-            Type::Record(_) => {
+            Type::Record(record) => {
                 let converted_fields: Vec<(RawIdentifier, Rc<Expression>)> = fields
                     .unwrap_or_default()
                     .iter()
@@ -423,10 +423,7 @@ impl Converter {
                         self.convert_expr(expr).and_then(|converted_expr| {
                             Ok((
                                 name.clone(),
-                                cast_to(
-                                    converted_expr,
-                                    &*converted_effective_type.get_field_type(name)?,
-                                )?,
+                                cast_to(converted_expr, record.get_field_type(name)?.as_ref())?,
                             ))
                         })
                     })
@@ -949,12 +946,13 @@ impl Converter {
 
         let args_decls: Vec<_> = converted_arguments_types
             .iter()
+            .cloned()
             .enumerate()
             .map(|(index, (name, t))| {
                 (
-                    name.clone(),
+                    name,
                     VarDecl {
-                        t: Rc::clone(t),
+                        t,
                         initialiser: None,
                         relative_location: Location::Argument(
                             index.try_into().expect("Too many arguments for function"),
