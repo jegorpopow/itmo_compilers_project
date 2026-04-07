@@ -46,6 +46,7 @@ testing::tests! {
         length => "length"
         logical_operators => "logical_operators"
         nested_control => "nested_control"
+        new_array => "new_array"
         operator_precedence => "operator_precedence"
         parse_minus => "parse_minus"
         raytracer => "raytracer"

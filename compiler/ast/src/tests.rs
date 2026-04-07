@@ -30,6 +30,7 @@ testing::tests! {
         length => "length"
         logical_operators => "logical_operators"
         nested_control => "nested_control"
+        new_array => "new_array"
         oob_big => "oob_big"
         oob_neg => "oob_neg"
         oob_zero => "oob_zero"
@@ -49,6 +50,7 @@ testing::tests! {
         while_loops => "while_loops"
     ]
     fail = [
+        new_array_fixed => "new_array_fixed"
         routine_redefinition => "routine_redefinition"
     ]
 }
