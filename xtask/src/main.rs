@@ -15,6 +15,7 @@ use testing::Mode;
 mod cli;
 mod folders;
 mod listings;
+mod raytracer;
 
 pub(crate) use cli::Stage;
 
@@ -86,5 +87,9 @@ fn main() {
                 new_src.display()
             )
         }
+        cli::Task::Render {
+            raytracer_output,
+            image,
+        } => raytracer::render(&raytracer_output, &image)?,
     }
 }
