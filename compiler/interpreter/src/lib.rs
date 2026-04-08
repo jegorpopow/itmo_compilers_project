@@ -1,10 +1,5 @@
 use core::{fmt, iter};
-use std::{
-    collections::HashMap,
-    fmt::Debug,
-    io::{self, Write},
-    rc::Rc,
-};
+use std::{collections::HashMap, fmt::Debug, io::Write, rc::Rc};
 
 use ast::{
     ArrayDescription, BinaryOperator, Binding, Block, BoolBinOp, Decl, EqBinOp, Expression,
@@ -17,6 +12,8 @@ use common::{
 };
 use culpa::{throw, throws};
 use indexed_arena::{Arena, Idx};
+
+mod print;
 
 #[cfg(test)]
 mod tests;
@@ -395,66 +392,16 @@ impl<'a, W: Write> Interpreter<'a, W> {
         }
     }
 
-    fn println(&mut self, value: &Value<'_>) -> io::Result<()> {
-        self.print(value)?;
-        writeln!(self.out)
-    }
-
-    fn print(&mut self, value: &Value<'_>) -> io::Result<()> {
-        match value {
-            Value::Bool(value) => write!(self.out, "{value}"),
-            Value::Integer(value) => write!(self.out, "{value}"),
-            &Value::Real(value) => {
-                if value.is_nan() {
-                    write!(self.out, "NaN")
-                } else if value.is_infinite() {
-                    write!(
-                        self.out,
-                        "{}Infinity",
-                        if value.is_sign_positive() { '+' } else { '-' }
-                    )
-                } else if value.fract() == 0.0 {
-                    write!(self.out, "{value:?}")
-                } else {
-                    write!(self.out, "{value}")
-                }
-            }
-            Value::Null => write!(self.out, "null"),
-            Value::Array { elements } => {
-                write!(self.out, "[ ")?;
-                for &idx in elements {
-                    self.print(&self.heap[idx].clone())?;
-                    write!(self.out, ", ")?;
-                }
-                write!(self.out, "]")
-            }
-            Value::Struct { fields } => {
-                write!(self.out, "{{ ")?;
-
-                let mut fields: Vec<_> = fields
-                    .iter()
-                    .map(|(&ident, &address)| (ident, address))
-                    .collect();
-                fields.sort_unstable_by_key(|&(key, _value)| key);
-
-                for (name, idx) in fields {
-                    let name = name.name.as_str();
-                    if name.contains('\'') {
-                        // This seems to be the only way that we have to get an identifier
-                        // that is not an identifier in ECMA (https://262.ecma-international.org/5.1/#sec-7.6).
-                        // And looks like Rust's `Debug for str` will be enough here to do all the escaping.
-                        write!(self.out, "{name:?}")?
-                    } else {
-                        write!(self.out, "{name}")?
-                    }
-                    write!(self.out, ": ")?;
-                    self.print(&self.heap[idx].clone())?;
-                    write!(self.out, ", ")?;
-                }
-
-                write!(self.out, "}}")
-            }
+    #[throws(RuntimeError)]
+    fn print(&mut self, bindings: &mut Bindings<'a>, expression: &'a Expression) {
+        if let Expression::LvalueToRvalue(lvalue) = expression {
+            let address = self.lvalue(bindings, lvalue)?;
+            print::print(&mut self.out, &self.heap, &address)
+        } else {
+            let value = self.expression(bindings, expression)?;
+            print::print(&mut self.out, &self.heap, &value)
         }
+        .expect("IO Error")
     }
 
     #[throws(BlockError<'a>)]
@@ -552,10 +499,7 @@ impl<'a, W: Write> Interpreter<'a, W> {
                     }
                 }
 
-                ast::Statement::Print { value } => {
-                    let value = self.expression(bindings, value)?;
-                    self.println(&value).expect("IO Error")
-                }
+                ast::Statement::Print { value } => self.print(bindings, value)?,
 
                 ast::Statement::Return { value } => {
                     throw!(BlockError::Return(self.expression(bindings, value)?))
