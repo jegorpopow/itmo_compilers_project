@@ -22,6 +22,7 @@ testing::tests! {
         conditionals => "conditionals"
         constant => "constant"
         deep_conditionals => "deep_conditionals"
+        default_init => "default_init"
         for_loops => "for_loops"
         function_parameters => "function_parameters"
         function_return => "function_return"
