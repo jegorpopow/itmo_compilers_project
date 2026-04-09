@@ -21,6 +21,7 @@ testing::tests! {
         conditionals => "conditionals"
         constant => "constant"
         deep_conditionals => "deep_conditionals"
+        field_not_record => "field_not_record"
         for_loops => "for_loops"
         function_parameters => "function_parameters"
         function_return => "function_return"

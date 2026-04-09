@@ -1,0 +1,36 @@
+Program(
+    [
+        Routine(
+            RoutineDecl {
+                name: r"foo",
+                arguments: [
+                    (
+                        r"t",
+                        Real,
+                    ),
+                ],
+                return_type: None,
+                body: Some(
+                    Block(
+                        Block(
+                            [
+                                Stmt(
+                                    Print {
+                                        value: LvalueToRvalue(
+                                            Member {
+                                                lhs: Identifier(
+                                                    r"t",
+                                                ),
+                                                member_name: r"length",
+                                            },
+                                        ),
+                                    },
+                                ),
+                            ],
+                        ),
+                    ),
+                ),
+            },
+        ),
+    ],
+)
