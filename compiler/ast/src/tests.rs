@@ -54,6 +54,7 @@ testing::tests! {
         while_loops => "while_loops"
     ]
     fail = [
+        array_slice_eq => "array_slice_eq"
         invalid_array_length => "invalid_array_length"
         new_array_fixed => "new_array_fixed"
         routine_redefinition => "routine_redefinition"

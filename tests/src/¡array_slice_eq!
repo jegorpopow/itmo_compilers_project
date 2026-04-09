@@ -1,0 +1,8 @@
+routine forget_length(t : array [] integer) : array [] integer is
+	return t;
+end
+
+routine main() is
+	var a : array[3] integer;
+	print a = forget_length(a);
+end

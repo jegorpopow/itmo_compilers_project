@@ -13,6 +13,7 @@ testing::tests! {
     fun = parse
     pass = [
         arithmetic_operations => "arithmetic_operations"
+        array_slice_eq => "array_slice_eq"
         arrays_and_records => "arrays_and_records"
         assert => "assert"
         comparison_operators => "comparison_operators"
