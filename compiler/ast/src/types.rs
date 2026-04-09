@@ -184,9 +184,7 @@ pub(crate) fn infer_binary_operator_type(
     op: parser::Operator,
 ) -> AnalysisResult<BinOpAdjustment> {
     match op {
-        parser::Operator::Not => Err(AnalysisError {
-            what: "Logical negation operator can not be applied as binary".to_string(),
-        }),
+        parser::Operator::Not => unreachable!("Parser never emits `not` as a binary operator"),
 
         parser::Operator::And | parser::Operator::Or | parser::Operator::Xor => {
             if lhs_type.is_logical() && rhs_type.is_logical() {

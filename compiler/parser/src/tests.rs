@@ -58,6 +58,7 @@ testing::tests! {
         while_loops => "while_loops"
     ]
     fail = [
+        binary_not => "binary_not"
         invalid => "invalid"
         lexer_invalid => "lexer_invalid"
     ]
