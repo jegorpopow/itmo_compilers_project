@@ -1,0 +1,45 @@
+Program(
+    [
+        Routine(
+            RoutineDecl {
+                name: r"bool_arith",
+                arguments: [
+                    (
+                        r"a",
+                        Bool,
+                    ),
+                    (
+                        r"b",
+                        Bool,
+                    ),
+                ],
+                return_type: None,
+                body: Some(
+                    Block(
+                        Block(
+                            [
+                                Stmt(
+                                    Print {
+                                        value: BinOp {
+                                            op: Plus,
+                                            lhs: LvalueToRvalue(
+                                                Identifier(
+                                                    r"a",
+                                                ),
+                                            ),
+                                            rhs: LvalueToRvalue(
+                                                Identifier(
+                                                    r"b",
+                                                ),
+                                            ),
+                                        },
+                                    },
+                                ),
+                            ],
+                        ),
+                    ),
+                ),
+            },
+        ),
+    ],
+)
