@@ -338,15 +338,16 @@ pub enum TypeDecl {
 }
 
 impl TypeDecl {
-    pub fn get_effective(&self) -> AnalysisResult<Rc<Type>> {
+    #[must_use]
+    pub fn get_effective(&self) -> &Rc<Type> {
         match self {
             TypeDecl::Full {
                 prescribed: _,
                 effective,
-            } => Ok(Rc::clone(effective)),
-            TypeDecl::Forward { alias } => Err(AnalysisError {
-                what: format!("Trying to get a effective type of forward declared type {alias:?}"),
-            }),
+            } => effective,
+            TypeDecl::Forward { alias } => {
+                unreachable!("Trying to get a effective type of forward declared type {alias:?}")
+            }
         }
     }
 }
@@ -593,18 +594,18 @@ impl Bindings {
         self.arena[ident.id.0].decl = new_decl;
     }
 
-    pub fn get_effective_type(&self, t: &Rc<Type>) -> AnalysisResult<Rc<Type>> {
+    pub fn get_effective_type<'a>(&'a self, t: &'a Rc<Type>) -> AnalysisResult<&'a Rc<Type>> {
         match t.as_ref() {
             Type::Alias(identifier) => self[identifier]
                 .ensure_is_type()
-                .and_then(TypeDecl::get_effective),
+                .map(TypeDecl::get_effective),
             Type::Int
             | Type::Real
             | Type::Bool
             | Type::Record(_)
             | Type::Array(_)
             | Type::Null
-            | Type::Unit => Ok(Rc::clone(t)),
+            | Type::Unit => Ok(t),
         }
     }
 }

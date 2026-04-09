@@ -397,7 +397,7 @@ impl Converter {
             let Type::Array(ArrayDescription {
                 t: elements,
                 length: None,
-            }) = Rc::unwrap_or_clone(effective)
+            }) = effective.as_ref()
             else {
                 return Err(AnalysisError {
                     what: "new[] is only supported for array[] types without length".to_string(),
@@ -405,7 +405,7 @@ impl Converter {
             };
             return Ok(Typed {
                 value: Rc::new(Expression::NewArray {
-                    elements,
+                    elements: Rc::clone(elements),
                     length: cast_to(self.convert_expr(length)?, &Type::Int)?,
                 }),
                 ty,
@@ -879,7 +879,7 @@ impl Converter {
 
         let prescribed = self.convert_type(t)?;
         let type_decl = TypeDecl::Full {
-            effective: self.bindings.get_effective_type(&prescribed)?,
+            effective: Rc::clone(self.bindings.get_effective_type(&prescribed)?),
             prescribed,
         };
         // Overriding forward declaration with full one

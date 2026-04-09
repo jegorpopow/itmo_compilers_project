@@ -63,7 +63,7 @@ impl<'a> Compiler<'a> {
     ) -> AnalysisResult<()> {
         let effective_type = self.bindings.get_effective_type(t)?;
 
-        match &*effective_type {
+        match effective_type.as_ref() {
             Type::Int | Type::Real | Type::Bool | Type::Null | Type::Unit => {
                 return Err(AnalysisError {
                     what: "Unboxed types can not be new-constructed".to_string(),
