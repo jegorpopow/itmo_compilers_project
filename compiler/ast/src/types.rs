@@ -95,19 +95,17 @@ impl Display for Type {
 }
 
 impl Type {
-    fn most_precise(l: &Rc<Self>, r: &Rc<Self>) -> AnalysisResult<Rc<Self>> {
+    fn most_precise(l: &Rc<Self>, r: &Rc<Self>) -> Rc<Self> {
         match (l.as_ref(), r.as_ref()) {
             (Type::Real, Type::Real | Type::Int | Type::Bool)
             | (Type::Int, Type::Int | Type::Bool)
-            | (Type::Bool, Type::Bool) => Ok(Rc::clone(l)),
+            | (Type::Bool, Type::Bool) => Rc::clone(l),
 
-            (Type::Int, Type::Real) | (Type::Bool, Type::Real | Type::Int) => Ok(Rc::clone(r)),
+            (Type::Int, Type::Real) | (Type::Bool, Type::Real | Type::Int) => Rc::clone(r),
 
             (Type::Alias(_) | Type::Array(_) | Type::Record(_) | Type::Unit | Type::Null, _)
             | (_, Type::Alias(_) | Type::Array(_) | Type::Record(_) | Type::Unit | Type::Null) => {
-                Err(AnalysisError {
-                    what: format!("Can not find common arithmetic type for types {l} and  {r}"),
-                })
+                unreachable!()
             }
         }
     }
@@ -229,7 +227,7 @@ pub(crate) fn infer_binary_operator_type(
         | parser::Operator::Mul
         | parser::Operator::Div => {
             if lhs_type.is_scalar() && rhs_type.is_scalar() {
-                let result_type = Type::most_precise(lhs_type, rhs_type)?;
+                let result_type = Type::most_precise(lhs_type, rhs_type);
                 if let Type::Int = *result_type {
                     Ok(BinOpAdjustment {
                         operand: Rc::clone(&result_type),
@@ -281,7 +279,7 @@ pub(crate) fn infer_binary_operator_type(
         | parser::Operator::Gt
         | parser::Operator::Ge => {
             if lhs_type.is_scalar() && rhs_type.is_scalar() {
-                let operand_type = Type::most_precise(lhs_type, rhs_type)?;
+                let operand_type = Type::most_precise(lhs_type, rhs_type);
                 if let Type::Int = *operand_type {
                     Ok(BinOpAdjustment {
                         result: Type::bool(),
