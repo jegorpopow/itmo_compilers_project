@@ -2,12 +2,24 @@ use std::io::{Error, Write};
 
 use culpa::throws;
 
-use crate::{Address, Memory, Value};
+use crate::{Heap, Object, Place, Places, Primitive, Reference, Value};
 
 #[throws]
 #[expect(private_bounds, reason = "implementation details")]
-pub(super) fn print<'a>(out: &mut impl Write, heap: &Memory<'a>, arg: &impl Printable<'a>) {
-    arg.print(out, heap, Recursion::Start)?;
+pub(super) fn print<'a>(
+    mut out: impl Write,
+    heap: &Heap<'a>,
+    places: &Places<'a>,
+    arg: &impl Printable<'a>,
+) {
+    arg.print(
+        &mut Context {
+            out: &mut out,
+            heap,
+            places,
+        },
+        Recursion::Start,
+    )?;
     writeln!(out)?
 }
 
@@ -16,13 +28,19 @@ pub(super) fn print<'a>(out: &mut impl Write, heap: &Memory<'a>, arg: &impl Prin
 enum Recursion<'a, 's> {
     Start,
     Node {
-        address: Address<'a>,
+        address: Reference<'a>,
         parent: &'s Self,
     },
 }
 
+struct Context<'a, 'r, W: Write> {
+    out: W,
+    heap: &'r Heap<'a>,
+    places: &'r Places<'a>,
+}
+
 impl<'a> Recursion<'a, '_> {
-    fn find(self, target: Address<'a>) -> Option<usize> {
+    fn find(self, target: Reference<'a>) -> Option<usize> {
         let mut depth = 1;
         let mut current = self;
         while let Self::Node { parent, address } = current {
@@ -38,37 +56,44 @@ impl<'a> Recursion<'a, '_> {
 
 trait Printable<'a> {
     #[throws]
-    fn print(&self, out: &mut impl Write, heap: &Memory<'a>, recursion: Recursion<'a, '_>);
+    fn print<W: Write>(&self, ctx: &mut Context<'a, '_, W>, parent: Recursion<'a, '_>);
 }
 
-impl<'a> Printable<'a> for Address<'a> {
+impl<'a> Printable<'a> for Reference<'a> {
     #[throws]
-    fn print(&self, out: &mut impl Write, heap: &Memory<'a>, recursion: Recursion<'a, '_>) {
-        match recursion.find(*self) {
+    fn print<W: Write>(&self, ctx: &mut Context<'a, '_, W>, parent: Recursion<'a, '_>) {
+        match parent.find(*self) {
             Some(depth) => write!(
-                out,
+                ctx.out,
                 "/* repeated {depth} level{} above */",
                 if depth == 1 { "" } else { "s" }
             )?,
-            None => heap[*self].print(
-                out,
-                heap,
+            None => ctx.heap[*self].print(
+                ctx,
                 Recursion::Node {
                     address: *self,
-                    parent: &recursion,
+                    parent: &parent,
                 },
             )?,
         }
     }
 }
 
-impl<'a> Printable<'a> for Value<'a> {
+impl<'a> Printable<'a> for Place<'a> {
     #[throws]
-    fn print(&self, out: &mut impl Write, heap: &Memory<'a>, recursion: Recursion<'a, '_>) {
+    fn print<W: Write>(&self, ctx: &mut Context<'a, '_, W>, parent: Recursion<'a, '_>) {
+        ctx.places[*self].print(ctx, parent)?
+    }
+}
+
+impl Printable<'_> for Primitive {
+    #[throws]
+    fn print<W: Write>(&self, ctx: &mut Context<'_, '_, W>, _: Recursion<'_, '_>) {
+        let out = &mut ctx.out;
         match self {
-            Value::Bool(value) => write!(out, "{value}")?,
-            Value::Integer(value) => write!(out, "{value}")?,
-            &Value::Real(value) => {
+            Self::Bool(value) => write!(out, "{value}")?,
+            Self::Integer(value) => write!(out, "{value}")?,
+            &Self::Real(value) => {
                 if value.is_nan() {
                     write!(out, "NaN")?
                 } else if value.is_infinite() {
@@ -83,17 +108,35 @@ impl<'a> Printable<'a> for Value<'a> {
                     write!(out, "{value}")?
                 }
             }
-            Value::Null => write!(out, "null")?,
-            Value::Array { elements } => {
-                write!(out, "[ ")?;
-                for &address in elements {
-                    address.print(out, heap, recursion)?;
-                    write!(out, ", ")?
+            Self::Null => write!(out, "null")?,
+        }
+    }
+}
+
+impl<'a> Printable<'a> for Value<'a> {
+    #[throws]
+    fn print<W: Write>(&self, ctx: &mut Context<'a, '_, W>, parent: Recursion<'a, '_>) {
+        match self {
+            Self::Primitive(primitive) => primitive.print(ctx, parent)?,
+            Self::Reference(address) => address.print(ctx, parent)?,
+        }
+    }
+}
+
+impl<'a> Printable<'a> for Object<'a> {
+    #[throws]
+    fn print<W: Write>(&self, ctx: &mut Context<'a, '_, W>, parent: Recursion<'a, '_>) {
+        match self {
+            Self::Array { elements } => {
+                write!(ctx.out, "[ ")?;
+                for elem in elements {
+                    elem.print(ctx, parent)?;
+                    write!(ctx.out, ", ")?
                 }
-                write!(out, "]")?
+                write!(ctx.out, "]")?
             }
-            Value::Struct { fields } => {
-                write!(out, "{{ ")?;
+            Self::Struct { fields } => {
+                write!(ctx.out, "{{ ")?;
 
                 let mut fields: Vec<_> = fields
                     .iter()
@@ -101,22 +144,22 @@ impl<'a> Printable<'a> for Value<'a> {
                     .collect();
                 fields.sort_unstable_by_key(|&(key, _value)| key);
 
-                for (name, address) in fields {
+                for (name, place) in fields {
                     let name = name.name.as_str();
                     if name.contains('\'') {
                         // This seems to be the only way that we have to get an identifier
                         // that is not an identifier in ECMA (https://262.ecma-international.org/5.1/#sec-7.6).
                         // And looks like Rust's `Debug for str` will be enough here to do all the escaping.
-                        write!(out, "{name:?}")?
+                        write!(ctx.out, "{name:?}")?
                     } else {
-                        write!(out, "{name}")?
+                        write!(ctx.out, "{name}")?
                     }
-                    write!(out, ": ")?;
-                    address.print(out, heap, recursion)?;
-                    write!(out, ", ")?;
+                    write!(ctx.out, ": ")?;
+                    place.print(ctx, parent)?;
+                    write!(ctx.out, ", ")?;
                 }
 
-                write!(out, "}}")?
+                write!(ctx.out, "}}")?
             }
         }
     }
