@@ -38,6 +38,7 @@ testing::tests! {
         nested_control => "nested_control"
         new_array => "new_array"
         new_array_fixed => "new_array_fixed"
+        no_such_field => "no_such_field"
         oob_big => "oob_big"
         oob_neg => "oob_neg"
         oob_zero => "oob_zero"

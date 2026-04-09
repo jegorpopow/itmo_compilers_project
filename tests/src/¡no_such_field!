@@ -1,0 +1,7 @@
+type T is record
+    var foo is real;
+end;
+
+routine foo(t : T) is
+    print t.bar;
+end

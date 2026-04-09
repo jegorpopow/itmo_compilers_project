@@ -31,7 +31,10 @@ impl RecordDescription {
         }
 
         Err(AnalysisError {
-            what: format!("No field of name {name} in struct with fields {self:?}"),
+            what: format!(
+                "No field of name {name} in struct with fields {:?}",
+                self.fields
+            ),
         })
     }
 }

@@ -57,6 +57,7 @@ testing::tests! {
         array_slice_eq => "array_slice_eq"
         invalid_array_length => "invalid_array_length"
         new_array_fixed => "new_array_fixed"
+        no_such_field => "no_such_field"
         routine_redefinition => "routine_redefinition"
     ]
 }
