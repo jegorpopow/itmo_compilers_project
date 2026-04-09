@@ -407,16 +407,6 @@ impl From<LocalDecl> for Decl {
 
 pub type LocalBinding = Binding<LocalDecl>;
 
-impl From<LocalBinding> for Binding {
-    fn from(sb: LocalBinding) -> Self {
-        let LocalBinding { name, decl } = sb;
-        Binding {
-            name,
-            decl: decl.into(),
-        }
-    }
-}
-
 #[derive(Debug, Clone)]
 pub struct Block {
     pub stmts: Vec<Statement>,
@@ -472,21 +462,6 @@ pub enum Decl {
     Routine(RoutineDecl),
 }
 
-impl TryFrom<Decl> for LocalDecl {
-    type Error = AnalysisError;
-
-    fn try_from(value: Decl) -> AnalysisResult<LocalDecl> {
-        match value {
-            Decl::Var(var_decl) => Ok(LocalDecl::Var(var_decl)),
-            Decl::Type(type_decl) => Ok(LocalDecl::Type(type_decl)),
-            Decl::Const(const_decl) => Ok(LocalDecl::Const(const_decl)),
-            Decl::Routine(_) => Err(AnalysisError {
-                what: "nested functions are not supported".to_string(),
-            }),
-        }
-    }
-}
-
 #[derive(Debug, Clone)]
 pub struct Binding<T = Decl> {
     pub name: Identifier,
@@ -529,18 +504,6 @@ impl Binding {
                 what: format!("Name {:?} does not name a routine", self.name),
             }),
         }
-    }
-}
-
-impl TryFrom<Binding> for LocalBinding {
-    type Error = AnalysisError;
-
-    fn try_from(value: Binding) -> AnalysisResult<LocalBinding> {
-        let Binding { name, decl } = value;
-        Ok(LocalBinding {
-            name,
-            decl: decl.try_into()?,
-        })
     }
 }
 
