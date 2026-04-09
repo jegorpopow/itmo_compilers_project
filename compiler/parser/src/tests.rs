@@ -4,7 +4,7 @@ use crate::{ParserError, Program, parse_program};
 
 fn parse(src: &str) -> Result<String, ParserError<Program>> {
     let tokens: Vec<_> = Lexer::from(src).collect();
-    parse_program(&tokens).map(|program| format!("{program:#?}"))
+    parse_program(&tokens).map(|program| format!("{program:#?}\n"))
 }
 
 testing::tests! {
