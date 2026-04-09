@@ -2,7 +2,7 @@ routine extra_return() is
   return 10;
 end;
 
-routine no_return() : real is 
+routine no_return() : real is
   extra_return();
 end;
 

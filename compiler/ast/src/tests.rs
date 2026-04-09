@@ -29,6 +29,7 @@ testing::tests! {
         invalid_new_array_length => "invalid_new_array_length"
         lazy_operators => "lazy_operators"
         length => "length"
+        local_type => "local_type"
         logical_operators => "logical_operators"
         nested_control => "nested_control"
         new_array => "new_array"
@@ -51,8 +52,8 @@ testing::tests! {
         while_loops => "while_loops"
     ]
     fail = [
-        new_array_fixed => "new_array_fixed"
         invalid_array_length => "invalid_array_length"
+        new_array_fixed => "new_array_fixed"
         routine_redefinition => "routine_redefinition"
     ]
 }

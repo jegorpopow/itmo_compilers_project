@@ -1,274 +1,272 @@
-(
-    Program(
-        [
-            Binding {
-                name: False(0),
-                decl: Routine(
-                    Full(
-                        Routine {
-                            signature: RoutineSignature {
-                                args: [],
-                                return_type: Bool,
+Program {
+    globals: [
+        Binding {
+            name: False(0),
+            decl: Routine(
+                Full(
+                    Routine {
+                        signature: RoutineSignature {
+                            args: [],
+                            return_type: Bool,
+                        },
+                        args_bindings: [],
+                        body: Block(
+                            Block {
+                                stmts: [
+                                    Declaration(
+                                        Binding {
+                                            name: result(1),
+                                            decl: Var(
+                                                VarDecl {
+                                                    t: Bool,
+                                                    initialiser: Some(
+                                                        BoolLiteral(
+                                                            False,
+                                                        ),
+                                                    ),
+                                                    relative_location: Local(
+                                                        0,
+                                                    ),
+                                                },
+                                            ),
+                                        },
+                                    ),
+                                    Print {
+                                        value: LvalueToRvalue(
+                                            Identifier(
+                                                result(1),
+                                            ),
+                                        ),
+                                    },
+                                    Return {
+                                        value: LvalueToRvalue(
+                                            Identifier(
+                                                result(1),
+                                            ),
+                                        ),
+                                    },
+                                ],
+                                locals_count: 1,
                             },
-                            args_bindings: [],
-                            body: Block(
-                                Block {
-                                    stmts: [
-                                        Declaration(
-                                            Binding {
-                                                name: result(1),
-                                                decl: Var(
-                                                    VarDecl {
-                                                        t: Bool,
-                                                        initialiser: Some(
-                                                            BoolLiteral(
-                                                                False,
-                                                            ),
+                        ),
+                    },
+                ),
+            ),
+        },
+        Binding {
+            name: True(2),
+            decl: Routine(
+                Full(
+                    Routine {
+                        signature: RoutineSignature {
+                            args: [],
+                            return_type: Bool,
+                        },
+                        args_bindings: [],
+                        body: Block(
+                            Block {
+                                stmts: [
+                                    Declaration(
+                                        Binding {
+                                            name: result(3),
+                                            decl: Var(
+                                                VarDecl {
+                                                    t: Bool,
+                                                    initialiser: Some(
+                                                        BoolLiteral(
+                                                            True,
                                                         ),
-                                                        relative_location: Local(
-                                                            0,
-                                                        ),
-                                                    },
-                                                ),
+                                                    ),
+                                                    relative_location: Local(
+                                                        0,
+                                                    ),
+                                                },
+                                            ),
+                                        },
+                                    ),
+                                    Print {
+                                        value: LvalueToRvalue(
+                                            Identifier(
+                                                result(3),
+                                            ),
+                                        ),
+                                    },
+                                    Return {
+                                        value: LvalueToRvalue(
+                                            Identifier(
+                                                result(3),
+                                            ),
+                                        ),
+                                    },
+                                ],
+                                locals_count: 1,
+                            },
+                        ),
+                    },
+                ),
+            ),
+        },
+        Binding {
+            name: main(4),
+            decl: Routine(
+                Full(
+                    Routine {
+                        signature: RoutineSignature {
+                            args: [],
+                            return_type: Unit,
+                        },
+                        args_bindings: [],
+                        body: Block(
+                            Block {
+                                stmts: [
+                                    Print {
+                                        value: IntegerLiteral(
+                                            IntegerLiteral {
+                                                repr: "0",
+                                                value: 0,
                                             },
                                         ),
-                                        Print {
-                                            value: LvalueToRvalue(
-                                                Identifier(
-                                                    result(1),
-                                                ),
+                                    },
+                                    Print {
+                                        value: BinOp {
+                                            op: Bool(
+                                                And,
                                             ),
+                                            lhs: Call {
+                                                callee: True(2),
+                                                args: [],
+                                            },
+                                            rhs: Call {
+                                                callee: False(0),
+                                                args: [],
+                                            },
                                         },
-                                        Return {
-                                            value: LvalueToRvalue(
-                                                Identifier(
-                                                    result(1),
-                                                ),
-                                            ),
-                                        },
-                                    ],
-                                    locals_count: 1,
-                                },
-                            ),
-                        },
-                    ),
-                ),
-            },
-            Binding {
-                name: True(2),
-                decl: Routine(
-                    Full(
-                        Routine {
-                            signature: RoutineSignature {
-                                args: [],
-                                return_type: Bool,
-                            },
-                            args_bindings: [],
-                            body: Block(
-                                Block {
-                                    stmts: [
-                                        Declaration(
-                                            Binding {
-                                                name: result(3),
-                                                decl: Var(
-                                                    VarDecl {
-                                                        t: Bool,
-                                                        initialiser: Some(
-                                                            BoolLiteral(
-                                                                True,
-                                                            ),
-                                                        ),
-                                                        relative_location: Local(
-                                                            0,
-                                                        ),
-                                                    },
-                                                ),
+                                    },
+                                    Print {
+                                        value: IntegerLiteral(
+                                            IntegerLiteral {
+                                                repr: "1",
+                                                value: 1,
                                             },
                                         ),
-                                        Print {
-                                            value: LvalueToRvalue(
-                                                Identifier(
-                                                    result(3),
-                                                ),
+                                    },
+                                    Print {
+                                        value: BinOp {
+                                            op: Bool(
+                                                And,
                                             ),
+                                            lhs: Call {
+                                                callee: False(0),
+                                                args: [],
+                                            },
+                                            rhs: Call {
+                                                callee: True(2),
+                                                args: [],
+                                            },
                                         },
-                                        Return {
-                                            value: LvalueToRvalue(
-                                                Identifier(
-                                                    result(3),
-                                                ),
+                                    },
+                                    Print {
+                                        value: IntegerLiteral(
+                                            IntegerLiteral {
+                                                repr: "2",
+                                                value: 2,
+                                            },
+                                        ),
+                                    },
+                                    Print {
+                                        value: BinOp {
+                                            op: Bool(
+                                                Or,
                                             ),
+                                            lhs: Call {
+                                                callee: True(2),
+                                                args: [],
+                                            },
+                                            rhs: Call {
+                                                callee: False(0),
+                                                args: [],
+                                            },
                                         },
-                                    ],
-                                    locals_count: 1,
-                                },
-                            ),
-                        },
-                    ),
-                ),
-            },
-            Binding {
-                name: main(4),
-                decl: Routine(
-                    Full(
-                        Routine {
-                            signature: RoutineSignature {
-                                args: [],
-                                return_type: Unit,
+                                    },
+                                    Print {
+                                        value: IntegerLiteral(
+                                            IntegerLiteral {
+                                                repr: "3",
+                                                value: 3,
+                                            },
+                                        ),
+                                    },
+                                    Print {
+                                        value: BinOp {
+                                            op: Bool(
+                                                Or,
+                                            ),
+                                            lhs: Call {
+                                                callee: False(0),
+                                                args: [],
+                                            },
+                                            rhs: Call {
+                                                callee: True(2),
+                                                args: [],
+                                            },
+                                        },
+                                    },
+                                    Print {
+                                        value: IntegerLiteral(
+                                            IntegerLiteral {
+                                                repr: "4",
+                                                value: 4,
+                                            },
+                                        ),
+                                    },
+                                    Print {
+                                        value: BinOp {
+                                            op: Bool(
+                                                Xor,
+                                            ),
+                                            lhs: Call {
+                                                callee: True(2),
+                                                args: [],
+                                            },
+                                            rhs: Call {
+                                                callee: False(0),
+                                                args: [],
+                                            },
+                                        },
+                                    },
+                                    Print {
+                                        value: IntegerLiteral(
+                                            IntegerLiteral {
+                                                repr: "5",
+                                                value: 5,
+                                            },
+                                        ),
+                                    },
+                                    Print {
+                                        value: BinOp {
+                                            op: Bool(
+                                                Xor,
+                                            ),
+                                            lhs: Call {
+                                                callee: False(0),
+                                                args: [],
+                                            },
+                                            rhs: Call {
+                                                callee: True(2),
+                                                args: [],
+                                            },
+                                        },
+                                    },
+                                ],
+                                locals_count: 0,
                             },
-                            args_bindings: [],
-                            body: Block(
-                                Block {
-                                    stmts: [
-                                        Print {
-                                            value: IntegerLiteral(
-                                                IntegerLiteral {
-                                                    repr: "0",
-                                                    value: 0,
-                                                },
-                                            ),
-                                        },
-                                        Print {
-                                            value: BinOp {
-                                                op: Bool(
-                                                    And,
-                                                ),
-                                                lhs: Call {
-                                                    callee: True(2),
-                                                    args: [],
-                                                },
-                                                rhs: Call {
-                                                    callee: False(0),
-                                                    args: [],
-                                                },
-                                            },
-                                        },
-                                        Print {
-                                            value: IntegerLiteral(
-                                                IntegerLiteral {
-                                                    repr: "1",
-                                                    value: 1,
-                                                },
-                                            ),
-                                        },
-                                        Print {
-                                            value: BinOp {
-                                                op: Bool(
-                                                    And,
-                                                ),
-                                                lhs: Call {
-                                                    callee: False(0),
-                                                    args: [],
-                                                },
-                                                rhs: Call {
-                                                    callee: True(2),
-                                                    args: [],
-                                                },
-                                            },
-                                        },
-                                        Print {
-                                            value: IntegerLiteral(
-                                                IntegerLiteral {
-                                                    repr: "2",
-                                                    value: 2,
-                                                },
-                                            ),
-                                        },
-                                        Print {
-                                            value: BinOp {
-                                                op: Bool(
-                                                    Or,
-                                                ),
-                                                lhs: Call {
-                                                    callee: True(2),
-                                                    args: [],
-                                                },
-                                                rhs: Call {
-                                                    callee: False(0),
-                                                    args: [],
-                                                },
-                                            },
-                                        },
-                                        Print {
-                                            value: IntegerLiteral(
-                                                IntegerLiteral {
-                                                    repr: "3",
-                                                    value: 3,
-                                                },
-                                            ),
-                                        },
-                                        Print {
-                                            value: BinOp {
-                                                op: Bool(
-                                                    Or,
-                                                ),
-                                                lhs: Call {
-                                                    callee: False(0),
-                                                    args: [],
-                                                },
-                                                rhs: Call {
-                                                    callee: True(2),
-                                                    args: [],
-                                                },
-                                            },
-                                        },
-                                        Print {
-                                            value: IntegerLiteral(
-                                                IntegerLiteral {
-                                                    repr: "4",
-                                                    value: 4,
-                                                },
-                                            ),
-                                        },
-                                        Print {
-                                            value: BinOp {
-                                                op: Bool(
-                                                    Xor,
-                                                ),
-                                                lhs: Call {
-                                                    callee: True(2),
-                                                    args: [],
-                                                },
-                                                rhs: Call {
-                                                    callee: False(0),
-                                                    args: [],
-                                                },
-                                            },
-                                        },
-                                        Print {
-                                            value: IntegerLiteral(
-                                                IntegerLiteral {
-                                                    repr: "5",
-                                                    value: 5,
-                                                },
-                                            ),
-                                        },
-                                        Print {
-                                            value: BinOp {
-                                                op: Bool(
-                                                    Xor,
-                                                ),
-                                                lhs: Call {
-                                                    callee: False(0),
-                                                    args: [],
-                                                },
-                                                rhs: Call {
-                                                    callee: True(2),
-                                                    args: [],
-                                                },
-                                            },
-                                        },
-                                    ],
-                                    locals_count: 0,
-                                },
-                            ),
-                        },
-                    ),
+                        ),
+                    },
                 ),
-            },
-        ],
-    ),
-    Bindings {
+            ),
+        },
+    ],
+    bindings: Bindings {
         arena: [
             Binding {
                 name: False(0),
@@ -569,4 +567,4 @@
             },
         ],
     },
-)
+}

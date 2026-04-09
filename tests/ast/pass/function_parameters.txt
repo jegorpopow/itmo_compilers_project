@@ -1,117 +1,115 @@
-(
-    Program(
-        [
-            Binding {
-                name: a_plus_b(0),
-                decl: Routine(
-                    Full(
-                        Routine {
-                            signature: RoutineSignature {
-                                args: [
-                                    (
-                                        r"a",
-                                        Int,
+Program {
+    globals: [
+        Binding {
+            name: a_plus_b(0),
+            decl: Routine(
+                Full(
+                    Routine {
+                        signature: RoutineSignature {
+                            args: [
+                                (
+                                    r"a",
+                                    Int,
+                                ),
+                                (
+                                    r"b",
+                                    Int,
+                                ),
+                            ],
+                            return_type: Unit,
+                        },
+                        args_bindings: [
+                            Binding {
+                                name: a(1),
+                                decl: VarDecl {
+                                    t: Int,
+                                    initialiser: None,
+                                    relative_location: Argument(
+                                        0,
                                     ),
-                                    (
-                                        r"b",
-                                        Int,
+                                },
+                            },
+                            Binding {
+                                name: b(2),
+                                decl: VarDecl {
+                                    t: Int,
+                                    initialiser: None,
+                                    relative_location: Argument(
+                                        1,
+                                    ),
+                                },
+                            },
+                        ],
+                        body: Block(
+                            Block {
+                                stmts: [
+                                    Print {
+                                        value: BinOp {
+                                            op: Int(
+                                                Add,
+                                            ),
+                                            lhs: LvalueToRvalue(
+                                                Identifier(
+                                                    a(1),
+                                                ),
+                                            ),
+                                            rhs: LvalueToRvalue(
+                                                Identifier(
+                                                    b(2),
+                                                ),
+                                            ),
+                                        },
+                                    },
+                                ],
+                                locals_count: 0,
+                            },
+                        ),
+                    },
+                ),
+            ),
+        },
+        Binding {
+            name: main(3),
+            decl: Routine(
+                Full(
+                    Routine {
+                        signature: RoutineSignature {
+                            args: [],
+                            return_type: Unit,
+                        },
+                        args_bindings: [],
+                        body: Block(
+                            Block {
+                                stmts: [
+                                    Expr(
+                                        Call {
+                                            callee: a_plus_b(0),
+                                            args: [
+                                                IntegerLiteral(
+                                                    IntegerLiteral {
+                                                        repr: "3",
+                                                        value: 3,
+                                                    },
+                                                ),
+                                                IntegerLiteral(
+                                                    IntegerLiteral {
+                                                        repr: "5",
+                                                        value: 5,
+                                                    },
+                                                ),
+                                            ],
+                                        },
                                     ),
                                 ],
-                                return_type: Unit,
+                                locals_count: 0,
                             },
-                            args_bindings: [
-                                Binding {
-                                    name: a(1),
-                                    decl: VarDecl {
-                                        t: Int,
-                                        initialiser: None,
-                                        relative_location: Argument(
-                                            0,
-                                        ),
-                                    },
-                                },
-                                Binding {
-                                    name: b(2),
-                                    decl: VarDecl {
-                                        t: Int,
-                                        initialiser: None,
-                                        relative_location: Argument(
-                                            1,
-                                        ),
-                                    },
-                                },
-                            ],
-                            body: Block(
-                                Block {
-                                    stmts: [
-                                        Print {
-                                            value: BinOp {
-                                                op: Int(
-                                                    Add,
-                                                ),
-                                                lhs: LvalueToRvalue(
-                                                    Identifier(
-                                                        a(1),
-                                                    ),
-                                                ),
-                                                rhs: LvalueToRvalue(
-                                                    Identifier(
-                                                        b(2),
-                                                    ),
-                                                ),
-                                            },
-                                        },
-                                    ],
-                                    locals_count: 0,
-                                },
-                            ),
-                        },
-                    ),
+                        ),
+                    },
                 ),
-            },
-            Binding {
-                name: main(3),
-                decl: Routine(
-                    Full(
-                        Routine {
-                            signature: RoutineSignature {
-                                args: [],
-                                return_type: Unit,
-                            },
-                            args_bindings: [],
-                            body: Block(
-                                Block {
-                                    stmts: [
-                                        Expr(
-                                            Call {
-                                                callee: a_plus_b(0),
-                                                args: [
-                                                    IntegerLiteral(
-                                                        IntegerLiteral {
-                                                            repr: "3",
-                                                            value: 3,
-                                                        },
-                                                    ),
-                                                    IntegerLiteral(
-                                                        IntegerLiteral {
-                                                            repr: "5",
-                                                            value: 5,
-                                                        },
-                                                    ),
-                                                ],
-                                            },
-                                        ),
-                                    ],
-                                    locals_count: 0,
-                                },
-                            ),
-                        },
-                    ),
-                ),
-            },
-        ],
-    ),
-    Bindings {
+            ),
+        },
+    ],
+    bindings: Bindings {
         arena: [
             Binding {
                 name: a_plus_b(0),
@@ -247,4 +245,4 @@
             },
         ],
     },
-)
+}

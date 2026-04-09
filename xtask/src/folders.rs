@@ -213,3 +213,30 @@ pub(super) fn add_test(name: &str, fail_stage: Option<Stage>) -> PathBuf {
     }
     result
 }
+
+#[test]
+#[throws]
+fn no_trailing_whitespace_in_src() {
+    use std::io::{BufRead, BufReader};
+
+    let srcs = TestDirContents::srcs()?;
+    for stem in &srcs.stems {
+        let path = srcs.path(stem);
+        for (i, line) in BufReader::new(
+            File::open(&path).with_context(|| format!("Cannot open {}", path.display()))?,
+        )
+        .lines()
+        .enumerate()
+        {
+            let i = i + 1;
+            let line =
+                line.with_context(|| format!("Cannot read line {i} from {}", path.display()))?;
+            assert_eq!(
+                line,
+                line.trim_end(),
+                "Trailing whitespace at {}:{i}",
+                path.display()
+            )
+        }
+    }
+}

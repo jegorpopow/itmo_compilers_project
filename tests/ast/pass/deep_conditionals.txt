@@ -1,220 +1,295 @@
-(
-    Program(
-        [
-            Binding {
-                name: main(0),
-                decl: Routine(
-                    Full(
-                        Routine {
-                            signature: RoutineSignature {
-                                args: [],
-                                return_type: Unit,
-                            },
-                            args_bindings: [],
-                            body: Block(
-                                Block {
-                                    stmts: [
-                                        Declaration(
-                                            Binding {
-                                                name: a(1),
-                                                decl: Var(
-                                                    VarDecl {
-                                                        t: Int,
-                                                        initialiser: Some(
-                                                            IntegerLiteral(
-                                                                IntegerLiteral {
-                                                                    repr: "1",
-                                                                    value: 1,
-                                                                },
-                                                            ),
+Program {
+    globals: [
+        Binding {
+            name: main(0),
+            decl: Routine(
+                Full(
+                    Routine {
+                        signature: RoutineSignature {
+                            args: [],
+                            return_type: Unit,
+                        },
+                        args_bindings: [],
+                        body: Block(
+                            Block {
+                                stmts: [
+                                    Declaration(
+                                        Binding {
+                                            name: a(1),
+                                            decl: Var(
+                                                VarDecl {
+                                                    t: Int,
+                                                    initialiser: Some(
+                                                        IntegerLiteral(
+                                                            IntegerLiteral {
+                                                                repr: "1",
+                                                                value: 1,
+                                                            },
                                                         ),
-                                                        relative_location: Local(
-                                                            0,
-                                                        ),
-                                                    },
-                                                ),
-                                            },
-                                        ),
-                                        Declaration(
-                                            Binding {
-                                                name: b(2),
-                                                decl: Var(
-                                                    VarDecl {
-                                                        t: Int,
-                                                        initialiser: Some(
-                                                            IntegerLiteral(
-                                                                IntegerLiteral {
-                                                                    repr: "1",
-                                                                    value: 1,
-                                                                },
-                                                            ),
-                                                        ),
-                                                        relative_location: Local(
-                                                            1,
-                                                        ),
-                                                    },
-                                                ),
-                                            },
-                                        ),
-                                        Declaration(
-                                            Binding {
-                                                name: c(3),
-                                                decl: Var(
-                                                    VarDecl {
-                                                        t: Int,
-                                                        initialiser: Some(
-                                                            IntegerLiteral(
-                                                                IntegerLiteral {
-                                                                    repr: "1",
-                                                                    value: 1,
-                                                                },
-                                                            ),
-                                                        ),
-                                                        relative_location: Local(
-                                                            2,
-                                                        ),
-                                                    },
-                                                ),
-                                            },
-                                        ),
-                                        Declaration(
-                                            Binding {
-                                                name: d(4),
-                                                decl: Var(
-                                                    VarDecl {
-                                                        t: Int,
-                                                        initialiser: Some(
-                                                            IntegerLiteral(
-                                                                IntegerLiteral {
-                                                                    repr: "1",
-                                                                    value: 1,
-                                                                },
-                                                            ),
-                                                        ),
-                                                        relative_location: Local(
-                                                            3,
-                                                        ),
-                                                    },
-                                                ),
-                                            },
-                                        ),
-                                        Declaration(
-                                            Binding {
-                                                name: e(5),
-                                                decl: Var(
-                                                    VarDecl {
-                                                        t: Int,
-                                                        initialiser: Some(
-                                                            IntegerLiteral(
-                                                                IntegerLiteral {
-                                                                    repr: "1",
-                                                                    value: 1,
-                                                                },
-                                                            ),
-                                                        ),
-                                                        relative_location: Local(
-                                                            4,
-                                                        ),
-                                                    },
-                                                ),
-                                            },
-                                        ),
-                                        Declaration(
-                                            Binding {
-                                                name: f(6),
-                                                decl: Var(
-                                                    VarDecl {
-                                                        t: Int,
-                                                        initialiser: Some(
-                                                            IntegerLiteral(
-                                                                IntegerLiteral {
-                                                                    repr: "1",
-                                                                    value: 1,
-                                                                },
-                                                            ),
-                                                        ),
-                                                        relative_location: Local(
-                                                            5,
-                                                        ),
-                                                    },
-                                                ),
-                                            },
-                                        ),
-                                        Declaration(
-                                            Binding {
-                                                name: g(7),
-                                                decl: Var(
-                                                    VarDecl {
-                                                        t: Int,
-                                                        initialiser: Some(
-                                                            IntegerLiteral(
-                                                                IntegerLiteral {
-                                                                    repr: "1",
-                                                                    value: 1,
-                                                                },
-                                                            ),
-                                                        ),
-                                                        relative_location: Local(
-                                                            6,
-                                                        ),
-                                                    },
-                                                ),
-                                            },
-                                        ),
-                                        If {
-                                            condition: BinOp {
-                                                op: Eq(
-                                                    Eq,
-                                                ),
-                                                lhs: LvalueToRvalue(
-                                                    Identifier(
-                                                        a(1),
                                                     ),
+                                                    relative_location: Local(
+                                                        0,
+                                                    ),
+                                                },
+                                            ),
+                                        },
+                                    ),
+                                    Declaration(
+                                        Binding {
+                                            name: b(2),
+                                            decl: Var(
+                                                VarDecl {
+                                                    t: Int,
+                                                    initialiser: Some(
+                                                        IntegerLiteral(
+                                                            IntegerLiteral {
+                                                                repr: "1",
+                                                                value: 1,
+                                                            },
+                                                        ),
+                                                    ),
+                                                    relative_location: Local(
+                                                        1,
+                                                    ),
+                                                },
+                                            ),
+                                        },
+                                    ),
+                                    Declaration(
+                                        Binding {
+                                            name: c(3),
+                                            decl: Var(
+                                                VarDecl {
+                                                    t: Int,
+                                                    initialiser: Some(
+                                                        IntegerLiteral(
+                                                            IntegerLiteral {
+                                                                repr: "1",
+                                                                value: 1,
+                                                            },
+                                                        ),
+                                                    ),
+                                                    relative_location: Local(
+                                                        2,
+                                                    ),
+                                                },
+                                            ),
+                                        },
+                                    ),
+                                    Declaration(
+                                        Binding {
+                                            name: d(4),
+                                            decl: Var(
+                                                VarDecl {
+                                                    t: Int,
+                                                    initialiser: Some(
+                                                        IntegerLiteral(
+                                                            IntegerLiteral {
+                                                                repr: "1",
+                                                                value: 1,
+                                                            },
+                                                        ),
+                                                    ),
+                                                    relative_location: Local(
+                                                        3,
+                                                    ),
+                                                },
+                                            ),
+                                        },
+                                    ),
+                                    Declaration(
+                                        Binding {
+                                            name: e(5),
+                                            decl: Var(
+                                                VarDecl {
+                                                    t: Int,
+                                                    initialiser: Some(
+                                                        IntegerLiteral(
+                                                            IntegerLiteral {
+                                                                repr: "1",
+                                                                value: 1,
+                                                            },
+                                                        ),
+                                                    ),
+                                                    relative_location: Local(
+                                                        4,
+                                                    ),
+                                                },
+                                            ),
+                                        },
+                                    ),
+                                    Declaration(
+                                        Binding {
+                                            name: f(6),
+                                            decl: Var(
+                                                VarDecl {
+                                                    t: Int,
+                                                    initialiser: Some(
+                                                        IntegerLiteral(
+                                                            IntegerLiteral {
+                                                                repr: "1",
+                                                                value: 1,
+                                                            },
+                                                        ),
+                                                    ),
+                                                    relative_location: Local(
+                                                        5,
+                                                    ),
+                                                },
+                                            ),
+                                        },
+                                    ),
+                                    Declaration(
+                                        Binding {
+                                            name: g(7),
+                                            decl: Var(
+                                                VarDecl {
+                                                    t: Int,
+                                                    initialiser: Some(
+                                                        IntegerLiteral(
+                                                            IntegerLiteral {
+                                                                repr: "1",
+                                                                value: 1,
+                                                            },
+                                                        ),
+                                                    ),
+                                                    relative_location: Local(
+                                                        6,
+                                                    ),
+                                                },
+                                            ),
+                                        },
+                                    ),
+                                    If {
+                                        condition: BinOp {
+                                            op: Eq(
+                                                Eq,
+                                            ),
+                                            lhs: LvalueToRvalue(
+                                                Identifier(
+                                                    a(1),
                                                 ),
-                                                rhs: IntegerLiteral(
-                                                    IntegerLiteral {
-                                                        repr: "1",
-                                                        value: 1,
-                                                    },
-                                                ),
-                                            },
-                                            on_true: Block {
-                                                stmts: [
-                                                    Print {
-                                                        value: IntegerLiteral(
+                                            ),
+                                            rhs: IntegerLiteral(
+                                                IntegerLiteral {
+                                                    repr: "1",
+                                                    value: 1,
+                                                },
+                                            ),
+                                        },
+                                        on_true: Block {
+                                            stmts: [
+                                                Print {
+                                                    value: IntegerLiteral(
+                                                        IntegerLiteral {
+                                                            repr: "1",
+                                                            value: 1,
+                                                        },
+                                                    ),
+                                                },
+                                                If {
+                                                    condition: BinOp {
+                                                        op: Eq(
+                                                            Eq,
+                                                        ),
+                                                        lhs: LvalueToRvalue(
+                                                            Identifier(
+                                                                b(2),
+                                                            ),
+                                                        ),
+                                                        rhs: IntegerLiteral(
                                                             IntegerLiteral {
                                                                 repr: "1",
                                                                 value: 1,
                                                             },
                                                         ),
                                                     },
-                                                    If {
-                                                        condition: BinOp {
-                                                            op: Eq(
-                                                                Eq,
-                                                            ),
-                                                            lhs: LvalueToRvalue(
-                                                                Identifier(
-                                                                    b(2),
+                                                    on_true: Block {
+                                                        stmts: [
+                                                            Print {
+                                                                value: IntegerLiteral(
+                                                                    IntegerLiteral {
+                                                                        repr: "2",
+                                                                        value: 2,
+                                                                    },
                                                                 ),
-                                                            ),
-                                                            rhs: IntegerLiteral(
-                                                                IntegerLiteral {
-                                                                    repr: "1",
-                                                                    value: 1,
-                                                                },
-                                                            ),
-                                                        },
-                                                        on_true: Block {
-                                                            stmts: [
-                                                                Print {
-                                                                    value: IntegerLiteral(
+                                                            },
+                                                            If {
+                                                                condition: BinOp {
+                                                                    op: Eq(
+                                                                        Eq,
+                                                                    ),
+                                                                    lhs: LvalueToRvalue(
+                                                                        Identifier(
+                                                                            c(3),
+                                                                        ),
+                                                                    ),
+                                                                    rhs: IntegerLiteral(
                                                                         IntegerLiteral {
-                                                                            repr: "2",
-                                                                            value: 2,
+                                                                            repr: "1",
+                                                                            value: 1,
                                                                         },
                                                                     ),
                                                                 },
+                                                                on_true: Block {
+                                                                    stmts: [
+                                                                        Print {
+                                                                            value: IntegerLiteral(
+                                                                                IntegerLiteral {
+                                                                                    repr: "3",
+                                                                                    value: 3,
+                                                                                },
+                                                                            ),
+                                                                        },
+                                                                    ],
+                                                                    locals_count: 0,
+                                                                },
+                                                                on_false: Some(
+                                                                    Block {
+                                                                        stmts: [
+                                                                            If {
+                                                                                condition: BinOp {
+                                                                                    op: Eq(
+                                                                                        Eq,
+                                                                                    ),
+                                                                                    lhs: LvalueToRvalue(
+                                                                                        Identifier(
+                                                                                            d(4),
+                                                                                        ),
+                                                                                    ),
+                                                                                    rhs: IntegerLiteral(
+                                                                                        IntegerLiteral {
+                                                                                            repr: "1",
+                                                                                            value: 1,
+                                                                                        },
+                                                                                    ),
+                                                                                },
+                                                                                on_true: Block {
+                                                                                    stmts: [
+                                                                                        Print {
+                                                                                            value: IntegerLiteral(
+                                                                                                IntegerLiteral {
+                                                                                                    repr: "0",
+                                                                                                    value: 0,
+                                                                                                },
+                                                                                            ),
+                                                                                        },
+                                                                                    ],
+                                                                                    locals_count: 0,
+                                                                                },
+                                                                                on_false: None,
+                                                                            },
+                                                                        ],
+                                                                        locals_count: 0,
+                                                                    },
+                                                                ),
+                                                            },
+                                                        ],
+                                                        locals_count: 0,
+                                                    },
+                                                    on_false: Some(
+                                                        Block {
+                                                            stmts: [
                                                                 If {
                                                                     condition: BinOp {
                                                                         op: Eq(
@@ -222,7 +297,7 @@
                                                                         ),
                                                                         lhs: LvalueToRvalue(
                                                                             Identifier(
-                                                                                c(3),
+                                                                                e(5),
                                                                             ),
                                                                         ),
                                                                         rhs: IntegerLiteral(
@@ -237,8 +312,8 @@
                                                                             Print {
                                                                                 value: IntegerLiteral(
                                                                                     IntegerLiteral {
-                                                                                        repr: "3",
-                                                                                        value: 3,
+                                                                                        repr: "0",
+                                                                                        value: 0,
                                                                                     },
                                                                                 ),
                                                                             },
@@ -255,7 +330,7 @@
                                                                                         ),
                                                                                         lhs: LvalueToRvalue(
                                                                                             Identifier(
-                                                                                                d(4),
+                                                                                                f(6),
                                                                                             ),
                                                                                         ),
                                                                                         rhs: IntegerLiteral(
@@ -288,42 +363,89 @@
                                                             ],
                                                             locals_count: 0,
                                                         },
-                                                        on_false: Some(
-                                                            Block {
-                                                                stmts: [
-                                                                    If {
-                                                                        condition: BinOp {
-                                                                            op: Eq(
-                                                                                Eq,
-                                                                            ),
-                                                                            lhs: LvalueToRvalue(
-                                                                                Identifier(
-                                                                                    e(5),
-                                                                                ),
-                                                                            ),
-                                                                            rhs: IntegerLiteral(
+                                                    ),
+                                                },
+                                                If {
+                                                    condition: BinOp {
+                                                        op: Eq(
+                                                            Eq,
+                                                        ),
+                                                        lhs: LvalueToRvalue(
+                                                            Identifier(
+                                                                d(4),
+                                                            ),
+                                                        ),
+                                                        rhs: IntegerLiteral(
+                                                            IntegerLiteral {
+                                                                repr: "1",
+                                                                value: 1,
+                                                            },
+                                                        ),
+                                                    },
+                                                    on_true: Block {
+                                                        stmts: [
+                                                            Print {
+                                                                value: IntegerLiteral(
+                                                                    IntegerLiteral {
+                                                                        repr: "4",
+                                                                        value: 4,
+                                                                    },
+                                                                ),
+                                                            },
+                                                            If {
+                                                                condition: BinOp {
+                                                                    op: Eq(
+                                                                        Eq,
+                                                                    ),
+                                                                    lhs: LvalueToRvalue(
+                                                                        Identifier(
+                                                                            e(5),
+                                                                        ),
+                                                                    ),
+                                                                    rhs: IntegerLiteral(
+                                                                        IntegerLiteral {
+                                                                            repr: "1",
+                                                                            value: 1,
+                                                                        },
+                                                                    ),
+                                                                },
+                                                                on_true: Block {
+                                                                    stmts: [
+                                                                        Print {
+                                                                            value: IntegerLiteral(
                                                                                 IntegerLiteral {
-                                                                                    repr: "1",
-                                                                                    value: 1,
+                                                                                    repr: "5",
+                                                                                    value: 5,
                                                                                 },
                                                                             ),
                                                                         },
-                                                                        on_true: Block {
-                                                                            stmts: [
-                                                                                Print {
-                                                                                    value: IntegerLiteral(
-                                                                                        IntegerLiteral {
-                                                                                            repr: "0",
-                                                                                            value: 0,
-                                                                                        },
+                                                                        If {
+                                                                            condition: BinOp {
+                                                                                op: Eq(
+                                                                                    Eq,
+                                                                                ),
+                                                                                lhs: LvalueToRvalue(
+                                                                                    Identifier(
+                                                                                        f(6),
                                                                                     ),
-                                                                                },
-                                                                            ],
-                                                                            locals_count: 0,
-                                                                        },
-                                                                        on_false: Some(
-                                                                            Block {
+                                                                                ),
+                                                                                rhs: IntegerLiteral(
+                                                                                    IntegerLiteral {
+                                                                                        repr: "1",
+                                                                                        value: 1,
+                                                                                    },
+                                                                                ),
+                                                                            },
+                                                                            on_true: Block {
                                                                                 stmts: [
+                                                                                    Print {
+                                                                                        value: IntegerLiteral(
+                                                                                            IntegerLiteral {
+                                                                                                repr: "6",
+                                                                                                value: 6,
+                                                                                            },
+                                                                                        ),
+                                                                                    },
                                                                                     If {
                                                                                         condition: BinOp {
                                                                                             op: Eq(
@@ -331,7 +453,7 @@
                                                                                             ),
                                                                                             lhs: LvalueToRvalue(
                                                                                                 Identifier(
-                                                                                                    f(6),
+                                                                                                    g(7),
                                                                                                 ),
                                                                                             ),
                                                                                             rhs: IntegerLiteral(
@@ -346,53 +468,74 @@
                                                                                                 Print {
                                                                                                     value: IntegerLiteral(
                                                                                                         IntegerLiteral {
-                                                                                                            repr: "0",
-                                                                                                            value: 0,
+                                                                                                            repr: "7",
+                                                                                                            value: 7,
                                                                                                         },
                                                                                                     ),
                                                                                                 },
                                                                                             ],
                                                                                             locals_count: 0,
                                                                                         },
-                                                                                        on_false: None,
+                                                                                        on_false: Some(
+                                                                                            Block {
+                                                                                                stmts: [
+                                                                                                    Print {
+                                                                                                        value: IntegerLiteral(
+                                                                                                            IntegerLiteral {
+                                                                                                                repr: "0",
+                                                                                                                value: 0,
+                                                                                                            },
+                                                                                                        ),
+                                                                                                    },
+                                                                                                ],
+                                                                                                locals_count: 0,
+                                                                                            },
+                                                                                        ),
                                                                                     },
                                                                                 ],
                                                                                 locals_count: 0,
                                                                             },
-                                                                        ),
-                                                                    },
-                                                                ],
-                                                                locals_count: 0,
-                                                            },
-                                                        ),
-                                                    },
-                                                    If {
-                                                        condition: BinOp {
-                                                            op: Eq(
-                                                                Eq,
-                                                            ),
-                                                            lhs: LvalueToRvalue(
-                                                                Identifier(
-                                                                    d(4),
-                                                                ),
-                                                            ),
-                                                            rhs: IntegerLiteral(
-                                                                IntegerLiteral {
-                                                                    repr: "1",
-                                                                    value: 1,
-                                                                },
-                                                            ),
-                                                        },
-                                                        on_true: Block {
-                                                            stmts: [
-                                                                Print {
-                                                                    value: IntegerLiteral(
-                                                                        IntegerLiteral {
-                                                                            repr: "4",
-                                                                            value: 4,
+                                                                            on_false: Some(
+                                                                                Block {
+                                                                                    stmts: [
+                                                                                        Print {
+                                                                                            value: IntegerLiteral(
+                                                                                                IntegerLiteral {
+                                                                                                    repr: "0",
+                                                                                                    value: 0,
+                                                                                                },
+                                                                                            ),
+                                                                                        },
+                                                                                    ],
+                                                                                    locals_count: 0,
+                                                                                },
+                                                                            ),
                                                                         },
-                                                                    ),
+                                                                    ],
+                                                                    locals_count: 0,
                                                                 },
+                                                                on_false: Some(
+                                                                    Block {
+                                                                        stmts: [
+                                                                            Print {
+                                                                                value: IntegerLiteral(
+                                                                                    IntegerLiteral {
+                                                                                        repr: "0",
+                                                                                        value: 0,
+                                                                                    },
+                                                                                ),
+                                                                            },
+                                                                        ],
+                                                                        locals_count: 0,
+                                                                    },
+                                                                ),
+                                                            },
+                                                        ],
+                                                        locals_count: 0,
+                                                    },
+                                                    on_false: Some(
+                                                        Block {
+                                                            stmts: [
                                                                 If {
                                                                     condition: BinOp {
                                                                         op: Eq(
@@ -400,7 +543,7 @@
                                                                         ),
                                                                         lhs: LvalueToRvalue(
                                                                             Identifier(
-                                                                                e(5),
+                                                                                b(2),
                                                                             ),
                                                                         ),
                                                                         rhs: IntegerLiteral(
@@ -415,89 +558,35 @@
                                                                             Print {
                                                                                 value: IntegerLiteral(
                                                                                     IntegerLiteral {
-                                                                                        repr: "5",
-                                                                                        value: 5,
+                                                                                        repr: "0",
+                                                                                        value: 0,
                                                                                     },
                                                                                 ),
                                                                             },
-                                                                            If {
-                                                                                condition: BinOp {
-                                                                                    op: Eq(
-                                                                                        Eq,
-                                                                                    ),
-                                                                                    lhs: LvalueToRvalue(
-                                                                                        Identifier(
-                                                                                            f(6),
+                                                                        ],
+                                                                        locals_count: 0,
+                                                                    },
+                                                                    on_false: Some(
+                                                                        Block {
+                                                                            stmts: [
+                                                                                If {
+                                                                                    condition: BinOp {
+                                                                                        op: Eq(
+                                                                                            Eq,
                                                                                         ),
-                                                                                    ),
-                                                                                    rhs: IntegerLiteral(
-                                                                                        IntegerLiteral {
-                                                                                            repr: "1",
-                                                                                            value: 1,
-                                                                                        },
-                                                                                    ),
-                                                                                },
-                                                                                on_true: Block {
-                                                                                    stmts: [
-                                                                                        Print {
-                                                                                            value: IntegerLiteral(
-                                                                                                IntegerLiteral {
-                                                                                                    repr: "6",
-                                                                                                    value: 6,
-                                                                                                },
+                                                                                        lhs: LvalueToRvalue(
+                                                                                            Identifier(
+                                                                                                c(3),
                                                                                             ),
-                                                                                        },
-                                                                                        If {
-                                                                                            condition: BinOp {
-                                                                                                op: Eq(
-                                                                                                    Eq,
-                                                                                                ),
-                                                                                                lhs: LvalueToRvalue(
-                                                                                                    Identifier(
-                                                                                                        g(7),
-                                                                                                    ),
-                                                                                                ),
-                                                                                                rhs: IntegerLiteral(
-                                                                                                    IntegerLiteral {
-                                                                                                        repr: "1",
-                                                                                                        value: 1,
-                                                                                                    },
-                                                                                                ),
+                                                                                        ),
+                                                                                        rhs: IntegerLiteral(
+                                                                                            IntegerLiteral {
+                                                                                                repr: "1",
+                                                                                                value: 1,
                                                                                             },
-                                                                                            on_true: Block {
-                                                                                                stmts: [
-                                                                                                    Print {
-                                                                                                        value: IntegerLiteral(
-                                                                                                            IntegerLiteral {
-                                                                                                                repr: "7",
-                                                                                                                value: 7,
-                                                                                                            },
-                                                                                                        ),
-                                                                                                    },
-                                                                                                ],
-                                                                                                locals_count: 0,
-                                                                                            },
-                                                                                            on_false: Some(
-                                                                                                Block {
-                                                                                                    stmts: [
-                                                                                                        Print {
-                                                                                                            value: IntegerLiteral(
-                                                                                                                IntegerLiteral {
-                                                                                                                    repr: "0",
-                                                                                                                    value: 0,
-                                                                                                                },
-                                                                                                            ),
-                                                                                                        },
-                                                                                                    ],
-                                                                                                    locals_count: 0,
-                                                                                                },
-                                                                                            ),
-                                                                                        },
-                                                                                    ],
-                                                                                    locals_count: 0,
-                                                                                },
-                                                                                on_false: Some(
-                                                                                    Block {
+                                                                                        ),
+                                                                                    },
+                                                                                    on_true: Block {
                                                                                         stmts: [
                                                                                             Print {
                                                                                                 value: IntegerLiteral(
@@ -510,24 +599,48 @@
                                                                                         ],
                                                                                         locals_count: 0,
                                                                                     },
-                                                                                ),
-                                                                            },
-                                                                        ],
-                                                                        locals_count: 0,
-                                                                    },
-                                                                    on_false: Some(
-                                                                        Block {
-                                                                            stmts: [
-                                                                                Print {
-                                                                                    value: IntegerLiteral(
-                                                                                        IntegerLiteral {
-                                                                                            repr: "0",
-                                                                                            value: 0,
-                                                                                        },
-                                                                                    ),
+                                                                                    on_false: None,
                                                                                 },
                                                                             ],
                                                                             locals_count: 0,
+                                                                        },
+                                                                    ),
+                                                                },
+                                                            ],
+                                                            locals_count: 0,
+                                                        },
+                                                    ),
+                                                },
+                                            ],
+                                            locals_count: 0,
+                                        },
+                                        on_false: Some(
+                                            Block {
+                                                stmts: [
+                                                    If {
+                                                        condition: BinOp {
+                                                            op: Eq(
+                                                                Eq,
+                                                            ),
+                                                            lhs: LvalueToRvalue(
+                                                                Identifier(
+                                                                    e(5),
+                                                                ),
+                                                            ),
+                                                            rhs: IntegerLiteral(
+                                                                IntegerLiteral {
+                                                                    repr: "1",
+                                                                    value: 1,
+                                                                },
+                                                            ),
+                                                        },
+                                                        on_true: Block {
+                                                            stmts: [
+                                                                Print {
+                                                                    value: IntegerLiteral(
+                                                                        IntegerLiteral {
+                                                                            repr: "0",
+                                                                            value: 0,
                                                                         },
                                                                     ),
                                                                 },
@@ -544,7 +657,7 @@
                                                                             ),
                                                                             lhs: LvalueToRvalue(
                                                                                 Identifier(
-                                                                                    b(2),
+                                                                                    g(7),
                                                                                 ),
                                                                             ),
                                                                             rhs: IntegerLiteral(
@@ -567,45 +680,7 @@
                                                                             ],
                                                                             locals_count: 0,
                                                                         },
-                                                                        on_false: Some(
-                                                                            Block {
-                                                                                stmts: [
-                                                                                    If {
-                                                                                        condition: BinOp {
-                                                                                            op: Eq(
-                                                                                                Eq,
-                                                                                            ),
-                                                                                            lhs: LvalueToRvalue(
-                                                                                                Identifier(
-                                                                                                    c(3),
-                                                                                                ),
-                                                                                            ),
-                                                                                            rhs: IntegerLiteral(
-                                                                                                IntegerLiteral {
-                                                                                                    repr: "1",
-                                                                                                    value: 1,
-                                                                                                },
-                                                                                            ),
-                                                                                        },
-                                                                                        on_true: Block {
-                                                                                            stmts: [
-                                                                                                Print {
-                                                                                                    value: IntegerLiteral(
-                                                                                                        IntegerLiteral {
-                                                                                                            repr: "0",
-                                                                                                            value: 0,
-                                                                                                        },
-                                                                                                    ),
-                                                                                                },
-                                                                                            ],
-                                                                                            locals_count: 0,
-                                                                                        },
-                                                                                        on_false: None,
-                                                                                    },
-                                                                                ],
-                                                                                locals_count: 0,
-                                                                            },
-                                                                        ),
+                                                                        on_false: None,
                                                                     },
                                                                 ],
                                                                 locals_count: 0,
@@ -615,95 +690,18 @@
                                                 ],
                                                 locals_count: 0,
                                             },
-                                            on_false: Some(
-                                                Block {
-                                                    stmts: [
-                                                        If {
-                                                            condition: BinOp {
-                                                                op: Eq(
-                                                                    Eq,
-                                                                ),
-                                                                lhs: LvalueToRvalue(
-                                                                    Identifier(
-                                                                        e(5),
-                                                                    ),
-                                                                ),
-                                                                rhs: IntegerLiteral(
-                                                                    IntegerLiteral {
-                                                                        repr: "1",
-                                                                        value: 1,
-                                                                    },
-                                                                ),
-                                                            },
-                                                            on_true: Block {
-                                                                stmts: [
-                                                                    Print {
-                                                                        value: IntegerLiteral(
-                                                                            IntegerLiteral {
-                                                                                repr: "0",
-                                                                                value: 0,
-                                                                            },
-                                                                        ),
-                                                                    },
-                                                                ],
-                                                                locals_count: 0,
-                                                            },
-                                                            on_false: Some(
-                                                                Block {
-                                                                    stmts: [
-                                                                        If {
-                                                                            condition: BinOp {
-                                                                                op: Eq(
-                                                                                    Eq,
-                                                                                ),
-                                                                                lhs: LvalueToRvalue(
-                                                                                    Identifier(
-                                                                                        g(7),
-                                                                                    ),
-                                                                                ),
-                                                                                rhs: IntegerLiteral(
-                                                                                    IntegerLiteral {
-                                                                                        repr: "1",
-                                                                                        value: 1,
-                                                                                    },
-                                                                                ),
-                                                                            },
-                                                                            on_true: Block {
-                                                                                stmts: [
-                                                                                    Print {
-                                                                                        value: IntegerLiteral(
-                                                                                            IntegerLiteral {
-                                                                                                repr: "0",
-                                                                                                value: 0,
-                                                                                            },
-                                                                                        ),
-                                                                                    },
-                                                                                ],
-                                                                                locals_count: 0,
-                                                                            },
-                                                                            on_false: None,
-                                                                        },
-                                                                    ],
-                                                                    locals_count: 0,
-                                                                },
-                                                            ),
-                                                        },
-                                                    ],
-                                                    locals_count: 0,
-                                                },
-                                            ),
-                                        },
-                                    ],
-                                    locals_count: 7,
-                                },
-                            ),
-                        },
-                    ),
+                                        ),
+                                    },
+                                ],
+                                locals_count: 7,
+                            },
+                        ),
+                    },
                 ),
-            },
-        ],
-    ),
-    Bindings {
+            ),
+        },
+    ],
+    bindings: Bindings {
         arena: [
             Binding {
                 name: main(0),
@@ -1540,4 +1538,4 @@
             },
         ],
     },
-)
+}

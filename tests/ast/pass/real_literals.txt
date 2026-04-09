@@ -1,568 +1,566 @@
-(
-    Program(
-        [
-            Binding {
-                name: main(0),
-                decl: Routine(
-                    Full(
-                        Routine {
-                            signature: RoutineSignature {
-                                args: [],
-                                return_type: Unit,
-                            },
-                            args_bindings: [],
-                            body: Block(
-                                Block {
-                                    stmts: [
-                                        Declaration(
-                                            Binding {
-                                                name: a(1),
-                                                decl: Var(
-                                                    VarDecl {
-                                                        t: Real,
-                                                        initialiser: Some(
-                                                            RealLiteral(
-                                                                RealLiteral {
-                                                                    repr: "0.0",
-                                                                    value: 0.0,
-                                                                },
-                                                            ),
+Program {
+    globals: [
+        Binding {
+            name: main(0),
+            decl: Routine(
+                Full(
+                    Routine {
+                        signature: RoutineSignature {
+                            args: [],
+                            return_type: Unit,
+                        },
+                        args_bindings: [],
+                        body: Block(
+                            Block {
+                                stmts: [
+                                    Declaration(
+                                        Binding {
+                                            name: a(1),
+                                            decl: Var(
+                                                VarDecl {
+                                                    t: Real,
+                                                    initialiser: Some(
+                                                        RealLiteral(
+                                                            RealLiteral {
+                                                                repr: "0.0",
+                                                                value: 0.0,
+                                                            },
                                                         ),
-                                                        relative_location: Local(
-                                                            0,
-                                                        ),
-                                                    },
-                                                ),
-                                            },
-                                        ),
-                                        Print {
-                                            value: LvalueToRvalue(
-                                                Identifier(
-                                                    a(1),
-                                                ),
+                                                    ),
+                                                    relative_location: Local(
+                                                        0,
+                                                    ),
+                                                },
                                             ),
                                         },
-                                        Declaration(
-                                            Binding {
-                                                name: b(2),
-                                                decl: Var(
-                                                    VarDecl {
-                                                        t: Real,
-                                                        initialiser: Some(
-                                                            RealLiteral(
-                                                                RealLiteral {
-                                                                    repr: "3.14",
-                                                                    value: 3.14,
-                                                                },
-                                                            ),
-                                                        ),
-                                                        relative_location: Local(
-                                                            1,
-                                                        ),
-                                                    },
-                                                ),
-                                            },
+                                    ),
+                                    Print {
+                                        value: LvalueToRvalue(
+                                            Identifier(
+                                                a(1),
+                                            ),
                                         ),
-                                        Print {
-                                            value: LvalueToRvalue(
-                                                Identifier(
-                                                    b(2),
-                                                ),
+                                    },
+                                    Declaration(
+                                        Binding {
+                                            name: b(2),
+                                            decl: Var(
+                                                VarDecl {
+                                                    t: Real,
+                                                    initialiser: Some(
+                                                        RealLiteral(
+                                                            RealLiteral {
+                                                                repr: "3.14",
+                                                                value: 3.14,
+                                                            },
+                                                        ),
+                                                    ),
+                                                    relative_location: Local(
+                                                        1,
+                                                    ),
+                                                },
                                             ),
                                         },
-                                        Declaration(
-                                            Binding {
-                                                name: c(3),
-                                                decl: Var(
-                                                    VarDecl {
-                                                        t: Real,
-                                                        initialiser: Some(
-                                                            RealLiteral(
-                                                                RealLiteral {
-                                                                    repr: "1.5",
-                                                                    value: 1.5,
-                                                                },
-                                                            ),
-                                                        ),
-                                                        relative_location: Local(
-                                                            2,
-                                                        ),
-                                                    },
-                                                ),
-                                            },
+                                    ),
+                                    Print {
+                                        value: LvalueToRvalue(
+                                            Identifier(
+                                                b(2),
+                                            ),
                                         ),
-                                        Print {
-                                            value: LvalueToRvalue(
-                                                Identifier(
-                                                    c(3),
-                                                ),
+                                    },
+                                    Declaration(
+                                        Binding {
+                                            name: c(3),
+                                            decl: Var(
+                                                VarDecl {
+                                                    t: Real,
+                                                    initialiser: Some(
+                                                        RealLiteral(
+                                                            RealLiteral {
+                                                                repr: "1.5",
+                                                                value: 1.5,
+                                                            },
+                                                        ),
+                                                    ),
+                                                    relative_location: Local(
+                                                        2,
+                                                    ),
+                                                },
                                             ),
                                         },
-                                        Declaration(
-                                            Binding {
-                                                name: d(4),
-                                                decl: Var(
-                                                    VarDecl {
-                                                        t: Real,
-                                                        initialiser: Some(
-                                                            RealLiteral(
-                                                                RealLiteral {
-                                                                    repr: "0.5",
-                                                                    value: 0.5,
-                                                                },
-                                                            ),
-                                                        ),
-                                                        relative_location: Local(
-                                                            3,
-                                                        ),
-                                                    },
-                                                ),
-                                            },
+                                    ),
+                                    Print {
+                                        value: LvalueToRvalue(
+                                            Identifier(
+                                                c(3),
+                                            ),
                                         ),
-                                        Print {
-                                            value: LvalueToRvalue(
-                                                Identifier(
-                                                    d(4),
-                                                ),
+                                    },
+                                    Declaration(
+                                        Binding {
+                                            name: d(4),
+                                            decl: Var(
+                                                VarDecl {
+                                                    t: Real,
+                                                    initialiser: Some(
+                                                        RealLiteral(
+                                                            RealLiteral {
+                                                                repr: "0.5",
+                                                                value: 0.5,
+                                                            },
+                                                        ),
+                                                    ),
+                                                    relative_location: Local(
+                                                        3,
+                                                    ),
+                                                },
                                             ),
                                         },
-                                        Declaration(
-                                            Binding {
-                                                name: e(5),
-                                                decl: Var(
-                                                    VarDecl {
-                                                        t: Real,
-                                                        initialiser: Some(
-                                                            RealLiteral(
-                                                                RealLiteral {
-                                                                    repr: "10.25",
-                                                                    value: 10.25,
-                                                                },
-                                                            ),
-                                                        ),
-                                                        relative_location: Local(
-                                                            4,
-                                                        ),
-                                                    },
-                                                ),
-                                            },
+                                    ),
+                                    Print {
+                                        value: LvalueToRvalue(
+                                            Identifier(
+                                                d(4),
+                                            ),
                                         ),
-                                        Print {
-                                            value: LvalueToRvalue(
-                                                Identifier(
-                                                    e(5),
-                                                ),
+                                    },
+                                    Declaration(
+                                        Binding {
+                                            name: e(5),
+                                            decl: Var(
+                                                VarDecl {
+                                                    t: Real,
+                                                    initialiser: Some(
+                                                        RealLiteral(
+                                                            RealLiteral {
+                                                                repr: "10.25",
+                                                                value: 10.25,
+                                                            },
+                                                        ),
+                                                    ),
+                                                    relative_location: Local(
+                                                        4,
+                                                    ),
+                                                },
                                             ),
                                         },
-                                        Declaration(
-                                            Binding {
-                                                name: f(6),
-                                                decl: Var(
-                                                    VarDecl {
-                                                        t: Real,
-                                                        initialiser: Some(
-                                                            RealLiteral(
-                                                                RealLiteral {
-                                                                    repr: "0.001",
-                                                                    value: 0.001,
-                                                                },
-                                                            ),
-                                                        ),
-                                                        relative_location: Local(
-                                                            5,
-                                                        ),
-                                                    },
-                                                ),
-                                            },
+                                    ),
+                                    Print {
+                                        value: LvalueToRvalue(
+                                            Identifier(
+                                                e(5),
+                                            ),
                                         ),
-                                        Print {
-                                            value: LvalueToRvalue(
-                                                Identifier(
-                                                    f(6),
-                                                ),
+                                    },
+                                    Declaration(
+                                        Binding {
+                                            name: f(6),
+                                            decl: Var(
+                                                VarDecl {
+                                                    t: Real,
+                                                    initialiser: Some(
+                                                        RealLiteral(
+                                                            RealLiteral {
+                                                                repr: "0.001",
+                                                                value: 0.001,
+                                                            },
+                                                        ),
+                                                    ),
+                                                    relative_location: Local(
+                                                        5,
+                                                    ),
+                                                },
                                             ),
                                         },
-                                        Declaration(
-                                            Binding {
-                                                name: g(7),
-                                                decl: Var(
-                                                    VarDecl {
-                                                        t: Real,
-                                                        initialiser: Some(
-                                                            RealLiteral(
-                                                                RealLiteral {
-                                                                    repr: "999.999999999999",
-                                                                    value: 999.999999999999,
-                                                                },
-                                                            ),
-                                                        ),
-                                                        relative_location: Local(
-                                                            6,
-                                                        ),
-                                                    },
-                                                ),
-                                            },
+                                    ),
+                                    Print {
+                                        value: LvalueToRvalue(
+                                            Identifier(
+                                                f(6),
+                                            ),
                                         ),
-                                        Print {
-                                            value: LvalueToRvalue(
-                                                Identifier(
-                                                    g(7),
-                                                ),
+                                    },
+                                    Declaration(
+                                        Binding {
+                                            name: g(7),
+                                            decl: Var(
+                                                VarDecl {
+                                                    t: Real,
+                                                    initialiser: Some(
+                                                        RealLiteral(
+                                                            RealLiteral {
+                                                                repr: "999.999999999999",
+                                                                value: 999.999999999999,
+                                                            },
+                                                        ),
+                                                    ),
+                                                    relative_location: Local(
+                                                        6,
+                                                    ),
+                                                },
                                             ),
                                         },
-                                        Declaration(
-                                            Binding {
-                                                name: h(8),
-                                                decl: Var(
-                                                    VarDecl {
-                                                        t: Real,
-                                                        initialiser: Some(
-                                                            RealLiteral(
-                                                                RealLiteral {
-                                                                    repr: "0.12345678901234",
-                                                                    value: 0.12345678901234,
-                                                                },
-                                                            ),
-                                                        ),
-                                                        relative_location: Local(
-                                                            7,
-                                                        ),
-                                                    },
-                                                ),
-                                            },
+                                    ),
+                                    Print {
+                                        value: LvalueToRvalue(
+                                            Identifier(
+                                                g(7),
+                                            ),
                                         ),
-                                        Print {
-                                            value: LvalueToRvalue(
-                                                Identifier(
-                                                    h(8),
-                                                ),
+                                    },
+                                    Declaration(
+                                        Binding {
+                                            name: h(8),
+                                            decl: Var(
+                                                VarDecl {
+                                                    t: Real,
+                                                    initialiser: Some(
+                                                        RealLiteral(
+                                                            RealLiteral {
+                                                                repr: "0.12345678901234",
+                                                                value: 0.12345678901234,
+                                                            },
+                                                        ),
+                                                    ),
+                                                    relative_location: Local(
+                                                        7,
+                                                    ),
+                                                },
                                             ),
                                         },
-                                        Declaration(
-                                            Binding {
-                                                name: i(9),
-                                                decl: Var(
-                                                    VarDecl {
-                                                        t: Real,
-                                                        initialiser: Some(
-                                                            RealLiteral(
-                                                                RealLiteral {
-                                                                    repr: "2.71828182845904",
-                                                                    value: 2.71828182845904,
-                                                                },
-                                                            ),
-                                                        ),
-                                                        relative_location: Local(
-                                                            8,
-                                                        ),
-                                                    },
-                                                ),
-                                            },
+                                    ),
+                                    Print {
+                                        value: LvalueToRvalue(
+                                            Identifier(
+                                                h(8),
+                                            ),
                                         ),
-                                        Print {
-                                            value: LvalueToRvalue(
-                                                Identifier(
-                                                    i(9),
-                                                ),
+                                    },
+                                    Declaration(
+                                        Binding {
+                                            name: i(9),
+                                            decl: Var(
+                                                VarDecl {
+                                                    t: Real,
+                                                    initialiser: Some(
+                                                        RealLiteral(
+                                                            RealLiteral {
+                                                                repr: "2.71828182845904",
+                                                                value: 2.71828182845904,
+                                                            },
+                                                        ),
+                                                    ),
+                                                    relative_location: Local(
+                                                        8,
+                                                    ),
+                                                },
                                             ),
                                         },
-                                        Declaration(
-                                            Binding {
-                                                name: j(10),
-                                                decl: Var(
-                                                    VarDecl {
-                                                        t: Real,
-                                                        initialiser: Some(
-                                                            RealLiteral(
-                                                                RealLiteral {
-                                                                    repr: "1.11111111111111",
-                                                                    value: 1.11111111111111,
-                                                                },
-                                                            ),
-                                                        ),
-                                                        relative_location: Local(
-                                                            9,
-                                                        ),
-                                                    },
-                                                ),
-                                            },
+                                    ),
+                                    Print {
+                                        value: LvalueToRvalue(
+                                            Identifier(
+                                                i(9),
+                                            ),
                                         ),
-                                        Print {
-                                            value: LvalueToRvalue(
-                                                Identifier(
-                                                    j(10),
-                                                ),
+                                    },
+                                    Declaration(
+                                        Binding {
+                                            name: j(10),
+                                            decl: Var(
+                                                VarDecl {
+                                                    t: Real,
+                                                    initialiser: Some(
+                                                        RealLiteral(
+                                                            RealLiteral {
+                                                                repr: "1.11111111111111",
+                                                                value: 1.11111111111111,
+                                                            },
+                                                        ),
+                                                    ),
+                                                    relative_location: Local(
+                                                        9,
+                                                    ),
+                                                },
                                             ),
                                         },
-                                        Declaration(
-                                            Binding {
-                                                name: k(11),
-                                                decl: Var(
-                                                    VarDecl {
-                                                        t: Real,
-                                                        initialiser: Some(
-                                                            RealLiteral(
-                                                                RealLiteral {
-                                                                    repr: "0.00000000000001",
-                                                                    value: 1e-14,
-                                                                },
-                                                            ),
-                                                        ),
-                                                        relative_location: Local(
-                                                            10,
-                                                        ),
-                                                    },
-                                                ),
-                                            },
+                                    ),
+                                    Print {
+                                        value: LvalueToRvalue(
+                                            Identifier(
+                                                j(10),
+                                            ),
                                         ),
-                                        Print {
-                                            value: LvalueToRvalue(
-                                                Identifier(
-                                                    k(11),
-                                                ),
+                                    },
+                                    Declaration(
+                                        Binding {
+                                            name: k(11),
+                                            decl: Var(
+                                                VarDecl {
+                                                    t: Real,
+                                                    initialiser: Some(
+                                                        RealLiteral(
+                                                            RealLiteral {
+                                                                repr: "0.00000000000001",
+                                                                value: 1e-14,
+                                                            },
+                                                        ),
+                                                    ),
+                                                    relative_location: Local(
+                                                        10,
+                                                    ),
+                                                },
                                             ),
                                         },
-                                        Declaration(
-                                            Binding {
-                                                name: l(12),
-                                                decl: Var(
-                                                    VarDecl {
-                                                        t: Real,
-                                                        initialiser: Some(
-                                                            RealLiteral(
-                                                                RealLiteral {
-                                                                    repr: "12345.6789012345",
-                                                                    value: 12345.6789012345,
-                                                                },
-                                                            ),
-                                                        ),
-                                                        relative_location: Local(
-                                                            11,
-                                                        ),
-                                                    },
-                                                ),
-                                            },
+                                    ),
+                                    Print {
+                                        value: LvalueToRvalue(
+                                            Identifier(
+                                                k(11),
+                                            ),
                                         ),
-                                        Print {
-                                            value: LvalueToRvalue(
-                                                Identifier(
-                                                    l(12),
-                                                ),
+                                    },
+                                    Declaration(
+                                        Binding {
+                                            name: l(12),
+                                            decl: Var(
+                                                VarDecl {
+                                                    t: Real,
+                                                    initialiser: Some(
+                                                        RealLiteral(
+                                                            RealLiteral {
+                                                                repr: "12345.6789012345",
+                                                                value: 12345.6789012345,
+                                                            },
+                                                        ),
+                                                    ),
+                                                    relative_location: Local(
+                                                        11,
+                                                    ),
+                                                },
                                             ),
                                         },
-                                        Declaration(
-                                            Binding {
-                                                name: m(13),
-                                                decl: Var(
-                                                    VarDecl {
-                                                        t: Real,
-                                                        initialiser: Some(
-                                                            RealLiteral(
+                                    ),
+                                    Print {
+                                        value: LvalueToRvalue(
+                                            Identifier(
+                                                l(12),
+                                            ),
+                                        ),
+                                    },
+                                    Declaration(
+                                        Binding {
+                                            name: m(13),
+                                            decl: Var(
+                                                VarDecl {
+                                                    t: Real,
+                                                    initialiser: Some(
+                                                        RealLiteral(
+                                                            RealLiteral {
+                                                                repr: "NaN",
+                                                                value: NaN,
+                                                            },
+                                                        ),
+                                                    ),
+                                                    relative_location: Local(
+                                                        12,
+                                                    ),
+                                                },
+                                            ),
+                                        },
+                                    ),
+                                    Print {
+                                        value: LvalueToRvalue(
+                                            Identifier(
+                                                m(13),
+                                            ),
+                                        ),
+                                    },
+                                    Declaration(
+                                        Binding {
+                                            name: n(14),
+                                            decl: Var(
+                                                VarDecl {
+                                                    t: Real,
+                                                    initialiser: Some(
+                                                        RealLiteral(
+                                                            RealLiteral {
+                                                                repr: ".5",
+                                                                value: 0.5,
+                                                            },
+                                                        ),
+                                                    ),
+                                                    relative_location: Local(
+                                                        13,
+                                                    ),
+                                                },
+                                            ),
+                                        },
+                                    ),
+                                    Print {
+                                        value: LvalueToRvalue(
+                                            Identifier(
+                                                n(14),
+                                            ),
+                                        ),
+                                    },
+                                    Declaration(
+                                        Binding {
+                                            name: o(15),
+                                            decl: Var(
+                                                VarDecl {
+                                                    t: Real,
+                                                    initialiser: Some(
+                                                        RealLiteral(
+                                                            RealLiteral {
+                                                                repr: "-.5",
+                                                                value: -0.5,
+                                                            },
+                                                        ),
+                                                    ),
+                                                    relative_location: Local(
+                                                        14,
+                                                    ),
+                                                },
+                                            ),
+                                        },
+                                    ),
+                                    Print {
+                                        value: LvalueToRvalue(
+                                            Identifier(
+                                                o(15),
+                                            ),
+                                        ),
+                                    },
+                                    Declaration(
+                                        Binding {
+                                            name: p(16),
+                                            decl: Var(
+                                                VarDecl {
+                                                    t: Real,
+                                                    initialiser: Some(
+                                                        RealLiteral(
+                                                            RealLiteral {
+                                                                repr: "+.5",
+                                                                value: 0.5,
+                                                            },
+                                                        ),
+                                                    ),
+                                                    relative_location: Local(
+                                                        15,
+                                                    ),
+                                                },
+                                            ),
+                                        },
+                                    ),
+                                    Print {
+                                        value: LvalueToRvalue(
+                                            Identifier(
+                                                p(16),
+                                            ),
+                                        ),
+                                    },
+                                    Declaration(
+                                        Binding {
+                                            name: q(17),
+                                            decl: Var(
+                                                VarDecl {
+                                                    t: Real,
+                                                    initialiser: Some(
+                                                        UnOp {
+                                                            op: RealNeg,
+                                                            operand: RealLiteral(
                                                                 RealLiteral {
                                                                     repr: "NaN",
                                                                     value: NaN,
                                                                 },
                                                             ),
-                                                        ),
-                                                        relative_location: Local(
-                                                            12,
-                                                        ),
-                                                    },
-                                                ),
-                                            },
-                                        ),
-                                        Print {
-                                            value: LvalueToRvalue(
-                                                Identifier(
-                                                    m(13),
-                                                ),
+                                                        },
+                                                    ),
+                                                    relative_location: Local(
+                                                        16,
+                                                    ),
+                                                },
                                             ),
                                         },
-                                        Declaration(
-                                            Binding {
-                                                name: n(14),
-                                                decl: Var(
-                                                    VarDecl {
-                                                        t: Real,
-                                                        initialiser: Some(
-                                                            RealLiteral(
-                                                                RealLiteral {
-                                                                    repr: ".5",
-                                                                    value: 0.5,
-                                                                },
-                                                            ),
-                                                        ),
-                                                        relative_location: Local(
-                                                            13,
-                                                        ),
-                                                    },
-                                                ),
-                                            },
-                                        ),
-                                        Print {
-                                            value: LvalueToRvalue(
-                                                Identifier(
-                                                    n(14),
-                                                ),
+                                    ),
+                                    Print {
+                                        value: LvalueToRvalue(
+                                            Identifier(
+                                                q(17),
                                             ),
-                                        },
-                                        Declaration(
-                                            Binding {
-                                                name: o(15),
-                                                decl: Var(
-                                                    VarDecl {
-                                                        t: Real,
-                                                        initialiser: Some(
-                                                            RealLiteral(
-                                                                RealLiteral {
-                                                                    repr: "-.5",
-                                                                    value: -0.5,
-                                                                },
-                                                            ),
-                                                        ),
-                                                        relative_location: Local(
-                                                            14,
-                                                        ),
-                                                    },
-                                                ),
-                                            },
                                         ),
-                                        Print {
-                                            value: LvalueToRvalue(
-                                                Identifier(
-                                                    o(15),
-                                                ),
-                                            ),
-                                        },
-                                        Declaration(
-                                            Binding {
-                                                name: p(16),
-                                                decl: Var(
-                                                    VarDecl {
-                                                        t: Real,
-                                                        initialiser: Some(
-                                                            RealLiteral(
-                                                                RealLiteral {
-                                                                    repr: "+.5",
-                                                                    value: 0.5,
-                                                                },
-                                                            ),
-                                                        ),
-                                                        relative_location: Local(
-                                                            15,
-                                                        ),
-                                                    },
-                                                ),
-                                            },
-                                        ),
-                                        Print {
-                                            value: LvalueToRvalue(
-                                                Identifier(
-                                                    p(16),
-                                                ),
-                                            ),
-                                        },
-                                        Declaration(
-                                            Binding {
-                                                name: q(17),
-                                                decl: Var(
-                                                    VarDecl {
-                                                        t: Real,
-                                                        initialiser: Some(
-                                                            UnOp {
-                                                                op: RealNeg,
-                                                                operand: RealLiteral(
-                                                                    RealLiteral {
-                                                                        repr: "NaN",
-                                                                        value: NaN,
-                                                                    },
-                                                                ),
+                                    },
+                                    Declaration(
+                                        Binding {
+                                            name: r(18),
+                                            decl: Var(
+                                                VarDecl {
+                                                    t: Real,
+                                                    initialiser: Some(
+                                                        RealLiteral(
+                                                            RealLiteral {
+                                                                repr: "Inf",
+                                                                value: inf,
                                                             },
                                                         ),
-                                                        relative_location: Local(
-                                                            16,
-                                                        ),
-                                                    },
-                                                ),
-                                            },
-                                        ),
-                                        Print {
-                                            value: LvalueToRvalue(
-                                                Identifier(
-                                                    q(17),
-                                                ),
+                                                    ),
+                                                    relative_location: Local(
+                                                        17,
+                                                    ),
+                                                },
                                             ),
                                         },
-                                        Declaration(
-                                            Binding {
-                                                name: r(18),
-                                                decl: Var(
-                                                    VarDecl {
-                                                        t: Real,
-                                                        initialiser: Some(
-                                                            RealLiteral(
+                                    ),
+                                    Print {
+                                        value: LvalueToRvalue(
+                                            Identifier(
+                                                r(18),
+                                            ),
+                                        ),
+                                    },
+                                    Declaration(
+                                        Binding {
+                                            name: s(19),
+                                            decl: Var(
+                                                VarDecl {
+                                                    t: Real,
+                                                    initialiser: Some(
+                                                        UnOp {
+                                                            op: RealNeg,
+                                                            operand: RealLiteral(
                                                                 RealLiteral {
                                                                     repr: "Inf",
                                                                     value: inf,
                                                                 },
                                                             ),
-                                                        ),
-                                                        relative_location: Local(
-                                                            17,
-                                                        ),
-                                                    },
-                                                ),
-                                            },
-                                        ),
-                                        Print {
-                                            value: LvalueToRvalue(
-                                                Identifier(
-                                                    r(18),
-                                                ),
+                                                        },
+                                                    ),
+                                                    relative_location: Local(
+                                                        18,
+                                                    ),
+                                                },
                                             ),
                                         },
-                                        Declaration(
-                                            Binding {
-                                                name: s(19),
-                                                decl: Var(
-                                                    VarDecl {
-                                                        t: Real,
-                                                        initialiser: Some(
-                                                            UnOp {
-                                                                op: RealNeg,
-                                                                operand: RealLiteral(
-                                                                    RealLiteral {
-                                                                        repr: "Inf",
-                                                                        value: inf,
-                                                                    },
-                                                                ),
-                                                            },
-                                                        ),
-                                                        relative_location: Local(
-                                                            18,
-                                                        ),
-                                                    },
-                                                ),
-                                            },
-                                        ),
-                                        Print {
-                                            value: LvalueToRvalue(
-                                                Identifier(
-                                                    s(19),
-                                                ),
+                                    ),
+                                    Print {
+                                        value: LvalueToRvalue(
+                                            Identifier(
+                                                s(19),
                                             ),
-                                        },
-                                    ],
-                                    locals_count: 19,
-                                },
-                            ),
-                        },
-                    ),
+                                        ),
+                                    },
+                                ],
+                                locals_count: 19,
+                            },
+                        ),
+                    },
                 ),
-            },
-        ],
-    ),
-    Bindings {
+            ),
+        },
+    ],
+    bindings: Bindings {
         arena: [
             Binding {
                 name: main(0),
@@ -1492,4 +1490,4 @@
             },
         ],
     },
-)
+}

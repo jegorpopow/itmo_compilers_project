@@ -86,23 +86,6 @@ impl From<RuntimeError> for BlockError<'_> {
     }
 }
 
-trait IdentSelector: Debug {
-    #[must_use]
-    fn matches(&self, ident: &Identifier) -> bool;
-}
-
-impl IdentSelector for str {
-    fn matches(&self, ident: &Identifier) -> bool {
-        self == ident.raw.name
-    }
-}
-
-impl IdentSelector for Identifier {
-    fn matches(&self, ident: &Identifier) -> bool {
-        self == ident
-    }
-}
-
 #[expect(
     clippy::wildcard_enum_match_arm,
     reason = "essentially an if-let but with better error reporting"
@@ -155,42 +138,24 @@ impl<'a, W: Write> Interpreter<'a, W> {
             Type::Int => Value::Integer(0),
             Type::Real => Value::Real(0.0),
             Type::Bool => Value::Bool(false),
-            Type::Alias(ty) => self.default_value_for_type(self.find_type(ty)),
+            Type::Alias(ty) => self.default_value_for_type(self.get_effective_type(ty)),
             Type::Record(_) | Type::Array(_) | Type::Null | Type::Unit => Value::Null,
         }
     }
 
-    fn find_routine<I: IdentSelector + ?Sized>(&self, routine: &I) -> &'a Routine {
-        let Some(routine) = self.program.0.iter().find_map(|Binding { name, decl }| {
-            if let Decl::Routine(RoutineDecl::Full(r)) = decl
-                && routine.matches(name)
-            {
-                Some(r)
-            } else {
-                None
-            }
-        }) else {
-            unreachable!("Could not find routine {routine:?}")
+    fn get_effective_type(&self, ty: &Identifier) -> &'a Type {
+        let decl = &self.program.bindings[ty.id].decl;
+        let Decl::Type(TypeDecl::Full {
+            prescribed: _,
+            effective,
+        }) = decl
+        else {
+            unreachable!("Expected a type for {ty:?} but found {decl:?}")
         };
-        routine
-    }
-
-    fn find_type(&self, ty: &Identifier) -> &'a Type {
-        let Some(ty) = self.program.0.iter().find_map(|Binding { name, decl }| {
-            if let Decl::Type(TypeDecl::Full {
-                prescribed: _,
-                effective,
-            }) = decl
-                && name == ty
-            {
-                Some(effective.as_ref())
-            } else {
-                None
-            }
-        }) else {
-            unreachable!("Could not find type {ty:?}")
-        };
-        ty
+        if let Type::Alias(to) = effective.as_ref() {
+            unreachable!("Effective type for {ty:?} is an alias to {to:?}")
+        }
+        effective
     }
 
     #[throws(RuntimeError)]
@@ -328,7 +293,7 @@ impl<'a, W: Write> Interpreter<'a, W> {
                 },
             },
 
-            Type::Alias(ty) => self.new(bindings, self.find_type(ty), field_values)?,
+            Type::Alias(ty) => self.new(bindings, self.get_effective_type(ty), field_values)?,
             Type::Record(RecordDescription {
                 fields: expected_fields,
             }) => {
@@ -502,7 +467,9 @@ impl<'a, W: Write> Interpreter<'a, W> {
                             None => self.default_value_for_type(t),
                         };
                         let e = self.heap.alloc(e);
-                        if let Some(prev) = bindings.insert(name, e) {
+                        if let Some(prev) = bindings.insert(name, e)
+                            && cfg!(debug_assertions)
+                        {
                             eprintln!(
                                 "Discarding previous value for {name}: {:?} => {:?}",
                                 self.heap[prev], self.heap[e]
@@ -594,12 +561,16 @@ impl<'a, W: Write> Interpreter<'a, W> {
     }
 
     #[throws(RuntimeError)]
-    fn call<I: IdentSelector + ?Sized>(&mut self, routine: &I, args: Vec<Value<'a>>) -> Value<'a> {
-        let Routine {
+    fn call(&mut self, routine: &Identifier, args: Vec<Value<'a>>) -> Value<'a> {
+        let decl = &self.program.bindings[routine.id].decl;
+        let Decl::Routine(RoutineDecl::Full(Routine {
             signature: _,
             args_bindings,
             body,
-        } = self.find_routine(routine);
+        })) = decl
+        else {
+            unreachable!("Expected a routine for {routine:?} but found {decl:?}")
+        };
         {
             let expected = args_bindings.len();
             let actual = args.len();
@@ -625,7 +596,7 @@ impl<'a, W: Write> Interpreter<'a, W> {
 
     #[throws(RuntimeError)]
     fn run(mut self) {
-        for Binding { name, decl } in &self.program.0 {
+        for Binding { name, decl } in &self.program.globals {
             match decl {
                 Decl::Type(_) | Decl::Routine(_) | Decl::Const(_) => {}
                 Decl::Var(VarDecl {
@@ -650,7 +621,23 @@ impl<'a, W: Write> Interpreter<'a, W> {
                 }
             }
         }
-        let value = self.call("main", vec![])?;
+        let Some(main) = self
+            .program
+            .globals
+            .iter()
+            .find_map(|Binding { name, decl }| {
+                if name.raw.name == "main"
+                    && let Decl::Routine(RoutineDecl::Full(_)) = decl
+                {
+                    Some(name)
+                } else {
+                    None
+                }
+            })
+        else {
+            todo!("No `main")
+        };
+        let value = self.call(main, vec![])?;
         let Value::Null = value else {
             unreachable!("main returned non-null value: {value:?}")
         };

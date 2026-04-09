@@ -28,6 +28,7 @@ testing::tests! {
         invalid_new_array_length => "invalid_new_array_length"
         lazy_operators => "lazy_operators"
         length => "length"
+        local_type => "local_type"
         logical_operators => "logical_operators"
         nested_control => "nested_control"
         new_array => "new_array"

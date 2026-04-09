@@ -295,7 +295,7 @@ impl<'a> Compiler<'a> {
     }
 
     pub fn compile(&mut self, program: &Program) -> AnalysisResult<()> {
-        for Binding { name, decl } in &program.0 {
+        for Binding { name, decl } in &program.globals {
             match decl {
                 Decl::Var(v) => todo!("var {name:?} = {v:?}"),
                 Decl::Const(v) => todo!("const {name:?} = {v:?}"),

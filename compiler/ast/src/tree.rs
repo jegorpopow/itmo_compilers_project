@@ -544,7 +544,10 @@ impl TryFrom<Binding> for LocalBinding {
 }
 
 #[derive(Debug)]
-pub struct Program(pub Vec<Binding>);
+pub struct Program {
+    pub globals: Vec<Binding>,
+    pub bindings: Bindings,
+}
 
 #[derive(Debug, Default)]
 pub struct Bindings {

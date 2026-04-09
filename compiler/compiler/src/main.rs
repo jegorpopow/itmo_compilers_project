@@ -17,7 +17,7 @@ fn main() -> anyhow::Result<()> {
 
     let tokens: Vec<_> = Lexer::from(source.as_str()).collect();
     for token in &tokens {
-        println!("{token}")
+        eprintln!("{token}")
     }
 
     let program = match parse_program(tokens.as_slice()) {
@@ -33,13 +33,13 @@ fn main() -> anyhow::Result<()> {
     };
 
     for decl in &program.0 {
-        println!("{decl:?}");
+        eprintln!("{decl:?}");
     }
 
-    let (program, _identifiers) = convert(&program).context("Typecheck error")?;
+    let program = convert(&program).context("Typecheck error")?;
 
-    for decl in &program.0 {
-        println!("{decl:?}");
+    for decl in &program.globals {
+        eprintln!("{decl:?}");
     }
 
     interpret(io::stdout(), &program).expect("Interpretation failed");

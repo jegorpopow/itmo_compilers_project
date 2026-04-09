@@ -1,0 +1,243 @@
+Program {
+    globals: [
+        Binding {
+            name: point(0),
+            decl: Type(
+                Full {
+                    prescribed: Real,
+                    effective: Real,
+                },
+            ),
+        },
+        Binding {
+            name: main(1),
+            decl: Routine(
+                Full(
+                    Routine {
+                        signature: RoutineSignature {
+                            args: [],
+                            return_type: Unit,
+                        },
+                        args_bindings: [],
+                        body: Block(
+                            Block {
+                                stmts: [
+                                    Declaration(
+                                        Binding {
+                                            name: point(2),
+                                            decl: Type(
+                                                Full {
+                                                    prescribed: Record(
+                                                        RecordDescription {
+                                                            fields: [
+                                                                FieldDescription {
+                                                                    name: r"x",
+                                                                    t: Real,
+                                                                },
+                                                                FieldDescription {
+                                                                    name: r"y",
+                                                                    t: Real,
+                                                                },
+                                                            ],
+                                                        },
+                                                    ),
+                                                    effective: Record(
+                                                        RecordDescription {
+                                                            fields: [
+                                                                FieldDescription {
+                                                                    name: r"x",
+                                                                    t: Real,
+                                                                },
+                                                                FieldDescription {
+                                                                    name: r"y",
+                                                                    t: Real,
+                                                                },
+                                                            ],
+                                                        },
+                                                    ),
+                                                },
+                                            ),
+                                        },
+                                    ),
+                                    Print {
+                                        value: New {
+                                            t: Alias(
+                                                point(2),
+                                            ),
+                                            fields: Some(
+                                                [
+                                                    (
+                                                        r"x",
+                                                        IntToReal(
+                                                            IntegerLiteral(
+                                                                IntegerLiteral {
+                                                                    repr: "1",
+                                                                    value: 1,
+                                                                },
+                                                            ),
+                                                        ),
+                                                    ),
+                                                    (
+                                                        r"y",
+                                                        IntToReal(
+                                                            IntegerLiteral(
+                                                                IntegerLiteral {
+                                                                    repr: "2",
+                                                                    value: 2,
+                                                                },
+                                                            ),
+                                                        ),
+                                                    ),
+                                                ],
+                                            ),
+                                        },
+                                    },
+                                ],
+                                locals_count: 0,
+                            },
+                        ),
+                    },
+                ),
+            ),
+        },
+    ],
+    bindings: Bindings {
+        arena: [
+            Binding {
+                name: point(0),
+                decl: Type(
+                    Full {
+                        prescribed: Real,
+                        effective: Real,
+                    },
+                ),
+            },
+            Binding {
+                name: main(1),
+                decl: Routine(
+                    Full(
+                        Routine {
+                            signature: RoutineSignature {
+                                args: [],
+                                return_type: Unit,
+                            },
+                            args_bindings: [],
+                            body: Block(
+                                Block {
+                                    stmts: [
+                                        Declaration(
+                                            Binding {
+                                                name: point(2),
+                                                decl: Type(
+                                                    Full {
+                                                        prescribed: Record(
+                                                            RecordDescription {
+                                                                fields: [
+                                                                    FieldDescription {
+                                                                        name: r"x",
+                                                                        t: Real,
+                                                                    },
+                                                                    FieldDescription {
+                                                                        name: r"y",
+                                                                        t: Real,
+                                                                    },
+                                                                ],
+                                                            },
+                                                        ),
+                                                        effective: Record(
+                                                            RecordDescription {
+                                                                fields: [
+                                                                    FieldDescription {
+                                                                        name: r"x",
+                                                                        t: Real,
+                                                                    },
+                                                                    FieldDescription {
+                                                                        name: r"y",
+                                                                        t: Real,
+                                                                    },
+                                                                ],
+                                                            },
+                                                        ),
+                                                    },
+                                                ),
+                                            },
+                                        ),
+                                        Print {
+                                            value: New {
+                                                t: Alias(
+                                                    point(2),
+                                                ),
+                                                fields: Some(
+                                                    [
+                                                        (
+                                                            r"x",
+                                                            IntToReal(
+                                                                IntegerLiteral(
+                                                                    IntegerLiteral {
+                                                                        repr: "1",
+                                                                        value: 1,
+                                                                    },
+                                                                ),
+                                                            ),
+                                                        ),
+                                                        (
+                                                            r"y",
+                                                            IntToReal(
+                                                                IntegerLiteral(
+                                                                    IntegerLiteral {
+                                                                        repr: "2",
+                                                                        value: 2,
+                                                                    },
+                                                                ),
+                                                            ),
+                                                        ),
+                                                    ],
+                                                ),
+                                            },
+                                        },
+                                    ],
+                                    locals_count: 0,
+                                },
+                            ),
+                        },
+                    ),
+                ),
+            },
+            Binding {
+                name: point(2),
+                decl: Type(
+                    Full {
+                        prescribed: Record(
+                            RecordDescription {
+                                fields: [
+                                    FieldDescription {
+                                        name: r"x",
+                                        t: Real,
+                                    },
+                                    FieldDescription {
+                                        name: r"y",
+                                        t: Real,
+                                    },
+                                ],
+                            },
+                        ),
+                        effective: Record(
+                            RecordDescription {
+                                fields: [
+                                    FieldDescription {
+                                        name: r"x",
+                                        t: Real,
+                                    },
+                                    FieldDescription {
+                                        name: r"y",
+                                        t: Real,
+                                    },
+                                ],
+                            },
+                        ),
+                    },
+                ),
+            },
+        ],
+    },
+}
