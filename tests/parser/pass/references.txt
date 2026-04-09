@@ -1,0 +1,1015 @@
+Program(
+    [
+        Type(
+            TypeDecl {
+                name: r"object",
+                t: Record(
+                    RecordDescription {
+                        fields: [],
+                    },
+                ),
+            },
+        ),
+        Routine(
+            RoutineDecl {
+                name: r"get_first",
+                arguments: [
+                    (
+                        r"t",
+                        Array(
+                            ArrayDescription {
+                                t: Alias(
+                                    r"object",
+                                ),
+                                length: None,
+                            },
+                        ),
+                    ),
+                ],
+                return_type: Some(
+                    Alias(
+                        r"object",
+                    ),
+                ),
+                body: Some(
+                    Expression(
+                        LvalueToRvalue(
+                            Index {
+                                lhs: Identifier(
+                                    r"t",
+                                ),
+                                index: IntegerLiteral(
+                                    IntegerLiteral {
+                                        repr: "1",
+                                        value: 1,
+                                    },
+                                ),
+                            },
+                        ),
+                    ),
+                ),
+            },
+        ),
+        Routine(
+            RoutineDecl {
+                name: r"get_second",
+                arguments: [
+                    (
+                        r"t",
+                        Array(
+                            ArrayDescription {
+                                t: Alias(
+                                    r"object",
+                                ),
+                                length: None,
+                            },
+                        ),
+                    ),
+                ],
+                return_type: Some(
+                    Alias(
+                        r"object",
+                    ),
+                ),
+                body: Some(
+                    Block(
+                        Block(
+                            [
+                                Stmt(
+                                    Return {
+                                        value: LvalueToRvalue(
+                                            Index {
+                                                lhs: Identifier(
+                                                    r"t",
+                                                ),
+                                                index: IntegerLiteral(
+                                                    IntegerLiteral {
+                                                        repr: "2",
+                                                        value: 2,
+                                                    },
+                                                ),
+                                            },
+                                        ),
+                                    },
+                                ),
+                            ],
+                        ),
+                    ),
+                ),
+            },
+        ),
+        Routine(
+            RoutineDecl {
+                name: r"objects",
+                arguments: [],
+                return_type: None,
+                body: Some(
+                    Block(
+                        Block(
+                            [
+                                VarDecl(
+                                    VarDecl {
+                                        name: r"a",
+                                        t: Some(
+                                            Alias(
+                                                r"object",
+                                            ),
+                                        ),
+                                        initialiser: None,
+                                    },
+                                ),
+                                Stmt(
+                                    Assert {
+                                        pos: Position {
+                                            line: 12,
+                                            column: 1,
+                                        },
+                                        value: BinOp {
+                                            op: Eq,
+                                            lhs: LvalueToRvalue(
+                                                Identifier(
+                                                    r"a",
+                                                ),
+                                            ),
+                                            rhs: Null,
+                                        },
+                                    },
+                                ),
+                                VarDecl(
+                                    VarDecl {
+                                        name: r"b",
+                                        t: None,
+                                        initialiser: Some(
+                                            New {
+                                                t: Alias(
+                                                    r"object",
+                                                ),
+                                                fields: None,
+                                                array_length: None,
+                                            },
+                                        ),
+                                    },
+                                ),
+                                Stmt(
+                                    Assert {
+                                        pos: Position {
+                                            line: 15,
+                                            column: 1,
+                                        },
+                                        value: BinOp {
+                                            op: Ne,
+                                            lhs: LvalueToRvalue(
+                                                Identifier(
+                                                    r"b",
+                                                ),
+                                            ),
+                                            rhs: Null,
+                                        },
+                                    },
+                                ),
+                                Stmt(
+                                    Assert {
+                                        pos: Position {
+                                            line: 16,
+                                            column: 1,
+                                        },
+                                        value: BinOp {
+                                            op: Ne,
+                                            lhs: LvalueToRvalue(
+                                                Identifier(
+                                                    r"a",
+                                                ),
+                                            ),
+                                            rhs: LvalueToRvalue(
+                                                Identifier(
+                                                    r"b",
+                                                ),
+                                            ),
+                                        },
+                                    },
+                                ),
+                                Stmt(
+                                    Assignment {
+                                        lhs: Identifier(
+                                            r"a",
+                                        ),
+                                        rhs: LvalueToRvalue(
+                                            Identifier(
+                                                r"b",
+                                            ),
+                                        ),
+                                    },
+                                ),
+                                Stmt(
+                                    Assert {
+                                        pos: Position {
+                                            line: 19,
+                                            column: 1,
+                                        },
+                                        value: BinOp {
+                                            op: Eq,
+                                            lhs: LvalueToRvalue(
+                                                Identifier(
+                                                    r"a",
+                                                ),
+                                            ),
+                                            rhs: LvalueToRvalue(
+                                                Identifier(
+                                                    r"b",
+                                                ),
+                                            ),
+                                        },
+                                    },
+                                ),
+                                Stmt(
+                                    Assignment {
+                                        lhs: Identifier(
+                                            r"a",
+                                        ),
+                                        rhs: New {
+                                            t: Alias(
+                                                r"object",
+                                            ),
+                                            fields: None,
+                                            array_length: None,
+                                        },
+                                    },
+                                ),
+                                Stmt(
+                                    Assert {
+                                        pos: Position {
+                                            line: 22,
+                                            column: 1,
+                                        },
+                                        value: BinOp {
+                                            op: Ne,
+                                            lhs: LvalueToRvalue(
+                                                Identifier(
+                                                    r"a",
+                                                ),
+                                            ),
+                                            rhs: LvalueToRvalue(
+                                                Identifier(
+                                                    r"b",
+                                                ),
+                                            ),
+                                        },
+                                    },
+                                ),
+                                VarDecl(
+                                    VarDecl {
+                                        name: r"t",
+                                        t: None,
+                                        initialiser: Some(
+                                            New {
+                                                t: Array(
+                                                    ArrayDescription {
+                                                        t: Alias(
+                                                            r"object",
+                                                        ),
+                                                        length: None,
+                                                    },
+                                                ),
+                                                fields: None,
+                                                array_length: Some(
+                                                    IntegerLiteral(
+                                                        IntegerLiteral {
+                                                            repr: "2",
+                                                            value: 2,
+                                                        },
+                                                    ),
+                                                ),
+                                            },
+                                        ),
+                                    },
+                                ),
+                                Stmt(
+                                    Assignment {
+                                        lhs: Index {
+                                            lhs: Identifier(
+                                                r"t",
+                                            ),
+                                            index: IntegerLiteral(
+                                                IntegerLiteral {
+                                                    repr: "1",
+                                                    value: 1,
+                                                },
+                                            ),
+                                        },
+                                        rhs: LvalueToRvalue(
+                                            Identifier(
+                                                r"a",
+                                            ),
+                                        ),
+                                    },
+                                ),
+                                Stmt(
+                                    Assignment {
+                                        lhs: Index {
+                                            lhs: Identifier(
+                                                r"t",
+                                            ),
+                                            index: IntegerLiteral(
+                                                IntegerLiteral {
+                                                    repr: "2",
+                                                    value: 2,
+                                                },
+                                            ),
+                                        },
+                                        rhs: LvalueToRvalue(
+                                            Identifier(
+                                                r"b",
+                                            ),
+                                        ),
+                                    },
+                                ),
+                                Stmt(
+                                    Assert {
+                                        pos: Position {
+                                            line: 28,
+                                            column: 1,
+                                        },
+                                        value: BinOp {
+                                            op: Eq,
+                                            lhs: LvalueToRvalue(
+                                                Index {
+                                                    lhs: Identifier(
+                                                        r"t",
+                                                    ),
+                                                    index: IntegerLiteral(
+                                                        IntegerLiteral {
+                                                            repr: "1",
+                                                            value: 1,
+                                                        },
+                                                    ),
+                                                },
+                                            ),
+                                            rhs: LvalueToRvalue(
+                                                Identifier(
+                                                    r"a",
+                                                ),
+                                            ),
+                                        },
+                                    },
+                                ),
+                                Stmt(
+                                    Assert {
+                                        pos: Position {
+                                            line: 29,
+                                            column: 1,
+                                        },
+                                        value: BinOp {
+                                            op: Eq,
+                                            lhs: LvalueToRvalue(
+                                                Index {
+                                                    lhs: Identifier(
+                                                        r"t",
+                                                    ),
+                                                    index: IntegerLiteral(
+                                                        IntegerLiteral {
+                                                            repr: "2",
+                                                            value: 2,
+                                                        },
+                                                    ),
+                                                },
+                                            ),
+                                            rhs: LvalueToRvalue(
+                                                Identifier(
+                                                    r"b",
+                                                ),
+                                            ),
+                                        },
+                                    },
+                                ),
+                                Stmt(
+                                    Assert {
+                                        pos: Position {
+                                            line: 31,
+                                            column: 1,
+                                        },
+                                        value: BinOp {
+                                            op: Eq,
+                                            lhs: Call {
+                                                callee: r"get_first",
+                                                args: [
+                                                    LvalueToRvalue(
+                                                        Identifier(
+                                                            r"t",
+                                                        ),
+                                                    ),
+                                                ],
+                                            },
+                                            rhs: LvalueToRvalue(
+                                                Identifier(
+                                                    r"a",
+                                                ),
+                                            ),
+                                        },
+                                    },
+                                ),
+                                Stmt(
+                                    Assert {
+                                        pos: Position {
+                                            line: 32,
+                                            column: 1,
+                                        },
+                                        value: BinOp {
+                                            op: Eq,
+                                            lhs: Call {
+                                                callee: r"get_second",
+                                                args: [
+                                                    LvalueToRvalue(
+                                                        Identifier(
+                                                            r"t",
+                                                        ),
+                                                    ),
+                                                ],
+                                            },
+                                            rhs: LvalueToRvalue(
+                                                Identifier(
+                                                    r"b",
+                                                ),
+                                            ),
+                                        },
+                                    },
+                                ),
+                            ],
+                        ),
+                    ),
+                ),
+            },
+        ),
+        Routine(
+            RoutineDecl {
+                name: r"forget_length",
+                arguments: [
+                    (
+                        r"t",
+                        Array(
+                            ArrayDescription {
+                                t: Int,
+                                length: None,
+                            },
+                        ),
+                    ),
+                ],
+                return_type: Some(
+                    Array(
+                        ArrayDescription {
+                            t: Int,
+                            length: None,
+                        },
+                    ),
+                ),
+                body: Some(
+                    Block(
+                        Block(
+                            [
+                                Stmt(
+                                    Return {
+                                        value: LvalueToRvalue(
+                                            Identifier(
+                                                r"t",
+                                            ),
+                                        ),
+                                    },
+                                ),
+                            ],
+                        ),
+                    ),
+                ),
+            },
+        ),
+        Routine(
+            RoutineDecl {
+                name: r"arrays",
+                arguments: [],
+                return_type: None,
+                body: Some(
+                    Block(
+                        Block(
+                            [
+                                VarDecl(
+                                    VarDecl {
+                                        name: r"a",
+                                        t: Some(
+                                            Array(
+                                                ArrayDescription {
+                                                    t: Int,
+                                                    length: Some(
+                                                        IntegerLiteral(
+                                                            IntegerLiteral {
+                                                                repr: "3",
+                                                                value: 3,
+                                                            },
+                                                        ),
+                                                    ),
+                                                },
+                                            ),
+                                        ),
+                                        initialiser: None,
+                                    },
+                                ),
+                                Stmt(
+                                    Assert {
+                                        pos: Position {
+                                            line: 41,
+                                            column: 1,
+                                        },
+                                        value: BinOp {
+                                            op: Eq,
+                                            lhs: LvalueToRvalue(
+                                                Identifier(
+                                                    r"a",
+                                                ),
+                                            ),
+                                            rhs: Null,
+                                        },
+                                    },
+                                ),
+                                Stmt(
+                                    Assignment {
+                                        lhs: Identifier(
+                                            r"a",
+                                        ),
+                                        rhs: New {
+                                            t: Array(
+                                                ArrayDescription {
+                                                    t: Int,
+                                                    length: Some(
+                                                        IntegerLiteral(
+                                                            IntegerLiteral {
+                                                                repr: "3",
+                                                                value: 3,
+                                                            },
+                                                        ),
+                                                    ),
+                                                },
+                                            ),
+                                            fields: None,
+                                            array_length: None,
+                                        },
+                                    },
+                                ),
+                                Stmt(
+                                    Assert {
+                                        pos: Position {
+                                            line: 44,
+                                            column: 1,
+                                        },
+                                        value: BinOp {
+                                            op: Ne,
+                                            lhs: LvalueToRvalue(
+                                                Identifier(
+                                                    r"a",
+                                                ),
+                                            ),
+                                            rhs: Null,
+                                        },
+                                    },
+                                ),
+                                Stmt(
+                                    Assert {
+                                        pos: Position {
+                                            line: 45,
+                                            column: 1,
+                                        },
+                                        value: BinOp {
+                                            op: Eq,
+                                            lhs: LvalueToRvalue(
+                                                Identifier(
+                                                    r"a",
+                                                ),
+                                            ),
+                                            rhs: LvalueToRvalue(
+                                                Identifier(
+                                                    r"a",
+                                                ),
+                                            ),
+                                        },
+                                    },
+                                ),
+                                Stmt(
+                                    Assert {
+                                        pos: Position {
+                                            line: 46,
+                                            column: 1,
+                                        },
+                                        value: BinOp {
+                                            op: Ne,
+                                            lhs: LvalueToRvalue(
+                                                Identifier(
+                                                    r"a",
+                                                ),
+                                            ),
+                                            rhs: New {
+                                                t: Array(
+                                                    ArrayDescription {
+                                                        t: Int,
+                                                        length: Some(
+                                                            IntegerLiteral(
+                                                                IntegerLiteral {
+                                                                    repr: "3",
+                                                                    value: 3,
+                                                                },
+                                                            ),
+                                                        ),
+                                                    },
+                                                ),
+                                                fields: None,
+                                                array_length: None,
+                                            },
+                                        },
+                                    },
+                                ),
+                                Stmt(
+                                    Assignment {
+                                        lhs: Index {
+                                            lhs: Identifier(
+                                                r"a",
+                                            ),
+                                            index: IntegerLiteral(
+                                                IntegerLiteral {
+                                                    repr: "1",
+                                                    value: 1,
+                                                },
+                                            ),
+                                        },
+                                        rhs: IntegerLiteral(
+                                            IntegerLiteral {
+                                                repr: "10",
+                                                value: 10,
+                                            },
+                                        ),
+                                    },
+                                ),
+                                Stmt(
+                                    Assignment {
+                                        lhs: Index {
+                                            lhs: Identifier(
+                                                r"a",
+                                            ),
+                                            index: IntegerLiteral(
+                                                IntegerLiteral {
+                                                    repr: "2",
+                                                    value: 2,
+                                                },
+                                            ),
+                                        },
+                                        rhs: IntegerLiteral(
+                                            IntegerLiteral {
+                                                repr: "20",
+                                                value: 20,
+                                            },
+                                        ),
+                                    },
+                                ),
+                                Stmt(
+                                    Assignment {
+                                        lhs: Index {
+                                            lhs: Identifier(
+                                                r"a",
+                                            ),
+                                            index: IntegerLiteral(
+                                                IntegerLiteral {
+                                                    repr: "3",
+                                                    value: 3,
+                                                },
+                                            ),
+                                        },
+                                        rhs: IntegerLiteral(
+                                            IntegerLiteral {
+                                                repr: "30",
+                                                value: 30,
+                                            },
+                                        ),
+                                    },
+                                ),
+                                VarDecl(
+                                    VarDecl {
+                                        name: r"b",
+                                        t: None,
+                                        initialiser: Some(
+                                            New {
+                                                t: Array(
+                                                    ArrayDescription {
+                                                        t: Int,
+                                                        length: Some(
+                                                            IntegerLiteral(
+                                                                IntegerLiteral {
+                                                                    repr: "3",
+                                                                    value: 3,
+                                                                },
+                                                            ),
+                                                        ),
+                                                    },
+                                                ),
+                                                fields: None,
+                                                array_length: None,
+                                            },
+                                        ),
+                                    },
+                                ),
+                                Stmt(
+                                    Assert {
+                                        pos: Position {
+                                            line: 55,
+                                            column: 1,
+                                        },
+                                        value: BinOp {
+                                            op: Ne,
+                                            lhs: LvalueToRvalue(
+                                                Identifier(
+                                                    r"a",
+                                                ),
+                                            ),
+                                            rhs: LvalueToRvalue(
+                                                Identifier(
+                                                    r"b",
+                                                ),
+                                            ),
+                                        },
+                                    },
+                                ),
+                                Stmt(
+                                    Assignment {
+                                        lhs: Index {
+                                            lhs: Identifier(
+                                                r"b",
+                                            ),
+                                            index: IntegerLiteral(
+                                                IntegerLiteral {
+                                                    repr: "1",
+                                                    value: 1,
+                                                },
+                                            ),
+                                        },
+                                        rhs: LvalueToRvalue(
+                                            Index {
+                                                lhs: Identifier(
+                                                    r"a",
+                                                ),
+                                                index: IntegerLiteral(
+                                                    IntegerLiteral {
+                                                        repr: "1",
+                                                        value: 1,
+                                                    },
+                                                ),
+                                            },
+                                        ),
+                                    },
+                                ),
+                                Stmt(
+                                    Assignment {
+                                        lhs: Index {
+                                            lhs: Identifier(
+                                                r"b",
+                                            ),
+                                            index: IntegerLiteral(
+                                                IntegerLiteral {
+                                                    repr: "2",
+                                                    value: 2,
+                                                },
+                                            ),
+                                        },
+                                        rhs: LvalueToRvalue(
+                                            Index {
+                                                lhs: Identifier(
+                                                    r"a",
+                                                ),
+                                                index: IntegerLiteral(
+                                                    IntegerLiteral {
+                                                        repr: "2",
+                                                        value: 2,
+                                                    },
+                                                ),
+                                            },
+                                        ),
+                                    },
+                                ),
+                                Stmt(
+                                    Assignment {
+                                        lhs: Index {
+                                            lhs: Identifier(
+                                                r"b",
+                                            ),
+                                            index: IntegerLiteral(
+                                                IntegerLiteral {
+                                                    repr: "3",
+                                                    value: 3,
+                                                },
+                                            ),
+                                        },
+                                        rhs: LvalueToRvalue(
+                                            Index {
+                                                lhs: Identifier(
+                                                    r"a",
+                                                ),
+                                                index: IntegerLiteral(
+                                                    IntegerLiteral {
+                                                        repr: "3",
+                                                        value: 3,
+                                                    },
+                                                ),
+                                            },
+                                        ),
+                                    },
+                                ),
+                                Stmt(
+                                    Assert {
+                                        pos: Position {
+                                            line: 60,
+                                            column: 1,
+                                        },
+                                        value: BinOp {
+                                            op: Eq,
+                                            lhs: LvalueToRvalue(
+                                                Member {
+                                                    lhs: Identifier(
+                                                        r"a",
+                                                    ),
+                                                    member_name: r"length",
+                                                },
+                                            ),
+                                            rhs: LvalueToRvalue(
+                                                Member {
+                                                    lhs: Identifier(
+                                                        r"b",
+                                                    ),
+                                                    member_name: r"length",
+                                                },
+                                            ),
+                                        },
+                                    },
+                                ),
+                                Stmt(
+                                    Assert {
+                                        pos: Position {
+                                            line: 61,
+                                            column: 1,
+                                        },
+                                        value: BinOp {
+                                            op: Eq,
+                                            lhs: LvalueToRvalue(
+                                                Index {
+                                                    lhs: Identifier(
+                                                        r"a",
+                                                    ),
+                                                    index: IntegerLiteral(
+                                                        IntegerLiteral {
+                                                            repr: "1",
+                                                            value: 1,
+                                                        },
+                                                    ),
+                                                },
+                                            ),
+                                            rhs: LvalueToRvalue(
+                                                Index {
+                                                    lhs: Identifier(
+                                                        r"b",
+                                                    ),
+                                                    index: IntegerLiteral(
+                                                        IntegerLiteral {
+                                                            repr: "1",
+                                                            value: 1,
+                                                        },
+                                                    ),
+                                                },
+                                            ),
+                                        },
+                                    },
+                                ),
+                                Stmt(
+                                    Assert {
+                                        pos: Position {
+                                            line: 62,
+                                            column: 1,
+                                        },
+                                        value: BinOp {
+                                            op: Eq,
+                                            lhs: LvalueToRvalue(
+                                                Index {
+                                                    lhs: Identifier(
+                                                        r"a",
+                                                    ),
+                                                    index: IntegerLiteral(
+                                                        IntegerLiteral {
+                                                            repr: "2",
+                                                            value: 2,
+                                                        },
+                                                    ),
+                                                },
+                                            ),
+                                            rhs: LvalueToRvalue(
+                                                Index {
+                                                    lhs: Identifier(
+                                                        r"b",
+                                                    ),
+                                                    index: IntegerLiteral(
+                                                        IntegerLiteral {
+                                                            repr: "2",
+                                                            value: 2,
+                                                        },
+                                                    ),
+                                                },
+                                            ),
+                                        },
+                                    },
+                                ),
+                                Stmt(
+                                    Assert {
+                                        pos: Position {
+                                            line: 63,
+                                            column: 1,
+                                        },
+                                        value: BinOp {
+                                            op: Eq,
+                                            lhs: LvalueToRvalue(
+                                                Index {
+                                                    lhs: Identifier(
+                                                        r"a",
+                                                    ),
+                                                    index: IntegerLiteral(
+                                                        IntegerLiteral {
+                                                            repr: "3",
+                                                            value: 3,
+                                                        },
+                                                    ),
+                                                },
+                                            ),
+                                            rhs: LvalueToRvalue(
+                                                Index {
+                                                    lhs: Identifier(
+                                                        r"b",
+                                                    ),
+                                                    index: IntegerLiteral(
+                                                        IntegerLiteral {
+                                                            repr: "3",
+                                                            value: 3,
+                                                        },
+                                                    ),
+                                                },
+                                            ),
+                                        },
+                                    },
+                                ),
+                                Stmt(
+                                    Assert {
+                                        pos: Position {
+                                            line: 64,
+                                            column: 1,
+                                        },
+                                        value: BinOp {
+                                            op: Ne,
+                                            lhs: LvalueToRvalue(
+                                                Identifier(
+                                                    r"a",
+                                                ),
+                                            ),
+                                            rhs: LvalueToRvalue(
+                                                Identifier(
+                                                    r"b",
+                                                ),
+                                            ),
+                                        },
+                                    },
+                                ),
+                            ],
+                        ),
+                    ),
+                ),
+            },
+        ),
+        Routine(
+            RoutineDecl {
+                name: r"main",
+                arguments: [],
+                return_type: None,
+                body: Some(
+                    Block(
+                        Block(
+                            [
+                                Stmt(
+                                    Expr(
+                                        Call {
+                                            callee: r"objects",
+                                            args: [],
+                                        },
+                                    ),
+                                ),
+                                Stmt(
+                                    Expr(
+                                        Call {
+                                            callee: r"arrays",
+                                            args: [],
+                                        },
+                                    ),
+                                ),
+                            ],
+                        ),
+                    ),
+                ),
+            },
+        ),
+    ],
+)

@@ -1,0 +1,70 @@
+type object is record
+
+end;
+
+routine get_first(t: array [] object) : object => t[1];
+routine get_second(t: array [] object) : object is
+	return t[2];
+end
+
+routine objects() is
+	var a: object;
+	assert a = null;
+
+	var b is new object;
+	assert b /= null;
+	assert a /= b;
+
+	a := b;
+	assert a = b;
+
+	a := new object;
+	assert a /= b;
+
+	var t is new [2] array [] object;
+	t[1] := a;
+	t[2] := b;
+
+	assert (((t[1]))) = ((a));
+	assert t[2] = b;
+
+	assert get_first(t) = a;
+	assert get_second(t) = b;
+end
+
+routine forget_length(t : array [] integer) : array [] integer is
+	return t;
+end
+
+routine arrays() is
+	var a : array[3] integer;
+	assert a = null;
+
+	a := new array[3] integer;
+	assert a /= null;
+	assert a = a;
+	assert a /= new array[3] integer;
+	a[1] := 10;
+	a[2] := 20;
+	a[3] := 30;
+
+	-- typecheck error
+	-- assert forget_length(a) = a;
+
+	var b is new array[3] integer;
+	assert a /= b;
+	b[1] := a[1];
+	b[2] := a[2];
+	b[3] := a[3];
+
+	assert a.length = b.length;
+	assert a[1] = b[1];
+	assert a[2] = b[2];
+	assert a[3] = b[3];
+	assert a /= b;
+end
+
+routine main() is
+	objects();
+	arrays();
+end

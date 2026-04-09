@@ -50,6 +50,7 @@ testing::tests! {
         records => "records"
         recursive_function => "recursive_function"
         recursive_types => "recursive_types"
+        references => "references"
         routine_redefinition => "routine_redefinition"
         shadow => "shadow"
         type_aliases => "type_aliases"
