@@ -56,6 +56,7 @@ testing::tests! {
     fail = [
         array_slice_eq => "array_slice_eq"
         bool_arith => "bool_arith"
+        bool_ord => "bool_ord"
         field_not_record => "field_not_record"
         invalid_array_length => "invalid_array_length"
         new_array_fixed => "new_array_fixed"

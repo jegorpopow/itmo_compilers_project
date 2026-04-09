@@ -17,6 +17,7 @@ testing::tests! {
         arrays_and_records => "arrays_and_records"
         assert => "assert"
         bool_arith => "bool_arith"
+        bool_ord => "bool_ord"
         comparison_operators => "comparison_operators"
         complex_expressions => "complex_expressions"
         conditionals => "conditionals"

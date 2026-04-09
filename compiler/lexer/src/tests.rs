@@ -20,6 +20,7 @@ testing::tests! {
         assert => "assert"
         binary_not => "binary_not"
         bool_arith => "bool_arith"
+        bool_ord => "bool_ord"
         comparison_operators => "comparison_operators"
         complex_expressions => "complex_expressions"
         conditionals => "conditionals"

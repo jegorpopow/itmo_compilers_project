@@ -293,14 +293,14 @@ pub(crate) fn infer_binary_operator_type(
                 } else {
                     Err(AnalysisError {
                         what: format!(
-                            "Can not apply arithmetic operator {op:?} for {lhs_type} and {rhs_type}"
+                            "Can not apply order comparison operator {op:?} for {lhs_type} and {rhs_type}"
                         ),
                     })
                 }
             } else {
                 Err(AnalysisError {
                     what: format!(
-                        "Can not apply arithmetic operator {op:?} for {lhs_type} and {rhs_type}"
+                        "Can not apply order comparison operator {op:?} for {lhs_type} and {rhs_type}"
                     ),
                 })
             }
