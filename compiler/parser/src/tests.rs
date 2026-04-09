@@ -48,6 +48,7 @@ testing::tests! {
         raytracer => "raytracer"
         real_comparisons => "real_comparisons"
         real_literals => "real_literals"
+        real_mod => "real_mod"
         records => "records"
         recursive_function => "recursive_function"
         recursive_types => "recursive_types"

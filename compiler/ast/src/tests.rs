@@ -61,6 +61,7 @@ testing::tests! {
         no_such_field => "no_such_field"
         not_scalar_arith => "not_scalar_arith"
         not_scalar_ord => "not_scalar_ord"
+        real_mod => "real_mod"
         routine_redefinition => "routine_redefinition"
     ]
 }
