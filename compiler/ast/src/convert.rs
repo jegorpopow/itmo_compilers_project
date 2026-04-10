@@ -289,16 +289,13 @@ impl Converter {
                     ty: Rc::new(Type::Bool),
                 },
 
-                Type::Real
-                | Type::Alias(_)
-                | Type::Record(_)
-                | Type::Array(_)
-                | Type::Null
-                | Type::Unit => Err(AnalysisError {
-                    what: format!(
-                        "Logical negation operator can not be applied to non-boolean {operand_type:?} value"
-                    ),
-                })?,
+                Type::Real | Type::Alias(_) | Type::Record(_) | Type::Array(_) | Type::Null => {
+                    Err(AnalysisError {
+                        what: format!(
+                            "Logical negation operator can not be applied to non-boolean {operand_type:?} value"
+                        ),
+                    })?
+                }
             },
             parser::Operator::Minus => match &*operand_type {
                 Type::Int => Typed {
@@ -315,16 +312,13 @@ impl Converter {
                     }),
                     ty: Rc::new(Type::Real),
                 },
-                Type::Bool
-                | Type::Alias(_)
-                | Type::Record(_)
-                | Type::Array(_)
-                | Type::Null
-                | Type::Unit => Err(AnalysisError {
-                    what: format!(
-                        "Arithmetical negation operator can not be applied to non-scalar type {operand_type:?} value"
-                    ),
-                })?,
+                Type::Bool | Type::Alias(_) | Type::Record(_) | Type::Array(_) | Type::Null => {
+                    Err(AnalysisError {
+                        what: format!(
+                            "Arithmetical negation operator can not be applied to non-scalar type {operand_type:?} value"
+                        ),
+                    })?
+                }
             },
             parser::Operator::Plus
             | parser::Operator::Mul
@@ -413,7 +407,7 @@ impl Converter {
         }
 
         match effective.as_ref() {
-            Type::Int | Type::Real | Type::Bool | Type::Null | Type::Unit => Err(AnalysisError {
+            Type::Int | Type::Real | Type::Bool | Type::Null => Err(AnalysisError {
                 what: format!("No new operator supported for built-in type {t:?}"),
             })?,
             Type::Alias(_) => unreachable!("Effective type can not be alias"),
@@ -919,7 +913,7 @@ impl Converter {
         let Some(body) = body else {
             let return_type = match &return_type {
                 Some(t) => self.convert_type(t)?,
-                None => Rc::new(Type::Unit),
+                None => Rc::new(Type::Null),
             };
 
             let signature = RoutineSignature {
@@ -980,7 +974,7 @@ impl Converter {
         argument_types: Vec<(RawIdentifier, Rc<Type>)>,
         args_decls: &[(RawIdentifier, VarDecl)],
     ) -> AnalysisResult<Binding> {
-        let return_type = return_type.map_or(Ok(Rc::new(Type::Unit)), |t| self.convert_type(t))?;
+        let return_type = return_type.map_or(Ok(Rc::new(Type::Null)), |t| self.convert_type(t))?;
 
         let signature = RoutineSignature {
             args: argument_types.clone(),

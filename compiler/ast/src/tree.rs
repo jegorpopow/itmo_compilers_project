@@ -584,9 +584,7 @@ impl Bindings {
             Type::Alias(_) => Err(AnalysisError {
                 what: "Effective type cannot be alias".to_string(),
             }),
-            Type::Record(_) | Type::Array(_) | Type::Null | Type::Unit => {
-                Ok(Expression::Null.into())
-            }
+            Type::Record(_) | Type::Array(_) | Type::Null => Ok(Expression::Null.into()),
         }
     }
 
@@ -599,13 +597,9 @@ impl Bindings {
             Type::Alias(identifier) => self[identifier]
                 .ensure_is_type()
                 .map(TypeDecl::get_effective),
-            Type::Int
-            | Type::Real
-            | Type::Bool
-            | Type::Record(_)
-            | Type::Array(_)
-            | Type::Null
-            | Type::Unit => Ok(t),
+            Type::Int | Type::Real | Type::Bool | Type::Record(_) | Type::Array(_) | Type::Null => {
+                Ok(t)
+            }
         }
     }
 }
@@ -642,13 +636,11 @@ pub(crate) fn cast_to(
             Type::Int => Ok(expr),
             Type::Real => Ok(Rc::new(Expression::RealToInt(expr))),
             Type::Bool => Ok(Rc::new(Expression::BoolToInt(expr))),
-            Type::Alias(_) | Type::Record(_) | Type::Array(_) | Type::Null | Type::Unit => {
-                Err(AnalysisError {
-                    what: format!(
-                        "There is no implicit conversion from `{own_type}` to `{target_type}`"
-                    ),
-                })
-            }
+            Type::Alias(_) | Type::Record(_) | Type::Array(_) | Type::Null => Err(AnalysisError {
+                what: format!(
+                    "There is no implicit conversion from `{own_type}` to `{target_type}`"
+                ),
+            }),
         },
         Type::Real => match own_type {
             Type::Real => Ok(expr),
@@ -656,13 +648,11 @@ pub(crate) fn cast_to(
             Type::Bool => Ok(Rc::new(Expression::IntToReal(Rc::new(
                 Expression::BoolToInt(expr),
             )))),
-            Type::Alias(_) | Type::Record(_) | Type::Array(_) | Type::Null | Type::Unit => {
-                Err(AnalysisError {
-                    what: format!(
-                        "There is no implicit conversion from `{own_type}` to `{target_type}`"
-                    ),
-                })
-            }
+            Type::Alias(_) | Type::Record(_) | Type::Array(_) | Type::Null => Err(AnalysisError {
+                what: format!(
+                    "There is no implicit conversion from `{own_type}` to `{target_type}`"
+                ),
+            }),
         },
 
         Type::Bool => match own_type {
@@ -671,13 +661,11 @@ pub(crate) fn cast_to(
             Type::Real => Ok(Rc::new(Expression::IntToBool(Rc::new(
                 Expression::RealToInt(expr),
             )))),
-            Type::Alias(_) | Type::Record(_) | Type::Array(_) | Type::Null | Type::Unit => {
-                Err(AnalysisError {
-                    what: format!(
-                        "There is no implicit conversion from `{own_type}` to `{target_type}`"
-                    ),
-                })
-            }
+            Type::Alias(_) | Type::Record(_) | Type::Array(_) | Type::Null => Err(AnalysisError {
+                what: format!(
+                    "There is no implicit conversion from `{own_type}` to `{target_type}`"
+                ),
+            }),
         },
 
         Type::Array(ArrayDescription { t, length: None }) => {
@@ -691,7 +679,7 @@ pub(crate) fn cast_to(
             }
         }
 
-        Type::Alias(_) | Type::Record(_) | Type::Array(_) | Type::Null | Type::Unit => {
+        Type::Alias(_) | Type::Record(_) | Type::Array(_) | Type::Null => {
             if own_type == target_type || *own_type == Type::Null {
                 Ok(expr)
             } else {

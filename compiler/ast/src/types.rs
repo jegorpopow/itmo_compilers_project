@@ -54,7 +54,6 @@ pub enum Type {
     Record(RecordDescription),
     Array(ArrayDescription),
     Null,
-    Unit,
 }
 
 impl Type {
@@ -89,7 +88,6 @@ impl Display for Type {
                 write!(f, "] {}", array_description.t)
             }
             Type::Null => write!(f, "null type"),
-            Type::Unit => write!(f, "unit type"),
         }
     }
 }
@@ -103,8 +101,8 @@ impl Type {
 
             (Type::Int, Type::Real) | (Type::Bool, Type::Real | Type::Int) => Rc::clone(r),
 
-            (Type::Alias(_) | Type::Array(_) | Type::Record(_) | Type::Unit | Type::Null, _)
-            | (_, Type::Alias(_) | Type::Array(_) | Type::Record(_) | Type::Unit | Type::Null) => {
+            (Type::Alias(_) | Type::Array(_) | Type::Record(_) | Type::Null, _)
+            | (_, Type::Alias(_) | Type::Array(_) | Type::Record(_) | Type::Null) => {
                 unreachable!()
             }
         }
@@ -113,12 +111,7 @@ impl Type {
     fn is_scalar(&self) -> bool {
         match self {
             Type::Int | Type::Real => true,
-            Type::Alias(_)
-            | Type::Record(_)
-            | Type::Array(_)
-            | Type::Bool
-            | Type::Null
-            | Type::Unit => false,
+            Type::Alias(_) | Type::Record(_) | Type::Array(_) | Type::Bool | Type::Null => false,
         }
     }
 
@@ -129,32 +122,24 @@ impl Type {
     pub fn get_field_type(&self, name: &RawIdentifier) -> AnalysisResult<Rc<Type>> {
         match self {
             Type::Record(record_description) => record_description.get_field_type(name),
-            Type::Int
-            | Type::Real
-            | Type::Bool
-            | Type::Alias(_)
-            | Type::Array(_)
-            | Type::Null
-            | Type::Unit => Err(AnalysisError {
-                what: format!(
-                    "Type `{self}` have no fields, but field `{name}` was requested for it"
-                ),
-            }),
+            Type::Int | Type::Real | Type::Bool | Type::Alias(_) | Type::Array(_) | Type::Null => {
+                Err(AnalysisError {
+                    what: format!(
+                        "Type `{self}` have no fields, but field `{name}` was requested for it"
+                    ),
+                })
+            }
         }
     }
 
     pub fn get_element_type(&self) -> AnalysisResult<&Rc<Type>> {
         match self {
             Type::Array(record_description) => Ok(&record_description.t),
-            Type::Int
-            | Type::Real
-            | Type::Bool
-            | Type::Alias(_)
-            | Type::Record(_)
-            | Type::Null
-            | Type::Unit => Err(AnalysisError {
-                what: format!("Type {self} is not an array, but its element was requested"),
-            }),
+            Type::Int | Type::Real | Type::Bool | Type::Alias(_) | Type::Record(_) | Type::Null => {
+                Err(AnalysisError {
+                    what: format!("Type {self} is not an array, but its element was requested"),
+                })
+            }
         }
     }
 
