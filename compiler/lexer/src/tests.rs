@@ -41,6 +41,7 @@ testing::tests! {
         new_array => "new_array"
         new_array_fixed => "new_array_fixed"
         no_such_field => "no_such_field"
+        not_scalar_arith => "not_scalar_arith"
         oob_big => "oob_big"
         oob_neg => "oob_neg"
         oob_zero => "oob_zero"

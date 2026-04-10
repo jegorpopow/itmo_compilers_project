@@ -59,6 +59,7 @@ testing::tests! {
         invalid_array_length => "invalid_array_length"
         new_array_fixed => "new_array_fixed"
         no_such_field => "no_such_field"
+        not_scalar_arith => "not_scalar_arith"
         routine_redefinition => "routine_redefinition"
     ]
 }
