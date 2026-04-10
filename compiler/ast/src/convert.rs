@@ -5,7 +5,7 @@ use common::{BindingId, Identifier, Location, LoopOrder, RawIdentifier, VarLoc};
 
 use crate::{
     operators::UnaryOperator,
-    tree::{ConstDecl, cast_to},
+    tree::ConstDecl,
     types::{BinOpAdjustment, infer_binary_operator_type},
     *,
 };
@@ -371,7 +371,7 @@ impl Converter {
             value: Rc::new(Expression::Call {
                 callee: self.lookup(callee)?.name.clone(),
                 args: iter::zip(arguments_types, args)
-                    .map(|(arg_type, expr)| cast_to(expr, &arg_type))
+                    .map(|(arg_type, expr)| self.bindings.coerce(expr, &arg_type))
                     .collect::<AnalysisResult<_>>()?,
             }),
             ty: Rc::clone(return_type),
@@ -400,7 +400,9 @@ impl Converter {
             return Ok(Typed {
                 value: Rc::new(Expression::NewArray {
                     elements: Rc::clone(elements),
-                    length: cast_to(self.convert_expr(length)?, &Type::Int)?,
+                    length: self
+                        .bindings
+                        .coerce(self.convert_expr(length)?, &Type::Int)?,
                 }),
                 ty,
             });
@@ -422,7 +424,8 @@ impl Converter {
                                 self.convert_expr(expr).and_then(|expr| {
                                     Ok((
                                         name.clone(),
-                                        cast_to(expr, record.get_field_type(name)?.as_ref())?,
+                                        self.bindings
+                                            .coerce(expr, record.get_field_type(name)?.as_ref())?,
                                     ))
                                 })
                             })
@@ -551,8 +554,8 @@ impl Converter {
                     operator: semantic_op,
                 } = infer_binary_operator_type(&lhs.ty, &rhs.ty, *op)?;
 
-                let actual_lhs = cast_to(lhs, &operand_type)?;
-                let actual_rhs = cast_to(rhs, &operand_type)?;
+                let actual_lhs = self.bindings.coerce(lhs, &operand_type)?;
+                let actual_rhs = self.bindings.coerce(rhs, &operand_type)?;
 
                 Typed {
                     value: Rc::new(Expression::BinOp {
@@ -646,8 +649,8 @@ impl Converter {
                     let body = this.convert_block(body)?;
                     Statement::For {
                         counter: counter_ident,
-                        lower_bound: cast_to(from, &int_type)?,
-                        upper_bound: cast_to(to, &int_type)?,
+                        lower_bound: this.bindings.coerce(from, &int_type)?,
+                        upper_bound: this.bindings.coerce(to, &int_type)?,
                         order,
                         body,
                     }
@@ -668,7 +671,9 @@ impl Converter {
             &parser::Statement::Assert { ref value, pos } => Statement::If {
                 condition: Rc::new(Expression::UnOp {
                     op: UnaryOperator::BoolNeg,
-                    operand: cast_to(self.convert_expr(value)?, &Type::Bool)?,
+                    operand: self
+                        .bindings
+                        .coerce(self.convert_expr(value)?, &Type::Bool)?,
                 }),
                 on_true: Block {
                     stmts: vec![Statement::Panic { pos }],
@@ -684,11 +689,15 @@ impl Converter {
                 } = self.convert_lvalue_expr(lhs)?;
                 Statement::Assignment {
                     lhs,
-                    rhs: cast_to(self.convert_expr(rhs)?, &target_type)?,
+                    rhs: self
+                        .bindings
+                        .coerce(self.convert_expr(rhs)?, &target_type)?,
                 }
             }
             parser::Statement::While { condition, body } => Statement::While {
-                condition: cast_to(self.convert_expr(condition)?, &Type::Bool)?,
+                condition: self
+                    .bindings
+                    .coerce(self.convert_expr(condition)?, &Type::Bool)?,
                 body: self.convert_block(body)?,
             },
             parser::Statement::Expr(expression) => {
@@ -701,7 +710,9 @@ impl Converter {
                 on_true,
                 on_false,
             } => Statement::If {
-                condition: cast_to(self.convert_expr(condition)?, &Type::Bool)?,
+                condition: self
+                    .bindings
+                    .coerce(self.convert_expr(condition)?, &Type::Bool)?,
                 on_true: self.convert_block(on_true)?,
                 on_false: on_false
                     .as_ref()
@@ -722,7 +733,9 @@ impl Converter {
             }
             parser::Statement::Return { value } => match &self.current_routine {
                 Some(RoutinePrototype { return_type, .. }) => Statement::Return {
-                    value: cast_to(self.convert_expr(value)?, return_type)?,
+                    value: self
+                        .bindings
+                        .coerce(self.convert_expr(value)?, return_type)?,
                 },
                 None => Err(AnalysisError {
                     what: "Return outside of routine".to_string(),
@@ -774,7 +787,7 @@ impl Converter {
         let decl = match t {
             Some(t) => {
                 let t = self.convert_type(t)?;
-                let expr = cast_to(expr, &t)?;
+                let expr = self.bindings.coerce(expr, &t)?;
                 ConstDecl {
                     t,
                     value: expr.try_constexpr_evaluate()?.as_literal(),
@@ -836,7 +849,7 @@ impl Converter {
             (Some(t), Some(expr)) => {
                 let t = self.convert_type(t)?;
                 VarDecl {
-                    initialiser: Some(cast_to(self.convert_expr(expr)?, &t)?),
+                    initialiser: Some(self.bindings.coerce(self.convert_expr(expr)?, &t)?),
                     t,
                     relative_location: loc,
                 }
@@ -1052,7 +1065,7 @@ impl Converter {
         );
 
         let (expr, return_type) = match return_type {
-            Some(ty) => (cast_to(expr, &ty)?, ty),
+            Some(ty) => (self.bindings.coerce(expr, &ty)?, ty),
             None => (expr.value, expr.ty),
         };
 

@@ -279,6 +279,34 @@ Program {
                                             ),
                                         },
                                     ),
+                                    If {
+                                        condition: UnOp {
+                                            op: BoolNeg,
+                                            operand: BinOp {
+                                                op: Eq(
+                                                    Eq,
+                                                ),
+                                                lhs: LvalueToRvalue(
+                                                    Identifier(
+                                                        s(8),
+                                                    ),
+                                                ),
+                                                rhs: Null,
+                                            },
+                                        },
+                                        on_true: Block {
+                                            stmts: [
+                                                Panic {
+                                                    pos: Position {
+                                                        line: 22,
+                                                        column: 4,
+                                                    },
+                                                },
+                                            ],
+                                            locals_count: 0,
+                                        },
+                                        on_false: None,
+                                    },
                                     Declaration(
                                         Binding {
                                             name: i2(9),
@@ -758,6 +786,34 @@ Program {
                                                 ),
                                             },
                                         ),
+                                        If {
+                                            condition: UnOp {
+                                                op: BoolNeg,
+                                                operand: BinOp {
+                                                    op: Eq(
+                                                        Eq,
+                                                    ),
+                                                    lhs: LvalueToRvalue(
+                                                        Identifier(
+                                                            s(8),
+                                                        ),
+                                                    ),
+                                                    rhs: Null,
+                                                },
+                                            },
+                                            on_true: Block {
+                                                stmts: [
+                                                    Panic {
+                                                        pos: Position {
+                                                            line: 22,
+                                                            column: 4,
+                                                        },
+                                                    },
+                                                ],
+                                                locals_count: 0,
+                                            },
+                                            on_false: None,
+                                        },
                                         Declaration(
                                             Binding {
                                                 name: i2(9),

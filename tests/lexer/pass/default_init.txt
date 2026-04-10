@@ -77,7 +77,11 @@
 "]" @ 21:19-21:20 is RIGHT BRACKET
 "integer" @ 21:21-21:28 is TYPENAME(Integer)
 ";" @ 21:28-21:29 is SEMICOLON
-"-- assert s = null;" @ 22:4-22:23 is COMMENT( assert s = null;)
+"assert" @ 22:4-22:10 is KEYWORD(Assert)
+"s" @ 22:11-22:12 is IDENTIFIER(s)
+"=" @ 22:13-22:14 is OPERATOR(Eq)
+"null" @ 22:15-22:19 is KEYWORD(Null)
+";" @ 22:19-22:20 is SEMICOLON
 "var" @ 24:4-24:7 is KEYWORD(Var)
 "i2" @ 24:8-24:10 is IDENTIFIER(i2)
 ":" @ 24:11-24:12 is COLON

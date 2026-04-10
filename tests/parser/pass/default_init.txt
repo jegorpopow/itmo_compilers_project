@@ -188,6 +188,23 @@ Program(
                                         initialiser: None,
                                     },
                                 ),
+                                Stmt(
+                                    Assert {
+                                        pos: Position {
+                                            line: 22,
+                                            column: 4,
+                                        },
+                                        value: BinOp {
+                                            op: Eq,
+                                            lhs: LvalueToRvalue(
+                                                Identifier(
+                                                    r"s",
+                                                ),
+                                            ),
+                                            rhs: Null,
+                                        },
+                                    },
+                                ),
                                 VarDecl(
                                     VarDecl {
                                         name: r"i2",
