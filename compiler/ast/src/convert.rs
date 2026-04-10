@@ -171,9 +171,9 @@ impl Converter {
 
     fn convert_type(&self, t: &parser::Type) -> AnalysisResult<Rc<Type>> {
         Ok(match t {
-            parser::Type::Int => Rc::new(Type::Int),
-            parser::Type::Real => Rc::new(Type::Real),
-            parser::Type::Bool => Rc::new(Type::Bool),
+            parser::Type::Int => Type::int(),
+            parser::Type::Real => Type::real(),
+            parser::Type::Bool => Type::bool(),
             parser::Type::Alias(raw_identifier) => {
                 let decl = self.lookup(raw_identifier)?;
                 let _: &_ = decl.ensure_is_type()?;
@@ -279,14 +279,14 @@ impl Converter {
                         op: UnaryOperator::BoolNeg,
                         operand,
                     }),
-                    ty: Rc::new(Type::Bool),
+                    ty: Type::bool(),
                 },
                 Type::Int => Typed {
                     value: Rc::new(Expression::UnOp {
                         op: UnaryOperator::BoolNeg,
                         operand: Rc::new(Expression::IntToBool(operand)),
                     }),
-                    ty: Rc::new(Type::Bool),
+                    ty: Type::bool(),
                 },
 
                 Type::Real | Type::Alias(_) | Type::Record(_) | Type::Array(_) | Type::Null => {
@@ -303,7 +303,7 @@ impl Converter {
                         op: UnaryOperator::IntNeg,
                         operand,
                     }),
-                    ty: Rc::new(Type::Int),
+                    ty: Type::int(),
                 },
                 Type::Real => Typed {
                     value: Rc::new(Expression::UnOp {
@@ -471,7 +471,7 @@ impl Converter {
                         value: Rc::new(Expression::LengthOf {
                             arr: Rc::new(Expression::LvalueToRvalue(lhs)),
                         }),
-                        ty: Rc::new(Type::Int),
+                        ty: Type::int(),
                     })
                 } else {
                     // Just field named `length`
@@ -525,7 +525,7 @@ impl Converter {
                     repr: integer_literal.repr.clone(),
                     value: integer_literal.value,
                 })),
-                ty: Rc::new(Type::Int),
+                ty: Type::int(),
             },
             parser::Expression::RealLiteral(real_literal) => Typed {
                 value: Rc::new(Expression::RealLiteral(RealLiteral {
@@ -539,7 +539,7 @@ impl Converter {
                     parser::BoolLiteral::True => BoolLiteral::True,
                     parser::BoolLiteral::False => BoolLiteral::False,
                 })),
-                ty: Rc::new(Type::Bool),
+                ty: Type::bool(),
             },
             parser::Expression::Call { callee, args } => self.convert_call(callee, args)?,
             parser::Expression::BinOp { op, lhs, rhs } => {
@@ -596,7 +596,7 @@ impl Converter {
             } => self.convert_new(t, fields.as_deref(), array_length.as_deref())?,
             parser::Expression::Null => Typed {
                 value: Rc::new(Expression::Null),
-                ty: Rc::new(Type::Null),
+                ty: Type::null(),
             },
         })
     }
@@ -636,7 +636,7 @@ impl Converter {
                 Some(to) => {
                     let from = this.convert_expr(from)?;
                     let to = this.convert_expr(to)?;
-                    let int_type = Rc::new(Type::Int);
+                    let int_type = Type::int();
                     let counter_decl = LocalDecl::Var(VarDecl {
                         t: Rc::clone(&int_type),
                         initialiser: None,
@@ -913,7 +913,7 @@ impl Converter {
         let Some(body) = body else {
             let return_type = match &return_type {
                 Some(t) => self.convert_type(t)?,
-                None => Rc::new(Type::Null),
+                None => Type::null(),
             };
 
             let signature = RoutineSignature {
@@ -974,7 +974,7 @@ impl Converter {
         argument_types: Vec<(RawIdentifier, Rc<Type>)>,
         args_decls: &[(RawIdentifier, VarDecl)],
     ) -> AnalysisResult<Binding> {
-        let return_type = return_type.map_or(Ok(Rc::new(Type::Null)), |t| self.convert_type(t))?;
+        let return_type = return_type.map_or(Ok(Type::null()), |t| self.convert_type(t))?;
 
         let signature = RoutineSignature {
             args: argument_types.clone(),

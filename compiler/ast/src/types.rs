@@ -56,10 +56,26 @@ pub enum Type {
     Null,
 }
 
+// TODO(#65, #111): get rid of `Rc`s
 impl Type {
     pub fn bool() -> Rc<Self> {
         thread_local! { static BOOL: Rc<Type> = Rc::new(Type::Bool); }
         BOOL.with(Rc::clone)
+    }
+
+    pub fn int() -> Rc<Self> {
+        thread_local! { static INT: Rc<Type> = Rc::new(Type::Int); }
+        INT.with(Rc::clone)
+    }
+
+    pub fn real() -> Rc<Self> {
+        thread_local! { static REAL: Rc<Type> = Rc::new(Type::Real); }
+        REAL.with(Rc::clone)
+    }
+
+    pub fn null() -> Rc<Self> {
+        thread_local! { static NULL: Rc<Type> = Rc::new(Type::Null); }
+        NULL.with(Rc::clone)
     }
 }
 
