@@ -60,6 +60,7 @@ testing::tests! {
         new_array_fixed => "new_array_fixed"
         no_such_field => "no_such_field"
         not_scalar_arith => "not_scalar_arith"
+        not_scalar_ord => "not_scalar_ord"
         routine_redefinition => "routine_redefinition"
     ]
 }
