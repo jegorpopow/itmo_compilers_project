@@ -1836,49 +1836,6 @@ Program(
                 ),
             },
         ),
-        Const(
-            ConstDecl {
-                name: r"CANVAS_MAX_HEIGHT",
-                t: None,
-                initialiser: IntegerLiteral(
-                    IntegerLiteral {
-                        repr: "360",
-                        value: 360,
-                    },
-                ),
-            },
-        ),
-        Const(
-            ConstDecl {
-                name: r"CANVAS_MAX_WIDTH",
-                t: None,
-                initialiser: IntegerLiteral(
-                    IntegerLiteral {
-                        repr: "640",
-                        value: 640,
-                    },
-                ),
-            },
-        ),
-        Const(
-            ConstDecl {
-                name: r"CANVAS_MAX_PIXELS",
-                t: None,
-                initialiser: BinOp {
-                    op: Mul,
-                    lhs: LvalueToRvalue(
-                        Identifier(
-                            r"CANVAS_MAX_HEIGHT",
-                        ),
-                    ),
-                    rhs: LvalueToRvalue(
-                        Identifier(
-                            r"CANVAS_MAX_WIDTH",
-                        ),
-                    ),
-                },
-            },
-        ),
         Type(
             TypeDecl {
                 name: r"canvas",
@@ -1892,13 +1849,7 @@ Program(
                                         t: Alias(
                                             r"colour",
                                         ),
-                                        length: Some(
-                                            LvalueToRvalue(
-                                                Identifier(
-                                                    r"CANVAS_MAX_PIXELS",
-                                                ),
-                                            ),
-                                        ),
+                                        length: None,
                                     },
                                 ),
                             },
@@ -2098,82 +2049,6 @@ Program(
                     Block(
                         Block(
                             [
-                                Stmt(
-                                    Assert {
-                                        pos: Position {
-                                            line: 173,
-                                            column: 2,
-                                        },
-                                        value: BinOp {
-                                            op: And,
-                                            lhs: BinOp {
-                                                op: Ge,
-                                                lhs: LvalueToRvalue(
-                                                    Identifier(
-                                                        r"h",
-                                                    ),
-                                                ),
-                                                rhs: IntegerLiteral(
-                                                    IntegerLiteral {
-                                                        repr: "0",
-                                                        value: 0,
-                                                    },
-                                                ),
-                                            },
-                                            rhs: BinOp {
-                                                op: Le,
-                                                lhs: LvalueToRvalue(
-                                                    Identifier(
-                                                        r"h",
-                                                    ),
-                                                ),
-                                                rhs: LvalueToRvalue(
-                                                    Identifier(
-                                                        r"CANVAS_MAX_HEIGHT",
-                                                    ),
-                                                ),
-                                            },
-                                        },
-                                    },
-                                ),
-                                Stmt(
-                                    Assert {
-                                        pos: Position {
-                                            line: 174,
-                                            column: 2,
-                                        },
-                                        value: BinOp {
-                                            op: And,
-                                            lhs: BinOp {
-                                                op: Ge,
-                                                lhs: LvalueToRvalue(
-                                                    Identifier(
-                                                        r"w",
-                                                    ),
-                                                ),
-                                                rhs: IntegerLiteral(
-                                                    IntegerLiteral {
-                                                        repr: "0",
-                                                        value: 0,
-                                                    },
-                                                ),
-                                            },
-                                            rhs: BinOp {
-                                                op: Le,
-                                                lhs: LvalueToRvalue(
-                                                    Identifier(
-                                                        r"w",
-                                                    ),
-                                                ),
-                                                rhs: LvalueToRvalue(
-                                                    Identifier(
-                                                        r"CANVAS_MAX_WIDTH",
-                                                    ),
-                                                ),
-                                            },
-                                        },
-                                    },
-                                ),
                                 VarDecl(
                                     VarDecl {
                                         name: r"res",
@@ -2193,17 +2068,25 @@ Program(
                                                                         t: Alias(
                                                                             r"colour",
                                                                         ),
-                                                                        length: Some(
-                                                                            LvalueToRvalue(
-                                                                                Identifier(
-                                                                                    r"CANVAS_MAX_PIXELS",
-                                                                                ),
+                                                                        length: None,
+                                                                    },
+                                                                ),
+                                                                fields: None,
+                                                                array_length: Some(
+                                                                    BinOp {
+                                                                        op: Mul,
+                                                                        lhs: LvalueToRvalue(
+                                                                            Identifier(
+                                                                                r"w",
+                                                                            ),
+                                                                        ),
+                                                                        rhs: LvalueToRvalue(
+                                                                            Identifier(
+                                                                                r"h",
                                                                             ),
                                                                         ),
                                                                     },
                                                                 ),
-                                                                fields: None,
-                                                                array_length: None,
                                                             },
                                                         ),
                                                         (
@@ -2246,7 +2129,7 @@ Program(
                                                         lhs: Identifier(
                                                             r"res",
                                                         ),
-                                                        member_name: r"height",
+                                                        member_name: r"width",
                                                     },
                                                 ),
                                                 rhs: IntegerLiteral(
@@ -2277,7 +2160,7 @@ Program(
                                                                         lhs: Identifier(
                                                                             r"res",
                                                                         ),
-                                                                        member_name: r"width",
+                                                                        member_name: r"height",
                                                                     },
                                                                 ),
                                                                 rhs: IntegerLiteral(
@@ -2385,7 +2268,7 @@ Program(
                                 ),
                                 Stmt(
                                     For {
-                                        counter: r"x",
+                                        counter: r"y",
                                         from: BinOp {
                                             op: Minus,
                                             lhs: LvalueToRvalue(
@@ -2416,7 +2299,7 @@ Program(
                                             [
                                                 Stmt(
                                                     For {
-                                                        counter: r"y",
+                                                        counter: r"x",
                                                         from: IntegerLiteral(
                                                             IntegerLiteral {
                                                                 repr: "0",
@@ -4171,18 +4054,16 @@ Program(
                                                             r"virtual_screen_height",
                                                         ),
                                                     ),
-                                                    rhs: IntegerLiteral(
-                                                        IntegerLiteral {
-                                                            repr: "16",
-                                                            value: 16,
-                                                        },
+                                                    rhs: LvalueToRvalue(
+                                                        Identifier(
+                                                            r"w",
+                                                        ),
                                                     ),
                                                 },
-                                                rhs: IntegerLiteral(
-                                                    IntegerLiteral {
-                                                        repr: "9",
-                                                        value: 9,
-                                                    },
+                                                rhs: LvalueToRvalue(
+                                                    Identifier(
+                                                        r"h",
+                                                    ),
                                                 ),
                                             },
                                         ),
@@ -4914,8 +4795,8 @@ Program(
                                                             r"radius",
                                                             IntegerLiteral(
                                                                 IntegerLiteral {
-                                                                    repr: "3",
-                                                                    value: 3,
+                                                                    repr: "2",
+                                                                    value: 2,
                                                                 },
                                                             ),
                                                         ),
@@ -5114,20 +4995,6 @@ Program(
                                         },
                                     },
                                 ),
-                                VarDecl(
-                                    VarDecl {
-                                        name: r"height",
-                                        t: None,
-                                        initialiser: Some(
-                                            IntegerLiteral(
-                                                IntegerLiteral {
-                                                    repr: "36",
-                                                    value: 36,
-                                                },
-                                            ),
-                                        ),
-                                    },
-                                ),
                                 Stmt(
                                     Expr(
                                         Call {
@@ -5136,34 +5003,18 @@ Program(
                                                 Call {
                                                     callee: r"trace_rays",
                                                     args: [
-                                                        LvalueToRvalue(
-                                                            Identifier(
-                                                                r"height",
-                                                            ),
-                                                        ),
-                                                        BinOp {
-                                                            op: Mul,
-                                                            lhs: BinOp {
-                                                                op: Div,
-                                                                lhs: LvalueToRvalue(
-                                                                    Identifier(
-                                                                        r"height",
-                                                                    ),
-                                                                ),
-                                                                rhs: IntegerLiteral(
-                                                                    IntegerLiteral {
-                                                                        repr: "9",
-                                                                        value: 9,
-                                                                    },
-                                                                ),
+                                                        IntegerLiteral(
+                                                            IntegerLiteral {
+                                                                repr: "36",
+                                                                value: 36,
                                                             },
-                                                            rhs: IntegerLiteral(
-                                                                IntegerLiteral {
-                                                                    repr: "16",
-                                                                    value: 16,
-                                                                },
-                                                            ),
-                                                        },
+                                                        ),
+                                                        IntegerLiteral(
+                                                            IntegerLiteral {
+                                                                repr: "64",
+                                                                value: 64,
+                                                            },
+                                                        ),
                                                         LvalueToRvalue(
                                                             Identifier(
                                                                 r"scene",

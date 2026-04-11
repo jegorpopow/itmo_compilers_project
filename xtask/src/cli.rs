@@ -1,3 +1,5 @@
+use std::path::PathBuf;
+
 use clap::{Parser, ValueEnum};
 
 #[derive(Parser)]
@@ -17,6 +19,13 @@ pub(crate) enum Task {
         name: String,
         /// Stage at which the test should fail (if any).
         fail_stage: Option<Stage>,
+    },
+    /// Convert raytracer's output to a png.
+    Render {
+        /// File with raytracer's output.
+        raytracer_output: PathBuf,
+        /// Path to the output image.
+        image: PathBuf,
     },
 }
 

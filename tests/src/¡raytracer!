@@ -152,12 +152,8 @@ var BLUE is colour_of(0, 0, 255);
 var BLACK is colour_of(0, 0, 0);
 var WHITE is colour_of(255, 255, 255);
 
-constant CANVAS_MAX_HEIGHT is 360;
-constant CANVAS_MAX_WIDTH is 640;
-constant CANVAS_MAX_PIXELS is CANVAS_MAX_HEIGHT * CANVAS_MAX_WIDTH;
-
 type canvas is record
-  var pixels is array [CANVAS_MAX_PIXELS] colour;
+  var pixels is array [] colour;
   var height is integer;
   var width is integer;
 end;
@@ -170,17 +166,14 @@ routine set_canvas_at(c : canvas, x : integer, y : integer, nc : colour) is
 end
 
 routine new_canvas(h : integer, w : integer, background : colour): canvas is
-  assert h >= 0 and h <= CANVAS_MAX_HEIGHT;
-  assert w >= 0 and w <= CANVAS_MAX_WIDTH;
-
   var res is new canvas where
-    pixels is new array [CANVAS_MAX_PIXELS] colour;
+    pixels is new[w * h] array [] colour;
     height is h;
     width is w;
   end;
 
-  for x in 0 .. res.height - 1 loop
-    for y in 0 .. res.width - 1 loop
+  for x in 0 .. res.width - 1 loop
+    for y in 0 .. res.height - 1 loop
       set_canvas_at(res, x, y, background);
     end
   end
@@ -192,8 +185,8 @@ routine render_canvas(c : canvas) is
   print c.height;
   print c.width;
 
-  for x in c.height - 1 .. 0  reverse loop
-    for y in 0 .. c.width - 1 loop
+  for y in c.height - 1 .. 0  reverse loop
+    for x in 0 .. c.width - 1 loop
       print get_canvas_at(c, x, y);
     end
   end
@@ -346,7 +339,7 @@ routine trace_rays(h : integer, w : integer, scene : array [] object) : canvas i
 
   var virtual_screen_height : real is 2;
   var virtual_screen_width : real is
-    virtual_screen_height * 16 / 9;
+    virtual_screen_height * w / h;
 
   var base : vector is
     vector_of(0, 0, -2);
@@ -404,7 +397,7 @@ routine main() is
   var green_sphere is
     new sphere where
       centre is vector_of(-0.8, -0.5, 4);
-      radius is 3;
+      radius is 2;
       colour is GREEN;
     end;
   var blue_plane is
@@ -419,7 +412,5 @@ routine main() is
   scene[2] := sphere_to_object(green_sphere);
   scene[3] := plane_to_object(blue_plane);
 
-  var height is 36;
-
-  render_canvas(trace_rays(height, height / 9 * 16, scene));
+  render_canvas(trace_rays(36, 64, scene));
 end
