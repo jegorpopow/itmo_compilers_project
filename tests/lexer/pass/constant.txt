@@ -23,7 +23,7 @@
 "]" @ 4:42-4:43 is RIGHT BRACKET
 "integer" @ 4:44-4:51 is TYPENAME(Integer)
 ";" @ 4:51-4:52 is SEMICOLON
-"routine" @ 6:0-6:7 is KEYWORD(Routine)
+"routine" @ 6:0-6:7 is KEYWORD(Routine(Opening))
 "meow" @ 6:8-6:12 is IDENTIFIER(meow)
 "(" @ 6:12-6:13 is LEFT PARENTHESIS
 "arr" @ 6:13-6:16 is IDENTIFIER(arr)
@@ -43,8 +43,8 @@
 "1" @ 7:13-7:14 is INTEGER LITERAL(1)
 "]" @ 7:14-7:15 is RIGHT BRACKET
 ";" @ 7:15-7:16 is SEMICOLON
-"end" @ 8:0-8:3 is KEYWORD(End)
-"routine" @ 10:0-10:7 is KEYWORD(Routine)
+"enitour" @ 8:0-8:7 is KEYWORD(Routine(Closing))
+"routine" @ 10:0-10:7 is KEYWORD(Routine(Opening))
 "table_receiver" @ 10:8-10:22 is IDENTIFIER(table_receiver)
 "(" @ 10:22-10:23 is LEFT PARENTHESIS
 "t" @ 10:23-10:24 is IDENTIFIER(t)
@@ -70,8 +70,8 @@
 "LENGTH" @ 12:27-12:33 is IDENTIFIER(LENGTH)
 "]" @ 12:33-12:34 is RIGHT BRACKET
 ";" @ 12:34-12:35 is SEMICOLON
-"end" @ 13:0-13:3 is KEYWORD(End)
-"routine" @ 15:0-15:7 is KEYWORD(Routine)
+"enitour" @ 13:0-13:7 is KEYWORD(Routine(Closing))
+"routine" @ 15:0-15:7 is KEYWORD(Routine(Opening))
 "main" @ 15:8-15:12 is IDENTIFIER(main)
 "(" @ 15:12-15:13 is LEFT PARENTHESIS
 ")" @ 15:13-15:14 is RIGHT PARENTHESIS
@@ -101,7 +101,7 @@
 "is" @ 20:18-20:20 is KEYWORD(Is)
 "300" @ 20:21-20:24 is INTEGER LITERAL(300)
 ";" @ 20:24-20:25 is SEMICOLON
-"if" @ 21:2-21:4 is KEYWORD(If)
+"if" @ 21:2-21:4 is KEYWORD(If(Opening))
 "LENGTH" @ 21:5-21:11 is IDENTIFIER(LENGTH)
 ">" @ 21:12-21:13 is OPERATOR(Gt)
 "DOUBLE_LENGTH" @ 21:14-21:27 is IDENTIFIER(DOUBLE_LENGTH)
@@ -117,8 +117,8 @@
 "print" @ 24:4-24:9 is KEYWORD(Print)
 "LENGTH" @ 24:10-24:16 is IDENTIFIER(LENGTH)
 ";" @ 24:16-24:17 is SEMICOLON
-"end" @ 25:2-25:5 is KEYWORD(End)
+"fi" @ 25:2-25:4 is KEYWORD(If(Closing))
 "print" @ 27:2-27:7 is KEYWORD(Print)
 "LENGTH" @ 27:8-27:14 is IDENTIFIER(LENGTH)
 ";" @ 27:14-27:15 is SEMICOLON
-"end" @ 28:0-28:3 is KEYWORD(End)
+"enitour" @ 28:0-28:7 is KEYWORD(Routine(Closing))

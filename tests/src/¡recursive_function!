@@ -3,9 +3,9 @@ routine fibonacci(n : integer) : integer is
     return 1;
   else
     return fibonacci(n  - 1) + fibonacci(n  - 2);
-  end
-end
+  fi
+enitour
 
 routine main() is
   print fibonacci(10);
-end
+enitour

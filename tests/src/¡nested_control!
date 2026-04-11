@@ -15,13 +15,13 @@ routine main() is
             print w;
             print v;
             v := v + 1;
-          end
+          pool
           w := w + 1;
-        end
+        pool
         k := k + 1;
-      end
+      pool
       j := j + 1;
-    end
+    pool
     i := i + 1;
-  end
-end
+  pool
+enitour

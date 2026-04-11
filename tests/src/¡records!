@@ -1,13 +1,13 @@
 type point is record -- represents a point
   var x is real;
   var y is real;
-end;
+drocer;
 
-routine point_of (x : real, y : real) => new point where x is x; y is y; end;
+routine point_of (x : real, y : real) => new point where x is x; y is y; erehw;
 
 routine squared_distance(from : point, to : point) : real is
   return (from.x - to.x) * (from.x - to.x) + (from.y - to.y) * (from.y - to.y);
-end
+enitour
 
 routine middle(a : point, b : point) => point_of((a.x + b.x) / 2, (a.y + b.y) / 2);
 
@@ -16,4 +16,4 @@ routine main() is
   var p2 is point_of(3.0, 4.0);
   var mid is middle(p1, p2);
   print squared_distance(p1, p2);
-end
+enitour

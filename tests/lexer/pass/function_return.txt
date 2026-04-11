@@ -1,4 +1,4 @@
-"routine" @ 1:0-1:7 is KEYWORD(Routine)
+"routine" @ 1:0-1:7 is KEYWORD(Routine(Opening))
 "echo" @ 1:8-1:12 is IDENTIFIER(echo)
 "(" @ 1:13-1:14 is LEFT PARENTHESIS
 "data" @ 1:14-1:18 is IDENTIFIER(data)
@@ -14,8 +14,8 @@
 "return" @ 3:2-3:8 is KEYWORD(Return)
 "data" @ 3:9-3:13 is IDENTIFIER(data)
 ";" @ 3:13-3:14 is SEMICOLON
-"end" @ 4:0-4:3 is KEYWORD(End)
-"routine" @ 6:0-6:7 is KEYWORD(Routine)
+"enitour" @ 4:0-4:7 is KEYWORD(Routine(Closing))
+"routine" @ 6:0-6:7 is KEYWORD(Routine(Opening))
 "main" @ 6:8-6:12 is IDENTIFIER(main)
 "(" @ 6:12-6:13 is LEFT PARENTHESIS
 ")" @ 6:13-6:14 is RIGHT PARENTHESIS
@@ -26,4 +26,4 @@
 "42" @ 7:13-7:15 is INTEGER LITERAL(42)
 ")" @ 7:15-7:16 is RIGHT PARENTHESIS
 ";" @ 7:16-7:17 is SEMICOLON
-"end" @ 8:0-8:3 is KEYWORD(End)
+"enitour" @ 8:0-8:7 is KEYWORD(Routine(Closing))

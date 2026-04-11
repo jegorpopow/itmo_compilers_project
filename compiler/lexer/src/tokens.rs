@@ -3,30 +3,33 @@ use core::{error, fmt};
 
 use common::{Extent, Integer, Real};
 
-// Token types
+#[derive(PartialEq, Eq, Hash, fmt::Debug, Clone, Copy)]
+pub enum Pair {
+    Opening,
+    Closing,
+}
 
 #[derive(PartialEq, Eq, Hash, fmt::Debug, Clone, Copy)]
 pub enum Keyword {
     Var,
     Type,
-    Routine,
+    Routine(Pair),
     Array,
-    Record,
+    Record(Pair),
     Is,
-    End,
-    If,
+    If(Pair),
     Then,
     Else,
     Return,
     In,
     While,
     For,
-    Loop,
+    Loop(Pair),
     Reverse,
     Print,
     New,
     Null,
-    Where,
+    Where(Pair),
     Assert,
     Panic,
     Constant,
@@ -116,10 +119,8 @@ pub enum TokenKind<'a> {
     Operator(Operator),
     Comment(Comment<'a>),
     Invalid(InvalidToken),
-    LeftBracket,
-    RightBracket,
-    LeftParenthesis,
-    RightParenthesis,
+    Bracket(Pair),
+    Parenthesis(Pair),
     /// `=>`
     RightArrow,
     /// `::`
@@ -154,10 +155,10 @@ impl fmt::Display for TokenKind<'_> {
             TokenKind::Operator(operator) => write!(f, "OPERATOR({operator:?})"),
             TokenKind::Comment(comment) => write!(f, "COMMENT({comment})"),
             TokenKind::Invalid(problem) => write!(f, "INVALID({problem})"),
-            TokenKind::LeftBracket => write!(f, "LEFT BRACKET"),
-            TokenKind::RightBracket => write!(f, "RIGHT BRACKET"),
-            TokenKind::LeftParenthesis => write!(f, "LEFT PARENTHESIS"),
-            TokenKind::RightParenthesis => write!(f, "RIGHT PARENTHESIS"),
+            TokenKind::Bracket(Pair::Opening) => write!(f, "LEFT BRACKET"),
+            TokenKind::Bracket(Pair::Closing) => write!(f, "RIGHT BRACKET"),
+            TokenKind::Parenthesis(Pair::Opening) => write!(f, "LEFT PARENTHESIS"),
+            TokenKind::Parenthesis(Pair::Closing) => write!(f, "RIGHT PARENTHESIS"),
             TokenKind::RightArrow => write!(f, "FUNCTION ARROW"),
             TokenKind::Assignment => write!(f, "ASSIGNMENT OPERATOR"),
             TokenKind::RangeSymbol => write!(f, "RANGE"),
