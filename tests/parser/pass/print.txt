@@ -1,0 +1,326 @@
+Program(
+    [
+        Type(
+            TypeDecl {
+                name: r"empty_struct",
+                t: Record(
+                    RecordDescription {
+                        fields: [],
+                    },
+                ),
+            },
+        ),
+        Type(
+            TypeDecl {
+                name: r"weird_names",
+                t: Record(
+                    RecordDescription {
+                        fields: [
+                            FieldDescription {
+                                name: r"'we'allow'this'",
+                                t: Alias(
+                                    r"empty_struct",
+                                ),
+                            },
+                            FieldDescription {
+                                name: r"_",
+                                t: Alias(
+                                    r"empty_struct",
+                                ),
+                            },
+                        ],
+                    },
+                ),
+            },
+        ),
+        Type(
+            TypeDecl {
+                name: r"recursive",
+                t: Record(
+                    RecordDescription {
+                        fields: [
+                            FieldDescription {
+                                name: r"id",
+                                t: Int,
+                            },
+                            FieldDescription {
+                                name: r"link",
+                                t: Alias(
+                                    r"recursive",
+                                ),
+                            },
+                            FieldDescription {
+                                name: r"links",
+                                t: Array(
+                                    ArrayDescription {
+                                        t: Alias(
+                                            r"recursive",
+                                        ),
+                                        length: None,
+                                    },
+                                ),
+                            },
+                        ],
+                    },
+                ),
+            },
+        ),
+        Routine(
+            RoutineDecl {
+                name: r"main",
+                arguments: [],
+                return_type: None,
+                body: Some(
+                    Block(
+                        Block(
+                            [
+                                Stmt(
+                                    Print {
+                                        value: New {
+                                            t: Alias(
+                                                r"weird_names",
+                                            ),
+                                            fields: Some(
+                                                [
+                                                    (
+                                                        r"_",
+                                                        New {
+                                                            t: Alias(
+                                                                r"empty_struct",
+                                                            ),
+                                                            fields: None,
+                                                            array_length: None,
+                                                        },
+                                                    ),
+                                                ],
+                                            ),
+                                            array_length: None,
+                                        },
+                                    },
+                                ),
+                                VarDecl(
+                                    VarDecl {
+                                        name: r"root",
+                                        t: None,
+                                        initialiser: Some(
+                                            New {
+                                                t: Alias(
+                                                    r"recursive",
+                                                ),
+                                                fields: Some(
+                                                    [
+                                                        (
+                                                            r"id",
+                                                            IntegerLiteral(
+                                                                IntegerLiteral {
+                                                                    repr: "0",
+                                                                    value: 0,
+                                                                },
+                                                            ),
+                                                        ),
+                                                        (
+                                                            r"links",
+                                                            New {
+                                                                t: Array(
+                                                                    ArrayDescription {
+                                                                        t: Alias(
+                                                                            r"recursive",
+                                                                        ),
+                                                                        length: None,
+                                                                    },
+                                                                ),
+                                                                fields: None,
+                                                                array_length: Some(
+                                                                    IntegerLiteral(
+                                                                        IntegerLiteral {
+                                                                            repr: "3",
+                                                                            value: 3,
+                                                                        },
+                                                                    ),
+                                                                ),
+                                                            },
+                                                        ),
+                                                    ],
+                                                ),
+                                                array_length: None,
+                                            },
+                                        ),
+                                    },
+                                ),
+                                Stmt(
+                                    Print {
+                                        value: LvalueToRvalue(
+                                            Identifier(
+                                                r"root",
+                                            ),
+                                        ),
+                                    },
+                                ),
+                                Stmt(
+                                    Assignment {
+                                        lhs: Member {
+                                            lhs: Identifier(
+                                                r"root",
+                                            ),
+                                            member_name: r"link",
+                                        },
+                                        rhs: LvalueToRvalue(
+                                            Identifier(
+                                                r"root",
+                                            ),
+                                        ),
+                                    },
+                                ),
+                                Stmt(
+                                    Print {
+                                        value: LvalueToRvalue(
+                                            Identifier(
+                                                r"root",
+                                            ),
+                                        ),
+                                    },
+                                ),
+                                VarDecl(
+                                    VarDecl {
+                                        name: r"leaf",
+                                        t: None,
+                                        initialiser: Some(
+                                            New {
+                                                t: Alias(
+                                                    r"recursive",
+                                                ),
+                                                fields: Some(
+                                                    [
+                                                        (
+                                                            r"id",
+                                                            IntegerLiteral(
+                                                                IntegerLiteral {
+                                                                    repr: "0",
+                                                                    value: 0,
+                                                                },
+                                                            ),
+                                                        ),
+                                                        (
+                                                            r"link",
+                                                            LvalueToRvalue(
+                                                                Identifier(
+                                                                    r"root",
+                                                                ),
+                                                            ),
+                                                        ),
+                                                        (
+                                                            r"links",
+                                                            New {
+                                                                t: Array(
+                                                                    ArrayDescription {
+                                                                        t: Alias(
+                                                                            r"recursive",
+                                                                        ),
+                                                                        length: None,
+                                                                    },
+                                                                ),
+                                                                fields: None,
+                                                                array_length: Some(
+                                                                    IntegerLiteral(
+                                                                        IntegerLiteral {
+                                                                            repr: "3",
+                                                                            value: 3,
+                                                                        },
+                                                                    ),
+                                                                ),
+                                                            },
+                                                        ),
+                                                    ],
+                                                ),
+                                                array_length: None,
+                                            },
+                                        ),
+                                    },
+                                ),
+                                Stmt(
+                                    Assignment {
+                                        lhs: Member {
+                                            lhs: Identifier(
+                                                r"root",
+                                            ),
+                                            member_name: r"link",
+                                        },
+                                        rhs: LvalueToRvalue(
+                                            Identifier(
+                                                r"leaf",
+                                            ),
+                                        ),
+                                    },
+                                ),
+                                Stmt(
+                                    Print {
+                                        value: LvalueToRvalue(
+                                            Identifier(
+                                                r"root",
+                                            ),
+                                        ),
+                                    },
+                                ),
+                                Stmt(
+                                    Assignment {
+                                        lhs: Index {
+                                            lhs: Member {
+                                                lhs: Identifier(
+                                                    r"leaf",
+                                                ),
+                                                member_name: r"links",
+                                            },
+                                            index: IntegerLiteral(
+                                                IntegerLiteral {
+                                                    repr: "1",
+                                                    value: 1,
+                                                },
+                                            ),
+                                        },
+                                        rhs: LvalueToRvalue(
+                                            Identifier(
+                                                r"leaf",
+                                            ),
+                                        ),
+                                    },
+                                ),
+                                Stmt(
+                                    Assignment {
+                                        lhs: Index {
+                                            lhs: Member {
+                                                lhs: Identifier(
+                                                    r"leaf",
+                                                ),
+                                                member_name: r"links",
+                                            },
+                                            index: IntegerLiteral(
+                                                IntegerLiteral {
+                                                    repr: "3",
+                                                    value: 3,
+                                                },
+                                            ),
+                                        },
+                                        rhs: LvalueToRvalue(
+                                            Identifier(
+                                                r"root",
+                                            ),
+                                        ),
+                                    },
+                                ),
+                                Stmt(
+                                    Print {
+                                        value: LvalueToRvalue(
+                                            Identifier(
+                                                r"root",
+                                            ),
+                                        ),
+                                    },
+                                ),
+                            ],
+                        ),
+                    ),
+                ),
+            },
+        ),
+    ],
+)

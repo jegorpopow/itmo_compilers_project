@@ -1,0 +1,39 @@
+type empty_struct is record end;
+
+type weird_names is record
+	var 'we'allow'this' is empty_struct;
+	var _ is empty_struct;
+end;
+
+type recursive is record
+	var id is integer;
+	var link is recursive;
+	var links is array [] recursive;
+end;
+
+routine main() is
+	print new weird_names where
+		_ is new empty_struct;
+	end;
+
+	var root is new recursive where
+		id is 0;
+		links is new[3] array [] recursive;
+	end;
+	print root;
+
+	root.link := root;
+	print root;
+
+	var leaf is new recursive where
+		id is 0;
+		link is root;
+		links is new[3] array [] recursive;
+	end;
+	root.link := leaf;
+	print root;
+
+	leaf.links[1] := leaf;
+	leaf.links[3] := root;
+	print root;
+end
