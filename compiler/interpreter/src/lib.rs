@@ -53,8 +53,10 @@ impl<'a> Value<'a> {
     }
 
     #[track_caller]
+    #[throws(RuntimeError)]
     fn unwrap_reference(&self) -> Reference<'a> {
         match *self {
+            Self::Primitive(Primitive::Null) => throw!(RuntimeError::NullPointerException),
             Self::Primitive(p) => unreachable!("Expected a reference, but found {p:?}"),
             Self::Reference(r) => r,
         }
@@ -85,6 +87,7 @@ pub enum RuntimeError {
     IndexOutOfBounds { index: Integer, len: usize },
     Panic { pos: Position },
     InvalidArrayLength { len: Integer },
+    NullPointerException,
 }
 
 impl fmt::Display for RuntimeError {
@@ -98,6 +101,7 @@ impl fmt::Display for RuntimeError {
             }
             Self::Panic { pos } => write!(f, "Panic @ {pos}"),
             Self::InvalidArrayLength { len } => write!(f, "Cannot create array of length {len}"),
+            Self::NullPointerException => f.write_str(include_str!("nurupo.txt")),
         }
     }
 }
@@ -160,7 +164,7 @@ impl<'a, W: Write> Interpreter<'a, W> {
         bindings: &mut Bindings<'a>,
         expression: &'a Expression,
     ) -> &'this [Place<'a>] {
-        let reference = self.expression(bindings, expression)?.unwrap_reference();
+        let reference = self.expression(bindings, expression)?.unwrap_reference()?;
         match &self.heap[reference] {
             Object::Array { elements } => elements,
             e @ Object::Struct { .. } => unreachable!("Expected array, got {e:?}"),
@@ -206,7 +210,7 @@ impl<'a, W: Write> Interpreter<'a, W> {
             }
             LvalueExpression::Member { lhs, member_name } => {
                 let lhs = self.lvalue(bindings, lhs)?;
-                let lhs = self.places[lhs].unwrap_reference();
+                let lhs = self.places[lhs].unwrap_reference()?;
                 match &self.heap[lhs] {
                     Object::Struct { fields } => {
                         let Some(&field) = fields.get(&member_name) else {
@@ -220,7 +224,7 @@ impl<'a, W: Write> Interpreter<'a, W> {
             }
             LvalueExpression::Index { lhs, index } => {
                 let lhs = self.lvalue(bindings, lhs)?;
-                let lhs = self.places[lhs].unwrap_reference();
+                let lhs = self.places[lhs].unwrap_reference()?;
                 let index = self.integer_expression(&mut *bindings, index)?;
                 match &self.heap[lhs] {
                     Object::Array { elements } => {

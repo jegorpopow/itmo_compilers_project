@@ -1,0 +1,129 @@
+Program {
+    globals: [
+        Binding {
+            name: main(0),
+            decl: Routine(
+                Full(
+                    Routine {
+                        signature: RoutineSignature {
+                            args: [],
+                            return_type: Null,
+                        },
+                        args_bindings: [],
+                        body: Block(
+                            Block {
+                                stmts: [
+                                    Declaration(
+                                        Binding {
+                                            name: a(1),
+                                            decl: Var(
+                                                VarDecl {
+                                                    t: Array(
+                                                        ArrayDescription {
+                                                            t: Real,
+                                                            length: Some(
+                                                                3,
+                                                            ),
+                                                        },
+                                                    ),
+                                                    initialiser: None,
+                                                    relative_location: Local(
+                                                        0,
+                                                    ),
+                                                },
+                                            ),
+                                        },
+                                    ),
+                                    Print {
+                                        value: LengthOf {
+                                            arr: LvalueToRvalue(
+                                                Identifier(
+                                                    a(1),
+                                                ),
+                                            ),
+                                        },
+                                    },
+                                ],
+                                locals_count: 1,
+                            },
+                        ),
+                    },
+                ),
+            ),
+        },
+    ],
+    bindings: Bindings {
+        arena: [
+            Binding {
+                name: main(0),
+                decl: Routine(
+                    Full(
+                        Routine {
+                            signature: RoutineSignature {
+                                args: [],
+                                return_type: Null,
+                            },
+                            args_bindings: [],
+                            body: Block(
+                                Block {
+                                    stmts: [
+                                        Declaration(
+                                            Binding {
+                                                name: a(1),
+                                                decl: Var(
+                                                    VarDecl {
+                                                        t: Array(
+                                                            ArrayDescription {
+                                                                t: Real,
+                                                                length: Some(
+                                                                    3,
+                                                                ),
+                                                            },
+                                                        ),
+                                                        initialiser: None,
+                                                        relative_location: Local(
+                                                            0,
+                                                        ),
+                                                    },
+                                                ),
+                                            },
+                                        ),
+                                        Print {
+                                            value: LengthOf {
+                                                arr: LvalueToRvalue(
+                                                    Identifier(
+                                                        a(1),
+                                                    ),
+                                                ),
+                                            },
+                                        },
+                                    ],
+                                    locals_count: 1,
+                                },
+                            ),
+                        },
+                    ),
+                ),
+            },
+            Binding {
+                name: a(1),
+                decl: Var(
+                    VarDecl {
+                        t: Array(
+                            ArrayDescription {
+                                t: Real,
+                                length: Some(
+                                    3,
+                                ),
+                            },
+                        ),
+                        initialiser: None,
+                        relative_location: Local(
+                            0,
+                        ),
+                    },
+                ),
+            },
+        ],
+    },
+}
