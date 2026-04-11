@@ -642,12 +642,11 @@ impl Parser {
     fn parse_operators<'a, 'b: 'a>(
         &mut self,
         mut ops: impl Iterator<Item = &'static [Operator]> + Clone,
-        mut atom: impl ParsingFunction<'a, 'b, Rc<Expression>> + Clone,
         i: IndexedIterator<'a, 'b>,
     ) -> ParsingResult<'a, 'b, Rc<Expression>> {
         match ops.next() {
             Some(operators) => {
-                let (mut head, mut next) = self.parse_operators(ops.clone(), atom.clone(), i)?;
+                let (mut head, mut next) = self.parse_operators(ops.clone(), i)?;
                 while let Some(Token {
                     kind: TokenKind::Operator(op),
                     ..
@@ -655,7 +654,7 @@ impl Parser {
                     && operators.contains(op)
                 {
                     next = self.next(next);
-                    let (rhs, rest) = self.parse_operators(ops.clone(), atom.clone(), next)?;
+                    let (rhs, rest) = self.parse_operators(ops.clone(), next)?;
                     next = rest;
                     head = Rc::new(Expression::BinOp {
                         op: *op,
@@ -666,7 +665,7 @@ impl Parser {
 
                 Ok((head, next))
             }
-            None => atom(self, i),
+            None => self.parse_atom(i),
         }
     }
 
@@ -854,11 +853,7 @@ impl Parser {
             &[Operator::Mul, Operator::Div, Operator::Mod],
         ];
 
-        self.parse_operators(
-            OPERATORS_PRECEDENCE_TABLE.iter().copied(),
-            Self::parse_atom,
-            i,
-        )
+        self.parse_operators(OPERATORS_PRECEDENCE_TABLE.iter().copied(), i)
     }
 
     pub fn parse_var_decl<'a, 'b: 'a>(
