@@ -22,6 +22,7 @@ testing::tests! {
         conditionals => "conditionals"
         constant => "constant"
         deep_conditionals => "deep_conditionals"
+        default_init => "default_init"
         for_loops => "for_loops"
         function_parameters => "function_parameters"
         function_return => "function_return"
@@ -46,6 +47,7 @@ testing::tests! {
         records => "records"
         recursive_function => "recursive_function"
         recursive_types => "recursive_types"
+        references => "references"
         shadow => "shadow"
         type_aliases => "type_aliases"
         type_conversions => "type_conversions"
@@ -53,8 +55,16 @@ testing::tests! {
         while_loops => "while_loops"
     ]
     fail = [
+        array_slice_eq => "array_slice_eq"
+        bool_arith => "bool_arith"
+        bool_ord => "bool_ord"
+        field_not_record => "field_not_record"
         invalid_array_length => "invalid_array_length"
         new_array_fixed => "new_array_fixed"
+        no_such_field => "no_such_field"
+        not_scalar_arith => "not_scalar_arith"
+        not_scalar_ord => "not_scalar_ord"
+        real_mod => "real_mod"
         routine_redefinition => "routine_redefinition"
     ]
 }

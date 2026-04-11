@@ -31,7 +31,10 @@ impl RecordDescription {
         }
 
         Err(AnalysisError {
-            what: format!("No field of name {name} in struct with fields {self:?}"),
+            what: format!(
+                "No field of name {name} in struct with fields {:?}",
+                self.fields
+            ),
         })
     }
 }
@@ -51,13 +54,28 @@ pub enum Type {
     Record(RecordDescription),
     Array(ArrayDescription),
     Null,
-    Unit,
 }
 
+// TODO(#65, #111): get rid of `Rc`s
 impl Type {
     pub fn bool() -> Rc<Self> {
         thread_local! { static BOOL: Rc<Type> = Rc::new(Type::Bool); }
         BOOL.with(Rc::clone)
+    }
+
+    pub fn int() -> Rc<Self> {
+        thread_local! { static INT: Rc<Type> = Rc::new(Type::Int); }
+        INT.with(Rc::clone)
+    }
+
+    pub fn real() -> Rc<Self> {
+        thread_local! { static REAL: Rc<Type> = Rc::new(Type::Real); }
+        REAL.with(Rc::clone)
+    }
+
+    pub fn null() -> Rc<Self> {
+        thread_local! { static NULL: Rc<Type> = Rc::new(Type::Null); }
+        NULL.with(Rc::clone)
     }
 }
 
@@ -86,25 +104,22 @@ impl Display for Type {
                 write!(f, "] {}", array_description.t)
             }
             Type::Null => write!(f, "null type"),
-            Type::Unit => write!(f, "unit type"),
         }
     }
 }
 
 impl Type {
-    fn most_precise(l: &Rc<Self>, r: &Rc<Self>) -> AnalysisResult<Rc<Self>> {
+    fn most_precise(l: &Rc<Self>, r: &Rc<Self>) -> Rc<Self> {
         match (l.as_ref(), r.as_ref()) {
             (Type::Real, Type::Real | Type::Int | Type::Bool)
             | (Type::Int, Type::Int | Type::Bool)
-            | (Type::Bool, Type::Bool) => Ok(Rc::clone(l)),
+            | (Type::Bool, Type::Bool) => Rc::clone(l),
 
-            (Type::Int, Type::Real) | (Type::Bool, Type::Real | Type::Int) => Ok(Rc::clone(r)),
+            (Type::Int, Type::Real) | (Type::Bool, Type::Real | Type::Int) => Rc::clone(r),
 
-            (Type::Alias(_) | Type::Array(_) | Type::Record(_) | Type::Unit | Type::Null, _)
-            | (_, Type::Alias(_) | Type::Array(_) | Type::Record(_) | Type::Unit | Type::Null) => {
-                Err(AnalysisError {
-                    what: format!("Can not find common arithmetic type for types {l} and  {r}"),
-                })
+            (Type::Alias(_) | Type::Array(_) | Type::Record(_) | Type::Null, _)
+            | (_, Type::Alias(_) | Type::Array(_) | Type::Record(_) | Type::Null) => {
+                unreachable!()
             }
         }
     }
@@ -112,12 +127,7 @@ impl Type {
     fn is_scalar(&self) -> bool {
         match self {
             Type::Int | Type::Real => true,
-            Type::Alias(_)
-            | Type::Record(_)
-            | Type::Array(_)
-            | Type::Bool
-            | Type::Null
-            | Type::Unit => false,
+            Type::Alias(_) | Type::Record(_) | Type::Array(_) | Type::Bool | Type::Null => false,
         }
     }
 
@@ -128,32 +138,24 @@ impl Type {
     pub fn get_field_type(&self, name: &RawIdentifier) -> AnalysisResult<Rc<Type>> {
         match self {
             Type::Record(record_description) => record_description.get_field_type(name),
-            Type::Int
-            | Type::Real
-            | Type::Bool
-            | Type::Alias(_)
-            | Type::Array(_)
-            | Type::Null
-            | Type::Unit => Err(AnalysisError {
-                what: format!(
-                    "Type `{self}` have no fields, but field `{name}` was requested for it"
-                ),
-            }),
+            Type::Int | Type::Real | Type::Bool | Type::Alias(_) | Type::Array(_) | Type::Null => {
+                Err(AnalysisError {
+                    what: format!(
+                        "Type `{self}` have no fields, but field `{name}` was requested for it"
+                    ),
+                })
+            }
         }
     }
 
     pub fn get_element_type(&self) -> AnalysisResult<&Rc<Type>> {
         match self {
             Type::Array(record_description) => Ok(&record_description.t),
-            Type::Int
-            | Type::Real
-            | Type::Bool
-            | Type::Alias(_)
-            | Type::Record(_)
-            | Type::Null
-            | Type::Unit => Err(AnalysisError {
-                what: format!("Type {self} is not an array, but its element was requested"),
-            }),
+            Type::Int | Type::Real | Type::Bool | Type::Alias(_) | Type::Record(_) | Type::Null => {
+                Err(AnalysisError {
+                    what: format!("Type {self} is not an array, but its element was requested"),
+                })
+            }
         }
     }
 
@@ -183,9 +185,7 @@ pub(crate) fn infer_binary_operator_type(
     op: parser::Operator,
 ) -> AnalysisResult<BinOpAdjustment> {
     match op {
-        parser::Operator::Not => Err(AnalysisError {
-            what: "Logical negation operator can not be applied as binary".to_string(),
-        }),
+        parser::Operator::Not => unreachable!("Parser never emits `not` as a binary operator"),
 
         parser::Operator::And | parser::Operator::Or | parser::Operator::Xor => {
             if lhs_type.is_logical() && rhs_type.is_logical() {
@@ -226,7 +226,7 @@ pub(crate) fn infer_binary_operator_type(
         | parser::Operator::Mul
         | parser::Operator::Div => {
             if lhs_type.is_scalar() && rhs_type.is_scalar() {
-                let result_type = Type::most_precise(lhs_type, rhs_type)?;
+                let result_type = Type::most_precise(lhs_type, rhs_type);
                 if let Type::Int = *result_type {
                     Ok(BinOpAdjustment {
                         operand: Rc::clone(&result_type),
@@ -278,7 +278,7 @@ pub(crate) fn infer_binary_operator_type(
         | parser::Operator::Gt
         | parser::Operator::Ge => {
             if lhs_type.is_scalar() && rhs_type.is_scalar() {
-                let operand_type = Type::most_precise(lhs_type, rhs_type)?;
+                let operand_type = Type::most_precise(lhs_type, rhs_type);
                 if let Type::Int = *operand_type {
                     Ok(BinOpAdjustment {
                         result: Type::bool(),
@@ -294,14 +294,14 @@ pub(crate) fn infer_binary_operator_type(
                 } else {
                     Err(AnalysisError {
                         what: format!(
-                            "Can not apply arithmetic operator {op:?} for {lhs_type} and {rhs_type}"
+                            "Can not apply order comparison operator {op:?} for {lhs_type} and {rhs_type}"
                         ),
                     })
                 }
             } else {
                 Err(AnalysisError {
                     what: format!(
-                        "Can not apply arithmetic operator {op:?} for {lhs_type} and {rhs_type}"
+                        "Can not apply order comparison operator {op:?} for {lhs_type} and {rhs_type}"
                     ),
                 })
             }

@@ -5,7 +5,7 @@ use common::{BindingId, Identifier, Location, LoopOrder, RawIdentifier, VarLoc};
 
 use crate::{
     operators::UnaryOperator,
-    tree::{ConstDecl, cast_to},
+    tree::ConstDecl,
     types::{BinOpAdjustment, infer_binary_operator_type},
     *,
 };
@@ -171,9 +171,9 @@ impl Converter {
 
     fn convert_type(&self, t: &parser::Type) -> AnalysisResult<Rc<Type>> {
         Ok(match t {
-            parser::Type::Int => Rc::new(Type::Int),
-            parser::Type::Real => Rc::new(Type::Real),
-            parser::Type::Bool => Rc::new(Type::Bool),
+            parser::Type::Int => Type::int(),
+            parser::Type::Real => Type::real(),
+            parser::Type::Bool => Type::bool(),
             parser::Type::Alias(raw_identifier) => {
                 let decl = self.lookup(raw_identifier)?;
                 let _: &_ = decl.ensure_is_type()?;
@@ -279,26 +279,23 @@ impl Converter {
                         op: UnaryOperator::BoolNeg,
                         operand,
                     }),
-                    ty: Rc::new(Type::Bool),
+                    ty: Type::bool(),
                 },
                 Type::Int => Typed {
                     value: Rc::new(Expression::UnOp {
                         op: UnaryOperator::BoolNeg,
                         operand: Rc::new(Expression::IntToBool(operand)),
                     }),
-                    ty: Rc::new(Type::Bool),
+                    ty: Type::bool(),
                 },
 
-                Type::Real
-                | Type::Alias(_)
-                | Type::Record(_)
-                | Type::Array(_)
-                | Type::Null
-                | Type::Unit => Err(AnalysisError {
-                    what: format!(
-                        "Logical negation operator can not be applied to non-boolean {operand_type:?} value"
-                    ),
-                })?,
+                Type::Real | Type::Alias(_) | Type::Record(_) | Type::Array(_) | Type::Null => {
+                    Err(AnalysisError {
+                        what: format!(
+                            "Logical negation operator can not be applied to non-boolean {operand_type:?} value"
+                        ),
+                    })?
+                }
             },
             parser::Operator::Minus => match &*operand_type {
                 Type::Int => Typed {
@@ -306,7 +303,7 @@ impl Converter {
                         op: UnaryOperator::IntNeg,
                         operand,
                     }),
-                    ty: Rc::new(Type::Int),
+                    ty: Type::int(),
                 },
                 Type::Real => Typed {
                     value: Rc::new(Expression::UnOp {
@@ -315,16 +312,13 @@ impl Converter {
                     }),
                     ty: Rc::new(Type::Real),
                 },
-                Type::Bool
-                | Type::Alias(_)
-                | Type::Record(_)
-                | Type::Array(_)
-                | Type::Null
-                | Type::Unit => Err(AnalysisError {
-                    what: format!(
-                        "Arithmetical negation operator can not be applied to non-scalar type {operand_type:?} value"
-                    ),
-                })?,
+                Type::Bool | Type::Alias(_) | Type::Record(_) | Type::Array(_) | Type::Null => {
+                    Err(AnalysisError {
+                        what: format!(
+                            "Arithmetical negation operator can not be applied to non-scalar type {operand_type:?} value"
+                        ),
+                    })?
+                }
             },
             parser::Operator::Plus
             | parser::Operator::Mul
@@ -377,7 +371,7 @@ impl Converter {
             value: Rc::new(Expression::Call {
                 callee: self.lookup(callee)?.name.clone(),
                 args: iter::zip(arguments_types, args)
-                    .map(|(arg_type, expr)| cast_to(expr, &arg_type))
+                    .map(|(arg_type, expr)| self.bindings.coerce(expr, &arg_type))
                     .collect::<AnalysisResult<_>>()?,
             }),
             ty: Rc::clone(return_type),
@@ -397,7 +391,7 @@ impl Converter {
             let Type::Array(ArrayDescription {
                 t: elements,
                 length: None,
-            }) = Rc::unwrap_or_clone(effective)
+            }) = effective.as_ref()
             else {
                 return Err(AnalysisError {
                     what: "new[] is only supported for array[] types without length".to_string(),
@@ -405,15 +399,17 @@ impl Converter {
             };
             return Ok(Typed {
                 value: Rc::new(Expression::NewArray {
-                    elements,
-                    length: cast_to(self.convert_expr(length)?, &Type::Int)?,
+                    elements: Rc::clone(elements),
+                    length: self
+                        .bindings
+                        .coerce(self.convert_expr(length)?, &Type::Int)?,
                 }),
                 ty,
             });
         }
 
         match effective.as_ref() {
-            Type::Int | Type::Real | Type::Bool | Type::Null | Type::Unit => Err(AnalysisError {
+            Type::Int | Type::Real | Type::Bool | Type::Null => Err(AnalysisError {
                 what: format!("No new operator supported for built-in type {t:?}"),
             })?,
             Type::Alias(_) => unreachable!("Effective type can not be alias"),
@@ -428,7 +424,8 @@ impl Converter {
                                 self.convert_expr(expr).and_then(|expr| {
                                     Ok((
                                         name.clone(),
-                                        cast_to(expr, record.get_field_type(name)?.as_ref())?,
+                                        self.bindings
+                                            .coerce(expr, record.get_field_type(name)?.as_ref())?,
                                     ))
                                 })
                             })
@@ -477,7 +474,7 @@ impl Converter {
                         value: Rc::new(Expression::LengthOf {
                             arr: Rc::new(Expression::LvalueToRvalue(lhs)),
                         }),
-                        ty: Rc::new(Type::Int),
+                        ty: Type::int(),
                     })
                 } else {
                     // Just field named `length`
@@ -531,7 +528,7 @@ impl Converter {
                     repr: integer_literal.repr.clone(),
                     value: integer_literal.value,
                 })),
-                ty: Rc::new(Type::Int),
+                ty: Type::int(),
             },
             parser::Expression::RealLiteral(real_literal) => Typed {
                 value: Rc::new(Expression::RealLiteral(RealLiteral {
@@ -545,7 +542,7 @@ impl Converter {
                     parser::BoolLiteral::True => BoolLiteral::True,
                     parser::BoolLiteral::False => BoolLiteral::False,
                 })),
-                ty: Rc::new(Type::Bool),
+                ty: Type::bool(),
             },
             parser::Expression::Call { callee, args } => self.convert_call(callee, args)?,
             parser::Expression::BinOp { op, lhs, rhs } => {
@@ -557,8 +554,8 @@ impl Converter {
                     operator: semantic_op,
                 } = infer_binary_operator_type(&lhs.ty, &rhs.ty, *op)?;
 
-                let actual_lhs = cast_to(lhs, &operand_type)?;
-                let actual_rhs = cast_to(rhs, &operand_type)?;
+                let actual_lhs = self.bindings.coerce(lhs, &operand_type)?;
+                let actual_rhs = self.bindings.coerce(rhs, &operand_type)?;
 
                 Typed {
                     value: Rc::new(Expression::BinOp {
@@ -602,7 +599,7 @@ impl Converter {
             } => self.convert_new(t, fields.as_deref(), array_length.as_deref())?,
             parser::Expression::Null => Typed {
                 value: Rc::new(Expression::Null),
-                ty: Rc::new(Type::Null),
+                ty: Type::null(),
             },
         })
     }
@@ -642,7 +639,7 @@ impl Converter {
                 Some(to) => {
                     let from = this.convert_expr(from)?;
                     let to = this.convert_expr(to)?;
-                    let int_type = Rc::new(Type::Int);
+                    let int_type = Type::int();
                     let counter_decl = LocalDecl::Var(VarDecl {
                         t: Rc::clone(&int_type),
                         initialiser: None,
@@ -652,8 +649,8 @@ impl Converter {
                     let body = this.convert_block(body)?;
                     Statement::For {
                         counter: counter_ident,
-                        lower_bound: cast_to(from, &int_type)?,
-                        upper_bound: cast_to(to, &int_type)?,
+                        lower_bound: this.bindings.coerce(from, &int_type)?,
+                        upper_bound: this.bindings.coerce(to, &int_type)?,
                         order,
                         body,
                     }
@@ -674,7 +671,9 @@ impl Converter {
             &parser::Statement::Assert { ref value, pos } => Statement::If {
                 condition: Rc::new(Expression::UnOp {
                     op: UnaryOperator::BoolNeg,
-                    operand: cast_to(self.convert_expr(value)?, &Type::Bool)?,
+                    operand: self
+                        .bindings
+                        .coerce(self.convert_expr(value)?, &Type::Bool)?,
                 }),
                 on_true: Block {
                     stmts: vec![Statement::Panic { pos }],
@@ -690,11 +689,15 @@ impl Converter {
                 } = self.convert_lvalue_expr(lhs)?;
                 Statement::Assignment {
                     lhs,
-                    rhs: cast_to(self.convert_expr(rhs)?, &target_type)?,
+                    rhs: self
+                        .bindings
+                        .coerce(self.convert_expr(rhs)?, &target_type)?,
                 }
             }
             parser::Statement::While { condition, body } => Statement::While {
-                condition: cast_to(self.convert_expr(condition)?, &Type::Bool)?,
+                condition: self
+                    .bindings
+                    .coerce(self.convert_expr(condition)?, &Type::Bool)?,
                 body: self.convert_block(body)?,
             },
             parser::Statement::Expr(expression) => {
@@ -707,7 +710,9 @@ impl Converter {
                 on_true,
                 on_false,
             } => Statement::If {
-                condition: cast_to(self.convert_expr(condition)?, &Type::Bool)?,
+                condition: self
+                    .bindings
+                    .coerce(self.convert_expr(condition)?, &Type::Bool)?,
                 on_true: self.convert_block(on_true)?,
                 on_false: on_false
                     .as_ref()
@@ -728,7 +733,9 @@ impl Converter {
             }
             parser::Statement::Return { value } => match &self.current_routine {
                 Some(RoutinePrototype { return_type, .. }) => Statement::Return {
-                    value: cast_to(self.convert_expr(value)?, return_type)?,
+                    value: self
+                        .bindings
+                        .coerce(self.convert_expr(value)?, return_type)?,
                 },
                 None => Err(AnalysisError {
                     what: "Return outside of routine".to_string(),
@@ -780,7 +787,7 @@ impl Converter {
         let decl = match t {
             Some(t) => {
                 let t = self.convert_type(t)?;
-                let expr = cast_to(expr, &t)?;
+                let expr = self.bindings.coerce(expr, &t)?;
                 ConstDecl {
                     t,
                     value: expr.try_constexpr_evaluate()?.as_literal(),
@@ -842,7 +849,7 @@ impl Converter {
             (Some(t), Some(expr)) => {
                 let t = self.convert_type(t)?;
                 VarDecl {
-                    initialiser: Some(cast_to(self.convert_expr(expr)?, &t)?),
+                    initialiser: Some(self.bindings.coerce(self.convert_expr(expr)?, &t)?),
                     t,
                     relative_location: loc,
                 }
@@ -879,7 +886,7 @@ impl Converter {
 
         let prescribed = self.convert_type(t)?;
         let type_decl = TypeDecl::Full {
-            effective: self.bindings.get_effective_type(&prescribed)?,
+            effective: Rc::clone(self.bindings.get_effective_type(&prescribed)?),
             prescribed,
         };
         // Overriding forward declaration with full one
@@ -919,7 +926,7 @@ impl Converter {
         let Some(body) = body else {
             let return_type = match &return_type {
                 Some(t) => self.convert_type(t)?,
-                None => Rc::new(Type::Unit),
+                None => Type::null(),
             };
 
             let signature = RoutineSignature {
@@ -980,7 +987,7 @@ impl Converter {
         argument_types: Vec<(RawIdentifier, Rc<Type>)>,
         args_decls: &[(RawIdentifier, VarDecl)],
     ) -> AnalysisResult<Binding> {
-        let return_type = return_type.map_or(Ok(Rc::new(Type::Unit)), |t| self.convert_type(t))?;
+        let return_type = return_type.map_or(Ok(Type::null()), |t| self.convert_type(t))?;
 
         let signature = RoutineSignature {
             args: argument_types.clone(),
@@ -1058,7 +1065,7 @@ impl Converter {
         );
 
         let (expr, return_type) = match return_type {
-            Some(ty) => (cast_to(expr, &ty)?, ty),
+            Some(ty) => (self.bindings.coerce(expr, &ty)?, ty),
             None => (expr.value, expr.ty),
         };
 

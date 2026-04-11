@@ -4,7 +4,7 @@ use crate::{ParserError, Program, parse_program};
 
 fn parse(src: &str) -> Result<String, ParserError<Program>> {
     let tokens: Vec<_> = Lexer::from(src).collect();
-    parse_program(&tokens).map(|program| format!("{program:#?}"))
+    parse_program(&tokens).map(|program| format!("{program:#?}\n"))
 }
 
 testing::tests! {
@@ -13,13 +13,18 @@ testing::tests! {
     fun = parse
     pass = [
         arithmetic_operations => "arithmetic_operations"
+        array_slice_eq => "array_slice_eq"
         arrays_and_records => "arrays_and_records"
         assert => "assert"
+        bool_arith => "bool_arith"
+        bool_ord => "bool_ord"
         comparison_operators => "comparison_operators"
         complex_expressions => "complex_expressions"
         conditionals => "conditionals"
         constant => "constant"
         deep_conditionals => "deep_conditionals"
+        default_init => "default_init"
+        field_not_record => "field_not_record"
         for_loops => "for_loops"
         function_parameters => "function_parameters"
         function_return => "function_return"
@@ -33,6 +38,9 @@ testing::tests! {
         nested_control => "nested_control"
         new_array => "new_array"
         new_array_fixed => "new_array_fixed"
+        no_such_field => "no_such_field"
+        not_scalar_arith => "not_scalar_arith"
+        not_scalar_ord => "not_scalar_ord"
         oob_big => "oob_big"
         oob_neg => "oob_neg"
         oob_zero => "oob_zero"
@@ -43,9 +51,11 @@ testing::tests! {
         raytracer => "raytracer"
         real_comparisons => "real_comparisons"
         real_literals => "real_literals"
+        real_mod => "real_mod"
         records => "records"
         recursive_function => "recursive_function"
         recursive_types => "recursive_types"
+        references => "references"
         routine_redefinition => "routine_redefinition"
         shadow => "shadow"
         type_aliases => "type_aliases"
@@ -54,6 +64,7 @@ testing::tests! {
         while_loops => "while_loops"
     ]
     fail = [
+        binary_not => "binary_not"
         invalid => "invalid"
         lexer_invalid => "lexer_invalid"
     ]

@@ -1,0 +1,1133 @@
+Program {
+    globals: [
+        Binding {
+            name: int(0),
+            decl: Type(
+                Full {
+                    prescribed: Int,
+                    effective: Int,
+                },
+            ),
+        },
+        Binding {
+            name: object(1),
+            decl: Type(
+                Full {
+                    prescribed: Record(
+                        RecordDescription {
+                            fields: [
+                                FieldDescription {
+                                    name: r"next",
+                                    t: Alias(
+                                        object(1),
+                                    ),
+                                },
+                            ],
+                        },
+                    ),
+                    effective: Record(
+                        RecordDescription {
+                            fields: [
+                                FieldDescription {
+                                    name: r"next",
+                                    t: Alias(
+                                        object(1),
+                                    ),
+                                },
+                            ],
+                        },
+                    ),
+                },
+            ),
+        },
+        Binding {
+            name: unit(2),
+            decl: Routine(
+                Full(
+                    Routine {
+                        signature: RoutineSignature {
+                            args: [],
+                            return_type: Null,
+                        },
+                        args_bindings: [],
+                        body: Block(
+                            Block {
+                                stmts: [],
+                                locals_count: 0,
+                            },
+                        ),
+                    },
+                ),
+            ),
+        },
+        Binding {
+            name: main(3),
+            decl: Routine(
+                Full(
+                    Routine {
+                        signature: RoutineSignature {
+                            args: [],
+                            return_type: Null,
+                        },
+                        args_bindings: [],
+                        body: Block(
+                            Block {
+                                stmts: [
+                                    Declaration(
+                                        Binding {
+                                            name: i(4),
+                                            decl: Var(
+                                                VarDecl {
+                                                    t: Int,
+                                                    initialiser: None,
+                                                    relative_location: Local(
+                                                        0,
+                                                    ),
+                                                },
+                                            ),
+                                        },
+                                    ),
+                                    If {
+                                        condition: UnOp {
+                                            op: BoolNeg,
+                                            operand: BinOp {
+                                                op: Eq(
+                                                    Eq,
+                                                ),
+                                                lhs: LvalueToRvalue(
+                                                    Identifier(
+                                                        i(4),
+                                                    ),
+                                                ),
+                                                rhs: IntegerLiteral(
+                                                    IntegerLiteral {
+                                                        repr: "0",
+                                                        value: 0,
+                                                    },
+                                                ),
+                                            },
+                                        },
+                                        on_true: Block {
+                                            stmts: [
+                                                Panic {
+                                                    pos: Position {
+                                                        line: 10,
+                                                        column: 4,
+                                                    },
+                                                },
+                                            ],
+                                            locals_count: 0,
+                                        },
+                                        on_false: None,
+                                    },
+                                    Declaration(
+                                        Binding {
+                                            name: r(5),
+                                            decl: Var(
+                                                VarDecl {
+                                                    t: Real,
+                                                    initialiser: None,
+                                                    relative_location: Local(
+                                                        1,
+                                                    ),
+                                                },
+                                            ),
+                                        },
+                                    ),
+                                    If {
+                                        condition: UnOp {
+                                            op: BoolNeg,
+                                            operand: BinOp {
+                                                op: Eq(
+                                                    Eq,
+                                                ),
+                                                lhs: LvalueToRvalue(
+                                                    Identifier(
+                                                        r(5),
+                                                    ),
+                                                ),
+                                                rhs: RealLiteral(
+                                                    RealLiteral {
+                                                        repr: "0.0",
+                                                        value: 0.0,
+                                                    },
+                                                ),
+                                            },
+                                        },
+                                        on_true: Block {
+                                            stmts: [
+                                                Panic {
+                                                    pos: Position {
+                                                        line: 13,
+                                                        column: 4,
+                                                    },
+                                                },
+                                            ],
+                                            locals_count: 0,
+                                        },
+                                        on_false: None,
+                                    },
+                                    Declaration(
+                                        Binding {
+                                            name: b(6),
+                                            decl: Var(
+                                                VarDecl {
+                                                    t: Bool,
+                                                    initialiser: None,
+                                                    relative_location: Local(
+                                                        2,
+                                                    ),
+                                                },
+                                            ),
+                                        },
+                                    ),
+                                    If {
+                                        condition: UnOp {
+                                            op: BoolNeg,
+                                            operand: BinOp {
+                                                op: Eq(
+                                                    Eq,
+                                                ),
+                                                lhs: LvalueToRvalue(
+                                                    Identifier(
+                                                        b(6),
+                                                    ),
+                                                ),
+                                                rhs: BoolLiteral(
+                                                    False,
+                                                ),
+                                            },
+                                        },
+                                        on_true: Block {
+                                            stmts: [
+                                                Panic {
+                                                    pos: Position {
+                                                        line: 16,
+                                                        column: 4,
+                                                    },
+                                                },
+                                            ],
+                                            locals_count: 0,
+                                        },
+                                        on_false: None,
+                                    },
+                                    Declaration(
+                                        Binding {
+                                            name: a(7),
+                                            decl: Var(
+                                                VarDecl {
+                                                    t: Array(
+                                                        ArrayDescription {
+                                                            t: Int,
+                                                            length: Some(
+                                                                3,
+                                                            ),
+                                                        },
+                                                    ),
+                                                    initialiser: None,
+                                                    relative_location: Local(
+                                                        3,
+                                                    ),
+                                                },
+                                            ),
+                                        },
+                                    ),
+                                    If {
+                                        condition: UnOp {
+                                            op: BoolNeg,
+                                            operand: BinOp {
+                                                op: Eq(
+                                                    Eq,
+                                                ),
+                                                lhs: LvalueToRvalue(
+                                                    Identifier(
+                                                        a(7),
+                                                    ),
+                                                ),
+                                                rhs: Null,
+                                            },
+                                        },
+                                        on_true: Block {
+                                            stmts: [
+                                                Panic {
+                                                    pos: Position {
+                                                        line: 19,
+                                                        column: 4,
+                                                    },
+                                                },
+                                            ],
+                                            locals_count: 0,
+                                        },
+                                        on_false: None,
+                                    },
+                                    Declaration(
+                                        Binding {
+                                            name: s(8),
+                                            decl: Var(
+                                                VarDecl {
+                                                    t: Array(
+                                                        ArrayDescription {
+                                                            t: Int,
+                                                            length: None,
+                                                        },
+                                                    ),
+                                                    initialiser: None,
+                                                    relative_location: Local(
+                                                        4,
+                                                    ),
+                                                },
+                                            ),
+                                        },
+                                    ),
+                                    If {
+                                        condition: UnOp {
+                                            op: BoolNeg,
+                                            operand: BinOp {
+                                                op: Eq(
+                                                    Eq,
+                                                ),
+                                                lhs: LvalueToRvalue(
+                                                    Identifier(
+                                                        s(8),
+                                                    ),
+                                                ),
+                                                rhs: Null,
+                                            },
+                                        },
+                                        on_true: Block {
+                                            stmts: [
+                                                Panic {
+                                                    pos: Position {
+                                                        line: 22,
+                                                        column: 4,
+                                                    },
+                                                },
+                                            ],
+                                            locals_count: 0,
+                                        },
+                                        on_false: None,
+                                    },
+                                    Declaration(
+                                        Binding {
+                                            name: i2(9),
+                                            decl: Var(
+                                                VarDecl {
+                                                    t: Alias(
+                                                        int(0),
+                                                    ),
+                                                    initialiser: None,
+                                                    relative_location: Local(
+                                                        5,
+                                                    ),
+                                                },
+                                            ),
+                                        },
+                                    ),
+                                    If {
+                                        condition: UnOp {
+                                            op: BoolNeg,
+                                            operand: BinOp {
+                                                op: Eq(
+                                                    Eq,
+                                                ),
+                                                lhs: LvalueToRvalue(
+                                                    Identifier(
+                                                        i2(9),
+                                                    ),
+                                                ),
+                                                rhs: Cast {
+                                                    operand: IntegerLiteral(
+                                                        IntegerLiteral {
+                                                            repr: "0",
+                                                            value: 0,
+                                                        },
+                                                    ),
+                                                    target: Alias(
+                                                        int(0),
+                                                    ),
+                                                },
+                                            },
+                                        },
+                                        on_true: Block {
+                                            stmts: [
+                                                Panic {
+                                                    pos: Position {
+                                                        line: 25,
+                                                        column: 4,
+                                                    },
+                                                },
+                                            ],
+                                            locals_count: 0,
+                                        },
+                                        on_false: None,
+                                    },
+                                    Declaration(
+                                        Binding {
+                                            name: o(10),
+                                            decl: Var(
+                                                VarDecl {
+                                                    t: Alias(
+                                                        object(1),
+                                                    ),
+                                                    initialiser: None,
+                                                    relative_location: Local(
+                                                        6,
+                                                    ),
+                                                },
+                                            ),
+                                        },
+                                    ),
+                                    If {
+                                        condition: UnOp {
+                                            op: BoolNeg,
+                                            operand: BinOp {
+                                                op: Eq(
+                                                    Eq,
+                                                ),
+                                                lhs: LvalueToRvalue(
+                                                    Identifier(
+                                                        o(10),
+                                                    ),
+                                                ),
+                                                rhs: Null,
+                                            },
+                                        },
+                                        on_true: Block {
+                                            stmts: [
+                                                Panic {
+                                                    pos: Position {
+                                                        line: 28,
+                                                        column: 4,
+                                                    },
+                                                },
+                                            ],
+                                            locals_count: 0,
+                                        },
+                                        on_false: None,
+                                    },
+                                    Assignment {
+                                        lhs: Identifier(
+                                            o(10),
+                                        ),
+                                        rhs: New {
+                                            t: Alias(
+                                                object(1),
+                                            ),
+                                            fields: Some(
+                                                [],
+                                            ),
+                                        },
+                                    },
+                                    If {
+                                        condition: UnOp {
+                                            op: BoolNeg,
+                                            operand: BinOp {
+                                                op: Eq(
+                                                    Eq,
+                                                ),
+                                                lhs: LvalueToRvalue(
+                                                    Member {
+                                                        lhs: Identifier(
+                                                            o(10),
+                                                        ),
+                                                        member_name: r"next",
+                                                    },
+                                                ),
+                                                rhs: Null,
+                                            },
+                                        },
+                                        on_true: Block {
+                                            stmts: [
+                                                Panic {
+                                                    pos: Position {
+                                                        line: 31,
+                                                        column: 4,
+                                                    },
+                                                },
+                                            ],
+                                            locals_count: 0,
+                                        },
+                                        on_false: None,
+                                    },
+                                    Declaration(
+                                        Binding {
+                                            name: u(11),
+                                            decl: Var(
+                                                VarDecl {
+                                                    t: Null,
+                                                    initialiser: Some(
+                                                        Call {
+                                                            callee: unit(2),
+                                                            args: [],
+                                                        },
+                                                    ),
+                                                    relative_location: Local(
+                                                        7,
+                                                    ),
+                                                },
+                                            ),
+                                        },
+                                    ),
+                                    If {
+                                        condition: UnOp {
+                                            op: BoolNeg,
+                                            operand: BinOp {
+                                                op: Eq(
+                                                    Eq,
+                                                ),
+                                                lhs: LvalueToRvalue(
+                                                    Identifier(
+                                                        u(11),
+                                                    ),
+                                                ),
+                                                rhs: Null,
+                                            },
+                                        },
+                                        on_true: Block {
+                                            stmts: [
+                                                Panic {
+                                                    pos: Position {
+                                                        line: 34,
+                                                        column: 4,
+                                                    },
+                                                },
+                                            ],
+                                            locals_count: 0,
+                                        },
+                                        on_false: None,
+                                    },
+                                ],
+                                locals_count: 8,
+                            },
+                        ),
+                    },
+                ),
+            ),
+        },
+    ],
+    bindings: Bindings {
+        arena: [
+            Binding {
+                name: int(0),
+                decl: Type(
+                    Full {
+                        prescribed: Int,
+                        effective: Int,
+                    },
+                ),
+            },
+            Binding {
+                name: object(1),
+                decl: Type(
+                    Full {
+                        prescribed: Record(
+                            RecordDescription {
+                                fields: [
+                                    FieldDescription {
+                                        name: r"next",
+                                        t: Alias(
+                                            object(1),
+                                        ),
+                                    },
+                                ],
+                            },
+                        ),
+                        effective: Record(
+                            RecordDescription {
+                                fields: [
+                                    FieldDescription {
+                                        name: r"next",
+                                        t: Alias(
+                                            object(1),
+                                        ),
+                                    },
+                                ],
+                            },
+                        ),
+                    },
+                ),
+            },
+            Binding {
+                name: unit(2),
+                decl: Routine(
+                    Full(
+                        Routine {
+                            signature: RoutineSignature {
+                                args: [],
+                                return_type: Null,
+                            },
+                            args_bindings: [],
+                            body: Block(
+                                Block {
+                                    stmts: [],
+                                    locals_count: 0,
+                                },
+                            ),
+                        },
+                    ),
+                ),
+            },
+            Binding {
+                name: main(3),
+                decl: Routine(
+                    Full(
+                        Routine {
+                            signature: RoutineSignature {
+                                args: [],
+                                return_type: Null,
+                            },
+                            args_bindings: [],
+                            body: Block(
+                                Block {
+                                    stmts: [
+                                        Declaration(
+                                            Binding {
+                                                name: i(4),
+                                                decl: Var(
+                                                    VarDecl {
+                                                        t: Int,
+                                                        initialiser: None,
+                                                        relative_location: Local(
+                                                            0,
+                                                        ),
+                                                    },
+                                                ),
+                                            },
+                                        ),
+                                        If {
+                                            condition: UnOp {
+                                                op: BoolNeg,
+                                                operand: BinOp {
+                                                    op: Eq(
+                                                        Eq,
+                                                    ),
+                                                    lhs: LvalueToRvalue(
+                                                        Identifier(
+                                                            i(4),
+                                                        ),
+                                                    ),
+                                                    rhs: IntegerLiteral(
+                                                        IntegerLiteral {
+                                                            repr: "0",
+                                                            value: 0,
+                                                        },
+                                                    ),
+                                                },
+                                            },
+                                            on_true: Block {
+                                                stmts: [
+                                                    Panic {
+                                                        pos: Position {
+                                                            line: 10,
+                                                            column: 4,
+                                                        },
+                                                    },
+                                                ],
+                                                locals_count: 0,
+                                            },
+                                            on_false: None,
+                                        },
+                                        Declaration(
+                                            Binding {
+                                                name: r(5),
+                                                decl: Var(
+                                                    VarDecl {
+                                                        t: Real,
+                                                        initialiser: None,
+                                                        relative_location: Local(
+                                                            1,
+                                                        ),
+                                                    },
+                                                ),
+                                            },
+                                        ),
+                                        If {
+                                            condition: UnOp {
+                                                op: BoolNeg,
+                                                operand: BinOp {
+                                                    op: Eq(
+                                                        Eq,
+                                                    ),
+                                                    lhs: LvalueToRvalue(
+                                                        Identifier(
+                                                            r(5),
+                                                        ),
+                                                    ),
+                                                    rhs: RealLiteral(
+                                                        RealLiteral {
+                                                            repr: "0.0",
+                                                            value: 0.0,
+                                                        },
+                                                    ),
+                                                },
+                                            },
+                                            on_true: Block {
+                                                stmts: [
+                                                    Panic {
+                                                        pos: Position {
+                                                            line: 13,
+                                                            column: 4,
+                                                        },
+                                                    },
+                                                ],
+                                                locals_count: 0,
+                                            },
+                                            on_false: None,
+                                        },
+                                        Declaration(
+                                            Binding {
+                                                name: b(6),
+                                                decl: Var(
+                                                    VarDecl {
+                                                        t: Bool,
+                                                        initialiser: None,
+                                                        relative_location: Local(
+                                                            2,
+                                                        ),
+                                                    },
+                                                ),
+                                            },
+                                        ),
+                                        If {
+                                            condition: UnOp {
+                                                op: BoolNeg,
+                                                operand: BinOp {
+                                                    op: Eq(
+                                                        Eq,
+                                                    ),
+                                                    lhs: LvalueToRvalue(
+                                                        Identifier(
+                                                            b(6),
+                                                        ),
+                                                    ),
+                                                    rhs: BoolLiteral(
+                                                        False,
+                                                    ),
+                                                },
+                                            },
+                                            on_true: Block {
+                                                stmts: [
+                                                    Panic {
+                                                        pos: Position {
+                                                            line: 16,
+                                                            column: 4,
+                                                        },
+                                                    },
+                                                ],
+                                                locals_count: 0,
+                                            },
+                                            on_false: None,
+                                        },
+                                        Declaration(
+                                            Binding {
+                                                name: a(7),
+                                                decl: Var(
+                                                    VarDecl {
+                                                        t: Array(
+                                                            ArrayDescription {
+                                                                t: Int,
+                                                                length: Some(
+                                                                    3,
+                                                                ),
+                                                            },
+                                                        ),
+                                                        initialiser: None,
+                                                        relative_location: Local(
+                                                            3,
+                                                        ),
+                                                    },
+                                                ),
+                                            },
+                                        ),
+                                        If {
+                                            condition: UnOp {
+                                                op: BoolNeg,
+                                                operand: BinOp {
+                                                    op: Eq(
+                                                        Eq,
+                                                    ),
+                                                    lhs: LvalueToRvalue(
+                                                        Identifier(
+                                                            a(7),
+                                                        ),
+                                                    ),
+                                                    rhs: Null,
+                                                },
+                                            },
+                                            on_true: Block {
+                                                stmts: [
+                                                    Panic {
+                                                        pos: Position {
+                                                            line: 19,
+                                                            column: 4,
+                                                        },
+                                                    },
+                                                ],
+                                                locals_count: 0,
+                                            },
+                                            on_false: None,
+                                        },
+                                        Declaration(
+                                            Binding {
+                                                name: s(8),
+                                                decl: Var(
+                                                    VarDecl {
+                                                        t: Array(
+                                                            ArrayDescription {
+                                                                t: Int,
+                                                                length: None,
+                                                            },
+                                                        ),
+                                                        initialiser: None,
+                                                        relative_location: Local(
+                                                            4,
+                                                        ),
+                                                    },
+                                                ),
+                                            },
+                                        ),
+                                        If {
+                                            condition: UnOp {
+                                                op: BoolNeg,
+                                                operand: BinOp {
+                                                    op: Eq(
+                                                        Eq,
+                                                    ),
+                                                    lhs: LvalueToRvalue(
+                                                        Identifier(
+                                                            s(8),
+                                                        ),
+                                                    ),
+                                                    rhs: Null,
+                                                },
+                                            },
+                                            on_true: Block {
+                                                stmts: [
+                                                    Panic {
+                                                        pos: Position {
+                                                            line: 22,
+                                                            column: 4,
+                                                        },
+                                                    },
+                                                ],
+                                                locals_count: 0,
+                                            },
+                                            on_false: None,
+                                        },
+                                        Declaration(
+                                            Binding {
+                                                name: i2(9),
+                                                decl: Var(
+                                                    VarDecl {
+                                                        t: Alias(
+                                                            int(0),
+                                                        ),
+                                                        initialiser: None,
+                                                        relative_location: Local(
+                                                            5,
+                                                        ),
+                                                    },
+                                                ),
+                                            },
+                                        ),
+                                        If {
+                                            condition: UnOp {
+                                                op: BoolNeg,
+                                                operand: BinOp {
+                                                    op: Eq(
+                                                        Eq,
+                                                    ),
+                                                    lhs: LvalueToRvalue(
+                                                        Identifier(
+                                                            i2(9),
+                                                        ),
+                                                    ),
+                                                    rhs: Cast {
+                                                        operand: IntegerLiteral(
+                                                            IntegerLiteral {
+                                                                repr: "0",
+                                                                value: 0,
+                                                            },
+                                                        ),
+                                                        target: Alias(
+                                                            int(0),
+                                                        ),
+                                                    },
+                                                },
+                                            },
+                                            on_true: Block {
+                                                stmts: [
+                                                    Panic {
+                                                        pos: Position {
+                                                            line: 25,
+                                                            column: 4,
+                                                        },
+                                                    },
+                                                ],
+                                                locals_count: 0,
+                                            },
+                                            on_false: None,
+                                        },
+                                        Declaration(
+                                            Binding {
+                                                name: o(10),
+                                                decl: Var(
+                                                    VarDecl {
+                                                        t: Alias(
+                                                            object(1),
+                                                        ),
+                                                        initialiser: None,
+                                                        relative_location: Local(
+                                                            6,
+                                                        ),
+                                                    },
+                                                ),
+                                            },
+                                        ),
+                                        If {
+                                            condition: UnOp {
+                                                op: BoolNeg,
+                                                operand: BinOp {
+                                                    op: Eq(
+                                                        Eq,
+                                                    ),
+                                                    lhs: LvalueToRvalue(
+                                                        Identifier(
+                                                            o(10),
+                                                        ),
+                                                    ),
+                                                    rhs: Null,
+                                                },
+                                            },
+                                            on_true: Block {
+                                                stmts: [
+                                                    Panic {
+                                                        pos: Position {
+                                                            line: 28,
+                                                            column: 4,
+                                                        },
+                                                    },
+                                                ],
+                                                locals_count: 0,
+                                            },
+                                            on_false: None,
+                                        },
+                                        Assignment {
+                                            lhs: Identifier(
+                                                o(10),
+                                            ),
+                                            rhs: New {
+                                                t: Alias(
+                                                    object(1),
+                                                ),
+                                                fields: Some(
+                                                    [],
+                                                ),
+                                            },
+                                        },
+                                        If {
+                                            condition: UnOp {
+                                                op: BoolNeg,
+                                                operand: BinOp {
+                                                    op: Eq(
+                                                        Eq,
+                                                    ),
+                                                    lhs: LvalueToRvalue(
+                                                        Member {
+                                                            lhs: Identifier(
+                                                                o(10),
+                                                            ),
+                                                            member_name: r"next",
+                                                        },
+                                                    ),
+                                                    rhs: Null,
+                                                },
+                                            },
+                                            on_true: Block {
+                                                stmts: [
+                                                    Panic {
+                                                        pos: Position {
+                                                            line: 31,
+                                                            column: 4,
+                                                        },
+                                                    },
+                                                ],
+                                                locals_count: 0,
+                                            },
+                                            on_false: None,
+                                        },
+                                        Declaration(
+                                            Binding {
+                                                name: u(11),
+                                                decl: Var(
+                                                    VarDecl {
+                                                        t: Null,
+                                                        initialiser: Some(
+                                                            Call {
+                                                                callee: unit(2),
+                                                                args: [],
+                                                            },
+                                                        ),
+                                                        relative_location: Local(
+                                                            7,
+                                                        ),
+                                                    },
+                                                ),
+                                            },
+                                        ),
+                                        If {
+                                            condition: UnOp {
+                                                op: BoolNeg,
+                                                operand: BinOp {
+                                                    op: Eq(
+                                                        Eq,
+                                                    ),
+                                                    lhs: LvalueToRvalue(
+                                                        Identifier(
+                                                            u(11),
+                                                        ),
+                                                    ),
+                                                    rhs: Null,
+                                                },
+                                            },
+                                            on_true: Block {
+                                                stmts: [
+                                                    Panic {
+                                                        pos: Position {
+                                                            line: 34,
+                                                            column: 4,
+                                                        },
+                                                    },
+                                                ],
+                                                locals_count: 0,
+                                            },
+                                            on_false: None,
+                                        },
+                                    ],
+                                    locals_count: 8,
+                                },
+                            ),
+                        },
+                    ),
+                ),
+            },
+            Binding {
+                name: i(4),
+                decl: Var(
+                    VarDecl {
+                        t: Int,
+                        initialiser: None,
+                        relative_location: Local(
+                            0,
+                        ),
+                    },
+                ),
+            },
+            Binding {
+                name: r(5),
+                decl: Var(
+                    VarDecl {
+                        t: Real,
+                        initialiser: None,
+                        relative_location: Local(
+                            1,
+                        ),
+                    },
+                ),
+            },
+            Binding {
+                name: b(6),
+                decl: Var(
+                    VarDecl {
+                        t: Bool,
+                        initialiser: None,
+                        relative_location: Local(
+                            2,
+                        ),
+                    },
+                ),
+            },
+            Binding {
+                name: a(7),
+                decl: Var(
+                    VarDecl {
+                        t: Array(
+                            ArrayDescription {
+                                t: Int,
+                                length: Some(
+                                    3,
+                                ),
+                            },
+                        ),
+                        initialiser: None,
+                        relative_location: Local(
+                            3,
+                        ),
+                    },
+                ),
+            },
+            Binding {
+                name: s(8),
+                decl: Var(
+                    VarDecl {
+                        t: Array(
+                            ArrayDescription {
+                                t: Int,
+                                length: None,
+                            },
+                        ),
+                        initialiser: None,
+                        relative_location: Local(
+                            4,
+                        ),
+                    },
+                ),
+            },
+            Binding {
+                name: i2(9),
+                decl: Var(
+                    VarDecl {
+                        t: Alias(
+                            int(0),
+                        ),
+                        initialiser: None,
+                        relative_location: Local(
+                            5,
+                        ),
+                    },
+                ),
+            },
+            Binding {
+                name: o(10),
+                decl: Var(
+                    VarDecl {
+                        t: Alias(
+                            object(1),
+                        ),
+                        initialiser: None,
+                        relative_location: Local(
+                            6,
+                        ),
+                    },
+                ),
+            },
+            Binding {
+                name: u(11),
+                decl: Var(
+                    VarDecl {
+                        t: Null,
+                        initialiser: Some(
+                            Call {
+                                callee: unit(2),
+                                args: [],
+                            },
+                        ),
+                        relative_location: Local(
+                            7,
+                        ),
+                    },
+                ),
+            },
+        ],
+    },
+}

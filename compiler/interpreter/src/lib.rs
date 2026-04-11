@@ -175,7 +175,7 @@ impl<'a, W: Write> Interpreter<'a, W> {
             Type::Real => Primitive::Real(0.0),
             Type::Bool => Primitive::Bool(false),
             Type::Alias(ty) => self.default_value_for_type(self.get_effective_type(ty)),
-            Type::Record(_) | Type::Array(_) | Type::Null | Type::Unit => Primitive::Null,
+            Type::Record(_) | Type::Array(_) | Type::Null => Primitive::Null,
         }
     }
 
@@ -345,7 +345,7 @@ impl<'a, W: Write> Interpreter<'a, W> {
 
             Type::Alias(ty) => self.new(bindings, self.get_effective_type(ty), field_values)?,
 
-            Type::Int | Type::Real | Type::Bool | Type::Null | Type::Unit => {
+            Type::Int | Type::Real | Type::Bool | Type::Null => {
                 unreachable!("Unsupported type for `new` expression: {ty}")
             }
         }

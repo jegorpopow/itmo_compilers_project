@@ -1,0 +1,35 @@
+type int is integer;
+type object is record
+    var next is object;
+end;
+
+routine unit() is end
+
+routine main() is
+    var i : integer;
+    assert i = 0;
+
+    var r : real;
+    assert r = 0.0;
+
+    var b : boolean;
+    assert b = false;
+
+    var a : array [3] integer;
+    assert a = null;
+
+    var s : array [] integer;
+    assert s = null;
+
+    var i2 : int;
+    assert i2 = (0 :: int);
+
+    var o : object;
+    assert o = null;
+
+    o := new object;
+    assert o.next = null;
+
+    var u is unit();
+    assert u = null;
+end

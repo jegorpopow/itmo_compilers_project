@@ -1,0 +1,344 @@
+Program(
+    [
+        Type(
+            TypeDecl {
+                name: r"int",
+                t: Int,
+            },
+        ),
+        Type(
+            TypeDecl {
+                name: r"object",
+                t: Record(
+                    RecordDescription {
+                        fields: [
+                            FieldDescription {
+                                name: r"next",
+                                t: Alias(
+                                    r"object",
+                                ),
+                            },
+                        ],
+                    },
+                ),
+            },
+        ),
+        Routine(
+            RoutineDecl {
+                name: r"unit",
+                arguments: [],
+                return_type: None,
+                body: Some(
+                    Block(
+                        Block(
+                            [],
+                        ),
+                    ),
+                ),
+            },
+        ),
+        Routine(
+            RoutineDecl {
+                name: r"main",
+                arguments: [],
+                return_type: None,
+                body: Some(
+                    Block(
+                        Block(
+                            [
+                                VarDecl(
+                                    VarDecl {
+                                        name: r"i",
+                                        t: Some(
+                                            Int,
+                                        ),
+                                        initialiser: None,
+                                    },
+                                ),
+                                Stmt(
+                                    Assert {
+                                        pos: Position {
+                                            line: 10,
+                                            column: 4,
+                                        },
+                                        value: BinOp {
+                                            op: Eq,
+                                            lhs: LvalueToRvalue(
+                                                Identifier(
+                                                    r"i",
+                                                ),
+                                            ),
+                                            rhs: IntegerLiteral(
+                                                IntegerLiteral {
+                                                    repr: "0",
+                                                    value: 0,
+                                                },
+                                            ),
+                                        },
+                                    },
+                                ),
+                                VarDecl(
+                                    VarDecl {
+                                        name: r"r",
+                                        t: Some(
+                                            Real,
+                                        ),
+                                        initialiser: None,
+                                    },
+                                ),
+                                Stmt(
+                                    Assert {
+                                        pos: Position {
+                                            line: 13,
+                                            column: 4,
+                                        },
+                                        value: BinOp {
+                                            op: Eq,
+                                            lhs: LvalueToRvalue(
+                                                Identifier(
+                                                    r"r",
+                                                ),
+                                            ),
+                                            rhs: RealLiteral(
+                                                RealLiteral {
+                                                    repr: "0.0",
+                                                    value: 0.0,
+                                                },
+                                            ),
+                                        },
+                                    },
+                                ),
+                                VarDecl(
+                                    VarDecl {
+                                        name: r"b",
+                                        t: Some(
+                                            Bool,
+                                        ),
+                                        initialiser: None,
+                                    },
+                                ),
+                                Stmt(
+                                    Assert {
+                                        pos: Position {
+                                            line: 16,
+                                            column: 4,
+                                        },
+                                        value: BinOp {
+                                            op: Eq,
+                                            lhs: LvalueToRvalue(
+                                                Identifier(
+                                                    r"b",
+                                                ),
+                                            ),
+                                            rhs: BoolLiteral(
+                                                False,
+                                            ),
+                                        },
+                                    },
+                                ),
+                                VarDecl(
+                                    VarDecl {
+                                        name: r"a",
+                                        t: Some(
+                                            Array(
+                                                ArrayDescription {
+                                                    t: Int,
+                                                    length: Some(
+                                                        IntegerLiteral(
+                                                            IntegerLiteral {
+                                                                repr: "3",
+                                                                value: 3,
+                                                            },
+                                                        ),
+                                                    ),
+                                                },
+                                            ),
+                                        ),
+                                        initialiser: None,
+                                    },
+                                ),
+                                Stmt(
+                                    Assert {
+                                        pos: Position {
+                                            line: 19,
+                                            column: 4,
+                                        },
+                                        value: BinOp {
+                                            op: Eq,
+                                            lhs: LvalueToRvalue(
+                                                Identifier(
+                                                    r"a",
+                                                ),
+                                            ),
+                                            rhs: Null,
+                                        },
+                                    },
+                                ),
+                                VarDecl(
+                                    VarDecl {
+                                        name: r"s",
+                                        t: Some(
+                                            Array(
+                                                ArrayDescription {
+                                                    t: Int,
+                                                    length: None,
+                                                },
+                                            ),
+                                        ),
+                                        initialiser: None,
+                                    },
+                                ),
+                                Stmt(
+                                    Assert {
+                                        pos: Position {
+                                            line: 22,
+                                            column: 4,
+                                        },
+                                        value: BinOp {
+                                            op: Eq,
+                                            lhs: LvalueToRvalue(
+                                                Identifier(
+                                                    r"s",
+                                                ),
+                                            ),
+                                            rhs: Null,
+                                        },
+                                    },
+                                ),
+                                VarDecl(
+                                    VarDecl {
+                                        name: r"i2",
+                                        t: Some(
+                                            Alias(
+                                                r"int",
+                                            ),
+                                        ),
+                                        initialiser: None,
+                                    },
+                                ),
+                                Stmt(
+                                    Assert {
+                                        pos: Position {
+                                            line: 25,
+                                            column: 4,
+                                        },
+                                        value: BinOp {
+                                            op: Eq,
+                                            lhs: LvalueToRvalue(
+                                                Identifier(
+                                                    r"i2",
+                                                ),
+                                            ),
+                                            rhs: Cast {
+                                                operand: IntegerLiteral(
+                                                    IntegerLiteral {
+                                                        repr: "0",
+                                                        value: 0,
+                                                    },
+                                                ),
+                                                target: Alias(
+                                                    r"int",
+                                                ),
+                                            },
+                                        },
+                                    },
+                                ),
+                                VarDecl(
+                                    VarDecl {
+                                        name: r"o",
+                                        t: Some(
+                                            Alias(
+                                                r"object",
+                                            ),
+                                        ),
+                                        initialiser: None,
+                                    },
+                                ),
+                                Stmt(
+                                    Assert {
+                                        pos: Position {
+                                            line: 28,
+                                            column: 4,
+                                        },
+                                        value: BinOp {
+                                            op: Eq,
+                                            lhs: LvalueToRvalue(
+                                                Identifier(
+                                                    r"o",
+                                                ),
+                                            ),
+                                            rhs: Null,
+                                        },
+                                    },
+                                ),
+                                Stmt(
+                                    Assignment {
+                                        lhs: Identifier(
+                                            r"o",
+                                        ),
+                                        rhs: New {
+                                            t: Alias(
+                                                r"object",
+                                            ),
+                                            fields: None,
+                                            array_length: None,
+                                        },
+                                    },
+                                ),
+                                Stmt(
+                                    Assert {
+                                        pos: Position {
+                                            line: 31,
+                                            column: 4,
+                                        },
+                                        value: BinOp {
+                                            op: Eq,
+                                            lhs: LvalueToRvalue(
+                                                Member {
+                                                    lhs: Identifier(
+                                                        r"o",
+                                                    ),
+                                                    member_name: r"next",
+                                                },
+                                            ),
+                                            rhs: Null,
+                                        },
+                                    },
+                                ),
+                                VarDecl(
+                                    VarDecl {
+                                        name: r"u",
+                                        t: None,
+                                        initialiser: Some(
+                                            Call {
+                                                callee: r"unit",
+                                                args: [],
+                                            },
+                                        ),
+                                    },
+                                ),
+                                Stmt(
+                                    Assert {
+                                        pos: Position {
+                                            line: 34,
+                                            column: 4,
+                                        },
+                                        value: BinOp {
+                                            op: Eq,
+                                            lhs: LvalueToRvalue(
+                                                Identifier(
+                                                    r"u",
+                                                ),
+                                            ),
+                                            rhs: Null,
+                                        },
+                                    },
+                                ),
+                            ],
+                        ),
+                    ),
+                ),
+            },
+        ),
+    ],
+)

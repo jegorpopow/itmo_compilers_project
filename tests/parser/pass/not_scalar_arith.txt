@@ -1,0 +1,57 @@
+Program(
+    [
+        Routine(
+            RoutineDecl {
+                name: r"foo",
+                arguments: [
+                    (
+                        r"a",
+                        Array(
+                            ArrayDescription {
+                                t: Int,
+                                length: None,
+                            },
+                        ),
+                    ),
+                    (
+                        r"b",
+                        Array(
+                            ArrayDescription {
+                                t: Int,
+                                length: None,
+                            },
+                        ),
+                    ),
+                ],
+                return_type: Some(
+                    Bool,
+                ),
+                body: Some(
+                    Block(
+                        Block(
+                            [
+                                Stmt(
+                                    Return {
+                                        value: BinOp {
+                                            op: Plus,
+                                            lhs: LvalueToRvalue(
+                                                Identifier(
+                                                    r"a",
+                                                ),
+                                            ),
+                                            rhs: LvalueToRvalue(
+                                                Identifier(
+                                                    r"b",
+                                                ),
+                                            ),
+                                        },
+                                    },
+                                ),
+                            ],
+                        ),
+                    ),
+                ),
+            },
+        ),
+    ],
+)

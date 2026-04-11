@@ -1,7 +1,7 @@
 use core::{cmp::Ordering, fmt};
 use std::{
     collections::BTreeSet,
-    fs::{File, read_dir},
+    fs::{self, File},
     path::PathBuf,
 };
 
@@ -63,7 +63,9 @@ impl TestDirContents {
 
         let mut expected_extension: Option<Extension> = None;
 
-        for entry in read_dir(&dir).with_context(|| format!("failed to ls {}", dir.display()))? {
+        for entry in
+            fs::read_dir(&dir).with_context(|| format!("failed to ls {}", dir.display()))?
+        {
             let entry = entry.with_context(|| format!("Error traversing {}", dir.display()))?;
             let filename = entry.file_name().into_string().map_err(|e| {
                 anyhow!("Non-unicode file name? Come on! {}", dir.join(e).display())
@@ -237,6 +239,30 @@ fn no_trailing_whitespace_in_src() {
                 "Trailing whitespace at {}:{i}",
                 path.display()
             )
+        }
+    }
+}
+
+#[test]
+#[throws]
+fn all_tests_have_trailing_newline() {
+    for dir in Stage::all()
+        .iter()
+        .flat_map(|s| [s.tests_for_mode(Mode::Pass), s.tests_for_mode(Mode::Fail)])
+        .chain(core::iter::once_with(TestDirContents::srcs))
+    {
+        let dir = dir?;
+        for stem in &dir.stems {
+            let path = dir.path(stem);
+            let contents = fs::read_to_string(&path)
+                .with_context(|| format!("Cannot read from {}", path.display()))?;
+            if !contents.is_empty() {
+                assert!(
+                    contents.ends_with('\n'),
+                    "No newline at the end of {}",
+                    path.display()
+                )
+            }
         }
     }
 }

@@ -1,0 +1,103 @@
+Program(
+    [
+        Routine(
+            RoutineDecl {
+                name: r"forget_length",
+                arguments: [
+                    (
+                        r"t",
+                        Array(
+                            ArrayDescription {
+                                t: Int,
+                                length: None,
+                            },
+                        ),
+                    ),
+                ],
+                return_type: Some(
+                    Array(
+                        ArrayDescription {
+                            t: Int,
+                            length: None,
+                        },
+                    ),
+                ),
+                body: Some(
+                    Block(
+                        Block(
+                            [
+                                Stmt(
+                                    Return {
+                                        value: LvalueToRvalue(
+                                            Identifier(
+                                                r"t",
+                                            ),
+                                        ),
+                                    },
+                                ),
+                            ],
+                        ),
+                    ),
+                ),
+            },
+        ),
+        Routine(
+            RoutineDecl {
+                name: r"main",
+                arguments: [],
+                return_type: None,
+                body: Some(
+                    Block(
+                        Block(
+                            [
+                                VarDecl(
+                                    VarDecl {
+                                        name: r"a",
+                                        t: Some(
+                                            Array(
+                                                ArrayDescription {
+                                                    t: Int,
+                                                    length: Some(
+                                                        IntegerLiteral(
+                                                            IntegerLiteral {
+                                                                repr: "3",
+                                                                value: 3,
+                                                            },
+                                                        ),
+                                                    ),
+                                                },
+                                            ),
+                                        ),
+                                        initialiser: None,
+                                    },
+                                ),
+                                Stmt(
+                                    Print {
+                                        value: BinOp {
+                                            op: Eq,
+                                            lhs: LvalueToRvalue(
+                                                Identifier(
+                                                    r"a",
+                                                ),
+                                            ),
+                                            rhs: Call {
+                                                callee: r"forget_length",
+                                                args: [
+                                                    LvalueToRvalue(
+                                                        Identifier(
+                                                            r"a",
+                                                        ),
+                                                    ),
+                                                ],
+                                            },
+                                        },
+                                    },
+                                ),
+                            ],
+                        ),
+                    ),
+                ),
+            },
+        ),
+    ],
+)

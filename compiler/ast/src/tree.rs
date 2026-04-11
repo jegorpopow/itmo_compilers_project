@@ -338,15 +338,16 @@ pub enum TypeDecl {
 }
 
 impl TypeDecl {
-    pub fn get_effective(&self) -> AnalysisResult<Rc<Type>> {
+    #[must_use]
+    pub fn get_effective(&self) -> &Rc<Type> {
         match self {
             TypeDecl::Full {
                 prescribed: _,
                 effective,
-            } => Ok(Rc::clone(effective)),
-            TypeDecl::Forward { alias } => Err(AnalysisError {
-                what: format!("Trying to get a effective type of forward declared type {alias:?}"),
-            }),
+            } => effective,
+            TypeDecl::Forward { alias } => {
+                unreachable!("Trying to get a effective type of forward declared type {alias:?}")
+            }
         }
     }
 }
@@ -406,16 +407,6 @@ impl From<LocalDecl> for Decl {
 
 pub type LocalBinding = Binding<LocalDecl>;
 
-impl From<LocalBinding> for Binding {
-    fn from(sb: LocalBinding) -> Self {
-        let LocalBinding { name, decl } = sb;
-        Binding {
-            name,
-            decl: decl.into(),
-        }
-    }
-}
-
 #[derive(Debug, Clone)]
 pub struct Block {
     pub stmts: Vec<Statement>,
@@ -471,21 +462,6 @@ pub enum Decl {
     Routine(RoutineDecl),
 }
 
-impl TryFrom<Decl> for LocalDecl {
-    type Error = AnalysisError;
-
-    fn try_from(value: Decl) -> AnalysisResult<LocalDecl> {
-        match value {
-            Decl::Var(var_decl) => Ok(LocalDecl::Var(var_decl)),
-            Decl::Type(type_decl) => Ok(LocalDecl::Type(type_decl)),
-            Decl::Const(const_decl) => Ok(LocalDecl::Const(const_decl)),
-            Decl::Routine(_) => Err(AnalysisError {
-                what: "nested functions are not supported".to_string(),
-            }),
-        }
-    }
-}
-
 #[derive(Debug, Clone)]
 pub struct Binding<T = Decl> {
     pub name: Identifier,
@@ -531,18 +507,6 @@ impl Binding {
     }
 }
 
-impl TryFrom<Binding> for LocalBinding {
-    type Error = AnalysisError;
-
-    fn try_from(value: Binding) -> AnalysisResult<LocalBinding> {
-        let Binding { name, decl } = value;
-        Ok(LocalBinding {
-            name,
-            decl: decl.try_into()?,
-        })
-    }
-}
-
 #[derive(Debug)]
 pub struct Program {
     pub globals: Vec<Binding>,
@@ -583,9 +547,7 @@ impl Bindings {
             Type::Alias(_) => Err(AnalysisError {
                 what: "Effective type cannot be alias".to_string(),
             }),
-            Type::Record(_) | Type::Array(_) | Type::Null | Type::Unit => {
-                Ok(Expression::Null.into())
-            }
+            Type::Record(_) | Type::Array(_) | Type::Null => Ok(Expression::Null.into()),
         }
     }
 
@@ -593,18 +555,14 @@ impl Bindings {
         self.arena[ident.id.0].decl = new_decl;
     }
 
-    pub fn get_effective_type(&self, t: &Rc<Type>) -> AnalysisResult<Rc<Type>> {
+    pub fn get_effective_type<'a>(&'a self, t: &'a Rc<Type>) -> AnalysisResult<&'a Rc<Type>> {
         match t.as_ref() {
             Type::Alias(identifier) => self[identifier]
                 .ensure_is_type()
-                .and_then(TypeDecl::get_effective),
-            Type::Int
-            | Type::Real
-            | Type::Bool
-            | Type::Record(_)
-            | Type::Array(_)
-            | Type::Null
-            | Type::Unit => Ok(Rc::clone(t)),
+                .map(TypeDecl::get_effective),
+            Type::Int | Type::Real | Type::Bool | Type::Record(_) | Type::Array(_) | Type::Null => {
+                Ok(t)
+            }
         }
     }
 }
@@ -626,80 +584,98 @@ impl Index<&Identifier> for Bindings {
     }
 }
 
-// FIXME: add target effective type
-pub(crate) fn cast_to(
-    expr: Typed<Expression>,
-    target_type: &Type,
-) -> AnalysisResult<Rc<Expression>> {
-    let Typed {
-        value: expr,
-        ty: own_type,
-    } = expr;
-    let own_type = &*own_type;
-    match target_type {
-        Type::Int => match own_type {
-            Type::Int => Ok(expr),
-            Type::Real => Ok(Rc::new(Expression::RealToInt(expr))),
-            Type::Bool => Ok(Rc::new(Expression::BoolToInt(expr))),
-            Type::Alias(_) | Type::Record(_) | Type::Array(_) | Type::Null | Type::Unit => {
-                Err(AnalysisError {
-                    what: format!(
-                        "There is no implicit conversion from `{own_type}` to `{target_type}`"
-                    ),
-                })
-            }
-        },
-        Type::Real => match own_type {
-            Type::Real => Ok(expr),
-            Type::Int => Ok(Rc::new(Expression::IntToReal(expr))),
-            Type::Bool => Ok(Rc::new(Expression::IntToReal(Rc::new(
+impl Bindings {
+    pub(crate) fn coerce(
+        &self,
+        expr: Typed<Expression>,
+        target_type: &Type,
+    ) -> AnalysisResult<Rc<Expression>> {
+        let Typed {
+            value: expr,
+            ty: own_type,
+        } = expr;
+
+        let source_type = own_type.as_ref();
+
+        match [source_type, target_type] {
+            [Type::Int, Type::Int]
+            | [Type::Bool, Type::Bool]
+            | [Type::Real, Type::Real]
+            | [Type::Null, Type::Null | Type::Record(_) | Type::Array(_)] => Ok(expr),
+
+            [Type::Null, &Type::Alias(Identifier { raw: _, id })] => self.coerce(
+                Typed {
+                    value: expr,
+                    ty: own_type,
+                },
+                self[id].ensure_is_type()?.get_effective(),
+            ),
+
+            [Type::Bool, Type::Real] => Ok(Rc::new(Expression::IntToReal(Rc::new(
                 Expression::BoolToInt(expr),
             )))),
-            Type::Alias(_) | Type::Record(_) | Type::Array(_) | Type::Null | Type::Unit => {
-                Err(AnalysisError {
-                    what: format!(
-                        "There is no implicit conversion from `{own_type}` to `{target_type}`"
-                    ),
-                })
-            }
-        },
+            [Type::Bool, Type::Int] => Ok(Rc::new(Expression::BoolToInt(expr))),
+            [Type::Int, Type::Real] => Ok(Rc::new(Expression::IntToReal(expr))),
 
-        Type::Bool => match own_type {
-            Type::Bool => Ok(expr),
-            Type::Int => Ok(Rc::new(Expression::IntToBool(expr))),
-            Type::Real => Ok(Rc::new(Expression::IntToBool(Rc::new(
-                Expression::RealToInt(expr),
+            [Type::Real, Type::Bool] => Ok(Rc::new(Expression::RealToInt(Rc::new(
+                Expression::IntToBool(expr),
             )))),
-            Type::Alias(_) | Type::Record(_) | Type::Array(_) | Type::Null | Type::Unit => {
-                Err(AnalysisError {
-                    what: format!(
-                        "There is no implicit conversion from `{own_type}` to `{target_type}`"
-                    ),
-                })
-            }
-        },
+            [Type::Real, Type::Int] => Ok(Rc::new(Expression::RealToInt(expr))),
+            [Type::Int, Type::Bool] => Ok(Rc::new(Expression::IntToBool(expr))),
 
-        Type::Array(ArrayDescription { t, length: None }) => {
-            let element_type = own_type.get_element_type()?;
-            if element_type == t {
-                Ok(expr)
-            } else {
-                Err(AnalysisError {
-                    what: format!("Array of {element_type} is casted to array of {t} type"),
-                })
-            }
-        }
+            [
+                Type::Int
+                | Type::Bool
+                | Type::Real
+                | Type::Array(_)
+                | Type::Record(_)
+                | Type::Alias(_),
+                Type::Null,
+            ] => Err(AnalysisError {
+                what: format!("Cannot discard a value of type `{own_type}`"),
+            }),
 
-        Type::Alias(_) | Type::Record(_) | Type::Array(_) | Type::Null | Type::Unit => {
-            if own_type == target_type || *own_type == Type::Null {
-                Ok(expr)
-            } else {
-                Err(AnalysisError {
-                    what: format!(
-                        "There is no implicit conversion from `{own_type}` to `{target_type}`"
-                    ),
-                })
-            }
+            [
+                Type::Array(_) | Type::Record(_) | Type::Null,
+                Type::Int | Type::Real | Type::Bool,
+            ] => Err(AnalysisError {
+                what: format!(
+                    "Reference-counted type `{own_type}` cannot be converted to numeric type `{target_type}`"
+                ),
+            }),
+
+            [
+                Type::Int | Type::Real | Type::Bool,
+                Type::Array(_) | Type::Record(_),
+            ] => Err(AnalysisError {
+                what: format!(
+                    "Numeric type `{own_type}` cannot be converted to reference-counted type `{target_type}`"
+                ),
+            }),
+
+            [Type::Alias(from), Type::Alias(to)] if from == to => Ok(expr),
+            [Type::Record(r1), Type::Record(r2)] if r1 == r2 => Ok(expr),
+            [
+                Type::Array(ArrayDescription {
+                    t: from_t,
+                    length: from_length,
+                }),
+                Type::Array(ArrayDescription {
+                    t: to_t,
+                    length: to_length,
+                }),
+            ] if from_t == to_t && (from_length == to_length || to_length.is_none()) => Ok(expr),
+
+            [
+                Type::Array(_) | Type::Record(_),
+                Type::Array(_) | Type::Record(_),
+            ]
+            | [Type::Alias(_), _]
+            | [_, Type::Alias(_)] => Err(AnalysisError {
+                what: format!(
+                    "There is no implicit conversion from `{source_type}` to `{target_type}`"
+                ),
+            }),
         }
     }
 }
