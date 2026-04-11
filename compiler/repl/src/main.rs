@@ -4,15 +4,12 @@ use std::{
 };
 
 use lexer::Lexer;
-use parser::{Expression, IndexedIterator, Parser, ParserResult, TokenIterator as _};
+use parser::{Expression, Parser, ParserResult};
 
 fn parse_expr_from_line(str: &str) -> ParserResult<Rc<Expression>> {
-    let tokens: Vec<_> = Lexer::from(str).collect();
-    let mut parser = Parser::new();
-    let start = IndexedIterator::from(tokens.as_slice());
-    let (result, tail) = parser.parse_expr(start)?;
-    assert_eq!(tail.current(), None, "Unparsed tokens");
-    parser.finish(result)
+    let mut parser = Parser::new(Lexer::from(str));
+    let expr = parser.parse_expr()?;
+    parser.finish(expr)
 }
 
 fn main() -> io::Result<()> {

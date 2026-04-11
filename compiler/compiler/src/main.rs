@@ -20,7 +20,7 @@ fn main() -> anyhow::Result<()> {
         eprintln!("{token}")
     }
 
-    let program = match parse_program(tokens.as_slice()) {
+    let program = match parse_program(tokens) {
         Ok(program) => program,
         Err(ParserError::Recoverable { errors, parsed }) => {
             eprintln!("Following errors occurred:");
