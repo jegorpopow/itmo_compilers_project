@@ -1,4 +1,4 @@
-"routine" @ 1:0-1:7 is KEYWORD(Routine)
+"routine" @ 1:0-1:7 is KEYWORD(Routine(Opening))
 "extra_return" @ 1:8-1:20 is IDENTIFIER(extra_return)
 "(" @ 1:20-1:21 is LEFT PARENTHESIS
 ")" @ 1:21-1:22 is RIGHT PARENTHESIS
@@ -6,9 +6,9 @@
 "return" @ 2:2-2:8 is KEYWORD(Return)
 "10" @ 2:9-2:11 is INTEGER LITERAL(10)
 ";" @ 2:11-2:12 is SEMICOLON
-"end" @ 3:0-3:3 is KEYWORD(End)
-";" @ 3:3-3:4 is SEMICOLON
-"routine" @ 5:0-5:7 is KEYWORD(Routine)
+"enitour" @ 3:0-3:7 is KEYWORD(Routine(Closing))
+";" @ 3:7-3:8 is SEMICOLON
+"routine" @ 5:0-5:7 is KEYWORD(Routine(Opening))
 "no_return" @ 5:8-5:17 is IDENTIFIER(no_return)
 "(" @ 5:17-5:18 is LEFT PARENTHESIS
 ")" @ 5:18-5:19 is RIGHT PARENTHESIS
@@ -19,8 +19,8 @@
 "(" @ 6:14-6:15 is LEFT PARENTHESIS
 ")" @ 6:15-6:16 is RIGHT PARENTHESIS
 ";" @ 6:16-6:17 is SEMICOLON
-"end" @ 7:0-7:3 is KEYWORD(End)
-";" @ 7:3-7:4 is SEMICOLON
+"enitour" @ 7:0-7:7 is KEYWORD(Routine(Closing))
+";" @ 7:7-7:8 is SEMICOLON
 "type" @ 9:0-9:4 is KEYWORD(Type)
 "a" @ 9:5-9:6 is IDENTIFIER(a)
 "is" @ 9:7-9:9 is KEYWORD(Is)
@@ -31,7 +31,7 @@
 "is" @ 10:7-10:9 is KEYWORD(Is)
 "real" @ 10:10-10:14 is TYPENAME(Real)
 ";" @ 10:14-10:15 is SEMICOLON
-"routine" @ 12:0-12:7 is KEYWORD(Routine)
+"routine" @ 12:0-12:7 is KEYWORD(Routine(Opening))
 "strange_cast" @ 12:8-12:20 is IDENTIFIER(strange_cast)
 "(" @ 12:20-12:21 is LEFT PARENTHESIS
 ")" @ 12:21-12:22 is RIGHT PARENTHESIS
@@ -52,5 +52,5 @@
 ":=" @ 15:4-15:6 is ASSIGNMENT OPERATOR
 "j" @ 15:7-15:8 is IDENTIFIER(j)
 ";" @ 15:8-15:9 is SEMICOLON
-"end" @ 16:0-16:3 is KEYWORD(End)
-";" @ 16:3-16:4 is SEMICOLON
+"enitour" @ 16:0-16:7 is KEYWORD(Routine(Closing))
+";" @ 16:7-16:8 is SEMICOLON

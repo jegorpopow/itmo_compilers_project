@@ -1,4 +1,4 @@
-"routine" @ 1:0-1:7 is KEYWORD(Routine)
+"routine" @ 1:0-1:7 is KEYWORD(Routine(Opening))
 "array_length" @ 1:8-1:20 is IDENTIFIER(array_length)
 "(" @ 1:21-1:22 is LEFT PARENTHESIS
 "a" @ 1:22-1:23 is IDENTIFIER(a)
@@ -11,7 +11,7 @@
 ":" @ 1:44-1:45 is COLON
 "integer" @ 1:46-1:53 is TYPENAME(Integer)
 ";" @ 1:53-1:54 is SEMICOLON
-"routine" @ 2:0-2:7 is KEYWORD(Routine)
+"routine" @ 2:0-2:7 is KEYWORD(Routine(Opening))
 "bubble_sort" @ 2:8-2:19 is IDENTIFIER(bubble_sort)
 "(" @ 2:20-2:21 is LEFT PARENTHESIS
 "a" @ 2:21-2:22 is IDENTIFIER(a)
@@ -26,7 +26,7 @@
 "integer" @ 2:52-2:59 is TYPENAME(Integer)
 ")" @ 2:59-2:60 is RIGHT PARENTHESIS
 ";" @ 2:60-2:61 is SEMICOLON
-"routine" @ 4:0-4:7 is KEYWORD(Routine)
+"routine" @ 4:0-4:7 is KEYWORD(Routine(Opening))
 "sort_and_print_reversed_array" @ 4:8-4:37 is IDENTIFIER(sort_and_print_reversed_array)
 "(" @ 4:37-4:38 is LEFT PARENTHESIS
 "a" @ 4:38-4:39 is IDENTIFIER(a)
@@ -52,13 +52,13 @@
 "a" @ 6:14-6:15 is IDENTIFIER(a)
 ".." @ 6:16-6:18 is RANGE
 "reverse" @ 6:20-6:27 is KEYWORD(Reverse)
-"loop" @ 6:28-6:32 is KEYWORD(Loop)
+"loop" @ 6:28-6:32 is KEYWORD(Loop(Opening))
 "print" @ 7:4-7:9 is KEYWORD(Print)
 "elem" @ 7:10-7:14 is IDENTIFIER(elem)
 ";" @ 7:14-7:15 is SEMICOLON
-"end" @ 8:2-8:5 is KEYWORD(End)
-"end" @ 9:0-9:3 is KEYWORD(End)
-"routine" @ 11:0-11:7 is KEYWORD(Routine)
+"pool" @ 8:2-8:6 is KEYWORD(Loop(Closing))
+"enitour" @ 9:0-9:7 is KEYWORD(Routine(Closing))
+"routine" @ 11:0-11:7 is KEYWORD(Routine(Opening))
 "array_length" @ 11:8-11:20 is IDENTIFIER(array_length)
 "(" @ 11:21-11:22 is LEFT PARENTHESIS
 "a" @ 11:22-11:23 is IDENTIFIER(a)
@@ -81,19 +81,19 @@
 "in" @ 13:8-13:10 is KEYWORD(In)
 "a" @ 13:11-13:12 is IDENTIFIER(a)
 ".." @ 13:12-13:14 is RANGE
-"loop" @ 13:15-13:19 is KEYWORD(Loop)
+"loop" @ 13:15-13:19 is KEYWORD(Loop(Opening))
 "result" @ 14:4-14:10 is IDENTIFIER(result)
 ":=" @ 14:11-14:13 is ASSIGNMENT OPERATOR
 "result" @ 14:14-14:20 is IDENTIFIER(result)
 "+" @ 14:21-14:22 is OPERATOR(Plus)
 "1" @ 14:23-14:24 is INTEGER LITERAL(1)
 ";" @ 14:24-14:25 is SEMICOLON
-"end" @ 15:2-15:5 is KEYWORD(End)
+"pool" @ 15:2-15:6 is KEYWORD(Loop(Closing))
 "return" @ 16:2-16:8 is KEYWORD(Return)
 "result" @ 16:9-16:15 is IDENTIFIER(result)
 ";" @ 16:15-16:16 is SEMICOLON
-"end" @ 17:0-17:3 is KEYWORD(End)
-"routine" @ 19:0-19:7 is KEYWORD(Routine)
+"enitour" @ 17:0-17:7 is KEYWORD(Routine(Closing))
+"routine" @ 19:0-19:7 is KEYWORD(Routine(Opening))
 "bubble_sort" @ 19:8-19:19 is IDENTIFIER(bubble_sort)
 "(" @ 19:20-19:21 is LEFT PARENTHESIS
 "a" @ 19:21-19:22 is IDENTIFIER(a)
@@ -114,15 +114,15 @@
 "1" @ 20:11-20:12 is INTEGER LITERAL(1)
 ".." @ 20:13-20:15 is RANGE
 "length" @ 20:16-20:22 is IDENTIFIER(length)
-"loop" @ 20:23-20:27 is KEYWORD(Loop)
+"loop" @ 20:23-20:27 is KEYWORD(Loop(Opening))
 "for" @ 21:4-21:7 is KEYWORD(For)
 "j" @ 21:8-21:9 is IDENTIFIER(j)
 "in" @ 21:10-21:12 is KEYWORD(In)
 "2" @ 21:13-21:14 is INTEGER LITERAL(2)
 ".." @ 21:15-21:17 is RANGE
 "i" @ 21:18-21:19 is IDENTIFIER(i)
-"loop" @ 21:20-21:24 is KEYWORD(Loop)
-"if" @ 22:6-22:8 is KEYWORD(If)
+"loop" @ 21:20-21:24 is KEYWORD(Loop(Opening))
+"if" @ 22:6-22:8 is KEYWORD(If(Opening))
 "a" @ 22:9-22:10 is IDENTIFIER(a)
 "[" @ 22:10-22:11 is LEFT BRACKET
 "j" @ 22:11-22:12 is IDENTIFIER(j)
@@ -164,11 +164,11 @@
 ":=" @ 25:17-25:19 is ASSIGNMENT OPERATOR
 "t" @ 25:20-25:21 is IDENTIFIER(t)
 ";" @ 25:21-25:22 is SEMICOLON
-"end" @ 26:6-26:9 is KEYWORD(End)
-"end" @ 27:4-27:7 is KEYWORD(End)
-"end" @ 28:2-28:5 is KEYWORD(End)
-"end" @ 29:0-29:3 is KEYWORD(End)
-"routine" @ 31:0-31:7 is KEYWORD(Routine)
+"fi" @ 26:6-26:8 is KEYWORD(If(Closing))
+"pool" @ 27:4-27:8 is KEYWORD(Loop(Closing))
+"pool" @ 28:2-28:6 is KEYWORD(Loop(Closing))
+"enitour" @ 29:0-29:7 is KEYWORD(Routine(Closing))
+"routine" @ 31:0-31:7 is KEYWORD(Routine(Opening))
 "countdown" @ 31:8-31:17 is IDENTIFIER(countdown)
 "(" @ 31:18-31:19 is LEFT PARENTHESIS
 "n" @ 31:19-31:20 is IDENTIFIER(n)
@@ -183,13 +183,13 @@
 ".." @ 32:13-32:15 is RANGE
 "0" @ 32:16-32:17 is INTEGER LITERAL(0)
 "reverse" @ 32:18-32:25 is KEYWORD(Reverse)
-"loop" @ 32:26-32:30 is KEYWORD(Loop)
+"loop" @ 32:26-32:30 is KEYWORD(Loop(Opening))
 "print" @ 33:4-33:9 is KEYWORD(Print)
 "i" @ 33:10-33:11 is IDENTIFIER(i)
 ";" @ 33:11-33:12 is SEMICOLON
-"end" @ 34:2-34:5 is KEYWORD(End)
-"end" @ 35:0-35:3 is KEYWORD(End)
-"routine" @ 37:0-37:7 is KEYWORD(Routine)
+"pool" @ 34:2-34:6 is KEYWORD(Loop(Closing))
+"enitour" @ 35:0-35:7 is KEYWORD(Routine(Closing))
+"routine" @ 37:0-37:7 is KEYWORD(Routine(Opening))
 "count" @ 37:8-37:13 is IDENTIFIER(count)
 "(" @ 37:14-37:15 is LEFT PARENTHESIS
 "n" @ 37:15-37:16 is IDENTIFIER(n)
@@ -203,13 +203,13 @@
 "0" @ 38:11-38:12 is INTEGER LITERAL(0)
 ".." @ 38:13-38:15 is RANGE
 "n" @ 38:16-38:17 is IDENTIFIER(n)
-"loop" @ 38:18-38:22 is KEYWORD(Loop)
+"loop" @ 38:18-38:22 is KEYWORD(Loop(Opening))
 "print" @ 39:4-39:9 is KEYWORD(Print)
 "i" @ 39:10-39:11 is IDENTIFIER(i)
 ";" @ 39:11-39:12 is SEMICOLON
-"end" @ 40:2-40:5 is KEYWORD(End)
-"end" @ 41:0-41:3 is KEYWORD(End)
-"routine" @ 43:0-43:7 is KEYWORD(Routine)
+"pool" @ 40:2-40:6 is KEYWORD(Loop(Closing))
+"enitour" @ 41:0-41:7 is KEYWORD(Routine(Closing))
+"routine" @ 43:0-43:7 is KEYWORD(Routine(Opening))
 "main" @ 43:8-43:12 is IDENTIFIER(main)
 "(" @ 43:12-43:13 is LEFT PARENTHESIS
 ")" @ 43:13-43:14 is RIGHT PARENTHESIS
@@ -280,4 +280,4 @@
 "5" @ 53:12-53:13 is INTEGER LITERAL(5)
 ")" @ 53:13-53:14 is RIGHT PARENTHESIS
 ";" @ 53:14-53:15 is SEMICOLON
-"end" @ 54:0-54:3 is KEYWORD(End)
+"enitour" @ 54:0-54:7 is KEYWORD(Routine(Closing))

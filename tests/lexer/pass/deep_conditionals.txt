@@ -1,4 +1,4 @@
-"routine" @ 1:0-1:7 is KEYWORD(Routine)
+"routine" @ 1:0-1:7 is KEYWORD(Routine(Opening))
 "main" @ 1:8-1:12 is IDENTIFIER(main)
 "(" @ 1:12-1:13 is LEFT PARENTHESIS
 ")" @ 1:13-1:14 is RIGHT PARENTHESIS
@@ -38,7 +38,7 @@
 "is" @ 8:8-8:10 is KEYWORD(Is)
 "1" @ 8:11-8:12 is INTEGER LITERAL(1)
 ";" @ 8:12-8:13 is SEMICOLON
-"if" @ 10:2-10:4 is KEYWORD(If)
+"if" @ 10:2-10:4 is KEYWORD(If(Opening))
 "a" @ 10:5-10:6 is IDENTIFIER(a)
 "=" @ 10:7-10:8 is OPERATOR(Eq)
 "1" @ 10:9-10:10 is INTEGER LITERAL(1)
@@ -46,7 +46,7 @@
 "print" @ 11:4-11:9 is KEYWORD(Print)
 "1" @ 11:10-11:11 is INTEGER LITERAL(1)
 ";" @ 11:11-11:12 is SEMICOLON
-"if" @ 12:4-12:6 is KEYWORD(If)
+"if" @ 12:4-12:6 is KEYWORD(If(Opening))
 "b" @ 12:7-12:8 is IDENTIFIER(b)
 "=" @ 12:9-12:10 is OPERATOR(Eq)
 "1" @ 12:11-12:12 is INTEGER LITERAL(1)
@@ -54,7 +54,7 @@
 "print" @ 13:6-13:11 is KEYWORD(Print)
 "2" @ 13:12-13:13 is INTEGER LITERAL(2)
 ";" @ 13:13-13:14 is SEMICOLON
-"if" @ 14:6-14:8 is KEYWORD(If)
+"if" @ 14:6-14:8 is KEYWORD(If(Opening))
 "c" @ 14:9-14:10 is IDENTIFIER(c)
 "=" @ 14:11-14:12 is OPERATOR(Eq)
 "1" @ 14:13-14:14 is INTEGER LITERAL(1)
@@ -63,7 +63,7 @@
 "3" @ 15:14-15:15 is INTEGER LITERAL(3)
 ";" @ 15:15-15:16 is SEMICOLON
 "else" @ 16:6-16:10 is KEYWORD(Else)
-"if" @ 17:8-17:10 is KEYWORD(If)
+"if" @ 17:8-17:10 is KEYWORD(If(Opening))
 "d" @ 17:11-17:12 is IDENTIFIER(d)
 "=" @ 17:13-17:14 is OPERATOR(Eq)
 "1" @ 17:15-17:16 is INTEGER LITERAL(1)
@@ -71,10 +71,10 @@
 "print" @ 18:10-18:15 is KEYWORD(Print)
 "0" @ 18:16-18:17 is INTEGER LITERAL(0)
 ";" @ 18:17-18:18 is SEMICOLON
-"end" @ 19:8-19:11 is KEYWORD(End)
-"end" @ 20:6-20:9 is KEYWORD(End)
+"fi" @ 19:8-19:10 is KEYWORD(If(Closing))
+"fi" @ 20:6-20:8 is KEYWORD(If(Closing))
 "else" @ 21:4-21:8 is KEYWORD(Else)
-"if" @ 22:6-22:8 is KEYWORD(If)
+"if" @ 22:6-22:8 is KEYWORD(If(Opening))
 "e" @ 22:9-22:10 is IDENTIFIER(e)
 "=" @ 22:11-22:12 is OPERATOR(Eq)
 "1" @ 22:13-22:14 is INTEGER LITERAL(1)
@@ -83,7 +83,7 @@
 "0" @ 23:14-23:15 is INTEGER LITERAL(0)
 ";" @ 23:15-23:16 is SEMICOLON
 "else" @ 24:6-24:10 is KEYWORD(Else)
-"if" @ 25:8-25:10 is KEYWORD(If)
+"if" @ 25:8-25:10 is KEYWORD(If(Opening))
 "f" @ 25:11-25:12 is IDENTIFIER(f)
 "=" @ 25:13-25:14 is OPERATOR(Eq)
 "1" @ 25:15-25:16 is INTEGER LITERAL(1)
@@ -91,10 +91,10 @@
 "print" @ 26:10-26:15 is KEYWORD(Print)
 "0" @ 26:16-26:17 is INTEGER LITERAL(0)
 ";" @ 26:17-26:18 is SEMICOLON
-"end" @ 27:8-27:11 is KEYWORD(End)
-"end" @ 28:6-28:9 is KEYWORD(End)
-"end" @ 29:4-29:7 is KEYWORD(End)
-"if" @ 30:4-30:6 is KEYWORD(If)
+"fi" @ 27:8-27:10 is KEYWORD(If(Closing))
+"fi" @ 28:6-28:8 is KEYWORD(If(Closing))
+"fi" @ 29:4-29:6 is KEYWORD(If(Closing))
+"if" @ 30:4-30:6 is KEYWORD(If(Opening))
 "d" @ 30:7-30:8 is IDENTIFIER(d)
 "=" @ 30:9-30:10 is OPERATOR(Eq)
 "1" @ 30:11-30:12 is INTEGER LITERAL(1)
@@ -102,7 +102,7 @@
 "print" @ 31:6-31:11 is KEYWORD(Print)
 "4" @ 31:12-31:13 is INTEGER LITERAL(4)
 ";" @ 31:13-31:14 is SEMICOLON
-"if" @ 32:6-32:8 is KEYWORD(If)
+"if" @ 32:6-32:8 is KEYWORD(If(Opening))
 "e" @ 32:9-32:10 is IDENTIFIER(e)
 "=" @ 32:11-32:12 is OPERATOR(Eq)
 "1" @ 32:13-32:14 is INTEGER LITERAL(1)
@@ -110,7 +110,7 @@
 "print" @ 33:8-33:13 is KEYWORD(Print)
 "5" @ 33:14-33:15 is INTEGER LITERAL(5)
 ";" @ 33:15-33:16 is SEMICOLON
-"if" @ 34:8-34:10 is KEYWORD(If)
+"if" @ 34:8-34:10 is KEYWORD(If(Opening))
 "f" @ 34:11-34:12 is IDENTIFIER(f)
 "=" @ 34:13-34:14 is OPERATOR(Eq)
 "1" @ 34:15-34:16 is INTEGER LITERAL(1)
@@ -118,7 +118,7 @@
 "print" @ 35:10-35:15 is KEYWORD(Print)
 "6" @ 35:16-35:17 is INTEGER LITERAL(6)
 ";" @ 35:17-35:18 is SEMICOLON
-"if" @ 36:10-36:12 is KEYWORD(If)
+"if" @ 36:10-36:12 is KEYWORD(If(Opening))
 "g" @ 36:13-36:14 is IDENTIFIER(g)
 "=" @ 36:15-36:16 is OPERATOR(Eq)
 "1" @ 36:17-36:18 is INTEGER LITERAL(1)
@@ -130,19 +130,19 @@
 "print" @ 39:12-39:17 is KEYWORD(Print)
 "0" @ 39:18-39:19 is INTEGER LITERAL(0)
 ";" @ 39:19-39:20 is SEMICOLON
-"end" @ 40:10-40:13 is KEYWORD(End)
+"fi" @ 40:10-40:12 is KEYWORD(If(Closing))
 "else" @ 41:8-41:12 is KEYWORD(Else)
 "print" @ 42:10-42:15 is KEYWORD(Print)
 "0" @ 42:16-42:17 is INTEGER LITERAL(0)
 ";" @ 42:17-42:18 is SEMICOLON
-"end" @ 43:8-43:11 is KEYWORD(End)
+"fi" @ 43:8-43:10 is KEYWORD(If(Closing))
 "else" @ 44:6-44:10 is KEYWORD(Else)
 "print" @ 45:8-45:13 is KEYWORD(Print)
 "0" @ 45:14-45:15 is INTEGER LITERAL(0)
 ";" @ 45:15-45:16 is SEMICOLON
-"end" @ 46:6-46:9 is KEYWORD(End)
+"fi" @ 46:6-46:8 is KEYWORD(If(Closing))
 "else" @ 47:4-47:8 is KEYWORD(Else)
-"if" @ 48:6-48:8 is KEYWORD(If)
+"if" @ 48:6-48:8 is KEYWORD(If(Opening))
 "b" @ 48:9-48:10 is IDENTIFIER(b)
 "=" @ 48:11-48:12 is OPERATOR(Eq)
 "1" @ 48:13-48:14 is INTEGER LITERAL(1)
@@ -151,7 +151,7 @@
 "0" @ 49:14-49:15 is INTEGER LITERAL(0)
 ";" @ 49:15-49:16 is SEMICOLON
 "else" @ 50:6-50:10 is KEYWORD(Else)
-"if" @ 51:8-51:10 is KEYWORD(If)
+"if" @ 51:8-51:10 is KEYWORD(If(Opening))
 "c" @ 51:11-51:12 is IDENTIFIER(c)
 "=" @ 51:13-51:14 is OPERATOR(Eq)
 "1" @ 51:15-51:16 is INTEGER LITERAL(1)
@@ -159,11 +159,11 @@
 "print" @ 52:10-52:15 is KEYWORD(Print)
 "0" @ 52:16-52:17 is INTEGER LITERAL(0)
 ";" @ 52:17-52:18 is SEMICOLON
-"end" @ 53:8-53:11 is KEYWORD(End)
-"end" @ 54:6-54:9 is KEYWORD(End)
-"end" @ 55:4-55:7 is KEYWORD(End)
+"fi" @ 53:8-53:10 is KEYWORD(If(Closing))
+"fi" @ 54:6-54:8 is KEYWORD(If(Closing))
+"fi" @ 55:4-55:6 is KEYWORD(If(Closing))
 "else" @ 56:2-56:6 is KEYWORD(Else)
-"if" @ 57:4-57:6 is KEYWORD(If)
+"if" @ 57:4-57:6 is KEYWORD(If(Opening))
 "e" @ 57:7-57:8 is IDENTIFIER(e)
 "=" @ 57:9-57:10 is OPERATOR(Eq)
 "1" @ 57:11-57:12 is INTEGER LITERAL(1)
@@ -172,7 +172,7 @@
 "0" @ 58:12-58:13 is INTEGER LITERAL(0)
 ";" @ 58:13-58:14 is SEMICOLON
 "else" @ 59:4-59:8 is KEYWORD(Else)
-"if" @ 60:6-60:8 is KEYWORD(If)
+"if" @ 60:6-60:8 is KEYWORD(If(Opening))
 "g" @ 60:9-60:10 is IDENTIFIER(g)
 "=" @ 60:11-60:12 is OPERATOR(Eq)
 "1" @ 60:13-60:14 is INTEGER LITERAL(1)
@@ -180,7 +180,7 @@
 "print" @ 61:8-61:13 is KEYWORD(Print)
 "0" @ 61:14-61:15 is INTEGER LITERAL(0)
 ";" @ 61:15-61:16 is SEMICOLON
-"end" @ 62:6-62:9 is KEYWORD(End)
-"end" @ 63:4-63:7 is KEYWORD(End)
-"end" @ 64:2-64:5 is KEYWORD(End)
-"end" @ 65:0-65:3 is KEYWORD(End)
+"fi" @ 62:6-62:8 is KEYWORD(If(Closing))
+"fi" @ 63:4-63:6 is KEYWORD(If(Closing))
+"fi" @ 64:2-64:4 is KEYWORD(If(Closing))
+"enitour" @ 65:0-65:7 is KEYWORD(Routine(Closing))

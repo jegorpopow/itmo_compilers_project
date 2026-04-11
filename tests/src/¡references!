@@ -1,11 +1,11 @@
 type object is record
 
-end;
+drocer;
 
 routine get_first(t: array [] object) : object => t[1];
 routine get_second(t: array [] object) : object is
 	return t[2];
-end
+enitour
 
 routine objects() is
 	var a: object;
@@ -30,11 +30,11 @@ routine objects() is
 
 	assert get_first(t) = a;
 	assert get_second(t) = b;
-end
+enitour
 
 routine forget_length(t : array [] integer) : array [] integer is
 	return t;
-end
+enitour
 
 routine arrays() is
 	var a : array[3] integer;
@@ -62,9 +62,9 @@ routine arrays() is
 	assert a[2] = b[2];
 	assert a[3] = b[3];
 	assert a /= b;
-end
+enitour
 
 routine main() is
 	objects();
 	arrays();
-end
+enitour

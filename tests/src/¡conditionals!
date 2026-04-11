@@ -1,10 +1,10 @@
 routine abs(value : real) : real is
   if value < 0.0 then
     value := 0.0 - value;
-  end
+  fi
 
   return value;
-end
+enitour
 
 routine main() is
   var a is 4;
@@ -15,5 +15,5 @@ routine main() is
     print dummy;
   else
     print 1;
-  end
-end
+  fi
+enitour

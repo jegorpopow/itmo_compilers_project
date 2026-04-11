@@ -3,30 +3,33 @@ use core::{error, fmt};
 
 use common::{Extent, Integer, Real};
 
-// Token types
+#[derive(PartialEq, Eq, Hash, fmt::Debug, Clone, Copy)]
+pub enum Pair {
+    Opening,
+    Closing,
+}
 
 #[derive(PartialEq, Eq, Hash, fmt::Debug, Clone, Copy)]
 pub enum Keyword {
     Var,
     Type,
-    Routine,
+    Routine(Pair),
     Array,
-    Record,
+    Record(Pair),
     Is,
-    End,
-    If,
+    If(Pair),
     Then,
     Else,
     Return,
     In,
     While,
     For,
-    Loop,
+    Loop(Pair),
     Reverse,
     Print,
     New,
     Null,
-    Where,
+    Where(Pair),
     Assert,
     Panic,
     Constant,

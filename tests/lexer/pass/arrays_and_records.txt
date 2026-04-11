@@ -1,7 +1,7 @@
 "type" @ 1:0-1:4 is KEYWORD(Type)
 "point" @ 1:5-1:10 is IDENTIFIER(point)
 "is" @ 1:11-1:13 is KEYWORD(Is)
-"record" @ 1:14-1:20 is KEYWORD(Record)
+"record" @ 1:14-1:20 is KEYWORD(Record(Opening))
 "var" @ 2:2-2:5 is KEYWORD(Var)
 "x" @ 2:6-2:7 is IDENTIFIER(x)
 "is" @ 2:8-2:10 is KEYWORD(Is)
@@ -12,8 +12,8 @@
 "is" @ 3:8-3:10 is KEYWORD(Is)
 "real" @ 3:11-3:15 is TYPENAME(Real)
 ";" @ 3:15-3:16 is SEMICOLON
-"end" @ 4:0-4:3 is KEYWORD(End)
-";" @ 4:3-4:4 is SEMICOLON
+"drocer" @ 4:0-4:6 is KEYWORD(Record(Closing))
+";" @ 4:6-4:7 is SEMICOLON
 "type" @ 6:0-6:4 is KEYWORD(Type)
 "triangle" @ 6:5-6:13 is IDENTIFIER(triangle)
 "is" @ 6:14-6:16 is KEYWORD(Is)
@@ -30,7 +30,7 @@
 "is" @ 8:8-8:10 is KEYWORD(Is)
 "0.0000001" @ 8:11-8:20 is REAL LITERAL(0.0000001)
 ";" @ 8:20-8:21 is SEMICOLON
-"routine" @ 10:0-10:7 is KEYWORD(Routine)
+"routine" @ 10:0-10:7 is KEYWORD(Routine(Opening))
 "approximately_eq" @ 10:8-10:24 is IDENTIFIER(approximately_eq)
 "(" @ 10:24-10:25 is LEFT PARENTHESIS
 "a" @ 10:25-10:26 is IDENTIFIER(a)
@@ -62,7 +62,7 @@
 "*" @ 10:84-10:85 is OPERATOR(Mul)
 "eps" @ 10:86-10:89 is IDENTIFIER(eps)
 ";" @ 10:89-10:90 is SEMICOLON
-"routine" @ 12:0-12:7 is KEYWORD(Routine)
+"routine" @ 12:0-12:7 is KEYWORD(Routine(Opening))
 "squared_distance" @ 12:8-12:24 is IDENTIFIER(squared_distance)
 "(" @ 12:24-12:25 is LEFT PARENTHESIS
 "from" @ 12:25-12:29 is IDENTIFIER(from)
@@ -117,8 +117,8 @@
 "y" @ 13:76-13:77 is IDENTIFIER(y)
 ")" @ 13:77-13:78 is RIGHT PARENTHESIS
 ";" @ 13:78-13:79 is SEMICOLON
-"end" @ 14:0-14:3 is KEYWORD(End)
-"routine" @ 16:0-16:7 is KEYWORD(Routine)
+"enitour" @ 14:0-14:7 is KEYWORD(Routine(Closing))
+"routine" @ 16:0-16:7 is KEYWORD(Routine(Opening))
 "is_right" @ 16:8-16:16 is IDENTIFIER(is_right)
 "(" @ 16:16-16:17 is LEFT PARENTHESIS
 "t" @ 16:17-16:18 is IDENTIFIER(t)
@@ -258,7 +258,7 @@
 "EPS" @ 19:113-19:116 is IDENTIFIER(EPS)
 ")" @ 19:116-19:117 is RIGHT PARENTHESIS
 ";" @ 19:117-19:118 is SEMICOLON
-"routine" @ 21:0-21:7 is KEYWORD(Routine)
+"routine" @ 21:0-21:7 is KEYWORD(Routine(Opening))
 "main" @ 21:8-21:12 is IDENTIFIER(main)
 "(" @ 21:12-21:13 is LEFT PARENTHESIS
 ")" @ 21:13-21:14 is RIGHT PARENTHESIS
@@ -355,4 +355,4 @@
 "t" @ 32:17-32:18 is IDENTIFIER(t)
 ")" @ 32:18-32:19 is RIGHT PARENTHESIS
 ";" @ 32:19-32:20 is SEMICOLON
-"end" @ 33:0-33:3 is KEYWORD(End)
+"enitour" @ 33:0-33:7 is KEYWORD(Routine(Closing))

@@ -1,4 +1,4 @@
-"routine" @ 1:0-1:7 is KEYWORD(Routine)
+"routine" @ 1:0-1:7 is KEYWORD(Routine(Opening))
 "add_one" @ 1:8-1:15 is IDENTIFIER(add_one)
 "(" @ 1:15-1:16 is LEFT PARENTHESIS
 "n" @ 1:16-1:17 is IDENTIFIER(n)
@@ -13,8 +13,8 @@
 "+" @ 2:11-2:12 is OPERATOR(Plus)
 "1" @ 2:13-2:14 is INTEGER LITERAL(1)
 ";" @ 2:14-2:15 is SEMICOLON
-"end" @ 3:0-3:3 is KEYWORD(End)
-"routine" @ 5:0-5:7 is KEYWORD(Routine)
+"enitour" @ 3:0-3:7 is KEYWORD(Routine(Closing))
+"routine" @ 5:0-5:7 is KEYWORD(Routine(Opening))
 "main" @ 5:8-5:12 is IDENTIFIER(main)
 "(" @ 5:12-5:13 is LEFT PARENTHESIS
 ")" @ 5:13-5:14 is RIGHT PARENTHESIS
@@ -144,4 +144,4 @@
 ";" @ 23:19-23:20 is SEMICOLON
 "-- print a + 1.5;" @ 25:2-25:19 is COMMENT( print a + 1.5;)
 "-- print 2.0 * b;" @ 26:2-26:19 is COMMENT( print 2.0 * b;)
-"end" @ 27:0-27:3 is KEYWORD(End)
+"enitour" @ 27:0-27:7 is KEYWORD(Routine(Closing))

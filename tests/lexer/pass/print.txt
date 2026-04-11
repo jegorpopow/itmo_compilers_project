@@ -1,13 +1,13 @@
 "type" @ 1:0-1:4 is KEYWORD(Type)
 "empty_struct" @ 1:5-1:17 is IDENTIFIER(empty_struct)
 "is" @ 1:18-1:20 is KEYWORD(Is)
-"record" @ 1:21-1:27 is KEYWORD(Record)
-"end" @ 1:28-1:31 is KEYWORD(End)
-";" @ 1:31-1:32 is SEMICOLON
+"record" @ 1:21-1:27 is KEYWORD(Record(Opening))
+"drocer" @ 1:28-1:34 is KEYWORD(Record(Closing))
+";" @ 1:34-1:35 is SEMICOLON
 "type" @ 3:0-3:4 is KEYWORD(Type)
 "weird_names" @ 3:5-3:16 is IDENTIFIER(weird_names)
 "is" @ 3:17-3:19 is KEYWORD(Is)
-"record" @ 3:20-3:26 is KEYWORD(Record)
+"record" @ 3:20-3:26 is KEYWORD(Record(Opening))
 "var" @ 4:1-4:4 is KEYWORD(Var)
 "'we'allow'this'" @ 4:5-4:20 is IDENTIFIER('we'allow'this')
 "is" @ 4:21-4:23 is KEYWORD(Is)
@@ -18,12 +18,12 @@
 "is" @ 5:7-5:9 is KEYWORD(Is)
 "empty_struct" @ 5:10-5:22 is IDENTIFIER(empty_struct)
 ";" @ 5:22-5:23 is SEMICOLON
-"end" @ 6:0-6:3 is KEYWORD(End)
-";" @ 6:3-6:4 is SEMICOLON
+"drocer" @ 6:0-6:6 is KEYWORD(Record(Closing))
+";" @ 6:6-6:7 is SEMICOLON
 "type" @ 8:0-8:4 is KEYWORD(Type)
 "recursive" @ 8:5-8:14 is IDENTIFIER(recursive)
 "is" @ 8:15-8:17 is KEYWORD(Is)
-"record" @ 8:18-8:24 is KEYWORD(Record)
+"record" @ 8:18-8:24 is KEYWORD(Record(Opening))
 "var" @ 9:1-9:4 is KEYWORD(Var)
 "id" @ 9:5-9:7 is IDENTIFIER(id)
 "is" @ 9:8-9:10 is KEYWORD(Is)
@@ -42,9 +42,9 @@
 "]" @ 11:21-11:22 is RIGHT BRACKET
 "recursive" @ 11:23-11:32 is IDENTIFIER(recursive)
 ";" @ 11:32-11:33 is SEMICOLON
-"end" @ 12:0-12:3 is KEYWORD(End)
-";" @ 12:3-12:4 is SEMICOLON
-"routine" @ 14:0-14:7 is KEYWORD(Routine)
+"drocer" @ 12:0-12:6 is KEYWORD(Record(Closing))
+";" @ 12:6-12:7 is SEMICOLON
+"routine" @ 14:0-14:7 is KEYWORD(Routine(Opening))
 "main" @ 14:8-14:12 is IDENTIFIER(main)
 "(" @ 14:12-14:13 is LEFT PARENTHESIS
 ")" @ 14:13-14:14 is RIGHT PARENTHESIS
@@ -52,20 +52,20 @@
 "print" @ 15:1-15:6 is KEYWORD(Print)
 "new" @ 15:7-15:10 is KEYWORD(New)
 "weird_names" @ 15:11-15:22 is IDENTIFIER(weird_names)
-"where" @ 15:23-15:28 is KEYWORD(Where)
+"where" @ 15:23-15:28 is KEYWORD(Where(Opening))
 "_" @ 16:2-16:3 is IDENTIFIER(_)
 "is" @ 16:4-16:6 is KEYWORD(Is)
 "new" @ 16:7-16:10 is KEYWORD(New)
 "empty_struct" @ 16:11-16:23 is IDENTIFIER(empty_struct)
 ";" @ 16:23-16:24 is SEMICOLON
-"end" @ 17:1-17:4 is KEYWORD(End)
-";" @ 17:4-17:5 is SEMICOLON
+"erehw" @ 17:1-17:6 is KEYWORD(Where(Closing))
+";" @ 17:6-17:7 is SEMICOLON
 "var" @ 19:1-19:4 is KEYWORD(Var)
 "root" @ 19:5-19:9 is IDENTIFIER(root)
 "is" @ 19:10-19:12 is KEYWORD(Is)
 "new" @ 19:13-19:16 is KEYWORD(New)
 "recursive" @ 19:17-19:26 is IDENTIFIER(recursive)
-"where" @ 19:27-19:32 is KEYWORD(Where)
+"where" @ 19:27-19:32 is KEYWORD(Where(Opening))
 "id" @ 20:2-20:4 is IDENTIFIER(id)
 "is" @ 20:5-20:7 is KEYWORD(Is)
 "0" @ 20:8-20:9 is INTEGER LITERAL(0)
@@ -81,8 +81,8 @@
 "]" @ 21:25-21:26 is RIGHT BRACKET
 "recursive" @ 21:27-21:36 is IDENTIFIER(recursive)
 ";" @ 21:36-21:37 is SEMICOLON
-"end" @ 22:1-22:4 is KEYWORD(End)
-";" @ 22:4-22:5 is SEMICOLON
+"erehw" @ 22:1-22:6 is KEYWORD(Where(Closing))
+";" @ 22:6-22:7 is SEMICOLON
 "print" @ 23:1-23:6 is KEYWORD(Print)
 "root" @ 23:7-23:11 is IDENTIFIER(root)
 ";" @ 23:11-23:12 is SEMICOLON
@@ -100,7 +100,7 @@
 "is" @ 28:10-28:12 is KEYWORD(Is)
 "new" @ 28:13-28:16 is KEYWORD(New)
 "recursive" @ 28:17-28:26 is IDENTIFIER(recursive)
-"where" @ 28:27-28:32 is KEYWORD(Where)
+"where" @ 28:27-28:32 is KEYWORD(Where(Opening))
 "id" @ 29:2-29:4 is IDENTIFIER(id)
 "is" @ 29:5-29:7 is KEYWORD(Is)
 "0" @ 29:8-29:9 is INTEGER LITERAL(0)
@@ -120,8 +120,8 @@
 "]" @ 31:25-31:26 is RIGHT BRACKET
 "recursive" @ 31:27-31:36 is IDENTIFIER(recursive)
 ";" @ 31:36-31:37 is SEMICOLON
-"end" @ 32:1-32:4 is KEYWORD(End)
-";" @ 32:4-32:5 is SEMICOLON
+"erehw" @ 32:1-32:6 is KEYWORD(Where(Closing))
+";" @ 32:6-32:7 is SEMICOLON
 "root" @ 33:1-33:5 is IDENTIFIER(root)
 "." @ 33:5-33:6 is DOT
 "link" @ 33:6-33:10 is IDENTIFIER(link)
@@ -152,4 +152,4 @@
 "print" @ 38:1-38:6 is KEYWORD(Print)
 "root" @ 38:7-38:11 is IDENTIFIER(root)
 ";" @ 38:11-38:12 is SEMICOLON
-"end" @ 39:0-39:3 is KEYWORD(End)
+"enitour" @ 39:0-39:7 is KEYWORD(Routine(Closing))

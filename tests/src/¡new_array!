@@ -1,6 +1,6 @@
 routine print_len(a : array[] integer) is
 	print a.length;
-end
+enitour
 
 routine factorial(n : integer) : integer is
 	assert n >= 0;
@@ -8,10 +8,10 @@ routine factorial(n : integer) : integer is
 		return 1;
 	else
 		return n * factorial(n-1);
-	end
-end
+	fi
+enitour
 
 routine main() is
 	print_len(new [factorial(5)] array [] integer);
 	print_len(new [0] array [] integer);
-end
+enitour

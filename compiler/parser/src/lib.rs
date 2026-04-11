@@ -4,8 +4,8 @@ use std::rc::Rc;
 use common::{Extent, LoopOrder, Position, RawIdentifier, Real};
 use lexer::{
     BoolLiteral as TokenBoolLiteral, BuiltinTypename, Identifier as TokenIdentifier,
-    IntegerLiteral as TokenIntegerLiteral, InvalidToken, Keyword, RealLiteral as TokenRealLiteral,
-    Token, TokenKind,
+    IntegerLiteral as TokenIntegerLiteral, InvalidToken, Keyword, Pair,
+    RealLiteral as TokenRealLiteral, Token, TokenKind,
 };
 
 mod tree;
@@ -237,6 +237,20 @@ impl Parser {
         let (res, next) = parser(self, next)?;
         let ((), next) = right(self, next)?;
         Ok((res, next))
+    }
+
+    fn parse_wrapped<'a, 'b: 'a, T>(
+        &mut self,
+        wrapper: fn(Pair) -> Keyword,
+        parser: impl ParsingFunction<'a, 'b, T>,
+        i: IndexedIterator<'a, 'b>,
+    ) -> ParsingResult<'a, 'b, T> {
+        self.parse_between(
+            |ctx, i| ctx.parse_keyword(wrapper(Pair::Opening), i),
+            parser,
+            |ctx, i| ctx.parse_keyword(wrapper(Pair::Closing), i),
+            i,
+        )
     }
 
     /// Parses with `parser`, successfully return None on failure
@@ -484,27 +498,6 @@ impl Parser {
         self.parse_known_kind(&TokenKind::Colon, i)
     }
 
-    fn parse_kw_end<'a, 'b: 'a>(
-        &mut self,
-        i: IndexedIterator<'a, 'b>,
-    ) -> ParsingResult<'a, 'b, ()> {
-        self.parse_keyword(Keyword::End, i)
-    }
-
-    fn parse_kw_loop<'a, 'b: 'a>(
-        &mut self,
-        i: IndexedIterator<'a, 'b>,
-    ) -> ParsingResult<'a, 'b, ()> {
-        self.parse_keyword(Keyword::Loop, i)
-    }
-
-    fn parse_kw_where<'a, 'b: 'a>(
-        &mut self,
-        i: IndexedIterator<'a, 'b>,
-    ) -> ParsingResult<'a, 'b, ()> {
-        self.parse_keyword(Keyword::Where, i)
-    }
-
     fn parse_kw_is<'a, 'b: 'a>(&mut self, i: IndexedIterator<'a, 'b>) -> ParsingResult<'a, 'b, ()> {
         self.parse_keyword(Keyword::Is, i)
     }
@@ -579,13 +572,18 @@ impl Parser {
         &mut self,
         i: IndexedIterator<'a, 'b>,
     ) -> ParsingResult<'a, 'b, RecordDescription> {
-        let ((), next) = self.parse_keyword(Keyword::Record, i)?;
-        let (fields, next) = self.parse_many(
-            |ctx, i| ctx.parse_before(Self::parse_field_description, Self::parse_semicolon, i),
-            next,
+        let (fields, next) = self.parse_wrapped(
+            Keyword::Record,
+            |ctx, next| {
+                ctx.parse_many(
+                    |ctx, i| {
+                        ctx.parse_before(Self::parse_field_description, Self::parse_semicolon, i)
+                    },
+                    next,
+                )
+            },
+            i,
         )?;
-
-        let ((), next) = self.parse_keyword(Keyword::End, next)?;
         Ok((RecordDescription { fields }, next))
     }
 
@@ -733,8 +731,8 @@ impl Parser {
                 let (t, next) = ctx.parse_type(i)?;
                 let (fields, next) = ctx.try_parse(
                     |ctx, i| {
-                        ctx.parse_between(
-                            Self::parse_kw_where,
+                        ctx.parse_wrapped(
+                            Keyword::Where,
                             |ctx, i| {
                                 ctx.parse_many(
                                     |ctx, i| {
@@ -754,7 +752,6 @@ impl Parser {
                                     i,
                                 )
                             },
-                            Self::parse_kw_end,
                             i,
                         )
                     },
@@ -954,7 +951,7 @@ impl Parser {
             next,
         )?;
 
-        let ((), next) = self.parse_kw_end(next)?;
+        let ((), next) = self.parse_keyword(Keyword::If(Pair::Closing), next)?;
 
         Ok((
             Statement::If {
@@ -972,7 +969,7 @@ impl Parser {
     ) -> ParsingResult<'a, 'b, Statement> {
         match i.current() {
             Some(Token {
-                kind: TokenKind::Keyword(Keyword::If),
+                kind: TokenKind::Keyword(Keyword::If(Pair::Opening)),
                 ..
             }) => self.parse_if(i),
 
@@ -983,12 +980,7 @@ impl Parser {
                 let next = self.next(i);
                 let (condition, next) = self.parse_expr(next)?;
 
-                let (body, next) = self.parse_between(
-                    Self::parse_kw_loop,
-                    Self::parse_block,
-                    Self::parse_kw_end,
-                    next,
-                )?;
+                let (body, next) = self.parse_wrapped(Keyword::Loop, Self::parse_block, next)?;
 
                 Ok((Statement::While { condition, body }, next))
             }
@@ -1053,12 +1045,7 @@ impl Parser {
 
                 let order = order.map_or(LoopOrder::Direct, |()| LoopOrder::Reversed);
 
-                let (body, next) = self.parse_between(
-                    Self::parse_kw_loop,
-                    Self::parse_block,
-                    Self::parse_kw_end,
-                    next,
-                )?;
+                let (body, next) = self.parse_wrapped(Keyword::Loop, Self::parse_block, next)?;
 
                 Ok((
                     Statement::For {
@@ -1145,7 +1132,7 @@ impl Parser {
         &mut self,
         i: IndexedIterator<'a, 'b>,
     ) -> ParsingResult<'a, 'b, RoutineDecl> {
-        let ((), next) = self.parse_keyword(Keyword::Routine, i)?;
+        let ((), next) = self.parse_keyword(Keyword::Routine(Pair::Opening), i)?;
         let (name, next) = self.parse_identifier(next)?;
 
         let (args, next) = self.parse_in_parentheses(
@@ -1197,7 +1184,7 @@ impl Parser {
                 let (body, next) = self.parse_between(
                     Self::parse_kw_is,
                     Self::parse_block,
-                    Self::parse_kw_end,
+                    |ctx, i| ctx.parse_keyword(Keyword::Routine(Pair::Closing), i),
                     next,
                 )?;
 
@@ -1262,7 +1249,7 @@ impl Parser {
                 .map(|(decl, next)| (Declaration::Type(decl), next)),
 
             Some(Token {
-                kind: TokenKind::Keyword(Keyword::Routine),
+                kind: TokenKind::Keyword(Keyword::Routine(Pair::Opening)),
                 ..
             }) => self
                 .parse_routine_decl(i)

@@ -1,15 +1,15 @@
 "type" @ 1:0-1:4 is KEYWORD(Type)
 "T" @ 1:5-1:6 is IDENTIFIER(T)
 "is" @ 1:7-1:9 is KEYWORD(Is)
-"record" @ 1:10-1:16 is KEYWORD(Record)
+"record" @ 1:10-1:16 is KEYWORD(Record(Opening))
 "var" @ 2:4-2:7 is KEYWORD(Var)
 "foo" @ 2:8-2:11 is IDENTIFIER(foo)
 "is" @ 2:12-2:14 is KEYWORD(Is)
 "real" @ 2:15-2:19 is TYPENAME(Real)
 ";" @ 2:19-2:20 is SEMICOLON
-"end" @ 3:0-3:3 is KEYWORD(End)
-";" @ 3:3-3:4 is SEMICOLON
-"routine" @ 5:0-5:7 is KEYWORD(Routine)
+"drocer" @ 3:0-3:6 is KEYWORD(Record(Closing))
+";" @ 3:6-3:7 is SEMICOLON
+"routine" @ 5:0-5:7 is KEYWORD(Routine(Opening))
 "foo" @ 5:8-5:11 is IDENTIFIER(foo)
 "(" @ 5:11-5:12 is LEFT PARENTHESIS
 "t" @ 5:12-5:13 is IDENTIFIER(t)
@@ -22,4 +22,4 @@
 "." @ 6:11-6:12 is DOT
 "bar" @ 6:12-6:15 is IDENTIFIER(bar)
 ";" @ 6:15-6:16 is SEMICOLON
-"end" @ 7:0-7:3 is KEYWORD(End)
+"enitour" @ 7:0-7:7 is KEYWORD(Routine(Closing))

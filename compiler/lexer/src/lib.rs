@@ -9,7 +9,7 @@ mod tests;
 
 pub use crate::tokens::{
     BoolLiteral, BuiltinTypename, Comment, Identifier, IntegerLiteral, InvalidToken, Keyword,
-    Operator, RealLiteral, Token, TokenKind,
+    Operator, Pair, RealLiteral, Token, TokenKind,
 };
 
 trait ImmutableIterator<'a>: Sized + Clone + From<&'a str> {
@@ -149,22 +149,26 @@ fn name_disambiguation(lexeme: &str) -> TokenKind<'_> {
     const KNOWN_TOKENS: phf::Map<&str, TokenKind<'static>> = phf_map! {
         "var" => TokenKind::Keyword(Keyword::Var),
         "type" => TokenKind::Keyword(Keyword::Type),
-        "routine" => TokenKind::Keyword(Keyword::Routine),
+        "routine" => TokenKind::Keyword(Keyword::Routine(Pair::Opening)),
+        "enitour" => TokenKind::Keyword(Keyword::Routine(Pair::Closing)),
         "array" => TokenKind::Keyword(Keyword::Array),
-        "record" => TokenKind::Keyword(Keyword::Record),
+        "record" => TokenKind::Keyword(Keyword::Record(Pair::Opening)),
+        "drocer" => TokenKind::Keyword(Keyword::Record(Pair::Closing)),
         "is" => TokenKind::Keyword(Keyword::Is),
-        "end" => TokenKind::Keyword(Keyword::End),
-        "if" => TokenKind::Keyword(Keyword::If),
+        "if" => TokenKind::Keyword(Keyword::If(Pair::Opening)),
+        "fi" => TokenKind::Keyword(Keyword::If(Pair::Closing)),
         "then" => TokenKind::Keyword(Keyword::Then),
         "else" => TokenKind::Keyword(Keyword::Else),
         "in" => TokenKind::Keyword(Keyword::In),
         "while" => TokenKind::Keyword(Keyword::While),
         "for" => TokenKind::Keyword(Keyword::For),
-        "loop" => TokenKind::Keyword(Keyword::Loop),
+        "loop" => TokenKind::Keyword(Keyword::Loop(Pair::Opening)),
+        "pool" => TokenKind::Keyword(Keyword::Loop(Pair::Closing)),
         "reverse" => TokenKind::Keyword(Keyword::Reverse),
         "return"  => TokenKind::Keyword(Keyword::Return),
         "print" => TokenKind::Keyword(Keyword::Print),
-        "where" => TokenKind::Keyword(Keyword::Where),
+        "where" => TokenKind::Keyword(Keyword::Where(Pair::Opening)),
+        "erehw" => TokenKind::Keyword(Keyword::Where(Pair::Closing)),
         "null" => TokenKind::Keyword(Keyword::Null),
         "new" => TokenKind::Keyword(Keyword::New),
         "constant" => TokenKind::Keyword(Keyword::Constant),

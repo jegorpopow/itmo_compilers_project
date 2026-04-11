@@ -1,4 +1,4 @@
-"routine" @ 1:0-1:7 is KEYWORD(Routine)
+"routine" @ 1:0-1:7 is KEYWORD(Routine(Opening))
 "fibonacci" @ 1:8-1:17 is IDENTIFIER(fibonacci)
 "(" @ 1:17-1:18 is LEFT PARENTHESIS
 "n" @ 1:18-1:19 is IDENTIFIER(n)
@@ -8,7 +8,7 @@
 ":" @ 1:31-1:32 is COLON
 "integer" @ 1:33-1:40 is TYPENAME(Integer)
 "is" @ 1:41-1:43 is KEYWORD(Is)
-"if" @ 2:2-2:4 is KEYWORD(If)
+"if" @ 2:2-2:4 is KEYWORD(If(Opening))
 "n" @ 2:5-2:6 is IDENTIFIER(n)
 "<=" @ 2:7-2:9 is OPERATOR(Le)
 "2" @ 2:10-2:11 is INTEGER LITERAL(2)
@@ -32,9 +32,9 @@
 "2" @ 5:46-5:47 is INTEGER LITERAL(2)
 ")" @ 5:47-5:48 is RIGHT PARENTHESIS
 ";" @ 5:48-5:49 is SEMICOLON
-"end" @ 6:2-6:5 is KEYWORD(End)
-"end" @ 7:0-7:3 is KEYWORD(End)
-"routine" @ 9:0-9:7 is KEYWORD(Routine)
+"fi" @ 6:2-6:4 is KEYWORD(If(Closing))
+"enitour" @ 7:0-7:7 is KEYWORD(Routine(Closing))
+"routine" @ 9:0-9:7 is KEYWORD(Routine(Opening))
 "main" @ 9:8-9:12 is IDENTIFIER(main)
 "(" @ 9:12-9:13 is LEFT PARENTHESIS
 ")" @ 9:13-9:14 is RIGHT PARENTHESIS
@@ -45,4 +45,4 @@
 "10" @ 10:18-10:20 is INTEGER LITERAL(10)
 ")" @ 10:20-10:21 is RIGHT PARENTHESIS
 ";" @ 10:21-10:22 is SEMICOLON
-"end" @ 11:0-11:3 is KEYWORD(End)
+"enitour" @ 11:0-11:7 is KEYWORD(Routine(Closing))

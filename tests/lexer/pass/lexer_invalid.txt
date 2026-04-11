@@ -1,4 +1,4 @@
-"routine" @ 1:0-1:7 is KEYWORD(Routine)
+"routine" @ 1:0-1:7 is KEYWORD(Routine(Opening))
 "main" @ 1:8-1:12 is IDENTIFIER(main)
 "(" @ 1:12-1:13 is LEFT PARENTHESIS
 ")" @ 1:13-1:14 is RIGHT PARENTHESIS
@@ -8,5 +8,5 @@
 "is" @ 2:8-2:10 is KEYWORD(Is)
 "123456789012345678901234567890" @ 2:11-2:41 is INVALID(Malformed integer literal: number too large to fit in target type)
 ";" @ 2:41-2:42 is SEMICOLON
-"end" @ 3:0-3:3 is KEYWORD(End)
-";" @ 3:3-3:4 is SEMICOLON
+"enitour" @ 3:0-3:7 is KEYWORD(Routine(Closing))
+";" @ 3:7-3:8 is SEMICOLON

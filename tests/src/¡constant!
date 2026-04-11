@@ -5,12 +5,12 @@ type table is array[LENGTH * DOUBLE_LENGTH] integer;
 
 routine meow(arr : array [LENGTH] real): real is
   return arr[1];
-end
+enitour
 
 routine table_receiver(t : table) : integer is
   print t[LENGTH * 2];
   return t[DOUBLE_LENGTH - LENGTH];
-end
+enitour
 
 routine main() : integer is
   var t is new table;
@@ -22,7 +22,7 @@ routine main() : integer is
     print LENGTH;
     constant LENGTH is 400;
     print LENGTH;
-  end
+  fi
 
   print LENGTH;
-end
+enitour
