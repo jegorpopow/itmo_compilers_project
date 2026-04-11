@@ -218,10 +218,10 @@ fn symbolic_token<'a>(start: &IndexIterator<'a>) -> Option<(TokenKind<'a>, Index
         ("<=", TokenKind::Operator(Operator::Le)),
         (">=", TokenKind::Operator(Operator::Ge)),
         ("=>", TokenKind::RightArrow),
-        ("(", TokenKind::LeftParenthesis),
-        (")", TokenKind::RightParenthesis),
-        ("[", TokenKind::LeftBracket),
-        ("]", TokenKind::RightBracket),
+        ("(", TokenKind::Parenthesis(Pair::Opening)),
+        (")", TokenKind::Parenthesis(Pair::Closing)),
+        ("[", TokenKind::Bracket(Pair::Opening)),
+        ("]", TokenKind::Bracket(Pair::Closing)),
         (",", TokenKind::Comma),
         (".", TokenKind::Dot),
         (";", TokenKind::Semicolon),
@@ -316,8 +316,8 @@ impl Lexer<'_> {
             TokenKind::Comment(_) => return,
 
             TokenKind::Assignment
-            | TokenKind::LeftParenthesis
-            | TokenKind::RightBracket
+            | TokenKind::Parenthesis(Pair::Opening)
+            | TokenKind::Bracket(Pair::Closing)
             | TokenKind::Operator(_)
             | TokenKind::Semicolon
             | TokenKind::RangeSymbol
@@ -330,8 +330,8 @@ impl Lexer<'_> {
             | TokenKind::RealLiteral(_)
             | TokenKind::BoolLiteral(_)
             | TokenKind::BuiltinTypename(_)
-            | TokenKind::LeftBracket
-            | TokenKind::RightParenthesis
+            | TokenKind::Bracket(Pair::Opening)
+            | TokenKind::Parenthesis(Pair::Closing)
             | TokenKind::Dot
             | TokenKind::Invalid(_)
             | TokenKind::Cast

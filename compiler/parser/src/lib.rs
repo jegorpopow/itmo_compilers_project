@@ -239,7 +239,21 @@ impl Parser {
         Ok((res, next))
     }
 
-    fn parse_wrapped<'a, 'b: 'a, T>(
+    fn parse_wrapped_in<'a, 'b: 'a, T>(
+        &mut self,
+        wrapper: fn(Pair) -> TokenKind<'a>,
+        parser: impl ParsingFunction<'a, 'b, T>,
+        i: IndexedIterator<'a, 'b>,
+    ) -> ParsingResult<'a, 'b, T> {
+        self.parse_between(
+            |ctx, i| ctx.parse_known_kind(&wrapper(Pair::Opening), i),
+            parser,
+            |ctx, i| ctx.parse_known_kind(&wrapper(Pair::Closing), i),
+            i,
+        )
+    }
+
+    fn parse_wrapped_in_kw<'a, 'b: 'a, T>(
         &mut self,
         wrapper: fn(Pair) -> Keyword,
         parser: impl ParsingFunction<'a, 'b, T>,
@@ -502,45 +516,12 @@ impl Parser {
         self.parse_keyword(Keyword::Is, i)
     }
 
-    fn parse_left_bracket<'a, 'b: 'a>(
-        &mut self,
-        i: IndexedIterator<'a, 'b>,
-    ) -> ParsingResult<'a, 'b, ()> {
-        self.parse_known_kind(&TokenKind::LeftBracket, i)
-    }
-
-    fn parse_right_bracket<'a, 'b: 'a>(
-        &mut self,
-        i: IndexedIterator<'a, 'b>,
-    ) -> ParsingResult<'a, 'b, ()> {
-        self.parse_known_kind(&TokenKind::RightBracket, i)
-    }
-
     fn parse_in_brackets<'a, 'b: 'a, T>(
         &mut self,
         parser: impl ParsingFunction<'a, 'b, T>,
         i: IndexedIterator<'a, 'b>,
     ) -> ParsingResult<'a, 'b, T> {
-        self.parse_between(
-            Self::parse_left_bracket,
-            parser,
-            Self::parse_right_bracket,
-            i,
-        )
-    }
-
-    fn parse_left_parenthesis<'a, 'b: 'a>(
-        &mut self,
-        i: IndexedIterator<'a, 'b>,
-    ) -> ParsingResult<'a, 'b, ()> {
-        self.parse_known_kind(&TokenKind::LeftParenthesis, i)
-    }
-
-    fn parse_right_parenthesis<'a, 'b: 'a>(
-        &mut self,
-        i: IndexedIterator<'a, 'b>,
-    ) -> ParsingResult<'a, 'b, ()> {
-        self.parse_known_kind(&TokenKind::RightParenthesis, i)
+        self.parse_wrapped_in(TokenKind::Bracket, parser, i)
     }
 
     fn parse_in_parentheses<'a, 'b: 'a, T>(
@@ -548,12 +529,7 @@ impl Parser {
         parser: impl ParsingFunction<'a, 'b, T>,
         i: IndexedIterator<'a, 'b>,
     ) -> ParsingResult<'a, 'b, T> {
-        self.parse_between(
-            Self::parse_left_parenthesis,
-            parser,
-            Self::parse_right_parenthesis,
-            i,
-        )
+        self.parse_wrapped_in(TokenKind::Parenthesis, parser, i)
     }
 
     fn parse_field_description<'a, 'b: 'a>(
@@ -572,7 +548,7 @@ impl Parser {
         &mut self,
         i: IndexedIterator<'a, 'b>,
     ) -> ParsingResult<'a, 'b, RecordDescription> {
-        let (fields, next) = self.parse_wrapped(
+        let (fields, next) = self.parse_wrapped_in_kw(
             Keyword::Record,
             |ctx, next| {
                 ctx.parse_many(
@@ -692,7 +668,7 @@ impl Parser {
                     next = rest;
                 }
                 Some(Token {
-                    kind: TokenKind::LeftBracket,
+                    kind: TokenKind::Bracket(Pair::Opening),
                     ..
                 }) => {
                     let (index, rest) = self.parse_in_brackets(Self::parse_expr, next)?;
@@ -731,7 +707,7 @@ impl Parser {
                 let (t, next) = ctx.parse_type(i)?;
                 let (fields, next) = ctx.try_parse(
                     |ctx, i| {
-                        ctx.parse_wrapped(
+                        ctx.parse_wrapped_in_kw(
                             Keyword::Where,
                             |ctx, i| {
                                 ctx.parse_many(
@@ -980,7 +956,8 @@ impl Parser {
                 let next = self.next(i);
                 let (condition, next) = self.parse_expr(next)?;
 
-                let (body, next) = self.parse_wrapped(Keyword::Loop, Self::parse_block, next)?;
+                let (body, next) =
+                    self.parse_wrapped_in_kw(Keyword::Loop, Self::parse_block, next)?;
 
                 Ok((Statement::While { condition, body }, next))
             }
@@ -1045,7 +1022,8 @@ impl Parser {
 
                 let order = order.map_or(LoopOrder::Direct, |()| LoopOrder::Reversed);
 
-                let (body, next) = self.parse_wrapped(Keyword::Loop, Self::parse_block, next)?;
+                let (body, next) =
+                    self.parse_wrapped_in_kw(Keyword::Loop, Self::parse_block, next)?;
 
                 Ok((
                     Statement::For {
