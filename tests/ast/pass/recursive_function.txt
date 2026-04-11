@@ -39,8 +39,8 @@ Program {
                                                     n(1),
                                                 ),
                                             ),
-                                            rhs: IntegerLiteral(
-                                                IntegerLiteral {
+                                            rhs: Literal(
+                                                Integer {
                                                     repr: "2",
                                                     value: 2,
                                                 },
@@ -49,8 +49,8 @@ Program {
                                         on_true: Block {
                                             stmts: [
                                                 Return {
-                                                    value: IntegerLiteral(
-                                                        IntegerLiteral {
+                                                    value: Literal(
+                                                        Integer {
                                                             repr: "1",
                                                             value: 1,
                                                         },
@@ -79,8 +79,8 @@ Program {
                                                                                 n(1),
                                                                             ),
                                                                         ),
-                                                                        rhs: IntegerLiteral(
-                                                                            IntegerLiteral {
+                                                                        rhs: Literal(
+                                                                            Integer {
                                                                                 repr: "1",
                                                                                 value: 1,
                                                                             },
@@ -100,8 +100,8 @@ Program {
                                                                                 n(1),
                                                                             ),
                                                                         ),
-                                                                        rhs: IntegerLiteral(
-                                                                            IntegerLiteral {
+                                                                        rhs: Literal(
+                                                                            Integer {
                                                                                 repr: "2",
                                                                                 value: 2,
                                                                             },
@@ -141,8 +141,8 @@ Program {
                                         value: Call {
                                             callee: fibonacci(0),
                                             args: [
-                                                IntegerLiteral(
-                                                    IntegerLiteral {
+                                                Literal(
+                                                    Integer {
                                                         repr: "10",
                                                         value: 10,
                                                     },
@@ -200,8 +200,8 @@ Program {
                                                         n(1),
                                                     ),
                                                 ),
-                                                rhs: IntegerLiteral(
-                                                    IntegerLiteral {
+                                                rhs: Literal(
+                                                    Integer {
                                                         repr: "2",
                                                         value: 2,
                                                     },
@@ -210,8 +210,8 @@ Program {
                                             on_true: Block {
                                                 stmts: [
                                                     Return {
-                                                        value: IntegerLiteral(
-                                                            IntegerLiteral {
+                                                        value: Literal(
+                                                            Integer {
                                                                 repr: "1",
                                                                 value: 1,
                                                             },
@@ -240,8 +240,8 @@ Program {
                                                                                     n(1),
                                                                                 ),
                                                                             ),
-                                                                            rhs: IntegerLiteral(
-                                                                                IntegerLiteral {
+                                                                            rhs: Literal(
+                                                                                Integer {
                                                                                     repr: "1",
                                                                                     value: 1,
                                                                                 },
@@ -261,8 +261,8 @@ Program {
                                                                                     n(1),
                                                                                 ),
                                                                             ),
-                                                                            rhs: IntegerLiteral(
-                                                                                IntegerLiteral {
+                                                                            rhs: Literal(
+                                                                                Integer {
                                                                                     repr: "2",
                                                                                     value: 2,
                                                                                 },
@@ -314,8 +314,8 @@ Program {
                                             value: Call {
                                                 callee: fibonacci(0),
                                                 args: [
-                                                    IntegerLiteral(
-                                                        IntegerLiteral {
+                                                    Literal(
+                                                        Integer {
                                                             repr: "10",
                                                             value: 10,
                                                         },

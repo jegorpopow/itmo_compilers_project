@@ -14,16 +14,18 @@ Program {
                             Block {
                                 stmts: [
                                     Print {
-                                        value: IntegerLiteral(
-                                            IntegerLiteral {
+                                        value: Literal(
+                                            Integer {
                                                 repr: "0",
                                                 value: 0,
                                             },
                                         ),
                                     },
                                     If {
-                                        condition: BoolLiteral(
-                                            True,
+                                        condition: Literal(
+                                            Bool {
+                                                value: true,
+                                            },
                                         ),
                                         on_true: Block {
                                             stmts: [
@@ -40,8 +42,8 @@ Program {
                                             Block {
                                                 stmts: [
                                                     Print {
-                                                        value: IntegerLiteral(
-                                                            IntegerLiteral {
+                                                        value: Literal(
+                                                            Integer {
                                                                 repr: "1",
                                                                 value: 1,
                                                             },
@@ -77,16 +79,18 @@ Program {
                                 Block {
                                     stmts: [
                                         Print {
-                                            value: IntegerLiteral(
-                                                IntegerLiteral {
+                                            value: Literal(
+                                                Integer {
                                                     repr: "0",
                                                     value: 0,
                                                 },
                                             ),
                                         },
                                         If {
-                                            condition: BoolLiteral(
-                                                True,
+                                            condition: Literal(
+                                                Bool {
+                                                    value: true,
+                                                },
                                             ),
                                             on_true: Block {
                                                 stmts: [
@@ -103,8 +107,8 @@ Program {
                                                 Block {
                                                     stmts: [
                                                         Print {
-                                                            value: IntegerLiteral(
-                                                                IntegerLiteral {
+                                                            value: Literal(
+                                                                Integer {
                                                                     repr: "1",
                                                                     value: 1,
                                                                 },

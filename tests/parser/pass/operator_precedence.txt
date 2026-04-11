@@ -7,8 +7,8 @@ Program(
                 return_type: None,
                 body: Some(
                     Expression(
-                        IntegerLiteral(
-                            IntegerLiteral {
+                        Literal(
+                            Integer {
                                 repr: "3",
                                 value: 3,
                             },
@@ -24,8 +24,8 @@ Program(
                 return_type: None,
                 body: Some(
                     Expression(
-                        IntegerLiteral(
-                            IntegerLiteral {
+                        Literal(
+                            Integer {
                                 repr: "4",
                                 value: 4,
                             },
@@ -41,8 +41,8 @@ Program(
                 return_type: None,
                 body: Some(
                     Expression(
-                        IntegerLiteral(
-                            IntegerLiteral {
+                        Literal(
+                            Integer {
                                 repr: "5",
                                 value: 5,
                             },
@@ -66,14 +66,14 @@ Program(
                                             op: And,
                                             lhs: BinOp {
                                                 op: Lt,
-                                                lhs: IntegerLiteral(
-                                                    IntegerLiteral {
+                                                lhs: Literal(
+                                                    Integer {
                                                         repr: "5",
                                                         value: 5,
                                                     },
                                                 ),
-                                                rhs: IntegerLiteral(
-                                                    IntegerLiteral {
+                                                rhs: Literal(
+                                                    Integer {
                                                         repr: "3",
                                                         value: 3,
                                                     },
@@ -81,14 +81,14 @@ Program(
                                             },
                                             rhs: BinOp {
                                                 op: Gt,
-                                                lhs: IntegerLiteral(
-                                                    IntegerLiteral {
+                                                lhs: Literal(
+                                                    Integer {
                                                         repr: "4",
                                                         value: 4,
                                                     },
                                                 ),
-                                                rhs: IntegerLiteral(
-                                                    IntegerLiteral {
+                                                rhs: Literal(
+                                                    Integer {
                                                         repr: "2",
                                                         value: 2,
                                                     },
@@ -103,23 +103,27 @@ Program(
                                             op: Or,
                                             lhs: BinOp {
                                                 op: And,
-                                                lhs: BoolLiteral(
-                                                    True,
+                                                lhs: Literal(
+                                                    Bool {
+                                                        value: true,
+                                                    },
                                                 ),
-                                                rhs: BoolLiteral(
-                                                    False,
+                                                rhs: Literal(
+                                                    Bool {
+                                                        value: false,
+                                                    },
                                                 ),
                                             },
                                             rhs: BinOp {
                                                 op: Eq,
-                                                lhs: IntegerLiteral(
-                                                    IntegerLiteral {
+                                                lhs: Literal(
+                                                    Integer {
                                                         repr: "1",
                                                         value: 1,
                                                     },
                                                 ),
-                                                rhs: IntegerLiteral(
-                                                    IntegerLiteral {
+                                                rhs: Literal(
+                                                    Integer {
                                                         repr: "1",
                                                         value: 1,
                                                     },
@@ -156,21 +160,21 @@ Program(
                                             op: Mod,
                                             lhs: BinOp {
                                                 op: Mod,
-                                                lhs: IntegerLiteral(
-                                                    IntegerLiteral {
+                                                lhs: Literal(
+                                                    Integer {
                                                         repr: "17",
                                                         value: 17,
                                                     },
                                                 ),
-                                                rhs: IntegerLiteral(
-                                                    IntegerLiteral {
+                                                rhs: Literal(
+                                                    Integer {
                                                         repr: "5",
                                                         value: 5,
                                                     },
                                                 ),
                                             },
-                                            rhs: IntegerLiteral(
-                                                IntegerLiteral {
+                                            rhs: Literal(
+                                                Integer {
                                                     repr: "2",
                                                     value: 2,
                                                 },
@@ -208,14 +212,14 @@ Program(
                                                 op: And,
                                                 lhs: BinOp {
                                                     op: Gt,
-                                                    lhs: IntegerLiteral(
-                                                        IntegerLiteral {
+                                                    lhs: Literal(
+                                                        Integer {
                                                             repr: "5",
                                                             value: 5,
                                                         },
                                                     ),
-                                                    rhs: IntegerLiteral(
-                                                        IntegerLiteral {
+                                                    rhs: Literal(
+                                                        Integer {
                                                             repr: "3",
                                                             value: 3,
                                                         },
@@ -223,14 +227,14 @@ Program(
                                                 },
                                                 rhs: BinOp {
                                                     op: Lt,
-                                                    lhs: IntegerLiteral(
-                                                        IntegerLiteral {
+                                                    lhs: Literal(
+                                                        Integer {
                                                             repr: "2",
                                                             value: 2,
                                                         },
                                                     ),
-                                                    rhs: IntegerLiteral(
-                                                        IntegerLiteral {
+                                                    rhs: Literal(
+                                                        Integer {
                                                             repr: "4",
                                                             value: 4,
                                                         },
@@ -239,8 +243,8 @@ Program(
                                             },
                                             rhs: UnOp {
                                                 op: Not,
-                                                operand: IntegerLiteral(
-                                                    IntegerLiteral {
+                                                operand: Literal(
+                                                    Integer {
                                                         repr: "1",
                                                         value: 1,
                                                     },
@@ -255,21 +259,21 @@ Program(
                                             op: Div,
                                             lhs: BinOp {
                                                 op: Div,
-                                                lhs: IntegerLiteral(
-                                                    IntegerLiteral {
+                                                lhs: Literal(
+                                                    Integer {
                                                         repr: "100",
                                                         value: 100,
                                                     },
                                                 ),
-                                                rhs: IntegerLiteral(
-                                                    IntegerLiteral {
+                                                rhs: Literal(
+                                                    Integer {
                                                         repr: "2",
                                                         value: 2,
                                                     },
                                                 ),
                                             },
-                                            rhs: IntegerLiteral(
-                                                IntegerLiteral {
+                                            rhs: Literal(
+                                                Integer {
                                                     repr: "5",
                                                     value: 5,
                                                 },

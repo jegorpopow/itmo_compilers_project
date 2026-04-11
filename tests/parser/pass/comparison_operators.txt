@@ -14,8 +14,8 @@ Program(
                                         name: r"a",
                                         t: None,
                                         initialiser: Some(
-                                            IntegerLiteral(
-                                                IntegerLiteral {
+                                            Literal(
+                                                Integer {
                                                     repr: "5",
                                                     value: 5,
                                                 },
@@ -28,8 +28,8 @@ Program(
                                         name: r"b",
                                         t: None,
                                         initialiser: Some(
-                                            IntegerLiteral(
-                                                IntegerLiteral {
+                                            Literal(
+                                                Integer {
                                                     repr: "3",
                                                     value: 3,
                                                 },
@@ -42,8 +42,8 @@ Program(
                                         name: r"x",
                                         t: None,
                                         initialiser: Some(
-                                            RealLiteral(
-                                                RealLiteral {
+                                            Literal(
+                                                Real {
                                                     repr: "2.5",
                                                     value: 2.5,
                                                 },
@@ -56,8 +56,8 @@ Program(
                                         name: r"y",
                                         t: None,
                                         initialiser: Some(
-                                            RealLiteral(
-                                                RealLiteral {
+                                            Literal(
+                                                Real {
                                                     repr: "5.0",
                                                     value: 5.0,
                                                 },
@@ -273,11 +273,15 @@ Program(
                                     Print {
                                         value: BinOp {
                                             op: Eq,
-                                            lhs: BoolLiteral(
-                                                True,
+                                            lhs: Literal(
+                                                Bool {
+                                                    value: true,
+                                                },
                                             ),
-                                            rhs: BoolLiteral(
-                                                False,
+                                            rhs: Literal(
+                                                Bool {
+                                                    value: false,
+                                                },
                                             ),
                                         },
                                     },
@@ -286,11 +290,15 @@ Program(
                                     Print {
                                         value: BinOp {
                                             op: Ne,
-                                            lhs: BoolLiteral(
-                                                True,
+                                            lhs: Literal(
+                                                Bool {
+                                                    value: true,
+                                                },
                                             ),
-                                            rhs: BoolLiteral(
-                                                False,
+                                            rhs: Literal(
+                                                Bool {
+                                                    value: false,
+                                                },
                                             ),
                                         },
                                     },

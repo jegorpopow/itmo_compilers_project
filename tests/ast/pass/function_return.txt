@@ -68,8 +68,8 @@ Program {
                                         value: Call {
                                             callee: echo(0),
                                             args: [
-                                                IntegerLiteral(
-                                                    IntegerLiteral {
+                                                Literal(
+                                                    Integer {
                                                         repr: "42",
                                                         value: 42,
                                                     },
@@ -168,8 +168,8 @@ Program {
                                             value: Call {
                                                 callee: echo(0),
                                                 args: [
-                                                    IntegerLiteral(
-                                                        IntegerLiteral {
+                                                    Literal(
+                                                        Integer {
                                                             repr: "42",
                                                             value: 42,
                                                         },

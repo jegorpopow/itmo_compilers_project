@@ -228,8 +228,8 @@ Program {
                                                 VarDecl {
                                                     t: Int,
                                                     initialiser: Some(
-                                                        IntegerLiteral(
-                                                            IntegerLiteral {
+                                                        Literal(
+                                                            Integer {
                                                                 repr: "0",
                                                                 value: 0,
                                                             },
@@ -271,8 +271,8 @@ Program {
                                                                 result(9),
                                                             ),
                                                         ),
-                                                        rhs: IntegerLiteral(
-                                                            IntegerLiteral {
+                                                        rhs: Literal(
+                                                            Integer {
                                                                 repr: "1",
                                                                 value: 1,
                                                             },
@@ -473,8 +473,8 @@ Program {
                                                         Call {
                                                             callee: singleton(3),
                                                             args: [
-                                                                IntegerLiteral(
-                                                                    IntegerLiteral {
+                                                                Literal(
+                                                                    Integer {
                                                                         repr: "1",
                                                                         value: 1,
                                                                     },
@@ -766,8 +766,8 @@ Program {
                                                     VarDecl {
                                                         t: Int,
                                                         initialiser: Some(
-                                                            IntegerLiteral(
-                                                                IntegerLiteral {
+                                                            Literal(
+                                                                Integer {
                                                                     repr: "0",
                                                                     value: 0,
                                                                 },
@@ -809,8 +809,8 @@ Program {
                                                                     result(9),
                                                                 ),
                                                             ),
-                                                            rhs: IntegerLiteral(
-                                                                IntegerLiteral {
+                                                            rhs: Literal(
+                                                                Integer {
                                                                     repr: "1",
                                                                     value: 1,
                                                                 },
@@ -869,8 +869,8 @@ Program {
                     VarDecl {
                         t: Int,
                         initialiser: Some(
-                            IntegerLiteral(
-                                IntegerLiteral {
+                            Literal(
+                                Integer {
                                     repr: "0",
                                     value: 0,
                                 },
@@ -1077,8 +1077,8 @@ Program {
                                                             Call {
                                                                 callee: singleton(3),
                                                                 args: [
-                                                                    IntegerLiteral(
-                                                                        IntegerLiteral {
+                                                                    Literal(
+                                                                        Integer {
                                                                             repr: "1",
                                                                             value: 1,
                                                                         },
@@ -1124,8 +1124,8 @@ Program {
                             Call {
                                 callee: singleton(3),
                                 args: [
-                                    IntegerLiteral(
-                                        IntegerLiteral {
+                                    Literal(
+                                        Integer {
                                             repr: "1",
                                             value: 1,
                                         },

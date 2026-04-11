@@ -14,8 +14,10 @@ Program(
                                         name: r"a",
                                         t: None,
                                         initialiser: Some(
-                                            BoolLiteral(
-                                                True,
+                                            Literal(
+                                                Bool {
+                                                    value: true,
+                                                },
                                             ),
                                         ),
                                     },
@@ -25,8 +27,10 @@ Program(
                                         name: r"b",
                                         t: None,
                                         initialiser: Some(
-                                            BoolLiteral(
-                                                False,
+                                            Literal(
+                                                Bool {
+                                                    value: false,
+                                                },
                                             ),
                                         ),
                                     },
@@ -36,8 +40,8 @@ Program(
                                         name: r"x",
                                         t: None,
                                         initialiser: Some(
-                                            IntegerLiteral(
-                                                IntegerLiteral {
+                                            Literal(
+                                                Integer {
                                                     repr: "5",
                                                     value: 5,
                                                 },
@@ -50,8 +54,8 @@ Program(
                                         name: r"y",
                                         t: None,
                                         initialiser: Some(
-                                            IntegerLiteral(
-                                                IntegerLiteral {
+                                            Literal(
+                                                Integer {
                                                     repr: "0",
                                                     value: 0,
                                                 },
@@ -85,8 +89,10 @@ Program(
                                                     r"a",
                                                 ),
                                             ),
-                                            rhs: BoolLiteral(
-                                                True,
+                                            rhs: Literal(
+                                                Bool {
+                                                    value: true,
+                                                },
                                             ),
                                         },
                                     },
@@ -112,8 +118,10 @@ Program(
                                     Print {
                                         value: BinOp {
                                             op: Or,
-                                            lhs: BoolLiteral(
-                                                False,
+                                            lhs: Literal(
+                                                Bool {
+                                                    value: false,
+                                                },
                                             ),
                                             rhs: LvalueToRvalue(
                                                 Identifier(

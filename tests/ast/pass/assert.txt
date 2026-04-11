@@ -16,8 +16,10 @@ Program {
                                     If {
                                         condition: UnOp {
                                             op: BoolNeg,
-                                            operand: BoolLiteral(
-                                                True,
+                                            operand: Literal(
+                                                Bool {
+                                                    value: true,
+                                                },
                                             ),
                                         },
                                         on_true: Block {
@@ -37,8 +39,8 @@ Program {
                                         condition: UnOp {
                                             op: BoolNeg,
                                             operand: IntToBool(
-                                                IntegerLiteral(
-                                                    IntegerLiteral {
+                                                Literal(
+                                                    Integer {
                                                         repr: "1",
                                                         value: 1,
                                                     },
@@ -69,21 +71,21 @@ Program {
                                                     op: Int(
                                                         Add,
                                                     ),
-                                                    lhs: IntegerLiteral(
-                                                        IntegerLiteral {
+                                                    lhs: Literal(
+                                                        Integer {
                                                             repr: "2",
                                                             value: 2,
                                                         },
                                                     ),
-                                                    rhs: IntegerLiteral(
-                                                        IntegerLiteral {
+                                                    rhs: Literal(
+                                                        Integer {
                                                             repr: "2",
                                                             value: 2,
                                                         },
                                                     ),
                                                 },
-                                                rhs: IntegerLiteral(
-                                                    IntegerLiteral {
+                                                rhs: Literal(
+                                                    Integer {
                                                         repr: "5",
                                                         value: 5,
                                                     },
@@ -130,8 +132,10 @@ Program {
                                         If {
                                             condition: UnOp {
                                                 op: BoolNeg,
-                                                operand: BoolLiteral(
-                                                    True,
+                                                operand: Literal(
+                                                    Bool {
+                                                        value: true,
+                                                    },
                                                 ),
                                             },
                                             on_true: Block {
@@ -151,8 +155,8 @@ Program {
                                             condition: UnOp {
                                                 op: BoolNeg,
                                                 operand: IntToBool(
-                                                    IntegerLiteral(
-                                                        IntegerLiteral {
+                                                    Literal(
+                                                        Integer {
                                                             repr: "1",
                                                             value: 1,
                                                         },
@@ -183,21 +187,21 @@ Program {
                                                         op: Int(
                                                             Add,
                                                         ),
-                                                        lhs: IntegerLiteral(
-                                                            IntegerLiteral {
+                                                        lhs: Literal(
+                                                            Integer {
                                                                 repr: "2",
                                                                 value: 2,
                                                             },
                                                         ),
-                                                        rhs: IntegerLiteral(
-                                                            IntegerLiteral {
+                                                        rhs: Literal(
+                                                            Integer {
                                                                 repr: "2",
                                                                 value: 2,
                                                             },
                                                         ),
                                                     },
-                                                    rhs: IntegerLiteral(
-                                                        IntegerLiteral {
+                                                    rhs: Literal(
+                                                        Integer {
                                                             repr: "5",
                                                             value: 5,
                                                         },

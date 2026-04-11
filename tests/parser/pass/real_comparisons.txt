@@ -13,14 +13,14 @@ Program(
                                     Print {
                                         value: BinOp {
                                             op: Eq,
-                                            lhs: RealLiteral(
-                                                RealLiteral {
+                                            lhs: Literal(
+                                                Real {
                                                     repr: "NaN",
                                                     value: NaN,
                                                 },
                                             ),
-                                            rhs: RealLiteral(
-                                                RealLiteral {
+                                            rhs: Literal(
+                                                Real {
                                                     repr: "NaN",
                                                     value: NaN,
                                                 },
@@ -32,14 +32,14 @@ Program(
                                     Print {
                                         value: BinOp {
                                             op: Ne,
-                                            lhs: RealLiteral(
-                                                RealLiteral {
+                                            lhs: Literal(
+                                                Real {
                                                     repr: "NaN",
                                                     value: NaN,
                                                 },
                                             ),
-                                            rhs: RealLiteral(
-                                                RealLiteral {
+                                            rhs: Literal(
+                                                Real {
                                                     repr: "NaN",
                                                     value: NaN,
                                                 },
@@ -51,14 +51,14 @@ Program(
                                     Print {
                                         value: BinOp {
                                             op: Lt,
-                                            lhs: RealLiteral(
-                                                RealLiteral {
+                                            lhs: Literal(
+                                                Real {
                                                     repr: "NaN",
                                                     value: NaN,
                                                 },
                                             ),
-                                            rhs: RealLiteral(
-                                                RealLiteral {
+                                            rhs: Literal(
+                                                Real {
                                                     repr: "NaN",
                                                     value: NaN,
                                                 },
@@ -70,14 +70,14 @@ Program(
                                     Print {
                                         value: BinOp {
                                             op: Le,
-                                            lhs: RealLiteral(
-                                                RealLiteral {
+                                            lhs: Literal(
+                                                Real {
                                                     repr: "NaN",
                                                     value: NaN,
                                                 },
                                             ),
-                                            rhs: RealLiteral(
-                                                RealLiteral {
+                                            rhs: Literal(
+                                                Real {
                                                     repr: "NaN",
                                                     value: NaN,
                                                 },
@@ -89,14 +89,14 @@ Program(
                                     Print {
                                         value: BinOp {
                                             op: Gt,
-                                            lhs: RealLiteral(
-                                                RealLiteral {
+                                            lhs: Literal(
+                                                Real {
                                                     repr: "NaN",
                                                     value: NaN,
                                                 },
                                             ),
-                                            rhs: RealLiteral(
-                                                RealLiteral {
+                                            rhs: Literal(
+                                                Real {
                                                     repr: "NaN",
                                                     value: NaN,
                                                 },
@@ -108,14 +108,14 @@ Program(
                                     Print {
                                         value: BinOp {
                                             op: Ge,
-                                            lhs: RealLiteral(
-                                                RealLiteral {
+                                            lhs: Literal(
+                                                Real {
                                                     repr: "NaN",
                                                     value: NaN,
                                                 },
                                             ),
-                                            rhs: RealLiteral(
-                                                RealLiteral {
+                                            rhs: Literal(
+                                                Real {
                                                     repr: "NaN",
                                                     value: NaN,
                                                 },
@@ -134,21 +134,21 @@ Program(
                                                 op: Plus,
                                                 lhs: BinOp {
                                                     op: Plus,
-                                                    lhs: RealLiteral(
-                                                        RealLiteral {
+                                                    lhs: Literal(
+                                                        Real {
                                                             repr: "0.1",
                                                             value: 0.1,
                                                         },
                                                     ),
-                                                    rhs: RealLiteral(
-                                                        RealLiteral {
+                                                    rhs: Literal(
+                                                        Real {
                                                             repr: "0.1",
                                                             value: 0.1,
                                                         },
                                                     ),
                                                 },
-                                                rhs: RealLiteral(
-                                                    RealLiteral {
+                                                rhs: Literal(
+                                                    Real {
                                                         repr: "0.1",
                                                         value: 0.1,
                                                     },
@@ -175,8 +175,8 @@ Program(
                                                     r"a",
                                                 ),
                                             ),
-                                            rhs: RealLiteral(
-                                                RealLiteral {
+                                            rhs: Literal(
+                                                Real {
                                                     repr: "0.3",
                                                     value: 0.3,
                                                 },
@@ -193,14 +193,14 @@ Program(
                                         initialiser: Some(
                                             BinOp {
                                                 op: Plus,
-                                                lhs: RealLiteral(
-                                                    RealLiteral {
+                                                lhs: Literal(
+                                                    Real {
                                                         repr: "0.1",
                                                         value: 0.1,
                                                     },
                                                 ),
-                                                rhs: RealLiteral(
-                                                    RealLiteral {
+                                                rhs: Literal(
+                                                    Real {
                                                         repr: "0.2",
                                                         value: 0.2,
                                                     },
@@ -227,8 +227,8 @@ Program(
                                                     r"b",
                                                 ),
                                             ),
-                                            rhs: RealLiteral(
-                                                RealLiteral {
+                                            rhs: Literal(
+                                                Real {
                                                     repr: "0.3",
                                                     value: 0.3,
                                                 },

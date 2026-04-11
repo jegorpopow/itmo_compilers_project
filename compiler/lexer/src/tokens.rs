@@ -37,19 +37,11 @@ pub struct Identifier<'a> {
     pub name: &'a str,
 }
 
-#[derive(PartialEq, Eq, Hash, fmt::Debug, Clone, Copy)]
-pub struct IntegerLiteral {
-    pub value: Integer,
-}
-
 #[derive(PartialEq, fmt::Debug, Clone, Copy)]
-pub struct RealLiteral {
-    pub value: Real,
-}
-
-#[derive(PartialEq, Eq, Hash, fmt::Debug, Clone, Copy)]
-pub struct BoolLiteral {
-    pub value: bool,
+pub enum Literal {
+    Real(Real),
+    Integer(Integer),
+    Bool(bool),
 }
 
 #[derive(PartialEq, Eq, Hash, fmt::Debug, Clone, Copy)]
@@ -109,9 +101,7 @@ impl fmt::Display for Comment<'_> {
 pub enum TokenKind<'a> {
     Identifier(Identifier<'a>),
     Keyword(Keyword),
-    IntegerLiteral(IntegerLiteral),
-    RealLiteral(RealLiteral),
-    BoolLiteral(BoolLiteral),
+    Literal(Literal),
     BuiltinTypename(BuiltinTypename),
     Operator(Operator),
     Comment(Comment<'a>),
@@ -139,13 +129,13 @@ impl fmt::Display for TokenKind<'_> {
         match self {
             TokenKind::Identifier(Identifier { name }) => write!(f, "IDENTIFIER({name})"),
             TokenKind::Keyword(keyword) => write!(f, "KEYWORD({keyword:?})"),
-            TokenKind::IntegerLiteral(IntegerLiteral { value }) => {
+            TokenKind::Literal(Literal::Integer(value)) => {
                 write!(f, "INTEGER LITERAL({value})")
             }
-            TokenKind::RealLiteral(RealLiteral { value }) => {
+            TokenKind::Literal(Literal::Real(value)) => {
                 write!(f, "REAL LITERAL({value})")
             }
-            TokenKind::BoolLiteral(BoolLiteral { value }) => {
+            TokenKind::Literal(Literal::Bool(value)) => {
                 write!(f, "BOOLEAN LITERAL({value})")
             }
             TokenKind::BuiltinTypename(builtin_typename) => {

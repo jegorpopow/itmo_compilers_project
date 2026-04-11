@@ -7,8 +7,8 @@ Program(
                     Int,
                 ),
                 initialiser: Some(
-                    IntegerLiteral(
-                        IntegerLiteral {
+                    Literal(
+                        Integer {
                             repr: "0",
                             value: 0,
                         },
@@ -21,8 +21,8 @@ Program(
                 name: r"b",
                 t: None,
                 initialiser: Some(
-                    RealLiteral(
-                        RealLiteral {
+                    Literal(
+                        Real {
                             repr: "1.5",
                             value: 1.5,
                         },
@@ -53,8 +53,10 @@ Program(
                                         name: r"local",
                                         t: None,
                                         initialiser: Some(
-                                            BoolLiteral(
-                                                True,
+                                            Literal(
+                                                Bool {
+                                                    value: true,
+                                                },
                                             ),
                                         ),
                                     },
@@ -64,8 +66,8 @@ Program(
                                         lhs: Identifier(
                                             r"c",
                                         ),
-                                        rhs: IntegerLiteral(
-                                            IntegerLiteral {
+                                        rhs: Literal(
+                                            Integer {
                                                 repr: "0",
                                                 value: 0,
                                             },
@@ -77,8 +79,8 @@ Program(
                                         name: r"another_local",
                                         t: None,
                                         initialiser: Some(
-                                            RealLiteral(
-                                                RealLiteral {
+                                            Literal(
+                                                Real {
                                                     repr: "0.0",
                                                     value: 0.0,
                                                 },

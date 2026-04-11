@@ -20,8 +20,8 @@ Program {
                                                 VarDecl {
                                                     t: Real,
                                                     initialiser: Some(
-                                                        RealLiteral(
-                                                            RealLiteral {
+                                                        Literal(
+                                                            Real {
                                                                 repr: "0.0",
                                                                 value: 0.0,
                                                             },
@@ -48,8 +48,8 @@ Program {
                                                 VarDecl {
                                                     t: Real,
                                                     initialiser: Some(
-                                                        RealLiteral(
-                                                            RealLiteral {
+                                                        Literal(
+                                                            Real {
                                                                 repr: "3.14",
                                                                 value: 3.14,
                                                             },
@@ -76,8 +76,8 @@ Program {
                                                 VarDecl {
                                                     t: Real,
                                                     initialiser: Some(
-                                                        RealLiteral(
-                                                            RealLiteral {
+                                                        Literal(
+                                                            Real {
                                                                 repr: "1.5",
                                                                 value: 1.5,
                                                             },
@@ -104,8 +104,8 @@ Program {
                                                 VarDecl {
                                                     t: Real,
                                                     initialiser: Some(
-                                                        RealLiteral(
-                                                            RealLiteral {
+                                                        Literal(
+                                                            Real {
                                                                 repr: "0.5",
                                                                 value: 0.5,
                                                             },
@@ -132,8 +132,8 @@ Program {
                                                 VarDecl {
                                                     t: Real,
                                                     initialiser: Some(
-                                                        RealLiteral(
-                                                            RealLiteral {
+                                                        Literal(
+                                                            Real {
                                                                 repr: "10.25",
                                                                 value: 10.25,
                                                             },
@@ -160,8 +160,8 @@ Program {
                                                 VarDecl {
                                                     t: Real,
                                                     initialiser: Some(
-                                                        RealLiteral(
-                                                            RealLiteral {
+                                                        Literal(
+                                                            Real {
                                                                 repr: "0.001",
                                                                 value: 0.001,
                                                             },
@@ -188,8 +188,8 @@ Program {
                                                 VarDecl {
                                                     t: Real,
                                                     initialiser: Some(
-                                                        RealLiteral(
-                                                            RealLiteral {
+                                                        Literal(
+                                                            Real {
                                                                 repr: "999.999999999999",
                                                                 value: 999.999999999999,
                                                             },
@@ -216,8 +216,8 @@ Program {
                                                 VarDecl {
                                                     t: Real,
                                                     initialiser: Some(
-                                                        RealLiteral(
-                                                            RealLiteral {
+                                                        Literal(
+                                                            Real {
                                                                 repr: "0.12345678901234",
                                                                 value: 0.12345678901234,
                                                             },
@@ -244,8 +244,8 @@ Program {
                                                 VarDecl {
                                                     t: Real,
                                                     initialiser: Some(
-                                                        RealLiteral(
-                                                            RealLiteral {
+                                                        Literal(
+                                                            Real {
                                                                 repr: "2.71828182845904",
                                                                 value: 2.71828182845904,
                                                             },
@@ -272,8 +272,8 @@ Program {
                                                 VarDecl {
                                                     t: Real,
                                                     initialiser: Some(
-                                                        RealLiteral(
-                                                            RealLiteral {
+                                                        Literal(
+                                                            Real {
                                                                 repr: "1.11111111111111",
                                                                 value: 1.11111111111111,
                                                             },
@@ -300,8 +300,8 @@ Program {
                                                 VarDecl {
                                                     t: Real,
                                                     initialiser: Some(
-                                                        RealLiteral(
-                                                            RealLiteral {
+                                                        Literal(
+                                                            Real {
                                                                 repr: "0.00000000000001",
                                                                 value: 1e-14,
                                                             },
@@ -328,8 +328,8 @@ Program {
                                                 VarDecl {
                                                     t: Real,
                                                     initialiser: Some(
-                                                        RealLiteral(
-                                                            RealLiteral {
+                                                        Literal(
+                                                            Real {
                                                                 repr: "12345.6789012345",
                                                                 value: 12345.6789012345,
                                                             },
@@ -356,8 +356,8 @@ Program {
                                                 VarDecl {
                                                     t: Real,
                                                     initialiser: Some(
-                                                        RealLiteral(
-                                                            RealLiteral {
+                                                        Literal(
+                                                            Real {
                                                                 repr: "NaN",
                                                                 value: NaN,
                                                             },
@@ -384,8 +384,8 @@ Program {
                                                 VarDecl {
                                                     t: Real,
                                                     initialiser: Some(
-                                                        RealLiteral(
-                                                            RealLiteral {
+                                                        Literal(
+                                                            Real {
                                                                 repr: ".5",
                                                                 value: 0.5,
                                                             },
@@ -412,8 +412,8 @@ Program {
                                                 VarDecl {
                                                     t: Real,
                                                     initialiser: Some(
-                                                        RealLiteral(
-                                                            RealLiteral {
+                                                        Literal(
+                                                            Real {
                                                                 repr: "-.5",
                                                                 value: -0.5,
                                                             },
@@ -440,8 +440,8 @@ Program {
                                                 VarDecl {
                                                     t: Real,
                                                     initialiser: Some(
-                                                        RealLiteral(
-                                                            RealLiteral {
+                                                        Literal(
+                                                            Real {
                                                                 repr: "+.5",
                                                                 value: 0.5,
                                                             },
@@ -470,8 +470,8 @@ Program {
                                                     initialiser: Some(
                                                         UnOp {
                                                             op: RealNeg,
-                                                            operand: RealLiteral(
-                                                                RealLiteral {
+                                                            operand: Literal(
+                                                                Real {
                                                                     repr: "NaN",
                                                                     value: NaN,
                                                                 },
@@ -499,8 +499,8 @@ Program {
                                                 VarDecl {
                                                     t: Real,
                                                     initialiser: Some(
-                                                        RealLiteral(
-                                                            RealLiteral {
+                                                        Literal(
+                                                            Real {
                                                                 repr: "Inf",
                                                                 value: inf,
                                                             },
@@ -529,8 +529,8 @@ Program {
                                                     initialiser: Some(
                                                         UnOp {
                                                             op: RealNeg,
-                                                            operand: RealLiteral(
-                                                                RealLiteral {
+                                                            operand: Literal(
+                                                                Real {
                                                                     repr: "Inf",
                                                                     value: inf,
                                                                 },
@@ -582,8 +582,8 @@ Program {
                                                     VarDecl {
                                                         t: Real,
                                                         initialiser: Some(
-                                                            RealLiteral(
-                                                                RealLiteral {
+                                                            Literal(
+                                                                Real {
                                                                     repr: "0.0",
                                                                     value: 0.0,
                                                                 },
@@ -610,8 +610,8 @@ Program {
                                                     VarDecl {
                                                         t: Real,
                                                         initialiser: Some(
-                                                            RealLiteral(
-                                                                RealLiteral {
+                                                            Literal(
+                                                                Real {
                                                                     repr: "3.14",
                                                                     value: 3.14,
                                                                 },
@@ -638,8 +638,8 @@ Program {
                                                     VarDecl {
                                                         t: Real,
                                                         initialiser: Some(
-                                                            RealLiteral(
-                                                                RealLiteral {
+                                                            Literal(
+                                                                Real {
                                                                     repr: "1.5",
                                                                     value: 1.5,
                                                                 },
@@ -666,8 +666,8 @@ Program {
                                                     VarDecl {
                                                         t: Real,
                                                         initialiser: Some(
-                                                            RealLiteral(
-                                                                RealLiteral {
+                                                            Literal(
+                                                                Real {
                                                                     repr: "0.5",
                                                                     value: 0.5,
                                                                 },
@@ -694,8 +694,8 @@ Program {
                                                     VarDecl {
                                                         t: Real,
                                                         initialiser: Some(
-                                                            RealLiteral(
-                                                                RealLiteral {
+                                                            Literal(
+                                                                Real {
                                                                     repr: "10.25",
                                                                     value: 10.25,
                                                                 },
@@ -722,8 +722,8 @@ Program {
                                                     VarDecl {
                                                         t: Real,
                                                         initialiser: Some(
-                                                            RealLiteral(
-                                                                RealLiteral {
+                                                            Literal(
+                                                                Real {
                                                                     repr: "0.001",
                                                                     value: 0.001,
                                                                 },
@@ -750,8 +750,8 @@ Program {
                                                     VarDecl {
                                                         t: Real,
                                                         initialiser: Some(
-                                                            RealLiteral(
-                                                                RealLiteral {
+                                                            Literal(
+                                                                Real {
                                                                     repr: "999.999999999999",
                                                                     value: 999.999999999999,
                                                                 },
@@ -778,8 +778,8 @@ Program {
                                                     VarDecl {
                                                         t: Real,
                                                         initialiser: Some(
-                                                            RealLiteral(
-                                                                RealLiteral {
+                                                            Literal(
+                                                                Real {
                                                                     repr: "0.12345678901234",
                                                                     value: 0.12345678901234,
                                                                 },
@@ -806,8 +806,8 @@ Program {
                                                     VarDecl {
                                                         t: Real,
                                                         initialiser: Some(
-                                                            RealLiteral(
-                                                                RealLiteral {
+                                                            Literal(
+                                                                Real {
                                                                     repr: "2.71828182845904",
                                                                     value: 2.71828182845904,
                                                                 },
@@ -834,8 +834,8 @@ Program {
                                                     VarDecl {
                                                         t: Real,
                                                         initialiser: Some(
-                                                            RealLiteral(
-                                                                RealLiteral {
+                                                            Literal(
+                                                                Real {
                                                                     repr: "1.11111111111111",
                                                                     value: 1.11111111111111,
                                                                 },
@@ -862,8 +862,8 @@ Program {
                                                     VarDecl {
                                                         t: Real,
                                                         initialiser: Some(
-                                                            RealLiteral(
-                                                                RealLiteral {
+                                                            Literal(
+                                                                Real {
                                                                     repr: "0.00000000000001",
                                                                     value: 1e-14,
                                                                 },
@@ -890,8 +890,8 @@ Program {
                                                     VarDecl {
                                                         t: Real,
                                                         initialiser: Some(
-                                                            RealLiteral(
-                                                                RealLiteral {
+                                                            Literal(
+                                                                Real {
                                                                     repr: "12345.6789012345",
                                                                     value: 12345.6789012345,
                                                                 },
@@ -918,8 +918,8 @@ Program {
                                                     VarDecl {
                                                         t: Real,
                                                         initialiser: Some(
-                                                            RealLiteral(
-                                                                RealLiteral {
+                                                            Literal(
+                                                                Real {
                                                                     repr: "NaN",
                                                                     value: NaN,
                                                                 },
@@ -946,8 +946,8 @@ Program {
                                                     VarDecl {
                                                         t: Real,
                                                         initialiser: Some(
-                                                            RealLiteral(
-                                                                RealLiteral {
+                                                            Literal(
+                                                                Real {
                                                                     repr: ".5",
                                                                     value: 0.5,
                                                                 },
@@ -974,8 +974,8 @@ Program {
                                                     VarDecl {
                                                         t: Real,
                                                         initialiser: Some(
-                                                            RealLiteral(
-                                                                RealLiteral {
+                                                            Literal(
+                                                                Real {
                                                                     repr: "-.5",
                                                                     value: -0.5,
                                                                 },
@@ -1002,8 +1002,8 @@ Program {
                                                     VarDecl {
                                                         t: Real,
                                                         initialiser: Some(
-                                                            RealLiteral(
-                                                                RealLiteral {
+                                                            Literal(
+                                                                Real {
                                                                     repr: "+.5",
                                                                     value: 0.5,
                                                                 },
@@ -1032,8 +1032,8 @@ Program {
                                                         initialiser: Some(
                                                             UnOp {
                                                                 op: RealNeg,
-                                                                operand: RealLiteral(
-                                                                    RealLiteral {
+                                                                operand: Literal(
+                                                                    Real {
                                                                         repr: "NaN",
                                                                         value: NaN,
                                                                     },
@@ -1061,8 +1061,8 @@ Program {
                                                     VarDecl {
                                                         t: Real,
                                                         initialiser: Some(
-                                                            RealLiteral(
-                                                                RealLiteral {
+                                                            Literal(
+                                                                Real {
                                                                     repr: "Inf",
                                                                     value: inf,
                                                                 },
@@ -1091,8 +1091,8 @@ Program {
                                                         initialiser: Some(
                                                             UnOp {
                                                                 op: RealNeg,
-                                                                operand: RealLiteral(
-                                                                    RealLiteral {
+                                                                operand: Literal(
+                                                                    Real {
                                                                         repr: "Inf",
                                                                         value: inf,
                                                                     },
@@ -1127,8 +1127,8 @@ Program {
                     VarDecl {
                         t: Real,
                         initialiser: Some(
-                            RealLiteral(
-                                RealLiteral {
+                            Literal(
+                                Real {
                                     repr: "0.0",
                                     value: 0.0,
                                 },
@@ -1146,8 +1146,8 @@ Program {
                     VarDecl {
                         t: Real,
                         initialiser: Some(
-                            RealLiteral(
-                                RealLiteral {
+                            Literal(
+                                Real {
                                     repr: "3.14",
                                     value: 3.14,
                                 },
@@ -1165,8 +1165,8 @@ Program {
                     VarDecl {
                         t: Real,
                         initialiser: Some(
-                            RealLiteral(
-                                RealLiteral {
+                            Literal(
+                                Real {
                                     repr: "1.5",
                                     value: 1.5,
                                 },
@@ -1184,8 +1184,8 @@ Program {
                     VarDecl {
                         t: Real,
                         initialiser: Some(
-                            RealLiteral(
-                                RealLiteral {
+                            Literal(
+                                Real {
                                     repr: "0.5",
                                     value: 0.5,
                                 },
@@ -1203,8 +1203,8 @@ Program {
                     VarDecl {
                         t: Real,
                         initialiser: Some(
-                            RealLiteral(
-                                RealLiteral {
+                            Literal(
+                                Real {
                                     repr: "10.25",
                                     value: 10.25,
                                 },
@@ -1222,8 +1222,8 @@ Program {
                     VarDecl {
                         t: Real,
                         initialiser: Some(
-                            RealLiteral(
-                                RealLiteral {
+                            Literal(
+                                Real {
                                     repr: "0.001",
                                     value: 0.001,
                                 },
@@ -1241,8 +1241,8 @@ Program {
                     VarDecl {
                         t: Real,
                         initialiser: Some(
-                            RealLiteral(
-                                RealLiteral {
+                            Literal(
+                                Real {
                                     repr: "999.999999999999",
                                     value: 999.999999999999,
                                 },
@@ -1260,8 +1260,8 @@ Program {
                     VarDecl {
                         t: Real,
                         initialiser: Some(
-                            RealLiteral(
-                                RealLiteral {
+                            Literal(
+                                Real {
                                     repr: "0.12345678901234",
                                     value: 0.12345678901234,
                                 },
@@ -1279,8 +1279,8 @@ Program {
                     VarDecl {
                         t: Real,
                         initialiser: Some(
-                            RealLiteral(
-                                RealLiteral {
+                            Literal(
+                                Real {
                                     repr: "2.71828182845904",
                                     value: 2.71828182845904,
                                 },
@@ -1298,8 +1298,8 @@ Program {
                     VarDecl {
                         t: Real,
                         initialiser: Some(
-                            RealLiteral(
-                                RealLiteral {
+                            Literal(
+                                Real {
                                     repr: "1.11111111111111",
                                     value: 1.11111111111111,
                                 },
@@ -1317,8 +1317,8 @@ Program {
                     VarDecl {
                         t: Real,
                         initialiser: Some(
-                            RealLiteral(
-                                RealLiteral {
+                            Literal(
+                                Real {
                                     repr: "0.00000000000001",
                                     value: 1e-14,
                                 },
@@ -1336,8 +1336,8 @@ Program {
                     VarDecl {
                         t: Real,
                         initialiser: Some(
-                            RealLiteral(
-                                RealLiteral {
+                            Literal(
+                                Real {
                                     repr: "12345.6789012345",
                                     value: 12345.6789012345,
                                 },
@@ -1355,8 +1355,8 @@ Program {
                     VarDecl {
                         t: Real,
                         initialiser: Some(
-                            RealLiteral(
-                                RealLiteral {
+                            Literal(
+                                Real {
                                     repr: "NaN",
                                     value: NaN,
                                 },
@@ -1374,8 +1374,8 @@ Program {
                     VarDecl {
                         t: Real,
                         initialiser: Some(
-                            RealLiteral(
-                                RealLiteral {
+                            Literal(
+                                Real {
                                     repr: ".5",
                                     value: 0.5,
                                 },
@@ -1393,8 +1393,8 @@ Program {
                     VarDecl {
                         t: Real,
                         initialiser: Some(
-                            RealLiteral(
-                                RealLiteral {
+                            Literal(
+                                Real {
                                     repr: "-.5",
                                     value: -0.5,
                                 },
@@ -1412,8 +1412,8 @@ Program {
                     VarDecl {
                         t: Real,
                         initialiser: Some(
-                            RealLiteral(
-                                RealLiteral {
+                            Literal(
+                                Real {
                                     repr: "+.5",
                                     value: 0.5,
                                 },
@@ -1433,8 +1433,8 @@ Program {
                         initialiser: Some(
                             UnOp {
                                 op: RealNeg,
-                                operand: RealLiteral(
-                                    RealLiteral {
+                                operand: Literal(
+                                    Real {
                                         repr: "NaN",
                                         value: NaN,
                                     },
@@ -1453,8 +1453,8 @@ Program {
                     VarDecl {
                         t: Real,
                         initialiser: Some(
-                            RealLiteral(
-                                RealLiteral {
+                            Literal(
+                                Real {
                                     repr: "Inf",
                                     value: inf,
                                 },
@@ -1474,8 +1474,8 @@ Program {
                         initialiser: Some(
                             UnOp {
                                 op: RealNeg,
-                                operand: RealLiteral(
-                                    RealLiteral {
+                                operand: Literal(
+                                    Real {
                                         repr: "Inf",
                                         value: inf,
                                     },

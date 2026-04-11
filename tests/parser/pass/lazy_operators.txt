@@ -16,8 +16,10 @@ Program(
                                         name: r"result",
                                         t: None,
                                         initialiser: Some(
-                                            BoolLiteral(
-                                                False,
+                                            Literal(
+                                                Bool {
+                                                    value: false,
+                                                },
                                             ),
                                         ),
                                     },
@@ -62,8 +64,10 @@ Program(
                                         name: r"result",
                                         t: None,
                                         initialiser: Some(
-                                            BoolLiteral(
-                                                True,
+                                            Literal(
+                                                Bool {
+                                                    value: true,
+                                                },
                                             ),
                                         ),
                                     },
@@ -103,8 +107,8 @@ Program(
                             [
                                 Stmt(
                                     Print {
-                                        value: IntegerLiteral(
-                                            IntegerLiteral {
+                                        value: Literal(
+                                            Integer {
                                                 repr: "0",
                                                 value: 0,
                                             },
@@ -128,8 +132,8 @@ Program(
                                 ),
                                 Stmt(
                                     Print {
-                                        value: IntegerLiteral(
-                                            IntegerLiteral {
+                                        value: Literal(
+                                            Integer {
                                                 repr: "1",
                                                 value: 1,
                                             },
@@ -153,8 +157,8 @@ Program(
                                 ),
                                 Stmt(
                                     Print {
-                                        value: IntegerLiteral(
-                                            IntegerLiteral {
+                                        value: Literal(
+                                            Integer {
                                                 repr: "2",
                                                 value: 2,
                                             },
@@ -178,8 +182,8 @@ Program(
                                 ),
                                 Stmt(
                                     Print {
-                                        value: IntegerLiteral(
-                                            IntegerLiteral {
+                                        value: Literal(
+                                            Integer {
                                                 repr: "3",
                                                 value: 3,
                                             },
@@ -203,8 +207,8 @@ Program(
                                 ),
                                 Stmt(
                                     Print {
-                                        value: IntegerLiteral(
-                                            IntegerLiteral {
+                                        value: Literal(
+                                            Integer {
                                                 repr: "4",
                                                 value: 4,
                                             },
@@ -228,8 +232,8 @@ Program(
                                 ),
                                 Stmt(
                                     Print {
-                                        value: IntegerLiteral(
-                                            IntegerLiteral {
+                                        value: Literal(
+                                            Integer {
                                                 repr: "5",
                                                 value: 5,
                                             },

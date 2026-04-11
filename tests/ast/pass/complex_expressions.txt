@@ -39,8 +39,8 @@ Program {
                                                     n(1),
                                                 ),
                                             ),
-                                            rhs: IntegerLiteral(
-                                                IntegerLiteral {
+                                            rhs: Literal(
+                                                Integer {
                                                     repr: "1",
                                                     value: 1,
                                                 },
@@ -75,8 +75,8 @@ Program {
                                                 VarDecl {
                                                     t: Int,
                                                     initialiser: Some(
-                                                        IntegerLiteral(
-                                                            IntegerLiteral {
+                                                        Literal(
+                                                            Integer {
                                                                 repr: "2",
                                                                 value: 2,
                                                             },
@@ -96,8 +96,8 @@ Program {
                                                 VarDecl {
                                                     t: Int,
                                                     initialiser: Some(
-                                                        IntegerLiteral(
-                                                            IntegerLiteral {
+                                                        Literal(
+                                                            Integer {
                                                                 repr: "3",
                                                                 value: 3,
                                                             },
@@ -117,8 +117,8 @@ Program {
                                                 VarDecl {
                                                     t: Int,
                                                     initialiser: Some(
-                                                        IntegerLiteral(
-                                                            IntegerLiteral {
+                                                        Literal(
+                                                            Integer {
                                                                 repr: "4",
                                                                 value: 4,
                                                             },
@@ -136,8 +136,8 @@ Program {
                                             op: Int(
                                                 Add,
                                             ),
-                                            lhs: IntegerLiteral(
-                                                IntegerLiteral {
+                                            lhs: Literal(
+                                                Integer {
                                                     repr: "2",
                                                     value: 2,
                                                 },
@@ -146,14 +146,14 @@ Program {
                                                 op: Int(
                                                     Mul,
                                                 ),
-                                                lhs: IntegerLiteral(
-                                                    IntegerLiteral {
+                                                lhs: Literal(
+                                                    Integer {
                                                         repr: "3",
                                                         value: 3,
                                                     },
                                                 ),
-                                                rhs: IntegerLiteral(
-                                                    IntegerLiteral {
+                                                rhs: Literal(
+                                                    Integer {
                                                         repr: "4",
                                                         value: 4,
                                                     },
@@ -170,21 +170,21 @@ Program {
                                                 op: Int(
                                                     Add,
                                                 ),
-                                                lhs: IntegerLiteral(
-                                                    IntegerLiteral {
+                                                lhs: Literal(
+                                                    Integer {
                                                         repr: "2",
                                                         value: 2,
                                                     },
                                                 ),
-                                                rhs: IntegerLiteral(
-                                                    IntegerLiteral {
+                                                rhs: Literal(
+                                                    Integer {
                                                         repr: "3",
                                                         value: 3,
                                                     },
                                                 ),
                                             },
-                                            rhs: IntegerLiteral(
-                                                IntegerLiteral {
+                                            rhs: Literal(
+                                                Integer {
                                                     repr: "4",
                                                     value: 4,
                                                 },
@@ -200,14 +200,14 @@ Program {
                                                 op: Int(
                                                     Add,
                                                 ),
-                                                lhs: IntegerLiteral(
-                                                    IntegerLiteral {
+                                                lhs: Literal(
+                                                    Integer {
                                                         repr: "1",
                                                         value: 1,
                                                     },
                                                 ),
-                                                rhs: IntegerLiteral(
-                                                    IntegerLiteral {
+                                                rhs: Literal(
+                                                    Integer {
                                                         repr: "2",
                                                         value: 2,
                                                     },
@@ -217,14 +217,14 @@ Program {
                                                 op: Int(
                                                     Add,
                                                 ),
-                                                lhs: IntegerLiteral(
-                                                    IntegerLiteral {
+                                                lhs: Literal(
+                                                    Integer {
                                                         repr: "3",
                                                         value: 3,
                                                     },
                                                 ),
-                                                rhs: IntegerLiteral(
-                                                    IntegerLiteral {
+                                                rhs: Literal(
+                                                    Integer {
                                                         repr: "4",
                                                         value: 4,
                                                     },
@@ -241,14 +241,14 @@ Program {
                                                 op: Int(
                                                     Lt,
                                                 ),
-                                                lhs: IntegerLiteral(
-                                                    IntegerLiteral {
+                                                lhs: Literal(
+                                                    Integer {
                                                         repr: "1",
                                                         value: 1,
                                                     },
                                                 ),
-                                                rhs: IntegerLiteral(
-                                                    IntegerLiteral {
+                                                rhs: Literal(
+                                                    Integer {
                                                         repr: "2",
                                                         value: 2,
                                                     },
@@ -258,14 +258,14 @@ Program {
                                                 op: Int(
                                                     Lt,
                                                 ),
-                                                lhs: IntegerLiteral(
-                                                    IntegerLiteral {
+                                                lhs: Literal(
+                                                    Integer {
                                                         repr: "3",
                                                         value: 3,
                                                     },
                                                 ),
-                                                rhs: IntegerLiteral(
-                                                    IntegerLiteral {
+                                                rhs: Literal(
+                                                    Integer {
                                                         repr: "4",
                                                         value: 4,
                                                     },
@@ -345,8 +345,8 @@ Program {
                                             lhs: Call {
                                                 callee: add_one(0),
                                                 args: [
-                                                    IntegerLiteral(
-                                                        IntegerLiteral {
+                                                    Literal(
+                                                        Integer {
                                                             repr: "5",
                                                             value: 5,
                                                         },
@@ -356,8 +356,8 @@ Program {
                                             rhs: Call {
                                                 callee: add_one(0),
                                                 args: [
-                                                    IntegerLiteral(
-                                                        IntegerLiteral {
+                                                    Literal(
+                                                        Integer {
                                                             repr: "3",
                                                             value: 3,
                                                         },
@@ -373,8 +373,8 @@ Program {
                                                 Call {
                                                     callee: add_one(0),
                                                     args: [
-                                                        IntegerLiteral(
-                                                            IntegerLiteral {
+                                                        Literal(
+                                                            Integer {
                                                                 repr: "2",
                                                                 value: 2,
                                                             },
@@ -528,8 +528,8 @@ Program {
                                                         n(1),
                                                     ),
                                                 ),
-                                                rhs: IntegerLiteral(
-                                                    IntegerLiteral {
+                                                rhs: Literal(
+                                                    Integer {
                                                         repr: "1",
                                                         value: 1,
                                                     },
@@ -576,8 +576,8 @@ Program {
                                                     VarDecl {
                                                         t: Int,
                                                         initialiser: Some(
-                                                            IntegerLiteral(
-                                                                IntegerLiteral {
+                                                            Literal(
+                                                                Integer {
                                                                     repr: "2",
                                                                     value: 2,
                                                                 },
@@ -597,8 +597,8 @@ Program {
                                                     VarDecl {
                                                         t: Int,
                                                         initialiser: Some(
-                                                            IntegerLiteral(
-                                                                IntegerLiteral {
+                                                            Literal(
+                                                                Integer {
                                                                     repr: "3",
                                                                     value: 3,
                                                                 },
@@ -618,8 +618,8 @@ Program {
                                                     VarDecl {
                                                         t: Int,
                                                         initialiser: Some(
-                                                            IntegerLiteral(
-                                                                IntegerLiteral {
+                                                            Literal(
+                                                                Integer {
                                                                     repr: "4",
                                                                     value: 4,
                                                                 },
@@ -637,8 +637,8 @@ Program {
                                                 op: Int(
                                                     Add,
                                                 ),
-                                                lhs: IntegerLiteral(
-                                                    IntegerLiteral {
+                                                lhs: Literal(
+                                                    Integer {
                                                         repr: "2",
                                                         value: 2,
                                                     },
@@ -647,14 +647,14 @@ Program {
                                                     op: Int(
                                                         Mul,
                                                     ),
-                                                    lhs: IntegerLiteral(
-                                                        IntegerLiteral {
+                                                    lhs: Literal(
+                                                        Integer {
                                                             repr: "3",
                                                             value: 3,
                                                         },
                                                     ),
-                                                    rhs: IntegerLiteral(
-                                                        IntegerLiteral {
+                                                    rhs: Literal(
+                                                        Integer {
                                                             repr: "4",
                                                             value: 4,
                                                         },
@@ -671,21 +671,21 @@ Program {
                                                     op: Int(
                                                         Add,
                                                     ),
-                                                    lhs: IntegerLiteral(
-                                                        IntegerLiteral {
+                                                    lhs: Literal(
+                                                        Integer {
                                                             repr: "2",
                                                             value: 2,
                                                         },
                                                     ),
-                                                    rhs: IntegerLiteral(
-                                                        IntegerLiteral {
+                                                    rhs: Literal(
+                                                        Integer {
                                                             repr: "3",
                                                             value: 3,
                                                         },
                                                     ),
                                                 },
-                                                rhs: IntegerLiteral(
-                                                    IntegerLiteral {
+                                                rhs: Literal(
+                                                    Integer {
                                                         repr: "4",
                                                         value: 4,
                                                     },
@@ -701,14 +701,14 @@ Program {
                                                     op: Int(
                                                         Add,
                                                     ),
-                                                    lhs: IntegerLiteral(
-                                                        IntegerLiteral {
+                                                    lhs: Literal(
+                                                        Integer {
                                                             repr: "1",
                                                             value: 1,
                                                         },
                                                     ),
-                                                    rhs: IntegerLiteral(
-                                                        IntegerLiteral {
+                                                    rhs: Literal(
+                                                        Integer {
                                                             repr: "2",
                                                             value: 2,
                                                         },
@@ -718,14 +718,14 @@ Program {
                                                     op: Int(
                                                         Add,
                                                     ),
-                                                    lhs: IntegerLiteral(
-                                                        IntegerLiteral {
+                                                    lhs: Literal(
+                                                        Integer {
                                                             repr: "3",
                                                             value: 3,
                                                         },
                                                     ),
-                                                    rhs: IntegerLiteral(
-                                                        IntegerLiteral {
+                                                    rhs: Literal(
+                                                        Integer {
                                                             repr: "4",
                                                             value: 4,
                                                         },
@@ -742,14 +742,14 @@ Program {
                                                     op: Int(
                                                         Lt,
                                                     ),
-                                                    lhs: IntegerLiteral(
-                                                        IntegerLiteral {
+                                                    lhs: Literal(
+                                                        Integer {
                                                             repr: "1",
                                                             value: 1,
                                                         },
                                                     ),
-                                                    rhs: IntegerLiteral(
-                                                        IntegerLiteral {
+                                                    rhs: Literal(
+                                                        Integer {
                                                             repr: "2",
                                                             value: 2,
                                                         },
@@ -759,14 +759,14 @@ Program {
                                                     op: Int(
                                                         Lt,
                                                     ),
-                                                    lhs: IntegerLiteral(
-                                                        IntegerLiteral {
+                                                    lhs: Literal(
+                                                        Integer {
                                                             repr: "3",
                                                             value: 3,
                                                         },
                                                     ),
-                                                    rhs: IntegerLiteral(
-                                                        IntegerLiteral {
+                                                    rhs: Literal(
+                                                        Integer {
                                                             repr: "4",
                                                             value: 4,
                                                         },
@@ -846,8 +846,8 @@ Program {
                                                 lhs: Call {
                                                     callee: add_one(0),
                                                     args: [
-                                                        IntegerLiteral(
-                                                            IntegerLiteral {
+                                                        Literal(
+                                                            Integer {
                                                                 repr: "5",
                                                                 value: 5,
                                                             },
@@ -857,8 +857,8 @@ Program {
                                                 rhs: Call {
                                                     callee: add_one(0),
                                                     args: [
-                                                        IntegerLiteral(
-                                                            IntegerLiteral {
+                                                        Literal(
+                                                            Integer {
                                                                 repr: "3",
                                                                 value: 3,
                                                             },
@@ -874,8 +874,8 @@ Program {
                                                     Call {
                                                         callee: add_one(0),
                                                         args: [
-                                                            IntegerLiteral(
-                                                                IntegerLiteral {
+                                                            Literal(
+                                                                Integer {
                                                                     repr: "2",
                                                                     value: 2,
                                                                 },
@@ -993,8 +993,8 @@ Program {
                     VarDecl {
                         t: Int,
                         initialiser: Some(
-                            IntegerLiteral(
-                                IntegerLiteral {
+                            Literal(
+                                Integer {
                                     repr: "2",
                                     value: 2,
                                 },
@@ -1012,8 +1012,8 @@ Program {
                     VarDecl {
                         t: Int,
                         initialiser: Some(
-                            IntegerLiteral(
-                                IntegerLiteral {
+                            Literal(
+                                Integer {
                                     repr: "3",
                                     value: 3,
                                 },
@@ -1031,8 +1031,8 @@ Program {
                     VarDecl {
                         t: Int,
                         initialiser: Some(
-                            IntegerLiteral(
-                                IntegerLiteral {
+                            Literal(
+                                Integer {
                                     repr: "4",
                                     value: 4,
                                 },

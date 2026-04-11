@@ -11,8 +11,8 @@ Program(
                             [
                                 Stmt(
                                     Print {
-                                        value: IntegerLiteral(
-                                            IntegerLiteral {
+                                        value: Literal(
+                                            Integer {
                                                 repr: "0",
                                                 value: 0,
                                             },
@@ -21,8 +21,10 @@ Program(
                                 ),
                                 Stmt(
                                     If {
-                                        condition: BoolLiteral(
-                                            True,
+                                        condition: Literal(
+                                            Bool {
+                                                value: true,
+                                            },
                                         ),
                                         on_true: Block(
                                             [
@@ -41,8 +43,8 @@ Program(
                                                 [
                                                     Stmt(
                                                         Print {
-                                                            value: IntegerLiteral(
-                                                                IntegerLiteral {
+                                                            value: Literal(
+                                                                Integer {
                                                                     repr: "1",
                                                                     value: 1,
                                                                 },

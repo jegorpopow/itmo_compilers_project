@@ -150,8 +150,8 @@ Program(
                                         name: r"result",
                                         t: None,
                                         initialiser: Some(
-                                            IntegerLiteral(
-                                                IntegerLiteral {
+                                            Literal(
+                                                Integer {
                                                     repr: "0",
                                                     value: 0,
                                                 },
@@ -188,8 +188,8 @@ Program(
                                                                     r"result",
                                                                 ),
                                                             ),
-                                                            rhs: IntegerLiteral(
-                                                                IntegerLiteral {
+                                                            rhs: Literal(
+                                                                Integer {
                                                                     repr: "1",
                                                                     value: 1,
                                                                 },
@@ -367,8 +367,8 @@ Program(
                                             Call {
                                                 callee: r"singleton",
                                                 args: [
-                                                    IntegerLiteral(
-                                                        IntegerLiteral {
+                                                    Literal(
+                                                        Integer {
                                                             repr: "1",
                                                             value: 1,
                                                         },

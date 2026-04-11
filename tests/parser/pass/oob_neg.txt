@@ -19,8 +19,8 @@ Program(
                                                     ArrayDescription {
                                                         t: Bool,
                                                         length: Some(
-                                                            IntegerLiteral(
-                                                                IntegerLiteral {
+                                                            Literal(
+                                                                Integer {
                                                                     repr: "3",
                                                                     value: 3,
                                                                 },
@@ -43,8 +43,8 @@ Program(
                                                 ),
                                                 index: UnOp {
                                                     op: Minus,
-                                                    operand: IntegerLiteral(
-                                                        IntegerLiteral {
+                                                    operand: Literal(
+                                                        Integer {
                                                             repr: "2",
                                                             value: 2,
                                                         },

@@ -495,12 +495,9 @@ impl Converter {
                         ty: Rc::clone(t),
                     }),
                     Binding {
-                        decl: Decl::Const(ConstDecl { value, t }),
+                        decl: Decl::Const(ConstDecl { value }),
                         ..
-                    } => Ok(Typed {
-                        value: Rc::clone(value), // Constants are immediately propagated
-                        ty: Rc::clone(t),
-                    }),
+                    } => Ok(value.as_literal().into()), // Constants are immediately propagated
 
                     t => Err(AnalysisError {
                         what: format!(
@@ -523,27 +520,7 @@ impl Converter {
             parser::Expression::LvalueToRvalue(lvalue_expression) => {
                 self.convert_lvalue_expr_in_rvalue_context(lvalue_expression)?
             }
-            parser::Expression::IntegerLiteral(integer_literal) => Typed {
-                value: Rc::new(Expression::IntegerLiteral(IntegerLiteral {
-                    repr: integer_literal.repr.clone(),
-                    value: integer_literal.value,
-                })),
-                ty: Type::int(),
-            },
-            parser::Expression::RealLiteral(real_literal) => Typed {
-                value: Rc::new(Expression::RealLiteral(RealLiteral {
-                    repr: real_literal.repr.clone(),
-                    value: real_literal.value,
-                })),
-                ty: Rc::new(Type::Real),
-            },
-            parser::Expression::BoolLiteral(bool_literal) => Typed {
-                value: Rc::new(Expression::BoolLiteral(match bool_literal {
-                    parser::BoolLiteral::True => BoolLiteral::True,
-                    parser::BoolLiteral::False => BoolLiteral::False,
-                })),
-                ty: Type::bool(),
-            },
+            parser::Expression::Literal(literal) => literal.clone().into(),
             parser::Expression::Call { callee, args } => self.convert_call(callee, args)?,
             parser::Expression::BinOp { op, lhs, rhs } => {
                 let lhs = self.convert_expr(lhs)?;
@@ -789,18 +766,16 @@ impl Converter {
                 let t = self.convert_type(t)?;
                 let expr = self.bindings.coerce(expr, &t)?;
                 ConstDecl {
-                    t,
-                    value: expr.try_constexpr_evaluate()?.as_literal(),
+                    value: expr.try_constexpr_evaluate()?,
                 }
             }
             None => ConstDecl {
-                t: expr.ty,
-                value: expr.value.try_constexpr_evaluate()?.as_literal(),
+                value: expr.value.try_constexpr_evaluate()?,
             },
         };
 
         Ok(Binding {
-            decl: decl.clone(),
+            decl,
             name: if is_global {
                 self.bind_global_decl(name, Decl::Const(decl))
             } else {

@@ -4,12 +4,8 @@ Program {
             name: LENGTH(0),
             decl: Const(
                 ConstDecl {
-                    t: Int,
-                    value: IntegerLiteral(
-                        IntegerLiteral {
-                            repr: "100",
-                            value: 100,
-                        },
+                    value: Int(
+                        100,
                     ),
                 },
             ),
@@ -18,12 +14,8 @@ Program {
             name: DOUBLE_LENGTH(1),
             decl: Const(
                 ConstDecl {
-                    t: Int,
-                    value: IntegerLiteral(
-                        IntegerLiteral {
-                            repr: "200",
-                            value: 200,
-                        },
+                    value: Int(
+                        200,
                     ),
                 },
             ),
@@ -100,8 +92,8 @@ Program {
                                                 lhs: Identifier(
                                                     arr(4),
                                                 ),
-                                                index: IntegerLiteral(
-                                                    IntegerLiteral {
+                                                index: Literal(
+                                                    Integer {
                                                         repr: "1",
                                                         value: 1,
                                                     },
@@ -160,14 +152,14 @@ Program {
                                                     op: Int(
                                                         Mul,
                                                     ),
-                                                    lhs: IntegerLiteral(
-                                                        IntegerLiteral {
+                                                    lhs: Literal(
+                                                        Integer {
                                                             repr: "100",
                                                             value: 100,
                                                         },
                                                     ),
-                                                    rhs: IntegerLiteral(
-                                                        IntegerLiteral {
+                                                    rhs: Literal(
+                                                        Integer {
                                                             repr: "2",
                                                             value: 2,
                                                         },
@@ -186,14 +178,14 @@ Program {
                                                     op: Int(
                                                         Sub,
                                                     ),
-                                                    lhs: IntegerLiteral(
-                                                        IntegerLiteral {
+                                                    lhs: Literal(
+                                                        Integer {
                                                             repr: "200",
                                                             value: 200,
                                                         },
                                                     ),
-                                                    rhs: IntegerLiteral(
-                                                        IntegerLiteral {
+                                                    rhs: Literal(
+                                                        Integer {
                                                             repr: "100",
                                                             value: 100,
                                                         },
@@ -265,8 +257,8 @@ Program {
                                                 lhs: Identifier(
                                                     t(8),
                                                 ),
-                                                index: IntegerLiteral(
-                                                    IntegerLiteral {
+                                                index: Literal(
+                                                    Integer {
                                                         repr: "1",
                                                         value: 1,
                                                     },
@@ -279,12 +271,8 @@ Program {
                                             name: LENGTH(9),
                                             decl: Const(
                                                 ConstDecl {
-                                                    t: Int,
-                                                    value: IntegerLiteral(
-                                                        IntegerLiteral {
-                                                            repr: "300",
-                                                            value: 300,
-                                                        },
+                                                    value: Int(
+                                                        300,
                                                     ),
                                                 },
                                             ),
@@ -295,14 +283,14 @@ Program {
                                             op: Int(
                                                 Gt,
                                             ),
-                                            lhs: IntegerLiteral(
-                                                IntegerLiteral {
+                                            lhs: Literal(
+                                                Integer {
                                                     repr: "300",
                                                     value: 300,
                                                 },
                                             ),
-                                            rhs: IntegerLiteral(
-                                                IntegerLiteral {
+                                            rhs: Literal(
+                                                Integer {
                                                     repr: "200",
                                                     value: 200,
                                                 },
@@ -311,8 +299,8 @@ Program {
                                         on_true: Block {
                                             stmts: [
                                                 Print {
-                                                    value: IntegerLiteral(
-                                                        IntegerLiteral {
+                                                    value: Literal(
+                                                        Integer {
                                                             repr: "300",
                                                             value: 300,
                                                         },
@@ -323,20 +311,16 @@ Program {
                                                         name: LENGTH(10),
                                                         decl: Const(
                                                             ConstDecl {
-                                                                t: Int,
-                                                                value: IntegerLiteral(
-                                                                    IntegerLiteral {
-                                                                        repr: "400",
-                                                                        value: 400,
-                                                                    },
+                                                                value: Int(
+                                                                    400,
                                                                 ),
                                                             },
                                                         ),
                                                     },
                                                 ),
                                                 Print {
-                                                    value: IntegerLiteral(
-                                                        IntegerLiteral {
+                                                    value: Literal(
+                                                        Integer {
                                                             repr: "400",
                                                             value: 400,
                                                         },
@@ -348,8 +332,8 @@ Program {
                                         on_false: None,
                                     },
                                     Print {
-                                        value: IntegerLiteral(
-                                            IntegerLiteral {
+                                        value: Literal(
+                                            Integer {
                                                 repr: "300",
                                                 value: 300,
                                             },
@@ -370,12 +354,8 @@ Program {
                 name: LENGTH(0),
                 decl: Const(
                     ConstDecl {
-                        t: Int,
-                        value: IntegerLiteral(
-                            IntegerLiteral {
-                                repr: "100",
-                                value: 100,
-                            },
+                        value: Int(
+                            100,
                         ),
                     },
                 ),
@@ -384,12 +364,8 @@ Program {
                 name: DOUBLE_LENGTH(1),
                 decl: Const(
                     ConstDecl {
-                        t: Int,
-                        value: IntegerLiteral(
-                            IntegerLiteral {
-                                repr: "200",
-                                value: 200,
-                            },
+                        value: Int(
+                            200,
                         ),
                     },
                 ),
@@ -466,8 +442,8 @@ Program {
                                                     lhs: Identifier(
                                                         arr(4),
                                                     ),
-                                                    index: IntegerLiteral(
-                                                        IntegerLiteral {
+                                                    index: Literal(
+                                                        Integer {
                                                             repr: "1",
                                                             value: 1,
                                                         },
@@ -545,14 +521,14 @@ Program {
                                                         op: Int(
                                                             Mul,
                                                         ),
-                                                        lhs: IntegerLiteral(
-                                                            IntegerLiteral {
+                                                        lhs: Literal(
+                                                            Integer {
                                                                 repr: "100",
                                                                 value: 100,
                                                             },
                                                         ),
-                                                        rhs: IntegerLiteral(
-                                                            IntegerLiteral {
+                                                        rhs: Literal(
+                                                            Integer {
                                                                 repr: "2",
                                                                 value: 2,
                                                             },
@@ -571,14 +547,14 @@ Program {
                                                         op: Int(
                                                             Sub,
                                                         ),
-                                                        lhs: IntegerLiteral(
-                                                            IntegerLiteral {
+                                                        lhs: Literal(
+                                                            Integer {
                                                                 repr: "200",
                                                                 value: 200,
                                                             },
                                                         ),
-                                                        rhs: IntegerLiteral(
-                                                            IntegerLiteral {
+                                                        rhs: Literal(
+                                                            Integer {
                                                                 repr: "100",
                                                                 value: 100,
                                                             },
@@ -664,8 +640,8 @@ Program {
                                                     lhs: Identifier(
                                                         t(8),
                                                     ),
-                                                    index: IntegerLiteral(
-                                                        IntegerLiteral {
+                                                    index: Literal(
+                                                        Integer {
                                                             repr: "1",
                                                             value: 1,
                                                         },
@@ -678,12 +654,8 @@ Program {
                                                 name: LENGTH(9),
                                                 decl: Const(
                                                     ConstDecl {
-                                                        t: Int,
-                                                        value: IntegerLiteral(
-                                                            IntegerLiteral {
-                                                                repr: "300",
-                                                                value: 300,
-                                                            },
+                                                        value: Int(
+                                                            300,
                                                         ),
                                                     },
                                                 ),
@@ -694,14 +666,14 @@ Program {
                                                 op: Int(
                                                     Gt,
                                                 ),
-                                                lhs: IntegerLiteral(
-                                                    IntegerLiteral {
+                                                lhs: Literal(
+                                                    Integer {
                                                         repr: "300",
                                                         value: 300,
                                                     },
                                                 ),
-                                                rhs: IntegerLiteral(
-                                                    IntegerLiteral {
+                                                rhs: Literal(
+                                                    Integer {
                                                         repr: "200",
                                                         value: 200,
                                                     },
@@ -710,8 +682,8 @@ Program {
                                             on_true: Block {
                                                 stmts: [
                                                     Print {
-                                                        value: IntegerLiteral(
-                                                            IntegerLiteral {
+                                                        value: Literal(
+                                                            Integer {
                                                                 repr: "300",
                                                                 value: 300,
                                                             },
@@ -722,20 +694,16 @@ Program {
                                                             name: LENGTH(10),
                                                             decl: Const(
                                                                 ConstDecl {
-                                                                    t: Int,
-                                                                    value: IntegerLiteral(
-                                                                        IntegerLiteral {
-                                                                            repr: "400",
-                                                                            value: 400,
-                                                                        },
+                                                                    value: Int(
+                                                                        400,
                                                                     ),
                                                                 },
                                                             ),
                                                         },
                                                     ),
                                                     Print {
-                                                        value: IntegerLiteral(
-                                                            IntegerLiteral {
+                                                        value: Literal(
+                                                            Integer {
                                                                 repr: "400",
                                                                 value: 400,
                                                             },
@@ -747,8 +715,8 @@ Program {
                                             on_false: None,
                                         },
                                         Print {
-                                            value: IntegerLiteral(
-                                                IntegerLiteral {
+                                            value: Literal(
+                                                Integer {
                                                     repr: "300",
                                                     value: 300,
                                                 },
@@ -787,12 +755,8 @@ Program {
                 name: LENGTH(9),
                 decl: Const(
                     ConstDecl {
-                        t: Int,
-                        value: IntegerLiteral(
-                            IntegerLiteral {
-                                repr: "300",
-                                value: 300,
-                            },
+                        value: Int(
+                            300,
                         ),
                     },
                 ),
@@ -801,12 +765,8 @@ Program {
                 name: LENGTH(10),
                 decl: Const(
                     ConstDecl {
-                        t: Int,
-                        value: IntegerLiteral(
-                            IntegerLiteral {
-                                repr: "400",
-                                value: 400,
-                            },
+                        value: Int(
+                            400,
                         ),
                     },
                 ),

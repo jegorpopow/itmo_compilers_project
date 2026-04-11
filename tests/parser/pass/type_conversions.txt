@@ -41,8 +41,8 @@ Program(
                                         lhs: Identifier(
                                             r"i",
                                         ),
-                                        rhs: IntegerLiteral(
-                                            IntegerLiteral {
+                                        rhs: Literal(
+                                            Integer {
                                                 repr: "5",
                                                 value: 5,
                                             },
@@ -54,8 +54,8 @@ Program(
                                         lhs: Identifier(
                                             r"i",
                                         ),
-                                        rhs: RealLiteral(
-                                            RealLiteral {
+                                        rhs: Literal(
+                                            Real {
                                                 repr: "3.7",
                                                 value: 3.7,
                                             },
@@ -67,8 +67,10 @@ Program(
                                         lhs: Identifier(
                                             r"i",
                                         ),
-                                        rhs: BoolLiteral(
-                                            True,
+                                        rhs: Literal(
+                                            Bool {
+                                                value: true,
+                                            },
                                         ),
                                     },
                                 ),
@@ -77,8 +79,10 @@ Program(
                                         lhs: Identifier(
                                             r"i",
                                         ),
-                                        rhs: BoolLiteral(
-                                            False,
+                                        rhs: Literal(
+                                            Bool {
+                                                value: false,
+                                            },
                                         ),
                                     },
                                 ),
@@ -87,8 +91,8 @@ Program(
                                         lhs: Identifier(
                                             r"r",
                                         ),
-                                        rhs: RealLiteral(
-                                            RealLiteral {
+                                        rhs: Literal(
+                                            Real {
                                                 repr: "2.5",
                                                 value: 2.5,
                                             },
@@ -100,8 +104,8 @@ Program(
                                         lhs: Identifier(
                                             r"r",
                                         ),
-                                        rhs: IntegerLiteral(
-                                            IntegerLiteral {
+                                        rhs: Literal(
+                                            Integer {
                                                 repr: "10",
                                                 value: 10,
                                             },
@@ -113,8 +117,10 @@ Program(
                                         lhs: Identifier(
                                             r"r",
                                         ),
-                                        rhs: BoolLiteral(
-                                            True,
+                                        rhs: Literal(
+                                            Bool {
+                                                value: true,
+                                            },
                                         ),
                                     },
                                 ),
@@ -123,8 +129,10 @@ Program(
                                         lhs: Identifier(
                                             r"r",
                                         ),
-                                        rhs: BoolLiteral(
-                                            False,
+                                        rhs: Literal(
+                                            Bool {
+                                                value: false,
+                                            },
                                         ),
                                     },
                                 ),
@@ -133,8 +141,10 @@ Program(
                                         lhs: Identifier(
                                             r"b",
                                         ),
-                                        rhs: BoolLiteral(
-                                            True,
+                                        rhs: Literal(
+                                            Bool {
+                                                value: true,
+                                            },
                                         ),
                                     },
                                 ),
@@ -143,8 +153,10 @@ Program(
                                         lhs: Identifier(
                                             r"b",
                                         ),
-                                        rhs: BoolLiteral(
-                                            False,
+                                        rhs: Literal(
+                                            Bool {
+                                                value: false,
+                                            },
                                         ),
                                     },
                                 ),
@@ -153,8 +165,8 @@ Program(
                                         lhs: Identifier(
                                             r"b",
                                         ),
-                                        rhs: IntegerLiteral(
-                                            IntegerLiteral {
+                                        rhs: Literal(
+                                            Integer {
                                                 repr: "1",
                                                 value: 1,
                                             },
@@ -166,8 +178,8 @@ Program(
                                         lhs: Identifier(
                                             r"b",
                                         ),
-                                        rhs: IntegerLiteral(
-                                            IntegerLiteral {
+                                        rhs: Literal(
+                                            Integer {
                                                 repr: "0",
                                                 value: 0,
                                             },

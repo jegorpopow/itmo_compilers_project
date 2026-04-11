@@ -8,8 +8,8 @@ mod tokens;
 mod tests;
 
 pub use crate::tokens::{
-    BoolLiteral, BuiltinTypename, Comment, Identifier, IntegerLiteral, InvalidToken, Keyword,
-    Operator, RealLiteral, Token, TokenKind,
+    BuiltinTypename, Comment, Identifier, InvalidToken, Keyword, Literal, Operator, Token,
+    TokenKind,
 };
 
 trait ImmutableIterator<'a>: Sized + Clone + From<&'a str> {
@@ -172,13 +172,13 @@ fn name_disambiguation(lexeme: &str) -> TokenKind<'_> {
         "or" => TokenKind::Operator(Operator::Or),
         "xor" => TokenKind::Operator(Operator::Xor),
         "not" => TokenKind::Operator(Operator::Not),
-        "true" => TokenKind::BoolLiteral(BoolLiteral { value: true }),
-        "false" => TokenKind::BoolLiteral(BoolLiteral { value: false }),
+        "true" => TokenKind::Literal(Literal::Bool(true)),
+        "false" => TokenKind::Literal(Literal::Bool(false)),
         "integer" => TokenKind::BuiltinTypename(BuiltinTypename::Integer),
         "real" => TokenKind::BuiltinTypename(BuiltinTypename::Real),
         "boolean" => TokenKind::BuiltinTypename(BuiltinTypename::Boolean),
-        "NaN" => TokenKind::RealLiteral(RealLiteral { value: Real::NAN }),
-        "Inf" => TokenKind::RealLiteral(RealLiteral { value: Real::INFINITY }),
+        "NaN" => TokenKind::Literal(Literal::Real(Real::NAN)),
+        "Inf" => TokenKind::Literal(Literal::Real(Real::INFINITY)),
         "assert" => TokenKind::Keyword(Keyword::Assert),
         "panic" => TokenKind::Keyword(Keyword::Panic),
     };
@@ -239,14 +239,14 @@ fn symbolic_token<'a>(start: &IndexIterator<'a>) -> Option<(TokenKind<'a>, Index
 
 fn real_literal_from_representation(s: &str) -> TokenKind<'_> {
     match s.parse() {
-        Ok(value) => TokenKind::RealLiteral(RealLiteral { value }),
+        Ok(value) => TokenKind::Literal(Literal::Real(value)),
         Err(e) => TokenKind::Invalid(InvalidToken::MalformedReal(e)),
     }
 }
 
 fn integer_literal_from_representation(s: &str) -> TokenKind<'_> {
     match s.parse() {
-        Ok(value) => TokenKind::IntegerLiteral(IntegerLiteral { value }),
+        Ok(value) => TokenKind::Literal(Literal::Integer(value)),
         Err(e) => TokenKind::Invalid(InvalidToken::MalformedInteger(e)),
     }
 }
@@ -322,9 +322,7 @@ impl Lexer<'_> {
             | TokenKind::Keyword(_) => true,
 
             TokenKind::Identifier(_)
-            | TokenKind::IntegerLiteral(_)
-            | TokenKind::RealLiteral(_)
-            | TokenKind::BoolLiteral(_)
+            | TokenKind::Literal(_)
             | TokenKind::BuiltinTypename(_)
             | TokenKind::LeftBracket
             | TokenKind::RightParenthesis

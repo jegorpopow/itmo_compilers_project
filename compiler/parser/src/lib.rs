@@ -3,8 +3,7 @@ use std::rc::Rc;
 
 use common::{Extent, LoopOrder, Position, RawIdentifier, Real};
 use lexer::{
-    BoolLiteral as TokenBoolLiteral, BuiltinTypename, Identifier as TokenIdentifier,
-    IntegerLiteral as TokenIntegerLiteral, InvalidToken, Keyword, RealLiteral as TokenRealLiteral,
+    BuiltinTypename, Identifier as TokenIdentifier, InvalidToken, Keyword, Literal as TokenLiteral,
     Token, TokenKind,
 };
 
@@ -16,9 +15,8 @@ mod tests;
 
 pub use crate::{
     tree::{
-        Block, BlockElem, BoolLiteral, ConstDecl, Declaration, Expression, IntegerLiteral,
-        LvalueExpression, Operator, Program, RealLiteral, RoutineBody, RoutineDecl, Statement,
-        TypeDecl, VarDecl,
+        Block, BlockElem, ConstDecl, Declaration, Expression, Literal, LvalueExpression, Operator,
+        Program, RoutineBody, RoutineDecl, Statement, TypeDecl, VarDecl,
     },
     types::{ArrayDescription, FieldDescription, RecordDescription, Type},
 };
@@ -318,17 +316,17 @@ impl Parser {
         }
     }
 
-    fn parse_real_literal<'a, 'b: 'a>(
+    fn parse_literal<'a, 'b: 'a>(
         &mut self,
         i: IndexedIterator<'a, 'b>,
-    ) -> ParsingResult<'a, 'b, RealLiteral> {
+    ) -> ParsingResult<'a, 'b, Literal> {
         match i.current() {
             Some(&Token {
-                kind: TokenKind::RealLiteral(TokenRealLiteral { value }),
+                kind: TokenKind::Literal(TokenLiteral::Real(value)),
                 lexeme,
                 ..
             }) => Ok((
-                RealLiteral {
+                Literal::Real {
                     repr: lexeme.to_owned(),
                     value,
                 },
@@ -346,7 +344,7 @@ impl Parser {
                 });
 
                 Ok((
-                    RealLiteral {
+                    Literal::Real {
                         repr: lexeme.to_owned(),
                         value: Real::NAN,
                     },
@@ -354,28 +352,12 @@ impl Parser {
                 ))
             }
 
-            Some(token) => Err(ParsingError {
-                what: format!("Real literal expected, {token} found"),
-                position: i.position(),
-            }),
-            None => Err(ParsingError {
-                what: "Real literal expected, EOF found".to_owned(),
-                position: i.position(),
-            }),
-        }
-    }
-
-    fn parse_integer_literal<'a, 'b>(
-        &mut self,
-        i: IndexedIterator<'a, 'b>,
-    ) -> ParsingResult<'a, 'b, IntegerLiteral> {
-        match i.current() {
             Some(&Token {
-                kind: TokenKind::IntegerLiteral(TokenIntegerLiteral { value }),
+                kind: TokenKind::Literal(TokenLiteral::Integer(value)),
                 lexeme,
                 ..
             }) => Ok((
-                IntegerLiteral {
+                Literal::Integer {
                     repr: lexeme.to_owned(),
                     value,
                 },
@@ -383,7 +365,7 @@ impl Parser {
             )),
 
             Some(&Token {
-                kind: TokenKind::Invalid(ref t @ InvalidToken::MalformedReal(_)),
+                kind: TokenKind::Invalid(ref t @ InvalidToken::MalformedInteger(_)),
                 extent: Extent { start, .. },
                 lexeme,
             }) => {
@@ -392,7 +374,7 @@ impl Parser {
                     what: t.to_string(),
                 });
                 Ok((
-                    IntegerLiteral {
+                    Literal::Integer {
                         repr: lexeme.to_owned(),
                         value: 0,
                     },
@@ -400,40 +382,17 @@ impl Parser {
                 ))
             }
 
-            Some(token) => Err(ParsingError {
-                what: format!("Integer literal expected, {token} found"),
-                position: i.position(),
-            }),
-            None => Err(ParsingError {
-                what: "Integer literal expected, EOF found".to_owned(),
-                position: i.position(),
-            }),
-        }
-    }
-
-    fn parse_bool_literal<'a, 'b>(
-        &mut self,
-        i: IndexedIterator<'a, 'b>,
-    ) -> ParsingResult<'a, 'b, BoolLiteral> {
-        match i.current() {
             Some(&Token {
-                kind: TokenKind::BoolLiteral(TokenBoolLiteral { value }),
+                kind: TokenKind::Literal(TokenLiteral::Bool(value)),
                 ..
-            }) => Ok((
-                if value {
-                    BoolLiteral::True
-                } else {
-                    BoolLiteral::False
-                },
-                self.next(i),
-            )),
+            }) => Ok((Literal::Bool { value }, self.next(i))),
+
             Some(token) => Err(ParsingError {
-                what: format!("Bool literal expected, {token} found"),
+                what: format!("Literal expected, {token} found"),
                 position: i.position(),
             }),
-
             None => Err(ParsingError {
-                what: "Bool literal expected, EOF found".to_owned(),
+                what: "Literal expected, EOF found".to_owned(),
                 position: i.position(),
             }),
         }
@@ -799,16 +758,8 @@ impl Parser {
                     .map(|((), next)| (Rc::new(Expression::Null), next))
             })
             .or_else(|_| {
-                self.parse_real_literal(i)
-                    .map(|(literal, next)| (Rc::new(Expression::RealLiteral(literal)), next))
-            })
-            .or_else(|_| {
-                self.parse_integer_literal(i)
-                    .map(|(literal, next)| (Rc::new(Expression::IntegerLiteral(literal)), next))
-            })
-            .or_else(|_| {
-                self.parse_bool_literal(i)
-                    .map(|(literal, next)| (Rc::new(Expression::BoolLiteral(literal)), next))
+                self.parse_literal(i)
+                    .map(|(literal, next)| (Rc::new(Expression::Literal(literal)), next))
             })
             .or_else(|_| self.parse_unop(Operator::Not, i))
             .or_else(|_| self.parse_unop(Operator::Minus, i))

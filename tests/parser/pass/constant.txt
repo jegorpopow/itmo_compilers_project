@@ -4,8 +4,8 @@ Program(
             ConstDecl {
                 name: r"LENGTH",
                 t: None,
-                initialiser: IntegerLiteral(
-                    IntegerLiteral {
+                initialiser: Literal(
+                    Integer {
                         repr: "100",
                         value: 100,
                     },
@@ -25,8 +25,8 @@ Program(
                             r"LENGTH",
                         ),
                     ),
-                    rhs: IntegerLiteral(
-                        IntegerLiteral {
+                    rhs: Literal(
+                        Integer {
                             repr: "2",
                             value: 2,
                         },
@@ -93,8 +93,8 @@ Program(
                                                 lhs: Identifier(
                                                     r"arr",
                                                 ),
-                                                index: IntegerLiteral(
-                                                    IntegerLiteral {
+                                                index: Literal(
+                                                    Integer {
                                                         repr: "1",
                                                         value: 1,
                                                     },
@@ -141,8 +141,8 @@ Program(
                                                             r"LENGTH",
                                                         ),
                                                     ),
-                                                    rhs: IntegerLiteral(
-                                                        IntegerLiteral {
+                                                    rhs: Literal(
+                                                        Integer {
                                                             repr: "2",
                                                             value: 2,
                                                         },
@@ -231,8 +231,8 @@ Program(
                                                 lhs: Identifier(
                                                     r"t",
                                                 ),
-                                                index: IntegerLiteral(
-                                                    IntegerLiteral {
+                                                index: Literal(
+                                                    Integer {
                                                         repr: "1",
                                                         value: 1,
                                                     },
@@ -245,8 +245,8 @@ Program(
                                     ConstDecl {
                                         name: r"LENGTH",
                                         t: None,
-                                        initialiser: IntegerLiteral(
-                                            IntegerLiteral {
+                                        initialiser: Literal(
+                                            Integer {
                                                 repr: "300",
                                                 value: 300,
                                             },
@@ -283,8 +283,8 @@ Program(
                                                     ConstDecl {
                                                         name: r"LENGTH",
                                                         t: None,
-                                                        initialiser: IntegerLiteral(
-                                                            IntegerLiteral {
+                                                        initialiser: Literal(
+                                                            Integer {
                                                                 repr: "400",
                                                                 value: 400,
                                                             },
