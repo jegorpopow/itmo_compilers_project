@@ -1,5 +1,3 @@
-use std::rc::Rc;
-
 use derive_where::derive_where;
 
 use common::{Integer, LoopOrder, Position, RawIdentifier, Real};
@@ -29,40 +27,40 @@ pub enum Literal {
 pub enum LvalueExpression {
     Identifier(RawIdentifier),
     Member {
-        lhs: Rc<LvalueExpression>,
+        lhs: Box<LvalueExpression>,
         member_name: RawIdentifier,
     },
     Index {
-        lhs: Rc<LvalueExpression>,
-        index: Rc<Expression>,
+        lhs: Box<LvalueExpression>,
+        index: Box<Expression>,
     },
 }
 
 #[derive(Debug, Hash, PartialEq, Eq)]
 pub enum Expression {
-    LvalueToRvalue(Rc<LvalueExpression>),
+    LvalueToRvalue(LvalueExpression),
     Literal(Literal),
     Call {
         callee: RawIdentifier,
-        args: Vec<Rc<Expression>>,
+        args: Vec<Expression>,
     },
     BinOp {
         op: Operator,
-        lhs: Rc<Expression>,
-        rhs: Rc<Expression>,
+        lhs: Box<Expression>,
+        rhs: Box<Expression>,
     },
     UnOp {
         op: Operator,
-        operand: Rc<Expression>,
+        operand: Box<Expression>,
     },
     Cast {
-        operand: Rc<Expression>,
-        target: Type,
+        operand: Box<Expression>,
+        target: Box<Type>,
     },
     New {
-        t: Type,
-        fields: Option<Vec<(RawIdentifier, Rc<Expression>)>>,
-        array_length: Option<Rc<Expression>>,
+        t: Box<Type>,
+        fields: Option<Vec<(RawIdentifier, Expression)>>,
+        array_length: Option<Box<Expression>>,
     },
     Null,
 }
@@ -71,14 +69,14 @@ pub enum Expression {
 pub struct VarDecl {
     pub name: RawIdentifier,
     pub t: Option<Type>,
-    pub initialiser: Option<Rc<Expression>>,
+    pub initialiser: Option<Expression>,
 }
 
 #[derive(Debug, Hash)]
 pub struct ConstDecl {
     pub name: RawIdentifier,
     pub t: Option<Type>,
-    pub initialiser: Rc<Expression>,
+    pub initialiser: Expression,
 }
 
 #[derive(Debug, Hash)]
@@ -90,7 +88,7 @@ pub struct TypeDecl {
 #[derive(Debug)]
 pub enum RoutineBody {
     Block(Block),
-    Expression(Rc<Expression>),
+    Expression(Expression),
 }
 
 #[derive(Debug)]
@@ -115,38 +113,38 @@ pub struct Block(pub Vec<BlockElem>);
 #[derive(Debug)]
 pub enum Statement {
     Assignment {
-        lhs: Rc<LvalueExpression>,
-        rhs: Rc<Expression>,
+        lhs: LvalueExpression,
+        rhs: Expression,
     },
     While {
-        condition: Rc<Expression>,
+        condition: Expression,
         body: Block,
     },
-    Expr(Rc<Expression>),
+    Expr(Expression),
     If {
-        condition: Rc<Expression>,
+        condition: Expression,
         on_true: Block,
         on_false: Option<Block>,
     },
     For {
         counter: RawIdentifier,
-        from: Rc<Expression>,
-        to: Option<Rc<Expression>>,
+        from: Expression,
+        to: Option<Expression>,
         order: LoopOrder,
         body: Block,
     },
     Print {
-        value: Rc<Expression>,
+        value: Expression,
     },
     Return {
-        value: Rc<Expression>,
+        value: Expression,
     },
     Panic {
         pos: Position,
     },
     Assert {
         pos: Position,
-        value: Rc<Expression>,
+        value: Expression,
     },
 }
 

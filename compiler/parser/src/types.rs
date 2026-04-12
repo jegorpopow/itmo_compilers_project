@@ -1,5 +1,4 @@
 use std::fmt::Debug;
-use std::rc::Rc;
 
 use common::RawIdentifier;
 
@@ -19,7 +18,7 @@ pub struct RecordDescription {
 #[derive(Debug, Hash, PartialEq, Eq)]
 pub struct ArrayDescription {
     pub t: Box<Type>,
-    pub length: Option<Rc<Expression>>,
+    pub length: Option<Expression>,
 }
 
 #[derive(Debug, Hash, PartialEq, Eq)]

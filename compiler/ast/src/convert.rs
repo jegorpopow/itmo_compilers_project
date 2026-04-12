@@ -341,7 +341,7 @@ impl Converter {
     fn convert_call(
         &self,
         callee: &RawIdentifier,
-        args: &[Rc<parser::Expression>],
+        args: &[parser::Expression],
     ) -> AnalysisResult<Typed> {
         let RoutineSignature {
             args: formal_args,
@@ -381,7 +381,7 @@ impl Converter {
     fn convert_new(
         &self,
         t: &parser::Type,
-        fields: Option<&[(RawIdentifier, Rc<parser::Expression>)]>,
+        fields: Option<&[(RawIdentifier, parser::Expression)]>,
         array_length: Option<&parser::Expression>,
     ) -> AnalysisResult<Typed> {
         let ty = self.convert_type(t)?;
@@ -702,7 +702,7 @@ impl Converter {
                 to,
                 order,
                 body,
-            } => self.convert_for(counter, from, to.as_deref(), *order, body)?,
+            } => self.convert_for(counter, from, to.as_ref(), *order, body)?,
 
             parser::Statement::Print { value } => {
                 let Typed { value, ty: _ } = self.convert_expr(value)?;

@@ -1,5 +1,4 @@
 use core::{error, fmt, ops::ControlFlow};
-use std::rc::Rc;
 
 use culpa::throws;
 
@@ -231,33 +230,39 @@ impl<'src, I: Iterator<Item = Lexeme<'src>>> Parser<'src, I> {
     }
 
     #[throws]
-    fn parse_lvalue(&mut self, ident: RawIdentifier) -> Rc<LvalueExpression> {
-        let mut lhs = Rc::new(LvalueExpression::Identifier(ident));
+    fn parse_lvalue(&mut self, ident: RawIdentifier) -> LvalueExpression {
+        let mut current = LvalueExpression::Identifier(ident);
         loop {
             if self.try_eat(Token::Dot) {
                 let member_name = self.eat_identifier()?;
-                lhs = Rc::new(LvalueExpression::Member { lhs, member_name });
+                current = LvalueExpression::Member {
+                    lhs: current.into(),
+                    member_name,
+                };
             } else if self.try_eat(Token::LeftBracket) {
-                let index = self.parse_expr()?;
+                let index = Box::new(self.parse_expr()?);
                 self.eat(Token::RightBracket)?;
-                lhs = Rc::new(LvalueExpression::Index { lhs, index });
+                current = LvalueExpression::Index {
+                    lhs: current.into(),
+                    index,
+                };
             } else {
-                break lhs;
+                break current;
             }
         }
     }
 
     #[throws]
-    fn parse_new(&mut self) -> Rc<Expression> {
+    fn parse_new(&mut self) -> Expression {
         self.eat(Keyword::New)?;
         let array_length = if self.try_eat(Token::LeftBracket) {
             let len = self.parse_expr()?;
             self.eat(Token::RightBracket)?;
-            Some(len)
+            Some(Box::new(len))
         } else {
             None
         };
-        let t = self.parse_type()?;
+        let t = Box::new(self.parse_type()?);
         let fields = if self.try_eat(Keyword::Where) {
             let mut fields = vec![];
             while !self.try_eat(Keyword::End) {
@@ -271,11 +276,11 @@ impl<'src, I: Iterator<Item = Lexeme<'src>>> Parser<'src, I> {
         } else {
             None
         };
-        Rc::new(Expression::New {
+        Expression::New {
             t,
             fields,
             array_length,
-        })
+        }
     }
 
     #[throws]
@@ -283,7 +288,7 @@ impl<'src, I: Iterator<Item = Lexeme<'src>>> Parser<'src, I> {
         if self.try_eat(op) {
             Some(Expression::UnOp {
                 op,
-                operand: self.parse_atom()?,
+                operand: Box::new(self.parse_atom()?),
             })
         } else {
             None
@@ -291,45 +296,45 @@ impl<'src, I: Iterator<Item = Lexeme<'src>>> Parser<'src, I> {
     }
 
     #[throws]
-    fn parse_atom(&mut self) -> Rc<Expression> {
+    fn parse_atom(&mut self) -> Expression {
         let mut result = if self.try_eat(Token::LeftParenthesis) {
             let res = self.parse_expr()?;
             self.eat(Token::RightParenthesis)?;
             res
         } else if self.try_eat(Keyword::Null) {
-            Rc::new(Expression::Null)
+            Expression::Null
         } else if self.check(Keyword::New) {
             self.parse_new()?
         } else if self.check(TokenKind::Literal) {
-            Rc::new(Expression::Literal(self.eat_literal()?))
+            Expression::Literal(self.eat_literal()?)
         } else if let Some(unop) = self.try_parse_unop(Operator::Not)? {
-            Rc::new(unop)
+            unop
         } else if let Some(unop) = self.try_parse_unop(Operator::Minus)? {
-            Rc::new(unop)
+            unop
         } else {
             let ident = self.eat_identifier()?;
-            Rc::new(if self.check(Token::LeftParenthesis) {
+            if self.check(Token::LeftParenthesis) {
                 Expression::Call {
                     callee: ident,
                     args: self.parse_in_parens_comma_sep(Self::parse_expr)?,
                 }
             } else {
                 Expression::LvalueToRvalue(self.parse_lvalue(ident)?)
-            })
+            }
         };
 
         while self.try_eat(Token::Cast) {
             let ty = self.parse_type()?;
-            result = Rc::new(Expression::Cast {
-                operand: result,
-                target: ty,
-            })
+            result = Expression::Cast {
+                operand: Box::new(result),
+                target: Box::new(ty),
+            }
         }
         result
     }
 
     #[throws]
-    fn parse_binops(&mut self, operators: &[&[Operator]]) -> Rc<Expression> {
+    fn parse_binops(&mut self, operators: &[&[Operator]]) -> Expression {
         let Some((operators, rest)) = operators.split_first() else {
             return self.parse_atom()?;
         };
@@ -337,8 +342,12 @@ impl<'src, I: Iterator<Item = Lexeme<'src>>> Parser<'src, I> {
         'level: loop {
             for op in operators.iter().copied() {
                 if self.try_eat(op) {
-                    let rhs = self.parse_binops(rest)?;
-                    lhs = Rc::new(Expression::BinOp { op, lhs, rhs });
+                    let rhs = Box::new(self.parse_binops(rest)?);
+                    lhs = Expression::BinOp {
+                        op,
+                        lhs: Box::new(lhs),
+                        rhs,
+                    };
                     continue 'level;
                 }
             }
@@ -348,7 +357,7 @@ impl<'src, I: Iterator<Item = Lexeme<'src>>> Parser<'src, I> {
     }
 
     #[throws]
-    pub fn parse_expr(&mut self) -> Rc<Expression> {
+    pub fn parse_expr(&mut self) -> Expression {
         self.parse_binops(OPERATORS_PRECEDENCE_TABLE)?
     }
 
@@ -438,10 +447,10 @@ impl<'src, I: Iterator<Item = Lexeme<'src>>> Parser<'src, I> {
             let ident = self.eat_identifier()?;
             let stmt = if self.check(Token::LeftParenthesis) {
                 let args = self.parse_in_parens_comma_sep(Self::parse_expr)?;
-                Statement::Expr(Rc::new(Expression::Call {
+                Statement::Expr(Expression::Call {
                     callee: ident,
                     args,
-                }))
+                })
             } else {
                 let lhs = self.parse_lvalue(ident)?;
                 self.eat(Token::Assignment)?;
