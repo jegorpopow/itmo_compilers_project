@@ -13,6 +13,8 @@ use crate::{Fatal, FinalError, FinalResult, ParsingError, Recoverable};
 ///
 /// Idea stolen from rustc.
 pub enum TokenKind {
+    Identifier,
+    Literal,
     Var,
     Type,
     Routine,
@@ -36,8 +38,6 @@ pub enum TokenKind {
     Assert,
     Panic,
     Constant,
-    Identifier,
-    Literal,
     Integer,
     Real,
     Boolean,
@@ -45,41 +45,31 @@ pub enum TokenKind {
     RightBracket,
     LeftParenthesis,
     RightParenthesis,
-    /// `=>`
     RightArrow,
-    /// `::`
     Cast,
-    /// `:=`
     Assignment,
-    /// `..`
     RangeSymbol,
     Dot,
     Comma,
-    Semicolon,
     Colon,
-    Plus,  // Either binary or unary one
-    Minus, // Either binary or unary one
+    Plus,
+    Minus,
     Mul,
     Div,
     Mod,
-    /// `=`
     Eq,
-    /// `/=`
     Ne,
     Lt,
     Le,
     Gt,
     Ge,
-    /// `and`
     And,
-    /// `or`
     Or,
-    /// `xor`
     Xor,
-    /// `not`
     Not,
-    Unexpected,
+    Semicolon,
     EOF,
+    Unexpected,
 }
 
 // TODO: this can be turned into a bitset

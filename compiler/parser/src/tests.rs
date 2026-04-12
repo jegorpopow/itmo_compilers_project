@@ -11,7 +11,7 @@ fn no_eof() {
     let res = parser.parse_expr();
     let res = parser.finish(res);
     testing::expect![[r#"
-        Expected EOF, but found an identifier @ 1:8
+        Parsing error at 1:8: expected EOF, but found an identifier.
         However, managed to parse:
         BinOp {
             op: Plus,

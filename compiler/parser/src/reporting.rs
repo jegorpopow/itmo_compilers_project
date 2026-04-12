@@ -11,6 +11,8 @@ use crate::parser::{Expected, TokenKind};
 impl From<TokenKind> for &'static str {
     fn from(kind: TokenKind) -> Self {
         match kind {
+            TokenKind::Identifier => "an identifier",
+            TokenKind::Literal => "a literal",
             TokenKind::Var => "`var`",
             TokenKind::Type => "`type`",
             TokenKind::Routine => "`routine`",
@@ -34,8 +36,6 @@ impl From<TokenKind> for &'static str {
             TokenKind::Assert => "`assert`",
             TokenKind::Panic => "`panic`",
             TokenKind::Constant => "`constant`",
-            TokenKind::Identifier => "an identifier",
-            TokenKind::Literal => "a literal",
             TokenKind::Integer => "`integer`",
             TokenKind::Real => "`real`",
             TokenKind::Boolean => "`boolean`",
@@ -66,8 +66,8 @@ impl From<TokenKind> for &'static str {
             TokenKind::Xor => "`xor`",
             TokenKind::Not => "`not`",
             TokenKind::Semicolon => "`;`",
-            TokenKind::Unexpected => "an unexpected character",
             TokenKind::EOF => "EOF",
+            TokenKind::Unexpected => "an unexpected character",
         }
     }
 }
@@ -93,9 +93,9 @@ impl<K: fmt::Display> fmt::Display for ParsingError<K> {
             position,
             previous,
         } = self;
-        write!(f, "{kind} @ {position}")?;
+        write!(f, "at {position}: {kind}")?;
         if let Some(previous) = previous {
-            write!(f, "\t might be caused by: {previous}")?
+            write!(f, ";\nthis might be caused by an error {previous}")?
         }
         Ok(())
     }
@@ -127,10 +127,10 @@ impl fmt::Display for Recoverable {
                     &TokenKind::EOF,
                     "Complaining about finding EOF instead of EOF?"
                 );
-                write!(f, "Expected EOF, but found {found}")
+                write!(f, "expected EOF, but found {found}")
             }
-            Self::MalformedReal(error) => write!(f, "Malformed real literal: {error}"),
-            Self::MalformedInteger(error) => write!(f, "Malformed integer literal: {error}"),
+            Self::MalformedReal(error) => write!(f, "malformed real literal: {error}"),
+            Self::MalformedInteger(error) => write!(f, "malformed integer literal: {error}"),
         }
     }
 }
@@ -158,7 +158,7 @@ impl fmt::Display for Fatal {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
             Self::UnexpectedToken { found, expected } => {
-                write!(f, "Expected ")?;
+                write!(f, "expected ")?;
 
                 let or_after = expected.len().checked_sub(2);
                 for (i, &expected) in expected.iter().enumerate() {
@@ -188,9 +188,12 @@ pub enum FinalError<T> {
 impl<T: fmt::Debug> fmt::Display for FinalError<T> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
-            Self::Failed(fatal) => write!(f, "Failed to parse: {fatal}"),
+            Self::Failed(fatal) => write!(f, "Parsing error {fatal}."),
             Self::ParsedWithError { last, parsed } => {
-                write!(f, "{last}\nHowever, managed to parse:\n{parsed:#?}")
+                write!(
+                    f,
+                    "Parsing error {last}.\nHowever, managed to parse:\n{parsed:#?}"
+                )
             }
         }
     }
