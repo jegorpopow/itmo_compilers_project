@@ -4,7 +4,7 @@ use std::rc::Rc;
 use common::{Extent, LoopOrder, Position, RawIdentifier, Real};
 use lexer::{
     BuiltinTypename, Identifier as TokenIdentifier, InvalidToken, Keyword, Lexeme,
-    Literal as TokenLiteral, TokenKind,
+    Literal as TokenLiteral, Token,
 };
 
 mod tree;
@@ -121,14 +121,14 @@ impl Parser {
         while let Some(token) = i.current() {
             match token {
                 Lexeme {
-                    kind: TokenKind::Invalid(t @ InvalidToken::Unexpected(_)),
+                    token: Token::Invalid(t @ InvalidToken::Unexpected(_)),
                     extent: Extent { start, .. },
                     ..
                 } => {
                     self.report_recovered(t.to_string(), *start);
                 }
                 Lexeme {
-                    kind: TokenKind::Comment(_),
+                    token: Token::Comment(_),
                     ..
                 } => {}
                 _ => break,
@@ -297,7 +297,7 @@ impl Parser {
     ) -> ParsingResult<'a, 'b, RawIdentifier> {
         match i.current() {
             Some(&Lexeme {
-                kind: TokenKind::Identifier(TokenIdentifier { name }),
+                token: Token::Identifier(TokenIdentifier { name }),
                 ..
             }) => Ok((
                 RawIdentifier {
@@ -322,7 +322,7 @@ impl Parser {
     ) -> ParsingResult<'a, 'b, Literal> {
         match i.current() {
             Some(&Lexeme {
-                kind: TokenKind::Literal(TokenLiteral::Real(value)),
+                token: Token::Literal(TokenLiteral::Real(value)),
                 text,
                 ..
             }) => Ok((
@@ -334,7 +334,7 @@ impl Parser {
             )),
 
             Some(&Lexeme {
-                kind: TokenKind::Invalid(ref t @ InvalidToken::MalformedReal(_)),
+                token: Token::Invalid(ref t @ InvalidToken::MalformedReal(_)),
                 extent: Extent { start, .. },
                 text,
             }) => {
@@ -353,7 +353,7 @@ impl Parser {
             }
 
             Some(&Lexeme {
-                kind: TokenKind::Literal(TokenLiteral::Integer(value)),
+                token: Token::Literal(TokenLiteral::Integer(value)),
                 text,
                 ..
             }) => Ok((
@@ -365,7 +365,7 @@ impl Parser {
             )),
 
             Some(&Lexeme {
-                kind: TokenKind::Invalid(ref t @ InvalidToken::MalformedInteger(_)),
+                token: Token::Invalid(ref t @ InvalidToken::MalformedInteger(_)),
                 extent: Extent { start, .. },
                 text,
             }) => {
@@ -383,7 +383,7 @@ impl Parser {
             }
 
             Some(&Lexeme {
-                kind: TokenKind::Literal(TokenLiteral::Bool(value)),
+                token: Token::Literal(TokenLiteral::Bool(value)),
                 ..
             }) => Ok((Literal::Bool { value }, self.next(i))),
 
@@ -400,11 +400,11 @@ impl Parser {
 
     fn parse_known_kind<'a, 'b: 'a>(
         &mut self,
-        expected_kind: &TokenKind<'a>,
+        expected_kind: &Token<'a>,
         i: IndexedIterator<'a, 'b>,
     ) -> ParsingResult<'a, 'b, ()> {
         match i.current() {
-            Some(Lexeme { kind, .. }) if kind == expected_kind => Ok(((), self.next(i))),
+            Some(Lexeme { token: kind, .. }) if kind == expected_kind => Ok(((), self.next(i))),
             Some(token) => Err(ParsingError {
                 what: format!("Token of kind {expected_kind} expected, token {token} found"),
                 position: token.extent.start,
@@ -421,26 +421,26 @@ impl Parser {
         keyword: Keyword,
         i: IndexedIterator<'a, 'b>,
     ) -> ParsingResult<'a, 'b, ()> {
-        self.parse_known_kind(&TokenKind::Keyword(keyword), i)
+        self.parse_known_kind(&Token::Keyword(keyword), i)
     }
 
     fn parse_semicolon<'a, 'b: 'a>(
         &mut self,
         i: IndexedIterator<'a, 'b>,
     ) -> ParsingResult<'a, 'b, ()> {
-        self.parse_known_kind(&TokenKind::Semicolon, i)
+        self.parse_known_kind(&Token::Semicolon, i)
     }
 
     fn parse_assn<'a, 'b: 'a>(&mut self, i: IndexedIterator<'a, 'b>) -> ParsingResult<'a, 'b, ()> {
-        self.parse_known_kind(&TokenKind::Assignment, i)
+        self.parse_known_kind(&Token::Assignment, i)
     }
 
     fn parse_comma<'a, 'b: 'a>(&mut self, i: IndexedIterator<'a, 'b>) -> ParsingResult<'a, 'b, ()> {
-        self.parse_known_kind(&TokenKind::Comma, i)
+        self.parse_known_kind(&Token::Comma, i)
     }
 
     fn parse_colon<'a, 'b: 'a>(&mut self, i: IndexedIterator<'a, 'b>) -> ParsingResult<'a, 'b, ()> {
-        self.parse_known_kind(&TokenKind::Colon, i)
+        self.parse_known_kind(&Token::Colon, i)
     }
 
     fn parse_kw_end<'a, 'b: 'a>(
@@ -472,14 +472,14 @@ impl Parser {
         &mut self,
         i: IndexedIterator<'a, 'b>,
     ) -> ParsingResult<'a, 'b, ()> {
-        self.parse_known_kind(&TokenKind::LeftBracket, i)
+        self.parse_known_kind(&Token::LeftBracket, i)
     }
 
     fn parse_right_bracket<'a, 'b: 'a>(
         &mut self,
         i: IndexedIterator<'a, 'b>,
     ) -> ParsingResult<'a, 'b, ()> {
-        self.parse_known_kind(&TokenKind::RightBracket, i)
+        self.parse_known_kind(&Token::RightBracket, i)
     }
 
     fn parse_in_brackets<'a, 'b: 'a, T>(
@@ -499,14 +499,14 @@ impl Parser {
         &mut self,
         i: IndexedIterator<'a, 'b>,
     ) -> ParsingResult<'a, 'b, ()> {
-        self.parse_known_kind(&TokenKind::LeftParenthesis, i)
+        self.parse_known_kind(&Token::LeftParenthesis, i)
     }
 
     fn parse_right_parenthesis<'a, 'b: 'a>(
         &mut self,
         i: IndexedIterator<'a, 'b>,
     ) -> ParsingResult<'a, 'b, ()> {
-        self.parse_known_kind(&TokenKind::RightParenthesis, i)
+        self.parse_known_kind(&Token::RightParenthesis, i)
     }
 
     fn parse_in_parentheses<'a, 'b: 'a, T>(
@@ -573,15 +573,15 @@ impl Parser {
         self.parse_identifier(i)
             .map(|(ident, next)| (Type::Alias(ident), next))
             .or_else(|_| {
-                self.parse_known_kind(&TokenKind::BuiltinTypename(BuiltinTypename::Real), i)
+                self.parse_known_kind(&Token::BuiltinTypename(BuiltinTypename::Real), i)
                     .map(|((), next)| (Type::Real, next))
             })
             .or_else(|_| {
-                self.parse_known_kind(&TokenKind::BuiltinTypename(BuiltinTypename::Integer), i)
+                self.parse_known_kind(&Token::BuiltinTypename(BuiltinTypename::Integer), i)
                     .map(|((), next)| (Type::Int, next))
             })
             .or_else(|_| {
-                self.parse_known_kind(&TokenKind::BuiltinTypename(BuiltinTypename::Boolean), i)
+                self.parse_known_kind(&Token::BuiltinTypename(BuiltinTypename::Boolean), i)
                     .map(|((), next)| (Type::Bool, next))
             })
             .or_else(|_| {
@@ -608,7 +608,7 @@ impl Parser {
             Some(operators) => {
                 let (mut head, mut next) = self.parse_operators(ops.clone(), atom.clone(), i)?;
                 while let Some(Lexeme {
-                    kind: TokenKind::Operator(op),
+                    token: Token::Operator(op),
                     ..
                 }) = next.current()
                     && operators.contains(op)
@@ -641,8 +641,7 @@ impl Parser {
         loop {
             match next.current() {
                 Some(Lexeme {
-                    kind: TokenKind::Dot,
-                    ..
+                    token: Token::Dot, ..
                 }) => {
                     next = self.next(next);
                     let (field_name, rest) = self.parse_identifier(next)?;
@@ -653,7 +652,7 @@ impl Parser {
                     next = rest;
                 }
                 Some(Lexeme {
-                    kind: TokenKind::LeftBracket,
+                    token: Token::LeftBracket,
                     ..
                 }) => {
                     let (index, rest) = self.parse_in_brackets(Self::parse_expr, next)?;
@@ -673,7 +672,7 @@ impl Parser {
         i: IndexedIterator<'a, 'b>,
     ) -> ParsingResult<'a, 'b, Rc<Expression>> {
         self.parse_after(
-            |ctx, i| ctx.parse_known_kind(&TokenKind::Operator(op), i),
+            |ctx, i| ctx.parse_known_kind(&Token::Operator(op), i),
             Self::parse_atom,
             i,
         )
@@ -771,8 +770,7 @@ impl Parser {
             })?;
 
         while let Some(Lexeme {
-            kind: TokenKind::Cast,
-            ..
+            token: Token::Cast, ..
         }) = next.current()
         {
             next = self.next(next);
@@ -923,12 +921,12 @@ impl Parser {
     ) -> ParsingResult<'a, 'b, Statement> {
         match i.current() {
             Some(Lexeme {
-                kind: TokenKind::Keyword(Keyword::If),
+                token: Token::Keyword(Keyword::If),
                 ..
             }) => self.parse_if(i),
 
             Some(Lexeme {
-                kind: TokenKind::Keyword(Keyword::While),
+                token: Token::Keyword(Keyword::While),
                 ..
             }) => {
                 let next = self.next(i);
@@ -945,7 +943,7 @@ impl Parser {
             }
 
             Some(Lexeme {
-                kind: TokenKind::Keyword(Keyword::Print),
+                token: Token::Keyword(Keyword::Print),
                 ..
             }) => {
                 let next = self.next(i);
@@ -956,7 +954,7 @@ impl Parser {
             }
 
             Some(Lexeme {
-                kind: TokenKind::Keyword(Keyword::Return),
+                token: Token::Keyword(Keyword::Return),
                 ..
             }) => {
                 let next = self.next(i);
@@ -966,7 +964,7 @@ impl Parser {
                 Ok((Statement::Return { value: expr }, next))
             }
             Some(&Lexeme {
-                kind: TokenKind::Keyword(Keyword::Panic),
+                token: Token::Keyword(Keyword::Panic),
                 extent: Extent { start: pos, end: _ },
                 text: _,
             }) => {
@@ -976,7 +974,7 @@ impl Parser {
             }
 
             Some(&Lexeme {
-                kind: TokenKind::Keyword(Keyword::Assert),
+                token: Token::Keyword(Keyword::Assert),
                 extent: Extent { start: pos, end: _ },
                 text: _,
             }) => {
@@ -987,7 +985,7 @@ impl Parser {
             }
 
             Some(Lexeme {
-                kind: TokenKind::Keyword(Keyword::For),
+                token: Token::Keyword(Keyword::For),
                 ..
             }) => {
                 let next = self.next(i);
@@ -997,7 +995,7 @@ impl Parser {
 
                 let (from, next) = self.parse_expr(next)?;
 
-                let ((), next) = self.parse_known_kind(&TokenKind::RangeSymbol, next)?;
+                let ((), next) = self.parse_known_kind(&Token::RangeSymbol, next)?;
                 let (to, next) = self.try_parse(Self::parse_expr, next)?;
                 let (order, next) =
                     self.try_parse(|ctx, i| ctx.parse_keyword(Keyword::Reverse, i), next)?;
@@ -1024,7 +1022,7 @@ impl Parser {
             }
 
             Some(Lexeme {
-                kind: TokenKind::Identifier(_),
+                token: Token::Identifier(_),
                 ..
             }) => self.parse_one_of(
                 Self::parse_assignment,
@@ -1053,21 +1051,21 @@ impl Parser {
     ) -> ParsingResult<'a, 'b, BlockElem> {
         match i.current() {
             Some(Lexeme {
-                kind: TokenKind::Keyword(Keyword::Var),
+                token: Token::Keyword(Keyword::Var),
                 ..
             }) => self
                 .parse_var_decl(i)
                 .map(|(decl, next)| (BlockElem::VarDecl(decl), next)),
 
             Some(Lexeme {
-                kind: TokenKind::Keyword(Keyword::Constant),
+                token: Token::Keyword(Keyword::Constant),
                 ..
             }) => self
                 .parse_const_decl(i)
                 .map(|(decl, next)| (BlockElem::ConstDecl(decl), next)),
 
             Some(Lexeme {
-                kind: TokenKind::Keyword(Keyword::Type),
+                token: Token::Keyword(Keyword::Type),
                 ..
             }) => self
                 .parse_type_decl(i)
@@ -1124,7 +1122,7 @@ impl Parser {
 
         match next.current() {
             Some(Lexeme {
-                kind: TokenKind::RightArrow,
+                token: Token::RightArrow,
                 ..
             }) => {
                 let next = self.next(next);
@@ -1142,7 +1140,7 @@ impl Parser {
             }
 
             Some(Lexeme {
-                kind: TokenKind::Keyword(Keyword::Is),
+                token: Token::Keyword(Keyword::Is),
                 ..
             }) => {
                 let (body, next) = self.parse_between(
@@ -1164,7 +1162,7 @@ impl Parser {
             }
 
             Some(Lexeme {
-                kind: TokenKind::Semicolon,
+                token: Token::Semicolon,
                 ..
             }) => Ok((
                 RoutineDecl {
@@ -1192,28 +1190,28 @@ impl Parser {
     ) -> ParsingResult<'a, 'b, Declaration> {
         match i.current() {
             Some(Lexeme {
-                kind: TokenKind::Keyword(Keyword::Var),
+                token: Token::Keyword(Keyword::Var),
                 ..
             }) => self
                 .parse_var_decl(i)
                 .map(|(decl, next)| (Declaration::Var(decl), next)),
 
             Some(Lexeme {
-                kind: TokenKind::Keyword(Keyword::Constant),
+                token: Token::Keyword(Keyword::Constant),
                 ..
             }) => self
                 .parse_const_decl(i)
                 .map(|(decl, next)| (Declaration::Const(decl), next)),
 
             Some(Lexeme {
-                kind: TokenKind::Keyword(Keyword::Type),
+                token: Token::Keyword(Keyword::Type),
                 ..
             }) => self
                 .parse_type_decl(i)
                 .map(|(decl, next)| (Declaration::Type(decl), next)),
 
             Some(Lexeme {
-                kind: TokenKind::Keyword(Keyword::Routine),
+                token: Token::Keyword(Keyword::Routine),
                 ..
             }) => self
                 .parse_routine_decl(i)
