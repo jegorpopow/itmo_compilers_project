@@ -162,20 +162,16 @@ impl fmt::Display for TokenKind<'_> {
 
 // Token description
 #[derive(Debug, Clone, PartialEq)]
-pub struct Token<'a> {
+pub struct Lexeme<'a> {
     pub extent: Extent,
-    pub lexeme: &'a str,
+    pub text: &'a str,
     pub kind: TokenKind<'a>,
 }
 
-impl fmt::Display for Token<'_> {
+impl fmt::Display for Lexeme<'_> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        let Self {
-            extent,
-            lexeme,
-            kind,
-        } = self;
-        write!(f, "{lexeme:?} @ {extent} is {kind}")
+        let Self { extent, text, kind } = self;
+        write!(f, "{text:?} @ {extent} is {kind}")
     }
 }
 

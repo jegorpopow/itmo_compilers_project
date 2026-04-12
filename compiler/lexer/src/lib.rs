@@ -8,7 +8,7 @@ mod tokens;
 mod tests;
 
 pub use crate::tokens::{
-    BuiltinTypename, Comment, Identifier, InvalidToken, Keyword, Literal, Operator, Token,
+    BuiltinTypename, Comment, Identifier, InvalidToken, Keyword, Lexeme, Literal, Operator,
     TokenKind,
 };
 
@@ -335,7 +335,7 @@ impl Lexer<'_> {
 }
 
 impl<'src> Iterator for Lexer<'src> {
-    type Item = Token<'src>;
+    type Item = Lexeme<'src>;
 
     fn next(&mut self) -> Option<Self::Item> {
         let begin = self.pos.skip(char::is_whitespace);
@@ -349,9 +349,9 @@ impl<'src> Iterator for Lexer<'src> {
                 rest,
             ));
         self.update_allow_sign(&kind);
-        let token = Token {
+        let token = Lexeme {
             extent: iterators_to_extent(&begin, &end),
-            lexeme: ImmutableIterator::slice_to_str(&begin, &end),
+            text: ImmutableIterator::slice_to_str(&begin, &end),
             kind,
         };
         self.pos = end;

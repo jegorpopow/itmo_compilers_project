@@ -3,8 +3,8 @@ use std::rc::Rc;
 
 use common::{Extent, LoopOrder, Position, RawIdentifier, Real};
 use lexer::{
-    BuiltinTypename, Identifier as TokenIdentifier, InvalidToken, Keyword, Literal as TokenLiteral,
-    Token, TokenKind,
+    BuiltinTypename, Identifier as TokenIdentifier, InvalidToken, Keyword, Lexeme,
+    Literal as TokenLiteral, TokenKind,
 };
 
 mod tree;
@@ -22,7 +22,7 @@ pub use crate::{
 };
 
 pub trait TokenIterator<'a, 'b: 'a>: Clone + Copy {
-    fn current(&self) -> Option<&'a Token<'b>>;
+    fn current(&self) -> Option<&'a Lexeme<'b>>;
     fn position(&self) -> Position;
     #[must_use]
     fn next(&self) -> Self;
@@ -30,13 +30,13 @@ pub trait TokenIterator<'a, 'b: 'a>: Clone + Copy {
 
 #[derive(Clone, Copy, Debug)]
 pub struct IndexedIterator<'a, 'b: 'a> {
-    underlying: &'a [Token<'b>],
+    underlying: &'a [Lexeme<'b>],
     index: usize,
     pos: Position,
 }
 
-impl<'a, 'b> From<&'a [Token<'b>]> for IndexedIterator<'a, 'b> {
-    fn from(value: &'a [Token<'b>]) -> Self {
+impl<'a, 'b> From<&'a [Lexeme<'b>]> for IndexedIterator<'a, 'b> {
+    fn from(value: &'a [Lexeme<'b>]) -> Self {
         IndexedIterator {
             underlying: value,
             index: 0,
@@ -49,7 +49,7 @@ impl<'a, 'b> From<&'a [Token<'b>]> for IndexedIterator<'a, 'b> {
 }
 
 impl<'a, 'b> TokenIterator<'a, 'b> for IndexedIterator<'a, 'b> {
-    fn current(&self) -> Option<&'a Token<'b>> {
+    fn current(&self) -> Option<&'a Lexeme<'b>> {
         self.underlying.get(self.index)
     }
 
@@ -120,14 +120,14 @@ impl Parser {
     ) -> IndexedIterator<'a, 'b> {
         while let Some(token) = i.current() {
             match token {
-                Token {
+                Lexeme {
                     kind: TokenKind::Invalid(t @ InvalidToken::Unexpected(_)),
                     extent: Extent { start, .. },
                     ..
                 } => {
                     self.report_recovered(t.to_string(), *start);
                 }
-                Token {
+                Lexeme {
                     kind: TokenKind::Comment(_),
                     ..
                 } => {}
@@ -296,7 +296,7 @@ impl Parser {
         i: IndexedIterator<'a, 'b>,
     ) -> ParsingResult<'a, 'b, RawIdentifier> {
         match i.current() {
-            Some(&Token {
+            Some(&Lexeme {
                 kind: TokenKind::Identifier(TokenIdentifier { name }),
                 ..
             }) => Ok((
@@ -321,22 +321,22 @@ impl Parser {
         i: IndexedIterator<'a, 'b>,
     ) -> ParsingResult<'a, 'b, Literal> {
         match i.current() {
-            Some(&Token {
+            Some(&Lexeme {
                 kind: TokenKind::Literal(TokenLiteral::Real(value)),
-                lexeme,
+                text,
                 ..
             }) => Ok((
                 Literal::Real {
-                    repr: lexeme.to_owned(),
+                    repr: text.to_owned(),
                     value,
                 },
                 self.next(i),
             )),
 
-            Some(&Token {
+            Some(&Lexeme {
                 kind: TokenKind::Invalid(ref t @ InvalidToken::MalformedReal(_)),
                 extent: Extent { start, .. },
-                lexeme,
+                text,
             }) => {
                 self.recovered_errors.push(ParsingError {
                     position: start,
@@ -345,29 +345,29 @@ impl Parser {
 
                 Ok((
                     Literal::Real {
-                        repr: lexeme.to_owned(),
+                        repr: text.to_owned(),
                         value: Real::NAN,
                     },
                     self.next(i),
                 ))
             }
 
-            Some(&Token {
+            Some(&Lexeme {
                 kind: TokenKind::Literal(TokenLiteral::Integer(value)),
-                lexeme,
+                text,
                 ..
             }) => Ok((
                 Literal::Integer {
-                    repr: lexeme.to_owned(),
+                    repr: text.to_owned(),
                     value,
                 },
                 self.next(i),
             )),
 
-            Some(&Token {
+            Some(&Lexeme {
                 kind: TokenKind::Invalid(ref t @ InvalidToken::MalformedInteger(_)),
                 extent: Extent { start, .. },
-                lexeme,
+                text,
             }) => {
                 self.recovered_errors.push(ParsingError {
                     position: start,
@@ -375,14 +375,14 @@ impl Parser {
                 });
                 Ok((
                     Literal::Integer {
-                        repr: lexeme.to_owned(),
+                        repr: text.to_owned(),
                         value: 0,
                     },
                     self.next(i),
                 ))
             }
 
-            Some(&Token {
+            Some(&Lexeme {
                 kind: TokenKind::Literal(TokenLiteral::Bool(value)),
                 ..
             }) => Ok((Literal::Bool { value }, self.next(i))),
@@ -404,7 +404,7 @@ impl Parser {
         i: IndexedIterator<'a, 'b>,
     ) -> ParsingResult<'a, 'b, ()> {
         match i.current() {
-            Some(Token { kind, .. }) if kind == expected_kind => Ok(((), self.next(i))),
+            Some(Lexeme { kind, .. }) if kind == expected_kind => Ok(((), self.next(i))),
             Some(token) => Err(ParsingError {
                 what: format!("Token of kind {expected_kind} expected, token {token} found"),
                 position: token.extent.start,
@@ -607,7 +607,7 @@ impl Parser {
         match ops.next() {
             Some(operators) => {
                 let (mut head, mut next) = self.parse_operators(ops.clone(), atom.clone(), i)?;
-                while let Some(Token {
+                while let Some(Lexeme {
                     kind: TokenKind::Operator(op),
                     ..
                 }) = next.current()
@@ -640,7 +640,7 @@ impl Parser {
 
         loop {
             match next.current() {
-                Some(Token {
+                Some(Lexeme {
                     kind: TokenKind::Dot,
                     ..
                 }) => {
@@ -652,7 +652,7 @@ impl Parser {
                     });
                     next = rest;
                 }
-                Some(Token {
+                Some(Lexeme {
                     kind: TokenKind::LeftBracket,
                     ..
                 }) => {
@@ -770,7 +770,7 @@ impl Parser {
                     .map(|(lvalue, next)| (Rc::new(Expression::LvalueToRvalue(lvalue)), next))
             })?;
 
-        while let Some(Token {
+        while let Some(Lexeme {
             kind: TokenKind::Cast,
             ..
         }) = next.current()
@@ -922,12 +922,12 @@ impl Parser {
         i: IndexedIterator<'a, 'b>,
     ) -> ParsingResult<'a, 'b, Statement> {
         match i.current() {
-            Some(Token {
+            Some(Lexeme {
                 kind: TokenKind::Keyword(Keyword::If),
                 ..
             }) => self.parse_if(i),
 
-            Some(Token {
+            Some(Lexeme {
                 kind: TokenKind::Keyword(Keyword::While),
                 ..
             }) => {
@@ -944,7 +944,7 @@ impl Parser {
                 Ok((Statement::While { condition, body }, next))
             }
 
-            Some(Token {
+            Some(Lexeme {
                 kind: TokenKind::Keyword(Keyword::Print),
                 ..
             }) => {
@@ -955,7 +955,7 @@ impl Parser {
                 Ok((Statement::Print { value: expr }, next))
             }
 
-            Some(Token {
+            Some(Lexeme {
                 kind: TokenKind::Keyword(Keyword::Return),
                 ..
             }) => {
@@ -965,20 +965,20 @@ impl Parser {
 
                 Ok((Statement::Return { value: expr }, next))
             }
-            Some(&Token {
+            Some(&Lexeme {
                 kind: TokenKind::Keyword(Keyword::Panic),
                 extent: Extent { start: pos, end: _ },
-                lexeme: _,
+                text: _,
             }) => {
                 let next = self.next(i);
                 let ((), next) = self.parse_semicolon(next)?;
                 Ok((Statement::Panic { pos }, next))
             }
 
-            Some(&Token {
+            Some(&Lexeme {
                 kind: TokenKind::Keyword(Keyword::Assert),
                 extent: Extent { start: pos, end: _ },
-                lexeme: _,
+                text: _,
             }) => {
                 let next = self.next(i);
                 let (value, next) = self.parse_expr(next)?;
@@ -986,7 +986,7 @@ impl Parser {
                 Ok((Statement::Assert { value, pos }, next))
             }
 
-            Some(Token {
+            Some(Lexeme {
                 kind: TokenKind::Keyword(Keyword::For),
                 ..
             }) => {
@@ -1023,7 +1023,7 @@ impl Parser {
                 ))
             }
 
-            Some(Token {
+            Some(Lexeme {
                 kind: TokenKind::Identifier(_),
                 ..
             }) => self.parse_one_of(
@@ -1052,21 +1052,21 @@ impl Parser {
         i: IndexedIterator<'a, 'b>,
     ) -> ParsingResult<'a, 'b, BlockElem> {
         match i.current() {
-            Some(Token {
+            Some(Lexeme {
                 kind: TokenKind::Keyword(Keyword::Var),
                 ..
             }) => self
                 .parse_var_decl(i)
                 .map(|(decl, next)| (BlockElem::VarDecl(decl), next)),
 
-            Some(Token {
+            Some(Lexeme {
                 kind: TokenKind::Keyword(Keyword::Constant),
                 ..
             }) => self
                 .parse_const_decl(i)
                 .map(|(decl, next)| (BlockElem::ConstDecl(decl), next)),
 
-            Some(Token {
+            Some(Lexeme {
                 kind: TokenKind::Keyword(Keyword::Type),
                 ..
             }) => self
@@ -1123,7 +1123,7 @@ impl Parser {
         )?;
 
         match next.current() {
-            Some(Token {
+            Some(Lexeme {
                 kind: TokenKind::RightArrow,
                 ..
             }) => {
@@ -1141,7 +1141,7 @@ impl Parser {
                 ))
             }
 
-            Some(Token {
+            Some(Lexeme {
                 kind: TokenKind::Keyword(Keyword::Is),
                 ..
             }) => {
@@ -1163,7 +1163,7 @@ impl Parser {
                 ))
             }
 
-            Some(Token {
+            Some(Lexeme {
                 kind: TokenKind::Semicolon,
                 ..
             }) => Ok((
@@ -1191,28 +1191,28 @@ impl Parser {
         i: IndexedIterator<'a, 'b>,
     ) -> ParsingResult<'a, 'b, Declaration> {
         match i.current() {
-            Some(Token {
+            Some(Lexeme {
                 kind: TokenKind::Keyword(Keyword::Var),
                 ..
             }) => self
                 .parse_var_decl(i)
                 .map(|(decl, next)| (Declaration::Var(decl), next)),
 
-            Some(Token {
+            Some(Lexeme {
                 kind: TokenKind::Keyword(Keyword::Constant),
                 ..
             }) => self
                 .parse_const_decl(i)
                 .map(|(decl, next)| (Declaration::Const(decl), next)),
 
-            Some(Token {
+            Some(Lexeme {
                 kind: TokenKind::Keyword(Keyword::Type),
                 ..
             }) => self
                 .parse_type_decl(i)
                 .map(|(decl, next)| (Declaration::Type(decl), next)),
 
-            Some(Token {
+            Some(Lexeme {
                 kind: TokenKind::Keyword(Keyword::Routine),
                 ..
             }) => self
@@ -1279,7 +1279,7 @@ impl<T: fmt::Debug> fmt::Display for ParserError<T> {
 
 impl<T: fmt::Debug> core::error::Error for ParserError<T> {}
 
-pub fn parse_program(tokens: &[Token<'_>]) -> ParserResult<Program> {
+pub fn parse_program(tokens: &[Lexeme<'_>]) -> ParserResult<Program> {
     let mut parser = Parser::new();
     let start = parser.skip_unused(IndexedIterator::from(tokens));
     let (decls, tail) = parser.parse_all(Parser::parse_declaration, start)?;
