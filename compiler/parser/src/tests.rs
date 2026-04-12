@@ -3,8 +3,7 @@ use lexer::Lexer;
 use crate::{FinalError, Program, parse_program};
 
 fn parse(src: &str) -> Result<String, FinalError<Program>> {
-    let tokens: Vec<_> = Lexer::from(src).collect();
-    parse_program(tokens).map(|program| format!("{program:#?}\n"))
+    parse_program(Lexer::from(src)).map(|program| format!("{program:#?}\n"))
 }
 
 testing::tests! {

@@ -520,7 +520,8 @@ impl<'src, I: Iterator<Item = Lexeme<'src>>> Parser<'src, I> {
     }
 }
 
-pub fn parse_program(tokens: Vec<Lexeme<'_>>) -> FinalResult<Program> {
+#[expect(single_use_lifetimes, reason = "Cannot use `'_` in impl Trait")]
+pub fn parse_program<'src>(tokens: impl IntoIterator<Item = Lexeme<'src>>) -> FinalResult<Program> {
     let mut parser = Parser::new(tokens.into_iter());
     let program = parser.parse_program();
     parser.finish(program)

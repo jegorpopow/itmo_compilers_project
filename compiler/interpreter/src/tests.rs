@@ -1,8 +1,7 @@
 use core::fmt;
 
 fn interpret(src: &str) -> Result<String, String> {
-    let tokens: Vec<_> = lexer::Lexer::from(src).collect();
-    let program = parser::parse_program(tokens).expect("Failed to parse");
+    let program = parser::parse_program(lexer::Lexer::from(src)).expect("Failed to parse");
     let program = ast::convert(&program).expect("Failed to typecheck");
     let mut output: Vec<u8> = vec![];
     let result = crate::interpret(&mut output, &program);
