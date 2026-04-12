@@ -1,6 +1,35 @@
 use lexer::Lexer;
 
-use crate::{FinalError, Program, parse_program};
+use crate::{FinalError, Parser, Program, parse_program};
+
+/// Sadly, `parse_program` will never finish successfully without reaching EOF.
+/// But the public `parse_expr` will. So here's a test to check that behavior.
+#[test]
+fn no_eof() {
+    let src = "(1 + 2) a";
+    let mut parser = Parser::new(Lexer::from(src));
+    let res = parser.parse_expr();
+    let res = parser.finish(res);
+    testing::expect![[r#"
+        Expected EOF, but found an identifier @ 1:8
+        However, managed to parse:
+        BinOp {
+            op: Plus,
+            lhs: Literal(
+                Integer {
+                    repr: "1",
+                    value: 1,
+                },
+            ),
+            rhs: Literal(
+                Integer {
+                    repr: "2",
+                    value: 2,
+                },
+            ),
+        }"#]]
+    .assert_eq(&res.expect_err("This is not a valid expression").to_string())
+}
 
 fn parse(src: &str) -> Result<String, FinalError<Program>> {
     parse_program(Lexer::from(src)).map(|program| format!("{program:#?}\n"))

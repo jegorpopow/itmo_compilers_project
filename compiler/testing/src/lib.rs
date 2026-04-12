@@ -1,5 +1,7 @@
-#[cfg(feature = "testing")]
 use core::fmt;
+
+#[cfg(feature = "testing")]
+pub use expect_test::{expect, expect_file};
 
 pub mod paths;
 
@@ -40,8 +42,7 @@ pub fn run_test<E: fmt::Display>(
     let source = std::fs::read_to_string(&test_src)
         .with_context(|| format!("Error reading {}", test_src.display()))?;
     let result = run(&source);
-    let expected =
-        ::expect_test::expect_file![paths::output_for(folder, test, out_extension, mode)];
+    let expected = expect_file![paths::output_for(folder, test, out_extension, mode)];
     expected.assert_eq(&match mode {
         Mode::Pass => match result {
             Ok(actual) => actual,
