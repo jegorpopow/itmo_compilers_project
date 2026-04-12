@@ -1,3 +1,4 @@
+#[cfg(feature = "testing")]
 use core::fmt;
 
 pub mod paths;
@@ -27,7 +28,7 @@ pub type TestResult = anyhow::Result<()>;
 
 #[track_caller]
 #[cfg(feature = "testing")]
-pub fn run_test<E: fmt::Debug>(
+pub fn run_test<E: fmt::Display>(
     folder: &str,
     out_extension: &str,
     run: fn(&str) -> Result<String, E>,
@@ -41,15 +42,18 @@ pub fn run_test<E: fmt::Debug>(
     let result = run(&source);
     let expected =
         ::expect_test::expect_file![paths::output_for(folder, test, out_extension, mode)];
-    match mode {
-        Mode::Pass => expected.assert_eq(&result.expect("Test failed but expected to pass")),
+    expected.assert_eq(&match mode {
+        Mode::Pass => match result {
+            Ok(actual) => actual,
+            Err(e) => bail!("Test expected to pass, but failed with the following result:\n{e}"),
+        },
         Mode::Fail => match result {
             Ok(actual) => {
                 bail!("Test expected to fail, but passed with the following result:\n{actual}")
             }
-            Err(e) => expected.assert_debug_eq(&e),
+            Err(e) => format!("{e}\n"),
         },
-    }
+    });
     Ok(())
 }
 
