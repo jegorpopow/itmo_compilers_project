@@ -79,7 +79,7 @@ pub(crate) enum TokenKind {
     Xor,
     /// `not`
     Not,
-    Invalid,
+    Unexpected,
     EOF,
 }
 
@@ -141,7 +141,7 @@ impl From<TokenKind> for &'static str {
             TokenKind::Xor => "`xor`",
             TokenKind::Not => "`not`",
             TokenKind::Semicolon => "`;`",
-            TokenKind::Invalid => "an invalid token",
+            TokenKind::Unexpected => "an unexpected character",
             TokenKind::EOF => "EOF",
         }
     }
@@ -224,7 +224,7 @@ impl From<&Token<'_>> for TokenKind {
             &Token::BuiltinTypename(ty) => ty.into(),
             &Token::Operator(op) => op.into(),
             Token::Comment(_) => unreachable!("We skip comments"),
-            Token::Invalid(_) => Self::Invalid,
+            Token::Unexpected(_) => Self::Unexpected,
             Token::LeftBracket => Self::LeftBracket,
             Token::RightBracket => Self::RightBracket,
             Token::LeftParenthesis => Self::LeftParenthesis,
@@ -412,6 +412,10 @@ impl<'src, I: Iterator<Item = Lexeme<'src>>> Parser<'src, I> {
 
     pub(crate) fn eat(&mut self, kind: impl Into<TokenKind>) -> ParsingResult<()> {
         self.eat_lexeme(kind).map(drop::<Lexeme<'src>>)
+    }
+
+    pub(crate) fn push_error(&mut self, error: ParsingError) {
+        self.recovered.push(error)
     }
 
     pub fn finish<T>(mut self, parsed: T) -> crate::ParserResult<T> {

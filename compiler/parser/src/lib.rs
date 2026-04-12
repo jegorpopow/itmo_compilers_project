@@ -1,9 +1,9 @@
-use core::{fmt, ops::ControlFlow};
+use core::{error, fmt, ops::ControlFlow};
 use std::rc::Rc;
 
 use culpa::throws;
 
-use common::{LoopOrder, Position, RawIdentifier};
+use common::{Extent, LoopOrder, Position, RawIdentifier, Real};
 use lexer::{
     BuiltinTypename, Identifier as TokenIdentifier, Keyword, Lexeme, Literal as TokenLiteral, Token,
 };
@@ -39,7 +39,7 @@ impl fmt::Display for ParsingError {
     }
 }
 
-impl core::error::Error for ParsingError {}
+impl error::Error for ParsingError {}
 
 type ParsingResult<T> = Result<T, ParsingError>;
 
@@ -72,6 +72,27 @@ impl<'src, I: Iterator<Item = Lexeme<'src>>> Parser<'src, I> {
         }
     }
 
+    fn recover_invalid_literal<T, E>(
+        &mut self,
+        literal: Result<T, E>,
+        default: T,
+        extent: Extent,
+    ) -> T
+    where
+        E: error::Error,
+    {
+        match literal {
+            Ok(literal) => literal,
+            Err(error) => {
+                self.push_error(ParsingError {
+                    position: extent.start,
+                    what: format!("Malformed literal: {error}"),
+                });
+                default
+            }
+        }
+    }
+
     #[throws]
     fn eat_literal(&mut self) -> Literal {
         let lexeme = self.eat_lexeme(TokenKind::Literal)?;
@@ -80,11 +101,11 @@ impl<'src, I: Iterator<Item = Lexeme<'src>>> Parser<'src, I> {
         };
         match literal {
             TokenLiteral::Integer(value) => Literal::Integer {
-                value,
+                value: self.recover_invalid_literal(value, 0, lexeme.extent),
                 repr: lexeme.text.to_owned(),
             },
             TokenLiteral::Real(value) => Literal::Real {
-                value,
+                value: self.recover_invalid_literal(value, Real::NAN, lexeme.extent),
                 repr: lexeme.text.to_owned(),
             },
             TokenLiteral::Bool(value) => Literal::Bool { value },
@@ -558,7 +579,7 @@ impl<T: fmt::Debug> fmt::Display for ParserError<T> {
     }
 }
 
-impl<T: fmt::Debug> core::error::Error for ParserError<T> {}
+impl<T: fmt::Debug> error::Error for ParserError<T> {}
 
 pub fn parse_program(tokens: Vec<Lexeme<'_>>) -> ParserResult<Program> {
     let mut parser = Parser::new(tokens.into_iter());

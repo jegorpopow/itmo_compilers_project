@@ -1,5 +1,5 @@
+use core::fmt;
 use core::num::{ParseFloatError, ParseIntError};
-use core::{error, fmt};
 
 use common::{Extent, Integer, Real};
 
@@ -37,10 +37,10 @@ pub struct Identifier<'a> {
     pub name: &'a str,
 }
 
-#[derive(PartialEq, fmt::Debug, Clone, Copy)]
+#[derive(PartialEq, fmt::Debug, Clone)]
 pub enum Literal {
-    Real(Real),
-    Integer(Integer),
+    Real(Result<Real, ParseFloatError>),
+    Integer(Result<Integer, ParseIntError>),
     Bool(bool),
 }
 
@@ -54,33 +54,6 @@ pub enum BuiltinTypename {
 #[derive(PartialEq, Eq, Hash, fmt::Debug, Clone)]
 pub struct Comment<'a> {
     pub value: &'a str,
-}
-
-#[derive(PartialEq, Eq, fmt::Debug, Clone)]
-pub enum InvalidToken {
-    Unexpected(char),
-    MalformedInteger(ParseIntError),
-    MalformedReal(ParseFloatError),
-}
-
-impl error::Error for InvalidToken {
-    fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
-        match self {
-            Self::Unexpected(_) => None,
-            Self::MalformedInteger(e) => Some(e),
-            Self::MalformedReal(e) => Some(e),
-        }
-    }
-}
-
-impl fmt::Display for InvalidToken {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        match self {
-            Self::Unexpected(c) => write!(f, "Unexpected character: {c:?}"),
-            Self::MalformedInteger(e) => write!(f, "Malformed integer literal: {e}"),
-            Self::MalformedReal(e) => write!(f, "Malformed real literal: {e}"),
-        }
-    }
 }
 
 impl fmt::Display for Comment<'_> {
@@ -105,7 +78,7 @@ pub enum Token<'a> {
     BuiltinTypename(BuiltinTypename),
     Operator(Operator),
     Comment(Comment<'a>),
-    Invalid(InvalidToken),
+    Unexpected(char),
     LeftBracket,
     RightBracket,
     LeftParenthesis,
@@ -129,10 +102,10 @@ impl fmt::Display for Token<'_> {
         match self {
             Token::Identifier(Identifier { name }) => write!(f, "IDENTIFIER({name})"),
             Token::Keyword(keyword) => write!(f, "KEYWORD({keyword:?})"),
-            Token::Literal(Literal::Integer(value)) => {
+            Token::Literal(Literal::Integer(Ok(value))) => {
                 write!(f, "INTEGER LITERAL({value})")
             }
-            Token::Literal(Literal::Real(value)) => {
+            Token::Literal(Literal::Real(Ok(value))) => {
                 write!(f, "REAL LITERAL({value})")
             }
             Token::Literal(Literal::Bool(value)) => {
@@ -143,7 +116,13 @@ impl fmt::Display for Token<'_> {
             }
             Token::Operator(operator) => write!(f, "OPERATOR({operator:?})"),
             Token::Comment(comment) => write!(f, "COMMENT({comment})"),
-            Token::Invalid(problem) => write!(f, "INVALID({problem})"),
+            Token::Literal(Literal::Integer(Err(e))) => {
+                write!(f, "INVALID(Malformed integer literal: {e})")
+            }
+            Token::Literal(Literal::Real(Err(e))) => {
+                write!(f, "INVALID(Malformed real literal: {e})")
+            }
+            Token::Unexpected(c) => write!(f, "INVALID(Unexpected character: {c:?})"),
             Token::LeftBracket => write!(f, "LEFT BRACKET"),
             Token::RightBracket => write!(f, "RIGHT BRACKET"),
             Token::LeftParenthesis => write!(f, "LEFT PARENTHESIS"),

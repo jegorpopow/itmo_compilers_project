@@ -8,7 +8,7 @@ mod tokens;
 mod tests;
 
 pub use crate::tokens::{
-    BuiltinTypename, Comment, Identifier, InvalidToken, Keyword, Lexeme, Literal, Operator, Token,
+    BuiltinTypename, Comment, Identifier, Keyword, Lexeme, Literal, Operator, Token,
 };
 
 trait ImmutableIterator<'a>: Sized + Clone + From<&'a str> {
@@ -176,8 +176,8 @@ fn name_disambiguation(lexeme: &str) -> Token<'_> {
         "integer" => Token::BuiltinTypename(BuiltinTypename::Integer),
         "real" => Token::BuiltinTypename(BuiltinTypename::Real),
         "boolean" => Token::BuiltinTypename(BuiltinTypename::Boolean),
-        "NaN" => Token::Literal(Literal::Real(Real::NAN)),
-        "Inf" => Token::Literal(Literal::Real(Real::INFINITY)),
+        "NaN" => Token::Literal(Literal::Real(Ok(Real::NAN))),
+        "Inf" => Token::Literal(Literal::Real(Ok(Real::INFINITY))),
         "assert" => Token::Keyword(Keyword::Assert),
         "panic" => Token::Keyword(Keyword::Panic),
     };
@@ -237,17 +237,11 @@ fn symbolic_token<'a>(start: &IndexIterator<'a>) -> Option<(Token<'a>, IndexIter
 }
 
 fn real_literal_from_representation(s: &str) -> Token<'_> {
-    match s.parse() {
-        Ok(value) => Token::Literal(Literal::Real(value)),
-        Err(e) => Token::Invalid(InvalidToken::MalformedReal(e)),
-    }
+    Token::Literal(Literal::Real(s.parse()))
 }
 
 fn integer_literal_from_representation(s: &str) -> Token<'_> {
-    match s.parse() {
-        Ok(value) => Token::Literal(Literal::Integer(value)),
-        Err(e) => Token::Invalid(InvalidToken::MalformedInteger(e)),
-    }
+    Token::Literal(Literal::Integer(s.parse()))
 }
 
 fn numeric_token<'a>(
@@ -326,7 +320,7 @@ impl Lexer<'_> {
             | Token::LeftBracket
             | Token::RightParenthesis
             | Token::Dot
-            | Token::Invalid(_)
+            | Token::Unexpected(_)
             | Token::Cast
             | Token::Colon => false,
         }
@@ -343,7 +337,7 @@ impl<'src> Iterator for Lexer<'src> {
             .or_else(|| nominal_token(&begin))
             .or_else(|| numeric_token(self.allow_sign, &begin))
             .or_else(|| symbolic_token(&begin))
-            .unwrap_or((Token::Invalid(InvalidToken::Unexpected(first_char)), rest));
+            .unwrap_or((Token::Unexpected(first_char), rest));
         self.update_allow_sign(&kind);
         let token = Lexeme {
             extent: iterators_to_extent(&begin, &end),
