@@ -95,5 +95,6 @@ testing::tests! {
         binary_not => "binary_not"
         invalid => "invalid"
         lexer_invalid => "lexer_invalid"
+        malformed_integer => "malformed_integer"
     ]
 }
