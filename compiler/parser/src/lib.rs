@@ -62,14 +62,14 @@ impl<'src, I: Iterator<Item = Lexeme<'src>>> Parser<'src, I> {
         match literal {
             TokenLiteral::Integer(value) => Literal::Integer {
                 value: value.unwrap_or_else(|e| {
-                    self.recovered(Recoverable::MalformedInteger(e), pos);
+                    self.recover(Recoverable::MalformedInteger(e), pos);
                     0
                 }),
                 repr: lexeme.text.to_owned(),
             },
             TokenLiteral::Real(value) => Literal::Real {
                 value: value.unwrap_or_else(|e| {
-                    self.recovered(Recoverable::MalformedReal(e), pos);
+                    self.recover(Recoverable::MalformedReal(e), pos);
                     Real::NAN
                 }),
                 repr: lexeme.text.to_owned(),

@@ -69,7 +69,6 @@ pub enum TokenKind {
     Not,
     Semicolon,
     EOF,
-    Unexpected,
 }
 
 // TODO: this can be turned into a bitset
@@ -149,7 +148,7 @@ impl From<&Token<'_>> for TokenKind {
             &Token::BuiltinTypename(ty) => ty.into(),
             &Token::Operator(op) => op.into(),
             Token::Comment(_) => unreachable!("We skip comments"),
-            Token::Unexpected(_) => Self::Unexpected,
+            Token::Unexpected(_) => unreachable!("We convert unexpected characters into errors"),
             Token::LeftBracket => Self::LeftBracket,
             Token::RightBracket => Self::RightBracket,
             Token::LeftParenthesis => Self::LeftParenthesis,
@@ -172,17 +171,20 @@ impl From<Token<'_>> for TokenKind {
     }
 }
 
-// FIXME(GrigorenkoPV): recover on invalid tokens
 fn next_lexeme<'src>(
     lexer: &mut impl Iterator<Item = Lexeme<'src>>,
+    mut recover: impl FnMut(Recoverable, Position),
 ) -> Result<Lexeme<'src>, Position> {
     let mut eof_pos = Position::begin();
     for lexeme in lexer {
         eof_pos = lexeme.extent.end;
         if let Token::Comment(_) = lexeme.token {
-            continue;
+            // skip comments
+        } else if let Token::Unexpected(c) = lexeme.token {
+            recover(Recoverable::UnexpectedCharacter(c), lexeme.extent.start)
+        } else {
+            return Ok(lexeme);
         }
-        return Ok(lexeme);
     }
     Err(eof_pos)
 }
@@ -193,16 +195,18 @@ enum State<'src, Lexer> {
     EOF(Position),
 }
 
-impl<'src, I: Iterator<Item = Lexeme<'src>>> From<I> for State<'src, I> {
-    fn from(mut lexer: I) -> Self {
-        match next_lexeme(&mut lexer) {
+impl<'src, I> State<'src, I> {
+    #[must_use]
+    fn new(mut lexer: I, recovered: &mut Option<ParsingError<Recoverable>>) -> Self
+    where
+        I: Iterator<Item = Lexeme<'src>>,
+    {
+        match next_lexeme(&mut lexer, |err, pos| add_error(recovered, err, pos)) {
             Ok(current) => Self::InProgress { current, lexer },
             Err(pos) => Self::EOF(pos),
         }
     }
-}
 
-impl<'src, I> State<'src, I> {
     #[must_use]
     fn current(&self) -> Option<&Lexeme<'src>> {
         match self {
@@ -228,7 +232,7 @@ impl<'src, I> State<'src, I> {
     }
 
     #[must_use]
-    fn advance(&mut self) -> Option<Lexeme<'src>>
+    fn advance(&mut self, recovered: &mut Option<ParsingError<Recoverable>>) -> Option<Lexeme<'src>>
     where
         I: Iterator<Item = Lexeme<'src>>,
     {
@@ -236,7 +240,7 @@ impl<'src, I> State<'src, I> {
         match prev {
             Self::EOF(_) => None,
             Self::InProgress { current, lexer } => {
-                *self = lexer.into();
+                *self = Self::new(lexer, recovered);
                 Some(current)
             }
         }
@@ -252,12 +256,27 @@ pub struct Parser<'src, Lexer> {
 
 impl<'src, I: Iterator<Item = Lexeme<'src>>> From<I> for Parser<'src, I> {
     fn from(lexer: I) -> Self {
+        let mut recovered = None;
+        let state = State::new(lexer, &mut recovered);
         Self {
-            state: lexer.into(),
+            state,
             expected: Expected::new(),
-            recovered: None,
+            recovered,
         }
     }
+}
+
+fn add_error(
+    storage: &mut Option<ParsingError<Recoverable>>,
+    kind: Recoverable,
+    position: Position,
+) {
+    let previous = storage.take().map(Box::new);
+    *storage = Some(ParsingError {
+        position,
+        kind,
+        previous,
+    })
 }
 
 impl<'src, I: Iterator<Item = Lexeme<'src>>> Parser<'src, I> {
@@ -286,12 +305,16 @@ impl<'src, I: Iterator<Item = Lexeme<'src>>> Parser<'src, I> {
         self.check(TokenKind::EOF)
     }
 
+    fn advance(&mut self) -> Option<Lexeme<'src>> {
+        self.expected.clear();
+        self.state.advance(&mut self.recovered)
+    }
+
     pub(crate) fn try_eat_lexeme(&mut self, kind: impl Into<TokenKind>) -> Option<Lexeme<'src>> {
         let kind = kind.into();
         assert_ne!(kind, TokenKind::EOF, "Cannot eat EOF");
         if self.state.current_kind() == kind {
-            self.expected.clear();
-            self.state.advance()
+            self.advance()
         } else {
             let _: bool = self.expected.insert(kind);
             None
@@ -327,18 +350,13 @@ impl<'src, I: Iterator<Item = Lexeme<'src>>> Parser<'src, I> {
         let _: Lexeme<'src> = self.eat_lexeme(kind)?;
     }
 
-    pub(crate) fn recovered(&mut self, error: Recoverable, position: Position) {
-        let previous = self.recovered.take().map(Box::new);
-        self.recovered = Some(ParsingError {
-            position,
-            kind: error,
-            previous,
-        });
+    pub(crate) fn recover(&mut self, error: Recoverable, position: Position) {
+        add_error(&mut self.recovered, error, position)
     }
 
     pub fn finish<T>(mut self, parsed: Result<T, ParsingError<Fatal>>) -> FinalResult<T> {
-        if let Some(lexeme) = self.state.advance() {
-            self.recovered(
+        if let Some(lexeme) = self.advance() {
+            self.recover(
                 Recoverable::NotEOF(lexeme.token.into()),
                 lexeme.extent.start,
             )

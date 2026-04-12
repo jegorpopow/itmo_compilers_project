@@ -67,7 +67,6 @@ impl From<TokenKind> for &'static str {
             TokenKind::Not => "`not`",
             TokenKind::Semicolon => "`;`",
             TokenKind::EOF => "EOF",
-            TokenKind::Unexpected => "an unexpected character",
         }
     }
 }
@@ -116,6 +115,7 @@ pub enum Recoverable {
     NotEOF(TokenKind),
     MalformedReal(ParseFloatError),
     MalformedInteger(ParseIntError),
+    UnexpectedCharacter(char),
 }
 
 impl fmt::Display for Recoverable {
@@ -131,6 +131,7 @@ impl fmt::Display for Recoverable {
             }
             Self::MalformedReal(error) => write!(f, "malformed real literal: {error}"),
             Self::MalformedInteger(error) => write!(f, "malformed integer literal: {error}"),
+            Self::UnexpectedCharacter(c) => write!(f, "unexpected character: {c:?}"),
         }
     }
 }
@@ -138,7 +139,7 @@ impl fmt::Display for Recoverable {
 impl Error for Recoverable {
     fn source(&self) -> Option<&(dyn Error + 'static)> {
         match self {
-            Self::NotEOF(_) => None,
+            Self::NotEOF(_) | Self::UnexpectedCharacter(_) => None,
             Self::MalformedReal(e) => Some(e),
             Self::MalformedInteger(e) => Some(e),
         }
