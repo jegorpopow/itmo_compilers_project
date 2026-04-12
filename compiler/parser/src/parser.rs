@@ -1,19 +1,18 @@
 //! Design largely inspired by `rustc_parse`.
 
-use core::{fmt, mem};
-use std::collections::BTreeSet;
+use core::mem;
 
 use common::Position;
+use culpa::{throw, throws};
 use lexer::{BuiltinTypename, Keyword, Lexeme, Operator, Token};
 
-use crate::{ParserError, ParsingError, ParsingResult};
+use crate::{Fatal, FinalError, FinalResult, ParsingError, Recoverable};
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord)]
 /// Like [`lexer::Token`], but flat and without data.
-/// TODO: this can be turned into a bitflag
 ///
 /// Idea stolen from rustc.
-pub(crate) enum TokenKind {
+pub enum TokenKind {
     Var,
     Type,
     Routine,
@@ -83,75 +82,11 @@ pub(crate) enum TokenKind {
     EOF,
 }
 
-impl From<TokenKind> for &'static str {
-    fn from(kind: TokenKind) -> Self {
-        match kind {
-            TokenKind::Var => "`var`",
-            TokenKind::Type => "`type`",
-            TokenKind::Routine => "`routine`",
-            TokenKind::Array => "`array`",
-            TokenKind::Record => "`record`",
-            TokenKind::Is => "`is`",
-            TokenKind::End => "`end`",
-            TokenKind::If => "`if`",
-            TokenKind::Then => "`then`",
-            TokenKind::Else => "`else`",
-            TokenKind::Return => "`return`",
-            TokenKind::In => "`in`",
-            TokenKind::While => "`while`",
-            TokenKind::For => "`for`",
-            TokenKind::Loop => "`loop`",
-            TokenKind::Reverse => "`reverse`",
-            TokenKind::Print => "`print`",
-            TokenKind::New => "`new`",
-            TokenKind::Null => "`null`",
-            TokenKind::Where => "`where`",
-            TokenKind::Assert => "`assert`",
-            TokenKind::Panic => "`panic`",
-            TokenKind::Constant => "`constant`",
-            TokenKind::Identifier => "an identifier",
-            TokenKind::Literal => "a literal",
-            TokenKind::Integer => "`integer`",
-            TokenKind::Real => "`real`",
-            TokenKind::Boolean => "`boolean`",
-            TokenKind::LeftBracket => "`[`",
-            TokenKind::RightBracket => "`]`",
-            TokenKind::LeftParenthesis => "`(`",
-            TokenKind::RightParenthesis => "`)`",
-            TokenKind::RightArrow => "`=>`",
-            TokenKind::Cast => "`::`",
-            TokenKind::Assignment => "`:=`",
-            TokenKind::RangeSymbol => "`..`",
-            TokenKind::Dot => "`.`",
-            TokenKind::Comma => "`,`",
-            TokenKind::Colon => "`:`",
-            TokenKind::Plus => "`+`",
-            TokenKind::Minus => "`-`",
-            TokenKind::Mul => "`*`",
-            TokenKind::Div => "`/`",
-            TokenKind::Mod => "`%`",
-            TokenKind::Eq => "`=`",
-            TokenKind::Ne => "`/=`",
-            TokenKind::Lt => "`<`",
-            TokenKind::Le => "`<=`",
-            TokenKind::Gt => "`>`",
-            TokenKind::Ge => "`>=`",
-            TokenKind::And => "`and`",
-            TokenKind::Or => "`or`",
-            TokenKind::Xor => "`xor`",
-            TokenKind::Not => "`not`",
-            TokenKind::Semicolon => "`;`",
-            TokenKind::Unexpected => "an unexpected character",
-            TokenKind::EOF => "EOF",
-        }
-    }
-}
+// TODO: this can be turned into a bitset
+pub type Expected = std::collections::BTreeSet<TokenKind>;
 
-impl fmt::Display for TokenKind {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        f.write_str((*self).into())
-    }
-}
+#[expect(clippy::error_impl_error, reason = "for #[throws]")]
+pub(crate) type Error = ParsingError<Fatal>;
 
 impl From<Operator> for TokenKind {
     fn from(op: Operator) -> Self {
@@ -321,25 +256,17 @@ impl<'src, I> State<'src, I> {
 #[derive(Debug)]
 pub struct Parser<'src, Lexer> {
     state: State<'src, Lexer>,
-    expected: BTreeSet<TokenKind>,
-    recovered: Vec<ParsingError>,
+    expected: Expected,
+    recovered: Option<ParsingError<Recoverable>>,
 }
 
 impl<'src, I: Iterator<Item = Lexeme<'src>>> From<I> for Parser<'src, I> {
     fn from(lexer: I) -> Self {
         Self {
             state: lexer.into(),
-            expected: BTreeSet::new(),
-            recovered: vec![],
+            expected: Expected::new(),
+            recovered: None,
         }
-    }
-}
-
-fn format_expected(out: &mut String, expected: &BTreeSet<TokenKind>) {
-    let or_after = expected.len().checked_sub(2);
-    for (i, &expected) in expected.iter().enumerate() {
-        out.push_str(expected.into());
-        out.push_str(if or_after == Some(i) { " or " } else { ", " });
     }
 }
 
@@ -356,7 +283,7 @@ impl<'src, I: Iterator<Item = Lexeme<'src>>> Parser<'src, I> {
         let first_check: bool = self.expected.insert(kind);
         let is_present = self.state.current_kind() == kind;
         debug_assert!(
-            !is_present || first_check || kind == TokenKind::EOF,
+            !is_present || first_check,
             "Duplicate `check()` call for {kind:?} @ {}\n{:?}",
             self.state.pos(),
             self.expected
@@ -367,27 +294,6 @@ impl<'src, I: Iterator<Item = Lexeme<'src>>> Parser<'src, I> {
     #[must_use]
     pub(crate) fn eof(&mut self) -> bool {
         self.check(TokenKind::EOF)
-    }
-
-    fn error(&self) -> ParsingError {
-        debug_assert!(
-            !self.expected.contains(&self.state.current_kind()),
-            "Error message requested, but the next token is expected"
-        );
-
-        let mut what = "Expected ".to_string();
-        format_expected(&mut what, &self.expected);
-        what.push_str("but found ");
-
-        let position = self.state.pos();
-        let found = self.state.current();
-
-        what.push_str(match found {
-            Some(lexeme) => TokenKind::from(&lexeme.token).into(),
-            None => "EOF",
-        });
-
-        ParsingError { what, position }
     }
 
     pub(crate) fn try_eat_lexeme(&mut self, kind: impl Into<TokenKind>) -> Option<Lexeme<'src>> {
@@ -406,30 +312,54 @@ impl<'src, I: Iterator<Item = Lexeme<'src>>> Parser<'src, I> {
         self.try_eat_lexeme(kind.into()).is_some()
     }
 
-    pub(crate) fn eat_lexeme(&mut self, kind: impl Into<TokenKind>) -> ParsingResult<Lexeme<'src>> {
-        self.try_eat_lexeme(kind.into()).ok_or_else(|| self.error())
-    }
-
-    pub(crate) fn eat(&mut self, kind: impl Into<TokenKind>) -> ParsingResult<()> {
-        self.eat_lexeme(kind).map(drop::<Lexeme<'src>>)
-    }
-
-    pub(crate) fn push_error(&mut self, error: ParsingError) {
-        self.recovered.push(error)
-    }
-
-    pub fn finish<T>(mut self, parsed: T) -> crate::ParserResult<T> {
-        if !self.eof() {
-            Err(self.error())?
+    #[throws]
+    pub(crate) fn eat_lexeme(&mut self, kind: impl Into<TokenKind>) -> Lexeme<'src> {
+        match self.try_eat_lexeme(kind.into()) {
+            Some(l) => l,
+            None => {
+                let found = self.state.current_kind();
+                let expected = self.expected.clone();
+                debug_assert!(
+                    !expected.contains(&found),
+                    "Error message requested, but the next token is expected"
+                );
+                throw!(ParsingError {
+                    position: self.state.pos(),
+                    kind: Fatal::UnexpectedToken { found, expected },
+                    previous: self.recovered.take().map(Box::new),
+                })
+            }
         }
-        let Self { recovered, .. } = self;
-        if recovered.is_empty() {
-            Ok(parsed)
-        } else {
-            Err(ParserError::Recoverable {
-                errors: recovered,
-                parsed,
-            })
+    }
+
+    #[throws]
+    pub(crate) fn eat(&mut self, kind: impl Into<TokenKind>) {
+        let _: Lexeme<'src> = self.eat_lexeme(kind)?;
+    }
+
+    pub(crate) fn recovered(&mut self, error: Recoverable, position: Position) {
+        let previous = self.recovered.take().map(Box::new);
+        self.recovered = Some(ParsingError {
+            position,
+            kind: error,
+            previous,
+        });
+    }
+
+    pub fn finish<T>(mut self, parsed: Result<T, ParsingError<Fatal>>) -> FinalResult<T> {
+        if let Some(lexeme) = self.state.advance() {
+            self.recovered(
+                Recoverable::NotEOF(lexeme.token.into()),
+                lexeme.extent.start,
+            )
+        }
+
+        match parsed {
+            Err(fatal) => Err(FinalError::Failed(fatal)),
+            Ok(parsed) => match self.recovered {
+                None => Ok(parsed),
+                Some(last) => Err(FinalError::ParsedWithError { last, parsed }),
+            },
         }
     }
 }

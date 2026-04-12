@@ -1,11 +1,11 @@
 use std::io::{self, Write};
 
 use lexer::Lexer;
-use parser::{Expression, Parser, ParserResult};
+use parser::{Expression, Parser};
 
-fn parse_expr_from_line(str: &str) -> ParserResult<Expression> {
+fn parse_expr_from_line(str: &str) -> parser::FinalResult<Expression> {
     let mut parser = Parser::new(Lexer::from(str));
-    let expr = parser.parse_expr()?;
+    let expr = parser.parse_expr();
     parser.finish(expr)
 }
 

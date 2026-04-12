@@ -1,46 +1,30 @@
-use core::{error, fmt, ops::ControlFlow};
+use core::ops::ControlFlow;
 
 use culpa::throws;
 
-use common::{Extent, LoopOrder, Position, RawIdentifier, Real};
+use common::{LoopOrder, RawIdentifier, Real};
 use lexer::{
     BuiltinTypename, Identifier as TokenIdentifier, Keyword, Lexeme, Literal as TokenLiteral, Token,
 };
 
 mod parser;
+mod reporting;
 mod tree;
 mod types;
 
 #[cfg(test)]
 mod tests;
 
-use crate::parser::TokenKind;
+use crate::parser::Error;
 pub use crate::{
-    parser::Parser,
+    parser::{Expected, Parser, TokenKind},
+    reporting::{Fatal, FinalError, FinalResult, ParsingError, Recoverable},
     tree::{
         Block, BlockElem, ConstDecl, Declaration, Expression, Literal, LvalueExpression, Operator,
         Program, RoutineBody, RoutineDecl, Statement, TypeDecl, VarDecl,
     },
     types::{ArrayDescription, FieldDescription, RecordDescription, Type},
 };
-
-#[derive(Debug, Clone)]
-#[must_use]
-pub struct ParsingError {
-    pub what: String,
-    pub position: Position,
-}
-
-impl fmt::Display for ParsingError {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        let Self { what, position } = self;
-        write!(f, "{what} @ {position}")
-    }
-}
-
-impl error::Error for ParsingError {}
-
-type ParsingResult<T> = Result<T, ParsingError>;
 
 const OPERATORS_PRECEDENCE_TABLE: &[&[Operator]] = &[
     &[Operator::And, Operator::Or, Operator::Xor],
@@ -56,9 +40,6 @@ const OPERATORS_PRECEDENCE_TABLE: &[&[Operator]] = &[
     &[Operator::Mul, Operator::Div, Operator::Mod],
 ];
 
-// For `#[throws]`
-use ParsingError as Error;
-
 impl<'src, I: Iterator<Item = Lexeme<'src>>> Parser<'src, I> {
     #[throws]
     fn eat_identifier(&mut self) -> RawIdentifier {
@@ -71,40 +52,26 @@ impl<'src, I: Iterator<Item = Lexeme<'src>>> Parser<'src, I> {
         }
     }
 
-    fn recover_invalid_literal<T, E>(
-        &mut self,
-        literal: Result<T, E>,
-        default: T,
-        extent: Extent,
-    ) -> T
-    where
-        E: error::Error,
-    {
-        match literal {
-            Ok(literal) => literal,
-            Err(error) => {
-                self.push_error(ParsingError {
-                    position: extent.start,
-                    what: format!("Malformed literal: {error}"),
-                });
-                default
-            }
-        }
-    }
-
     #[throws]
     fn eat_literal(&mut self) -> Literal {
         let lexeme = self.eat_lexeme(TokenKind::Literal)?;
         let Token::Literal(literal) = lexeme.token else {
             unreachable!("We ate `TokenKind::Literal` but got {lexeme:?}")
         };
+        let pos = lexeme.extent.start;
         match literal {
             TokenLiteral::Integer(value) => Literal::Integer {
-                value: self.recover_invalid_literal(value, 0, lexeme.extent),
+                value: value.unwrap_or_else(|e| {
+                    self.recovered(Recoverable::MalformedInteger(e), pos);
+                    0
+                }),
                 repr: lexeme.text.to_owned(),
             },
             TokenLiteral::Real(value) => Literal::Real {
-                value: self.recover_invalid_literal(value, Real::NAN, lexeme.extent),
+                value: value.unwrap_or_else(|e| {
+                    self.recovered(Recoverable::MalformedReal(e), pos);
+                    Real::NAN
+                }),
                 repr: lexeme.text.to_owned(),
             },
             TokenLiteral::Bool(value) => Literal::Bool { value },
@@ -146,7 +113,7 @@ impl<'src, I: Iterator<Item = Lexeme<'src>>> Parser<'src, I> {
     #[throws]
     fn parse_in_parens_comma_sep<T>(
         &mut self,
-        parser: fn(&mut Self) -> ParsingResult<T>,
+        parser: fn(&mut Self) -> Result<T, Error>,
     ) -> Vec<T> {
         self.eat(Token::LeftParenthesis)?;
         let mut result = vec![];
@@ -553,45 +520,8 @@ impl<'src, I: Iterator<Item = Lexeme<'src>>> Parser<'src, I> {
     }
 }
 
-#[derive(Debug)]
-#[must_use]
-pub enum ParserError<T> {
-    Unrecoverable {
-        error: ParsingError,
-    },
-    Recoverable {
-        errors: Vec<ParsingError>,
-        parsed: T,
-    },
-}
-
-pub type ParserResult<T> = Result<T, ParserError<T>>;
-
-impl<T> From<ParsingError> for ParserError<T> {
-    fn from(error: ParsingError) -> Self {
-        Self::Unrecoverable { error }
-    }
-}
-
-impl<T: fmt::Debug> fmt::Display for ParserError<T> {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        match self {
-            Self::Unrecoverable { error } => write!(f, "unrecoverable error: {error}"),
-            Self::Recoverable { errors, parsed } => {
-                writeln!(f, "Some recoverable errors occurred during parsing:")?;
-                for err in errors {
-                    writeln!(f, "- {err}")?
-                }
-                writeln!(f, "But managed to parse: {parsed:#?}")
-            }
-        }
-    }
-}
-
-impl<T: fmt::Debug> error::Error for ParserError<T> {}
-
-pub fn parse_program(tokens: Vec<Lexeme<'_>>) -> ParserResult<Program> {
+pub fn parse_program(tokens: Vec<Lexeme<'_>>) -> FinalResult<Program> {
     let mut parser = Parser::new(tokens.into_iter());
-    let program = parser.parse_program()?;
+    let program = parser.parse_program();
     parser.finish(program)
 }
