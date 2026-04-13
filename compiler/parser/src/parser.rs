@@ -347,7 +347,7 @@ impl<'src, I: Iterator<Item = Lexeme<'src>>> Parser<'src, I> {
 
     #[throws]
     pub(crate) fn eat(&mut self, kind: impl Into<TokenKind>) {
-        let _: Lexeme<'src> = self.eat_lexeme(kind)?;
+        drop::<Lexeme<'src>>(self.eat_lexeme(kind)?)
     }
 
     pub(crate) fn recover(&mut self, error: Recoverable, position: Position) {

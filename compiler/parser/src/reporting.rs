@@ -1,10 +1,7 @@
-use core::{
-    error::Error,
-    fmt,
-    num::{ParseFloatError, ParseIntError},
-};
+use core::{error::Error, fmt};
 
 use common::Position;
+use lexer::{ParseFloatError, ParseIntError};
 
 use crate::parser::{Expected, TokenKind};
 
@@ -113,7 +110,7 @@ impl<K: Error> Error for ParsingError<K> {
 #[must_use]
 pub enum Recoverable {
     NotEOF(TokenKind),
-    MalformedReal(ParseFloatError),
+    MalformedReal(ParseFloatError<'static>),
     MalformedInteger(ParseIntError),
     UnexpectedCharacter(char),
 }

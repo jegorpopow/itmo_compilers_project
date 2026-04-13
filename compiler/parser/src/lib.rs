@@ -69,7 +69,8 @@ impl<'src, I: Iterator<Item = Lexeme<'src>>> Parser<'src, I> {
             },
             TokenLiteral::Real(value) => Literal::Real {
                 value: value.unwrap_or_else(|e| {
-                    self.recover(Recoverable::MalformedReal(e), pos);
+                    self.recover(Recoverable::MalformedReal(e.to_static()), pos);
+                    // FIXME: do not recover to NaN
                     Real::NAN
                 }),
                 repr: lexeme.text.to_owned(),

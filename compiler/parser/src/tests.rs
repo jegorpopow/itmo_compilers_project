@@ -98,5 +98,6 @@ testing::tests! {
         invalid => "invalid"
         lexer_invalid => "lexer_invalid"
         malformed_integer => "malformed_integer"
+        malformed_real => "malformed_real"
     ]
 }

@@ -1,3 +1,5 @@
+use std::borrow::Cow;
+
 use phf::phf_map;
 
 use common::{Extent, Position, Real};
@@ -8,8 +10,10 @@ mod tokens;
 mod tests;
 
 pub use crate::tokens::{
-    BuiltinTypename, Comment, Identifier, Keyword, Lexeme, Literal, Operator, Token,
+    BuiltinTypename, Comment, Identifier, Keyword, Lexeme, Literal, Operator, ParseFloatError,
+    Token,
 };
+pub use core::num::ParseIntError;
 
 trait ImmutableIterator<'a>: Sized + Clone + From<&'a str> {
     fn slice_to_str(start: &Self, end: &Self) -> &'a str;
@@ -236,8 +240,36 @@ fn symbolic_token<'a>(start: &IndexIterator<'a>) -> Option<(Token<'a>, IndexIter
         .find_map(|(pattern, token)| start.stars_with(pattern).map(|end| (token.to_owned(), end)))
 }
 
+// FIXME: this only checks for the fractional part truncation
 fn real_literal_from_representation(s: &str) -> Token<'_> {
-    Token::Literal(Literal::Real(s.parse()))
+    let f: Real = s.parse().expect("We only feed syntactically valid floats");
+    Token::Literal(Literal::Real(
+        if let Some((_, expected)) = s.trim_end_matches('0').split_once('.') {
+            let expected = if expected.is_empty() { "0" } else { expected };
+            let actual = f.abs().fract();
+            let actual = if actual == 0.0 {
+                Cow::Borrowed("0")
+            } else {
+                let mut actual = actual.to_string();
+                assert_eq!(
+                    [actual.remove(0), actual.remove(0)],
+                    ['0', '.'],
+                    "This is a fractional part of a positive value"
+                );
+                Cow::Owned(actual)
+            };
+            if actual.len() > expected.len() || actual == expected {
+                Ok(f)
+            } else {
+                Err(ParseFloatError::PrecisionLoss {
+                    expected_fractional_part: Cow::Borrowed(expected),
+                    actual_fractional_part: actual,
+                })
+            }
+        } else {
+            Ok(f)
+        },
+    ))
 }
 
 fn integer_literal_from_representation(s: &str) -> Token<'_> {
