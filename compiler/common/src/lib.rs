@@ -23,34 +23,6 @@ impl Display for RawIdentifier {
     }
 }
 
-#[derive(Debug, Hash, PartialEq, Eq, Clone, Copy)]
-pub struct BindingId(pub usize);
-
-impl Display for BindingId {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        let Self(id) = self;
-        Display::fmt(id, f)
-    }
-}
-
-#[derive(Hash, PartialEq, Eq, Clone)]
-pub struct Identifier {
-    pub raw: RawIdentifier,
-    pub id: BindingId,
-}
-
-impl Debug for Identifier {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{}({})", self.raw.name, self.id)
-    }
-}
-
-impl Display for Identifier {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{}", self.raw.name)
-    }
-}
-
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct Position {
     pub line: usize,

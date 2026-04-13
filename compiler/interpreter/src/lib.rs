@@ -2,14 +2,11 @@ use core::{fmt, iter};
 use std::{collections::HashMap, fmt::Debug, io::Write, rc::Rc};
 
 use ast::{
-    ArrayDescription, BinaryOperator, Binding, Block, BoolBinOp, Decl, EqBinOp, Expression,
-    FieldDescription, IntBinOp, Literal, LocalBinding, LocalDecl, LvalueExpression, Program,
-    RealBinOp, RecordDescription, Routine, RoutineBody, RoutineDecl, Type, TypeDecl, UnaryOperator,
-    VarDecl,
+    ArrayDescription, BinaryOperator, BindingId, Block, BoolBinOp, Decl, EqBinOp, Expression,
+    FieldDescription, IntBinOp, Literal, LvalueExpression, Program, RealBinOp, RecordDescription,
+    Routine, RoutineBody, RoutineDecl, Type, UnaryOperator, VarDecl,
 };
-use common::{
-    Identifier, Integer, LoopOrder, Position, RawIdentifier, Real, integer_to_real, real_to_integer,
-};
+use common::{Integer, LoopOrder, Position, RawIdentifier, Real, integer_to_real, real_to_integer};
 use culpa::{throw, throws};
 use indexed_arena::{Arena, Idx};
 
@@ -71,7 +68,7 @@ type PlaceIndex = usize;
 type Place<'a> = Idx<Value<'a>, PlaceIndex>;
 type Places<'a> = Arena<Value<'a>, PlaceIndex>;
 
-type Bindings<'a> = HashMap<&'a Identifier, Place<'a>>;
+type Bindings<'a> = HashMap<BindingId, Place<'a>>;
 
 #[derive(Debug)]
 struct Interpreter<'a, W: Write> {
@@ -173,35 +170,20 @@ impl<'a, W: Write> Interpreter<'a, W> {
 }
 
 impl<'a, W: Write> Interpreter<'a, W> {
-    fn default_value_for_type(&self, ty: &Type) -> Primitive {
+    fn default_value_for_type(ty: &Type) -> Primitive {
         match ty {
             Type::Int => Primitive::Integer(0),
             Type::Real => Primitive::Real(0.0),
             Type::Bool => Primitive::Bool(false),
-            Type::Alias(ty) => self.default_value_for_type(self.get_effective_type(ty)),
+            Type::Alias(ty) => Self::default_value_for_type(ty),
             Type::Record(_) | Type::Array(_) | Type::Null => Primitive::Null,
         }
-    }
-
-    fn get_effective_type(&self, ty: &Identifier) -> &'a Type {
-        let decl = &self.program.bindings[ty.id].decl;
-        let Decl::Type(TypeDecl::Full {
-            prescribed: _,
-            effective,
-        }) = decl
-        else {
-            unreachable!("Expected a type for {ty:?} but found {decl:?}")
-        };
-        if let Type::Alias(to) = effective.as_ref() {
-            unreachable!("Effective type for {ty:?} is an alias to {to:?}")
-        }
-        effective
     }
 
     #[throws(RuntimeError)]
     fn lvalue(&mut self, bindings: &mut Bindings<'a>, lvalue: &'a LvalueExpression) -> Place<'a> {
         match lvalue {
-            LvalueExpression::Identifier(ident) => {
+            LvalueExpression::Binding(ident) => {
                 let Some(&var) = bindings.get(ident) else {
                     unreachable!("Could not find variable {ident:?}")
                 };
@@ -318,7 +300,7 @@ impl<'a, W: Write> Interpreter<'a, W> {
             Type::Array(ArrayDescription { t, length }) => Object::Array {
                 elements: match (*length, field_values) {
                     (Some(n), None) => {
-                        let value = self.default_value_for_type(t);
+                        let value = Self::default_value_for_type(t);
                         iter::repeat_n(value, n)
                             .map(|v| self.places.alloc(Value::Primitive(v)))
                             .collect()
@@ -333,7 +315,7 @@ impl<'a, W: Write> Interpreter<'a, W> {
                 let fields: HashMap<&'a RawIdentifier, Place<'a>> = expected_fields
                     .iter()
                     .map(|FieldDescription { name, t }| {
-                        let val = self.default_value_for_type(t);
+                        let val = Self::default_value_for_type(t);
                         (name, self.places.alloc(Value::Primitive(val)))
                     })
                     .collect();
@@ -347,7 +329,7 @@ impl<'a, W: Write> Interpreter<'a, W> {
                 Object::Struct { fields }
             }
 
-            Type::Alias(ty) => self.new(bindings, self.get_effective_type(ty), field_values)?,
+            Type::Alias(ty) => self.new(bindings, ty.effective(), field_values)?,
 
             Type::Int | Type::Real | Type::Bool | Type::Null => {
                 unreachable!("Unsupported type for `new` expression: {ty}")
@@ -365,7 +347,7 @@ impl<'a, W: Write> Interpreter<'a, W> {
         let len = self.integer_expression(bindings, len)?;
         Object::Array {
             elements: iter::repeat_n(
-                self.default_value_for_type(element_ty),
+                Self::default_value_for_type(element_ty),
                 len.try_into()
                     .map_err(|_e| RuntimeError::InvalidArrayLength { len })?,
             )
@@ -394,7 +376,7 @@ impl<'a, W: Write> Interpreter<'a, W> {
                     .iter()
                     .map(|arg| self.expression(bindings, arg))
                     .collect::<Result<_, _>>()?;
-                self.call(callee, args)?
+                self.call(*callee, args)?
             }
             Expression::BinOp { op, lhs, rhs } => {
                 Value::Primitive(self.binop(bindings, *op, lhs, rhs)?)
@@ -453,28 +435,18 @@ impl<'a, W: Write> Interpreter<'a, W> {
         let Block { stmts, .. } = block;
         for stmt in stmts {
             match stmt {
-                ast::Statement::Declaration(LocalBinding { name, decl }) => match decl {
-                    LocalDecl::Const(_) | LocalDecl::Type(_) => {}
-                    LocalDecl::Var(VarDecl {
-                        t,
-                        initialiser,
-                        relative_location: _,
-                    }) => {
-                        let e = match initialiser {
-                            Some(e) => self.expression(bindings, e)?,
-                            None => Value::Primitive(self.default_value_for_type(t)),
-                        };
-                        let e = self.places.alloc(e);
-                        if let Some(prev) = bindings.insert(name, e)
-                            && cfg!(debug_assertions)
-                        {
-                            eprintln!(
-                                "Discarding previous value for {name}: {:?} => {:?}",
-                                self.places[prev], self.places[e]
-                            )
-                        }
+                ast::Statement::Initialization { lhs, rhs } => {
+                    let e = self.expression(bindings, rhs)?;
+                    let e = self.places.alloc(e);
+                    if let Some(prev) = bindings.insert(*lhs, e)
+                        && cfg!(debug_assertions)
+                    {
+                        eprintln!(
+                            "Discarding previous value for {lhs:?}: {:?} => {:?}",
+                            self.places[prev], self.places[e]
+                        )
                     }
-                },
+                }
 
                 ast::Statement::Assignment { lhs, rhs } => {
                     let lhs = self.lvalue(bindings, lhs)?;
@@ -519,7 +491,7 @@ impl<'a, W: Write> Interpreter<'a, W> {
                     };
                     for value in range {
                         let _: Option<Place<'a>> = bindings.insert(
-                            counter,
+                            *counter,
                             self.places
                                 .alloc(Value::Primitive(Primitive::Integer(value))),
                         );
@@ -546,7 +518,7 @@ impl<'a, W: Write> Interpreter<'a, W> {
                     }
                     for value in collection {
                         let _: Option<Place<'a>> =
-                            bindings.insert(counter, self.places.alloc(value));
+                            bindings.insert(*counter, self.places.alloc(value));
                         self.block(bindings, body)?
                     }
                 }
@@ -565,8 +537,8 @@ impl<'a, W: Write> Interpreter<'a, W> {
     }
 
     #[throws(RuntimeError)]
-    fn call(&mut self, routine: &Identifier, args: Vec<Value<'a>>) -> Value<'a> {
-        let decl = &self.program.bindings[routine.id].decl;
+    fn call(&mut self, routine: BindingId, args: Vec<Value<'a>>) -> Value<'a> {
+        let decl = &self.program.bindings[routine];
         let Decl::Routine(RoutineDecl::Full(Routine {
             signature: _,
             args_bindings,
@@ -584,7 +556,7 @@ impl<'a, W: Write> Interpreter<'a, W> {
             )
         }
         let mut bindings = self.globals.clone();
-        for (Binding { name, decl: _ }, value) in args_bindings.iter().zip(args) {
+        for (&name, value) in args_bindings.iter().zip(args) {
             let _: Option<Place<'a>> = bindings.insert(name, self.places.alloc(value));
         }
 
@@ -600,21 +572,18 @@ impl<'a, W: Write> Interpreter<'a, W> {
 
     #[throws(RuntimeError)]
     fn run(mut self) {
-        for Binding { name, decl } in &self.program.globals {
+        for &binding in &self.program.globals {
+            let name = binding;
+            let decl = &self.program.bindings[binding];
             match decl {
                 Decl::Type(_) | Decl::Routine(_) | Decl::Const(_) => {}
                 Decl::Var(VarDecl {
-                    t,
+                    t: _,
                     initialiser,
                     relative_location: _,
                 }) => {
                     // FIXME: globals referencing other globals are not supported
-                    let value = match initialiser.as_deref() {
-                        Some(expression) => {
-                            self.expression(&mut Bindings::default(), expression)?
-                        }
-                        None => Value::Primitive(self.default_value_for_type(t)),
-                    };
+                    let value = self.expression(&mut Bindings::default(), initialiser)?;
                     let place = self.places.alloc(value);
                     if let Some(prev) = self.globals.insert(name, place) {
                         unreachable!(
@@ -629,15 +598,7 @@ impl<'a, W: Write> Interpreter<'a, W> {
             .program
             .globals
             .iter()
-            .find_map(|Binding { name, decl }| {
-                if name.raw.name == "main"
-                    && let Decl::Routine(RoutineDecl::Full(_)) = decl
-                {
-                    Some(name)
-                } else {
-                    None
-                }
-            })
+            .find_map(|id| todo!("We lost all the names..."))
         else {
             todo!("No `main")
         };

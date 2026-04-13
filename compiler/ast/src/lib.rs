@@ -9,16 +9,40 @@ mod types;
 #[cfg(test)]
 mod tests;
 
+use common::RawIdentifier;
+
 pub use crate::{
     convert::convert,
     operators::{BinaryOperator, BoolBinOp, EqBinOp, IntBinOp, RealBinOp, UnaryOperator},
     tree::{
-        Binding, Bindings, Block, ConstDecl, Decl, EvaluatedValue, Expression, Literal,
-        LocalBinding, LocalDecl, LvalueExpression, Program, Routine, RoutineBody, RoutineDecl,
-        RoutineSignature, Statement, TypeDecl, VarDecl,
+        Block, ConstDecl, Decl, EvaluatedValue, Expression, Literal, LvalueExpression, Program,
+        Routine, RoutineBody, RoutineDecl, RoutineSignature, Statement, TypeDecl, VarDecl,
     },
     types::{ArrayDescription, FieldDescription, RecordDescription, Type},
 };
+
+pub type Bindings = indexed_arena::Arena<Decl, usize>;
+pub type BindingId = indexed_arena::Idx<Decl, usize>;
+
+#[derive(Hash, PartialEq, Eq, Clone)]
+pub struct Identifier {
+    pub raw: RawIdentifier,
+    pub id: BindingId,
+}
+
+impl fmt::Debug for Identifier {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        let Self { raw, id } = self;
+        write!(f, "{raw}({})", id.into_raw())
+    }
+}
+
+impl fmt::Display for Identifier {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        let Self { raw, id: _ } = self;
+        raw.fmt(f)
+    }
+}
 
 #[derive(Debug)]
 struct Typed<T = Expression> {

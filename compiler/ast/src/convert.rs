@@ -1,7 +1,11 @@
 use core::iter;
-use std::{collections::HashMap, rc::Rc};
+use std::{
+    collections::{HashMap, hash_map::Entry},
+    rc::Rc,
+};
 
-use common::{BindingId, Identifier, Location, LoopOrder, RawIdentifier, VarLoc};
+use common::{Location, LoopOrder, RawIdentifier, VarLoc};
+use indexed_arena::Arena;
 
 use crate::{
     operators::UnaryOperator,
@@ -26,11 +30,18 @@ impl Scope {
         self.binders.get(name).copied()
     }
 
-    fn add(&mut self, ident: &Identifier) {
+    fn add(&mut self, ident: Identifier) {
         let Identifier { raw, id } = ident;
-        if let Some(prev) = self.binders.insert(raw.to_owned(), *id) {
-            unreachable!("Duplicate bindings for the same ident ({raw:?}): {prev} & {id}")
-        }
+        let _: &mut BindingId = match self.binders.entry(raw) {
+            Entry::Vacant(e) => e.insert(id),
+            Entry::Occupied(e) => {
+                unreachable!(
+                    "Duplicate bindings for the same ident ({:?}): {:?} & {id:?}",
+                    e.key(),
+                    e.get()
+                )
+            }
+        };
     }
 }
 
@@ -45,12 +56,17 @@ struct RoutinePrototype {
 
 #[derive(Debug, Default)]
 struct Converter {
-    bindings: Bindings,
+    bindings: Arena<Decl, usize>,
     global_scope: Scope,
     local_scopes: Vec<Scope>,
     global_count: VarLoc,
     local_count: VarLoc,
     current_routine: Option<RoutinePrototype>,
+}
+
+struct Binding<'a> {
+    id: BindingId,
+    decl: &'a Decl,
 }
 
 impl Converter {
@@ -91,37 +107,32 @@ impl Converter {
         Location::Local(res)
     }
 
-    fn bind_global_decl(&mut self, name: &RawIdentifier, decl: Decl) -> Identifier {
+    fn bind_decl(&mut self, name: RawIdentifier, decl: Decl, is_global: bool) -> BindingId {
         // TODO: process function forward declaration
-        let ident = self.bindings.create(name, decl);
-        self.global_scope.add(&ident);
-        ident
+        let id = self.bindings.alloc(decl);
+        if is_global {
+            &mut self.global_scope
+        } else {
+            self.local_scopes
+                .last_mut()
+                .expect("Cannot bind a local decl outside of any local scopes")
+        }
+        .add(Identifier { raw: name, id });
+        id
     }
 
-    fn rebind_decl(&mut self, ident: &Identifier, new_decl: Decl) {
-        self.bindings.rebind(ident, new_decl);
-    }
-
-    fn bind_local_decl(&mut self, name: &RawIdentifier, decl: LocalDecl) -> Identifier {
-        let ident = self.bindings.create(name, decl.into());
-        self.local_scopes
-            .last_mut()
-            .expect("Cannot bind a local decl outside of any local scopes")
-            .add(&ident);
-
-        ident
+    fn rebind_decl(&mut self, id: BindingId, new_decl: Decl) {
+        self.bindings[id] = new_decl
     }
 
     fn bind_routine(
         &mut self,
         routine_name: &RawIdentifier,
         decl: RoutineDecl,
-    ) -> AnalysisResult<Identifier> {
-        let existing_binding = self.lookup(routine_name);
-
-        Ok(match existing_binding {
+    ) -> AnalysisResult<BindingId> {
+        Ok(match self.lookup(routine_name) {
             Ok(Binding {
-                name: ident,
+                id,
                 decl: Decl::Routine(existing_decl),
             }) => match [existing_decl, &decl] {
                 [_, _] if existing_decl.signature() != decl.signature() => Err(AnalysisError {
@@ -135,38 +146,140 @@ impl Converter {
                 })?,
 
                 [RoutineDecl::Forward { .. }, RoutineDecl::Full { .. }] => {
-                    let ident = ident.to_owned();
-                    self.rebind_decl(&ident, Decl::Routine(decl));
-                    ident
+                    self.rebind_decl(id, Decl::Routine(decl));
+                    id
                 }
 
                 [
                     RoutineDecl::Full(..) | RoutineDecl::Forward { .. },
                     RoutineDecl::Forward { .. },
-                ] => ident.to_owned(),
+                ] => id,
             },
 
             Ok(Binding {
-                name: _,
+                id: _,
                 decl: Decl::Type(_) | Decl::Var(_) | Decl::Const(_),
             })
             | Err(_) => {
                 // function just shadows previous global variable or type with the same name
-                self.bind_global_decl(routine_name, Decl::Routine(decl))
+                self.bind_decl(routine_name.to_owned(), Decl::Routine(decl), true)
             }
         })
     }
 
-    fn lookup<'a>(&'a self, name: &RawIdentifier) -> AnalysisResult<&'a Binding> {
-        self.local_scopes
+    fn lookup<'this>(&'this self, name: &RawIdentifier) -> AnalysisResult<Binding<'this>> {
+        match self
+            .local_scopes
             .iter()
             .rev()
             .chain(iter::once(&self.global_scope))
             .find_map(|scope_block| scope_block.lookup(name))
-            .map(|id| &self.bindings[id])
-            .ok_or(AnalysisError {
+        {
+            Some(id) => Ok(Binding {
+                id,
+                decl: &self.bindings[id],
+            }),
+            None => Err(AnalysisError {
                 what: format!("Unknown name `{name}`"),
-            })
+            }),
+        }
+    }
+
+    pub(crate) fn coerce(
+        &self,
+        expr: Typed<Expression>,
+        target_type: &Type,
+    ) -> AnalysisResult<Rc<Expression>> {
+        let Typed {
+            value: expr,
+            ty: own_type,
+        } = expr;
+
+        let source_type = own_type.as_ref();
+
+        match [source_type, target_type] {
+            [Type::Int, Type::Int]
+            | [Type::Bool, Type::Bool]
+            | [Type::Real, Type::Real]
+            | [Type::Null, Type::Null | Type::Record(_) | Type::Array(_)] => Ok(expr),
+
+            [Type::Null, Type::Alias(ty)] => {
+                let target = Rc::clone(ty.effective());
+                self.coerce(
+                    Typed {
+                        value: expr,
+                        ty: own_type,
+                    },
+                    &target,
+                )
+            }
+
+            [Type::Bool, Type::Real] => Ok(Rc::new(Expression::IntToReal(Rc::new(
+                Expression::BoolToInt(expr),
+            )))),
+            [Type::Bool, Type::Int] => Ok(Rc::new(Expression::BoolToInt(expr))),
+            [Type::Int, Type::Real] => Ok(Rc::new(Expression::IntToReal(expr))),
+
+            [Type::Real, Type::Bool] => Ok(Rc::new(Expression::RealToInt(Rc::new(
+                Expression::IntToBool(expr),
+            )))),
+            [Type::Real, Type::Int] => Ok(Rc::new(Expression::RealToInt(expr))),
+            [Type::Int, Type::Bool] => Ok(Rc::new(Expression::IntToBool(expr))),
+
+            [
+                Type::Int
+                | Type::Bool
+                | Type::Real
+                | Type::Array(_)
+                | Type::Record(_)
+                | Type::Alias(_),
+                Type::Null,
+            ] => Err(AnalysisError {
+                what: format!("Cannot discard a value of type `{own_type}`"),
+            }),
+
+            [
+                Type::Array(_) | Type::Record(_) | Type::Null,
+                Type::Int | Type::Real | Type::Bool,
+            ] => Err(AnalysisError {
+                what: format!(
+                    "Reference-counted type `{own_type}` cannot be converted to numeric type `{target_type}`"
+                ),
+            }),
+
+            [
+                Type::Int | Type::Real | Type::Bool,
+                Type::Array(_) | Type::Record(_),
+            ] => Err(AnalysisError {
+                what: format!(
+                    "Numeric type `{own_type}` cannot be converted to reference-counted type `{target_type}`"
+                ),
+            }),
+
+            [Type::Alias(from), Type::Alias(to)] if from == to => Ok(expr),
+            [Type::Record(r1), Type::Record(r2)] if r1 == r2 => Ok(expr),
+            [
+                Type::Array(ArrayDescription {
+                    t: from_t,
+                    length: from_length,
+                }),
+                Type::Array(ArrayDescription {
+                    t: to_t,
+                    length: to_length,
+                }),
+            ] if from_t == to_t && (from_length == to_length || to_length.is_none()) => Ok(expr),
+
+            [
+                Type::Array(_) | Type::Record(_),
+                Type::Array(_) | Type::Record(_),
+            ]
+            | [Type::Alias(_), _]
+            | [_, Type::Alias(_)] => Err(AnalysisError {
+                what: format!(
+                    "There is no implicit conversion from `{source_type}` to `{target_type}`"
+                ),
+            }),
+        }
     }
 
     fn convert_type(&self, t: &parser::Type) -> AnalysisResult<Rc<Type>> {
@@ -175,9 +288,17 @@ impl Converter {
             parser::Type::Real => Type::real(),
             parser::Type::Bool => Type::bool(),
             parser::Type::Alias(raw_identifier) => {
-                let decl = self.lookup(raw_identifier)?;
-                let _: &_ = decl.ensure_is_type()?;
-                Rc::new(Type::Alias(decl.name.clone()))
+                let Binding { id: _, decl } = self.lookup(raw_identifier)?;
+                Rc::new(Type::Alias(match decl {
+                    Decl::Var(_) | Decl::Const(_) | Decl::Routine(_) => todo!("Report an error"),
+                    Decl::Type(decl) => match decl {
+                        TypeDecl::Full {
+                            prescribed: _,
+                            effective,
+                        } => Rc::clone(effective),
+                        TypeDecl::Forward { .. } => todo!("Eliminate this branch"),
+                    },
+                }))
             }
             parser::Type::Record(parser::RecordDescription { fields }) => {
                 let fields: Vec<FieldDescription> = fields
@@ -220,16 +341,15 @@ impl Converter {
             parser::LvalueExpression::Identifier(raw_identifier) => {
                 match self.lookup(raw_identifier)? {
                     Binding {
-                        name,
+                        id,
                         decl: Decl::Var(VarDecl { t, .. }),
                     } => Typed {
-                        value: Rc::new(LvalueExpression::Identifier(name.clone())),
+                        value: Rc::new(LvalueExpression::Binding(id)),
                         ty: Rc::clone(t),
                     },
-                    t => Err(AnalysisError {
+                    _ => Err(AnalysisError {
                         what: format!(
-                            "{:?} is not a name of variable in lvalue expression",
-                            t.name
+                            "{raw_identifier:?} is not a name of variable in lvalue expression",
                         ),
                     })?,
                 }
@@ -241,10 +361,7 @@ impl Converter {
                         lhs,
                         member_name: member_name.clone(),
                     }),
-                    ty: self
-                        .bindings
-                        .get_effective_type(&t)?
-                        .get_field_type(member_name)?,
+                    ty: t.effective().get_field_type(member_name)?,
                 }
             }
             parser::LvalueExpression::Index { lhs, index } => {
@@ -252,7 +369,7 @@ impl Converter {
                     value: lhs,
                     ty: lhs_t,
                 } = self.convert_lvalue_expr(lhs)?;
-                let effective_lhs_type = self.bindings.get_effective_type(&lhs_t)?;
+                let effective_lhs_type = lhs_t.effective();
                 let Typed {
                     value: index,
                     ty: rhs_t,
@@ -343,10 +460,15 @@ impl Converter {
         callee: &RawIdentifier,
         args: &[parser::Expression],
     ) -> AnalysisResult<Typed> {
+        let Binding {
+            id: callee_id,
+            decl: callee_decl,
+        } = self.lookup(callee)?;
+
         let RoutineSignature {
             args: formal_args,
             return_type,
-        } = self.lookup(callee)?.ensure_is_routine()?.signature();
+        } = callee_decl.ensure_is_routine(callee)?.signature();
         let arguments_types: Vec<Rc<Type>> = formal_args
             .iter()
             .map(|(_, arg_type)| Rc::clone(arg_type))
@@ -369,9 +491,9 @@ impl Converter {
 
         Ok(Typed {
             value: Rc::new(Expression::Call {
-                callee: self.lookup(callee)?.name.clone(),
+                callee: callee_id,
                 args: iter::zip(arguments_types, args)
-                    .map(|(arg_type, expr)| self.bindings.coerce(expr, &arg_type))
+                    .map(|(arg_type, expr)| self.coerce(expr, &arg_type))
                     .collect::<AnalysisResult<_>>()?,
             }),
             ty: Rc::clone(return_type),
@@ -385,7 +507,7 @@ impl Converter {
         array_length: Option<&parser::Expression>,
     ) -> AnalysisResult<Typed> {
         let ty = self.convert_type(t)?;
-        let effective = self.bindings.get_effective_type(&ty)?;
+        let effective = ty.effective();
 
         if let Some(length) = array_length {
             let Type::Array(ArrayDescription {
@@ -400,9 +522,7 @@ impl Converter {
             return Ok(Typed {
                 value: Rc::new(Expression::NewArray {
                     elements: Rc::clone(elements),
-                    length: self
-                        .bindings
-                        .coerce(self.convert_expr(length)?, &Type::Int)?,
+                    length: self.coerce(self.convert_expr(length)?, &Type::Int)?,
                 }),
                 ty,
             });
@@ -424,8 +544,7 @@ impl Converter {
                                 self.convert_expr(expr).and_then(|expr| {
                                     Ok((
                                         name.clone(),
-                                        self.bindings
-                                            .coerce(expr, record.get_field_type(name)?.as_ref())?,
+                                        self.coerce(expr, record.get_field_type(name)?.as_ref())?,
                                     ))
                                 })
                             })
@@ -486,11 +605,11 @@ impl Converter {
             parser::LvalueExpression::Identifier(raw_identifier) => {
                 match self.lookup(raw_identifier)? {
                     Binding {
-                        name,
+                        id,
                         decl: Decl::Var(VarDecl { t, .. }),
                     } => Ok(Typed {
                         value: Rc::new(Expression::LvalueToRvalue(Rc::new(
-                            LvalueExpression::Identifier(name.clone()),
+                            LvalueExpression::Binding(id),
                         ))),
                         ty: Rc::clone(t),
                     }),
@@ -499,10 +618,9 @@ impl Converter {
                         ..
                     } => Ok(value.as_literal().into()), // Constants are immediately propagated
 
-                    t => Err(AnalysisError {
+                    _ => Err(AnalysisError {
                         what: format!(
-                            "{:?} is not a name of variable in lvalue expression",
-                            t.name
+                            "{raw_identifier:?} is not a name of variable in lvalue expression",
                         ),
                     })?,
                 }
@@ -531,8 +649,8 @@ impl Converter {
                     operator: semantic_op,
                 } = infer_binary_operator_type(&lhs.ty, &rhs.ty, *op)?;
 
-                let actual_lhs = self.bindings.coerce(lhs, &operand_type)?;
-                let actual_rhs = self.bindings.coerce(rhs, &operand_type)?;
+                let actual_lhs = self.coerce(lhs, &operand_type)?;
+                let actual_rhs = self.coerce(rhs, &operand_type)?;
 
                 Typed {
                     value: Rc::new(Expression::BinOp {
@@ -552,8 +670,8 @@ impl Converter {
                     ty: operand_type,
                 } = self.convert_expr(operand)?;
                 let target_ty = self.convert_type(target)?;
-                let operand_effective_type = self.bindings.get_effective_type(&operand_type)?;
-                let target_effective_type = self.bindings.get_effective_type(&target_ty)?;
+                let operand_effective_type = operand_type.effective();
+                let target_effective_type = target_ty.effective();
 
                 if operand_effective_type == target_effective_type {
                     Typed {
@@ -583,7 +701,7 @@ impl Converter {
 
     fn convert_for(
         &mut self,
-        counter: &RawIdentifier,
+        counter: RawIdentifier,
         from: &parser::Expression,
         to: Option<&parser::Expression>,
         order: LoopOrder,
@@ -598,16 +716,16 @@ impl Converter {
                         ty: array_type,
                     } = this.convert_expr(from)?;
                     let element_type = array_type.get_element_type()?;
-                    let counter_decl = LocalDecl::Var(VarDecl {
+                    let counter_decl = Decl::Var(VarDecl {
                         t: Rc::clone(element_type),
-                        initialiser: None,
+                        initialiser: element_type.get_default_initialiser().into(),
                         relative_location: counter_loc,
                     });
 
-                    let counter_ident = this.bind_local_decl(counter, counter_decl);
+                    let counter = this.bind_decl(counter, counter_decl, false);
                     let body = this.convert_block(body)?;
                     Statement::ForEach {
-                        counter: counter_ident,
+                        counter,
                         collection: array_expr,
                         order,
                         body,
@@ -617,17 +735,17 @@ impl Converter {
                     let from = this.convert_expr(from)?;
                     let to = this.convert_expr(to)?;
                     let int_type = Type::int();
-                    let counter_decl = LocalDecl::Var(VarDecl {
+                    let counter_decl = Decl::Var(VarDecl {
                         t: Rc::clone(&int_type),
-                        initialiser: None,
+                        initialiser: int_type.get_default_initialiser().into(),
                         relative_location: counter_loc,
                     });
-                    let counter_ident = this.bind_local_decl(counter, counter_decl);
+                    let counter_ident = this.bind_decl(counter, counter_decl, false);
                     let body = this.convert_block(body)?;
                     Statement::For {
                         counter: counter_ident,
-                        lower_bound: this.bindings.coerce(from, &int_type)?,
-                        upper_bound: this.bindings.coerce(to, &int_type)?,
+                        lower_bound: this.coerce(from, &int_type)?,
+                        upper_bound: this.coerce(to, &int_type)?,
                         order,
                         body,
                     }
@@ -648,9 +766,7 @@ impl Converter {
             &parser::Statement::Assert { ref value, pos } => Statement::If {
                 condition: Rc::new(Expression::UnOp {
                     op: UnaryOperator::BoolNeg,
-                    operand: self
-                        .bindings
-                        .coerce(self.convert_expr(value)?, &Type::Bool)?,
+                    operand: self.coerce(self.convert_expr(value)?, &Type::Bool)?,
                 }),
                 on_true: Block {
                     stmts: vec![Statement::Panic { pos }],
@@ -666,15 +782,11 @@ impl Converter {
                 } = self.convert_lvalue_expr(lhs)?;
                 Statement::Assignment {
                     lhs,
-                    rhs: self
-                        .bindings
-                        .coerce(self.convert_expr(rhs)?, &target_type)?,
+                    rhs: self.coerce(self.convert_expr(rhs)?, &target_type)?,
                 }
             }
             parser::Statement::While { condition, body } => Statement::While {
-                condition: self
-                    .bindings
-                    .coerce(self.convert_expr(condition)?, &Type::Bool)?,
+                condition: self.coerce(self.convert_expr(condition)?, &Type::Bool)?,
                 body: self.convert_block(body)?,
             },
             parser::Statement::Expr(expression) => {
@@ -687,9 +799,7 @@ impl Converter {
                 on_true,
                 on_false,
             } => Statement::If {
-                condition: self
-                    .bindings
-                    .coerce(self.convert_expr(condition)?, &Type::Bool)?,
+                condition: self.coerce(self.convert_expr(condition)?, &Type::Bool)?,
                 on_true: self.convert_block(on_true)?,
                 on_false: on_false
                     .as_ref()
@@ -702,7 +812,7 @@ impl Converter {
                 to,
                 order,
                 body,
-            } => self.convert_for(counter, from, to.as_ref(), *order, body)?,
+            } => self.convert_for(counter.to_owned(), from, to.as_ref(), *order, body)?,
 
             parser::Statement::Print { value } => {
                 let Typed { value, ty: _ } = self.convert_expr(value)?;
@@ -710,9 +820,7 @@ impl Converter {
             }
             parser::Statement::Return { value } => match &self.current_routine {
                 Some(RoutinePrototype { return_type, .. }) => Statement::Return {
-                    value: self
-                        .bindings
-                        .coerce(self.convert_expr(value)?, return_type)?,
+                    value: self.coerce(self.convert_expr(value)?, return_type)?,
                 },
                 None => Err(AnalysisError {
                     what: "Return outside of routine".to_string(),
@@ -723,26 +831,25 @@ impl Converter {
 
     fn convert_block(&mut self, block: &parser::Block) -> AnalysisResult<Block> {
         let (result, locals_count) = self.scoped(|this| -> AnalysisResult<_> {
-            block
-                .0
-                .iter()
-                .map(|elem| {
-                    Ok(match elem {
-                        parser::BlockElem::Stmt(statement) => this.convert_stmt(statement)?,
-                        parser::BlockElem::VarDecl(var_decl) => Statement::Declaration(
-                            this.convert_var_decl(var_decl, false)?.map(LocalDecl::Var),
-                        ),
-                        parser::BlockElem::ConstDecl(const_decl) => Statement::Declaration(
-                            this.convert_const_decl(const_decl, false)?
-                                .map(LocalDecl::Const),
-                        ),
-                        parser::BlockElem::TypeDecl(type_decl) => Statement::Declaration(
-                            this.convert_type_decl(type_decl, false)?
-                                .map(LocalDecl::Type),
-                        ),
-                    })
+            let mut result = vec![];
+            for elem in &block.0 {
+                result.push(match elem {
+                    parser::BlockElem::Stmt(statement) => this.convert_stmt(statement)?,
+                    parser::BlockElem::VarDecl(var_decl) => {
+                        let binding = this.convert_var_decl(var_decl, false)?;
+                        todo!("Do something abot {binding:?}")
+                    }
+                    parser::BlockElem::ConstDecl(const_decl) => {
+                        let _: BindingId = this.convert_const_decl(const_decl, false)?;
+                        continue;
+                    }
+                    parser::BlockElem::TypeDecl(type_decl) => {
+                        let _: BindingId = this.convert_type_decl(type_decl, false)?;
+                        continue;
+                    }
                 })
-                .collect()
+            }
+            Ok(result)
         });
         result.map(|stmts| Block {
             stmts,
@@ -754,7 +861,7 @@ impl Converter {
         &mut self,
         decl: &parser::ConstDecl,
         is_global: bool,
-    ) -> AnalysisResult<Binding<ConstDecl>> {
+    ) -> AnalysisResult<BindingId> {
         let parser::ConstDecl {
             name,
             t,
@@ -764,7 +871,7 @@ impl Converter {
         let decl = match t {
             Some(t) => {
                 let t = self.convert_type(t)?;
-                let expr = self.bindings.coerce(expr, &t)?;
+                let expr = self.coerce(expr, &t)?;
                 ConstDecl {
                     value: expr.try_constexpr_evaluate()?,
                 }
@@ -773,22 +880,14 @@ impl Converter {
                 value: expr.value.try_constexpr_evaluate()?,
             },
         };
-
-        Ok(Binding {
-            decl,
-            name: if is_global {
-                self.bind_global_decl(name, Decl::Const(decl))
-            } else {
-                self.bind_local_decl(name, LocalDecl::Const(decl))
-            },
-        })
+        Ok(self.bind_decl(name.to_owned(), Decl::Const(decl), is_global))
     }
 
     fn convert_var_decl(
         &mut self,
         decl: &parser::VarDecl,
         is_global: bool,
-    ) -> AnalysisResult<Binding<VarDecl>> {
+    ) -> AnalysisResult<BindingId> {
         let parser::VarDecl {
             name,
             t,
@@ -812,79 +911,67 @@ impl Converter {
                 } = self.convert_expr(expr)?;
                 VarDecl {
                     t,
-                    initialiser: Some(initialiser),
+                    initialiser,
                     relative_location: loc,
                 }
             }
-            (Some(t), None) => VarDecl {
-                t: self.convert_type(t)?,
-                initialiser: None,
-                relative_location: loc,
-            },
+            (Some(t), None) => {
+                let t = self.convert_type(t)?;
+                VarDecl {
+                    initialiser: t.get_default_initialiser().into(),
+                    t,
+                    relative_location: loc,
+                }
+            }
             (Some(t), Some(expr)) => {
                 let t = self.convert_type(t)?;
                 VarDecl {
-                    initialiser: Some(self.bindings.coerce(self.convert_expr(expr)?, &t)?),
+                    initialiser: self.coerce(self.convert_expr(expr)?, &t)?,
                     t,
                     relative_location: loc,
                 }
             }
         };
 
-        Ok(Binding {
-            decl: decl.clone(),
-            name: if is_global {
-                self.bind_global_decl(name, Decl::Var(decl))
-            } else {
-                self.bind_local_decl(name, LocalDecl::Var(decl))
-            },
-        })
+        Ok(self.bind_decl(name.to_owned(), Decl::Var(decl), is_global))
     }
 
     fn convert_type_decl(
         &mut self,
         decl: &parser::TypeDecl,
         is_global: bool,
-    ) -> AnalysisResult<Binding<TypeDecl>> {
+    ) -> AnalysisResult<BindingId> {
         let parser::TypeDecl { name, t } = decl;
         // Binding forward declaration of type for possible recursive usage
-        let ident = {
-            let forward = TypeDecl::Forward {
+        let ident = self.bind_decl(
+            name.to_owned(),
+            Decl::Type(TypeDecl::Forward {
                 alias: name.clone(),
-            };
-            if is_global {
-                self.bind_global_decl(name, Decl::Type(forward))
-            } else {
-                self.bind_local_decl(name, LocalDecl::Type(forward))
-            }
-        };
+            }),
+            is_global,
+        );
 
         let prescribed = self.convert_type(t)?;
         let type_decl = TypeDecl::Full {
-            effective: Rc::clone(self.bindings.get_effective_type(&prescribed)?),
+            effective: Rc::clone(prescribed.effective()),
             prescribed,
         };
         // Overriding forward declaration with full one
-        self.rebind_decl(&ident, Decl::Type(type_decl.clone()));
-        Ok(Binding {
-            name: ident,
-            decl: type_decl,
-        })
+        self.rebind_decl(ident, Decl::Type(type_decl));
+        Ok(ident)
     }
 
-    fn convert_global_decl(&mut self, decl: &parser::Declaration) -> AnalysisResult<Binding> {
+    fn convert_global_decl(&mut self, decl: &parser::Declaration) -> AnalysisResult<BindingId> {
         Ok(match decl {
-            parser::Declaration::Var(decl) => self.convert_var_decl(decl, true)?.map(Decl::Var),
+            parser::Declaration::Var(decl) => self.convert_var_decl(decl, true)?,
 
-            parser::Declaration::Const(decl) => {
-                self.convert_const_decl(decl, true)?.map(Decl::Const)
-            }
-            parser::Declaration::Type(decl) => self.convert_type_decl(decl, true)?.map(Decl::Type),
+            parser::Declaration::Const(decl) => self.convert_const_decl(decl, true)?,
+            parser::Declaration::Type(decl) => self.convert_type_decl(decl, true)?,
             parser::Declaration::Routine(decl) => self.convert_routine(decl)?,
         })
     }
 
-    fn convert_routine(&mut self, decl: &parser::RoutineDecl) -> AnalysisResult<Binding> {
+    fn convert_routine(&mut self, decl: &parser::RoutineDecl) -> AnalysisResult<BindingId> {
         let parser::RoutineDecl {
             name,
             arguments,
@@ -916,10 +1003,7 @@ impl Converter {
                 },
             )?;
 
-            return Ok(Binding {
-                name: ident,
-                decl: Decl::Routine(RoutineDecl::Forward { signature }),
-            });
+            return Ok(ident);
         };
 
         let args_decls: Vec<_> = argument_types
@@ -930,8 +1014,8 @@ impl Converter {
                 (
                     name,
                     VarDecl {
+                        initialiser: t.get_default_initialiser().into(),
                         t,
-                        initialiser: None,
                         relative_location: Location::Argument(
                             index.try_into().expect("Too many arguments for function"),
                         ),
@@ -942,14 +1026,14 @@ impl Converter {
 
         match body {
             parser::RoutineBody::Block(block) => {
-                self.convert_routine_block(name, return_type, block, argument_types, &args_decls)
+                self.convert_routine_block(name, return_type, block, argument_types, args_decls)
             }
             parser::RoutineBody::Expression(expression) => self.convert_routine_expression(
                 name,
                 return_type,
                 expression,
                 argument_types,
-                &args_decls,
+                args_decls,
             ),
         }
     }
@@ -960,8 +1044,8 @@ impl Converter {
         return_type: Option<&parser::Type>,
         block: &parser::Block,
         argument_types: Vec<(RawIdentifier, Rc<Type>)>,
-        args_decls: &[(RawIdentifier, VarDecl)],
-    ) -> AnalysisResult<Binding> {
+        args_decls: Vec<(RawIdentifier, VarDecl)>,
+    ) -> AnalysisResult<BindingId> {
         let return_type = return_type.map_or(Ok(Type::null()), |t| self.convert_type(t))?;
 
         let signature = RoutineSignature {
@@ -970,13 +1054,12 @@ impl Converter {
         };
 
         // Firstly, create a forward declaration for possible recursive use
-        let forward_ident: Identifier = self.bind_routine(
+        let _: BindingId = self.bind_routine(
             name,
             RoutineDecl::Forward {
                 signature: signature.clone(),
             },
         )?;
-        drop(forward_ident);
 
         // Memorise that routine for type-check of return statement
         self.current_routine = Some(RoutinePrototype {
@@ -994,28 +1077,20 @@ impl Converter {
         );
         self.current_routine = None;
 
-        let decl = RoutineDecl::Full(Routine {
-            signature,
-            args_bindings,
-            body: RoutineBody::Block(body?),
-        });
-        Ok(Binding {
-            name: self.bind_routine(name, decl.clone())?,
-            decl: Decl::Routine(decl),
-        })
+        self.bind_routine(
+            name,
+            RoutineDecl::Full(Routine {
+                signature,
+                args_bindings,
+                body: RoutineBody::Block(body?),
+            }),
+        )
     }
 
-    fn bind_args(&mut self, args_decls: &[(RawIdentifier, VarDecl)]) -> Vec<Binding<VarDecl>> {
+    fn bind_args(&mut self, args_decls: Vec<(RawIdentifier, VarDecl)>) -> Vec<BindingId> {
         args_decls
-            .iter()
-            .map(|(raw_name, decl)| {
-                let decl = decl.to_owned();
-                let arg_ident = self.bind_local_decl(raw_name, LocalDecl::Var(decl.clone()));
-                Binding {
-                    name: arg_ident,
-                    decl,
-                }
-            })
+            .into_iter()
+            .map(|(raw_name, decl)| self.bind_decl(raw_name, Decl::Var(decl), false))
             .collect()
     }
 
@@ -1025,8 +1100,8 @@ impl Converter {
         return_type: Option<&parser::Type>,
         expression: &parser::Expression,
         argument_types: Vec<(RawIdentifier, Rc<Type>)>,
-        args_decls: &[(RawIdentifier, VarDecl)],
-    ) -> AnalysisResult<Binding> {
+        args_decls: Vec<(RawIdentifier, VarDecl)>,
+    ) -> AnalysisResult<BindingId> {
         let return_type = return_type.map(|t| self.convert_type(t)).transpose()?;
 
         // No recursive calls for expression function
@@ -1040,7 +1115,7 @@ impl Converter {
         );
 
         let (expr, return_type) = match return_type {
-            Some(ty) => (self.bindings.coerce(expr, &ty)?, ty),
+            Some(ty) => (self.coerce(expr, &ty)?, ty),
             None => (expr.value, expr.ty),
         };
 
@@ -1049,28 +1124,25 @@ impl Converter {
             return_type,
         };
 
-        let decl = RoutineDecl::Full(Routine {
-            signature,
-            args_bindings,
-            body: RoutineBody::Expression(expr),
-        });
-
-        let ident = self.bind_routine(name, decl.clone())?;
-        Ok(Binding {
-            name: ident,
-            decl: Decl::Routine(decl),
-        })
+        self.bind_routine(
+            name,
+            RoutineDecl::Full(Routine {
+                signature,
+                args_bindings,
+                body: RoutineBody::Expression(expr),
+            }),
+        )
     }
 }
 
 pub fn convert(program: &parser::Program) -> AnalysisResult<Program> {
     let mut converter = Converter::new();
 
-    let program = program
+    let program: Vec<_> = program
         .0
         .iter()
         .map(|decl| converter.convert_global_decl(decl))
-        .collect::<AnalysisResult<Vec<Binding>>>()?;
+        .collect::<AnalysisResult<_>>()?;
 
     let Converter { bindings, .. } = converter;
     Ok(Program {

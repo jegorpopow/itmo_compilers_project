@@ -1,21 +1,20 @@
-use core::ops::Index;
 use std::rc::Rc;
 
 use common::{
-    BindingId, Identifier, Integer, Location, LoopOrder, Position, RawIdentifier, Real, VarLoc,
-    integer_to_real, real_to_integer,
+    Integer, Location, LoopOrder, Position, RawIdentifier, Real, VarLoc, integer_to_real,
+    real_to_integer,
 };
 pub use parser::Literal;
 
 use crate::{
-    AnalysisError, AnalysisResult, Typed,
+    AnalysisError, AnalysisResult, BindingId, Bindings, Typed,
     operators::{BinaryOperator, BoolBinOp, EqBinOp, IntBinOp, RealBinOp, UnaryOperator},
-    types::{ArrayDescription, Type},
+    types::Type,
 };
 
 #[derive(Debug, Hash, PartialEq, Eq)]
 pub enum LvalueExpression {
-    Identifier(Identifier),
+    Binding(BindingId),
     Member {
         lhs: Rc<LvalueExpression>,
         member_name: RawIdentifier,
@@ -31,7 +30,7 @@ pub enum Expression {
     LvalueToRvalue(Rc<LvalueExpression>),
     Literal(Literal),
     Call {
-        callee: Identifier,
+        callee: BindingId,
         args: Vec<Rc<Expression>>,
     },
     BinOp {
@@ -257,7 +256,7 @@ impl Expression {
 #[derive(Debug, Hash, Clone)]
 pub struct VarDecl {
     pub t: Rc<Type>,
-    pub initialiser: Option<Rc<Expression>>,
+    pub initialiser: Rc<Expression>,
     pub relative_location: Location,
 }
 
@@ -301,7 +300,7 @@ pub struct RoutineSignature {
 #[derive(Debug, Clone)]
 pub struct Routine {
     pub signature: RoutineSignature,
-    pub args_bindings: Vec<Binding<VarDecl>>,
+    pub args_bindings: Vec<BindingId>,
     pub body: RoutineBody,
 }
 
@@ -329,25 +328,6 @@ pub enum RoutineBody {
 }
 
 #[derive(Debug, Clone)]
-pub enum LocalDecl {
-    Var(VarDecl),
-    Const(ConstDecl),
-    Type(TypeDecl),
-}
-
-impl From<LocalDecl> for Decl {
-    fn from(value: LocalDecl) -> Self {
-        match value {
-            LocalDecl::Var(var_decl) => Decl::Var(var_decl),
-            LocalDecl::Type(type_decl) => Decl::Type(type_decl),
-            LocalDecl::Const(const_decl) => Decl::Const(const_decl),
-        }
-    }
-}
-
-pub type LocalBinding = Binding<LocalDecl>;
-
-#[derive(Debug, Clone)]
 pub struct Block {
     pub stmts: Vec<Statement>,
     pub locals_count: VarLoc,
@@ -355,7 +335,10 @@ pub struct Block {
 
 #[derive(Debug, Clone)]
 pub enum Statement {
-    Declaration(LocalBinding),
+    Initialization {
+        lhs: BindingId,
+        rhs: Rc<Expression>,
+    },
     Assignment {
         lhs: Rc<LvalueExpression>,
         rhs: Rc<Expression>,
@@ -371,14 +354,14 @@ pub enum Statement {
         on_false: Option<Block>,
     },
     For {
-        counter: Identifier,
+        counter: BindingId,
         lower_bound: Rc<Expression>,
         upper_bound: Rc<Expression>,
         order: LoopOrder,
         body: Block,
     },
     ForEach {
-        counter: Identifier,
+        counter: BindingId,
         collection: Rc<Expression>,
         order: LoopOrder,
         body: Block,
@@ -402,46 +385,35 @@ pub enum Decl {
     Routine(RoutineDecl),
 }
 
-#[derive(Debug, Clone)]
-pub struct Binding<T = Decl> {
-    pub name: Identifier,
-    pub decl: T,
-}
-
-impl<T> Binding<T> {
-    pub fn map<U>(self, f: impl FnOnce(T) -> U) -> Binding<U> {
-        let Self { name, decl } = self;
-        Binding {
-            name,
-            decl: f(decl),
-        }
+impl Decl {
+    #[must_use]
+    pub fn unwrap_type(&self) -> &TypeDecl {
+        self.ensure_is_type().expect("unwrap type on non type")
     }
-}
 
-impl Binding {
-    pub fn ensure_is_type(&self) -> AnalysisResult<&TypeDecl> {
-        match &self.decl {
+    pub fn ensure_is_type(&self,) -> AnalysisResult<&TypeDecl> {
+        match &self {
             Decl::Type(t) => Ok(t),
             Decl::Var(_) | Decl::Const(_) | Decl::Routine(_) => Err(AnalysisError {
-                what: format!("Name {:?} does not name a type", self.name),
+                what: format!("Name {self:?} does not name a type",),
             }),
         }
     }
 
     pub fn ensure_is_var(&self) -> AnalysisResult<&VarDecl> {
-        match &self.decl {
+        match &self {
             Decl::Var(t) => Ok(t),
             Decl::Routine(_) | Decl::Type(_) | Decl::Const(_) => Err(AnalysisError {
-                what: format!("Name {:?} does not name a variable", self.name),
+                what: format!("Name {self:?} does not name a variable"),
             }),
         }
     }
 
-    pub fn ensure_is_routine(&self) -> AnalysisResult<&RoutineDecl> {
-        match &self.decl {
+    pub fn ensure_is_routine(&self, name: &RawIdentifier) -> AnalysisResult<&RoutineDecl> {
+        match &self {
             Decl::Routine(t) => Ok(t),
             Decl::Var(_) | Decl::Type(_) | Decl::Const(_) => Err(AnalysisError {
-                what: format!("Name {:?} does not name a routine", self.name),
+                what: format!("Name {name} does not name a routine",),
             }),
         }
     }
@@ -449,171 +421,6 @@ impl Binding {
 
 #[derive(Debug)]
 pub struct Program {
-    pub globals: Vec<Binding>,
+    pub globals: Vec<BindingId>,
     pub bindings: Bindings,
-}
-
-#[derive(Debug, Default)]
-pub struct Bindings {
-    arena: Vec<Binding>,
-}
-
-impl Bindings {
-    pub fn create(&mut self, name: &RawIdentifier, decl: Decl) -> Identifier {
-        let identifier = Identifier {
-            raw: name.clone(),
-            id: BindingId(self.arena.len()),
-        };
-        self.arena.push(Binding {
-            name: identifier.clone(),
-            decl,
-        });
-        identifier
-    }
-
-    pub fn get_default_initialiser(&self, ty: &Rc<Type>) -> AnalysisResult<Expression> {
-        Ok(match self.get_effective_type(ty)?.as_ref() {
-            Type::Int => Expression::Literal(Literal::Integer {
-                repr: "0".to_string(),
-                value: 0,
-            }),
-            Type::Real => Expression::Literal(Literal::Real {
-                repr: "0.0".to_string(),
-                value: 0.0,
-            }),
-            Type::Bool => Expression::Literal(Literal::Bool { value: false }),
-            Type::Alias(_) => Err(AnalysisError {
-                what: "Effective type cannot be alias".to_string(),
-            })?,
-            Type::Record(_) | Type::Array(_) | Type::Null => Expression::Null,
-        })
-    }
-
-    pub fn rebind(&mut self, ident: &Identifier, new_decl: Decl) {
-        self.arena[ident.id.0].decl = new_decl;
-    }
-
-    pub fn get_effective_type<'a>(&'a self, t: &'a Rc<Type>) -> AnalysisResult<&'a Rc<Type>> {
-        match t.as_ref() {
-            Type::Alias(identifier) => self[identifier]
-                .ensure_is_type()
-                .map(TypeDecl::get_effective),
-            Type::Int | Type::Real | Type::Bool | Type::Record(_) | Type::Array(_) | Type::Null => {
-                Ok(t)
-            }
-        }
-    }
-}
-
-impl Index<BindingId> for Bindings {
-    type Output = Binding;
-
-    fn index(&self, id: BindingId) -> &Self::Output {
-        let BindingId(id) = id;
-        &self.arena[id]
-    }
-}
-
-impl Index<&Identifier> for Bindings {
-    type Output = Binding;
-
-    fn index(&self, ident: &Identifier) -> &Self::Output {
-        &self[ident.id]
-    }
-}
-
-impl Bindings {
-    pub(crate) fn coerce(
-        &self,
-        expr: Typed<Expression>,
-        target_type: &Type,
-    ) -> AnalysisResult<Rc<Expression>> {
-        let Typed {
-            value: expr,
-            ty: own_type,
-        } = expr;
-
-        let source_type = own_type.as_ref();
-
-        match [source_type, target_type] {
-            [Type::Int, Type::Int]
-            | [Type::Bool, Type::Bool]
-            | [Type::Real, Type::Real]
-            | [Type::Null, Type::Null | Type::Record(_) | Type::Array(_)] => Ok(expr),
-
-            [Type::Null, &Type::Alias(Identifier { raw: _, id })] => self.coerce(
-                Typed {
-                    value: expr,
-                    ty: own_type,
-                },
-                self[id].ensure_is_type()?.get_effective(),
-            ),
-
-            [Type::Bool, Type::Real] => Ok(Rc::new(Expression::IntToReal(Rc::new(
-                Expression::BoolToInt(expr),
-            )))),
-            [Type::Bool, Type::Int] => Ok(Rc::new(Expression::BoolToInt(expr))),
-            [Type::Int, Type::Real] => Ok(Rc::new(Expression::IntToReal(expr))),
-
-            [Type::Real, Type::Bool] => Ok(Rc::new(Expression::RealToInt(Rc::new(
-                Expression::IntToBool(expr),
-            )))),
-            [Type::Real, Type::Int] => Ok(Rc::new(Expression::RealToInt(expr))),
-            [Type::Int, Type::Bool] => Ok(Rc::new(Expression::IntToBool(expr))),
-
-            [
-                Type::Int
-                | Type::Bool
-                | Type::Real
-                | Type::Array(_)
-                | Type::Record(_)
-                | Type::Alias(_),
-                Type::Null,
-            ] => Err(AnalysisError {
-                what: format!("Cannot discard a value of type `{own_type}`"),
-            }),
-
-            [
-                Type::Array(_) | Type::Record(_) | Type::Null,
-                Type::Int | Type::Real | Type::Bool,
-            ] => Err(AnalysisError {
-                what: format!(
-                    "Reference-counted type `{own_type}` cannot be converted to numeric type `{target_type}`"
-                ),
-            }),
-
-            [
-                Type::Int | Type::Real | Type::Bool,
-                Type::Array(_) | Type::Record(_),
-            ] => Err(AnalysisError {
-                what: format!(
-                    "Numeric type `{own_type}` cannot be converted to reference-counted type `{target_type}`"
-                ),
-            }),
-
-            [Type::Alias(from), Type::Alias(to)] if from == to => Ok(expr),
-            [Type::Record(r1), Type::Record(r2)] if r1 == r2 => Ok(expr),
-            [
-                Type::Array(ArrayDescription {
-                    t: from_t,
-                    length: from_length,
-                }),
-                Type::Array(ArrayDescription {
-                    t: to_t,
-                    length: to_length,
-                }),
-            ] if from_t == to_t && (from_length == to_length || to_length.is_none()) => Ok(expr),
-
-            [
-                Type::Array(_) | Type::Record(_),
-                Type::Array(_) | Type::Record(_),
-            ]
-            | [Type::Alias(_), _]
-            | [_, Type::Alias(_)] => Err(AnalysisError {
-                what: format!(
-                    "There is no implicit conversion from `{source_type}` to `{target_type}`"
-                ),
-            }),
-        }
-    }
 }

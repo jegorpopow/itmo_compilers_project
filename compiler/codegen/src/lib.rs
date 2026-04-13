@@ -1,8 +1,8 @@
 use std::rc::Rc;
 
 use ast::{
-    AnalysisError, AnalysisResult, Binding, Bindings, Block, Decl, Expression, Literal,
-    LvalueExpression, Program, Routine, RoutineBody, RoutineDecl, Statement, Type, VarDecl,
+    AnalysisError, AnalysisResult, Bindings, Block, Decl, Expression, Literal, LvalueExpression,
+    Program, Routine, RoutineBody, RoutineDecl, Statement, Type,
 };
 use common::{Integer, Position, RawIdentifier};
 
@@ -35,7 +35,7 @@ impl<'a> Compiler<'a> {
 
     fn compile_lvalue_expr(&mut self, expr: &LvalueExpression) -> AnalysisResult<()> {
         match expr {
-            LvalueExpression::Identifier(identifier) => {
+            &LvalueExpression::Binding(identifier) => {
                 self.bytecode.push(Instruction::AddressOf {
                     loc: self.bindings[identifier].ensure_is_var()?.relative_location,
                 });
@@ -61,7 +61,7 @@ impl<'a> Compiler<'a> {
         t: &Rc<Type>,
         fields: &[(RawIdentifier, Rc<Expression>)],
     ) -> AnalysisResult<()> {
-        let effective_type = self.bindings.get_effective_type(t)?;
+        let effective_type = t.effective();
 
         match effective_type.as_ref() {
             Type::Int | Type::Real | Type::Bool | Type::Null => {
@@ -110,7 +110,7 @@ impl<'a> Compiler<'a> {
     fn compile_expr(&mut self, expr: &Expression) -> AnalysisResult<()> {
         match expr {
             Expression::LvalueToRvalue(lvalue_expression) => match lvalue_expression.as_ref() {
-                LvalueExpression::Identifier(identifier) => {
+                &LvalueExpression::Binding(identifier) => {
                     self.bytecode.push(Instruction::Load {
                         loc: self.bindings[identifier].ensure_is_var()?.relative_location,
                     });
@@ -204,7 +204,7 @@ impl<'a> Compiler<'a> {
                 ),
             }),
             Statement::Assignment { lhs, rhs } => match lhs.as_ref() {
-                LvalueExpression::Identifier(identifier) => {
+                &LvalueExpression::Binding(identifier) => {
                     // Microoptimisation: use direct Store instruction instead of calculating address
                     self.compile_expr(rhs)?;
                     self.bytecode.push(Instruction::Store {
@@ -266,30 +266,19 @@ impl<'a> Compiler<'a> {
                 self.bytecode.push(Instruction::Ret);
             }
 
-            Statement::Declaration(Binding { name: _, decl }) => match decl {
-                ast::LocalDecl::Var(VarDecl {
-                    t,
-                    initialiser,
-                    relative_location: _,
-                }) => {
-                    let initialiser = match initialiser {
-                        Some(initialiser) => initialiser.as_ref(),
-                        None => &self.bindings.get_default_initialiser(t)?,
-                    };
-
-                    // Local variable initialisation is just a `push`
-                    self.compile_expr(initialiser)?;
-                }
-
-                ast::LocalDecl::Type(_) | ast::LocalDecl::Const(_) => (),
-            },
+            Statement::Initialization { lhs: _, rhs } => {
+                // Local variable initialisation is just a `push`
+                self.compile_expr(rhs)?;
+            }
         }
 
         Ok(())
     }
 
     pub fn compile(&mut self, program: &Program) -> AnalysisResult<()> {
-        for Binding { name, decl } in &program.globals {
+        for &binding in &program.globals {
+            let decl = &program.bindings[binding];
+            let name = binding;
             match decl {
                 Decl::Var(v) => todo!("var {name:?} = {v:?}"),
                 Decl::Const(v) => todo!("const {name:?} = {v:?}"),

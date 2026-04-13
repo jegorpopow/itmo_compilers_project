@@ -2,10 +2,10 @@ use std::fmt::{Debug, Display};
 use std::hash::Hash;
 use std::rc::Rc;
 
-use common::{Identifier, RawIdentifier};
+use common::RawIdentifier;
 
 use crate::operators::BinaryOperator;
-use crate::{AnalysisError, AnalysisResult};
+use crate::{AnalysisError, AnalysisResult, Expression, Literal};
 
 #[derive(Debug, Hash, PartialEq, Eq, Clone)]
 pub struct FieldDescription {
@@ -50,7 +50,10 @@ pub enum Type {
     Int,
     Real,
     Bool,
-    Alias(Identifier),
+    Alias(
+        // FIXME: replace this with EffectiveType
+        Rc<Type>,
+    ),
     Record(RecordDescription),
     Array(ArrayDescription),
     Null,
@@ -77,6 +80,33 @@ impl Type {
         thread_local! { static NULL: Rc<Type> = Rc::new(Type::Null); }
         NULL.with(Rc::clone)
     }
+
+    #[must_use]
+    pub fn effective(self: &Rc<Self>) -> &Rc<Self> {
+        if let Self::Alias(to) = self.as_ref() {
+            to
+        } else {
+            self
+        }
+    }
+
+    #[must_use]
+    pub fn get_default_initialiser(&self) -> Expression {
+        match self {
+            Type::Int => Expression::Literal(Literal::Integer {
+                repr: "0".to_string(),
+                value: 0,
+            }),
+            Type::Real => Expression::Literal(Literal::Real {
+                repr: "0.0".to_string(),
+                value: 0.0,
+            }),
+            Type::Bool => Expression::Literal(Literal::Bool { value: false }),
+            Type::Alias(ty) =>ty.get_default_initialiser(),
+
+            Type::Record(_) | Type::Array(_) | Type::Null => Expression::Null,
+        }
+    }
 }
 
 impl Display for Type {
@@ -85,7 +115,7 @@ impl Display for Type {
             Type::Int => write!(f, "integer"),
             Type::Real => write!(f, "real"),
             Type::Bool => write!(f, "bool"),
-            Type::Alias(identifier) => write!(f, "{identifier}"),
+            Type::Alias(ty) => write!(f, "alias of {ty}",),
             Type::Record(record_description) => {
                 write!(f, "record")?;
 
