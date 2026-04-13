@@ -33,6 +33,8 @@ testing::tests! {
         logical_operators => "logical_operators"
         nested_control => "nested_control"
         new_array => "new_array"
+        null_array_length => "null_array_length"
+        null_record_field => "null_record_field"
         oob_big => "oob_big"
         oob_neg => "oob_neg"
         oob_zero => "oob_zero"

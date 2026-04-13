@@ -47,6 +47,8 @@ testing::tests! {
         no_such_field => "no_such_field"
         not_scalar_arith => "not_scalar_arith"
         not_scalar_ord => "not_scalar_ord"
+        null_array_length => "null_array_length"
+        null_record_field => "null_record_field"
         oob_big => "oob_big"
         oob_neg => "oob_neg"
         oob_zero => "oob_zero"

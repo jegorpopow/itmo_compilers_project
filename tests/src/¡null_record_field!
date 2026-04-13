@@ -1,0 +1,5 @@
+routine main() is
+    type object is record var field is real; end;
+    var o : object;
+    print o.field;
+end
