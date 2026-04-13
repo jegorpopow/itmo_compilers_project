@@ -1,0 +1,57 @@
+Program(
+    [
+        Routine(
+            RoutineDecl {
+                name: r"main",
+                arguments: [],
+                return_type: None,
+                body: Some(
+                    Block(
+                        Block(
+                            [
+                                TypeDecl(
+                                    TypeDecl {
+                                        name: r"object",
+                                        t: Record(
+                                            RecordDescription {
+                                                fields: [
+                                                    FieldDescription {
+                                                        name: r"field",
+                                                        t: Real,
+                                                    },
+                                                ],
+                                            },
+                                        ),
+                                    },
+                                ),
+                                VarDecl(
+                                    VarDecl {
+                                        name: r"o",
+                                        t: Some(
+                                            Alias(
+                                                r"object",
+                                            ),
+                                        ),
+                                        initialiser: None,
+                                    },
+                                ),
+                                Stmt(
+                                    Print {
+                                        value: LvalueToRvalue(
+                                            Member {
+                                                lhs: Identifier(
+                                                    r"o",
+                                                ),
+                                                member_name: r"field",
+                                            },
+                                        ),
+                                    },
+                                ),
+                            ],
+                        ),
+                    ),
+                ),
+            },
+        ),
+    ],
+)

@@ -1,0 +1,201 @@
+Program {
+    globals: [
+        Binding {
+            name: main(0),
+            decl: Routine(
+                Full(
+                    Routine {
+                        signature: RoutineSignature {
+                            args: [],
+                            return_type: Null,
+                        },
+                        args_bindings: [],
+                        body: Block(
+                            Block {
+                                stmts: [
+                                    Declaration(
+                                        Binding {
+                                            name: object(1),
+                                            decl: Type(
+                                                Full {
+                                                    prescribed: Record(
+                                                        RecordDescription {
+                                                            fields: [
+                                                                FieldDescription {
+                                                                    name: r"field",
+                                                                    t: Real,
+                                                                },
+                                                            ],
+                                                        },
+                                                    ),
+                                                    effective: Record(
+                                                        RecordDescription {
+                                                            fields: [
+                                                                FieldDescription {
+                                                                    name: r"field",
+                                                                    t: Real,
+                                                                },
+                                                            ],
+                                                        },
+                                                    ),
+                                                },
+                                            ),
+                                        },
+                                    ),
+                                    Declaration(
+                                        Binding {
+                                            name: o(2),
+                                            decl: Var(
+                                                VarDecl {
+                                                    t: Alias(
+                                                        object(1),
+                                                    ),
+                                                    initialiser: None,
+                                                    relative_location: Local(
+                                                        0,
+                                                    ),
+                                                },
+                                            ),
+                                        },
+                                    ),
+                                    Print {
+                                        value: LvalueToRvalue(
+                                            Member {
+                                                lhs: Identifier(
+                                                    o(2),
+                                                ),
+                                                member_name: r"field",
+                                            },
+                                        ),
+                                    },
+                                ],
+                                locals_count: 1,
+                            },
+                        ),
+                    },
+                ),
+            ),
+        },
+    ],
+    bindings: Bindings {
+        arena: [
+            Binding {
+                name: main(0),
+                decl: Routine(
+                    Full(
+                        Routine {
+                            signature: RoutineSignature {
+                                args: [],
+                                return_type: Null,
+                            },
+                            args_bindings: [],
+                            body: Block(
+                                Block {
+                                    stmts: [
+                                        Declaration(
+                                            Binding {
+                                                name: object(1),
+                                                decl: Type(
+                                                    Full {
+                                                        prescribed: Record(
+                                                            RecordDescription {
+                                                                fields: [
+                                                                    FieldDescription {
+                                                                        name: r"field",
+                                                                        t: Real,
+                                                                    },
+                                                                ],
+                                                            },
+                                                        ),
+                                                        effective: Record(
+                                                            RecordDescription {
+                                                                fields: [
+                                                                    FieldDescription {
+                                                                        name: r"field",
+                                                                        t: Real,
+                                                                    },
+                                                                ],
+                                                            },
+                                                        ),
+                                                    },
+                                                ),
+                                            },
+                                        ),
+                                        Declaration(
+                                            Binding {
+                                                name: o(2),
+                                                decl: Var(
+                                                    VarDecl {
+                                                        t: Alias(
+                                                            object(1),
+                                                        ),
+                                                        initialiser: None,
+                                                        relative_location: Local(
+                                                            0,
+                                                        ),
+                                                    },
+                                                ),
+                                            },
+                                        ),
+                                        Print {
+                                            value: LvalueToRvalue(
+                                                Member {
+                                                    lhs: Identifier(
+                                                        o(2),
+                                                    ),
+                                                    member_name: r"field",
+                                                },
+                                            ),
+                                        },
+                                    ],
+                                    locals_count: 1,
+                                },
+                            ),
+                        },
+                    ),
+                ),
+            },
+            Binding {
+                name: object(1),
+                decl: Type(
+                    Full {
+                        prescribed: Record(
+                            RecordDescription {
+                                fields: [
+                                    FieldDescription {
+                                        name: r"field",
+                                        t: Real,
+                                    },
+                                ],
+                            },
+                        ),
+                        effective: Record(
+                            RecordDescription {
+                                fields: [
+                                    FieldDescription {
+                                        name: r"field",
+                                        t: Real,
+                                    },
+                                ],
+                            },
+                        ),
+                    },
+                ),
+            },
+            Binding {
+                name: o(2),
+                decl: Var(
+                    VarDecl {
+                        t: Alias(
+                            object(1),
+                        ),
+                        initialiser: None,
+                        relative_location: Local(
+                            0,
+                        ),
+                    },
+                ),
+            },
+        ],
+    },
+}
