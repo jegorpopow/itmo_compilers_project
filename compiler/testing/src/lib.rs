@@ -1,5 +1,8 @@
 use core::fmt;
 
+#[cfg(feature = "testing")]
+pub use expect_test::{expect, expect_file};
+
 pub mod paths;
 
 #[derive(Debug, Clone, Copy)]
@@ -27,7 +30,7 @@ pub type TestResult = anyhow::Result<()>;
 
 #[track_caller]
 #[cfg(feature = "testing")]
-pub fn run_test<E: fmt::Debug>(
+pub fn run_test<E: fmt::Display>(
     folder: &str,
     out_extension: &str,
     run: fn(&str) -> Result<String, E>,
@@ -39,17 +42,19 @@ pub fn run_test<E: fmt::Debug>(
     let source = std::fs::read_to_string(&test_src)
         .with_context(|| format!("Error reading {}", test_src.display()))?;
     let result = run(&source);
-    let expected =
-        ::expect_test::expect_file![paths::output_for(folder, test, out_extension, mode)];
-    match mode {
-        Mode::Pass => expected.assert_eq(&result.expect("Test failed but expected to pass")),
+    let expected = expect_file![paths::output_for(folder, test, out_extension, mode)];
+    expected.assert_eq(&match mode {
+        Mode::Pass => match result {
+            Ok(actual) => actual,
+            Err(e) => bail!("Test expected to pass, but failed with the following result:\n{e}"),
+        },
         Mode::Fail => match result {
             Ok(actual) => {
                 bail!("Test expected to fail, but passed with the following result:\n{actual}")
             }
-            Err(e) => expected.assert_debug_eq(&e),
+            Err(e) => format!("{e}\n"),
         },
-    }
+    });
     Ok(())
 }
 

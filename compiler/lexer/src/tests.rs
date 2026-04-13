@@ -40,6 +40,7 @@ testing::tests! {
         lexer_invalid => "lexer_invalid"
         local_type => "local_type"
         logical_operators => "logical_operators"
+        malformed_integer => "malformed_integer"
         nested_control => "nested_control"
         new_array => "new_array"
         new_array_fixed => "new_array_fixed"

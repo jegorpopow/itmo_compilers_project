@@ -1,9 +1,2 @@
-Unrecoverable {
-    error: ParsingError {
-        what: "Token of kind KEYWORD(End) expected, token \"var\" @ 2:2-2:5 is KEYWORD(Var) found",
-        position: Position {
-            line: 2,
-            column: 2,
-        },
-    },
-}
+Parsing error at 2:8: expected an identifier, but found `is`;
+this might be caused by an error at 2:6: unexpected character: '🐈'.

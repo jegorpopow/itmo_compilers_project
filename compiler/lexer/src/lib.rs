@@ -8,8 +8,7 @@ mod tokens;
 mod tests;
 
 pub use crate::tokens::{
-    BuiltinTypename, Comment, Identifier, InvalidToken, Keyword, Literal, Operator, Token,
-    TokenKind,
+    BuiltinTypename, Comment, Identifier, Keyword, Lexeme, Literal, Operator, Token,
 };
 
 trait ImmutableIterator<'a>: Sized + Clone + From<&'a str> {
@@ -145,91 +144,91 @@ fn iterators_to_extent(start: &IndexIterator<'_>, end: &IndexIterator<'_>) -> Ex
 }
 
 /// Processes all the identifier-like lexemes (identifiers, keywords, bool literals and some operators)
-fn name_disambiguation(lexeme: &str) -> TokenKind<'_> {
-    const KNOWN_TOKENS: phf::Map<&str, TokenKind<'static>> = phf_map! {
-        "var" => TokenKind::Keyword(Keyword::Var),
-        "type" => TokenKind::Keyword(Keyword::Type),
-        "routine" => TokenKind::Keyword(Keyword::Routine),
-        "array" => TokenKind::Keyword(Keyword::Array),
-        "record" => TokenKind::Keyword(Keyword::Record),
-        "is" => TokenKind::Keyword(Keyword::Is),
-        "end" => TokenKind::Keyword(Keyword::End),
-        "if" => TokenKind::Keyword(Keyword::If),
-        "then" => TokenKind::Keyword(Keyword::Then),
-        "else" => TokenKind::Keyword(Keyword::Else),
-        "in" => TokenKind::Keyword(Keyword::In),
-        "while" => TokenKind::Keyword(Keyword::While),
-        "for" => TokenKind::Keyword(Keyword::For),
-        "loop" => TokenKind::Keyword(Keyword::Loop),
-        "reverse" => TokenKind::Keyword(Keyword::Reverse),
-        "return"  => TokenKind::Keyword(Keyword::Return),
-        "print" => TokenKind::Keyword(Keyword::Print),
-        "where" => TokenKind::Keyword(Keyword::Where),
-        "null" => TokenKind::Keyword(Keyword::Null),
-        "new" => TokenKind::Keyword(Keyword::New),
-        "constant" => TokenKind::Keyword(Keyword::Constant),
-        "and" => TokenKind::Operator(Operator::And),
-        "or" => TokenKind::Operator(Operator::Or),
-        "xor" => TokenKind::Operator(Operator::Xor),
-        "not" => TokenKind::Operator(Operator::Not),
-        "true" => TokenKind::Literal(Literal::Bool(true)),
-        "false" => TokenKind::Literal(Literal::Bool(false)),
-        "integer" => TokenKind::BuiltinTypename(BuiltinTypename::Integer),
-        "real" => TokenKind::BuiltinTypename(BuiltinTypename::Real),
-        "boolean" => TokenKind::BuiltinTypename(BuiltinTypename::Boolean),
-        "NaN" => TokenKind::Literal(Literal::Real(Real::NAN)),
-        "Inf" => TokenKind::Literal(Literal::Real(Real::INFINITY)),
-        "assert" => TokenKind::Keyword(Keyword::Assert),
-        "panic" => TokenKind::Keyword(Keyword::Panic),
+fn name_disambiguation(lexeme: &str) -> Token<'_> {
+    const KNOWN_TOKENS: phf::Map<&str, Token<'static>> = phf_map! {
+        "var" => Token::Keyword(Keyword::Var),
+        "type" => Token::Keyword(Keyword::Type),
+        "routine" => Token::Keyword(Keyword::Routine),
+        "array" => Token::Keyword(Keyword::Array),
+        "record" => Token::Keyword(Keyword::Record),
+        "is" => Token::Keyword(Keyword::Is),
+        "end" => Token::Keyword(Keyword::End),
+        "if" => Token::Keyword(Keyword::If),
+        "then" => Token::Keyword(Keyword::Then),
+        "else" => Token::Keyword(Keyword::Else),
+        "in" => Token::Keyword(Keyword::In),
+        "while" => Token::Keyword(Keyword::While),
+        "for" => Token::Keyword(Keyword::For),
+        "loop" => Token::Keyword(Keyword::Loop),
+        "reverse" => Token::Keyword(Keyword::Reverse),
+        "return"  => Token::Keyword(Keyword::Return),
+        "print" => Token::Keyword(Keyword::Print),
+        "where" => Token::Keyword(Keyword::Where),
+        "null" => Token::Keyword(Keyword::Null),
+        "new" => Token::Keyword(Keyword::New),
+        "constant" => Token::Keyword(Keyword::Constant),
+        "and" => Token::Operator(Operator::And),
+        "or" => Token::Operator(Operator::Or),
+        "xor" => Token::Operator(Operator::Xor),
+        "not" => Token::Operator(Operator::Not),
+        "true" => Token::Literal(Literal::Bool(true)),
+        "false" => Token::Literal(Literal::Bool(false)),
+        "integer" => Token::BuiltinTypename(BuiltinTypename::Integer),
+        "real" => Token::BuiltinTypename(BuiltinTypename::Real),
+        "boolean" => Token::BuiltinTypename(BuiltinTypename::Boolean),
+        "NaN" => Token::Literal(Literal::Real(Ok(Real::NAN))),
+        "Inf" => Token::Literal(Literal::Real(Ok(Real::INFINITY))),
+        "assert" => Token::Keyword(Keyword::Assert),
+        "panic" => Token::Keyword(Keyword::Panic),
     };
 
     match KNOWN_TOKENS.get(lexeme) {
         Some(token_value) => token_value.clone(),
-        None => TokenKind::Identifier(Identifier { name: lexeme }),
+        None => Token::Identifier(Identifier { name: lexeme }),
     }
 }
 
-fn nominal_token<'a>(start: &IndexIterator<'a>) -> Option<(TokenKind<'a>, IndexIterator<'a>)> {
+fn nominal_token<'a>(start: &IndexIterator<'a>) -> Option<(Token<'a>, IndexIterator<'a>)> {
     start
         .next()
         .is_some_and(|(ch, _)| is_identifier_start(ch))
         .then(|| start.take_while_map(is_identifier_continue, name_disambiguation))
 }
 
-fn comment_token<'a>(start: &IndexIterator<'a>) -> Option<(TokenKind<'a>, IndexIterator<'a>)> {
+fn comment_token<'a>(start: &IndexIterator<'a>) -> Option<(Token<'a>, IndexIterator<'a>)> {
     start.stars_with("--").map(|comment_start| {
         comment_start.take_while_map(
             |ch| ch != '\n',
-            |comment| TokenKind::Comment(Comment { value: comment }),
+            |comment| Token::Comment(Comment { value: comment }),
         )
     })
 }
 
-fn symbolic_token<'a>(start: &IndexIterator<'a>) -> Option<(TokenKind<'a>, IndexIterator<'a>)> {
-    const KNOWN_TOKENS: &[(&str, TokenKind<'static>)] = &[
-        (":=", TokenKind::Assignment),
-        ("::", TokenKind::Cast),
-        ("..", TokenKind::RangeSymbol),
-        ("/=", TokenKind::Operator(Operator::Ne)),
-        ("<=", TokenKind::Operator(Operator::Le)),
-        (">=", TokenKind::Operator(Operator::Ge)),
-        ("=>", TokenKind::RightArrow),
-        ("(", TokenKind::LeftParenthesis),
-        (")", TokenKind::RightParenthesis),
-        ("[", TokenKind::LeftBracket),
-        ("]", TokenKind::RightBracket),
-        (",", TokenKind::Comma),
-        (".", TokenKind::Dot),
-        (";", TokenKind::Semicolon),
-        (":", TokenKind::Colon),
-        ("+", TokenKind::Operator(Operator::Plus)),
-        ("-", TokenKind::Operator(Operator::Minus)),
-        ("*", TokenKind::Operator(Operator::Mul)),
-        ("/", TokenKind::Operator(Operator::Div)),
-        ("%", TokenKind::Operator(Operator::Mod)),
-        ("=", TokenKind::Operator(Operator::Eq)),
-        ("<", TokenKind::Operator(Operator::Lt)),
-        (">", TokenKind::Operator(Operator::Gt)),
+fn symbolic_token<'a>(start: &IndexIterator<'a>) -> Option<(Token<'a>, IndexIterator<'a>)> {
+    const KNOWN_TOKENS: &[(&str, Token<'static>)] = &[
+        (":=", Token::Assignment),
+        ("::", Token::Cast),
+        ("..", Token::RangeSymbol),
+        ("/=", Token::Operator(Operator::Ne)),
+        ("<=", Token::Operator(Operator::Le)),
+        (">=", Token::Operator(Operator::Ge)),
+        ("=>", Token::RightArrow),
+        ("(", Token::LeftParenthesis),
+        (")", Token::RightParenthesis),
+        ("[", Token::LeftBracket),
+        ("]", Token::RightBracket),
+        (",", Token::Comma),
+        (".", Token::Dot),
+        (";", Token::Semicolon),
+        (":", Token::Colon),
+        ("+", Token::Operator(Operator::Plus)),
+        ("-", Token::Operator(Operator::Minus)),
+        ("*", Token::Operator(Operator::Mul)),
+        ("/", Token::Operator(Operator::Div)),
+        ("%", Token::Operator(Operator::Mod)),
+        ("=", Token::Operator(Operator::Eq)),
+        ("<", Token::Operator(Operator::Lt)),
+        (">", Token::Operator(Operator::Gt)),
     ];
 
     KNOWN_TOKENS
@@ -237,24 +236,18 @@ fn symbolic_token<'a>(start: &IndexIterator<'a>) -> Option<(TokenKind<'a>, Index
         .find_map(|(pattern, token)| start.stars_with(pattern).map(|end| (token.to_owned(), end)))
 }
 
-fn real_literal_from_representation(s: &str) -> TokenKind<'_> {
-    match s.parse() {
-        Ok(value) => TokenKind::Literal(Literal::Real(value)),
-        Err(e) => TokenKind::Invalid(InvalidToken::MalformedReal(e)),
-    }
+fn real_literal_from_representation(s: &str) -> Token<'_> {
+    Token::Literal(Literal::Real(s.parse()))
 }
 
-fn integer_literal_from_representation(s: &str) -> TokenKind<'_> {
-    match s.parse() {
-        Ok(value) => TokenKind::Literal(Literal::Integer(value)),
-        Err(e) => TokenKind::Invalid(InvalidToken::MalformedInteger(e)),
-    }
+fn integer_literal_from_representation(s: &str) -> Token<'_> {
+    Token::Literal(Literal::Integer(s.parse()))
 }
 
 fn numeric_token<'a>(
     allow_sign: bool,
     begin: &IndexIterator<'a>,
-) -> Option<(TokenKind<'a>, IndexIterator<'a>)> {
+) -> Option<(Token<'a>, IndexIterator<'a>)> {
     let start_digits = if allow_sign && let Some(('-' | '+', it)) = begin.next() {
         it
     } else {
@@ -307,35 +300,35 @@ impl<'src> From<&'src str> for Lexer<'src> {
 }
 
 impl Lexer<'_> {
-    fn update_allow_sign(&mut self, token: &TokenKind<'_>) {
+    fn update_allow_sign(&mut self, token: &Token<'_>) {
         self.allow_sign = match token {
-            TokenKind::Comment(_) => return,
+            Token::Comment(_) => return,
 
-            TokenKind::Assignment
-            | TokenKind::LeftParenthesis
-            | TokenKind::RightBracket
-            | TokenKind::Operator(_)
-            | TokenKind::Semicolon
-            | TokenKind::RangeSymbol
-            | TokenKind::Comma
-            | TokenKind::RightArrow
-            | TokenKind::Keyword(_) => true,
+            Token::Assignment
+            | Token::LeftParenthesis
+            | Token::RightBracket
+            | Token::Operator(_)
+            | Token::Semicolon
+            | Token::RangeSymbol
+            | Token::Comma
+            | Token::RightArrow
+            | Token::Keyword(_) => true,
 
-            TokenKind::Identifier(_)
-            | TokenKind::Literal(_)
-            | TokenKind::BuiltinTypename(_)
-            | TokenKind::LeftBracket
-            | TokenKind::RightParenthesis
-            | TokenKind::Dot
-            | TokenKind::Invalid(_)
-            | TokenKind::Cast
-            | TokenKind::Colon => false,
+            Token::Identifier(_)
+            | Token::Literal(_)
+            | Token::BuiltinTypename(_)
+            | Token::LeftBracket
+            | Token::RightParenthesis
+            | Token::Dot
+            | Token::Unexpected(_)
+            | Token::Cast
+            | Token::Colon => false,
         }
     }
 }
 
 impl<'src> Iterator for Lexer<'src> {
-    type Item = Token<'src>;
+    type Item = Lexeme<'src>;
 
     fn next(&mut self) -> Option<Self::Item> {
         let begin = self.pos.skip(char::is_whitespace);
@@ -344,15 +337,12 @@ impl<'src> Iterator for Lexer<'src> {
             .or_else(|| nominal_token(&begin))
             .or_else(|| numeric_token(self.allow_sign, &begin))
             .or_else(|| symbolic_token(&begin))
-            .unwrap_or((
-                TokenKind::Invalid(InvalidToken::Unexpected(first_char)),
-                rest,
-            ));
+            .unwrap_or((Token::Unexpected(first_char), rest));
         self.update_allow_sign(&kind);
-        let token = Token {
+        let token = Lexeme {
             extent: iterators_to_extent(&begin, &end),
-            lexeme: ImmutableIterator::slice_to_str(&begin, &end),
-            kind,
+            text: ImmutableIterator::slice_to_str(&begin, &end),
+            token: kind,
         };
         self.pos = end;
         Some(token)

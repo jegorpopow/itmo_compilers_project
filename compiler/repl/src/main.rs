@@ -1,18 +1,12 @@
-use std::{
-    io::{self, Write},
-    rc::Rc,
-};
+use std::io::{self, Write};
 
 use lexer::Lexer;
-use parser::{Expression, IndexedIterator, Parser, ParserResult, TokenIterator as _};
+use parser::{Expression, Parser};
 
-fn parse_expr_from_line(str: &str) -> ParserResult<Rc<Expression>> {
-    let tokens: Vec<_> = Lexer::from(str).collect();
-    let mut parser = Parser::new();
-    let start = IndexedIterator::from(tokens.as_slice());
-    let (result, tail) = parser.parse_expr(start)?;
-    assert_eq!(tail.current(), None, "Unparsed tokens");
-    parser.finish(result)
+fn parse_expr_from_line(str: &str) -> parser::FinalResult<Expression> {
+    let mut parser = Parser::new(Lexer::from(str));
+    let expr = parser.parse_expr();
+    parser.finish(expr)
 }
 
 fn main() -> io::Result<()> {
@@ -25,7 +19,7 @@ fn main() -> io::Result<()> {
         let _: usize = io::stdin().read_line(&mut buffer)?;
 
         match parse_expr_from_line(&buffer) {
-            Ok(expr) => println!("{:?}", *expr),
+            Ok(expr) => println!("{expr:?}"),
             Err(err) => println!("error: {err}"),
         }
     }

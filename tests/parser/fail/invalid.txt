@@ -1,9 +1,1 @@
-Unrecoverable {
-    error: ParsingError {
-        what: "Declaration expected, \";\" @ 3:3-3:4 is SEMICOLON found",
-        position: Position {
-            line: 3,
-            column: 3,
-        },
-    },
-}
+Parsing error at 3:3: expected `var`, `type`, `routine`, `constant` or EOF, but found `;`.

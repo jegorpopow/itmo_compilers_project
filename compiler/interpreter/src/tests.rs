@@ -1,17 +1,7 @@
 use core::fmt;
 
-struct DebugDisplay<T: fmt::Display>(T);
-
-impl<T: fmt::Display> fmt::Debug for DebugDisplay<T> {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        let Self(inner) = self;
-        fmt::Display::fmt(&inner, f)
-    }
-}
-
-fn interpret(src: &str) -> Result<String, DebugDisplay<String>> {
-    let tokens: Vec<_> = lexer::Lexer::from(src).collect();
-    let program = parser::parse_program(&tokens).expect("Failed to parse");
+fn interpret(src: &str) -> Result<String, String> {
+    let program = parser::parse_program(lexer::Lexer::from(src)).expect("Failed to parse");
     let program = ast::convert(&program).expect("Failed to typecheck");
     let mut output: Vec<u8> = vec![];
     let result = crate::interpret(&mut output, &program);
@@ -21,7 +11,7 @@ fn interpret(src: &str) -> Result<String, DebugDisplay<String>> {
         Err(e) => {
             use fmt::Write;
             writeln!(output, "{e}").expect("Error formatting shouldn't fail");
-            Err(DebugDisplay(output))
+            Err(output)
         }
     }
 }

@@ -1,5 +1,5 @@
+use core::fmt;
 use core::num::{ParseFloatError, ParseIntError};
-use core::{error, fmt};
 
 use common::{Extent, Integer, Real};
 
@@ -37,10 +37,10 @@ pub struct Identifier<'a> {
     pub name: &'a str,
 }
 
-#[derive(PartialEq, fmt::Debug, Clone, Copy)]
+#[derive(PartialEq, fmt::Debug, Clone)]
 pub enum Literal {
-    Real(Real),
-    Integer(Integer),
+    Real(Result<Real, ParseFloatError>),
+    Integer(Result<Integer, ParseIntError>),
     Bool(bool),
 }
 
@@ -54,33 +54,6 @@ pub enum BuiltinTypename {
 #[derive(PartialEq, Eq, Hash, fmt::Debug, Clone)]
 pub struct Comment<'a> {
     pub value: &'a str,
-}
-
-#[derive(PartialEq, Eq, fmt::Debug, Clone)]
-pub enum InvalidToken {
-    Unexpected(char),
-    MalformedInteger(ParseIntError),
-    MalformedReal(ParseFloatError),
-}
-
-impl error::Error for InvalidToken {
-    fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
-        match self {
-            Self::Unexpected(_) => None,
-            Self::MalformedInteger(e) => Some(e),
-            Self::MalformedReal(e) => Some(e),
-        }
-    }
-}
-
-impl fmt::Display for InvalidToken {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        match self {
-            Self::Unexpected(c) => write!(f, "Unexpected character: {c:?}"),
-            Self::MalformedInteger(e) => write!(f, "Malformed integer literal: {e}"),
-            Self::MalformedReal(e) => write!(f, "Malformed real literal: {e}"),
-        }
-    }
 }
 
 impl fmt::Display for Comment<'_> {
@@ -98,14 +71,14 @@ impl fmt::Display for Comment<'_> {
 }
 
 #[derive(PartialEq, Clone, Debug)]
-pub enum TokenKind<'a> {
+pub enum Token<'a> {
     Identifier(Identifier<'a>),
     Keyword(Keyword),
     Literal(Literal),
     BuiltinTypename(BuiltinTypename),
     Operator(Operator),
     Comment(Comment<'a>),
-    Invalid(InvalidToken),
+    Unexpected(char),
     LeftBracket,
     RightBracket,
     LeftParenthesis,
@@ -124,58 +97,64 @@ pub enum TokenKind<'a> {
     Colon,
 }
 
-impl fmt::Display for TokenKind<'_> {
+impl fmt::Display for Token<'_> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
-            TokenKind::Identifier(Identifier { name }) => write!(f, "IDENTIFIER({name})"),
-            TokenKind::Keyword(keyword) => write!(f, "KEYWORD({keyword:?})"),
-            TokenKind::Literal(Literal::Integer(value)) => {
+            Token::Identifier(Identifier { name }) => write!(f, "IDENTIFIER({name})"),
+            Token::Keyword(keyword) => write!(f, "KEYWORD({keyword:?})"),
+            Token::Literal(Literal::Integer(Ok(value))) => {
                 write!(f, "INTEGER LITERAL({value})")
             }
-            TokenKind::Literal(Literal::Real(value)) => {
+            Token::Literal(Literal::Real(Ok(value))) => {
                 write!(f, "REAL LITERAL({value})")
             }
-            TokenKind::Literal(Literal::Bool(value)) => {
+            Token::Literal(Literal::Bool(value)) => {
                 write!(f, "BOOLEAN LITERAL({value})")
             }
-            TokenKind::BuiltinTypename(builtin_typename) => {
+            Token::BuiltinTypename(builtin_typename) => {
                 write!(f, "TYPENAME({builtin_typename:?})")
             }
-            TokenKind::Operator(operator) => write!(f, "OPERATOR({operator:?})"),
-            TokenKind::Comment(comment) => write!(f, "COMMENT({comment})"),
-            TokenKind::Invalid(problem) => write!(f, "INVALID({problem})"),
-            TokenKind::LeftBracket => write!(f, "LEFT BRACKET"),
-            TokenKind::RightBracket => write!(f, "RIGHT BRACKET"),
-            TokenKind::LeftParenthesis => write!(f, "LEFT PARENTHESIS"),
-            TokenKind::RightParenthesis => write!(f, "RIGHT PARENTHESIS"),
-            TokenKind::RightArrow => write!(f, "FUNCTION ARROW"),
-            TokenKind::Assignment => write!(f, "ASSIGNMENT OPERATOR"),
-            TokenKind::RangeSymbol => write!(f, "RANGE"),
-            TokenKind::Dot => write!(f, "DOT"),
-            TokenKind::Comma => write!(f, "COMMA"),
-            TokenKind::Semicolon => write!(f, "SEMICOLON"),
-            TokenKind::Colon => write!(f, "COLON"),
-            TokenKind::Cast => write!(f, "CAST"),
+            Token::Operator(operator) => write!(f, "OPERATOR({operator:?})"),
+            Token::Comment(comment) => write!(f, "COMMENT({comment})"),
+            Token::Literal(Literal::Integer(Err(e))) => {
+                write!(f, "INVALID(Malformed integer literal: {e})")
+            }
+            Token::Literal(Literal::Real(Err(e))) => {
+                write!(f, "INVALID(Malformed real literal: {e})")
+            }
+            Token::Unexpected(c) => write!(f, "INVALID(Unexpected character: {c:?})"),
+            Token::LeftBracket => write!(f, "LEFT BRACKET"),
+            Token::RightBracket => write!(f, "RIGHT BRACKET"),
+            Token::LeftParenthesis => write!(f, "LEFT PARENTHESIS"),
+            Token::RightParenthesis => write!(f, "RIGHT PARENTHESIS"),
+            Token::RightArrow => write!(f, "FUNCTION ARROW"),
+            Token::Assignment => write!(f, "ASSIGNMENT OPERATOR"),
+            Token::RangeSymbol => write!(f, "RANGE"),
+            Token::Dot => write!(f, "DOT"),
+            Token::Comma => write!(f, "COMMA"),
+            Token::Semicolon => write!(f, "SEMICOLON"),
+            Token::Colon => write!(f, "COLON"),
+            Token::Cast => write!(f, "CAST"),
         }
     }
 }
 
 // Token description
 #[derive(Debug, Clone, PartialEq)]
-pub struct Token<'a> {
+pub struct Lexeme<'a> {
     pub extent: Extent,
-    pub lexeme: &'a str,
-    pub kind: TokenKind<'a>,
+    pub text: &'a str,
+    pub token: Token<'a>,
 }
 
-impl fmt::Display for Token<'_> {
+impl fmt::Display for Lexeme<'_> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         let Self {
             extent,
-            lexeme,
-            kind,
+            text,
+            token,
         } = self;
-        write!(f, "{lexeme:?} @ {extent} is {kind}")
+        write!(f, "{text:?} @ {extent} is {token}")
     }
 }
 

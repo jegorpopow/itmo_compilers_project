@@ -6,7 +6,6 @@ use anyhow::Context;
 use ast::convert;
 use interpreter::interpret;
 use lexer::Lexer;
-use parser::ParserError;
 use parser::parse_program;
 
 // TODO: create a Driver module
@@ -20,17 +19,7 @@ fn main() -> anyhow::Result<()> {
         eprintln!("{token}")
     }
 
-    let program = match parse_program(tokens.as_slice()) {
-        Ok(program) => program,
-        Err(ParserError::Recoverable { errors, parsed }) => {
-            eprintln!("Following errors occurred:");
-            for err in errors {
-                eprintln!("\t{err}");
-            }
-            parsed
-        }
-        Err(ParserError::Unrecoverable { error }) => Err(error).context("Parsing error")?,
-    };
+    let program = parse_program(tokens).context("Parsing error")?;
 
     for decl in &program.0 {
         eprintln!("{decl:?}");
