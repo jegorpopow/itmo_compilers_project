@@ -7,8 +7,8 @@ Program(
                     Int,
                 ),
                 initialiser: Some(
-                    IntegerLiteral(
-                        IntegerLiteral {
+                    Literal(
+                        Integer {
                             repr: "0",
                             value: 0,
                         },
@@ -39,8 +39,8 @@ Program(
                                         name: r"x",
                                         t: None,
                                         initialiser: Some(
-                                            IntegerLiteral(
-                                                IntegerLiteral {
+                                            Literal(
+                                                Integer {
                                                     repr: "1",
                                                     value: 1,
                                                 },
@@ -59,8 +59,10 @@ Program(
                                 ),
                                 Stmt(
                                     If {
-                                        condition: BoolLiteral(
-                                            True,
+                                        condition: Literal(
+                                            Bool {
+                                                value: true,
+                                            },
                                         ),
                                         on_true: Block(
                                             [
@@ -69,8 +71,10 @@ Program(
                                                         name: r"x",
                                                         t: None,
                                                         initialiser: Some(
-                                                            BoolLiteral(
-                                                                True,
+                                                            Literal(
+                                                                Bool {
+                                                                    value: true,
+                                                                },
                                                             ),
                                                         ),
                                                     },

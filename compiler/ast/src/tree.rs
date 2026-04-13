@@ -1,80 +1,17 @@
 use core::ops::Index;
 use std::rc::Rc;
 
-use derive_where::derive_where;
-
 use common::{
     BindingId, Identifier, Integer, Location, LoopOrder, Position, RawIdentifier, Real, VarLoc,
     integer_to_real, real_to_integer,
 };
+pub use parser::Literal;
 
 use crate::{
     AnalysisError, AnalysisResult, Typed,
     operators::{BinaryOperator, BoolBinOp, EqBinOp, IntBinOp, RealBinOp, UnaryOperator},
     types::{ArrayDescription, Type},
 };
-
-#[derive(Debug)]
-#[derive_where(Hash, Eq, PartialEq)]
-pub struct IntegerLiteral {
-    pub repr: String,
-    #[derive_where(skip(EqHashOrd))]
-    pub value: Integer,
-}
-
-impl From<&IntegerLiteral> for Integer {
-    fn from(value: &IntegerLiteral) -> Self {
-        value.value
-    }
-}
-
-#[derive(Debug)]
-#[derive_where(Hash, Eq, PartialEq)]
-pub struct RealLiteral {
-    pub repr: String,
-    #[derive_where(skip(EqHashOrd))]
-    pub value: Real,
-}
-
-impl From<&RealLiteral> for Real {
-    fn from(value: &RealLiteral) -> Self {
-        value.value
-    }
-}
-
-#[derive(Debug, Hash, PartialEq, Eq, Clone, Copy)]
-pub enum BoolLiteral {
-    True,
-    False,
-}
-
-impl From<bool> for BoolLiteral {
-    fn from(value: bool) -> Self {
-        #[expect(clippy::match_bool, reason = "prettier this way")]
-        match value {
-            true => Self::True,
-            false => Self::False,
-        }
-    }
-}
-
-impl From<BoolLiteral> for bool {
-    fn from(value: BoolLiteral) -> Self {
-        match value {
-            BoolLiteral::True => true,
-            BoolLiteral::False => false,
-        }
-    }
-}
-
-impl From<BoolLiteral> for Integer {
-    fn from(value: BoolLiteral) -> Self {
-        match value {
-            BoolLiteral::True => 1,
-            BoolLiteral::False => 0,
-        }
-    }
-}
 
 #[derive(Debug, Hash, PartialEq, Eq)]
 pub enum LvalueExpression {
@@ -92,9 +29,7 @@ pub enum LvalueExpression {
 #[derive(Debug, Hash, PartialEq, Eq)]
 pub enum Expression {
     LvalueToRvalue(Rc<LvalueExpression>),
-    IntegerLiteral(IntegerLiteral),
-    RealLiteral(RealLiteral),
-    BoolLiteral(BoolLiteral),
+    Literal(Literal),
     Call {
         callee: Identifier,
         args: Vec<Rc<Expression>>,
@@ -130,8 +65,21 @@ pub enum Expression {
     IntToReal(Rc<Expression>),
 }
 
-#[derive(Debug, PartialEq)]
-pub(crate) enum EvaluatedValue {
+impl From<Literal> for Typed<Expression> {
+    fn from(literal: Literal) -> Self {
+        Typed {
+            ty: match literal {
+                Literal::Bool { .. } => Type::bool(),
+                Literal::Integer { .. } => Type::int(),
+                Literal::Real { .. } => Type::real(),
+            },
+            value: Rc::new(Expression::Literal(literal)),
+        }
+    }
+}
+
+#[derive(Debug, PartialEq, Clone, Copy)]
+pub enum EvaluatedValue {
     Int(Integer),
     Real(Real),
     Bool(bool),
@@ -167,25 +115,17 @@ impl EvaluatedValue {
 }
 
 impl EvaluatedValue {
-    // FIXME(GrigorenkoPV): introduce Expression::Literal
-    pub(crate) fn as_literal(&self) -> Rc<Expression> {
+    pub(crate) fn as_literal(&self) -> Literal {
         match self {
-            EvaluatedValue::Int(val) => Expression::IntegerLiteral(IntegerLiteral {
+            EvaluatedValue::Int(val) => Literal::Integer {
                 repr: val.to_string(),
                 value: *val,
-            })
-            .into(),
-            EvaluatedValue::Real(val) => Expression::RealLiteral(RealLiteral {
+            },
+            EvaluatedValue::Real(val) => Literal::Real {
                 repr: val.to_string(),
                 value: *val,
-            })
-            .into(),
-            EvaluatedValue::Bool(val) => Expression::BoolLiteral(if *val {
-                BoolLiteral::True
-            } else {
-                BoolLiteral::False
-            })
-            .into(),
+            },
+            EvaluatedValue::Bool(val) => Literal::Bool { value: *val },
         }
     }
 
@@ -258,9 +198,11 @@ impl BinOp<EvaluatedValue> for EqBinOp {
 impl Expression {
     pub(crate) fn try_constexpr_evaluate(&self) -> AnalysisResult<EvaluatedValue> {
         Ok(match self {
-            Expression::IntegerLiteral(lit) => EvaluatedValue::Int(lit.value),
-            Expression::RealLiteral(lit) => EvaluatedValue::Real(lit.value),
-            &Expression::BoolLiteral(lit) => EvaluatedValue::Bool(lit.into()),
+            Expression::Literal(lit) => match *lit {
+                Literal::Bool { value } => EvaluatedValue::Bool(value),
+                Literal::Integer { repr: _, value } => EvaluatedValue::Int(value),
+                Literal::Real { repr: _, value } => EvaluatedValue::Real(value),
+            },
 
             Expression::BinOp { op, lhs, rhs } => {
                 let lhs = lhs.try_constexpr_evaluate()?;
@@ -319,11 +261,9 @@ pub struct VarDecl {
     pub relative_location: Location,
 }
 
-/// FIXME(GrigorenkoPV): Typed<Literal>
-#[derive(Debug, Hash, Clone)]
+#[derive(Debug, Clone, Copy)]
 pub struct ConstDecl {
-    pub t: Rc<Type>,
-    pub value: Rc<Expression>,
+    pub value: EvaluatedValue,
 }
 
 #[derive(Debug, Hash, Clone)]
@@ -531,24 +471,22 @@ impl Bindings {
         identifier
     }
 
-    pub fn get_default_initialiser(&self, ty: &Rc<Type>) -> AnalysisResult<Rc<Expression>> {
-        match self.get_effective_type(ty)?.as_ref() {
-            Type::Int => Ok(Expression::IntegerLiteral(IntegerLiteral {
+    pub fn get_default_initialiser(&self, ty: &Rc<Type>) -> AnalysisResult<Expression> {
+        Ok(match self.get_effective_type(ty)?.as_ref() {
+            Type::Int => Expression::Literal(Literal::Integer {
                 repr: "0".to_string(),
                 value: 0,
-            })
-            .into()),
-            Type::Real => Ok(Expression::RealLiteral(RealLiteral {
+            }),
+            Type::Real => Expression::Literal(Literal::Real {
                 repr: "0.0".to_string(),
                 value: 0.0,
-            })
-            .into()),
-            Type::Bool => Ok(Expression::BoolLiteral(BoolLiteral::False).into()),
+            }),
+            Type::Bool => Expression::Literal(Literal::Bool { value: false }),
             Type::Alias(_) => Err(AnalysisError {
                 what: "Effective type cannot be alias".to_string(),
-            }),
-            Type::Record(_) | Type::Array(_) | Type::Null => Ok(Expression::Null.into()),
-        }
+            })?,
+            Type::Record(_) | Type::Array(_) | Type::Null => Expression::Null,
+        })
     }
 
     pub fn rebind(&mut self, ident: &Identifier, new_decl: Decl) {

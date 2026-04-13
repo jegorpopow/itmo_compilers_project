@@ -59,8 +59,8 @@ Program {
                                         lhs: Identifier(
                                             i(1),
                                         ),
-                                        rhs: IntegerLiteral(
-                                            IntegerLiteral {
+                                        rhs: Literal(
+                                            Integer {
                                                 repr: "5",
                                                 value: 5,
                                             },
@@ -71,8 +71,8 @@ Program {
                                             i(1),
                                         ),
                                         rhs: RealToInt(
-                                            RealLiteral(
-                                                RealLiteral {
+                                            Literal(
+                                                Real {
                                                     repr: "3.7",
                                                     value: 3.7,
                                                 },
@@ -84,8 +84,10 @@ Program {
                                             i(1),
                                         ),
                                         rhs: BoolToInt(
-                                            BoolLiteral(
-                                                True,
+                                            Literal(
+                                                Bool {
+                                                    value: true,
+                                                },
                                             ),
                                         ),
                                     },
@@ -94,8 +96,10 @@ Program {
                                             i(1),
                                         ),
                                         rhs: BoolToInt(
-                                            BoolLiteral(
-                                                False,
+                                            Literal(
+                                                Bool {
+                                                    value: false,
+                                                },
                                             ),
                                         ),
                                     },
@@ -103,8 +107,8 @@ Program {
                                         lhs: Identifier(
                                             r(2),
                                         ),
-                                        rhs: RealLiteral(
-                                            RealLiteral {
+                                        rhs: Literal(
+                                            Real {
                                                 repr: "2.5",
                                                 value: 2.5,
                                             },
@@ -115,8 +119,8 @@ Program {
                                             r(2),
                                         ),
                                         rhs: IntToReal(
-                                            IntegerLiteral(
-                                                IntegerLiteral {
+                                            Literal(
+                                                Integer {
                                                     repr: "10",
                                                     value: 10,
                                                 },
@@ -129,8 +133,10 @@ Program {
                                         ),
                                         rhs: IntToReal(
                                             BoolToInt(
-                                                BoolLiteral(
-                                                    True,
+                                                Literal(
+                                                    Bool {
+                                                        value: true,
+                                                    },
                                                 ),
                                             ),
                                         ),
@@ -141,8 +147,10 @@ Program {
                                         ),
                                         rhs: IntToReal(
                                             BoolToInt(
-                                                BoolLiteral(
-                                                    False,
+                                                Literal(
+                                                    Bool {
+                                                        value: false,
+                                                    },
                                                 ),
                                             ),
                                         ),
@@ -151,16 +159,20 @@ Program {
                                         lhs: Identifier(
                                             b(3),
                                         ),
-                                        rhs: BoolLiteral(
-                                            True,
+                                        rhs: Literal(
+                                            Bool {
+                                                value: true,
+                                            },
                                         ),
                                     },
                                     Assignment {
                                         lhs: Identifier(
                                             b(3),
                                         ),
-                                        rhs: BoolLiteral(
-                                            False,
+                                        rhs: Literal(
+                                            Bool {
+                                                value: false,
+                                            },
                                         ),
                                     },
                                     Assignment {
@@ -168,8 +180,8 @@ Program {
                                             b(3),
                                         ),
                                         rhs: IntToBool(
-                                            IntegerLiteral(
-                                                IntegerLiteral {
+                                            Literal(
+                                                Integer {
                                                     repr: "1",
                                                     value: 1,
                                                 },
@@ -181,8 +193,8 @@ Program {
                                             b(3),
                                         ),
                                         rhs: IntToBool(
-                                            IntegerLiteral(
-                                                IntegerLiteral {
+                                            Literal(
+                                                Integer {
                                                     repr: "0",
                                                     value: 0,
                                                 },
@@ -280,8 +292,8 @@ Program {
                                             lhs: Identifier(
                                                 i(1),
                                             ),
-                                            rhs: IntegerLiteral(
-                                                IntegerLiteral {
+                                            rhs: Literal(
+                                                Integer {
                                                     repr: "5",
                                                     value: 5,
                                                 },
@@ -292,8 +304,8 @@ Program {
                                                 i(1),
                                             ),
                                             rhs: RealToInt(
-                                                RealLiteral(
-                                                    RealLiteral {
+                                                Literal(
+                                                    Real {
                                                         repr: "3.7",
                                                         value: 3.7,
                                                     },
@@ -305,8 +317,10 @@ Program {
                                                 i(1),
                                             ),
                                             rhs: BoolToInt(
-                                                BoolLiteral(
-                                                    True,
+                                                Literal(
+                                                    Bool {
+                                                        value: true,
+                                                    },
                                                 ),
                                             ),
                                         },
@@ -315,8 +329,10 @@ Program {
                                                 i(1),
                                             ),
                                             rhs: BoolToInt(
-                                                BoolLiteral(
-                                                    False,
+                                                Literal(
+                                                    Bool {
+                                                        value: false,
+                                                    },
                                                 ),
                                             ),
                                         },
@@ -324,8 +340,8 @@ Program {
                                             lhs: Identifier(
                                                 r(2),
                                             ),
-                                            rhs: RealLiteral(
-                                                RealLiteral {
+                                            rhs: Literal(
+                                                Real {
                                                     repr: "2.5",
                                                     value: 2.5,
                                                 },
@@ -336,8 +352,8 @@ Program {
                                                 r(2),
                                             ),
                                             rhs: IntToReal(
-                                                IntegerLiteral(
-                                                    IntegerLiteral {
+                                                Literal(
+                                                    Integer {
                                                         repr: "10",
                                                         value: 10,
                                                     },
@@ -350,8 +366,10 @@ Program {
                                             ),
                                             rhs: IntToReal(
                                                 BoolToInt(
-                                                    BoolLiteral(
-                                                        True,
+                                                    Literal(
+                                                        Bool {
+                                                            value: true,
+                                                        },
                                                     ),
                                                 ),
                                             ),
@@ -362,8 +380,10 @@ Program {
                                             ),
                                             rhs: IntToReal(
                                                 BoolToInt(
-                                                    BoolLiteral(
-                                                        False,
+                                                    Literal(
+                                                        Bool {
+                                                            value: false,
+                                                        },
                                                     ),
                                                 ),
                                             ),
@@ -372,16 +392,20 @@ Program {
                                             lhs: Identifier(
                                                 b(3),
                                             ),
-                                            rhs: BoolLiteral(
-                                                True,
+                                            rhs: Literal(
+                                                Bool {
+                                                    value: true,
+                                                },
                                             ),
                                         },
                                         Assignment {
                                             lhs: Identifier(
                                                 b(3),
                                             ),
-                                            rhs: BoolLiteral(
-                                                False,
+                                            rhs: Literal(
+                                                Bool {
+                                                    value: false,
+                                                },
                                             ),
                                         },
                                         Assignment {
@@ -389,8 +413,8 @@ Program {
                                                 b(3),
                                             ),
                                             rhs: IntToBool(
-                                                IntegerLiteral(
-                                                    IntegerLiteral {
+                                                Literal(
+                                                    Integer {
                                                         repr: "1",
                                                         value: 1,
                                                     },
@@ -402,8 +426,8 @@ Program {
                                                 b(3),
                                             ),
                                             rhs: IntToBool(
-                                                IntegerLiteral(
-                                                    IntegerLiteral {
+                                                Literal(
+                                                    Integer {
                                                         repr: "0",
                                                         value: 0,
                                                     },

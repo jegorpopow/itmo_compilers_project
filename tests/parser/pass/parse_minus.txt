@@ -5,8 +5,8 @@ Program(
                 name: r"a",
                 t: None,
                 initialiser: Some(
-                    IntegerLiteral(
-                        IntegerLiteral {
+                    Literal(
+                        Integer {
                             repr: "-1",
                             value: -1,
                         },
@@ -21,14 +21,14 @@ Program(
                 initialiser: Some(
                     BinOp {
                         op: Minus,
-                        lhs: IntegerLiteral(
-                            IntegerLiteral {
+                        lhs: Literal(
+                            Integer {
                                 repr: "-1",
                                 value: -1,
                             },
                         ),
-                        rhs: IntegerLiteral(
-                            IntegerLiteral {
+                        rhs: Literal(
+                            Integer {
                                 repr: "-2",
                                 value: -2,
                             },
@@ -44,14 +44,14 @@ Program(
                 initialiser: Some(
                     BinOp {
                         op: Minus,
-                        lhs: IntegerLiteral(
-                            IntegerLiteral {
+                        lhs: Literal(
+                            Integer {
                                 repr: "-1",
                                 value: -1,
                             },
                         ),
-                        rhs: IntegerLiteral(
-                            IntegerLiteral {
+                        rhs: Literal(
+                            Integer {
                                 repr: "-2",
                                 value: -2,
                             },
@@ -67,22 +67,22 @@ Program(
                 initialiser: Some(
                     BinOp {
                         op: Plus,
-                        lhs: IntegerLiteral(
-                            IntegerLiteral {
+                        lhs: Literal(
+                            Integer {
                                 repr: "-5",
                                 value: -5,
                             },
                         ),
                         rhs: BinOp {
                             op: Plus,
-                            lhs: IntegerLiteral(
-                                IntegerLiteral {
+                            lhs: Literal(
+                                Integer {
                                     repr: "-7",
                                     value: -7,
                                 },
                             ),
-                            rhs: IntegerLiteral(
-                                IntegerLiteral {
+                            rhs: Literal(
+                                Integer {
                                     repr: "-8",
                                     value: -8,
                                 },
@@ -99,8 +99,8 @@ Program(
                 initialiser: Some(
                     UnOp {
                         op: Minus,
-                        operand: IntegerLiteral(
-                            IntegerLiteral {
+                        operand: Literal(
+                            Integer {
                                 repr: "-7",
                                 value: -7,
                             },

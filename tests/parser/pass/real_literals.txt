@@ -14,8 +14,8 @@ Program(
                                         name: r"a",
                                         t: None,
                                         initialiser: Some(
-                                            RealLiteral(
-                                                RealLiteral {
+                                            Literal(
+                                                Real {
                                                     repr: "0.0",
                                                     value: 0.0,
                                                 },
@@ -37,8 +37,8 @@ Program(
                                         name: r"b",
                                         t: None,
                                         initialiser: Some(
-                                            RealLiteral(
-                                                RealLiteral {
+                                            Literal(
+                                                Real {
                                                     repr: "3.14",
                                                     value: 3.14,
                                                 },
@@ -60,8 +60,8 @@ Program(
                                         name: r"c",
                                         t: None,
                                         initialiser: Some(
-                                            RealLiteral(
-                                                RealLiteral {
+                                            Literal(
+                                                Real {
                                                     repr: "1.5",
                                                     value: 1.5,
                                                 },
@@ -83,8 +83,8 @@ Program(
                                         name: r"d",
                                         t: None,
                                         initialiser: Some(
-                                            RealLiteral(
-                                                RealLiteral {
+                                            Literal(
+                                                Real {
                                                     repr: "0.5",
                                                     value: 0.5,
                                                 },
@@ -106,8 +106,8 @@ Program(
                                         name: r"e",
                                         t: None,
                                         initialiser: Some(
-                                            RealLiteral(
-                                                RealLiteral {
+                                            Literal(
+                                                Real {
                                                     repr: "10.25",
                                                     value: 10.25,
                                                 },
@@ -129,8 +129,8 @@ Program(
                                         name: r"f",
                                         t: None,
                                         initialiser: Some(
-                                            RealLiteral(
-                                                RealLiteral {
+                                            Literal(
+                                                Real {
                                                     repr: "0.001",
                                                     value: 0.001,
                                                 },
@@ -152,8 +152,8 @@ Program(
                                         name: r"g",
                                         t: None,
                                         initialiser: Some(
-                                            RealLiteral(
-                                                RealLiteral {
+                                            Literal(
+                                                Real {
                                                     repr: "999.999999999999",
                                                     value: 999.999999999999,
                                                 },
@@ -175,8 +175,8 @@ Program(
                                         name: r"h",
                                         t: None,
                                         initialiser: Some(
-                                            RealLiteral(
-                                                RealLiteral {
+                                            Literal(
+                                                Real {
                                                     repr: "0.12345678901234",
                                                     value: 0.12345678901234,
                                                 },
@@ -198,8 +198,8 @@ Program(
                                         name: r"i",
                                         t: None,
                                         initialiser: Some(
-                                            RealLiteral(
-                                                RealLiteral {
+                                            Literal(
+                                                Real {
                                                     repr: "2.71828182845904",
                                                     value: 2.71828182845904,
                                                 },
@@ -221,8 +221,8 @@ Program(
                                         name: r"j",
                                         t: None,
                                         initialiser: Some(
-                                            RealLiteral(
-                                                RealLiteral {
+                                            Literal(
+                                                Real {
                                                     repr: "1.11111111111111",
                                                     value: 1.11111111111111,
                                                 },
@@ -244,8 +244,8 @@ Program(
                                         name: r"k",
                                         t: None,
                                         initialiser: Some(
-                                            RealLiteral(
-                                                RealLiteral {
+                                            Literal(
+                                                Real {
                                                     repr: "0.00000000000001",
                                                     value: 1e-14,
                                                 },
@@ -267,8 +267,8 @@ Program(
                                         name: r"l",
                                         t: None,
                                         initialiser: Some(
-                                            RealLiteral(
-                                                RealLiteral {
+                                            Literal(
+                                                Real {
                                                     repr: "12345.6789012345",
                                                     value: 12345.6789012345,
                                                 },
@@ -290,8 +290,8 @@ Program(
                                         name: r"m",
                                         t: None,
                                         initialiser: Some(
-                                            RealLiteral(
-                                                RealLiteral {
+                                            Literal(
+                                                Real {
                                                     repr: "NaN",
                                                     value: NaN,
                                                 },
@@ -313,8 +313,8 @@ Program(
                                         name: r"n",
                                         t: None,
                                         initialiser: Some(
-                                            RealLiteral(
-                                                RealLiteral {
+                                            Literal(
+                                                Real {
                                                     repr: ".5",
                                                     value: 0.5,
                                                 },
@@ -336,8 +336,8 @@ Program(
                                         name: r"o",
                                         t: None,
                                         initialiser: Some(
-                                            RealLiteral(
-                                                RealLiteral {
+                                            Literal(
+                                                Real {
                                                     repr: "-.5",
                                                     value: -0.5,
                                                 },
@@ -359,8 +359,8 @@ Program(
                                         name: r"p",
                                         t: None,
                                         initialiser: Some(
-                                            RealLiteral(
-                                                RealLiteral {
+                                            Literal(
+                                                Real {
                                                     repr: "+.5",
                                                     value: 0.5,
                                                 },
@@ -384,8 +384,8 @@ Program(
                                         initialiser: Some(
                                             UnOp {
                                                 op: Minus,
-                                                operand: RealLiteral(
-                                                    RealLiteral {
+                                                operand: Literal(
+                                                    Real {
                                                         repr: "NaN",
                                                         value: NaN,
                                                     },
@@ -408,8 +408,8 @@ Program(
                                         name: r"r",
                                         t: None,
                                         initialiser: Some(
-                                            RealLiteral(
-                                                RealLiteral {
+                                            Literal(
+                                                Real {
                                                     repr: "Inf",
                                                     value: inf,
                                                 },
@@ -433,8 +433,8 @@ Program(
                                         initialiser: Some(
                                             UnOp {
                                                 op: Minus,
-                                                operand: RealLiteral(
-                                                    RealLiteral {
+                                                operand: Literal(
+                                                    Real {
                                                         repr: "Inf",
                                                         value: inf,
                                                     },

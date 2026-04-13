@@ -30,14 +30,14 @@ Program(
                         length: Some(
                             BinOp {
                                 op: Plus,
-                                lhs: IntegerLiteral(
-                                    IntegerLiteral {
+                                lhs: Literal(
+                                    Integer {
                                         repr: "1",
                                         value: 1,
                                     },
                                 ),
-                                rhs: IntegerLiteral(
-                                    IntegerLiteral {
+                                rhs: Literal(
+                                    Integer {
                                         repr: "2",
                                         value: 2,
                                     },
@@ -53,8 +53,8 @@ Program(
                 name: r"EPS",
                 t: None,
                 initialiser: Some(
-                    RealLiteral(
-                        RealLiteral {
+                    Literal(
+                        Real {
                             repr: "0.0000001",
                             value: 1e-7,
                         },
@@ -281,8 +281,8 @@ Program(
                                                             lhs: Identifier(
                                                                 r"t",
                                                             ),
-                                                            index: IntegerLiteral(
-                                                                IntegerLiteral {
+                                                            index: Literal(
+                                                                Integer {
                                                                     repr: "1",
                                                                     value: 1,
                                                                 },
@@ -294,8 +294,8 @@ Program(
                                                             lhs: Identifier(
                                                                 r"t",
                                                             ),
-                                                            index: IntegerLiteral(
-                                                                IntegerLiteral {
+                                                            index: Literal(
+                                                                Integer {
                                                                     repr: "2",
                                                                     value: 2,
                                                                 },
@@ -312,8 +312,8 @@ Program(
                                                             lhs: Identifier(
                                                                 r"t",
                                                             ),
-                                                            index: IntegerLiteral(
-                                                                IntegerLiteral {
+                                                            index: Literal(
+                                                                Integer {
                                                                     repr: "2",
                                                                     value: 2,
                                                                 },
@@ -325,8 +325,8 @@ Program(
                                                             lhs: Identifier(
                                                                 r"t",
                                                             ),
-                                                            index: IntegerLiteral(
-                                                                IntegerLiteral {
+                                                            index: Literal(
+                                                                Integer {
                                                                     repr: "3",
                                                                     value: 3,
                                                                 },
@@ -344,8 +344,8 @@ Program(
                                                         lhs: Identifier(
                                                             r"t",
                                                         ),
-                                                        index: IntegerLiteral(
-                                                            IntegerLiteral {
+                                                        index: Literal(
+                                                            Integer {
                                                                 repr: "1",
                                                                 value: 1,
                                                             },
@@ -357,8 +357,8 @@ Program(
                                                         lhs: Identifier(
                                                             r"t",
                                                         ),
-                                                        index: IntegerLiteral(
-                                                            IntegerLiteral {
+                                                        index: Literal(
+                                                            Integer {
                                                                 repr: "3",
                                                                 value: 3,
                                                             },
@@ -387,8 +387,8 @@ Program(
                                                             lhs: Identifier(
                                                                 r"t",
                                                             ),
-                                                            index: IntegerLiteral(
-                                                                IntegerLiteral {
+                                                            index: Literal(
+                                                                Integer {
                                                                     repr: "1",
                                                                     value: 1,
                                                                 },
@@ -400,8 +400,8 @@ Program(
                                                             lhs: Identifier(
                                                                 r"t",
                                                             ),
-                                                            index: IntegerLiteral(
-                                                                IntegerLiteral {
+                                                            index: Literal(
+                                                                Integer {
                                                                     repr: "3",
                                                                     value: 3,
                                                                 },
@@ -418,8 +418,8 @@ Program(
                                                             lhs: Identifier(
                                                                 r"t",
                                                             ),
-                                                            index: IntegerLiteral(
-                                                                IntegerLiteral {
+                                                            index: Literal(
+                                                                Integer {
                                                                     repr: "1",
                                                                     value: 1,
                                                                 },
@@ -431,8 +431,8 @@ Program(
                                                             lhs: Identifier(
                                                                 r"t",
                                                             ),
-                                                            index: IntegerLiteral(
-                                                                IntegerLiteral {
+                                                            index: Literal(
+                                                                Integer {
                                                                     repr: "2",
                                                                     value: 2,
                                                                 },
@@ -450,8 +450,8 @@ Program(
                                                         lhs: Identifier(
                                                             r"t",
                                                         ),
-                                                        index: IntegerLiteral(
-                                                            IntegerLiteral {
+                                                        index: Literal(
+                                                            Integer {
                                                                 repr: "2",
                                                                 value: 2,
                                                             },
@@ -463,8 +463,8 @@ Program(
                                                         lhs: Identifier(
                                                             r"t",
                                                         ),
-                                                        index: IntegerLiteral(
-                                                            IntegerLiteral {
+                                                        index: Literal(
+                                                            Integer {
                                                                 repr: "3",
                                                                 value: 3,
                                                             },
@@ -494,8 +494,8 @@ Program(
                                                         lhs: Identifier(
                                                             r"t",
                                                         ),
-                                                        index: IntegerLiteral(
-                                                            IntegerLiteral {
+                                                        index: Literal(
+                                                            Integer {
                                                                 repr: "3",
                                                                 value: 3,
                                                             },
@@ -507,8 +507,8 @@ Program(
                                                         lhs: Identifier(
                                                             r"t",
                                                         ),
-                                                        index: IntegerLiteral(
-                                                            IntegerLiteral {
+                                                        index: Literal(
+                                                            Integer {
                                                                 repr: "1",
                                                                 value: 1,
                                                             },
@@ -525,8 +525,8 @@ Program(
                                                         lhs: Identifier(
                                                             r"t",
                                                         ),
-                                                        index: IntegerLiteral(
-                                                            IntegerLiteral {
+                                                        index: Literal(
+                                                            Integer {
                                                                 repr: "3",
                                                                 value: 3,
                                                             },
@@ -538,8 +538,8 @@ Program(
                                                         lhs: Identifier(
                                                             r"t",
                                                         ),
-                                                        index: IntegerLiteral(
-                                                            IntegerLiteral {
+                                                        index: Literal(
+                                                            Integer {
                                                                 repr: "2",
                                                                 value: 2,
                                                             },
@@ -557,8 +557,8 @@ Program(
                                                     lhs: Identifier(
                                                         r"t",
                                                     ),
-                                                    index: IntegerLiteral(
-                                                        IntegerLiteral {
+                                                    index: Literal(
+                                                        Integer {
                                                             repr: "1",
                                                             value: 1,
                                                         },
@@ -570,8 +570,8 @@ Program(
                                                     lhs: Identifier(
                                                         r"t",
                                                     ),
-                                                    index: IntegerLiteral(
-                                                        IntegerLiteral {
+                                                    index: Literal(
+                                                        Integer {
                                                             repr: "2",
                                                             value: 2,
                                                         },
@@ -626,8 +626,8 @@ Program(
                                             lhs: Identifier(
                                                 r"t",
                                             ),
-                                            index: IntegerLiteral(
-                                                IntegerLiteral {
+                                            index: Literal(
+                                                Integer {
                                                     repr: "1",
                                                     value: 1,
                                                 },
@@ -649,8 +649,8 @@ Program(
                                                 lhs: Identifier(
                                                     r"t",
                                                 ),
-                                                index: IntegerLiteral(
-                                                    IntegerLiteral {
+                                                index: Literal(
+                                                    Integer {
                                                         repr: "1",
                                                         value: 1,
                                                     },
@@ -658,8 +658,8 @@ Program(
                                             },
                                             member_name: r"x",
                                         },
-                                        rhs: RealLiteral(
-                                            RealLiteral {
+                                        rhs: Literal(
+                                            Real {
                                                 repr: "0.0",
                                                 value: 0.0,
                                             },
@@ -673,8 +673,8 @@ Program(
                                                 lhs: Identifier(
                                                     r"t",
                                                 ),
-                                                index: IntegerLiteral(
-                                                    IntegerLiteral {
+                                                index: Literal(
+                                                    Integer {
                                                         repr: "1",
                                                         value: 1,
                                                     },
@@ -682,8 +682,8 @@ Program(
                                             },
                                             member_name: r"y",
                                         },
-                                        rhs: RealLiteral(
-                                            RealLiteral {
+                                        rhs: Literal(
+                                            Real {
                                                 repr: "0.0",
                                                 value: 0.0,
                                             },
@@ -696,8 +696,8 @@ Program(
                                             lhs: Identifier(
                                                 r"t",
                                             ),
-                                            index: IntegerLiteral(
-                                                IntegerLiteral {
+                                            index: Literal(
+                                                Integer {
                                                     repr: "2",
                                                     value: 2,
                                                 },
@@ -719,8 +719,8 @@ Program(
                                                 lhs: Identifier(
                                                     r"t",
                                                 ),
-                                                index: IntegerLiteral(
-                                                    IntegerLiteral {
+                                                index: Literal(
+                                                    Integer {
                                                         repr: "2",
                                                         value: 2,
                                                     },
@@ -728,8 +728,8 @@ Program(
                                             },
                                             member_name: r"x",
                                         },
-                                        rhs: RealLiteral(
-                                            RealLiteral {
+                                        rhs: Literal(
+                                            Real {
                                                 repr: "3.0",
                                                 value: 3.0,
                                             },
@@ -743,8 +743,8 @@ Program(
                                                 lhs: Identifier(
                                                     r"t",
                                                 ),
-                                                index: IntegerLiteral(
-                                                    IntegerLiteral {
+                                                index: Literal(
+                                                    Integer {
                                                         repr: "2",
                                                         value: 2,
                                                     },
@@ -752,8 +752,8 @@ Program(
                                             },
                                             member_name: r"y",
                                         },
-                                        rhs: RealLiteral(
-                                            RealLiteral {
+                                        rhs: Literal(
+                                            Real {
                                                 repr: "0.0",
                                                 value: 0.0,
                                             },
@@ -766,8 +766,8 @@ Program(
                                             lhs: Identifier(
                                                 r"t",
                                             ),
-                                            index: IntegerLiteral(
-                                                IntegerLiteral {
+                                            index: Literal(
+                                                Integer {
                                                     repr: "3",
                                                     value: 3,
                                                 },
@@ -789,8 +789,8 @@ Program(
                                                 lhs: Identifier(
                                                     r"t",
                                                 ),
-                                                index: IntegerLiteral(
-                                                    IntegerLiteral {
+                                                index: Literal(
+                                                    Integer {
                                                         repr: "3",
                                                         value: 3,
                                                     },
@@ -798,8 +798,8 @@ Program(
                                             },
                                             member_name: r"x",
                                         },
-                                        rhs: RealLiteral(
-                                            RealLiteral {
+                                        rhs: Literal(
+                                            Real {
                                                 repr: "0.0",
                                                 value: 0.0,
                                             },
@@ -813,8 +813,8 @@ Program(
                                                 lhs: Identifier(
                                                     r"t",
                                                 ),
-                                                index: IntegerLiteral(
-                                                    IntegerLiteral {
+                                                index: Literal(
+                                                    Integer {
                                                         repr: "3",
                                                         value: 3,
                                                     },
@@ -822,8 +822,8 @@ Program(
                                             },
                                             member_name: r"y",
                                         },
-                                        rhs: RealLiteral(
-                                            RealLiteral {
+                                        rhs: Literal(
+                                            Real {
                                                 repr: "4.0",
                                                 value: 4.0,
                                             },

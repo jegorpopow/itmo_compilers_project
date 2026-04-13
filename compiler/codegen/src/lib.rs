@@ -1,8 +1,8 @@
 use std::rc::Rc;
 
 use ast::{
-    AnalysisError, AnalysisResult, Binding, Bindings, Block, Decl, Expression, LvalueExpression,
-    Program, Routine, RoutineBody, RoutineDecl, Statement, Type, VarDecl,
+    AnalysisError, AnalysisResult, Binding, Bindings, Block, Decl, Expression, Literal,
+    LvalueExpression, Program, Routine, RoutineBody, RoutineDecl, Statement, Type, VarDecl,
 };
 use common::{Integer, Position, RawIdentifier};
 
@@ -120,19 +120,13 @@ impl<'a> Compiler<'a> {
                     self.bytecode.push(Instruction::LoadAddress);
                 }
             },
-            Expression::IntegerLiteral(integer_literal) => {
-                self.bytecode.push(Instruction::IntConst {
-                    value: integer_literal.value,
-                });
-            }
-            Expression::RealLiteral(real_literal) => {
-                self.bytecode.push(Instruction::RealConst {
-                    value: real_literal.value,
-                });
-            }
-            Expression::BoolLiteral(bool_literal) => {
-                self.bytecode.push(Instruction::IntConst {
-                    value: Integer::from(*bool_literal),
+            Expression::Literal(literal) => {
+                self.bytecode.push(match *literal {
+                    Literal::Bool { value } => Instruction::IntConst {
+                        value: value.into(),
+                    },
+                    Literal::Integer { repr: _, value } => Instruction::IntConst { value },
+                    Literal::Real { repr: _, value } => Instruction::RealConst { value },
                 });
             }
             Expression::Call { callee, args } => {
@@ -279,12 +273,12 @@ impl<'a> Compiler<'a> {
                     relative_location: _,
                 }) => {
                     let initialiser = match initialiser {
-                        Some(initialiser) => Rc::clone(initialiser),
-                        None => self.bindings.get_default_initialiser(t)?,
+                        Some(initialiser) => initialiser.as_ref(),
+                        None => &self.bindings.get_default_initialiser(t)?,
                     };
 
                     // Local variable initialisation is just a `push`
-                    self.compile_expr(&initialiser)?;
+                    self.compile_expr(initialiser)?;
                 }
 
                 ast::LocalDecl::Type(_) | ast::LocalDecl::Const(_) => (),

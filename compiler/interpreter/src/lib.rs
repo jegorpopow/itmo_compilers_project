@@ -3,9 +3,9 @@ use std::{collections::HashMap, fmt::Debug, io::Write, rc::Rc};
 
 use ast::{
     ArrayDescription, BinaryOperator, Binding, Block, BoolBinOp, Decl, EqBinOp, Expression,
-    FieldDescription, IntBinOp, IntegerLiteral, LocalBinding, LocalDecl, LvalueExpression, Program,
-    RealBinOp, RealLiteral, RecordDescription, Routine, RoutineBody, RoutineDecl, Type, TypeDecl,
-    UnaryOperator, VarDecl,
+    FieldDescription, IntBinOp, Literal, LocalBinding, LocalDecl, LvalueExpression, Program,
+    RealBinOp, RecordDescription, Routine, RoutineBody, RoutineDecl, Type, TypeDecl, UnaryOperator,
+    VarDecl,
 };
 use common::{
     Identifier, Integer, LoopOrder, Position, RawIdentifier, Real, integer_to_real, real_to_integer,
@@ -374,13 +374,11 @@ impl<'a, W: Write> Interpreter<'a, W> {
     fn expression(&mut self, bindings: &mut Bindings<'a>, expression: &'a Expression) -> Value<'a> {
         match expression {
             Expression::Null => Value::Primitive(Primitive::Null),
-            &Expression::IntegerLiteral(IntegerLiteral { repr: _, value }) => {
-                Value::Primitive(Primitive::Integer(value))
-            }
-            &Expression::RealLiteral(RealLiteral { repr: _, value }) => {
-                Value::Primitive(Primitive::Real(value))
-            }
-            &Expression::BoolLiteral(l) => Value::Primitive(Primitive::Bool(l.into())),
+            Expression::Literal(literal) => Value::Primitive(match *literal {
+                Literal::Bool { value } => Primitive::Bool(value),
+                Literal::Integer { repr: _, value } => Primitive::Integer(value),
+                Literal::Real { repr: _, value } => Primitive::Real(value),
+            }),
 
             Expression::LvalueToRvalue(lvalue) => {
                 let addr = self.lvalue(bindings, lvalue)?;

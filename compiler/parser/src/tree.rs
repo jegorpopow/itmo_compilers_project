@@ -7,26 +7,22 @@ pub use lexer::Operator;
 
 use crate::Type;
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 #[derive_where(Hash, Eq, PartialEq)]
-pub struct IntegerLiteral {
-    pub repr: String,
-    #[derive_where(skip(EqHashOrd))]
-    pub value: Integer,
-}
-
-#[derive(Debug)]
-#[derive_where(Hash, Eq, PartialEq)]
-pub struct RealLiteral {
-    pub repr: String,
-    #[derive_where(skip(EqHashOrd))]
-    pub value: Real,
-}
-
-#[derive(Debug, Hash, PartialEq, Eq, Copy, Clone)]
-pub enum BoolLiteral {
-    True,
-    False,
+pub enum Literal {
+    Bool {
+        value: bool,
+    },
+    Integer {
+        repr: String,
+        #[derive_where(skip(EqHashOrd))]
+        value: Integer,
+    },
+    Real {
+        repr: String,
+        #[derive_where(skip(EqHashOrd))]
+        value: Real,
+    },
 }
 
 #[derive(Debug, Hash, PartialEq, Eq)]
@@ -45,9 +41,7 @@ pub enum LvalueExpression {
 #[derive(Debug, Hash, PartialEq, Eq)]
 pub enum Expression {
     LvalueToRvalue(Rc<LvalueExpression>),
-    IntegerLiteral(IntegerLiteral),
-    RealLiteral(RealLiteral),
-    BoolLiteral(BoolLiteral),
+    Literal(Literal),
     Call {
         callee: RawIdentifier,
         args: Vec<Rc<Expression>>,

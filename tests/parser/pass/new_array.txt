@@ -66,8 +66,8 @@ Program(
                                                     r"n",
                                                 ),
                                             ),
-                                            rhs: IntegerLiteral(
-                                                IntegerLiteral {
+                                            rhs: Literal(
+                                                Integer {
                                                     repr: "0",
                                                     value: 0,
                                                 },
@@ -84,8 +84,8 @@ Program(
                                                     r"n",
                                                 ),
                                             ),
-                                            rhs: IntegerLiteral(
-                                                IntegerLiteral {
+                                            rhs: Literal(
+                                                Integer {
                                                     repr: "0",
                                                     value: 0,
                                                 },
@@ -95,8 +95,8 @@ Program(
                                             [
                                                 Stmt(
                                                     Return {
-                                                        value: IntegerLiteral(
-                                                            IntegerLiteral {
+                                                        value: Literal(
+                                                            Integer {
                                                                 repr: "1",
                                                                 value: 1,
                                                             },
@@ -127,8 +127,8 @@ Program(
                                                                                     r"n",
                                                                                 ),
                                                                             ),
-                                                                            rhs: IntegerLiteral(
-                                                                                IntegerLiteral {
+                                                                            rhs: Literal(
+                                                                                Integer {
                                                                                     repr: "1",
                                                                                     value: 1,
                                                                                 },
@@ -176,8 +176,8 @@ Program(
                                                         Call {
                                                             callee: r"factorial",
                                                             args: [
-                                                                IntegerLiteral(
-                                                                    IntegerLiteral {
+                                                                Literal(
+                                                                    Integer {
                                                                         repr: "5",
                                                                         value: 5,
                                                                     },
@@ -204,8 +204,8 @@ Program(
                                                     ),
                                                     fields: None,
                                                     array_length: Some(
-                                                        IntegerLiteral(
-                                                            IntegerLiteral {
+                                                        Literal(
+                                                            Integer {
                                                                 repr: "0",
                                                                 value: 0,
                                                             },

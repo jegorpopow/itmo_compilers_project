@@ -179,8 +179,8 @@ Program {
                                                 VarDecl {
                                                     t: Int,
                                                     initialiser: Some(
-                                                        IntegerLiteral(
-                                                            IntegerLiteral {
+                                                        Literal(
+                                                            Integer {
                                                                 repr: "0",
                                                                 value: 0,
                                                             },
@@ -216,8 +216,8 @@ Program {
                                                                 result(6),
                                                             ),
                                                         ),
-                                                        rhs: IntegerLiteral(
-                                                            IntegerLiteral {
+                                                        rhs: Literal(
+                                                            Integer {
                                                                 repr: "1",
                                                                 value: 1,
                                                             },
@@ -298,8 +298,8 @@ Program {
                                 stmts: [
                                     For {
                                         counter: i(10),
-                                        lower_bound: IntegerLiteral(
-                                            IntegerLiteral {
+                                        lower_bound: Literal(
+                                            Integer {
                                                 repr: "1",
                                                 value: 1,
                                             },
@@ -314,8 +314,8 @@ Program {
                                             stmts: [
                                                 For {
                                                     counter: j(11),
-                                                    lower_bound: IntegerLiteral(
-                                                        IntegerLiteral {
+                                                    lower_bound: Literal(
+                                                        Integer {
                                                             repr: "2",
                                                             value: 2,
                                                         },
@@ -347,8 +347,8 @@ Program {
                                                                                         j(11),
                                                                                     ),
                                                                                 ),
-                                                                                rhs: IntegerLiteral(
-                                                                                    IntegerLiteral {
+                                                                                rhs: Literal(
+                                                                                    Integer {
                                                                                         repr: "1",
                                                                                         value: 1,
                                                                                     },
@@ -423,8 +423,8 @@ Program {
                                                                                                 j(11),
                                                                                             ),
                                                                                         ),
-                                                                                        rhs: IntegerLiteral(
-                                                                                            IntegerLiteral {
+                                                                                        rhs: Literal(
+                                                                                            Integer {
                                                                                                 repr: "1",
                                                                                                 value: 1,
                                                                                             },
@@ -447,8 +447,8 @@ Program {
                                                                                             j(11),
                                                                                         ),
                                                                                     ),
-                                                                                    rhs: IntegerLiteral(
-                                                                                        IntegerLiteral {
+                                                                                    rhs: Literal(
+                                                                                        Integer {
                                                                                             repr: "1",
                                                                                             value: 1,
                                                                                         },
@@ -518,8 +518,8 @@ Program {
                                                 n(14),
                                             ),
                                         ),
-                                        upper_bound: IntegerLiteral(
-                                            IntegerLiteral {
+                                        upper_bound: Literal(
+                                            Integer {
                                                 repr: "0",
                                                 value: 0,
                                             },
@@ -577,8 +577,8 @@ Program {
                                 stmts: [
                                     For {
                                         counter: i(18),
-                                        lower_bound: IntegerLiteral(
-                                            IntegerLiteral {
+                                        lower_bound: Literal(
+                                            Integer {
                                                 repr: "0",
                                                 value: 0,
                                             },
@@ -661,15 +661,15 @@ Program {
                                             lhs: Identifier(
                                                 arr(20),
                                             ),
-                                            index: IntegerLiteral(
-                                                IntegerLiteral {
+                                            index: Literal(
+                                                Integer {
                                                     repr: "1",
                                                     value: 1,
                                                 },
                                             ),
                                         },
-                                        rhs: IntegerLiteral(
-                                            IntegerLiteral {
+                                        rhs: Literal(
+                                            Integer {
                                                 repr: "3",
                                                 value: 3,
                                             },
@@ -680,15 +680,15 @@ Program {
                                             lhs: Identifier(
                                                 arr(20),
                                             ),
-                                            index: IntegerLiteral(
-                                                IntegerLiteral {
+                                            index: Literal(
+                                                Integer {
                                                     repr: "2",
                                                     value: 2,
                                                 },
                                             ),
                                         },
-                                        rhs: IntegerLiteral(
-                                            IntegerLiteral {
+                                        rhs: Literal(
+                                            Integer {
                                                 repr: "5",
                                                 value: 5,
                                             },
@@ -699,15 +699,15 @@ Program {
                                             lhs: Identifier(
                                                 arr(20),
                                             ),
-                                            index: IntegerLiteral(
-                                                IntegerLiteral {
+                                            index: Literal(
+                                                Integer {
                                                     repr: "3",
                                                     value: 3,
                                                 },
                                             ),
                                         },
-                                        rhs: IntegerLiteral(
-                                            IntegerLiteral {
+                                        rhs: Literal(
+                                            Integer {
                                                 repr: "1",
                                                 value: 1,
                                             },
@@ -718,15 +718,15 @@ Program {
                                             lhs: Identifier(
                                                 arr(20),
                                             ),
-                                            index: IntegerLiteral(
-                                                IntegerLiteral {
+                                            index: Literal(
+                                                Integer {
                                                     repr: "4",
                                                     value: 4,
                                                 },
                                             ),
                                         },
-                                        rhs: IntegerLiteral(
-                                            IntegerLiteral {
+                                        rhs: Literal(
+                                            Integer {
                                                 repr: "2",
                                                 value: 2,
                                             },
@@ -737,15 +737,15 @@ Program {
                                             lhs: Identifier(
                                                 arr(20),
                                             ),
-                                            index: IntegerLiteral(
-                                                IntegerLiteral {
+                                            index: Literal(
+                                                Integer {
                                                     repr: "5",
                                                     value: 5,
                                                 },
                                             ),
                                         },
-                                        rhs: IntegerLiteral(
-                                            IntegerLiteral {
+                                        rhs: Literal(
+                                            Integer {
                                                 repr: "4",
                                                 value: 4,
                                             },
@@ -767,8 +767,8 @@ Program {
                                         Call {
                                             callee: count(16),
                                             args: [
-                                                IntegerLiteral(
-                                                    IntegerLiteral {
+                                                Literal(
+                                                    Integer {
                                                         repr: "3",
                                                         value: 3,
                                                     },
@@ -780,8 +780,8 @@ Program {
                                         Call {
                                             callee: countdown(13),
                                             args: [
-                                                IntegerLiteral(
-                                                    IntegerLiteral {
+                                                Literal(
+                                                    Integer {
                                                         repr: "5",
                                                         value: 5,
                                                     },
@@ -846,8 +846,8 @@ Program {
                                                     VarDecl {
                                                         t: Int,
                                                         initialiser: Some(
-                                                            IntegerLiteral(
-                                                                IntegerLiteral {
+                                                            Literal(
+                                                                Integer {
                                                                     repr: "0",
                                                                     value: 0,
                                                                 },
@@ -883,8 +883,8 @@ Program {
                                                                     result(6),
                                                                 ),
                                                             ),
-                                                            rhs: IntegerLiteral(
-                                                                IntegerLiteral {
+                                                            rhs: Literal(
+                                                                Integer {
                                                                     repr: "1",
                                                                     value: 1,
                                                                 },
@@ -965,8 +965,8 @@ Program {
                                     stmts: [
                                         For {
                                             counter: i(10),
-                                            lower_bound: IntegerLiteral(
-                                                IntegerLiteral {
+                                            lower_bound: Literal(
+                                                Integer {
                                                     repr: "1",
                                                     value: 1,
                                                 },
@@ -981,8 +981,8 @@ Program {
                                                 stmts: [
                                                     For {
                                                         counter: j(11),
-                                                        lower_bound: IntegerLiteral(
-                                                            IntegerLiteral {
+                                                        lower_bound: Literal(
+                                                            Integer {
                                                                 repr: "2",
                                                                 value: 2,
                                                             },
@@ -1014,8 +1014,8 @@ Program {
                                                                                             j(11),
                                                                                         ),
                                                                                     ),
-                                                                                    rhs: IntegerLiteral(
-                                                                                        IntegerLiteral {
+                                                                                    rhs: Literal(
+                                                                                        Integer {
                                                                                             repr: "1",
                                                                                             value: 1,
                                                                                         },
@@ -1090,8 +1090,8 @@ Program {
                                                                                                     j(11),
                                                                                                 ),
                                                                                             ),
-                                                                                            rhs: IntegerLiteral(
-                                                                                                IntegerLiteral {
+                                                                                            rhs: Literal(
+                                                                                                Integer {
                                                                                                     repr: "1",
                                                                                                     value: 1,
                                                                                                 },
@@ -1114,8 +1114,8 @@ Program {
                                                                                                 j(11),
                                                                                             ),
                                                                                         ),
-                                                                                        rhs: IntegerLiteral(
-                                                                                            IntegerLiteral {
+                                                                                        rhs: Literal(
+                                                                                            Integer {
                                                                                                 repr: "1",
                                                                                                 value: 1,
                                                                                             },
@@ -1288,8 +1288,8 @@ Program {
                     VarDecl {
                         t: Int,
                         initialiser: Some(
-                            IntegerLiteral(
-                                IntegerLiteral {
+                            Literal(
+                                Integer {
                                     repr: "0",
                                     value: 0,
                                 },
@@ -1427,8 +1427,8 @@ Program {
                                                     n(14),
                                                 ),
                                             ),
-                                            upper_bound: IntegerLiteral(
-                                                IntegerLiteral {
+                                            upper_bound: Literal(
+                                                Integer {
                                                     repr: "0",
                                                     value: 0,
                                                 },
@@ -1510,8 +1510,8 @@ Program {
                                     stmts: [
                                         For {
                                             counter: i(18),
-                                            lower_bound: IntegerLiteral(
-                                                IntegerLiteral {
+                                            lower_bound: Literal(
+                                                Integer {
                                                     repr: "0",
                                                     value: 0,
                                                 },
@@ -1618,15 +1618,15 @@ Program {
                                                 lhs: Identifier(
                                                     arr(20),
                                                 ),
-                                                index: IntegerLiteral(
-                                                    IntegerLiteral {
+                                                index: Literal(
+                                                    Integer {
                                                         repr: "1",
                                                         value: 1,
                                                     },
                                                 ),
                                             },
-                                            rhs: IntegerLiteral(
-                                                IntegerLiteral {
+                                            rhs: Literal(
+                                                Integer {
                                                     repr: "3",
                                                     value: 3,
                                                 },
@@ -1637,15 +1637,15 @@ Program {
                                                 lhs: Identifier(
                                                     arr(20),
                                                 ),
-                                                index: IntegerLiteral(
-                                                    IntegerLiteral {
+                                                index: Literal(
+                                                    Integer {
                                                         repr: "2",
                                                         value: 2,
                                                     },
                                                 ),
                                             },
-                                            rhs: IntegerLiteral(
-                                                IntegerLiteral {
+                                            rhs: Literal(
+                                                Integer {
                                                     repr: "5",
                                                     value: 5,
                                                 },
@@ -1656,15 +1656,15 @@ Program {
                                                 lhs: Identifier(
                                                     arr(20),
                                                 ),
-                                                index: IntegerLiteral(
-                                                    IntegerLiteral {
+                                                index: Literal(
+                                                    Integer {
                                                         repr: "3",
                                                         value: 3,
                                                     },
                                                 ),
                                             },
-                                            rhs: IntegerLiteral(
-                                                IntegerLiteral {
+                                            rhs: Literal(
+                                                Integer {
                                                     repr: "1",
                                                     value: 1,
                                                 },
@@ -1675,15 +1675,15 @@ Program {
                                                 lhs: Identifier(
                                                     arr(20),
                                                 ),
-                                                index: IntegerLiteral(
-                                                    IntegerLiteral {
+                                                index: Literal(
+                                                    Integer {
                                                         repr: "4",
                                                         value: 4,
                                                     },
                                                 ),
                                             },
-                                            rhs: IntegerLiteral(
-                                                IntegerLiteral {
+                                            rhs: Literal(
+                                                Integer {
                                                     repr: "2",
                                                     value: 2,
                                                 },
@@ -1694,15 +1694,15 @@ Program {
                                                 lhs: Identifier(
                                                     arr(20),
                                                 ),
-                                                index: IntegerLiteral(
-                                                    IntegerLiteral {
+                                                index: Literal(
+                                                    Integer {
                                                         repr: "5",
                                                         value: 5,
                                                     },
                                                 ),
                                             },
-                                            rhs: IntegerLiteral(
-                                                IntegerLiteral {
+                                            rhs: Literal(
+                                                Integer {
                                                     repr: "4",
                                                     value: 4,
                                                 },
@@ -1724,8 +1724,8 @@ Program {
                                             Call {
                                                 callee: count(16),
                                                 args: [
-                                                    IntegerLiteral(
-                                                        IntegerLiteral {
+                                                    Literal(
+                                                        Integer {
                                                             repr: "3",
                                                             value: 3,
                                                         },
@@ -1737,8 +1737,8 @@ Program {
                                             Call {
                                                 callee: countdown(13),
                                                 args: [
-                                                    IntegerLiteral(
-                                                        IntegerLiteral {
+                                                    Literal(
+                                                        Integer {
                                                             repr: "5",
                                                             value: 5,
                                                         },

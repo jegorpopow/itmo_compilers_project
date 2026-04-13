@@ -68,8 +68,8 @@ Program(
                                                     r"i",
                                                 ),
                                             ),
-                                            rhs: IntegerLiteral(
-                                                IntegerLiteral {
+                                            rhs: Literal(
+                                                Integer {
                                                     repr: "0",
                                                     value: 0,
                                                 },
@@ -99,8 +99,8 @@ Program(
                                                     r"r",
                                                 ),
                                             ),
-                                            rhs: RealLiteral(
-                                                RealLiteral {
+                                            rhs: Literal(
+                                                Real {
                                                     repr: "0.0",
                                                     value: 0.0,
                                                 },
@@ -130,8 +130,10 @@ Program(
                                                     r"b",
                                                 ),
                                             ),
-                                            rhs: BoolLiteral(
-                                                False,
+                                            rhs: Literal(
+                                                Bool {
+                                                    value: false,
+                                                },
                                             ),
                                         },
                                     },
@@ -144,8 +146,8 @@ Program(
                                                 ArrayDescription {
                                                     t: Int,
                                                     length: Some(
-                                                        IntegerLiteral(
-                                                            IntegerLiteral {
+                                                        Literal(
+                                                            Integer {
                                                                 repr: "3",
                                                                 value: 3,
                                                             },
@@ -230,8 +232,8 @@ Program(
                                                 ),
                                             ),
                                             rhs: Cast {
-                                                operand: IntegerLiteral(
-                                                    IntegerLiteral {
+                                                operand: Literal(
+                                                    Integer {
                                                         repr: "0",
                                                         value: 0,
                                                     },

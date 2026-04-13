@@ -6,8 +6,8 @@ Program {
                 VarDecl {
                     t: Int,
                     initialiser: Some(
-                        IntegerLiteral(
-                            IntegerLiteral {
+                        Literal(
+                            Integer {
                                 repr: "-1",
                                 value: -1,
                             },
@@ -29,14 +29,14 @@ Program {
                             op: Int(
                                 Sub,
                             ),
-                            lhs: IntegerLiteral(
-                                IntegerLiteral {
+                            lhs: Literal(
+                                Integer {
                                     repr: "-1",
                                     value: -1,
                                 },
                             ),
-                            rhs: IntegerLiteral(
-                                IntegerLiteral {
+                            rhs: Literal(
+                                Integer {
                                     repr: "-2",
                                     value: -2,
                                 },
@@ -59,14 +59,14 @@ Program {
                             op: Int(
                                 Sub,
                             ),
-                            lhs: IntegerLiteral(
-                                IntegerLiteral {
+                            lhs: Literal(
+                                Integer {
                                     repr: "-1",
                                     value: -1,
                                 },
                             ),
-                            rhs: IntegerLiteral(
-                                IntegerLiteral {
+                            rhs: Literal(
+                                Integer {
                                     repr: "-2",
                                     value: -2,
                                 },
@@ -89,8 +89,8 @@ Program {
                             op: Int(
                                 Add,
                             ),
-                            lhs: IntegerLiteral(
-                                IntegerLiteral {
+                            lhs: Literal(
+                                Integer {
                                     repr: "-5",
                                     value: -5,
                                 },
@@ -99,14 +99,14 @@ Program {
                                 op: Int(
                                     Add,
                                 ),
-                                lhs: IntegerLiteral(
-                                    IntegerLiteral {
+                                lhs: Literal(
+                                    Integer {
                                         repr: "-7",
                                         value: -7,
                                     },
                                 ),
-                                rhs: IntegerLiteral(
-                                    IntegerLiteral {
+                                rhs: Literal(
+                                    Integer {
                                         repr: "-8",
                                         value: -8,
                                     },
@@ -128,8 +128,8 @@ Program {
                     initialiser: Some(
                         UnOp {
                             op: IntNeg,
-                            operand: IntegerLiteral(
-                                IntegerLiteral {
+                            operand: Literal(
+                                Integer {
                                     repr: "-7",
                                     value: -7,
                                 },
@@ -171,8 +171,8 @@ Program {
                     VarDecl {
                         t: Int,
                         initialiser: Some(
-                            IntegerLiteral(
-                                IntegerLiteral {
+                            Literal(
+                                Integer {
                                     repr: "-1",
                                     value: -1,
                                 },
@@ -194,14 +194,14 @@ Program {
                                 op: Int(
                                     Sub,
                                 ),
-                                lhs: IntegerLiteral(
-                                    IntegerLiteral {
+                                lhs: Literal(
+                                    Integer {
                                         repr: "-1",
                                         value: -1,
                                     },
                                 ),
-                                rhs: IntegerLiteral(
-                                    IntegerLiteral {
+                                rhs: Literal(
+                                    Integer {
                                         repr: "-2",
                                         value: -2,
                                     },
@@ -224,14 +224,14 @@ Program {
                                 op: Int(
                                     Sub,
                                 ),
-                                lhs: IntegerLiteral(
-                                    IntegerLiteral {
+                                lhs: Literal(
+                                    Integer {
                                         repr: "-1",
                                         value: -1,
                                     },
                                 ),
-                                rhs: IntegerLiteral(
-                                    IntegerLiteral {
+                                rhs: Literal(
+                                    Integer {
                                         repr: "-2",
                                         value: -2,
                                     },
@@ -254,8 +254,8 @@ Program {
                                 op: Int(
                                     Add,
                                 ),
-                                lhs: IntegerLiteral(
-                                    IntegerLiteral {
+                                lhs: Literal(
+                                    Integer {
                                         repr: "-5",
                                         value: -5,
                                     },
@@ -264,14 +264,14 @@ Program {
                                     op: Int(
                                         Add,
                                     ),
-                                    lhs: IntegerLiteral(
-                                        IntegerLiteral {
+                                    lhs: Literal(
+                                        Integer {
                                             repr: "-7",
                                             value: -7,
                                         },
                                     ),
-                                    rhs: IntegerLiteral(
-                                        IntegerLiteral {
+                                    rhs: Literal(
+                                        Integer {
                                             repr: "-8",
                                             value: -8,
                                         },
@@ -293,8 +293,8 @@ Program {
                         initialiser: Some(
                             UnOp {
                                 op: IntNeg,
-                                operand: IntegerLiteral(
-                                    IntegerLiteral {
+                                operand: Literal(
+                                    Integer {
                                         repr: "-7",
                                         value: -7,
                                     },

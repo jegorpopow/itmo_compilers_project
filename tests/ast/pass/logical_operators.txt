@@ -20,8 +20,10 @@ Program {
                                                 VarDecl {
                                                     t: Bool,
                                                     initialiser: Some(
-                                                        BoolLiteral(
-                                                            True,
+                                                        Literal(
+                                                            Bool {
+                                                                value: true,
+                                                            },
                                                         ),
                                                     ),
                                                     relative_location: Local(
@@ -38,8 +40,10 @@ Program {
                                                 VarDecl {
                                                     t: Bool,
                                                     initialiser: Some(
-                                                        BoolLiteral(
-                                                            False,
+                                                        Literal(
+                                                            Bool {
+                                                                value: false,
+                                                            },
                                                         ),
                                                     ),
                                                     relative_location: Local(
@@ -56,8 +60,8 @@ Program {
                                                 VarDecl {
                                                     t: Int,
                                                     initialiser: Some(
-                                                        IntegerLiteral(
-                                                            IntegerLiteral {
+                                                        Literal(
+                                                            Integer {
                                                                 repr: "5",
                                                                 value: 5,
                                                             },
@@ -77,8 +81,8 @@ Program {
                                                 VarDecl {
                                                     t: Int,
                                                     initialiser: Some(
-                                                        IntegerLiteral(
-                                                            IntegerLiteral {
+                                                        Literal(
+                                                            Integer {
                                                                 repr: "0",
                                                                 value: 0,
                                                             },
@@ -118,8 +122,10 @@ Program {
                                                     a(1),
                                                 ),
                                             ),
-                                            rhs: BoolLiteral(
-                                                True,
+                                            rhs: Literal(
+                                                Bool {
+                                                    value: true,
+                                                },
                                             ),
                                         },
                                     },
@@ -145,8 +151,10 @@ Program {
                                             op: Bool(
                                                 Or,
                                             ),
-                                            lhs: BoolLiteral(
-                                                False,
+                                            lhs: Literal(
+                                                Bool {
+                                                    value: false,
+                                                },
                                             ),
                                             rhs: LvalueToRvalue(
                                                 Identifier(
@@ -230,8 +238,10 @@ Program {
                                                     VarDecl {
                                                         t: Bool,
                                                         initialiser: Some(
-                                                            BoolLiteral(
-                                                                True,
+                                                            Literal(
+                                                                Bool {
+                                                                    value: true,
+                                                                },
                                                             ),
                                                         ),
                                                         relative_location: Local(
@@ -248,8 +258,10 @@ Program {
                                                     VarDecl {
                                                         t: Bool,
                                                         initialiser: Some(
-                                                            BoolLiteral(
-                                                                False,
+                                                            Literal(
+                                                                Bool {
+                                                                    value: false,
+                                                                },
                                                             ),
                                                         ),
                                                         relative_location: Local(
@@ -266,8 +278,8 @@ Program {
                                                     VarDecl {
                                                         t: Int,
                                                         initialiser: Some(
-                                                            IntegerLiteral(
-                                                                IntegerLiteral {
+                                                            Literal(
+                                                                Integer {
                                                                     repr: "5",
                                                                     value: 5,
                                                                 },
@@ -287,8 +299,8 @@ Program {
                                                     VarDecl {
                                                         t: Int,
                                                         initialiser: Some(
-                                                            IntegerLiteral(
-                                                                IntegerLiteral {
+                                                            Literal(
+                                                                Integer {
                                                                     repr: "0",
                                                                     value: 0,
                                                                 },
@@ -328,8 +340,10 @@ Program {
                                                         a(1),
                                                     ),
                                                 ),
-                                                rhs: BoolLiteral(
-                                                    True,
+                                                rhs: Literal(
+                                                    Bool {
+                                                        value: true,
+                                                    },
                                                 ),
                                             },
                                         },
@@ -355,8 +369,10 @@ Program {
                                                 op: Bool(
                                                     Or,
                                                 ),
-                                                lhs: BoolLiteral(
-                                                    False,
+                                                lhs: Literal(
+                                                    Bool {
+                                                        value: false,
+                                                    },
                                                 ),
                                                 rhs: LvalueToRvalue(
                                                     Identifier(
@@ -423,8 +439,10 @@ Program {
                     VarDecl {
                         t: Bool,
                         initialiser: Some(
-                            BoolLiteral(
-                                True,
+                            Literal(
+                                Bool {
+                                    value: true,
+                                },
                             ),
                         ),
                         relative_location: Local(
@@ -439,8 +457,10 @@ Program {
                     VarDecl {
                         t: Bool,
                         initialiser: Some(
-                            BoolLiteral(
-                                False,
+                            Literal(
+                                Bool {
+                                    value: false,
+                                },
                             ),
                         ),
                         relative_location: Local(
@@ -455,8 +475,8 @@ Program {
                     VarDecl {
                         t: Int,
                         initialiser: Some(
-                            IntegerLiteral(
-                                IntegerLiteral {
+                            Literal(
+                                Integer {
                                     repr: "5",
                                     value: 5,
                                 },
@@ -474,8 +494,8 @@ Program {
                     VarDecl {
                         t: Int,
                         initialiser: Some(
-                            IntegerLiteral(
-                                IntegerLiteral {
+                            Literal(
+                                Integer {
                                     repr: "0",
                                     value: 0,
                                 },

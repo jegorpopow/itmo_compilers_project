@@ -37,8 +37,8 @@ Program(
                                     ),
                                     target: Real,
                                 },
-                                rhs: RealLiteral(
-                                    RealLiteral {
+                                rhs: Literal(
+                                    Real {
                                         repr: "1.60934",
                                         value: 1.60934,
                                     },
@@ -67,8 +67,8 @@ Program(
                                         t: None,
                                         initialiser: Some(
                                             Cast {
-                                                operand: RealLiteral(
-                                                    RealLiteral {
+                                                operand: Literal(
+                                                    Real {
                                                         repr: "10.0",
                                                         value: 10.0,
                                                     },

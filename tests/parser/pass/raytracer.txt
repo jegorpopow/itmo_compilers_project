@@ -7,8 +7,8 @@ Program(
                     Real,
                 ),
                 initialiser: Some(
-                    RealLiteral(
-                        RealLiteral {
+                    Literal(
+                        Real {
                             repr: "0.0001",
                             value: 0.0001,
                         },
@@ -283,8 +283,8 @@ Program(
                                 ),
                                 rhs: BinOp {
                                     op: Minus,
-                                    lhs: IntegerLiteral(
-                                        IntegerLiteral {
+                                    lhs: Literal(
+                                        Integer {
                                             repr: "1",
                                             value: 1,
                                         },
@@ -362,8 +362,8 @@ Program(
                                                     ),
                                                 ),
                                             },
-                                            rhs: RealLiteral(
-                                                RealLiteral {
+                                            rhs: Literal(
+                                                Real {
                                                     repr: "0.5",
                                                     value: 0.5,
                                                 },
@@ -383,8 +383,8 @@ Program(
                                                                     r"res",
                                                                 ),
                                                             ),
-                                                            rhs: IntegerLiteral(
-                                                                IntegerLiteral {
+                                                            rhs: Literal(
+                                                                Integer {
                                                                     repr: "1",
                                                                     value: 1,
                                                                 },
@@ -437,8 +437,8 @@ Program(
                                                     r"s",
                                                 ),
                                             ),
-                                            rhs: RealLiteral(
-                                                RealLiteral {
+                                            rhs: Literal(
+                                                Real {
                                                     repr: "0.0",
                                                     value: 0.0,
                                                 },
@@ -448,8 +448,8 @@ Program(
                                             [
                                                 Stmt(
                                                     Return {
-                                                        value: RealLiteral(
-                                                            RealLiteral {
+                                                        value: Literal(
+                                                            Real {
                                                                 repr: "NaN",
                                                                 value: NaN,
                                                             },
@@ -468,8 +468,8 @@ Program(
                                             Real,
                                         ),
                                         initialiser: Some(
-                                            RealLiteral(
-                                                RealLiteral {
+                                            Literal(
+                                                Real {
                                                     repr: "1.0",
                                                     value: 1.0,
                                                 },
@@ -486,8 +486,8 @@ Program(
                                                     r"s",
                                                 ),
                                             ),
-                                            rhs: RealLiteral(
-                                                RealLiteral {
+                                            rhs: Literal(
+                                                Real {
                                                     repr: "1.0",
                                                     value: 1.0,
                                                 },
@@ -507,8 +507,8 @@ Program(
                                                                     r"s",
                                                                 ),
                                                             ),
-                                                            rhs: IntegerLiteral(
-                                                                IntegerLiteral {
+                                                            rhs: Literal(
+                                                                Integer {
                                                                     repr: "2",
                                                                     value: 2,
                                                                 },
@@ -524,15 +524,15 @@ Program(
                                 Stmt(
                                     For {
                                         counter: r"i",
-                                        from: IntegerLiteral(
-                                            IntegerLiteral {
+                                        from: Literal(
+                                            Integer {
                                                 repr: "0",
                                                 value: 0,
                                             },
                                         ),
                                         to: Some(
-                                            IntegerLiteral(
-                                                IntegerLiteral {
+                                            Literal(
+                                                Integer {
                                                     repr: "100",
                                                     value: 100,
                                                 },
@@ -582,8 +582,8 @@ Program(
                                                                     ),
                                                                 },
                                                             },
-                                                            rhs: IntegerLiteral(
-                                                                IntegerLiteral {
+                                                            rhs: Literal(
+                                                                Integer {
                                                                     repr: "2",
                                                                     value: 2,
                                                                 },
@@ -1183,8 +1183,8 @@ Program(
                             args: [
                                 BinOp {
                                     op: Div,
-                                    lhs: IntegerLiteral(
-                                        IntegerLiteral {
+                                    lhs: Literal(
+                                        Integer {
                                             repr: "1",
                                             value: 1,
                                         },
@@ -1391,8 +1391,8 @@ Program(
                                                         r"val",
                                                     ),
                                                 ),
-                                                rhs: IntegerLiteral(
-                                                    IntegerLiteral {
+                                                rhs: Literal(
+                                                    Integer {
                                                         repr: "0",
                                                         value: 0,
                                                     },
@@ -1405,8 +1405,8 @@ Program(
                                                         r"val",
                                                     ),
                                                 ),
-                                                rhs: IntegerLiteral(
-                                                    IntegerLiteral {
+                                                rhs: Literal(
+                                                    Integer {
                                                         repr: "256",
                                                         value: 256,
                                                     },
@@ -1689,20 +1689,20 @@ Program(
                     Call {
                         callee: r"colour_of",
                         args: [
-                            IntegerLiteral(
-                                IntegerLiteral {
+                            Literal(
+                                Integer {
                                     repr: "255",
                                     value: 255,
                                 },
                             ),
-                            IntegerLiteral(
-                                IntegerLiteral {
+                            Literal(
+                                Integer {
                                     repr: "0",
                                     value: 0,
                                 },
                             ),
-                            IntegerLiteral(
-                                IntegerLiteral {
+                            Literal(
+                                Integer {
                                     repr: "0",
                                     value: 0,
                                 },
@@ -1720,20 +1720,20 @@ Program(
                     Call {
                         callee: r"colour_of",
                         args: [
-                            IntegerLiteral(
-                                IntegerLiteral {
+                            Literal(
+                                Integer {
                                     repr: "0",
                                     value: 0,
                                 },
                             ),
-                            IntegerLiteral(
-                                IntegerLiteral {
+                            Literal(
+                                Integer {
                                     repr: "255",
                                     value: 255,
                                 },
                             ),
-                            IntegerLiteral(
-                                IntegerLiteral {
+                            Literal(
+                                Integer {
                                     repr: "0",
                                     value: 0,
                                 },
@@ -1751,20 +1751,20 @@ Program(
                     Call {
                         callee: r"colour_of",
                         args: [
-                            IntegerLiteral(
-                                IntegerLiteral {
+                            Literal(
+                                Integer {
                                     repr: "0",
                                     value: 0,
                                 },
                             ),
-                            IntegerLiteral(
-                                IntegerLiteral {
+                            Literal(
+                                Integer {
                                     repr: "0",
                                     value: 0,
                                 },
                             ),
-                            IntegerLiteral(
-                                IntegerLiteral {
+                            Literal(
+                                Integer {
                                     repr: "255",
                                     value: 255,
                                 },
@@ -1782,20 +1782,20 @@ Program(
                     Call {
                         callee: r"colour_of",
                         args: [
-                            IntegerLiteral(
-                                IntegerLiteral {
+                            Literal(
+                                Integer {
                                     repr: "0",
                                     value: 0,
                                 },
                             ),
-                            IntegerLiteral(
-                                IntegerLiteral {
+                            Literal(
+                                Integer {
                                     repr: "0",
                                     value: 0,
                                 },
                             ),
-                            IntegerLiteral(
-                                IntegerLiteral {
+                            Literal(
+                                Integer {
                                     repr: "0",
                                     value: 0,
                                 },
@@ -1813,20 +1813,20 @@ Program(
                     Call {
                         callee: r"colour_of",
                         args: [
-                            IntegerLiteral(
-                                IntegerLiteral {
+                            Literal(
+                                Integer {
                                     repr: "255",
                                     value: 255,
                                 },
                             ),
-                            IntegerLiteral(
-                                IntegerLiteral {
+                            Literal(
+                                Integer {
                                     repr: "255",
                                     value: 255,
                                 },
                             ),
-                            IntegerLiteral(
-                                IntegerLiteral {
+                            Literal(
+                                Integer {
                                     repr: "255",
                                     value: 255,
                                 },
@@ -1922,8 +1922,8 @@ Program(
                                             ),
                                         ),
                                     },
-                                    rhs: IntegerLiteral(
-                                        IntegerLiteral {
+                                    rhs: Literal(
+                                        Integer {
                                             repr: "1",
                                             value: 1,
                                         },
@@ -2000,8 +2000,8 @@ Program(
                                                         ),
                                                     ),
                                                 },
-                                                rhs: IntegerLiteral(
-                                                    IntegerLiteral {
+                                                rhs: Literal(
+                                                    Integer {
                                                         repr: "1",
                                                         value: 1,
                                                     },
@@ -2115,8 +2115,8 @@ Program(
                                 Stmt(
                                     For {
                                         counter: r"x",
-                                        from: IntegerLiteral(
-                                            IntegerLiteral {
+                                        from: Literal(
+                                            Integer {
                                                 repr: "0",
                                                 value: 0,
                                             },
@@ -2132,8 +2132,8 @@ Program(
                                                         member_name: r"width",
                                                     },
                                                 ),
-                                                rhs: IntegerLiteral(
-                                                    IntegerLiteral {
+                                                rhs: Literal(
+                                                    Integer {
                                                         repr: "1",
                                                         value: 1,
                                                     },
@@ -2146,8 +2146,8 @@ Program(
                                                 Stmt(
                                                     For {
                                                         counter: r"y",
-                                                        from: IntegerLiteral(
-                                                            IntegerLiteral {
+                                                        from: Literal(
+                                                            Integer {
                                                                 repr: "0",
                                                                 value: 0,
                                                             },
@@ -2163,8 +2163,8 @@ Program(
                                                                         member_name: r"height",
                                                                     },
                                                                 ),
-                                                                rhs: IntegerLiteral(
-                                                                    IntegerLiteral {
+                                                                rhs: Literal(
+                                                                    Integer {
                                                                         repr: "1",
                                                                         value: 1,
                                                                     },
@@ -2279,16 +2279,16 @@ Program(
                                                     member_name: r"height",
                                                 },
                                             ),
-                                            rhs: IntegerLiteral(
-                                                IntegerLiteral {
+                                            rhs: Literal(
+                                                Integer {
                                                     repr: "1",
                                                     value: 1,
                                                 },
                                             ),
                                         },
                                         to: Some(
-                                            IntegerLiteral(
-                                                IntegerLiteral {
+                                            Literal(
+                                                Integer {
                                                     repr: "0",
                                                     value: 0,
                                                 },
@@ -2300,8 +2300,8 @@ Program(
                                                 Stmt(
                                                     For {
                                                         counter: r"x",
-                                                        from: IntegerLiteral(
-                                                            IntegerLiteral {
+                                                        from: Literal(
+                                                            Integer {
                                                                 repr: "0",
                                                                 value: 0,
                                                             },
@@ -2317,8 +2317,8 @@ Program(
                                                                         member_name: r"width",
                                                                     },
                                                                 ),
-                                                                rhs: IntegerLiteral(
-                                                                    IntegerLiteral {
+                                                                rhs: Literal(
+                                                                    Integer {
                                                                         repr: "1",
                                                                         value: 1,
                                                                     },
@@ -2471,8 +2471,8 @@ Program(
                                 [
                                     (
                                         r"kind",
-                                        IntegerLiteral(
-                                            IntegerLiteral {
+                                        Literal(
+                                            Integer {
                                                 repr: "1",
                                                 value: 1,
                                             },
@@ -2520,8 +2520,8 @@ Program(
                                 [
                                     (
                                         r"kind",
-                                        IntegerLiteral(
-                                            IntegerLiteral {
+                                        Literal(
+                                            Integer {
                                                 repr: "2",
                                                 value: 2,
                                             },
@@ -2611,8 +2611,8 @@ Program(
                                         initialiser: Some(
                                             BinOp {
                                                 op: Mul,
-                                                lhs: IntegerLiteral(
-                                                    IntegerLiteral {
+                                                lhs: Literal(
+                                                    Integer {
                                                         repr: "2",
                                                         value: 2,
                                                     },
@@ -2760,8 +2760,8 @@ Program(
                                                     op: Mul,
                                                     lhs: BinOp {
                                                         op: Mul,
-                                                        lhs: IntegerLiteral(
-                                                            IntegerLiteral {
+                                                        lhs: Literal(
+                                                            Integer {
                                                                 repr: "4",
                                                                 value: 4,
                                                             },
@@ -2791,8 +2791,8 @@ Program(
                                                     r"discriminant",
                                                 ),
                                             ),
-                                            rhs: RealLiteral(
-                                                RealLiteral {
+                                            rhs: Literal(
+                                                Real {
                                                     repr: "0.0",
                                                     value: 0.0,
                                                 },
@@ -2802,8 +2802,8 @@ Program(
                                             [
                                                 Stmt(
                                                     Return {
-                                                        value: RealLiteral(
-                                                            RealLiteral {
+                                                        value: Literal(
+                                                            Real {
                                                                 repr: "NaN",
                                                                 value: NaN,
                                                             },
@@ -2847,8 +2847,8 @@ Program(
                                                 },
                                                 rhs: BinOp {
                                                     op: Mul,
-                                                    lhs: IntegerLiteral(
-                                                        IntegerLiteral {
+                                                    lhs: Literal(
+                                                        Integer {
                                                             repr: "2",
                                                             value: 2,
                                                         },
@@ -2895,8 +2895,8 @@ Program(
                                                 },
                                                 rhs: BinOp {
                                                     op: Mul,
-                                                    lhs: IntegerLiteral(
-                                                        IntegerLiteral {
+                                                    lhs: Literal(
+                                                        Integer {
                                                             repr: "2",
                                                             value: 2,
                                                         },
@@ -2930,8 +2930,8 @@ Program(
                                                     ),
                                                 ],
                                             },
-                                            rhs: IntegerLiteral(
-                                                IntegerLiteral {
+                                            rhs: Literal(
+                                                Integer {
                                                     repr: "0",
                                                     value: 0,
                                                 },
@@ -2982,8 +2982,8 @@ Program(
                                                                         ),
                                                                     ],
                                                                 },
-                                                                rhs: IntegerLiteral(
-                                                                    IntegerLiteral {
+                                                                rhs: Literal(
+                                                                    Integer {
                                                                         repr: "0",
                                                                         value: 0,
                                                                     },
@@ -3017,8 +3017,8 @@ Program(
                                                                     [
                                                                         Stmt(
                                                                             Return {
-                                                                                value: RealLiteral(
-                                                                                    RealLiteral {
+                                                                                value: Literal(
+                                                                                    Real {
                                                                                         repr: "NaN",
                                                                                         value: NaN,
                                                                                     },
@@ -3091,8 +3091,8 @@ Program(
                                                         ),
                                                     ],
                                                 },
-                                                IntegerLiteral(
-                                                    IntegerLiteral {
+                                                Literal(
+                                                    Integer {
                                                         repr: "0",
                                                         value: 0,
                                                     },
@@ -3103,8 +3103,8 @@ Program(
                                             [
                                                 Stmt(
                                                     Return {
-                                                        value: RealLiteral(
-                                                            RealLiteral {
+                                                        value: Literal(
+                                                            Real {
                                                                 repr: "NaN",
                                                                 value: NaN,
                                                             },
@@ -3217,8 +3217,8 @@ Program(
                                                 [
                                                     Stmt(
                                                         Return {
-                                                            value: RealLiteral(
-                                                                RealLiteral {
+                                                            value: Literal(
+                                                                Real {
                                                                     repr: "NaN",
                                                                     value: NaN,
                                                                 },
@@ -3272,8 +3272,8 @@ Program(
                                                     member_name: r"kind",
                                                 },
                                             ),
-                                            rhs: IntegerLiteral(
-                                                IntegerLiteral {
+                                            rhs: Literal(
+                                                Integer {
                                                     repr: "1",
                                                     value: 1,
                                                 },
@@ -3320,8 +3320,8 @@ Program(
                                                     member_name: r"kind",
                                                 },
                                             ),
-                                            rhs: IntegerLiteral(
-                                                IntegerLiteral {
+                                            rhs: Literal(
+                                                Integer {
                                                     repr: "2",
                                                     value: 2,
                                                 },
@@ -3358,8 +3358,8 @@ Program(
                                 ),
                                 Stmt(
                                     Return {
-                                        value: RealLiteral(
-                                            RealLiteral {
+                                        value: Literal(
+                                            Real {
                                                 repr: "NaN",
                                                 value: NaN,
                                             },
@@ -3497,8 +3497,8 @@ Program(
                                                     member_name: r"kind",
                                                 },
                                             ),
-                                            rhs: IntegerLiteral(
-                                                IntegerLiteral {
+                                            rhs: Literal(
+                                                Integer {
                                                     repr: "1",
                                                     value: 1,
                                                 },
@@ -3545,8 +3545,8 @@ Program(
                                                     member_name: r"kind",
                                                 },
                                             ),
-                                            rhs: IntegerLiteral(
-                                                IntegerLiteral {
+                                            rhs: Literal(
+                                                Integer {
                                                     repr: "2",
                                                     value: 2,
                                                 },
@@ -3630,8 +3630,8 @@ Program(
                                                     member_name: r"kind",
                                                 },
                                             ),
-                                            rhs: IntegerLiteral(
-                                                IntegerLiteral {
+                                            rhs: Literal(
+                                                Integer {
                                                     repr: "1",
                                                     value: 1,
                                                 },
@@ -3671,8 +3671,8 @@ Program(
                                                     member_name: r"kind",
                                                 },
                                             ),
-                                            rhs: IntegerLiteral(
-                                                IntegerLiteral {
+                                            rhs: Literal(
+                                                Integer {
                                                     repr: "2",
                                                     value: 2,
                                                 },
@@ -3747,8 +3747,8 @@ Program(
                                 [
                                     (
                                         r"t",
-                                        RealLiteral(
-                                            RealLiteral {
+                                        Literal(
+                                            Real {
                                                 repr: "NaN",
                                                 value: NaN,
                                             },
@@ -4029,8 +4029,8 @@ Program(
                                             Real,
                                         ),
                                         initialiser: Some(
-                                            IntegerLiteral(
-                                                IntegerLiteral {
+                                            Literal(
+                                                Integer {
                                                     repr: "2",
                                                     value: 2,
                                                 },
@@ -4081,20 +4081,20 @@ Program(
                                             Call {
                                                 callee: r"vector_of",
                                                 args: [
-                                                    IntegerLiteral(
-                                                        IntegerLiteral {
+                                                    Literal(
+                                                        Integer {
                                                             repr: "0",
                                                             value: 0,
                                                         },
                                                     ),
-                                                    IntegerLiteral(
-                                                        IntegerLiteral {
+                                                    Literal(
+                                                        Integer {
                                                             repr: "0",
                                                             value: 0,
                                                         },
                                                     ),
-                                                    IntegerLiteral(
-                                                        IntegerLiteral {
+                                                    Literal(
+                                                        Integer {
                                                             repr: "-2",
                                                             value: -2,
                                                         },
@@ -4116,20 +4116,20 @@ Program(
                                             Call {
                                                 callee: r"vector_of",
                                                 args: [
-                                                    IntegerLiteral(
-                                                        IntegerLiteral {
+                                                    Literal(
+                                                        Integer {
                                                             repr: "1",
                                                             value: 1,
                                                         },
                                                     ),
-                                                    IntegerLiteral(
-                                                        IntegerLiteral {
+                                                    Literal(
+                                                        Integer {
                                                             repr: "0",
                                                             value: 0,
                                                         },
                                                     ),
-                                                    IntegerLiteral(
-                                                        IntegerLiteral {
+                                                    Literal(
+                                                        Integer {
                                                             repr: "0",
                                                             value: 0,
                                                         },
@@ -4151,20 +4151,20 @@ Program(
                                             Call {
                                                 callee: r"vector_of",
                                                 args: [
-                                                    IntegerLiteral(
-                                                        IntegerLiteral {
+                                                    Literal(
+                                                        Integer {
                                                             repr: "0",
                                                             value: 0,
                                                         },
                                                     ),
-                                                    IntegerLiteral(
-                                                        IntegerLiteral {
+                                                    Literal(
+                                                        Integer {
                                                             repr: "1",
                                                             value: 1,
                                                         },
                                                     ),
-                                                    IntegerLiteral(
-                                                        IntegerLiteral {
+                                                    Literal(
+                                                        Integer {
                                                             repr: "0",
                                                             value: 0,
                                                         },
@@ -4196,8 +4196,8 @@ Program(
                                                                 ),
                                                             ),
                                                         },
-                                                        rhs: IntegerLiteral(
-                                                            IntegerLiteral {
+                                                        rhs: Literal(
+                                                            Integer {
                                                                 repr: "2",
                                                                 value: 2,
                                                             },
@@ -4213,15 +4213,15 @@ Program(
                                                                 ),
                                                             ),
                                                         },
-                                                        rhs: IntegerLiteral(
-                                                            IntegerLiteral {
+                                                        rhs: Literal(
+                                                            Integer {
                                                                 repr: "2",
                                                                 value: 2,
                                                             },
                                                         ),
                                                     },
-                                                    IntegerLiteral(
-                                                        IntegerLiteral {
+                                                    Literal(
+                                                        Integer {
                                                             repr: "0",
                                                             value: 0,
                                                         },
@@ -4234,8 +4234,8 @@ Program(
                                 Stmt(
                                     For {
                                         counter: r"x",
-                                        from: IntegerLiteral(
-                                            IntegerLiteral {
+                                        from: Literal(
+                                            Integer {
                                                 repr: "0",
                                                 value: 0,
                                             },
@@ -4251,8 +4251,8 @@ Program(
                                                         member_name: r"width",
                                                     },
                                                 ),
-                                                rhs: IntegerLiteral(
-                                                    IntegerLiteral {
+                                                rhs: Literal(
+                                                    Integer {
                                                         repr: "1",
                                                         value: 1,
                                                     },
@@ -4265,8 +4265,8 @@ Program(
                                                 Stmt(
                                                     For {
                                                         counter: r"y",
-                                                        from: IntegerLiteral(
-                                                            IntegerLiteral {
+                                                        from: Literal(
+                                                            Integer {
                                                                 repr: "0",
                                                                 value: 0,
                                                             },
@@ -4282,8 +4282,8 @@ Program(
                                                                         member_name: r"height",
                                                                     },
                                                                 ),
-                                                                rhs: IntegerLiteral(
-                                                                    IntegerLiteral {
+                                                                rhs: Literal(
+                                                                    Integer {
                                                                         repr: "1",
                                                                         value: 1,
                                                                     },
@@ -4333,8 +4333,8 @@ Program(
                                                                                                         },
                                                                                                         rhs: BinOp {
                                                                                                             op: Mul,
-                                                                                                            lhs: RealLiteral(
-                                                                                                                RealLiteral {
+                                                                                                            lhs: Literal(
+                                                                                                                Real {
                                                                                                                     repr: "1.0",
                                                                                                                     value: 1.0,
                                                                                                                 },
@@ -4376,8 +4376,8 @@ Program(
                                                                                                         },
                                                                                                         rhs: BinOp {
                                                                                                             op: Mul,
-                                                                                                            lhs: RealLiteral(
-                                                                                                                RealLiteral {
+                                                                                                            lhs: Literal(
+                                                                                                                Real {
                                                                                                                     repr: "1.0",
                                                                                                                     value: 1.0,
                                                                                                                 },
@@ -4516,8 +4516,8 @@ Program(
                                                                                                     Call {
                                                                                                         callee: r"vector_mul",
                                                                                                         args: [
-                                                                                                            IntegerLiteral(
-                                                                                                                IntegerLiteral {
+                                                                                                            Literal(
+                                                                                                                Integer {
                                                                                                                     repr: "-1",
                                                                                                                     value: -1,
                                                                                                                 },
@@ -4546,8 +4546,8 @@ Program(
                                                                                                     r"colour_ratio",
                                                                                                 ),
                                                                                             ),
-                                                                                            rhs: IntegerLiteral(
-                                                                                                IntegerLiteral {
+                                                                                            rhs: Literal(
+                                                                                                Integer {
                                                                                                     repr: "0",
                                                                                                     value: 0,
                                                                                                 },
@@ -4560,8 +4560,8 @@ Program(
                                                                                                         lhs: Identifier(
                                                                                                             r"colour_ratio",
                                                                                                         ),
-                                                                                                        rhs: IntegerLiteral(
-                                                                                                            IntegerLiteral {
+                                                                                                        rhs: Literal(
+                                                                                                            Integer {
                                                                                                                 repr: "1",
                                                                                                                 value: 1,
                                                                                                             },
@@ -4709,20 +4709,20 @@ Program(
                                                             Call {
                                                                 callee: r"vector_of",
                                                                 args: [
-                                                                    RealLiteral(
-                                                                        RealLiteral {
+                                                                    Literal(
+                                                                        Real {
                                                                             repr: "0.5",
                                                                             value: 0.5,
                                                                         },
                                                                     ),
-                                                                    RealLiteral(
-                                                                        RealLiteral {
+                                                                    Literal(
+                                                                        Real {
                                                                             repr: "0.5",
                                                                             value: 0.5,
                                                                         },
                                                                     ),
-                                                                    IntegerLiteral(
-                                                                        IntegerLiteral {
+                                                                    Literal(
+                                                                        Integer {
                                                                             repr: "3",
                                                                             value: 3,
                                                                         },
@@ -4732,8 +4732,8 @@ Program(
                                                         ),
                                                         (
                                                             r"radius",
-                                                            IntegerLiteral(
-                                                                IntegerLiteral {
+                                                            Literal(
+                                                                Integer {
                                                                     repr: "1",
                                                                     value: 1,
                                                                 },
@@ -4770,20 +4770,20 @@ Program(
                                                             Call {
                                                                 callee: r"vector_of",
                                                                 args: [
-                                                                    RealLiteral(
-                                                                        RealLiteral {
+                                                                    Literal(
+                                                                        Real {
                                                                             repr: "-0.8",
                                                                             value: -0.8,
                                                                         },
                                                                     ),
-                                                                    RealLiteral(
-                                                                        RealLiteral {
+                                                                    Literal(
+                                                                        Real {
                                                                             repr: "-0.5",
                                                                             value: -0.5,
                                                                         },
                                                                     ),
-                                                                    IntegerLiteral(
-                                                                        IntegerLiteral {
+                                                                    Literal(
+                                                                        Integer {
                                                                             repr: "4",
                                                                             value: 4,
                                                                         },
@@ -4793,8 +4793,8 @@ Program(
                                                         ),
                                                         (
                                                             r"radius",
-                                                            IntegerLiteral(
-                                                                IntegerLiteral {
+                                                            Literal(
+                                                                Integer {
                                                                     repr: "2",
                                                                     value: 2,
                                                                 },
@@ -4831,20 +4831,20 @@ Program(
                                                             Call {
                                                                 callee: r"vector_of",
                                                                 args: [
-                                                                    IntegerLiteral(
-                                                                        IntegerLiteral {
+                                                                    Literal(
+                                                                        Integer {
                                                                             repr: "0",
                                                                             value: 0,
                                                                         },
                                                                     ),
-                                                                    RealLiteral(
-                                                                        RealLiteral {
+                                                                    Literal(
+                                                                        Real {
                                                                             repr: "-1.5",
                                                                             value: -1.5,
                                                                         },
                                                                     ),
-                                                                    IntegerLiteral(
-                                                                        IntegerLiteral {
+                                                                    Literal(
+                                                                        Integer {
                                                                             repr: "5",
                                                                             value: 5,
                                                                         },
@@ -4857,20 +4857,20 @@ Program(
                                                             Call {
                                                                 callee: r"vector_of",
                                                                 args: [
-                                                                    RealLiteral(
-                                                                        RealLiteral {
+                                                                    Literal(
+                                                                        Real {
                                                                             repr: "0.2",
                                                                             value: 0.2,
                                                                         },
                                                                     ),
-                                                                    IntegerLiteral(
-                                                                        IntegerLiteral {
+                                                                    Literal(
+                                                                        Integer {
                                                                             repr: "1",
                                                                             value: 1,
                                                                         },
                                                                     ),
-                                                                    RealLiteral(
-                                                                        RealLiteral {
+                                                                    Literal(
+                                                                        Real {
                                                                             repr: "-0.1",
                                                                             value: -0.1,
                                                                         },
@@ -4905,8 +4905,8 @@ Program(
                                                             r"object",
                                                         ),
                                                         length: Some(
-                                                            IntegerLiteral(
-                                                                IntegerLiteral {
+                                                            Literal(
+                                                                Integer {
                                                                     repr: "3",
                                                                     value: 3,
                                                                 },
@@ -4926,8 +4926,8 @@ Program(
                                             lhs: Identifier(
                                                 r"scene",
                                             ),
-                                            index: IntegerLiteral(
-                                                IntegerLiteral {
+                                            index: Literal(
+                                                Integer {
                                                     repr: "1",
                                                     value: 1,
                                                 },
@@ -4951,8 +4951,8 @@ Program(
                                             lhs: Identifier(
                                                 r"scene",
                                             ),
-                                            index: IntegerLiteral(
-                                                IntegerLiteral {
+                                            index: Literal(
+                                                Integer {
                                                     repr: "2",
                                                     value: 2,
                                                 },
@@ -4976,8 +4976,8 @@ Program(
                                             lhs: Identifier(
                                                 r"scene",
                                             ),
-                                            index: IntegerLiteral(
-                                                IntegerLiteral {
+                                            index: Literal(
+                                                Integer {
                                                     repr: "3",
                                                     value: 3,
                                                 },
@@ -5003,14 +5003,14 @@ Program(
                                                 Call {
                                                     callee: r"trace_rays",
                                                     args: [
-                                                        IntegerLiteral(
-                                                            IntegerLiteral {
+                                                        Literal(
+                                                            Integer {
                                                                 repr: "36",
                                                                 value: 36,
                                                             },
                                                         ),
-                                                        IntegerLiteral(
-                                                            IntegerLiteral {
+                                                        Literal(
+                                                            Integer {
                                                                 repr: "64",
                                                                 value: 64,
                                                             },

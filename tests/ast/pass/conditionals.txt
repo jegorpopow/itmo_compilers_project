@@ -39,8 +39,8 @@ Program {
                                                     value(1),
                                                 ),
                                             ),
-                                            rhs: RealLiteral(
-                                                RealLiteral {
+                                            rhs: Literal(
+                                                Real {
                                                     repr: "0.0",
                                                     value: 0.0,
                                                 },
@@ -56,8 +56,8 @@ Program {
                                                         op: Real(
                                                             Sub,
                                                         ),
-                                                        lhs: RealLiteral(
-                                                            RealLiteral {
+                                                        lhs: Literal(
+                                                            Real {
                                                                 repr: "0.0",
                                                                 value: 0.0,
                                                             },
@@ -109,8 +109,8 @@ Program {
                                                 VarDecl {
                                                     t: Int,
                                                     initialiser: Some(
-                                                        IntegerLiteral(
-                                                            IntegerLiteral {
+                                                        Literal(
+                                                            Integer {
                                                                 repr: "4",
                                                                 value: 4,
                                                             },
@@ -137,15 +137,15 @@ Program {
                                                         a(3),
                                                     ),
                                                 ),
-                                                rhs: IntegerLiteral(
-                                                    IntegerLiteral {
+                                                rhs: Literal(
+                                                    Integer {
                                                         repr: "2",
                                                         value: 2,
                                                     },
                                                 ),
                                             },
-                                            rhs: IntegerLiteral(
-                                                IntegerLiteral {
+                                            rhs: Literal(
+                                                Integer {
                                                     repr: "0",
                                                     value: 0,
                                                 },
@@ -160,8 +160,8 @@ Program {
                                                             VarDecl {
                                                                 t: Int,
                                                                 initialiser: Some(
-                                                                    IntegerLiteral(
-                                                                        IntegerLiteral {
+                                                                    Literal(
+                                                                        Integer {
                                                                             repr: "0",
                                                                             value: 0,
                                                                         },
@@ -175,8 +175,8 @@ Program {
                                                     },
                                                 ),
                                                 Print {
-                                                    value: IntegerLiteral(
-                                                        IntegerLiteral {
+                                                    value: Literal(
+                                                        Integer {
                                                             repr: "0",
                                                             value: 0,
                                                         },
@@ -196,8 +196,8 @@ Program {
                                             Block {
                                                 stmts: [
                                                     Print {
-                                                        value: IntegerLiteral(
-                                                            IntegerLiteral {
+                                                        value: Literal(
+                                                            Integer {
                                                                 repr: "1",
                                                                 value: 1,
                                                             },
@@ -258,8 +258,8 @@ Program {
                                                         value(1),
                                                     ),
                                                 ),
-                                                rhs: RealLiteral(
-                                                    RealLiteral {
+                                                rhs: Literal(
+                                                    Real {
                                                         repr: "0.0",
                                                         value: 0.0,
                                                     },
@@ -275,8 +275,8 @@ Program {
                                                             op: Real(
                                                                 Sub,
                                                             ),
-                                                            lhs: RealLiteral(
-                                                                RealLiteral {
+                                                            lhs: Literal(
+                                                                Real {
                                                                     repr: "0.0",
                                                                     value: 0.0,
                                                                 },
@@ -340,8 +340,8 @@ Program {
                                                     VarDecl {
                                                         t: Int,
                                                         initialiser: Some(
-                                                            IntegerLiteral(
-                                                                IntegerLiteral {
+                                                            Literal(
+                                                                Integer {
                                                                     repr: "4",
                                                                     value: 4,
                                                                 },
@@ -368,15 +368,15 @@ Program {
                                                             a(3),
                                                         ),
                                                     ),
-                                                    rhs: IntegerLiteral(
-                                                        IntegerLiteral {
+                                                    rhs: Literal(
+                                                        Integer {
                                                             repr: "2",
                                                             value: 2,
                                                         },
                                                     ),
                                                 },
-                                                rhs: IntegerLiteral(
-                                                    IntegerLiteral {
+                                                rhs: Literal(
+                                                    Integer {
                                                         repr: "0",
                                                         value: 0,
                                                     },
@@ -391,8 +391,8 @@ Program {
                                                                 VarDecl {
                                                                     t: Int,
                                                                     initialiser: Some(
-                                                                        IntegerLiteral(
-                                                                            IntegerLiteral {
+                                                                        Literal(
+                                                                            Integer {
                                                                                 repr: "0",
                                                                                 value: 0,
                                                                             },
@@ -406,8 +406,8 @@ Program {
                                                         },
                                                     ),
                                                     Print {
-                                                        value: IntegerLiteral(
-                                                            IntegerLiteral {
+                                                        value: Literal(
+                                                            Integer {
                                                                 repr: "0",
                                                                 value: 0,
                                                             },
@@ -427,8 +427,8 @@ Program {
                                                 Block {
                                                     stmts: [
                                                         Print {
-                                                            value: IntegerLiteral(
-                                                                IntegerLiteral {
+                                                            value: Literal(
+                                                                Integer {
                                                                     repr: "1",
                                                                     value: 1,
                                                                 },
@@ -453,8 +453,8 @@ Program {
                     VarDecl {
                         t: Int,
                         initialiser: Some(
-                            IntegerLiteral(
-                                IntegerLiteral {
+                            Literal(
+                                Integer {
                                     repr: "4",
                                     value: 4,
                                 },
@@ -472,8 +472,8 @@ Program {
                     VarDecl {
                         t: Int,
                         initialiser: Some(
-                            IntegerLiteral(
-                                IntegerLiteral {
+                            Literal(
+                                Integer {
                                     repr: "0",
                                     value: 0,
                                 },
