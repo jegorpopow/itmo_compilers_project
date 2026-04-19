@@ -17,6 +17,7 @@ pub struct Compiler<'a> {
     bindings: &'a Bindings,
     interner: Interner,
     bytecode: Vec<Instruction>,
+    global_init: Vec<Instruction>,
     fresh_label_counter: u64,
     routines_labels: HashMap<Identifier, u64>,
 }
@@ -24,13 +25,26 @@ pub struct Compiler<'a> {
 impl<'a> Compiler<'a> {
     #[must_use]
     pub fn new(table: &'a Bindings) -> Self {
-        Compiler {
+        let mut result = Compiler {
             bindings: table,
             interner: Interner::new(),
             bytecode: Vec::new(),
+            global_init: Vec::new(),
             fresh_label_counter: 0,
             routines_labels: HashMap::new(),
-        }
+        };
+
+        let global_init_label = result.get_fresh_label();
+        assert_eq!(
+            global_init_label, 0,
+            "Global init section should have hardcoded label `0`"
+        );
+
+        result.global_init.push(Instruction::Label {
+            id: global_init_label,
+        });
+
+        result
     }
 
     fn get_fresh_label(&mut self) -> u64 {
@@ -462,35 +476,53 @@ impl<'a> Compiler<'a> {
     pub fn compile(&mut self, program: &Program) -> AnalysisResult<()> {
         for Binding { name, decl } in &program.globals {
             match decl {
-                Decl::Var(v) => todo!("var {name:?} = {v:?}"),
-                Decl::Const(v) => todo!("const {name:?} = {v:?}"),
-                Decl::Type(t) => todo!("type {name:?} = {t:?}"),
+                Decl::Var(v) => {
+                    // Some dirty hacks below
+                    let bytecode = std::mem::take(&mut self.bytecode);
+
+                    let initialiser = match &v.initialiser {
+                        Some(expr) => Rc::clone(expr),
+                        None => Rc::new(self.bindings.get_default_initialiser(&v.t)?),
+                    };
+
+                    self.compile_statement(&Statement::Assignment {
+                        lhs: LvalueExpression::Identifier(name.clone()).into(),
+                        rhs: initialiser,
+                    })?;
+
+                    let mut global_init = std::mem::take(&mut self.bytecode);
+                    self.bytecode = bytecode;
+                    self.global_init.append(&mut global_init);
+                }
                 Decl::Routine(r) => match r {
-                    RoutineDecl::Forward { .. } => todo!(),
-                    RoutineDecl::Full(Routine {
-                        signature,
-                        args_bindings,
-                        body,
-                    }) => {
+                    RoutineDecl::Forward { .. } => {}
+                    RoutineDecl::Full(Routine { body, .. }) => {
+                        self.bytecode.push(Instruction::Label {
+                            id: *self
+                                .routines_labels
+                                .get(name)
+                                .expect("Routines are indexed"),
+                        });
                         match body {
                             RoutineBody::Block(block) => self.compile_block(block)?,
 
-                            RoutineBody::Expression(expression) => self.compile_expr(expression)?,
+                            RoutineBody::Expression(expression) => {
+                                self.compile_expr(expression)?;
+                                self.bytecode.push(Instruction::Ret);
+                            }
                         }
-                        todo!(
-                            "Do something with signature {signature:?} and args {args_bindings:?}"
-                        )
                     }
                 },
+                Decl::Const(_) | Decl::Type(_) => {}
             }
         }
         Ok(())
     }
 
     #[expect(clippy::wrong_self_convention, reason = "The convention is stupid")]
-    fn to_bytecode_file(self) -> BytecodeFile {
-        let instructions = self.bytecode;
-
+    fn to_bytecode_file(mut self) -> BytecodeFile {
+        self.global_init.push(Instruction::Ret);
+        let instructions = [self.global_init, self.bytecode].concat();
         let function_table = FunctionTable(
             self.routines_labels
                 .iter()
@@ -512,6 +544,7 @@ impl<'a> Compiler<'a> {
 
 pub fn codegen(program: &Program) -> AnalysisResult<BytecodeFile> {
     let mut compiler = Compiler::new(&program.bindings);
+    compiler.collect_routines(program);
     compiler.compile(program)?;
     Ok(compiler.to_bytecode_file())
 }
