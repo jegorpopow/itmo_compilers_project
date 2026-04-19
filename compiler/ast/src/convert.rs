@@ -236,10 +236,16 @@ impl Converter {
             }
             parser::LvalueExpression::Member { lhs, member_name } => {
                 let Typed { value: lhs, ty: t } = self.convert_lvalue_expr(lhs)?;
+                let offset = self
+                    .bindings
+                    .get_effective_type(&t)?
+                    .ensure_is_record()?
+                    .get_field_index(member_name)?;
                 Typed {
                     value: Rc::new(LvalueExpression::Member {
                         lhs,
                         member_name: member_name.clone(),
+                        member_offset: offset,
                     }),
                     ty: self
                         .bindings
@@ -705,8 +711,8 @@ impl Converter {
             } => self.convert_for(counter, from, to.as_ref(), *order, body)?,
 
             parser::Statement::Print { value } => {
-                let Typed { value, ty: _ } = self.convert_expr(value)?;
-                Statement::Print { value }
+                let Typed { value, ty } = self.convert_expr(value)?;
+                Statement::Print { value, t: ty }
             }
             parser::Statement::Return { value } => match &self.current_routine {
                 Some(RoutinePrototype { return_type, .. }) => Statement::Return {

@@ -9,6 +9,9 @@ pub use parser::Literal;
 
 use crate::{
     AnalysisError, AnalysisResult, Typed,
+    data_representation::{
+        ArrayRepresentation, Interner, RecordRepresentation, Representation, TypeId,
+    },
     operators::{BinaryOperator, BoolBinOp, EqBinOp, IntBinOp, RealBinOp, UnaryOperator},
     types::{ArrayDescription, Type},
 };
@@ -19,6 +22,7 @@ pub enum LvalueExpression {
     Member {
         lhs: Rc<LvalueExpression>,
         member_name: RawIdentifier,
+        member_offset: u64, // This should be calculated from type of lhs and field name, but we do not store type in ast
     },
     Index {
         lhs: Rc<LvalueExpression>,
@@ -385,6 +389,7 @@ pub enum Statement {
     },
     Print {
         value: Rc<Expression>,
+        t: Rc<Type>,
     },
     Return {
         value: Rc<Expression>,
@@ -502,6 +507,45 @@ impl Bindings {
                 Ok(t)
             }
         }
+    }
+
+    pub fn get_type_representation<'a>(
+        &'a self,
+        t: &'a Rc<Type>,
+        interner: &mut Interner,
+    ) -> AnalysisResult<TypeId> {
+        let effective = self.get_effective_type(t)?;
+        let representation = match &**effective {
+            Type::Int => Representation::IntegerRepresentation,
+            Type::Real => Representation::RealRepresentation,
+            Type::Bool => Representation::BooleanRepresentation,
+            Type::Null => Representation::NullRepresentation,
+            Type::Alias(_) => {
+                return Err(AnalysisError {
+                    what: "Effective type can not be alias".to_string(),
+                });
+            }
+            Type::Record(record_description) => {
+                let representation_fields = record_description
+                    .fields
+                    .iter()
+                    .map(|field| {
+                        self.get_type_representation(&field.t, interner)
+                            .map(|type_id| (field.name.clone(), type_id))
+                    })
+                    .collect::<AnalysisResult<Vec<(RawIdentifier, TypeId)>>>()?;
+                Representation::RecordRepresentation(RecordRepresentation {
+                    fields: representation_fields,
+                })
+            }
+            Type::Array(array_description) => {
+                Representation::ArrayRepresentation(ArrayRepresentation {
+                    element: self.get_type_representation(&array_description.t, interner)?,
+                })
+            }
+        };
+
+        Ok(interner.intern(representation))
     }
 }
 

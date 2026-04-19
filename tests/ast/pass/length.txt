@@ -92,6 +92,7 @@ Program {
                                                 ),
                                             ),
                                         },
+                                        t: Int,
                                     },
                                     Print {
                                         value: LvalueToRvalue(
@@ -100,8 +101,10 @@ Program {
                                                     s(3),
                                                 ),
                                                 member_name: r"length",
+                                                member_offset: 0,
                                             },
                                         ),
+                                        t: Real,
                                     },
                                 ],
                                 locals_count: 0,
@@ -314,6 +317,7 @@ Program {
                                                     ),
                                                 ),
                                             },
+                                            t: Int,
                                         },
                                         Print {
                                             value: LvalueToRvalue(
@@ -322,8 +326,10 @@ Program {
                                                         s(3),
                                                     ),
                                                     member_name: r"length",
+                                                    member_offset: 0,
                                                 },
                                             ),
+                                            t: Real,
                                         },
                                     ],
                                     locals_count: 0,
