@@ -20,13 +20,17 @@ pub struct RecordDescription {
 
 impl RecordDescription {
     pub fn get_field_type(&self, name: &RawIdentifier) -> AnalysisResult<Rc<Type>> {
-        Ok(Rc::clone(&self.fields[self.get_field_index(name)?].t))
+        Ok(Rc::clone(
+            &self.fields
+                [usize::try_from(self.get_field_index(name)?).expect("> 64 bit machine word ???")]
+            .t,
+        ))
     }
 
-    pub fn get_field_index(&self, name: &RawIdentifier) -> AnalysisResult<usize> {
+    pub fn get_field_index(&self, name: &RawIdentifier) -> AnalysisResult<u64> {
         for (i, field) in self.fields.iter().enumerate() {
             if field.name == *name {
-                return Ok(i);
+                return Ok(i as u64);
             }
         }
 
@@ -133,6 +137,17 @@ impl Type {
 
     fn is_logical(&self) -> bool {
         matches!(self, Type::Bool) || self.is_scalar()
+    }
+
+    pub fn ensure_is_record(&self) -> AnalysisResult<&RecordDescription> {
+        match self {
+            Type::Record(record_description) => Ok(record_description),
+            Type::Int | Type::Real | Type::Bool | Type::Alias(_) | Type::Array(_) | Type::Null => {
+                Err(AnalysisError {
+                    what: format!("Type `{self}` expected to be a structure"),
+                })
+            }
+        }
     }
 
     pub fn get_field_type(&self, name: &RawIdentifier) -> AnalysisResult<Rc<Type>> {

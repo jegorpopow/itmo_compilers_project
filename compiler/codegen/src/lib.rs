@@ -1,30 +1,50 @@
-use std::rc::Rc;
+use std::{collections::HashMap, rc::Rc};
 
 use ast::{
-    AnalysisError, AnalysisResult, Binding, Bindings, Block, Decl, Expression, Literal,
-    LvalueExpression, Program, Routine, RoutineBody, RoutineDecl, Statement, Type, VarDecl,
+    AnalysisError, AnalysisResult, Binding, Bindings, Block, Decl, Expression, Interner, Literal,
+    LvalueExpression, Program, Routine, RoutineBody, RoutineDecl, Statement, Type, TypeId, VarDecl,
 };
-use common::{Integer, Position, RawIdentifier};
+use common::{Identifier, Integer, Position, RawIdentifier};
 
 pub mod bytecode;
 
-use bytecode::{Instruction, TypeId};
+use bytecode::Instruction;
+
+use crate::bytecode::{BytecodeFile, FunctionRecord, FunctionTable, RTTI};
 
 #[derive(Debug)]
 pub struct Compiler<'a> {
     bindings: &'a Bindings,
+    interner: Interner,
     bytecode: Vec<Instruction>,
+    global_init: Vec<Instruction>,
     fresh_label_counter: u64,
+    routines_labels: HashMap<Identifier, u64>,
 }
 
 impl<'a> Compiler<'a> {
     #[must_use]
     pub fn new(table: &'a Bindings) -> Self {
-        Compiler {
+        let mut result = Compiler {
             bindings: table,
+            interner: Interner::new(),
             bytecode: Vec::new(),
+            global_init: Vec::new(),
             fresh_label_counter: 0,
-        }
+            routines_labels: HashMap::new(),
+        };
+
+        let global_init_label = result.get_fresh_label();
+        assert_eq!(
+            global_init_label, 0,
+            "Global init section should have hardcoded label `0`"
+        );
+
+        result.global_init.push(Instruction::Label {
+            id: global_init_label,
+        });
+
+        result
     }
 
     fn get_fresh_label(&mut self) -> u64 {
@@ -41,11 +61,14 @@ impl<'a> Compiler<'a> {
                 });
                 Ok(())
             }
-            LvalueExpression::Member { lhs, member_name } => {
+            LvalueExpression::Member {
+                lhs, member_offset, ..
+            } => {
                 self.compile_lvalue_expr(lhs)?;
-                self.bytecode
-                    .push(Instruction::FieldAddress { field_offset: 0 });
-                todo!("Compute field offset for {member_name:?}")
+                self.bytecode.push(Instruction::FieldAddress {
+                    field_offset: *member_offset,
+                });
+                Ok(())
             }
             LvalueExpression::Index { lhs, index } => {
                 self.compile_expr(index)?;
@@ -56,7 +79,7 @@ impl<'a> Compiler<'a> {
         }
     }
 
-    fn compiler_new(
+    fn compile_new(
         &mut self,
         t: &Rc<Type>,
         fields: &[(RawIdentifier, Rc<Expression>)],
@@ -76,7 +99,9 @@ impl<'a> Compiler<'a> {
             }
             Type::Record(record_description) => {
                 self.bytecode.push(Instruction::AllocRecord {
-                    type_id: TypeId(0), // TODO: make types interning to build a
+                    type_id: self
+                        .bindings
+                        .get_type_representation(t, &mut self.interner)?,
                     size: 0,
                 });
 
@@ -97,13 +122,29 @@ impl<'a> Compiler<'a> {
                     unreachable!()
                 };
                 self.bytecode.push(Instruction::AllocArray {
-                    type_id: TypeId(0),
+                    type_id: self
+                        .bindings
+                        .get_type_representation(t, &mut self.interner)?,
                     size: length
                         .try_into()
                         .expect("Internal compiler error, too long array"),
                 })
             }
         }
+        Ok(())
+    }
+
+    fn compile_new_array(
+        &mut self,
+        element_type: &Rc<Type>,
+        length: &Rc<Expression>,
+    ) -> AnalysisResult<()> {
+        self.compile_expr(length)?;
+        self.bytecode.push(Instruction::AllocArrayDynamic {
+            type_id: self
+                .bindings
+                .get_type_representation(element_type, &mut self.interner)?,
+        });
         Ok(())
     }
 
@@ -133,8 +174,12 @@ impl<'a> Compiler<'a> {
                 for arg in args.iter().rev() {
                     self.compile_expr(arg)?;
                 }
-                self.bytecode.push(Instruction::Call { function_label: 0 });
-                todo!("Compute function label for {callee:?}")
+                let function_label = self.routines_labels.get(callee).ok_or(AnalysisError {
+                    what: format!("Unknown function {callee}"),
+                })?;
+                self.bytecode.push(Instruction::Call {
+                    function_label: *function_label,
+                });
             }
             Expression::BinOp { op, lhs, rhs } => {
                 self.compile_expr(lhs)?;
@@ -149,7 +194,10 @@ impl<'a> Compiler<'a> {
                 self.compile_expr(operand)?;
             }
             Expression::New { t, fields } => {
-                self.compiler_new(t, fields.as_deref().unwrap_or_default())?
+                self.compile_new(t, fields.as_deref().unwrap_or_default())?
+            }
+            Expression::NewArray { elements, length } => {
+                self.compile_new_array(elements, length)?;
             }
             Expression::LengthOf { arr } => {
                 self.compile_expr(arr)?;
@@ -173,7 +221,6 @@ impl<'a> Compiler<'a> {
                 self.compile_expr(expression)?;
                 self.bytecode.push(Instruction::IntToReal);
             }
-            Expression::NewArray { .. } => todo!(),
         }
 
         Ok(())
@@ -191,6 +238,7 @@ impl<'a> Compiler<'a> {
         Ok(())
     }
 
+    #[expect(clippy::too_many_lines, reason = "This lint is useless")]
     fn compile_statement(&mut self, stmt: &Statement) -> AnalysisResult<()> {
         match stmt {
             &Statement::Panic {
@@ -254,12 +302,140 @@ impl<'a> Compiler<'a> {
                     self.compile_block(on_false)?;
                 }
             }
-            Statement::For { .. } => todo!(),
-            Statement::ForEach { .. } => todo!(),
-            Statement::Print { value } => {
-                self.compile_expr(value)?;
+            Statement::For {
+                counter,
+                lower_bound,
+                upper_bound,
+                order,
+                body,
+            } => {
+                let body_label = self.get_fresh_label();
+                let condition_label = self.get_fresh_label();
+
+                self.compile_expr(lower_bound)?; // the current stack top is a counter location, so that line initialises the counter
+
+                self.bytecode.push(Instruction::Jump {
+                    label: condition_label,
+                });
+                self.bytecode.push(Instruction::Label { id: body_label });
+                self.compile_block(body)?;
+
+                let operator = match order {
+                    common::LoopOrder::Direct => ast::BinaryOperator::Int(ast::IntBinOp::Add),
+                    common::LoopOrder::Reversed => ast::BinaryOperator::Int(ast::IntBinOp::Sub),
+                };
+
+                let counter_expr = Rc::new(LvalueExpression::Identifier(counter.clone()));
+
+                self.compile_statement(&Statement::Assignment {
+                    lhs: Rc::clone(&counter_expr),
+                    rhs: Expression::BinOp {
+                        op: operator,
+                        lhs: Expression::LvalueToRvalue(counter_expr).into(),
+                        rhs: Expression::Literal(Literal::Integer {
+                            repr: "1".to_string(),
+                            value: 1,
+                        })
+                        .into(),
+                    }
+                    .into(),
+                })?;
+
+                self.bytecode.push(Instruction::Label {
+                    id: condition_label,
+                });
+
+                self.compile_expr(upper_bound)?; // Recalculating upper bound in case of its changing
+
+                match order {
+                    common::LoopOrder::Direct => self.bytecode.push(Instruction::BinOp {
+                        op: ast::BinaryOperator::Int(ast::IntBinOp::Le),
+                    }),
+                    common::LoopOrder::Reversed => self.bytecode.push(Instruction::BinOp {
+                        op: ast::BinaryOperator::Int(ast::IntBinOp::Ge),
+                    }),
+                }
+                self.bytecode.push(Instruction::Swap);
+                self.bytecode.push(Instruction::Drop);
                 self.bytecode
-                    .push(Instruction::Print { type_id: TypeId(0) }); // TODO: typeid
+                    .push(Instruction::JumpNotZero { label: body_label });
+
+                self.bytecode.push(Instruction::Drop);
+            }
+            Statement::ForEach {
+                counter,
+                index,
+                collection,
+                body,
+                ..
+            } => {
+                let body_label = self.get_fresh_label();
+                let condition_label = self.get_fresh_label();
+
+                let counter_expr = Rc::new(LvalueExpression::Identifier(counter.clone()));
+                let index_expr = Rc::new(LvalueExpression::Identifier(index.clone()));
+
+                self.bytecode.push(Instruction::IntConst { value: 1 });
+                self.bytecode.push(Instruction::NullConst);
+
+                self.bytecode.push(Instruction::Jump {
+                    label: condition_label,
+                });
+
+                self.bytecode.push(Instruction::Label { id: body_label });
+                self.compile_statement(&Statement::Assignment {
+                    lhs: counter_expr,
+                    rhs: Expression::LvalueToRvalue(
+                        LvalueExpression::Index {
+                            lhs: Rc::clone(collection),
+                            index: Expression::LvalueToRvalue(Rc::clone(&index_expr)).into(),
+                        }
+                        .into(),
+                    )
+                    .into(),
+                })?;
+
+                self.compile_block(body)?;
+
+                self.compile_statement(&Statement::Assignment {
+                    lhs: Rc::clone(&index_expr),
+                    rhs: Expression::BinOp {
+                        op: ast::BinaryOperator::Int(ast::IntBinOp::Add),
+                        lhs: Expression::LvalueToRvalue(Rc::clone(&index_expr)).into(),
+                        rhs: Expression::Literal(Literal::Integer {
+                            repr: "1".to_string(),
+                            value: 1,
+                        })
+                        .into(),
+                    }
+                    .into(),
+                })?;
+
+                self.bytecode.push(Instruction::Label {
+                    id: condition_label,
+                });
+
+                self.compile_expr(&Expression::BinOp {
+                    op: ast::BinaryOperator::Int(ast::IntBinOp::Le),
+                    lhs: Expression::LvalueToRvalue(index_expr).into(),
+                    rhs: Expression::LengthOf {
+                        arr: Expression::LvalueToRvalue(Rc::clone(collection)).into(),
+                    }
+                    .into(),
+                })?;
+
+                self.bytecode
+                    .push(Instruction::JumpNotZero { label: body_label });
+
+                self.bytecode.push(Instruction::DropMany(2));
+            }
+            Statement::Print { value, t } => {
+                self.compile_expr(value)?;
+                self.bytecode.push(Instruction::Print {
+                    type_id: self
+                        .bindings
+                        .get_type_representation(t, &mut self.interner)?,
+                });
             }
             Statement::Return { value } => {
                 self.compile_expr(value)?;
@@ -288,31 +464,87 @@ impl<'a> Compiler<'a> {
         Ok(())
     }
 
+    pub fn collect_routines(&mut self, program: &Program) {
+        for binding in &program.globals {
+            if let Decl::Routine(_) = &binding.decl {
+                let fresh = self.get_fresh_label();
+                let _: Option<u64> = self.routines_labels.insert(binding.name.clone(), fresh);
+            }
+        }
+    }
+
     pub fn compile(&mut self, program: &Program) -> AnalysisResult<()> {
         for Binding { name, decl } in &program.globals {
             match decl {
-                Decl::Var(v) => todo!("var {name:?} = {v:?}"),
-                Decl::Const(v) => todo!("const {name:?} = {v:?}"),
-                Decl::Type(t) => todo!("type {name:?} = {t:?}"),
+                Decl::Var(v) => {
+                    // Some dirty hacks below
+                    let bytecode = std::mem::take(&mut self.bytecode);
+
+                    let initialiser = match &v.initialiser {
+                        Some(expr) => Rc::clone(expr),
+                        None => Rc::new(self.bindings.get_default_initialiser(&v.t)?),
+                    };
+
+                    self.compile_statement(&Statement::Assignment {
+                        lhs: LvalueExpression::Identifier(name.clone()).into(),
+                        rhs: initialiser,
+                    })?;
+
+                    let mut global_init = std::mem::take(&mut self.bytecode);
+                    self.bytecode = bytecode;
+                    self.global_init.append(&mut global_init);
+                }
                 Decl::Routine(r) => match r {
-                    RoutineDecl::Forward { .. } => todo!(),
-                    RoutineDecl::Full(Routine {
-                        signature,
-                        args_bindings,
-                        body,
-                    }) => {
+                    RoutineDecl::Forward { .. } => {}
+                    RoutineDecl::Full(Routine { body, .. }) => {
+                        self.bytecode.push(Instruction::Label {
+                            id: *self
+                                .routines_labels
+                                .get(name)
+                                .expect("Routines are indexed"),
+                        });
                         match body {
                             RoutineBody::Block(block) => self.compile_block(block)?,
 
-                            RoutineBody::Expression(expression) => self.compile_expr(expression)?,
+                            RoutineBody::Expression(expression) => {
+                                self.compile_expr(expression)?;
+                                self.bytecode.push(Instruction::Ret);
+                            }
                         }
-                        todo!(
-                            "Do something with signature {signature:?} and args {args_bindings:?}"
-                        )
                     }
                 },
+                Decl::Const(_) | Decl::Type(_) => {}
             }
         }
         Ok(())
     }
+
+    #[expect(clippy::wrong_self_convention, reason = "The convention is stupid")]
+    fn to_bytecode_file(mut self) -> BytecodeFile {
+        self.global_init.push(Instruction::Ret);
+        let instructions = [self.global_init, self.bytecode].concat();
+        let function_table = FunctionTable(
+            self.routines_labels
+                .iter()
+                .map(|(name, label)| FunctionRecord {
+                    name: name.raw.name.clone(),
+                    label_id: *label,
+                    args: Vec::new(),
+                    result: TypeId(0),
+                })
+                .collect(),
+        );
+        BytecodeFile {
+            code: instructions,
+            rtti: RTTI(self.interner.to_table()),
+            function_table,
+        }
+    }
+}
+
+pub fn codegen(program: &Program) -> AnalysisResult<BytecodeFile> {
+    let mut compiler = Compiler::new(&program.bindings);
+    compiler.collect_routines(program);
+    compiler.compile(program)?;
+    Ok(compiler.to_bytecode_file())
 }

@@ -9,6 +9,9 @@ pub use parser::Literal;
 
 use crate::{
     AnalysisError, AnalysisResult, Typed,
+    data_representation::{
+        ArrayRepresentation, Interner, RecordRepresentation, Representation, TypeId,
+    },
     operators::{BinaryOperator, BoolBinOp, EqBinOp, IntBinOp, RealBinOp, UnaryOperator},
     types::{ArrayDescription, Type},
 };
@@ -19,6 +22,7 @@ pub enum LvalueExpression {
     Member {
         lhs: Rc<LvalueExpression>,
         member_name: RawIdentifier,
+        member_offset: u64, // This should be calculated from type of lhs and field name, but we do not store type in ast
     },
     Index {
         lhs: Rc<LvalueExpression>,
@@ -196,6 +200,27 @@ impl BinOp<EvaluatedValue> for EqBinOp {
 }
 
 impl Expression {
+    pub fn ensure_is_lvalue(&self) -> AnalysisResult<Rc<LvalueExpression>> {
+        match self {
+            Expression::LvalueToRvalue(lvalue_expression) => Ok(Rc::clone(lvalue_expression)),
+            Expression::Literal(_)
+            | Expression::Call { .. }
+            | Expression::BinOp { .. }
+            | Expression::UnOp { .. }
+            | Expression::Cast { .. }
+            | Expression::New { .. }
+            | Expression::NewArray { .. }
+            | Expression::LengthOf { .. }
+            | Expression::Null
+            | Expression::IntToBool(_)
+            | Expression::BoolToInt(_)
+            | Expression::RealToInt(_)
+            | Expression::IntToReal(_) => Err(AnalysisError {
+                what: format!("Expression {self:?} expected to be lvalue"),
+            }),
+        }
+    }
+
     pub(crate) fn try_constexpr_evaluate(&self) -> AnalysisResult<EvaluatedValue> {
         Ok(match self {
             Expression::Literal(lit) => match *lit {
@@ -379,12 +404,14 @@ pub enum Statement {
     },
     ForEach {
         counter: Identifier,
-        collection: Rc<Expression>,
+        index: Identifier,
+        collection: Rc<LvalueExpression>,
         order: LoopOrder,
         body: Block,
     },
     Print {
         value: Rc<Expression>,
+        t: Rc<Type>,
     },
     Return {
         value: Rc<Expression>,
@@ -502,6 +529,45 @@ impl Bindings {
                 Ok(t)
             }
         }
+    }
+
+    pub fn get_type_representation<'a>(
+        &'a self,
+        t: &'a Rc<Type>,
+        interner: &mut Interner,
+    ) -> AnalysisResult<TypeId> {
+        let effective = self.get_effective_type(t)?;
+        let representation = match &**effective {
+            Type::Int => Representation::IntegerRepresentation,
+            Type::Real => Representation::RealRepresentation,
+            Type::Bool => Representation::BooleanRepresentation,
+            Type::Null => Representation::NullRepresentation,
+            Type::Alias(_) => {
+                return Err(AnalysisError {
+                    what: "Effective type can not be alias".to_string(),
+                });
+            }
+            Type::Record(record_description) => {
+                let representation_fields = record_description
+                    .fields
+                    .iter()
+                    .map(|field| {
+                        self.get_type_representation(&field.t, interner)
+                            .map(|type_id| (field.name.clone(), type_id))
+                    })
+                    .collect::<AnalysisResult<Vec<(RawIdentifier, TypeId)>>>()?;
+                Representation::RecordRepresentation(RecordRepresentation {
+                    fields: representation_fields,
+                })
+            }
+            Type::Array(array_description) => {
+                Representation::ArrayRepresentation(ArrayRepresentation {
+                    element: self.get_type_representation(&array_description.t, interner)?,
+                })
+            }
+        };
+
+        Ok(interner.intern(representation))
     }
 }
 

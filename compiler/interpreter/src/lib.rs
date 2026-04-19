@@ -208,7 +208,9 @@ impl<'a, W: Write> Interpreter<'a, W> {
 
                 var
             }
-            LvalueExpression::Member { lhs, member_name } => {
+            LvalueExpression::Member {
+                lhs, member_name, ..
+            } => {
                 let lhs = self.lvalue(bindings, lhs)?;
                 let lhs = self.places[lhs].unwrap_reference()?;
                 match &self.heap[lhs] {
@@ -532,10 +534,13 @@ impl<'a, W: Write> Interpreter<'a, W> {
                     collection,
                     order,
                     body,
+                    ..
                 } => {
+                    let array_expr: &'static mut Expression =
+                        Box::leak(Box::new(Expression::LvalueToRvalue(Rc::clone(collection))));
                     // assigning to the loop variable won't change the array, so we need to create new places
                     let mut collection: Vec<_> = self
-                        .array_expression(bindings, collection)?
+                        .array_expression(bindings, array_expr)?
                         .to_vec()
                         .into_iter()
                         .map(|lvalue| self.places[lvalue].clone())
@@ -551,7 +556,7 @@ impl<'a, W: Write> Interpreter<'a, W> {
                     }
                 }
 
-                ast::Statement::Print { value } => self.print(bindings, value)?,
+                ast::Statement::Print { value, .. } => self.print(bindings, value)?,
 
                 ast::Statement::Return { value } => {
                     throw!(BlockError::Return(self.expression(bindings, value)?))

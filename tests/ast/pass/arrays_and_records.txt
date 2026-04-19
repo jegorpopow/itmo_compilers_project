@@ -266,6 +266,7 @@ Program {
                                                                 from(8),
                                                             ),
                                                             member_name: r"x",
+                                                            member_offset: 0,
                                                         },
                                                     ),
                                                     rhs: LvalueToRvalue(
@@ -274,6 +275,7 @@ Program {
                                                                 to(9),
                                                             ),
                                                             member_name: r"x",
+                                                            member_offset: 0,
                                                         },
                                                     ),
                                                 },
@@ -287,6 +289,7 @@ Program {
                                                                 from(8),
                                                             ),
                                                             member_name: r"x",
+                                                            member_offset: 0,
                                                         },
                                                     ),
                                                     rhs: LvalueToRvalue(
@@ -295,6 +298,7 @@ Program {
                                                                 to(9),
                                                             ),
                                                             member_name: r"x",
+                                                            member_offset: 0,
                                                         },
                                                     ),
                                                 },
@@ -313,6 +317,7 @@ Program {
                                                                 from(8),
                                                             ),
                                                             member_name: r"y",
+                                                            member_offset: 1,
                                                         },
                                                     ),
                                                     rhs: LvalueToRvalue(
@@ -321,6 +326,7 @@ Program {
                                                                 to(9),
                                                             ),
                                                             member_name: r"y",
+                                                            member_offset: 1,
                                                         },
                                                     ),
                                                 },
@@ -334,6 +340,7 @@ Program {
                                                                 from(8),
                                                             ),
                                                             member_name: r"y",
+                                                            member_offset: 1,
                                                         },
                                                     ),
                                                     rhs: LvalueToRvalue(
@@ -342,6 +349,7 @@ Program {
                                                                 to(9),
                                                             ),
                                                             member_name: r"y",
+                                                            member_offset: 1,
                                                         },
                                                     ),
                                                 },
@@ -797,6 +805,7 @@ Program {
                                                 ),
                                             },
                                             member_name: r"x",
+                                            member_offset: 0,
                                         },
                                         rhs: Literal(
                                             Real {
@@ -819,6 +828,7 @@ Program {
                                                 ),
                                             },
                                             member_name: r"y",
+                                            member_offset: 1,
                                         },
                                         rhs: Literal(
                                             Real {
@@ -862,6 +872,7 @@ Program {
                                                 ),
                                             },
                                             member_name: r"x",
+                                            member_offset: 0,
                                         },
                                         rhs: Literal(
                                             Real {
@@ -884,6 +895,7 @@ Program {
                                                 ),
                                             },
                                             member_name: r"y",
+                                            member_offset: 1,
                                         },
                                         rhs: Literal(
                                             Real {
@@ -927,6 +939,7 @@ Program {
                                                 ),
                                             },
                                             member_name: r"x",
+                                            member_offset: 0,
                                         },
                                         rhs: Literal(
                                             Real {
@@ -949,6 +962,7 @@ Program {
                                                 ),
                                             },
                                             member_name: r"y",
+                                            member_offset: 1,
                                         },
                                         rhs: Literal(
                                             Real {
@@ -968,6 +982,7 @@ Program {
                                                 ),
                                             ],
                                         },
+                                        t: Bool,
                                     },
                                 ],
                                 locals_count: 1,
@@ -1282,6 +1297,7 @@ Program {
                                                                     from(8),
                                                                 ),
                                                                 member_name: r"x",
+                                                                member_offset: 0,
                                                             },
                                                         ),
                                                         rhs: LvalueToRvalue(
@@ -1290,6 +1306,7 @@ Program {
                                                                     to(9),
                                                                 ),
                                                                 member_name: r"x",
+                                                                member_offset: 0,
                                                             },
                                                         ),
                                                     },
@@ -1303,6 +1320,7 @@ Program {
                                                                     from(8),
                                                                 ),
                                                                 member_name: r"x",
+                                                                member_offset: 0,
                                                             },
                                                         ),
                                                         rhs: LvalueToRvalue(
@@ -1311,6 +1329,7 @@ Program {
                                                                     to(9),
                                                                 ),
                                                                 member_name: r"x",
+                                                                member_offset: 0,
                                                             },
                                                         ),
                                                     },
@@ -1329,6 +1348,7 @@ Program {
                                                                     from(8),
                                                                 ),
                                                                 member_name: r"y",
+                                                                member_offset: 1,
                                                             },
                                                         ),
                                                         rhs: LvalueToRvalue(
@@ -1337,6 +1357,7 @@ Program {
                                                                     to(9),
                                                                 ),
                                                                 member_name: r"y",
+                                                                member_offset: 1,
                                                             },
                                                         ),
                                                     },
@@ -1350,6 +1371,7 @@ Program {
                                                                     from(8),
                                                                 ),
                                                                 member_name: r"y",
+                                                                member_offset: 1,
                                                             },
                                                         ),
                                                         rhs: LvalueToRvalue(
@@ -1358,6 +1380,7 @@ Program {
                                                                     to(9),
                                                                 ),
                                                                 member_name: r"y",
+                                                                member_offset: 1,
                                                             },
                                                         ),
                                                     },
@@ -1855,6 +1878,7 @@ Program {
                                                     ),
                                                 },
                                                 member_name: r"x",
+                                                member_offset: 0,
                                             },
                                             rhs: Literal(
                                                 Real {
@@ -1877,6 +1901,7 @@ Program {
                                                     ),
                                                 },
                                                 member_name: r"y",
+                                                member_offset: 1,
                                             },
                                             rhs: Literal(
                                                 Real {
@@ -1920,6 +1945,7 @@ Program {
                                                     ),
                                                 },
                                                 member_name: r"x",
+                                                member_offset: 0,
                                             },
                                             rhs: Literal(
                                                 Real {
@@ -1942,6 +1968,7 @@ Program {
                                                     ),
                                                 },
                                                 member_name: r"y",
+                                                member_offset: 1,
                                             },
                                             rhs: Literal(
                                                 Real {
@@ -1985,6 +2012,7 @@ Program {
                                                     ),
                                                 },
                                                 member_name: r"x",
+                                                member_offset: 0,
                                             },
                                             rhs: Literal(
                                                 Real {
@@ -2007,6 +2035,7 @@ Program {
                                                     ),
                                                 },
                                                 member_name: r"y",
+                                                member_offset: 1,
                                             },
                                             rhs: Literal(
                                                 Real {
@@ -2026,6 +2055,7 @@ Program {
                                                     ),
                                                 ],
                                             },
+                                            t: Bool,
                                         },
                                     ],
                                     locals_count: 1,

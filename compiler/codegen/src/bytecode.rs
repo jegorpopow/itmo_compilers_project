@@ -2,7 +2,10 @@
 
 use core::alloc::Layout;
 
-use ast::{BinaryOperator, BoolBinOp, EqBinOp, IntBinOp, RealBinOp, UnaryOperator};
+use ast::{
+    BinaryOperator, BoolBinOp, EqBinOp, IntBinOp, RealBinOp, Representation, TypeId, UnaryOperator,
+};
+
 use common::{Integer, Location, Real, VarLoc};
 
 trait Encode {
@@ -22,11 +25,8 @@ impl Encode for Location {
     }
 }
 
-#[derive(Debug)]
-pub(crate) struct TypeId(pub u32);
-
-#[derive(Debug)]
-pub(crate) enum Instruction {
+#[derive(Debug, Clone, Copy)]
+pub enum Instruction {
     /// push int / bool onto stack
     IntConst {
         value: Integer,
@@ -80,6 +80,9 @@ pub(crate) enum Instruction {
         type_id: TypeId,
         size: u64,
     }, // TODO: add TypeId ?
+    AllocArrayDynamic {
+        type_id: TypeId,
+    },
     /// pop array ref from stack, push its size
     ArraySize, // TODO: add built-in function call
     /// pop element index and array ref from stack, push address of array[index]
@@ -239,10 +242,8 @@ impl Encode for Instruction {
                     ..zero
                 }
             }
-
             Instruction::StoreAddress => Bytecode { opcode: 14, ..zero },
             Instruction::LoadAddress => Bytecode { opcode: 15, ..zero },
-
             Instruction::AllocRecord {
                 type_id: TypeId(type_id),
                 size,
@@ -261,7 +262,13 @@ impl Encode for Instruction {
                 arg64: size.to_le_bytes(),
                 ..zero
             },
-
+            Instruction::AllocArrayDynamic {
+                type_id: TypeId(type_id),
+            } => Bytecode {
+                opcode: 28,
+                arg32: type_id.to_le_bytes(),
+                ..zero
+            },
             Instruction::ArraySize => Bytecode { opcode: 18, ..zero },
             Instruction::ElementAddress => Bytecode { opcode: 19, ..zero },
             Instruction::FieldAddress { field_offset } => Bytecode {
@@ -367,36 +374,19 @@ impl Encode for Bytecode {
     }
 }
 
-struct RecordRTTI {
-    id: TypeId,
-    field_ids: Vec<TypeId>,
+#[derive(Debug)]
+pub struct RTTI(pub Vec<Representation>);
+
+#[derive(Debug)]
+pub struct FunctionRecord {
+    pub name: String,
+    pub label_id: u64,
+    pub args: Vec<TypeId>,
+    pub result: TypeId,
 }
 
-struct ArrayRTTI {
-    id: TypeId,
-    element_id: TypeId,
-}
-
-struct PrimitiveRTTI {
-    id: TypeId,
-}
-
-enum RTTIElement {
-    Record(RecordRTTI),
-    Array(ArrayRTTI),
-    Primitive(PrimitiveRTTI),
-}
-
-struct RTTI(Vec<RTTIElement>);
-
-struct FunctionRecord {
-    name: String,
-    label_id: i64,
-    args: Vec<TypeId>,
-    result: TypeId,
-}
-
-struct FunctionTable(Vec<FunctionRecord>);
+#[derive(Debug)]
+pub struct FunctionTable(pub Vec<FunctionRecord>);
 
 struct MemorySpan {
     offset: u32,
@@ -411,4 +401,11 @@ struct Header {
     rtti_span: MemorySpan,
     function_count: u32,
     global_count: u32,
+}
+
+#[derive(Debug)]
+pub struct BytecodeFile {
+    pub code: Vec<Instruction>,
+    pub rtti: RTTI,
+    pub function_table: FunctionTable,
 }

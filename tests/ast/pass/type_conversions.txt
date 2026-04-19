@@ -207,6 +207,7 @@ Program {
                                                 i(1),
                                             ),
                                         ),
+                                        t: Int,
                                     },
                                     Print {
                                         value: LvalueToRvalue(
@@ -214,6 +215,7 @@ Program {
                                                 r(2),
                                             ),
                                         ),
+                                        t: Real,
                                     },
                                     Print {
                                         value: LvalueToRvalue(
@@ -221,6 +223,7 @@ Program {
                                                 b(3),
                                             ),
                                         ),
+                                        t: Bool,
                                     },
                                 ],
                                 locals_count: 3,
@@ -440,6 +443,7 @@ Program {
                                                     i(1),
                                                 ),
                                             ),
+                                            t: Int,
                                         },
                                         Print {
                                             value: LvalueToRvalue(
@@ -447,6 +451,7 @@ Program {
                                                     r(2),
                                                 ),
                                             ),
+                                            t: Real,
                                         },
                                         Print {
                                             value: LvalueToRvalue(
@@ -454,6 +459,7 @@ Program {
                                                     b(3),
                                                 ),
                                             ),
+                                            t: Bool,
                                         },
                                     ],
                                     locals_count: 3,
