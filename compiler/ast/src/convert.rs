@@ -596,9 +596,11 @@ impl Converter {
         body: &parser::Block,
     ) -> AnalysisResult<Statement> {
         let (result, locals_count) = self.scoped(|this| {
-            let counter_loc = this.get_fresh_local_location();
             Ok(match to {
                 None => {
+                    let index_loc = this.get_fresh_local_location();
+                    let counter_loc = this.get_fresh_local_location();
+
                     let Typed {
                         value: array_expr,
                         ty: array_type,
@@ -610,16 +612,31 @@ impl Converter {
                         relative_location: counter_loc,
                     });
 
+                    let index_decl = LocalDecl::Var(VarDecl {
+                        t: Type::int(),
+                        initialiser: None,
+                        relative_location: index_loc,
+                    });
+
                     let counter_ident = this.bind_local_decl(counter, counter_decl);
+                    let index_ident = this.bind_local_decl(
+                        &RawIdentifier {
+                            name: "<foreach-index>".to_string(),
+                        },
+                        index_decl,
+                    );
                     let body = this.convert_block(body)?;
                     Statement::ForEach {
                         counter: counter_ident,
-                        collection: array_expr,
+                        index: index_ident,
+                        collection: array_expr.ensure_is_lvalue()?,
                         order,
                         body,
                     }
                 }
                 Some(to) => {
+                    let counter_loc = this.get_fresh_local_location();
+
                     let from = this.convert_expr(from)?;
                     let to = this.convert_expr(to)?;
                     let int_type = Type::int();
@@ -642,7 +659,8 @@ impl Converter {
         });
 
         assert_eq!(
-            locals_count, 1,
+            locals_count,
+            if to.is_some() { 1 } else { 2 },
             "Internal compiler error: mismatched number of locals in `for` counter block"
         );
 

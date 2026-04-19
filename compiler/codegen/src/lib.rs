@@ -348,7 +348,73 @@ impl<'a> Compiler<'a> {
 
                 self.bytecode.push(Instruction::Drop);
             }
-            Statement::ForEach { .. } => todo!(),
+            Statement::ForEach {
+                counter,
+                index,
+                collection,
+                body,
+                ..
+            } => {
+                let body_label = self.get_fresh_label();
+                let condition_label = self.get_fresh_label();
+
+                let counter_expr = Rc::new(LvalueExpression::Identifier(counter.clone()));
+                let index_expr = Rc::new(LvalueExpression::Identifier(index.clone()));
+
+                self.bytecode.push(Instruction::IntConst { value: 1 });
+                self.bytecode.push(Instruction::NullConst);
+
+                self.bytecode.push(Instruction::Jump {
+                    label: condition_label,
+                });
+
+                self.bytecode.push(Instruction::Label { id: body_label });
+                self.compile_statement(&Statement::Assignment {
+                    lhs: counter_expr,
+                    rhs: Expression::LvalueToRvalue(
+                        LvalueExpression::Index {
+                            lhs: Rc::clone(collection),
+                            index: Expression::LvalueToRvalue(Rc::clone(&index_expr)).into(),
+                        }
+                        .into(),
+                    )
+                    .into(),
+                })?;
+
+                self.compile_block(body)?;
+
+                self.compile_statement(&Statement::Assignment {
+                    lhs: Rc::clone(&index_expr),
+                    rhs: Expression::BinOp {
+                        op: ast::BinaryOperator::Int(ast::IntBinOp::Add),
+                        lhs: Expression::LvalueToRvalue(Rc::clone(&index_expr)).into(),
+                        rhs: Expression::Literal(Literal::Integer {
+                            repr: "1".to_string(),
+                            value: 1,
+                        })
+                        .into(),
+                    }
+                    .into(),
+                })?;
+
+                self.bytecode.push(Instruction::Label {
+                    id: condition_label,
+                });
+
+                self.compile_expr(&Expression::BinOp {
+                    op: ast::BinaryOperator::Int(ast::IntBinOp::Le),
+                    lhs: Expression::LvalueToRvalue(index_expr).into(),
+                    rhs: Expression::LengthOf {
+                        arr: Expression::LvalueToRvalue(Rc::clone(collection)).into(),
+                    }
+                    .into(),
+                })?;
+
+                self.bytecode
+                    .push(Instruction::JumpNotZero { label: body_label });
+
+                self.bytecode.push(Instruction::DropMany(2));
+            }
             Statement::Print { value, t } => {
                 self.compile_expr(value)?;
                 self.bytecode.push(Instruction::Print {

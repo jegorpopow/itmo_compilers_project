@@ -106,10 +106,9 @@ Program {
                                     ),
                                     ForEach {
                                         counter: elem(4),
-                                        collection: LvalueToRvalue(
-                                            Identifier(
-                                                a(3),
-                                            ),
+                                        index: <foreach-index>(5),
+                                        collection: Identifier(
+                                            a(3),
                                         ),
                                         order: Reversed,
                                         body: Block {
@@ -155,7 +154,7 @@ Program {
                         },
                         args_bindings: [
                             Binding {
-                                name: a(5),
+                                name: a(6),
                                 decl: VarDecl {
                                     t: Array(
                                         ArrayDescription {
@@ -175,7 +174,7 @@ Program {
                                 stmts: [
                                     Declaration(
                                         Binding {
-                                            name: result(6),
+                                            name: result(7),
                                             decl: Var(
                                                 VarDecl {
                                                     t: Int,
@@ -195,18 +194,17 @@ Program {
                                         },
                                     ),
                                     ForEach {
-                                        counter: _(7),
-                                        collection: LvalueToRvalue(
-                                            Identifier(
-                                                a(5),
-                                            ),
+                                        counter: _(8),
+                                        index: <foreach-index>(9),
+                                        collection: Identifier(
+                                            a(6),
                                         ),
                                         order: Direct,
                                         body: Block {
                                             stmts: [
                                                 Assignment {
                                                     lhs: Identifier(
-                                                        result(6),
+                                                        result(7),
                                                     ),
                                                     rhs: BinOp {
                                                         op: Int(
@@ -214,7 +212,7 @@ Program {
                                                         ),
                                                         lhs: LvalueToRvalue(
                                                             Identifier(
-                                                                result(6),
+                                                                result(7),
                                                             ),
                                                         ),
                                                         rhs: Literal(
@@ -232,7 +230,7 @@ Program {
                                     Return {
                                         value: LvalueToRvalue(
                                             Identifier(
-                                                result(6),
+                                                result(7),
                                             ),
                                         ),
                                     },
@@ -269,7 +267,7 @@ Program {
                         },
                         args_bindings: [
                             Binding {
-                                name: a(8),
+                                name: a(10),
                                 decl: VarDecl {
                                     t: Array(
                                         ArrayDescription {
@@ -284,7 +282,7 @@ Program {
                                 },
                             },
                             Binding {
-                                name: length(9),
+                                name: length(11),
                                 decl: VarDecl {
                                     t: Int,
                                     initialiser: None,
@@ -298,7 +296,7 @@ Program {
                             Block {
                                 stmts: [
                                     For {
-                                        counter: i(10),
+                                        counter: i(12),
                                         lower_bound: Literal(
                                             Integer {
                                                 repr: "1",
@@ -307,14 +305,14 @@ Program {
                                         ),
                                         upper_bound: LvalueToRvalue(
                                             Identifier(
-                                                length(9),
+                                                length(11),
                                             ),
                                         ),
                                         order: Direct,
                                         body: Block {
                                             stmts: [
                                                 For {
-                                                    counter: j(11),
+                                                    counter: j(13),
                                                     lower_bound: Literal(
                                                         Integer {
                                                             repr: "2",
@@ -323,7 +321,7 @@ Program {
                                                     ),
                                                     upper_bound: LvalueToRvalue(
                                                         Identifier(
-                                                            i(10),
+                                                            i(12),
                                                         ),
                                                     ),
                                                     order: Direct,
@@ -337,7 +335,7 @@ Program {
                                                                     lhs: LvalueToRvalue(
                                                                         Index {
                                                                             lhs: Identifier(
-                                                                                a(8),
+                                                                                a(10),
                                                                             ),
                                                                             index: BinOp {
                                                                                 op: Int(
@@ -345,7 +343,7 @@ Program {
                                                                                 ),
                                                                                 lhs: LvalueToRvalue(
                                                                                     Identifier(
-                                                                                        j(11),
+                                                                                        j(13),
                                                                                     ),
                                                                                 ),
                                                                                 rhs: Literal(
@@ -360,11 +358,11 @@ Program {
                                                                     rhs: LvalueToRvalue(
                                                                         Index {
                                                                             lhs: Identifier(
-                                                                                a(8),
+                                                                                a(10),
                                                                             ),
                                                                             index: LvalueToRvalue(
                                                                                 Identifier(
-                                                                                    j(11),
+                                                                                    j(13),
                                                                                 ),
                                                                             ),
                                                                         },
@@ -374,7 +372,7 @@ Program {
                                                                     stmts: [
                                                                         Declaration(
                                                                             Binding {
-                                                                                name: t(12),
+                                                                                name: t(14),
                                                                                 decl: Var(
                                                                                     VarDecl {
                                                                                         t: Int,
@@ -382,11 +380,11 @@ Program {
                                                                                             LvalueToRvalue(
                                                                                                 Index {
                                                                                                     lhs: Identifier(
-                                                                                                        a(8),
+                                                                                                        a(10),
                                                                                                     ),
                                                                                                     index: LvalueToRvalue(
                                                                                                         Identifier(
-                                                                                                            j(11),
+                                                                                                            j(13),
                                                                                                         ),
                                                                                                     ),
                                                                                                 },
@@ -402,18 +400,18 @@ Program {
                                                                         Assignment {
                                                                             lhs: Index {
                                                                                 lhs: Identifier(
-                                                                                    a(8),
+                                                                                    a(10),
                                                                                 ),
                                                                                 index: LvalueToRvalue(
                                                                                     Identifier(
-                                                                                        j(11),
+                                                                                        j(13),
                                                                                     ),
                                                                                 ),
                                                                             },
                                                                             rhs: LvalueToRvalue(
                                                                                 Index {
                                                                                     lhs: Identifier(
-                                                                                        a(8),
+                                                                                        a(10),
                                                                                     ),
                                                                                     index: BinOp {
                                                                                         op: Int(
@@ -421,7 +419,7 @@ Program {
                                                                                         ),
                                                                                         lhs: LvalueToRvalue(
                                                                                             Identifier(
-                                                                                                j(11),
+                                                                                                j(13),
                                                                                             ),
                                                                                         ),
                                                                                         rhs: Literal(
@@ -437,7 +435,7 @@ Program {
                                                                         Assignment {
                                                                             lhs: Index {
                                                                                 lhs: Identifier(
-                                                                                    a(8),
+                                                                                    a(10),
                                                                                 ),
                                                                                 index: BinOp {
                                                                                     op: Int(
@@ -445,7 +443,7 @@ Program {
                                                                                     ),
                                                                                     lhs: LvalueToRvalue(
                                                                                         Identifier(
-                                                                                            j(11),
+                                                                                            j(13),
                                                                                         ),
                                                                                     ),
                                                                                     rhs: Literal(
@@ -458,7 +456,7 @@ Program {
                                                                             },
                                                                             rhs: LvalueToRvalue(
                                                                                 Identifier(
-                                                                                    t(12),
+                                                                                    t(14),
                                                                                 ),
                                                                             ),
                                                                         },
@@ -484,7 +482,7 @@ Program {
             ),
         },
         Binding {
-            name: countdown(13),
+            name: countdown(15),
             decl: Routine(
                 Full(
                     Routine {
@@ -499,7 +497,7 @@ Program {
                         },
                         args_bindings: [
                             Binding {
-                                name: n(14),
+                                name: n(16),
                                 decl: VarDecl {
                                     t: Int,
                                     initialiser: None,
@@ -513,10 +511,10 @@ Program {
                             Block {
                                 stmts: [
                                     For {
-                                        counter: i(15),
+                                        counter: i(17),
                                         lower_bound: LvalueToRvalue(
                                             Identifier(
-                                                n(14),
+                                                n(16),
                                             ),
                                         ),
                                         upper_bound: Literal(
@@ -531,7 +529,7 @@ Program {
                                                 Print {
                                                     value: LvalueToRvalue(
                                                         Identifier(
-                                                            i(15),
+                                                            i(17),
                                                         ),
                                                     ),
                                                     t: Int,
@@ -549,7 +547,7 @@ Program {
             ),
         },
         Binding {
-            name: count(16),
+            name: count(18),
             decl: Routine(
                 Full(
                     Routine {
@@ -564,7 +562,7 @@ Program {
                         },
                         args_bindings: [
                             Binding {
-                                name: n(17),
+                                name: n(19),
                                 decl: VarDecl {
                                     t: Int,
                                     initialiser: None,
@@ -578,7 +576,7 @@ Program {
                             Block {
                                 stmts: [
                                     For {
-                                        counter: i(18),
+                                        counter: i(20),
                                         lower_bound: Literal(
                                             Integer {
                                                 repr: "0",
@@ -587,7 +585,7 @@ Program {
                                         ),
                                         upper_bound: LvalueToRvalue(
                                             Identifier(
-                                                n(17),
+                                                n(19),
                                             ),
                                         ),
                                         order: Direct,
@@ -596,7 +594,7 @@ Program {
                                                 Print {
                                                     value: LvalueToRvalue(
                                                         Identifier(
-                                                            i(18),
+                                                            i(20),
                                                         ),
                                                     ),
                                                     t: Int,
@@ -614,7 +612,7 @@ Program {
             ),
         },
         Binding {
-            name: main(19),
+            name: main(21),
             decl: Routine(
                 Full(
                     Routine {
@@ -628,7 +626,7 @@ Program {
                                 stmts: [
                                     Declaration(
                                         Binding {
-                                            name: arr(20),
+                                            name: arr(22),
                                             decl: Var(
                                                 VarDecl {
                                                     t: Array(
@@ -662,7 +660,7 @@ Program {
                                     Assignment {
                                         lhs: Index {
                                             lhs: Identifier(
-                                                arr(20),
+                                                arr(22),
                                             ),
                                             index: Literal(
                                                 Integer {
@@ -681,7 +679,7 @@ Program {
                                     Assignment {
                                         lhs: Index {
                                             lhs: Identifier(
-                                                arr(20),
+                                                arr(22),
                                             ),
                                             index: Literal(
                                                 Integer {
@@ -700,7 +698,7 @@ Program {
                                     Assignment {
                                         lhs: Index {
                                             lhs: Identifier(
-                                                arr(20),
+                                                arr(22),
                                             ),
                                             index: Literal(
                                                 Integer {
@@ -719,7 +717,7 @@ Program {
                                     Assignment {
                                         lhs: Index {
                                             lhs: Identifier(
-                                                arr(20),
+                                                arr(22),
                                             ),
                                             index: Literal(
                                                 Integer {
@@ -738,7 +736,7 @@ Program {
                                     Assignment {
                                         lhs: Index {
                                             lhs: Identifier(
-                                                arr(20),
+                                                arr(22),
                                             ),
                                             index: Literal(
                                                 Integer {
@@ -760,7 +758,7 @@ Program {
                                             args: [
                                                 LvalueToRvalue(
                                                     Identifier(
-                                                        arr(20),
+                                                        arr(22),
                                                     ),
                                                 ),
                                             ],
@@ -768,7 +766,7 @@ Program {
                                     ),
                                     Expr(
                                         Call {
-                                            callee: count(16),
+                                            callee: count(18),
                                             args: [
                                                 Literal(
                                                     Integer {
@@ -781,7 +779,7 @@ Program {
                                     ),
                                     Expr(
                                         Call {
-                                            callee: countdown(13),
+                                            callee: countdown(15),
                                             args: [
                                                 Literal(
                                                     Integer {
@@ -824,7 +822,7 @@ Program {
                             },
                             args_bindings: [
                                 Binding {
-                                    name: a(5),
+                                    name: a(6),
                                     decl: VarDecl {
                                         t: Array(
                                             ArrayDescription {
@@ -844,7 +842,7 @@ Program {
                                     stmts: [
                                         Declaration(
                                             Binding {
-                                                name: result(6),
+                                                name: result(7),
                                                 decl: Var(
                                                     VarDecl {
                                                         t: Int,
@@ -864,18 +862,17 @@ Program {
                                             },
                                         ),
                                         ForEach {
-                                            counter: _(7),
-                                            collection: LvalueToRvalue(
-                                                Identifier(
-                                                    a(5),
-                                                ),
+                                            counter: _(8),
+                                            index: <foreach-index>(9),
+                                            collection: Identifier(
+                                                a(6),
                                             ),
                                             order: Direct,
                                             body: Block {
                                                 stmts: [
                                                     Assignment {
                                                         lhs: Identifier(
-                                                            result(6),
+                                                            result(7),
                                                         ),
                                                         rhs: BinOp {
                                                             op: Int(
@@ -883,7 +880,7 @@ Program {
                                                             ),
                                                             lhs: LvalueToRvalue(
                                                                 Identifier(
-                                                                    result(6),
+                                                                    result(7),
                                                                 ),
                                                             ),
                                                             rhs: Literal(
@@ -901,7 +898,7 @@ Program {
                                         Return {
                                             value: LvalueToRvalue(
                                                 Identifier(
-                                                    result(6),
+                                                    result(7),
                                                 ),
                                             ),
                                         },
@@ -938,7 +935,7 @@ Program {
                             },
                             args_bindings: [
                                 Binding {
-                                    name: a(8),
+                                    name: a(10),
                                     decl: VarDecl {
                                         t: Array(
                                             ArrayDescription {
@@ -953,7 +950,7 @@ Program {
                                     },
                                 },
                                 Binding {
-                                    name: length(9),
+                                    name: length(11),
                                     decl: VarDecl {
                                         t: Int,
                                         initialiser: None,
@@ -967,7 +964,7 @@ Program {
                                 Block {
                                     stmts: [
                                         For {
-                                            counter: i(10),
+                                            counter: i(12),
                                             lower_bound: Literal(
                                                 Integer {
                                                     repr: "1",
@@ -976,14 +973,14 @@ Program {
                                             ),
                                             upper_bound: LvalueToRvalue(
                                                 Identifier(
-                                                    length(9),
+                                                    length(11),
                                                 ),
                                             ),
                                             order: Direct,
                                             body: Block {
                                                 stmts: [
                                                     For {
-                                                        counter: j(11),
+                                                        counter: j(13),
                                                         lower_bound: Literal(
                                                             Integer {
                                                                 repr: "2",
@@ -992,7 +989,7 @@ Program {
                                                         ),
                                                         upper_bound: LvalueToRvalue(
                                                             Identifier(
-                                                                i(10),
+                                                                i(12),
                                                             ),
                                                         ),
                                                         order: Direct,
@@ -1006,7 +1003,7 @@ Program {
                                                                         lhs: LvalueToRvalue(
                                                                             Index {
                                                                                 lhs: Identifier(
-                                                                                    a(8),
+                                                                                    a(10),
                                                                                 ),
                                                                                 index: BinOp {
                                                                                     op: Int(
@@ -1014,7 +1011,7 @@ Program {
                                                                                     ),
                                                                                     lhs: LvalueToRvalue(
                                                                                         Identifier(
-                                                                                            j(11),
+                                                                                            j(13),
                                                                                         ),
                                                                                     ),
                                                                                     rhs: Literal(
@@ -1029,11 +1026,11 @@ Program {
                                                                         rhs: LvalueToRvalue(
                                                                             Index {
                                                                                 lhs: Identifier(
-                                                                                    a(8),
+                                                                                    a(10),
                                                                                 ),
                                                                                 index: LvalueToRvalue(
                                                                                     Identifier(
-                                                                                        j(11),
+                                                                                        j(13),
                                                                                     ),
                                                                                 ),
                                                                             },
@@ -1043,7 +1040,7 @@ Program {
                                                                         stmts: [
                                                                             Declaration(
                                                                                 Binding {
-                                                                                    name: t(12),
+                                                                                    name: t(14),
                                                                                     decl: Var(
                                                                                         VarDecl {
                                                                                             t: Int,
@@ -1051,11 +1048,11 @@ Program {
                                                                                                 LvalueToRvalue(
                                                                                                     Index {
                                                                                                         lhs: Identifier(
-                                                                                                            a(8),
+                                                                                                            a(10),
                                                                                                         ),
                                                                                                         index: LvalueToRvalue(
                                                                                                             Identifier(
-                                                                                                                j(11),
+                                                                                                                j(13),
                                                                                                             ),
                                                                                                         ),
                                                                                                     },
@@ -1071,18 +1068,18 @@ Program {
                                                                             Assignment {
                                                                                 lhs: Index {
                                                                                     lhs: Identifier(
-                                                                                        a(8),
+                                                                                        a(10),
                                                                                     ),
                                                                                     index: LvalueToRvalue(
                                                                                         Identifier(
-                                                                                            j(11),
+                                                                                            j(13),
                                                                                         ),
                                                                                     ),
                                                                                 },
                                                                                 rhs: LvalueToRvalue(
                                                                                     Index {
                                                                                         lhs: Identifier(
-                                                                                            a(8),
+                                                                                            a(10),
                                                                                         ),
                                                                                         index: BinOp {
                                                                                             op: Int(
@@ -1090,7 +1087,7 @@ Program {
                                                                                             ),
                                                                                             lhs: LvalueToRvalue(
                                                                                                 Identifier(
-                                                                                                    j(11),
+                                                                                                    j(13),
                                                                                                 ),
                                                                                             ),
                                                                                             rhs: Literal(
@@ -1106,7 +1103,7 @@ Program {
                                                                             Assignment {
                                                                                 lhs: Index {
                                                                                     lhs: Identifier(
-                                                                                        a(8),
+                                                                                        a(10),
                                                                                     ),
                                                                                     index: BinOp {
                                                                                         op: Int(
@@ -1114,7 +1111,7 @@ Program {
                                                                                         ),
                                                                                         lhs: LvalueToRvalue(
                                                                                             Identifier(
-                                                                                                j(11),
+                                                                                                j(13),
                                                                                             ),
                                                                                         ),
                                                                                         rhs: Literal(
@@ -1127,7 +1124,7 @@ Program {
                                                                                 },
                                                                                 rhs: LvalueToRvalue(
                                                                                     Identifier(
-                                                                                        t(12),
+                                                                                        t(14),
                                                                                     ),
                                                                                 ),
                                                                             },
@@ -1212,10 +1209,9 @@ Program {
                                         ),
                                         ForEach {
                                             counter: elem(4),
-                                            collection: LvalueToRvalue(
-                                                Identifier(
-                                                    a(3),
-                                                ),
+                                            index: <foreach-index>(5),
+                                            collection: Identifier(
+                                                a(3),
                                             ),
                                             order: Reversed,
                                             body: Block {
@@ -1264,13 +1260,25 @@ Program {
                         t: Int,
                         initialiser: None,
                         relative_location: Local(
+                            1,
+                        ),
+                    },
+                ),
+            },
+            Binding {
+                name: <foreach-index>(5),
+                decl: Var(
+                    VarDecl {
+                        t: Int,
+                        initialiser: None,
+                        relative_location: Local(
                             0,
                         ),
                     },
                 ),
             },
             Binding {
-                name: a(5),
+                name: a(6),
                 decl: Var(
                     VarDecl {
                         t: Array(
@@ -1287,7 +1295,7 @@ Program {
                 ),
             },
             Binding {
-                name: result(6),
+                name: result(7),
                 decl: Var(
                     VarDecl {
                         t: Int,
@@ -1306,7 +1314,19 @@ Program {
                 ),
             },
             Binding {
-                name: _(7),
+                name: _(8),
+                decl: Var(
+                    VarDecl {
+                        t: Int,
+                        initialiser: None,
+                        relative_location: Local(
+                            2,
+                        ),
+                    },
+                ),
+            },
+            Binding {
+                name: <foreach-index>(9),
                 decl: Var(
                     VarDecl {
                         t: Int,
@@ -1318,7 +1338,7 @@ Program {
                 ),
             },
             Binding {
-                name: a(8),
+                name: a(10),
                 decl: Var(
                     VarDecl {
                         t: Array(
@@ -1335,7 +1355,7 @@ Program {
                 ),
             },
             Binding {
-                name: length(9),
+                name: length(11),
                 decl: Var(
                     VarDecl {
                         t: Int,
@@ -1347,7 +1367,7 @@ Program {
                 ),
             },
             Binding {
-                name: i(10),
+                name: i(12),
                 decl: Var(
                     VarDecl {
                         t: Int,
@@ -1359,7 +1379,7 @@ Program {
                 ),
             },
             Binding {
-                name: j(11),
+                name: j(13),
                 decl: Var(
                     VarDecl {
                         t: Int,
@@ -1371,7 +1391,7 @@ Program {
                 ),
             },
             Binding {
-                name: t(12),
+                name: t(14),
                 decl: Var(
                     VarDecl {
                         t: Int,
@@ -1379,11 +1399,11 @@ Program {
                             LvalueToRvalue(
                                 Index {
                                     lhs: Identifier(
-                                        a(8),
+                                        a(10),
                                     ),
                                     index: LvalueToRvalue(
                                         Identifier(
-                                            j(11),
+                                            j(13),
                                         ),
                                     ),
                                 },
@@ -1396,7 +1416,7 @@ Program {
                 ),
             },
             Binding {
-                name: countdown(13),
+                name: countdown(15),
                 decl: Routine(
                     Full(
                         Routine {
@@ -1411,7 +1431,7 @@ Program {
                             },
                             args_bindings: [
                                 Binding {
-                                    name: n(14),
+                                    name: n(16),
                                     decl: VarDecl {
                                         t: Int,
                                         initialiser: None,
@@ -1425,10 +1445,10 @@ Program {
                                 Block {
                                     stmts: [
                                         For {
-                                            counter: i(15),
+                                            counter: i(17),
                                             lower_bound: LvalueToRvalue(
                                                 Identifier(
-                                                    n(14),
+                                                    n(16),
                                                 ),
                                             ),
                                             upper_bound: Literal(
@@ -1443,7 +1463,7 @@ Program {
                                                     Print {
                                                         value: LvalueToRvalue(
                                                             Identifier(
-                                                                i(15),
+                                                                i(17),
                                                             ),
                                                         ),
                                                         t: Int,
@@ -1461,7 +1481,7 @@ Program {
                 ),
             },
             Binding {
-                name: n(14),
+                name: n(16),
                 decl: Var(
                     VarDecl {
                         t: Int,
@@ -1473,7 +1493,7 @@ Program {
                 ),
             },
             Binding {
-                name: i(15),
+                name: i(17),
                 decl: Var(
                     VarDecl {
                         t: Int,
@@ -1485,7 +1505,7 @@ Program {
                 ),
             },
             Binding {
-                name: count(16),
+                name: count(18),
                 decl: Routine(
                     Full(
                         Routine {
@@ -1500,7 +1520,7 @@ Program {
                             },
                             args_bindings: [
                                 Binding {
-                                    name: n(17),
+                                    name: n(19),
                                     decl: VarDecl {
                                         t: Int,
                                         initialiser: None,
@@ -1514,7 +1534,7 @@ Program {
                                 Block {
                                     stmts: [
                                         For {
-                                            counter: i(18),
+                                            counter: i(20),
                                             lower_bound: Literal(
                                                 Integer {
                                                     repr: "0",
@@ -1523,7 +1543,7 @@ Program {
                                             ),
                                             upper_bound: LvalueToRvalue(
                                                 Identifier(
-                                                    n(17),
+                                                    n(19),
                                                 ),
                                             ),
                                             order: Direct,
@@ -1532,7 +1552,7 @@ Program {
                                                     Print {
                                                         value: LvalueToRvalue(
                                                             Identifier(
-                                                                i(18),
+                                                                i(20),
                                                             ),
                                                         ),
                                                         t: Int,
@@ -1550,7 +1570,7 @@ Program {
                 ),
             },
             Binding {
-                name: n(17),
+                name: n(19),
                 decl: Var(
                     VarDecl {
                         t: Int,
@@ -1562,7 +1582,7 @@ Program {
                 ),
             },
             Binding {
-                name: i(18),
+                name: i(20),
                 decl: Var(
                     VarDecl {
                         t: Int,
@@ -1574,7 +1594,7 @@ Program {
                 ),
             },
             Binding {
-                name: main(19),
+                name: main(21),
                 decl: Routine(
                     Full(
                         Routine {
@@ -1588,7 +1608,7 @@ Program {
                                     stmts: [
                                         Declaration(
                                             Binding {
-                                                name: arr(20),
+                                                name: arr(22),
                                                 decl: Var(
                                                     VarDecl {
                                                         t: Array(
@@ -1622,7 +1642,7 @@ Program {
                                         Assignment {
                                             lhs: Index {
                                                 lhs: Identifier(
-                                                    arr(20),
+                                                    arr(22),
                                                 ),
                                                 index: Literal(
                                                     Integer {
@@ -1641,7 +1661,7 @@ Program {
                                         Assignment {
                                             lhs: Index {
                                                 lhs: Identifier(
-                                                    arr(20),
+                                                    arr(22),
                                                 ),
                                                 index: Literal(
                                                     Integer {
@@ -1660,7 +1680,7 @@ Program {
                                         Assignment {
                                             lhs: Index {
                                                 lhs: Identifier(
-                                                    arr(20),
+                                                    arr(22),
                                                 ),
                                                 index: Literal(
                                                     Integer {
@@ -1679,7 +1699,7 @@ Program {
                                         Assignment {
                                             lhs: Index {
                                                 lhs: Identifier(
-                                                    arr(20),
+                                                    arr(22),
                                                 ),
                                                 index: Literal(
                                                     Integer {
@@ -1698,7 +1718,7 @@ Program {
                                         Assignment {
                                             lhs: Index {
                                                 lhs: Identifier(
-                                                    arr(20),
+                                                    arr(22),
                                                 ),
                                                 index: Literal(
                                                     Integer {
@@ -1720,7 +1740,7 @@ Program {
                                                 args: [
                                                     LvalueToRvalue(
                                                         Identifier(
-                                                            arr(20),
+                                                            arr(22),
                                                         ),
                                                     ),
                                                 ],
@@ -1728,7 +1748,7 @@ Program {
                                         ),
                                         Expr(
                                             Call {
-                                                callee: count(16),
+                                                callee: count(18),
                                                 args: [
                                                     Literal(
                                                         Integer {
@@ -1741,7 +1761,7 @@ Program {
                                         ),
                                         Expr(
                                             Call {
-                                                callee: countdown(13),
+                                                callee: countdown(15),
                                                 args: [
                                                     Literal(
                                                         Integer {
@@ -1761,7 +1781,7 @@ Program {
                 ),
             },
             Binding {
-                name: arr(20),
+                name: arr(22),
                 decl: Var(
                     VarDecl {
                         t: Array(

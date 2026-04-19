@@ -200,6 +200,27 @@ impl BinOp<EvaluatedValue> for EqBinOp {
 }
 
 impl Expression {
+    pub fn ensure_is_lvalue(&self) -> AnalysisResult<Rc<LvalueExpression>> {
+        match self {
+            Expression::LvalueToRvalue(lvalue_expression) => Ok(Rc::clone(lvalue_expression)),
+            Expression::Literal(_)
+            | Expression::Call { .. }
+            | Expression::BinOp { .. }
+            | Expression::UnOp { .. }
+            | Expression::Cast { .. }
+            | Expression::New { .. }
+            | Expression::NewArray { .. }
+            | Expression::LengthOf { .. }
+            | Expression::Null
+            | Expression::IntToBool(_)
+            | Expression::BoolToInt(_)
+            | Expression::RealToInt(_)
+            | Expression::IntToReal(_) => Err(AnalysisError {
+                what: format!("Expression {self:?} expected to be lvalue"),
+            }),
+        }
+    }
+
     pub(crate) fn try_constexpr_evaluate(&self) -> AnalysisResult<EvaluatedValue> {
         Ok(match self {
             Expression::Literal(lit) => match *lit {
@@ -383,7 +404,8 @@ pub enum Statement {
     },
     ForEach {
         counter: Identifier,
-        collection: Rc<Expression>,
+        index: Identifier,
+        collection: Rc<LvalueExpression>,
         order: LoopOrder,
         body: Block,
     },

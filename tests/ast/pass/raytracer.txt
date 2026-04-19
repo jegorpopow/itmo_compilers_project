@@ -5213,17 +5213,16 @@ Program {
                                     ),
                                     ForEach {
                                         counter: obj(131),
-                                        collection: LvalueToRvalue(
-                                            Identifier(
-                                                scene(129),
-                                            ),
+                                        index: <foreach-index>(132),
+                                        collection: Identifier(
+                                            scene(129),
                                         ),
                                         order: Direct,
                                         body: Block {
                                             stmts: [
                                                 Declaration(
                                                     Binding {
-                                                        name: intersection(132),
+                                                        name: intersection(133),
                                                         decl: Var(
                                                             VarDecl {
                                                                 t: Real,
@@ -5245,7 +5244,7 @@ Program {
                                                                     },
                                                                 ),
                                                                 relative_location: Local(
-                                                                    2,
+                                                                    3,
                                                                 ),
                                                             },
                                                         ),
@@ -5263,7 +5262,7 @@ Program {
                                                                 args: [
                                                                     LvalueToRvalue(
                                                                         Identifier(
-                                                                            intersection(132),
+                                                                            intersection(133),
                                                                         ),
                                                                     ),
                                                                 ],
@@ -5306,7 +5305,7 @@ Program {
                                                                     ),
                                                                     lhs: LvalueToRvalue(
                                                                         Identifier(
-                                                                            intersection(132),
+                                                                            intersection(133),
                                                                         ),
                                                                     ),
                                                                     rhs: LvalueToRvalue(
@@ -5334,7 +5333,7 @@ Program {
                                                                                 r"t",
                                                                                 LvalueToRvalue(
                                                                                     Identifier(
-                                                                                        intersection(132),
+                                                                                        intersection(133),
                                                                                     ),
                                                                                 ),
                                                                             ),
@@ -5375,7 +5374,7 @@ Program {
             ),
         },
         Binding {
-            name: trace_rays(133),
+            name: trace_rays(134),
             decl: Routine(
                 Full(
                     Routine {
@@ -5407,7 +5406,7 @@ Program {
                         },
                         args_bindings: [
                             Binding {
-                                name: h(134),
+                                name: h(135),
                                 decl: VarDecl {
                                     t: Int,
                                     initialiser: None,
@@ -5417,7 +5416,7 @@ Program {
                                 },
                             },
                             Binding {
-                                name: w(135),
+                                name: w(136),
                                 decl: VarDecl {
                                     t: Int,
                                     initialiser: None,
@@ -5427,7 +5426,7 @@ Program {
                                 },
                             },
                             Binding {
-                                name: scene(136),
+                                name: scene(137),
                                 decl: VarDecl {
                                     t: Array(
                                         ArrayDescription {
@@ -5449,7 +5448,7 @@ Program {
                                 stmts: [
                                     Declaration(
                                         Binding {
-                                            name: c(137),
+                                            name: c(138),
                                             decl: Var(
                                                 VarDecl {
                                                     t: Alias(
@@ -5461,12 +5460,12 @@ Program {
                                                             args: [
                                                                 LvalueToRvalue(
                                                                     Identifier(
-                                                                        h(134),
+                                                                        h(135),
                                                                     ),
                                                                 ),
                                                                 LvalueToRvalue(
                                                                     Identifier(
-                                                                        w(135),
+                                                                        w(136),
                                                                     ),
                                                                 ),
                                                                 LvalueToRvalue(
@@ -5486,7 +5485,7 @@ Program {
                                     ),
                                     Declaration(
                                         Binding {
-                                            name: virtual_screen_height(138),
+                                            name: virtual_screen_height(139),
                                             decl: Var(
                                                 VarDecl {
                                                     t: Real,
@@ -5509,7 +5508,7 @@ Program {
                                     ),
                                     Declaration(
                                         Binding {
-                                            name: virtual_screen_width(139),
+                                            name: virtual_screen_width(140),
                                             decl: Var(
                                                 VarDecl {
                                                     t: Real,
@@ -5524,13 +5523,13 @@ Program {
                                                                 ),
                                                                 lhs: LvalueToRvalue(
                                                                     Identifier(
-                                                                        virtual_screen_height(138),
+                                                                        virtual_screen_height(139),
                                                                     ),
                                                                 ),
                                                                 rhs: IntToReal(
                                                                     LvalueToRvalue(
                                                                         Identifier(
-                                                                            w(135),
+                                                                            w(136),
                                                                         ),
                                                                     ),
                                                                 ),
@@ -5538,7 +5537,7 @@ Program {
                                                             rhs: IntToReal(
                                                                 LvalueToRvalue(
                                                                     Identifier(
-                                                                        h(134),
+                                                                        h(135),
                                                                     ),
                                                                 ),
                                                             ),
@@ -5553,7 +5552,7 @@ Program {
                                     ),
                                     Declaration(
                                         Binding {
-                                            name: base(140),
+                                            name: base(141),
                                             decl: Var(
                                                 VarDecl {
                                                     t: Alias(
@@ -5599,7 +5598,7 @@ Program {
                                     ),
                                     Declaration(
                                         Binding {
-                                            name: x_orth(141),
+                                            name: x_orth(142),
                                             decl: Var(
                                                 VarDecl {
                                                     t: Alias(
@@ -5645,7 +5644,7 @@ Program {
                                     ),
                                     Declaration(
                                         Binding {
-                                            name: y_orth(142),
+                                            name: y_orth(143),
                                             decl: Var(
                                                 VarDecl {
                                                     t: Alias(
@@ -5691,7 +5690,7 @@ Program {
                                     ),
                                     Declaration(
                                         Binding {
-                                            name: left_bottom(143),
+                                            name: left_bottom(144),
                                             decl: Var(
                                                 VarDecl {
                                                     t: Alias(
@@ -5709,7 +5708,7 @@ Program {
                                                                         op: RealNeg,
                                                                         operand: LvalueToRvalue(
                                                                             Identifier(
-                                                                                virtual_screen_width(139),
+                                                                                virtual_screen_width(140),
                                                                             ),
                                                                         ),
                                                                     },
@@ -5730,7 +5729,7 @@ Program {
                                                                         op: RealNeg,
                                                                         operand: LvalueToRvalue(
                                                                             Identifier(
-                                                                                virtual_screen_height(138),
+                                                                                virtual_screen_height(139),
                                                                             ),
                                                                         ),
                                                                     },
@@ -5762,7 +5761,7 @@ Program {
                                         },
                                     ),
                                     For {
-                                        counter: x(144),
+                                        counter: x(145),
                                         lower_bound: Literal(
                                             Integer {
                                                 repr: "0",
@@ -5776,7 +5775,7 @@ Program {
                                             lhs: LvalueToRvalue(
                                                 Member {
                                                     lhs: Identifier(
-                                                        c(137),
+                                                        c(138),
                                                     ),
                                                     member_name: r"width",
                                                     member_offset: 2,
@@ -5793,7 +5792,7 @@ Program {
                                         body: Block {
                                             stmts: [
                                                 For {
-                                                    counter: y(145),
+                                                    counter: y(146),
                                                     lower_bound: Literal(
                                                         Integer {
                                                             repr: "0",
@@ -5807,7 +5806,7 @@ Program {
                                                         lhs: LvalueToRvalue(
                                                             Member {
                                                                 lhs: Identifier(
-                                                                    c(137),
+                                                                    c(138),
                                                                 ),
                                                                 member_name: r"height",
                                                                 member_offset: 1,
@@ -5825,7 +5824,7 @@ Program {
                                                         stmts: [
                                                             Declaration(
                                                                 Binding {
-                                                                    name: virtual_screen_point(146),
+                                                                    name: virtual_screen_point(147),
                                                                     decl: Var(
                                                                         VarDecl {
                                                                             t: Alias(
@@ -5837,7 +5836,7 @@ Program {
                                                                                     args: [
                                                                                         LvalueToRvalue(
                                                                                             Identifier(
-                                                                                                left_bottom(143),
+                                                                                                left_bottom(144),
                                                                                             ),
                                                                                         ),
                                                                                         Call {
@@ -5856,13 +5855,13 @@ Program {
                                                                                                                 ),
                                                                                                                 lhs: LvalueToRvalue(
                                                                                                                     Identifier(
-                                                                                                                        virtual_screen_width(139),
+                                                                                                                        virtual_screen_width(140),
                                                                                                                     ),
                                                                                                                 ),
                                                                                                                 rhs: IntToReal(
                                                                                                                     LvalueToRvalue(
                                                                                                                         Identifier(
-                                                                                                                            x(144),
+                                                                                                                            x(145),
                                                                                                                         ),
                                                                                                                     ),
                                                                                                                 ),
@@ -5881,7 +5880,7 @@ Program {
                                                                                                                     LvalueToRvalue(
                                                                                                                         Member {
                                                                                                                             lhs: Identifier(
-                                                                                                                                c(137),
+                                                                                                                                c(138),
                                                                                                                             ),
                                                                                                                             member_name: r"width",
                                                                                                                             member_offset: 2,
@@ -5892,7 +5891,7 @@ Program {
                                                                                                         },
                                                                                                         LvalueToRvalue(
                                                                                                             Identifier(
-                                                                                                                x_orth(141),
+                                                                                                                x_orth(142),
                                                                                                             ),
                                                                                                         ),
                                                                                                     ],
@@ -5910,13 +5909,13 @@ Program {
                                                                                                                 ),
                                                                                                                 lhs: LvalueToRvalue(
                                                                                                                     Identifier(
-                                                                                                                        virtual_screen_height(138),
+                                                                                                                        virtual_screen_height(139),
                                                                                                                     ),
                                                                                                                 ),
                                                                                                                 rhs: IntToReal(
                                                                                                                     LvalueToRvalue(
                                                                                                                         Identifier(
-                                                                                                                            y(145),
+                                                                                                                            y(146),
                                                                                                                         ),
                                                                                                                     ),
                                                                                                                 ),
@@ -5935,7 +5934,7 @@ Program {
                                                                                                                     LvalueToRvalue(
                                                                                                                         Member {
                                                                                                                             lhs: Identifier(
-                                                                                                                                c(137),
+                                                                                                                                c(138),
                                                                                                                             ),
                                                                                                                             member_name: r"height",
                                                                                                                             member_offset: 1,
@@ -5946,7 +5945,7 @@ Program {
                                                                                                         },
                                                                                                         LvalueToRvalue(
                                                                                                             Identifier(
-                                                                                                                y_orth(142),
+                                                                                                                y_orth(143),
                                                                                                             ),
                                                                                                         ),
                                                                                                     ],
@@ -5965,7 +5964,7 @@ Program {
                                                             ),
                                                             Declaration(
                                                                 Binding {
-                                                                    name: r(147),
+                                                                    name: r(148),
                                                                     decl: Var(
                                                                         VarDecl {
                                                                             t: Alias(
@@ -5977,12 +5976,12 @@ Program {
                                                                                     args: [
                                                                                         LvalueToRvalue(
                                                                                             Identifier(
-                                                                                                base(140),
+                                                                                                base(141),
                                                                                             ),
                                                                                         ),
                                                                                         LvalueToRvalue(
                                                                                             Identifier(
-                                                                                                virtual_screen_point(146),
+                                                                                                virtual_screen_point(147),
                                                                                             ),
                                                                                         ),
                                                                                     ],
@@ -5997,7 +5996,7 @@ Program {
                                                             ),
                                                             Declaration(
                                                                 Binding {
-                                                                    name: intersection(148),
+                                                                    name: intersection(149),
                                                                     decl: Var(
                                                                         VarDecl {
                                                                             t: Alias(
@@ -6009,12 +6008,12 @@ Program {
                                                                                     args: [
                                                                                         LvalueToRvalue(
                                                                                             Identifier(
-                                                                                                r(147),
+                                                                                                r(148),
                                                                                             ),
                                                                                         ),
                                                                                         LvalueToRvalue(
                                                                                             Identifier(
-                                                                                                scene(136),
+                                                                                                scene(137),
                                                                                             ),
                                                                                         ),
                                                                                     ],
@@ -6036,7 +6035,7 @@ Program {
                                                                             LvalueToRvalue(
                                                                                 Member {
                                                                                     lhs: Identifier(
-                                                                                        intersection(148),
+                                                                                        intersection(149),
                                                                                     ),
                                                                                     member_name: r"t",
                                                                                     member_offset: 0,
@@ -6049,7 +6048,7 @@ Program {
                                                                     stmts: [
                                                                         Declaration(
                                                                             Binding {
-                                                                                name: colour_ratio(149),
+                                                                                name: colour_ratio(150),
                                                                                 decl: Var(
                                                                                     VarDecl {
                                                                                         t: Real,
@@ -6063,7 +6062,7 @@ Program {
                                                                                                             LvalueToRvalue(
                                                                                                                 Member {
                                                                                                                     lhs: Identifier(
-                                                                                                                        intersection(148),
+                                                                                                                        intersection(149),
                                                                                                                     ),
                                                                                                                     member_name: r"object",
                                                                                                                     member_offset: 1,
@@ -6074,13 +6073,13 @@ Program {
                                                                                                                 args: [
                                                                                                                     LvalueToRvalue(
                                                                                                                         Identifier(
-                                                                                                                            r(147),
+                                                                                                                            r(148),
                                                                                                                         ),
                                                                                                                     ),
                                                                                                                     LvalueToRvalue(
                                                                                                                         Member {
                                                                                                                             lhs: Identifier(
-                                                                                                                                intersection(148),
+                                                                                                                                intersection(149),
                                                                                                                             ),
                                                                                                                             member_name: r"t",
                                                                                                                             member_offset: 0,
@@ -6104,7 +6103,7 @@ Program {
                                                                                                             LvalueToRvalue(
                                                                                                                 Member {
                                                                                                                     lhs: Identifier(
-                                                                                                                        r(147),
+                                                                                                                        r(148),
                                                                                                                     ),
                                                                                                                     member_name: r"dest",
                                                                                                                     member_offset: 1,
@@ -6129,7 +6128,7 @@ Program {
                                                                                 ),
                                                                                 lhs: LvalueToRvalue(
                                                                                     Identifier(
-                                                                                        colour_ratio(149),
+                                                                                        colour_ratio(150),
                                                                                     ),
                                                                                 ),
                                                                                 rhs: IntToReal(
@@ -6145,7 +6144,7 @@ Program {
                                                                                 stmts: [
                                                                                     Assignment {
                                                                                         lhs: Identifier(
-                                                                                            colour_ratio(149),
+                                                                                            colour_ratio(150),
                                                                                         ),
                                                                                         rhs: IntToReal(
                                                                                             Literal(
@@ -6163,7 +6162,7 @@ Program {
                                                                         },
                                                                         Declaration(
                                                                             Binding {
-                                                                                name: paint(150),
+                                                                                name: paint(151),
                                                                                 decl: Var(
                                                                                     VarDecl {
                                                                                         t: Alias(
@@ -6176,7 +6175,7 @@ Program {
                                                                                                     LvalueToRvalue(
                                                                                                         Member {
                                                                                                             lhs: Identifier(
-                                                                                                                intersection(148),
+                                                                                                                intersection(149),
                                                                                                             ),
                                                                                                             member_name: r"object",
                                                                                                             member_offset: 1,
@@ -6187,13 +6186,13 @@ Program {
                                                                                                         args: [
                                                                                                             LvalueToRvalue(
                                                                                                                 Identifier(
-                                                                                                                    r(147),
+                                                                                                                    r(148),
                                                                                                                 ),
                                                                                                             ),
                                                                                                             LvalueToRvalue(
                                                                                                                 Member {
                                                                                                                     lhs: Identifier(
-                                                                                                                        intersection(148),
+                                                                                                                        intersection(149),
                                                                                                                     ),
                                                                                                                     member_name: r"t",
                                                                                                                     member_offset: 0,
@@ -6217,17 +6216,17 @@ Program {
                                                                                 args: [
                                                                                     LvalueToRvalue(
                                                                                         Identifier(
-                                                                                            c(137),
+                                                                                            c(138),
                                                                                         ),
                                                                                     ),
                                                                                     LvalueToRvalue(
                                                                                         Identifier(
-                                                                                            x(144),
+                                                                                            x(145),
                                                                                         ),
                                                                                     ),
                                                                                     LvalueToRvalue(
                                                                                         Identifier(
-                                                                                            y(145),
+                                                                                            y(146),
                                                                                         ),
                                                                                     ),
                                                                                     Call {
@@ -6240,12 +6239,12 @@ Program {
                                                                                             ),
                                                                                             LvalueToRvalue(
                                                                                                 Identifier(
-                                                                                                    paint(150),
+                                                                                                    paint(151),
                                                                                                 ),
                                                                                             ),
                                                                                             LvalueToRvalue(
                                                                                                 Identifier(
-                                                                                                    colour_ratio(149),
+                                                                                                    colour_ratio(150),
                                                                                                 ),
                                                                                             ),
                                                                                         ],
@@ -6269,7 +6268,7 @@ Program {
                                     Return {
                                         value: LvalueToRvalue(
                                             Identifier(
-                                                c(137),
+                                                c(138),
                                             ),
                                         ),
                                     },
@@ -6282,7 +6281,7 @@ Program {
             ),
         },
         Binding {
-            name: main(151),
+            name: main(152),
             decl: Routine(
                 Full(
                     Routine {
@@ -6296,7 +6295,7 @@ Program {
                                 stmts: [
                                     Declaration(
                                         Binding {
-                                            name: red_sphere(152),
+                                            name: red_sphere(153),
                                             decl: Var(
                                                 VarDecl {
                                                     t: Alias(
@@ -6369,7 +6368,7 @@ Program {
                                     ),
                                     Declaration(
                                         Binding {
-                                            name: green_sphere(153),
+                                            name: green_sphere(154),
                                             decl: Var(
                                                 VarDecl {
                                                     t: Alias(
@@ -6442,7 +6441,7 @@ Program {
                                     ),
                                     Declaration(
                                         Binding {
-                                            name: blue_plane(154),
+                                            name: blue_plane(155),
                                             decl: Var(
                                                 VarDecl {
                                                     t: Alias(
@@ -6534,7 +6533,7 @@ Program {
                                     ),
                                     Declaration(
                                         Binding {
-                                            name: scene(155),
+                                            name: scene(156),
                                             decl: Var(
                                                 VarDecl {
                                                     t: Array(
@@ -6572,7 +6571,7 @@ Program {
                                     Assignment {
                                         lhs: Index {
                                             lhs: Identifier(
-                                                scene(155),
+                                                scene(156),
                                             ),
                                             index: Literal(
                                                 Integer {
@@ -6586,7 +6585,7 @@ Program {
                                             args: [
                                                 LvalueToRvalue(
                                                     Identifier(
-                                                        red_sphere(152),
+                                                        red_sphere(153),
                                                     ),
                                                 ),
                                             ],
@@ -6595,7 +6594,7 @@ Program {
                                     Assignment {
                                         lhs: Index {
                                             lhs: Identifier(
-                                                scene(155),
+                                                scene(156),
                                             ),
                                             index: Literal(
                                                 Integer {
@@ -6609,7 +6608,7 @@ Program {
                                             args: [
                                                 LvalueToRvalue(
                                                     Identifier(
-                                                        green_sphere(153),
+                                                        green_sphere(154),
                                                     ),
                                                 ),
                                             ],
@@ -6618,7 +6617,7 @@ Program {
                                     Assignment {
                                         lhs: Index {
                                             lhs: Identifier(
-                                                scene(155),
+                                                scene(156),
                                             ),
                                             index: Literal(
                                                 Integer {
@@ -6632,7 +6631,7 @@ Program {
                                             args: [
                                                 LvalueToRvalue(
                                                     Identifier(
-                                                        blue_plane(154),
+                                                        blue_plane(155),
                                                     ),
                                                 ),
                                             ],
@@ -6643,7 +6642,7 @@ Program {
                                             callee: render_canvas(86),
                                             args: [
                                                 Call {
-                                                    callee: trace_rays(133),
+                                                    callee: trace_rays(134),
                                                     args: [
                                                         Literal(
                                                             Integer {
@@ -6659,7 +6658,7 @@ Program {
                                                         ),
                                                         LvalueToRvalue(
                                                             Identifier(
-                                                                scene(155),
+                                                                scene(156),
                                                             ),
                                                         ),
                                                     ],
@@ -13345,17 +13344,16 @@ Program {
                                         ),
                                         ForEach {
                                             counter: obj(131),
-                                            collection: LvalueToRvalue(
-                                                Identifier(
-                                                    scene(129),
-                                                ),
+                                            index: <foreach-index>(132),
+                                            collection: Identifier(
+                                                scene(129),
                                             ),
                                             order: Direct,
                                             body: Block {
                                                 stmts: [
                                                     Declaration(
                                                         Binding {
-                                                            name: intersection(132),
+                                                            name: intersection(133),
                                                             decl: Var(
                                                                 VarDecl {
                                                                     t: Real,
@@ -13377,7 +13375,7 @@ Program {
                                                                         },
                                                                     ),
                                                                     relative_location: Local(
-                                                                        2,
+                                                                        3,
                                                                     ),
                                                                 },
                                                             ),
@@ -13395,7 +13393,7 @@ Program {
                                                                     args: [
                                                                         LvalueToRvalue(
                                                                             Identifier(
-                                                                                intersection(132),
+                                                                                intersection(133),
                                                                             ),
                                                                         ),
                                                                     ],
@@ -13438,7 +13436,7 @@ Program {
                                                                         ),
                                                                         lhs: LvalueToRvalue(
                                                                             Identifier(
-                                                                                intersection(132),
+                                                                                intersection(133),
                                                                             ),
                                                                         ),
                                                                         rhs: LvalueToRvalue(
@@ -13466,7 +13464,7 @@ Program {
                                                                                     r"t",
                                                                                     LvalueToRvalue(
                                                                                         Identifier(
-                                                                                            intersection(132),
+                                                                                            intersection(133),
                                                                                         ),
                                                                                     ),
                                                                                 ),
@@ -13567,13 +13565,25 @@ Program {
                         ),
                         initialiser: None,
                         relative_location: Local(
+                            2,
+                        ),
+                    },
+                ),
+            },
+            Binding {
+                name: <foreach-index>(132),
+                decl: Var(
+                    VarDecl {
+                        t: Int,
+                        initialiser: None,
+                        relative_location: Local(
                             1,
                         ),
                     },
                 ),
             },
             Binding {
-                name: intersection(132),
+                name: intersection(133),
                 decl: Var(
                     VarDecl {
                         t: Real,
@@ -13595,13 +13605,13 @@ Program {
                             },
                         ),
                         relative_location: Local(
-                            2,
+                            3,
                         ),
                     },
                 ),
             },
             Binding {
-                name: trace_rays(133),
+                name: trace_rays(134),
                 decl: Routine(
                     Full(
                         Routine {
@@ -13633,7 +13643,7 @@ Program {
                             },
                             args_bindings: [
                                 Binding {
-                                    name: h(134),
+                                    name: h(135),
                                     decl: VarDecl {
                                         t: Int,
                                         initialiser: None,
@@ -13643,7 +13653,7 @@ Program {
                                     },
                                 },
                                 Binding {
-                                    name: w(135),
+                                    name: w(136),
                                     decl: VarDecl {
                                         t: Int,
                                         initialiser: None,
@@ -13653,7 +13663,7 @@ Program {
                                     },
                                 },
                                 Binding {
-                                    name: scene(136),
+                                    name: scene(137),
                                     decl: VarDecl {
                                         t: Array(
                                             ArrayDescription {
@@ -13675,7 +13685,7 @@ Program {
                                     stmts: [
                                         Declaration(
                                             Binding {
-                                                name: c(137),
+                                                name: c(138),
                                                 decl: Var(
                                                     VarDecl {
                                                         t: Alias(
@@ -13687,12 +13697,12 @@ Program {
                                                                 args: [
                                                                     LvalueToRvalue(
                                                                         Identifier(
-                                                                            h(134),
+                                                                            h(135),
                                                                         ),
                                                                     ),
                                                                     LvalueToRvalue(
                                                                         Identifier(
-                                                                            w(135),
+                                                                            w(136),
                                                                         ),
                                                                     ),
                                                                     LvalueToRvalue(
@@ -13712,7 +13722,7 @@ Program {
                                         ),
                                         Declaration(
                                             Binding {
-                                                name: virtual_screen_height(138),
+                                                name: virtual_screen_height(139),
                                                 decl: Var(
                                                     VarDecl {
                                                         t: Real,
@@ -13735,7 +13745,7 @@ Program {
                                         ),
                                         Declaration(
                                             Binding {
-                                                name: virtual_screen_width(139),
+                                                name: virtual_screen_width(140),
                                                 decl: Var(
                                                     VarDecl {
                                                         t: Real,
@@ -13750,13 +13760,13 @@ Program {
                                                                     ),
                                                                     lhs: LvalueToRvalue(
                                                                         Identifier(
-                                                                            virtual_screen_height(138),
+                                                                            virtual_screen_height(139),
                                                                         ),
                                                                     ),
                                                                     rhs: IntToReal(
                                                                         LvalueToRvalue(
                                                                             Identifier(
-                                                                                w(135),
+                                                                                w(136),
                                                                             ),
                                                                         ),
                                                                     ),
@@ -13764,7 +13774,7 @@ Program {
                                                                 rhs: IntToReal(
                                                                     LvalueToRvalue(
                                                                         Identifier(
-                                                                            h(134),
+                                                                            h(135),
                                                                         ),
                                                                     ),
                                                                 ),
@@ -13779,7 +13789,7 @@ Program {
                                         ),
                                         Declaration(
                                             Binding {
-                                                name: base(140),
+                                                name: base(141),
                                                 decl: Var(
                                                     VarDecl {
                                                         t: Alias(
@@ -13825,7 +13835,7 @@ Program {
                                         ),
                                         Declaration(
                                             Binding {
-                                                name: x_orth(141),
+                                                name: x_orth(142),
                                                 decl: Var(
                                                     VarDecl {
                                                         t: Alias(
@@ -13871,7 +13881,7 @@ Program {
                                         ),
                                         Declaration(
                                             Binding {
-                                                name: y_orth(142),
+                                                name: y_orth(143),
                                                 decl: Var(
                                                     VarDecl {
                                                         t: Alias(
@@ -13917,7 +13927,7 @@ Program {
                                         ),
                                         Declaration(
                                             Binding {
-                                                name: left_bottom(143),
+                                                name: left_bottom(144),
                                                 decl: Var(
                                                     VarDecl {
                                                         t: Alias(
@@ -13935,7 +13945,7 @@ Program {
                                                                             op: RealNeg,
                                                                             operand: LvalueToRvalue(
                                                                                 Identifier(
-                                                                                    virtual_screen_width(139),
+                                                                                    virtual_screen_width(140),
                                                                                 ),
                                                                             ),
                                                                         },
@@ -13956,7 +13966,7 @@ Program {
                                                                             op: RealNeg,
                                                                             operand: LvalueToRvalue(
                                                                                 Identifier(
-                                                                                    virtual_screen_height(138),
+                                                                                    virtual_screen_height(139),
                                                                                 ),
                                                                             ),
                                                                         },
@@ -13988,7 +13998,7 @@ Program {
                                             },
                                         ),
                                         For {
-                                            counter: x(144),
+                                            counter: x(145),
                                             lower_bound: Literal(
                                                 Integer {
                                                     repr: "0",
@@ -14002,7 +14012,7 @@ Program {
                                                 lhs: LvalueToRvalue(
                                                     Member {
                                                         lhs: Identifier(
-                                                            c(137),
+                                                            c(138),
                                                         ),
                                                         member_name: r"width",
                                                         member_offset: 2,
@@ -14019,7 +14029,7 @@ Program {
                                             body: Block {
                                                 stmts: [
                                                     For {
-                                                        counter: y(145),
+                                                        counter: y(146),
                                                         lower_bound: Literal(
                                                             Integer {
                                                                 repr: "0",
@@ -14033,7 +14043,7 @@ Program {
                                                             lhs: LvalueToRvalue(
                                                                 Member {
                                                                     lhs: Identifier(
-                                                                        c(137),
+                                                                        c(138),
                                                                     ),
                                                                     member_name: r"height",
                                                                     member_offset: 1,
@@ -14051,7 +14061,7 @@ Program {
                                                             stmts: [
                                                                 Declaration(
                                                                     Binding {
-                                                                        name: virtual_screen_point(146),
+                                                                        name: virtual_screen_point(147),
                                                                         decl: Var(
                                                                             VarDecl {
                                                                                 t: Alias(
@@ -14063,7 +14073,7 @@ Program {
                                                                                         args: [
                                                                                             LvalueToRvalue(
                                                                                                 Identifier(
-                                                                                                    left_bottom(143),
+                                                                                                    left_bottom(144),
                                                                                                 ),
                                                                                             ),
                                                                                             Call {
@@ -14082,13 +14092,13 @@ Program {
                                                                                                                     ),
                                                                                                                     lhs: LvalueToRvalue(
                                                                                                                         Identifier(
-                                                                                                                            virtual_screen_width(139),
+                                                                                                                            virtual_screen_width(140),
                                                                                                                         ),
                                                                                                                     ),
                                                                                                                     rhs: IntToReal(
                                                                                                                         LvalueToRvalue(
                                                                                                                             Identifier(
-                                                                                                                                x(144),
+                                                                                                                                x(145),
                                                                                                                             ),
                                                                                                                         ),
                                                                                                                     ),
@@ -14107,7 +14117,7 @@ Program {
                                                                                                                         LvalueToRvalue(
                                                                                                                             Member {
                                                                                                                                 lhs: Identifier(
-                                                                                                                                    c(137),
+                                                                                                                                    c(138),
                                                                                                                                 ),
                                                                                                                                 member_name: r"width",
                                                                                                                                 member_offset: 2,
@@ -14118,7 +14128,7 @@ Program {
                                                                                                             },
                                                                                                             LvalueToRvalue(
                                                                                                                 Identifier(
-                                                                                                                    x_orth(141),
+                                                                                                                    x_orth(142),
                                                                                                                 ),
                                                                                                             ),
                                                                                                         ],
@@ -14136,13 +14146,13 @@ Program {
                                                                                                                     ),
                                                                                                                     lhs: LvalueToRvalue(
                                                                                                                         Identifier(
-                                                                                                                            virtual_screen_height(138),
+                                                                                                                            virtual_screen_height(139),
                                                                                                                         ),
                                                                                                                     ),
                                                                                                                     rhs: IntToReal(
                                                                                                                         LvalueToRvalue(
                                                                                                                             Identifier(
-                                                                                                                                y(145),
+                                                                                                                                y(146),
                                                                                                                             ),
                                                                                                                         ),
                                                                                                                     ),
@@ -14161,7 +14171,7 @@ Program {
                                                                                                                         LvalueToRvalue(
                                                                                                                             Member {
                                                                                                                                 lhs: Identifier(
-                                                                                                                                    c(137),
+                                                                                                                                    c(138),
                                                                                                                                 ),
                                                                                                                                 member_name: r"height",
                                                                                                                                 member_offset: 1,
@@ -14172,7 +14182,7 @@ Program {
                                                                                                             },
                                                                                                             LvalueToRvalue(
                                                                                                                 Identifier(
-                                                                                                                    y_orth(142),
+                                                                                                                    y_orth(143),
                                                                                                                 ),
                                                                                                             ),
                                                                                                         ],
@@ -14191,7 +14201,7 @@ Program {
                                                                 ),
                                                                 Declaration(
                                                                     Binding {
-                                                                        name: r(147),
+                                                                        name: r(148),
                                                                         decl: Var(
                                                                             VarDecl {
                                                                                 t: Alias(
@@ -14203,12 +14213,12 @@ Program {
                                                                                         args: [
                                                                                             LvalueToRvalue(
                                                                                                 Identifier(
-                                                                                                    base(140),
+                                                                                                    base(141),
                                                                                                 ),
                                                                                             ),
                                                                                             LvalueToRvalue(
                                                                                                 Identifier(
-                                                                                                    virtual_screen_point(146),
+                                                                                                    virtual_screen_point(147),
                                                                                                 ),
                                                                                             ),
                                                                                         ],
@@ -14223,7 +14233,7 @@ Program {
                                                                 ),
                                                                 Declaration(
                                                                     Binding {
-                                                                        name: intersection(148),
+                                                                        name: intersection(149),
                                                                         decl: Var(
                                                                             VarDecl {
                                                                                 t: Alias(
@@ -14235,12 +14245,12 @@ Program {
                                                                                         args: [
                                                                                             LvalueToRvalue(
                                                                                                 Identifier(
-                                                                                                    r(147),
+                                                                                                    r(148),
                                                                                                 ),
                                                                                             ),
                                                                                             LvalueToRvalue(
                                                                                                 Identifier(
-                                                                                                    scene(136),
+                                                                                                    scene(137),
                                                                                                 ),
                                                                                             ),
                                                                                         ],
@@ -14262,7 +14272,7 @@ Program {
                                                                                 LvalueToRvalue(
                                                                                     Member {
                                                                                         lhs: Identifier(
-                                                                                            intersection(148),
+                                                                                            intersection(149),
                                                                                         ),
                                                                                         member_name: r"t",
                                                                                         member_offset: 0,
@@ -14275,7 +14285,7 @@ Program {
                                                                         stmts: [
                                                                             Declaration(
                                                                                 Binding {
-                                                                                    name: colour_ratio(149),
+                                                                                    name: colour_ratio(150),
                                                                                     decl: Var(
                                                                                         VarDecl {
                                                                                             t: Real,
@@ -14289,7 +14299,7 @@ Program {
                                                                                                                 LvalueToRvalue(
                                                                                                                     Member {
                                                                                                                         lhs: Identifier(
-                                                                                                                            intersection(148),
+                                                                                                                            intersection(149),
                                                                                                                         ),
                                                                                                                         member_name: r"object",
                                                                                                                         member_offset: 1,
@@ -14300,13 +14310,13 @@ Program {
                                                                                                                     args: [
                                                                                                                         LvalueToRvalue(
                                                                                                                             Identifier(
-                                                                                                                                r(147),
+                                                                                                                                r(148),
                                                                                                                             ),
                                                                                                                         ),
                                                                                                                         LvalueToRvalue(
                                                                                                                             Member {
                                                                                                                                 lhs: Identifier(
-                                                                                                                                    intersection(148),
+                                                                                                                                    intersection(149),
                                                                                                                                 ),
                                                                                                                                 member_name: r"t",
                                                                                                                                 member_offset: 0,
@@ -14330,7 +14340,7 @@ Program {
                                                                                                                 LvalueToRvalue(
                                                                                                                     Member {
                                                                                                                         lhs: Identifier(
-                                                                                                                            r(147),
+                                                                                                                            r(148),
                                                                                                                         ),
                                                                                                                         member_name: r"dest",
                                                                                                                         member_offset: 1,
@@ -14355,7 +14365,7 @@ Program {
                                                                                     ),
                                                                                     lhs: LvalueToRvalue(
                                                                                         Identifier(
-                                                                                            colour_ratio(149),
+                                                                                            colour_ratio(150),
                                                                                         ),
                                                                                     ),
                                                                                     rhs: IntToReal(
@@ -14371,7 +14381,7 @@ Program {
                                                                                     stmts: [
                                                                                         Assignment {
                                                                                             lhs: Identifier(
-                                                                                                colour_ratio(149),
+                                                                                                colour_ratio(150),
                                                                                             ),
                                                                                             rhs: IntToReal(
                                                                                                 Literal(
@@ -14389,7 +14399,7 @@ Program {
                                                                             },
                                                                             Declaration(
                                                                                 Binding {
-                                                                                    name: paint(150),
+                                                                                    name: paint(151),
                                                                                     decl: Var(
                                                                                         VarDecl {
                                                                                             t: Alias(
@@ -14402,7 +14412,7 @@ Program {
                                                                                                         LvalueToRvalue(
                                                                                                             Member {
                                                                                                                 lhs: Identifier(
-                                                                                                                    intersection(148),
+                                                                                                                    intersection(149),
                                                                                                                 ),
                                                                                                                 member_name: r"object",
                                                                                                                 member_offset: 1,
@@ -14413,13 +14423,13 @@ Program {
                                                                                                             args: [
                                                                                                                 LvalueToRvalue(
                                                                                                                     Identifier(
-                                                                                                                        r(147),
+                                                                                                                        r(148),
                                                                                                                     ),
                                                                                                                 ),
                                                                                                                 LvalueToRvalue(
                                                                                                                     Member {
                                                                                                                         lhs: Identifier(
-                                                                                                                            intersection(148),
+                                                                                                                            intersection(149),
                                                                                                                         ),
                                                                                                                         member_name: r"t",
                                                                                                                         member_offset: 0,
@@ -14443,17 +14453,17 @@ Program {
                                                                                     args: [
                                                                                         LvalueToRvalue(
                                                                                             Identifier(
-                                                                                                c(137),
+                                                                                                c(138),
                                                                                             ),
                                                                                         ),
                                                                                         LvalueToRvalue(
                                                                                             Identifier(
-                                                                                                x(144),
+                                                                                                x(145),
                                                                                             ),
                                                                                         ),
                                                                                         LvalueToRvalue(
                                                                                             Identifier(
-                                                                                                y(145),
+                                                                                                y(146),
                                                                                             ),
                                                                                         ),
                                                                                         Call {
@@ -14466,12 +14476,12 @@ Program {
                                                                                                 ),
                                                                                                 LvalueToRvalue(
                                                                                                     Identifier(
-                                                                                                        paint(150),
+                                                                                                        paint(151),
                                                                                                     ),
                                                                                                 ),
                                                                                                 LvalueToRvalue(
                                                                                                     Identifier(
-                                                                                                        colour_ratio(149),
+                                                                                                        colour_ratio(150),
                                                                                                     ),
                                                                                                 ),
                                                                                             ],
@@ -14495,7 +14505,7 @@ Program {
                                         Return {
                                             value: LvalueToRvalue(
                                                 Identifier(
-                                                    c(137),
+                                                    c(138),
                                                 ),
                                             ),
                                         },
@@ -14508,7 +14518,7 @@ Program {
                 ),
             },
             Binding {
-                name: h(134),
+                name: h(135),
                 decl: Var(
                     VarDecl {
                         t: Int,
@@ -14520,7 +14530,7 @@ Program {
                 ),
             },
             Binding {
-                name: w(135),
+                name: w(136),
                 decl: Var(
                     VarDecl {
                         t: Int,
@@ -14532,7 +14542,7 @@ Program {
                 ),
             },
             Binding {
-                name: scene(136),
+                name: scene(137),
                 decl: Var(
                     VarDecl {
                         t: Array(
@@ -14551,7 +14561,7 @@ Program {
                 ),
             },
             Binding {
-                name: c(137),
+                name: c(138),
                 decl: Var(
                     VarDecl {
                         t: Alias(
@@ -14563,12 +14573,12 @@ Program {
                                 args: [
                                     LvalueToRvalue(
                                         Identifier(
-                                            h(134),
+                                            h(135),
                                         ),
                                     ),
                                     LvalueToRvalue(
                                         Identifier(
-                                            w(135),
+                                            w(136),
                                         ),
                                     ),
                                     LvalueToRvalue(
@@ -14586,7 +14596,7 @@ Program {
                 ),
             },
             Binding {
-                name: virtual_screen_height(138),
+                name: virtual_screen_height(139),
                 decl: Var(
                     VarDecl {
                         t: Real,
@@ -14607,7 +14617,7 @@ Program {
                 ),
             },
             Binding {
-                name: virtual_screen_width(139),
+                name: virtual_screen_width(140),
                 decl: Var(
                     VarDecl {
                         t: Real,
@@ -14622,13 +14632,13 @@ Program {
                                     ),
                                     lhs: LvalueToRvalue(
                                         Identifier(
-                                            virtual_screen_height(138),
+                                            virtual_screen_height(139),
                                         ),
                                     ),
                                     rhs: IntToReal(
                                         LvalueToRvalue(
                                             Identifier(
-                                                w(135),
+                                                w(136),
                                             ),
                                         ),
                                     ),
@@ -14636,7 +14646,7 @@ Program {
                                 rhs: IntToReal(
                                     LvalueToRvalue(
                                         Identifier(
-                                            h(134),
+                                            h(135),
                                         ),
                                     ),
                                 ),
@@ -14649,7 +14659,7 @@ Program {
                 ),
             },
             Binding {
-                name: base(140),
+                name: base(141),
                 decl: Var(
                     VarDecl {
                         t: Alias(
@@ -14693,7 +14703,7 @@ Program {
                 ),
             },
             Binding {
-                name: x_orth(141),
+                name: x_orth(142),
                 decl: Var(
                     VarDecl {
                         t: Alias(
@@ -14737,7 +14747,7 @@ Program {
                 ),
             },
             Binding {
-                name: y_orth(142),
+                name: y_orth(143),
                 decl: Var(
                     VarDecl {
                         t: Alias(
@@ -14781,7 +14791,7 @@ Program {
                 ),
             },
             Binding {
-                name: left_bottom(143),
+                name: left_bottom(144),
                 decl: Var(
                     VarDecl {
                         t: Alias(
@@ -14799,7 +14809,7 @@ Program {
                                             op: RealNeg,
                                             operand: LvalueToRvalue(
                                                 Identifier(
-                                                    virtual_screen_width(139),
+                                                    virtual_screen_width(140),
                                                 ),
                                             ),
                                         },
@@ -14820,7 +14830,7 @@ Program {
                                             op: RealNeg,
                                             operand: LvalueToRvalue(
                                                 Identifier(
-                                                    virtual_screen_height(138),
+                                                    virtual_screen_height(139),
                                                 ),
                                             ),
                                         },
@@ -14851,7 +14861,7 @@ Program {
                 ),
             },
             Binding {
-                name: x(144),
+                name: x(145),
                 decl: Var(
                     VarDecl {
                         t: Int,
@@ -14863,7 +14873,7 @@ Program {
                 ),
             },
             Binding {
-                name: y(145),
+                name: y(146),
                 decl: Var(
                     VarDecl {
                         t: Int,
@@ -14875,7 +14885,7 @@ Program {
                 ),
             },
             Binding {
-                name: virtual_screen_point(146),
+                name: virtual_screen_point(147),
                 decl: Var(
                     VarDecl {
                         t: Alias(
@@ -14887,7 +14897,7 @@ Program {
                                 args: [
                                     LvalueToRvalue(
                                         Identifier(
-                                            left_bottom(143),
+                                            left_bottom(144),
                                         ),
                                     ),
                                     Call {
@@ -14906,13 +14916,13 @@ Program {
                                                             ),
                                                             lhs: LvalueToRvalue(
                                                                 Identifier(
-                                                                    virtual_screen_width(139),
+                                                                    virtual_screen_width(140),
                                                                 ),
                                                             ),
                                                             rhs: IntToReal(
                                                                 LvalueToRvalue(
                                                                     Identifier(
-                                                                        x(144),
+                                                                        x(145),
                                                                     ),
                                                                 ),
                                                             ),
@@ -14931,7 +14941,7 @@ Program {
                                                                 LvalueToRvalue(
                                                                     Member {
                                                                         lhs: Identifier(
-                                                                            c(137),
+                                                                            c(138),
                                                                         ),
                                                                         member_name: r"width",
                                                                         member_offset: 2,
@@ -14942,7 +14952,7 @@ Program {
                                                     },
                                                     LvalueToRvalue(
                                                         Identifier(
-                                                            x_orth(141),
+                                                            x_orth(142),
                                                         ),
                                                     ),
                                                 ],
@@ -14960,13 +14970,13 @@ Program {
                                                             ),
                                                             lhs: LvalueToRvalue(
                                                                 Identifier(
-                                                                    virtual_screen_height(138),
+                                                                    virtual_screen_height(139),
                                                                 ),
                                                             ),
                                                             rhs: IntToReal(
                                                                 LvalueToRvalue(
                                                                     Identifier(
-                                                                        y(145),
+                                                                        y(146),
                                                                     ),
                                                                 ),
                                                             ),
@@ -14985,7 +14995,7 @@ Program {
                                                                 LvalueToRvalue(
                                                                     Member {
                                                                         lhs: Identifier(
-                                                                            c(137),
+                                                                            c(138),
                                                                         ),
                                                                         member_name: r"height",
                                                                         member_offset: 1,
@@ -14996,7 +15006,7 @@ Program {
                                                     },
                                                     LvalueToRvalue(
                                                         Identifier(
-                                                            y_orth(142),
+                                                            y_orth(143),
                                                         ),
                                                     ),
                                                 ],
@@ -15013,7 +15023,7 @@ Program {
                 ),
             },
             Binding {
-                name: r(147),
+                name: r(148),
                 decl: Var(
                     VarDecl {
                         t: Alias(
@@ -15025,12 +15035,12 @@ Program {
                                 args: [
                                     LvalueToRvalue(
                                         Identifier(
-                                            base(140),
+                                            base(141),
                                         ),
                                     ),
                                     LvalueToRvalue(
                                         Identifier(
-                                            virtual_screen_point(146),
+                                            virtual_screen_point(147),
                                         ),
                                     ),
                                 ],
@@ -15043,7 +15053,7 @@ Program {
                 ),
             },
             Binding {
-                name: intersection(148),
+                name: intersection(149),
                 decl: Var(
                     VarDecl {
                         t: Alias(
@@ -15055,12 +15065,12 @@ Program {
                                 args: [
                                     LvalueToRvalue(
                                         Identifier(
-                                            r(147),
+                                            r(148),
                                         ),
                                     ),
                                     LvalueToRvalue(
                                         Identifier(
-                                            scene(136),
+                                            scene(137),
                                         ),
                                     ),
                                 ],
@@ -15073,7 +15083,7 @@ Program {
                 ),
             },
             Binding {
-                name: colour_ratio(149),
+                name: colour_ratio(150),
                 decl: Var(
                     VarDecl {
                         t: Real,
@@ -15087,7 +15097,7 @@ Program {
                                             LvalueToRvalue(
                                                 Member {
                                                     lhs: Identifier(
-                                                        intersection(148),
+                                                        intersection(149),
                                                     ),
                                                     member_name: r"object",
                                                     member_offset: 1,
@@ -15098,13 +15108,13 @@ Program {
                                                 args: [
                                                     LvalueToRvalue(
                                                         Identifier(
-                                                            r(147),
+                                                            r(148),
                                                         ),
                                                     ),
                                                     LvalueToRvalue(
                                                         Member {
                                                             lhs: Identifier(
-                                                                intersection(148),
+                                                                intersection(149),
                                                             ),
                                                             member_name: r"t",
                                                             member_offset: 0,
@@ -15128,7 +15138,7 @@ Program {
                                             LvalueToRvalue(
                                                 Member {
                                                     lhs: Identifier(
-                                                        r(147),
+                                                        r(148),
                                                     ),
                                                     member_name: r"dest",
                                                     member_offset: 1,
@@ -15146,7 +15156,7 @@ Program {
                 ),
             },
             Binding {
-                name: paint(150),
+                name: paint(151),
                 decl: Var(
                     VarDecl {
                         t: Alias(
@@ -15159,7 +15169,7 @@ Program {
                                     LvalueToRvalue(
                                         Member {
                                             lhs: Identifier(
-                                                intersection(148),
+                                                intersection(149),
                                             ),
                                             member_name: r"object",
                                             member_offset: 1,
@@ -15170,13 +15180,13 @@ Program {
                                         args: [
                                             LvalueToRvalue(
                                                 Identifier(
-                                                    r(147),
+                                                    r(148),
                                                 ),
                                             ),
                                             LvalueToRvalue(
                                                 Member {
                                                     lhs: Identifier(
-                                                        intersection(148),
+                                                        intersection(149),
                                                     ),
                                                     member_name: r"t",
                                                     member_offset: 0,
@@ -15194,7 +15204,7 @@ Program {
                 ),
             },
             Binding {
-                name: main(151),
+                name: main(152),
                 decl: Routine(
                     Full(
                         Routine {
@@ -15208,7 +15218,7 @@ Program {
                                     stmts: [
                                         Declaration(
                                             Binding {
-                                                name: red_sphere(152),
+                                                name: red_sphere(153),
                                                 decl: Var(
                                                     VarDecl {
                                                         t: Alias(
@@ -15281,7 +15291,7 @@ Program {
                                         ),
                                         Declaration(
                                             Binding {
-                                                name: green_sphere(153),
+                                                name: green_sphere(154),
                                                 decl: Var(
                                                     VarDecl {
                                                         t: Alias(
@@ -15354,7 +15364,7 @@ Program {
                                         ),
                                         Declaration(
                                             Binding {
-                                                name: blue_plane(154),
+                                                name: blue_plane(155),
                                                 decl: Var(
                                                     VarDecl {
                                                         t: Alias(
@@ -15446,7 +15456,7 @@ Program {
                                         ),
                                         Declaration(
                                             Binding {
-                                                name: scene(155),
+                                                name: scene(156),
                                                 decl: Var(
                                                     VarDecl {
                                                         t: Array(
@@ -15484,7 +15494,7 @@ Program {
                                         Assignment {
                                             lhs: Index {
                                                 lhs: Identifier(
-                                                    scene(155),
+                                                    scene(156),
                                                 ),
                                                 index: Literal(
                                                     Integer {
@@ -15498,7 +15508,7 @@ Program {
                                                 args: [
                                                     LvalueToRvalue(
                                                         Identifier(
-                                                            red_sphere(152),
+                                                            red_sphere(153),
                                                         ),
                                                     ),
                                                 ],
@@ -15507,7 +15517,7 @@ Program {
                                         Assignment {
                                             lhs: Index {
                                                 lhs: Identifier(
-                                                    scene(155),
+                                                    scene(156),
                                                 ),
                                                 index: Literal(
                                                     Integer {
@@ -15521,7 +15531,7 @@ Program {
                                                 args: [
                                                     LvalueToRvalue(
                                                         Identifier(
-                                                            green_sphere(153),
+                                                            green_sphere(154),
                                                         ),
                                                     ),
                                                 ],
@@ -15530,7 +15540,7 @@ Program {
                                         Assignment {
                                             lhs: Index {
                                                 lhs: Identifier(
-                                                    scene(155),
+                                                    scene(156),
                                                 ),
                                                 index: Literal(
                                                     Integer {
@@ -15544,7 +15554,7 @@ Program {
                                                 args: [
                                                     LvalueToRvalue(
                                                         Identifier(
-                                                            blue_plane(154),
+                                                            blue_plane(155),
                                                         ),
                                                     ),
                                                 ],
@@ -15555,7 +15565,7 @@ Program {
                                                 callee: render_canvas(86),
                                                 args: [
                                                     Call {
-                                                        callee: trace_rays(133),
+                                                        callee: trace_rays(134),
                                                         args: [
                                                             Literal(
                                                                 Integer {
@@ -15571,7 +15581,7 @@ Program {
                                                             ),
                                                             LvalueToRvalue(
                                                                 Identifier(
-                                                                    scene(155),
+                                                                    scene(156),
                                                                 ),
                                                             ),
                                                         ],
@@ -15588,7 +15598,7 @@ Program {
                 ),
             },
             Binding {
-                name: red_sphere(152),
+                name: red_sphere(153),
                 decl: Var(
                     VarDecl {
                         t: Alias(
@@ -15659,7 +15669,7 @@ Program {
                 ),
             },
             Binding {
-                name: green_sphere(153),
+                name: green_sphere(154),
                 decl: Var(
                     VarDecl {
                         t: Alias(
@@ -15730,7 +15740,7 @@ Program {
                 ),
             },
             Binding {
-                name: blue_plane(154),
+                name: blue_plane(155),
                 decl: Var(
                     VarDecl {
                         t: Alias(
@@ -15820,7 +15830,7 @@ Program {
                 ),
             },
             Binding {
-                name: scene(155),
+                name: scene(156),
                 decl: Var(
                     VarDecl {
                         t: Array(
