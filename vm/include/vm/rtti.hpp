@@ -14,7 +14,8 @@ namespace vm {
 // Runtime type info for a record type.
 struct RecordRtti {
   uint32_t id;
-  std::vector<uint32_t> field_type_ids;  // type_id of each field, in order
+  std::vector<std::string>  field_names;     // name of each field, in order
+  std::vector<uint32_t>     field_type_ids;  // type_id of each field, in order
 
   uint64_t FieldCount() const { return field_type_ids.size(); }
 };

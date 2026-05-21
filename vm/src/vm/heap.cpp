@@ -53,9 +53,8 @@ void GarbageCollector::Mark(Vm& vm) {
   for (const Value& v : vm.globals())
     MarkValue(v);
 
-  // Root set 2: call stack locals and arguments.
+  // Root set 2: call stack arguments (locals live on eval_stack).
   for (const CallFrame& frame : vm.call_stack()) {
-    for (const Value& v : frame.locals)    MarkValue(v);
     for (const Value& v : frame.arguments) MarkValue(v);
   }
 

@@ -4,8 +4,10 @@
 // This header must be included AFTER vm.hpp so that Vm is fully defined.
 // It is included only from vm.cpp to avoid multiple-definition issues.
 
+#include <algorithm>
 #include <bit>
 #include <cmath>
+#include <numeric>
 #include <string>
 
 #include <fmt/format.h>
@@ -31,59 +33,82 @@ inline void CheckRef(const Value& v, const char* op) {
   }
 }
 
-// Forward declaration — FormatValue calls itself recursively for heap objects.
-inline std::string FormatValue(const Value& v, const RttiTable& rtti);
-
-// Rust-like real formatting: always includes a decimal point.
 inline std::string FormatReal(double v) {
-  if (std::isinf(v)) return v > 0 ? "inf" : "-inf";
+  if (std::isinf(v)) return v > 0 ? "+Infinity" : "-Infinity";
   if (std::isnan(v)) return "NaN";
-  // fmt::format("{}", double) may omit the decimal point for whole numbers.
   std::string s = fmt::format("{}", v);
-  if (s.find('.') == std::string::npos &&
-      s.find('e') == std::string::npos) {
+  if (s.find('.') == std::string::npos && s.find('e') == std::string::npos)
     s += ".0";
-  }
   return s;
 }
 
-// Formats a Value as a human-readable string.
-// For heap objects, recursively formats fields/elements.
-inline std::string FormatValue(const Value& v, const RttiTable& rtti) {
-  if (v.type_id == kIntegerTypeId) return fmt::format("{}", v.AsInteger());
-  if (v.type_id == kRealTypeId)    return FormatReal(v.AsReal());
-  if (v.type_id == kBooleanTypeId) return v.AsBoolean() ? "true" : "false";
-  if (v.type_id == kAddressTypeId) return "<address>";
+inline void PrintValue(const Value& v, const RttiTable& rtti,
+                       std::vector<HeapObject*>& ancestors);
 
-  // User-defined reference type.
-  if (v.data == 0) return fmt::format("<null type_id={}>", v.type_id);
-
-  auto* obj = std::bit_cast<HeapObject*>(v.data);
-
-  // Determine the kind from RTTI if available, otherwise fall back on
-  // the HeapObject's own kind tag.
-  bool is_array = (obj->kind == HeapObjectKind::kArray);
-  if (rtti.Has(v.type_id)) {
-    is_array = rtti.IsArray(v.type_id);
+inline void PrintObject(HeapObject* obj, const Value& ref,
+                        const RttiTable& rtti,
+                        std::vector<HeapObject*>& ancestors) {
+  for (std::size_t d = 0; d < ancestors.size(); ++d) {
+    if (ancestors[d] == obj) {
+      std::size_t depth = ancestors.size() - d;
+      if (depth == 1)
+        fmt::print("/* repeated 1 level above */");
+      else
+        fmt::print("/* repeated {} levels above */", depth);
+      return;
+    }
   }
+
+  ancestors.push_back(obj);
+
+  bool is_array = (obj->kind == HeapObjectKind::kArray);
+  if (rtti.Has(ref.type_id))
+    is_array = rtti.IsArray(ref.type_id);
 
   if (is_array) {
-    std::string result = fmt::format("array<{}>[", v.type_id);
-    for (std::size_t i = 0; i < obj->fields.size(); ++i) {
-      if (i > 0) result += ", ";
-      result += FormatValue(obj->fields[i], rtti);
+    fmt::print("[ ");
+    for (const Value& elem : obj->fields) {
+      PrintValue(elem, rtti, ancestors);
+      fmt::print(", ");
     }
-    result += ']';
-    return result;
+    fmt::print("]");
   } else {
-    std::string result = fmt::format("record<{}>{{", v.type_id);
-    for (std::size_t i = 0; i < obj->fields.size(); ++i) {
-      if (i > 0) result += ", ";
-      result += fmt::format("field_{}={}", i, FormatValue(obj->fields[i], rtti));
+    fmt::print("{{ ");
+    if (rtti.Has(ref.type_id) && rtti.IsRecord(ref.type_id)) {
+      const auto& rec = std::get<RecordRtti>(rtti.Lookup(ref.type_id));
+      std::vector<std::size_t> order(rec.field_names.size());
+      std::iota(order.begin(), order.end(), 0);
+      std::sort(order.begin(), order.end(), [&](std::size_t a, std::size_t b) {
+        return rec.field_names[a] < rec.field_names[b];
+      });
+      for (std::size_t idx : order) {
+        fmt::print("{}: ", rec.field_names[idx]);
+        PrintValue(obj->fields[idx], rtti, ancestors);
+        fmt::print(", ");
+      }
+    } else {
+      for (std::size_t i = 0; i < obj->fields.size(); ++i) {
+        fmt::print("field_{}: ", i);
+        PrintValue(obj->fields[i], rtti, ancestors);
+        fmt::print(", ");
+      }
     }
-    result += '}';
-    return result;
+    fmt::print("}}");
   }
+
+  ancestors.pop_back();
+}
+
+inline void PrintValue(const Value& v, const RttiTable& rtti,
+                       std::vector<HeapObject*>& ancestors) {
+  if (v.type_id == kIntegerTypeId) { fmt::print("{}", v.AsInteger()); return; }
+  if (v.type_id == kBooleanTypeId) { fmt::print("{}", v.AsBoolean() ? "true" : "false"); return; }
+  if (v.type_id == kRealTypeId)    { fmt::print("{}", FormatReal(v.AsReal())); return; }
+  if (v.type_id == kNullTypeId || v.data == 0) { fmt::print("null"); return; }
+  if (v.type_id == kAddressTypeId) { fmt::print("<address>"); return; }
+
+  auto* obj = std::bit_cast<HeapObject*>(v.data);
+  PrintObject(obj, v, rtti, ancestors);
 }
 
 }  // namespace detail
@@ -138,12 +163,18 @@ struct OpcodeHandler<4> {
     Value lhs = vm.Pop();
 
     switch (instr.subopcode) {
-      // --- Equality (any type: compare data field directly) ---
+      // --- Equality ---
       case binop::kEqEq:
-        vm.Push(Value::MakeBoolean(lhs.data == rhs.data));
+        if (lhs.type_id == kRealTypeId)
+          vm.Push(Value::MakeBoolean(lhs.AsReal() == rhs.AsReal()));
+        else
+          vm.Push(Value::MakeBoolean(lhs.data == rhs.data));
         return;
       case binop::kEqNe:
-        vm.Push(Value::MakeBoolean(lhs.data != rhs.data));
+        if (lhs.type_id == kRealTypeId)
+          vm.Push(Value::MakeBoolean(lhs.AsReal() != rhs.AsReal()));
+        else
+          vm.Push(Value::MakeBoolean(lhs.data != rhs.data));
         return;
 
       // --- Real arithmetic ---
@@ -495,7 +526,9 @@ template <>
 struct OpcodeHandler<26> {
   static void Execute(Vm& vm, const Instruction&) {
     Value v = vm.Pop();
-    fmt::print("{}\n", detail::FormatValue(v, vm.program().rtti));
+    std::vector<HeapObject*> ancestors;
+    detail::PrintValue(v, vm.program().rtti, ancestors);
+    fmt::print("\n");
   }
 };
 
@@ -504,6 +537,44 @@ template <>
 struct OpcodeHandler<27> {
   static void Execute(Vm&, const Instruction& instr) {
     throw PanicError(instr.arg64);
+  }
+};
+
+// 28: NullConst — push a null value
+template <>
+struct OpcodeHandler<28> {
+  static void Execute(Vm& vm, const Instruction&) {
+    Value v;
+    v.type_id = kNullTypeId;
+    v.data    = 0;
+    vm.Push(v);
+  }
+};
+
+// 29: DropMany — drop arg16 values from the eval stack
+template <>
+struct OpcodeHandler<29> {
+  static void Execute(Vm& vm, const Instruction& instr) {
+    uint16_t count = static_cast<uint16_t>(instr.arg16);
+    for (uint16_t i = 0; i < count; ++i)
+      vm.Pop();
+  }
+};
+
+// 30: AllocArrayDynamic — pop count (int) from stack, alloc array of that size
+template <>
+struct OpcodeHandler<30> {
+  static void Execute(Vm& vm, const Instruction& instr) {
+    int64_t count = vm.Pop().AsInteger();
+    if (count < 0)
+      throw RuntimeError(
+          fmt::format("AllocArrayDynamic: negative count {}", count));
+    HeapObject* obj =
+        vm.AllocArray(instr.arg32, static_cast<uint64_t>(count));
+    Value ref;
+    ref.type_id = instr.arg32;
+    ref.data    = std::bit_cast<uint64_t>(obj);
+    vm.Push(ref);
   }
 };
 

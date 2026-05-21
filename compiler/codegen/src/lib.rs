@@ -4,7 +4,7 @@ use ast::{
     AnalysisError, AnalysisResult, Binding, Bindings, Block, Decl, Expression, Interner, Literal,
     LvalueExpression, Program, Routine, RoutineBody, RoutineDecl, Statement, Type, TypeId, VarDecl,
 };
-use common::{Identifier, Integer, Position, RawIdentifier};
+use common::{Identifier, Position, RawIdentifier};
 
 pub mod bytecode;
 
@@ -20,6 +20,8 @@ pub struct Compiler<'a> {
     global_init: Vec<Instruction>,
     fresh_label_counter: u64,
     routines_labels: HashMap<Identifier, u64>,
+    routine_meta: HashMap<u64, (Vec<TypeId>, TypeId)>,
+    global_count: u32,
 }
 
 impl<'a> Compiler<'a> {
@@ -32,6 +34,8 @@ impl<'a> Compiler<'a> {
             global_init: Vec::new(),
             fresh_label_counter: 0,
             routines_labels: HashMap::new(),
+            routine_meta: HashMap::new(),
+            global_count: 0,
         };
 
         let global_init_label = result.get_fresh_label();
@@ -102,17 +106,13 @@ impl<'a> Compiler<'a> {
                     type_id: self
                         .bindings
                         .get_type_representation(t, &mut self.interner)?,
-                    size: 0,
+                    size: record_description.fields.len() as u64,
                 });
 
-                // Fields initialisation
                 for (name, expr) in fields {
+                    let field_offset = record_description.get_field_index(name)?;
                     self.bytecode.push(Instruction::Dup);
-                    self.bytecode.push(Instruction::IntConst {
-                        value: Integer::try_from(record_description.get_field_index(name)?)
-                            .expect("Internal compiler error: to big structure type"),
-                    });
-                    self.bytecode.push(Instruction::ElementAddress);
+                    self.bytecode.push(Instruction::FieldAddress { field_offset });
                     self.compile_expr(expr)?;
                     self.bytecode.push(Instruction::StoreAddress);
                 }
@@ -171,7 +171,7 @@ impl<'a> Compiler<'a> {
                 });
             }
             Expression::Call { callee, args } => {
-                for arg in args.iter().rev() {
+                for arg in args.iter() {
                     self.compile_expr(arg)?;
                 }
                 let function_label = self.routines_labels.get(callee).ok_or(AnalysisError {
@@ -345,7 +345,10 @@ impl<'a> Compiler<'a> {
                     id: condition_label,
                 });
 
-                self.compile_expr(upper_bound)?; // Recalculating upper bound in case of its changing
+                self.bytecode.push(Instruction::Load {
+                    loc: self.bindings[counter].ensure_is_var()?.relative_location,
+                });
+                self.compile_expr(upper_bound)?;
 
                 match order {
                     common::LoopOrder::Direct => self.bytecode.push(Instruction::BinOp {
@@ -355,8 +358,6 @@ impl<'a> Compiler<'a> {
                         op: ast::BinaryOperator::Int(ast::IntBinOp::Ge),
                     }),
                 }
-                self.bytecode.push(Instruction::Swap);
-                self.bytecode.push(Instruction::Drop);
                 self.bytecode
                     .push(Instruction::JumpNotZero { label: body_label });
 
@@ -474,6 +475,12 @@ impl<'a> Compiler<'a> {
     }
 
     pub fn compile(&mut self, program: &Program) -> AnalysisResult<()> {
+        self.global_count = program
+            .globals
+            .iter()
+            .filter(|b| matches!(b.decl, Decl::Var(_)))
+            .count() as u32;
+
         for Binding { name, decl } in &program.globals {
             match decl {
                 Decl::Var(v) => {
@@ -496,16 +503,33 @@ impl<'a> Compiler<'a> {
                 }
                 Decl::Routine(r) => match r {
                     RoutineDecl::Forward { .. } => {}
-                    RoutineDecl::Full(Routine { body, .. }) => {
-                        self.bytecode.push(Instruction::Label {
-                            id: *self
-                                .routines_labels
-                                .get(name)
-                                .expect("Routines are indexed"),
-                        });
-                        match body {
-                            RoutineBody::Block(block) => self.compile_block(block)?,
+                    RoutineDecl::Full(Routine { body, signature, .. }) => {
+                        let label_id = *self
+                            .routines_labels
+                            .get(name)
+                            .expect("Routines are indexed");
+                        self.bytecode.push(Instruction::Label { id: label_id });
 
+                        let arg_type_ids: Vec<TypeId> = signature
+                            .args
+                            .iter()
+                            .map(|(_, t)| {
+                                self.bindings
+                                    .get_type_representation(t, &mut self.interner)
+                            })
+                            .collect::<Result<_, _>>()?;
+                        let return_type_id = self
+                            .bindings
+                            .get_type_representation(&signature.return_type, &mut self.interner)?;
+                        let _: Option<_> = self.routine_meta
+                            .insert(label_id, (arg_type_ids, return_type_id));
+
+                        match body {
+                            RoutineBody::Block(block) => {
+                                self.compile_block(block)?;
+                                self.bytecode.push(Instruction::NullConst);
+                                self.bytecode.push(Instruction::Ret);
+                            }
                             RoutineBody::Expression(expression) => {
                                 self.compile_expr(expression)?;
                                 self.bytecode.push(Instruction::Ret);
@@ -521,16 +545,35 @@ impl<'a> Compiler<'a> {
 
     #[expect(clippy::wrong_self_convention, reason = "The convention is stupid")]
     fn to_bytecode_file(mut self) -> BytecodeFile {
+        if let Some(&main_label) = self
+            .routines_labels
+            .iter()
+            .find(|(ident, _)| ident.raw.name == "main")
+            .map(|(_, label)| label)
+        {
+            self.global_init
+                .push(Instruction::Call { function_label: main_label });
+            self.global_init.push(Instruction::Drop);
+        }
+        self.global_init.push(Instruction::NullConst);
         self.global_init.push(Instruction::Ret);
+
         let instructions = [self.global_init, self.bytecode].concat();
         let function_table = FunctionTable(
             self.routines_labels
                 .iter()
-                .map(|(name, label)| FunctionRecord {
-                    name: name.raw.name.clone(),
-                    label_id: *label,
-                    args: Vec::new(),
-                    result: TypeId(0),
+                .map(|(name, label)| {
+                    let (args, result) = self
+                        .routine_meta
+                        .get(label)
+                        .cloned()
+                        .unwrap_or_else(|| (Vec::new(), TypeId(0)));
+                    FunctionRecord {
+                        name: name.raw.name.clone(),
+                        label_id: *label,
+                        args,
+                        result,
+                    }
                 })
                 .collect(),
         );
@@ -538,6 +581,7 @@ impl<'a> Compiler<'a> {
             code: instructions,
             rtti: RTTI(self.interner.to_table()),
             function_table,
+            global_count: self.global_count,
         }
     }
 }

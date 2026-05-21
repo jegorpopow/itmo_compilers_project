@@ -57,11 +57,15 @@ else ()
     message(STATUS "LTO enabled")
 endif ()
 
-find_package(GTest 1.15.2 REQUIRED)
+find_package(GTest 1.12 REQUIRED)
 include(GoogleTest)
 
 find_package(gflags 2.2.2 REQUIRED)
-find_package(fmt 11.1.4 REQUIRED)
+find_package(fmt 9 REQUIRED)
+
+set(COMPILER_SRC_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../compiler")
+set(TESTS_SRC_DIR    "${CMAKE_CURRENT_SOURCE_DIR}/../tests/src")
+set(TESTS_PASS_DIR   "${CMAKE_CURRENT_SOURCE_DIR}/../tests/run/pass")
 
 add_subdirectory(src)
 enable_testing()

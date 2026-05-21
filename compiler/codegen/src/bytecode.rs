@@ -265,7 +265,7 @@ impl Encode for Instruction {
             Instruction::AllocArrayDynamic {
                 type_id: TypeId(type_id),
             } => Bytecode {
-                opcode: 28,
+                opcode: 30,
                 arg32: type_id.to_le_bytes(),
                 ..zero
             },
@@ -408,4 +408,105 @@ pub struct BytecodeFile {
     pub code: Vec<Instruction>,
     pub rtti: RTTI,
     pub function_table: FunctionTable,
+    pub global_count: u32,
+}
+
+impl BytecodeFile {
+    pub fn to_bytes(&self) -> Vec<u8> {
+        let mut code_bytes: Vec<u8> = Vec::new();
+        for instr in &self.code {
+            code_bytes.extend_from_slice(&instr.encode().encode());
+        }
+
+        let mut fn_bytes: Vec<u8> = Vec::new();
+        for rec in &self.function_table.0 {
+            let name_bytes = rec.name.as_bytes();
+            fn_bytes.extend_from_slice(&(name_bytes.len() as u32).to_le_bytes());
+            fn_bytes.extend_from_slice(name_bytes);
+            fn_bytes.extend_from_slice(&rec.label_id.to_le_bytes());
+            fn_bytes.extend_from_slice(&(rec.args.len() as u32).to_le_bytes());
+            for TypeId(arg_id) in &rec.args {
+                fn_bytes.extend_from_slice(&arg_id.to_le_bytes());
+            }
+            let TypeId(ret_id) = rec.result;
+            fn_bytes.extend_from_slice(&ret_id.to_le_bytes());
+        }
+
+        let mut rtti_bytes: Vec<u8> = Vec::new();
+        for rep in &self.rtti.0 {
+            match rep {
+                Representation::IntegerRepresentation => {
+                    rtti_bytes.push(0);
+                    rtti_bytes.extend_from_slice(&0u32.to_le_bytes());
+                }
+                Representation::BooleanRepresentation => {
+                    rtti_bytes.push(0);
+                    rtti_bytes.extend_from_slice(&1u32.to_le_bytes());
+                }
+                Representation::RealRepresentation => {
+                    rtti_bytes.push(0);
+                    rtti_bytes.extend_from_slice(&2u32.to_le_bytes());
+                }
+                Representation::NullRepresentation => {
+                    rtti_bytes.push(0);
+                    rtti_bytes.extend_from_slice(&3u32.to_le_bytes());
+                }
+                Representation::RecordRepresentation(rec) => {
+                    let type_id = self
+                        .rtti
+                        .0
+                        .iter()
+                        .position(|r| r == rep)
+                        .unwrap() as u32;
+                    rtti_bytes.push(1);
+                    rtti_bytes.extend_from_slice(&type_id.to_le_bytes());
+                    rtti_bytes.extend_from_slice(&(rec.fields.len() as u32).to_le_bytes());
+                    for (name, TypeId(field_type_id)) in &rec.fields {
+                        let name_bytes = name.name.as_bytes();
+                        rtti_bytes.extend_from_slice(&(name_bytes.len() as u32).to_le_bytes());
+                        rtti_bytes.extend_from_slice(name_bytes);
+                        rtti_bytes.extend_from_slice(&field_type_id.to_le_bytes());
+                    }
+                }
+                Representation::ArrayRepresentation(arr) => {
+                    let type_id = self
+                        .rtti
+                        .0
+                        .iter()
+                        .position(|r| r == rep)
+                        .unwrap() as u32;
+                    let TypeId(elem_type_id) = arr.element;
+                    rtti_bytes.push(2);
+                    rtti_bytes.extend_from_slice(&type_id.to_le_bytes());
+                    rtti_bytes.extend_from_slice(&elem_type_id.to_le_bytes());
+                }
+            }
+        }
+
+        const MAGIC: u32 = 0x494D_564D;
+        const VERSION: u32 = 1;
+        const HEADER_SIZE: u32 = 36;
+
+        let code_offset = HEADER_SIZE;
+        let code_length = self.code.len() as u32;
+        let fn_table_offset = code_offset + code_bytes.len() as u32;
+        let fn_table_length = self.function_table.0.len() as u32;
+        let rtti_offset = fn_table_offset + fn_bytes.len() as u32;
+        let rtti_length = self.rtti.0.len() as u32;
+
+        let mut out = Vec::with_capacity(HEADER_SIZE as usize + code_bytes.len() + fn_bytes.len() + rtti_bytes.len());
+        out.extend_from_slice(&MAGIC.to_le_bytes());
+        out.extend_from_slice(&VERSION.to_le_bytes());
+        out.extend_from_slice(&code_offset.to_le_bytes());
+        out.extend_from_slice(&code_length.to_le_bytes());
+        out.extend_from_slice(&fn_table_offset.to_le_bytes());
+        out.extend_from_slice(&fn_table_length.to_le_bytes());
+        out.extend_from_slice(&rtti_offset.to_le_bytes());
+        out.extend_from_slice(&rtti_length.to_le_bytes());
+        out.extend_from_slice(&self.global_count.to_le_bytes());
+        out.extend(code_bytes);
+        out.extend(fn_bytes);
+        out.extend(rtti_bytes);
+        out
+    }
 }

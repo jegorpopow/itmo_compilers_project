@@ -9,8 +9,9 @@ namespace vm {
 // Well-known TypeIds for primitive types.
 // These must match what the compiler assigns in the RTTI table.
 inline constexpr uint32_t kIntegerTypeId = 0;
-inline constexpr uint32_t kRealTypeId    = 1;
-inline constexpr uint32_t kBooleanTypeId = 2;
+inline constexpr uint32_t kBooleanTypeId = 1;
+inline constexpr uint32_t kRealTypeId    = 2;
+inline constexpr uint32_t kNullTypeId    = 3;
 
 // Internal TypeId for address values — never appears in user RTTI.
 inline constexpr uint32_t kAddressTypeId = 0xFFFF'FFFFu;
@@ -56,11 +57,12 @@ struct Value {
   bool IsInteger() const noexcept { return type_id == kIntegerTypeId; }
   bool IsReal()    const noexcept { return type_id == kRealTypeId; }
   bool IsBoolean() const noexcept { return type_id == kBooleanTypeId; }
+  bool IsNull()    const noexcept { return type_id == kNullTypeId; }
   bool IsAddress() const noexcept { return type_id == kAddressTypeId; }
   bool IsRef()     const noexcept {
-    return type_id != kIntegerTypeId && type_id != kRealTypeId &&
-           type_id != kBooleanTypeId && type_id != kAddressTypeId &&
-           type_id != kVoidTypeId;
+    return type_id != kIntegerTypeId && type_id != kBooleanTypeId &&
+           type_id != kRealTypeId    && type_id != kNullTypeId &&
+           type_id != kAddressTypeId && type_id != kVoidTypeId;
   }
 
   std::string TypeName() const;
