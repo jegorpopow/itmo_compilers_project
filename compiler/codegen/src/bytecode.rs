@@ -1,22 +1,19 @@
-#![expect(dead_code, reason = "WIP")]
-
-use core::alloc::Layout;
-
 use ast::{
-    BinaryOperator, BoolBinOp, EqBinOp, IntBinOp, RealBinOp, Representation, TypeId, UnaryOperator,
+    ArrayRepresentation, BinaryOperator, BoolBinOp, EqBinOp, IntBinOp, RealBinOp,
+    RecordRepresentation, Representation, TypeId, UnaryOperator,
 };
 
-use common::{Integer, Location, Real, VarLoc};
+use common::{Integer, Location, RawIdentifier, Real, VarLoc};
 
-trait Encode {
+trait ToByteCode {
     type Output: Copy;
     #[must_use]
-    fn encode(&self) -> Self::Output;
+    fn to_bytecode(&self) -> Self::Output;
 }
 
-impl Encode for Location {
+impl ToByteCode for Location {
     type Output = (u8, [u8; 2]);
-    fn encode(&self) -> Self::Output {
+    fn to_bytecode(&self) -> Self::Output {
         match self {
             Self::Global(v) => (0, v.to_le_bytes()),
             Self::Local(v) => (1, v.to_le_bytes()),
@@ -128,10 +125,10 @@ pub enum Instruction {
     IntToReal, // All of it may be just a built-in call
 }
 
-impl Encode for BinaryOperator {
+impl ToByteCode for BinaryOperator {
     type Output = u8;
 
-    fn encode(&self) -> Self::Output {
+    fn to_bytecode(&self) -> Self::Output {
         match self {
             BinaryOperator::Eq(op) => match op {
                 EqBinOp::Eq => 0x00,
@@ -172,9 +169,9 @@ impl Encode for BinaryOperator {
 }
 
 #[expect(clippy::too_many_lines, reason = "Cause that lint is really stupid")]
-impl Encode for Instruction {
+impl ToByteCode for Instruction {
     type Output = Bytecode;
-    fn encode(&self) -> Bytecode {
+    fn to_bytecode(&self) -> Bytecode {
         let zero = Bytecode::default();
         match self {
             Instruction::Drop => Bytecode { opcode: 1, ..zero },
@@ -183,7 +180,7 @@ impl Encode for Instruction {
 
             Instruction::BinOp { op } => Bytecode {
                 opcode: 4,
-                subopcode: op.encode(),
+                subopcode: op.to_bytecode(),
                 ..zero
             },
             Instruction::UnOp { op } => Bytecode {
@@ -216,7 +213,7 @@ impl Encode for Instruction {
             },
 
             Instruction::Load { loc } => {
-                let (subopcode, arg16) = loc.encode();
+                let (subopcode, arg16) = loc.to_bytecode();
                 Bytecode {
                     opcode: 11,
                     subopcode,
@@ -225,7 +222,7 @@ impl Encode for Instruction {
                 }
             }
             Instruction::Store { loc } => {
-                let (subopcode, arg16) = loc.encode();
+                let (subopcode, arg16) = loc.to_bytecode();
                 Bytecode {
                     opcode: 12,
                     subopcode,
@@ -234,7 +231,7 @@ impl Encode for Instruction {
                 }
             }
             Instruction::AddressOf { loc } => {
-                let (subopcode, arg16) = loc.encode();
+                let (subopcode, arg16) = loc.to_bytecode();
                 Bytecode {
                     opcode: 13,
                     subopcode,
@@ -335,47 +332,30 @@ struct Bytecode {
     arg64: [u8; 8],
 }
 
-fn into_halves<const H: usize, const N: usize>(s: &mut [u8; N]) -> [&mut [u8; H]; 2] {
-    const { assert!(2 * H == N, "H should be exactly half of N") }
-    let ([first_half, second_half], []) = s.as_chunks_mut::<H>() else {
-        unreachable!()
-    };
-    [first_half, second_half]
+type BytecodeBytes = [u8; size_of::<Bytecode>()];
+
+#[expect(clippy::tests_outside_test_module, reason = "simplicity")]
+#[test]
+fn bytecode_as_bytes() {
+    use core::alloc::Layout;
+
+    let src = Layout::new::<Bytecode>();
+    let dst = Layout::new::<BytecodeBytes>();
+    assert_eq!(src.size(), dst.size(), "size mismatch");
+    assert!(src.align() >= dst.align(), "alignment mismatch")
 }
 
-impl Encode for Bytecode {
-    type Output = [u8; 16];
-    fn encode(&self) -> Self::Output {
-        // TODO: all of this is just a convoluted memcpy, lmao
-        debug_assert_eq!(
-            Layout::new::<Self>(),
-            Layout::new::<Self::Output>(),
-            "this isn't a memcpy anymore"
-        );
-
-        let mut result = [0u8; 16];
-        let [h, s64to128] = into_halves::<8, _>(&mut result);
-        let [h, s32to64] = into_halves::<4, _>(h);
-        let [h, s16to32] = into_halves::<2, _>(h);
-        let [[s0to8], [s8to16]] = into_halves::<1, _>(h);
-        let Bytecode {
-            opcode,
-            subopcode,
-            arg16,
-            arg32,
-            arg64,
-        } = *self;
-        *s0to8 = opcode;
-        *s8to16 = subopcode;
-        *s16to32 = arg16;
-        *s32to64 = arg32;
-        *s64to128 = arg64;
-        result
+impl Bytecode {
+    #[must_use]
+    const fn as_bytes(&self) -> &BytecodeBytes {
+        let result = core::ptr::from_ref(self).cast::<BytecodeBytes>();
+        // SAFETY: we are `repr(C)` with no niches
+        unsafe { result.as_ref_unchecked() }
     }
 }
 
 #[derive(Debug)]
-pub struct RTTI(pub Vec<Representation>);
+pub(crate) struct RTTI(pub Vec<Representation>);
 
 #[derive(Debug)]
 pub struct FunctionRecord {
@@ -386,127 +366,152 @@ pub struct FunctionRecord {
 }
 
 #[derive(Debug)]
-pub struct FunctionTable(pub Vec<FunctionRecord>);
-
-struct MemorySpan {
-    offset: u32,
-    length: u32,
-}
-
-struct Header {
-    magic: u32,
-    version: u32,
-    code_span: MemorySpan,
-    function_table_span: MemorySpan,
-    rtti_span: MemorySpan,
-    function_count: u32,
-    global_count: u32,
-}
+pub(crate) struct FunctionTable(pub Vec<FunctionRecord>);
 
 #[derive(Debug)]
 pub struct BytecodeFile {
-    pub code: Vec<Instruction>,
-    pub rtti: RTTI,
-    pub function_table: FunctionTable,
-    pub global_count: u32,
+    pub(crate) code: Vec<Instruction>,
+    pub(crate) rtti: RTTI,
+    pub(crate) function_table: FunctionTable,
+    pub(crate) global_count: usize,
 }
 
-impl BytecodeFile {
-    pub fn to_bytes(&self) -> Vec<u8> {
-        let mut code_bytes: Vec<u8> = Vec::new();
-        for instr in &self.code {
-            code_bytes.extend_from_slice(&instr.encode().encode());
-        }
+pub trait Serialize {
+    fn serialize<E>(&self, sink: &mut impl FnMut(&[u8]) -> Result<(), E>) -> Result<(), E>;
+}
 
-        let mut fn_bytes: Vec<u8> = Vec::new();
-        for rec in &self.function_table.0 {
-            let name_bytes = rec.name.as_bytes();
-            fn_bytes.extend_from_slice(&(name_bytes.len() as u32).to_le_bytes());
-            fn_bytes.extend_from_slice(name_bytes);
-            fn_bytes.extend_from_slice(&rec.label_id.to_le_bytes());
-            fn_bytes.extend_from_slice(&(rec.args.len() as u32).to_le_bytes());
-            for TypeId(arg_id) in &rec.args {
-                fn_bytes.extend_from_slice(&arg_id.to_le_bytes());
+macro_rules! serialize_as_le_bytes {
+    {$($t:ty),+} => {
+        $(impl Serialize for $t {
+            fn serialize<E>(&self, sink: &mut impl FnMut(&[u8]) -> Result<(), E>) -> Result<(), E> {
+                sink(&self.to_le_bytes())
             }
-            let TypeId(ret_id) = rec.result;
-            fn_bytes.extend_from_slice(&ret_id.to_le_bytes());
-        }
+        })+
+    };
+}
 
-        let mut rtti_bytes: Vec<u8> = Vec::new();
-        for rep in &self.rtti.0 {
-            match rep {
-                Representation::IntegerRepresentation => {
-                    rtti_bytes.push(0);
-                    rtti_bytes.extend_from_slice(&0u32.to_le_bytes());
-                }
-                Representation::BooleanRepresentation => {
-                    rtti_bytes.push(0);
-                    rtti_bytes.extend_from_slice(&1u32.to_le_bytes());
-                }
-                Representation::RealRepresentation => {
-                    rtti_bytes.push(0);
-                    rtti_bytes.extend_from_slice(&2u32.to_le_bytes());
-                }
-                Representation::NullRepresentation => {
-                    rtti_bytes.push(0);
-                    rtti_bytes.extend_from_slice(&3u32.to_le_bytes());
-                }
-                Representation::RecordRepresentation(rec) => {
-                    let type_id = self
-                        .rtti
-                        .0
-                        .iter()
-                        .position(|r| r == rep)
-                        .unwrap() as u32;
-                    rtti_bytes.push(1);
-                    rtti_bytes.extend_from_slice(&type_id.to_le_bytes());
-                    rtti_bytes.extend_from_slice(&(rec.fields.len() as u32).to_le_bytes());
-                    for (name, TypeId(field_type_id)) in &rec.fields {
-                        let name_bytes = name.name.as_bytes();
-                        rtti_bytes.extend_from_slice(&(name_bytes.len() as u32).to_le_bytes());
-                        rtti_bytes.extend_from_slice(name_bytes);
-                        rtti_bytes.extend_from_slice(&field_type_id.to_le_bytes());
-                    }
-                }
-                Representation::ArrayRepresentation(arr) => {
-                    let type_id = self
-                        .rtti
-                        .0
-                        .iter()
-                        .position(|r| r == rep)
-                        .unwrap() as u32;
-                    let TypeId(elem_type_id) = arr.element;
-                    rtti_bytes.push(2);
-                    rtti_bytes.extend_from_slice(&type_id.to_le_bytes());
-                    rtti_bytes.extend_from_slice(&elem_type_id.to_le_bytes());
-                }
+serialize_as_le_bytes! { u8, u32, u64 }
+
+impl Serialize for usize {
+    fn serialize<E>(&self, sink: &mut impl FnMut(&[u8]) -> Result<(), E>) -> Result<(), E> {
+        u32::try_from(*self)
+            .expect("usize too big to serialize")
+            .serialize(sink)
+    }
+}
+
+impl<T: Serialize> Serialize for [T] {
+    fn serialize<E>(&self, sink: &mut impl FnMut(&[u8]) -> Result<(), E>) -> Result<(), E> {
+        self.len().serialize(sink)?;
+        for item in self {
+            item.serialize(sink)?
+        }
+        Ok(())
+    }
+}
+
+impl Serialize for str {
+    fn serialize<E>(&self, sink: &mut impl FnMut(&[u8]) -> Result<(), E>) -> Result<(), E> {
+        self.len().serialize(sink)?;
+        sink(self.as_bytes())
+    }
+}
+
+impl<T: Serialize, U: Serialize> Serialize for (T, U) {
+    fn serialize<E>(&self, sink: &mut impl FnMut(&[u8]) -> Result<(), E>) -> Result<(), E> {
+        let (t, u) = self;
+        t.serialize(sink)?;
+        u.serialize(sink)?;
+        Ok(())
+    }
+}
+
+macro_rules! serialize_as_inner {
+    {$($t:ty),+} => {
+        $(impl Serialize for $t {
+            fn serialize<E>(&self, sink: &mut impl FnMut(&[u8]) -> Result<(), E>) -> Result<(), E> {
+                let Self(inner) = self;
+                inner.serialize(sink)
             }
-        }
+        })+
+    };
+}
 
+serialize_as_inner! { RTTI, FunctionTable, TypeId }
+
+macro_rules! serialize_fields {
+    {$( $t:ty { $( $field:ident, )+ }, )+} => {
+        $(impl Serialize for $t {
+            fn serialize<E>(&self, sink: &mut impl FnMut(&[u8]) -> Result<(), E>) -> Result<(), E> {
+                let Self { $($field,)+ } = self;
+                $($field.serialize(sink)?;)+
+                Ok(())
+            }
+        })+
+    };
+}
+
+serialize_fields! {
+    ArrayRepresentation { element, },
+    RecordRepresentation { fields, },
+    RawIdentifier { name, },
+    FunctionRecord {
+        name,
+        label_id,
+        args,
+        result,
+    },
+}
+
+impl Serialize for BytecodeFile {
+    fn serialize<E>(&self, sink: &mut impl FnMut(&[u8]) -> Result<(), E>) -> Result<(), E> {
         const MAGIC: u32 = 0x494D_564D;
-        const VERSION: u32 = 1;
-        const HEADER_SIZE: u32 = 36;
+        const VERSION: u32 = 2;
 
-        let code_offset = HEADER_SIZE;
-        let code_length = self.code.len() as u32;
-        let fn_table_offset = code_offset + code_bytes.len() as u32;
-        let fn_table_length = self.function_table.0.len() as u32;
-        let rtti_offset = fn_table_offset + fn_bytes.len() as u32;
-        let rtti_length = self.rtti.0.len() as u32;
+        MAGIC.serialize(sink)?;
+        VERSION.serialize(sink)?;
 
-        let mut out = Vec::with_capacity(HEADER_SIZE as usize + code_bytes.len() + fn_bytes.len() + rtti_bytes.len());
-        out.extend_from_slice(&MAGIC.to_le_bytes());
-        out.extend_from_slice(&VERSION.to_le_bytes());
-        out.extend_from_slice(&code_offset.to_le_bytes());
-        out.extend_from_slice(&code_length.to_le_bytes());
-        out.extend_from_slice(&fn_table_offset.to_le_bytes());
-        out.extend_from_slice(&fn_table_length.to_le_bytes());
-        out.extend_from_slice(&rtti_offset.to_le_bytes());
-        out.extend_from_slice(&rtti_length.to_le_bytes());
-        out.extend_from_slice(&self.global_count.to_le_bytes());
-        out.extend(code_bytes);
-        out.extend(fn_bytes);
-        out.extend(rtti_bytes);
-        out
+        let Self {
+            code,
+            rtti,
+            function_table,
+            global_count,
+        } = self;
+        code.serialize(sink)?;
+        rtti.serialize(sink)?;
+        function_table.serialize(sink)?;
+        global_count.serialize(sink)?;
+        Ok(())
+    }
+}
+
+impl Serialize for Instruction {
+    fn serialize<E>(&self, sink: &mut impl FnMut(&[u8]) -> Result<(), E>) -> Result<(), E> {
+        self.to_bytecode().serialize(sink)
+    }
+}
+
+impl Serialize for Bytecode {
+    fn serialize<E>(&self, sink: &mut impl FnMut(&[u8]) -> Result<(), E>) -> Result<(), E> {
+        sink(self.as_bytes())
+    }
+}
+
+impl Serialize for Representation {
+    fn serialize<E>(&self, sink: &mut impl FnMut(&[u8]) -> Result<(), E>) -> Result<(), E> {
+        match self {
+            Self::IntegerRepresentation => sink(&[0, 0]),
+            Self::BooleanRepresentation => sink(&[0, 1]),
+            Self::RealRepresentation => sink(&[0, 2]),
+            Self::NullRepresentation => sink(&[0, 3]),
+            Self::RecordRepresentation(repr) => {
+                sink(&[1])?;
+                repr.serialize(sink)
+            }
+            Self::ArrayRepresentation(repr) => {
+                sink(&[2])?;
+                repr.serialize(sink)
+            }
+        }
     }
 }

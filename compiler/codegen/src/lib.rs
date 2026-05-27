@@ -21,7 +21,7 @@ pub struct Compiler<'a> {
     fresh_label_counter: u64,
     routines_labels: HashMap<Identifier, u64>,
     routine_meta: HashMap<u64, (Vec<TypeId>, TypeId)>,
-    global_count: u32,
+    global_count: usize,
 }
 
 impl<'a> Compiler<'a> {
@@ -112,7 +112,8 @@ impl<'a> Compiler<'a> {
                 for (name, expr) in fields {
                     let field_offset = record_description.get_field_index(name)?;
                     self.bytecode.push(Instruction::Dup);
-                    self.bytecode.push(Instruction::FieldAddress { field_offset });
+                    self.bytecode
+                        .push(Instruction::FieldAddress { field_offset });
                     self.compile_expr(expr)?;
                     self.bytecode.push(Instruction::StoreAddress);
                 }
@@ -171,7 +172,7 @@ impl<'a> Compiler<'a> {
                 });
             }
             Expression::Call { callee, args } => {
-                for arg in args.iter() {
+                for arg in args {
                     self.compile_expr(arg)?;
                 }
                 let function_label = self.routines_labels.get(callee).ok_or(AnalysisError {
@@ -479,7 +480,7 @@ impl<'a> Compiler<'a> {
             .globals
             .iter()
             .filter(|b| matches!(b.decl, Decl::Var(_)))
-            .count() as u32;
+            .count();
 
         for Binding { name, decl } in &program.globals {
             match decl {
@@ -503,7 +504,9 @@ impl<'a> Compiler<'a> {
                 }
                 Decl::Routine(r) => match r {
                     RoutineDecl::Forward { .. } => {}
-                    RoutineDecl::Full(Routine { body, signature, .. }) => {
+                    RoutineDecl::Full(Routine {
+                        body, signature, ..
+                    }) => {
                         let label_id = *self
                             .routines_labels
                             .get(name)
@@ -514,15 +517,19 @@ impl<'a> Compiler<'a> {
                             .args
                             .iter()
                             .map(|(_, t)| {
-                                self.bindings
-                                    .get_type_representation(t, &mut self.interner)
+                                self.bindings.get_type_representation(t, &mut self.interner)
                             })
                             .collect::<Result<_, _>>()?;
                         let return_type_id = self
                             .bindings
                             .get_type_representation(&signature.return_type, &mut self.interner)?;
-                        let _: Option<_> = self.routine_meta
+                        let prev = self
+                            .routine_meta
                             .insert(label_id, (arg_type_ids, return_type_id));
+                        debug_assert_eq!(
+                            prev, None,
+                            "compiler bug: multiple bodies for label {label_id}"
+                        );
 
                         match body {
                             RoutineBody::Block(block) => {
@@ -551,8 +558,9 @@ impl<'a> Compiler<'a> {
             .find(|(ident, _)| ident.raw.name == "main")
             .map(|(_, label)| label)
         {
-            self.global_init
-                .push(Instruction::Call { function_label: main_label });
+            self.global_init.push(Instruction::Call {
+                function_label: main_label,
+            });
             self.global_init.push(Instruction::Drop);
         }
         self.global_init.push(Instruction::NullConst);
