@@ -6,6 +6,13 @@ Program {
             IntegerRepresentation,
             BooleanRepresentation,
             RealRepresentation,
+            ArrayRepresentation(
+                ArrayRepresentation {
+                    element: TypeId(
+                        5,
+                    ),
+                },
+            ),
             RecordRepresentation(
                 RecordRepresentation {
                     fields: [],
@@ -14,7 +21,7 @@ Program {
             ArrayRepresentation(
                 ArrayRepresentation {
                     element: TypeId(
-                        4,
+                        1,
                     ),
                 },
             ),
@@ -34,11 +41,11 @@ Program {
                 label_id: 1,
                 args: [
                     TypeId(
-                        5,
+                        4,
                     ),
                 ],
                 result: TypeId(
-                    4,
+                    5,
                 ),
             },
             FunctionRecord {
@@ -46,11 +53,11 @@ Program {
                 label_id: 2,
                 args: [
                     TypeId(
-                        5,
+                        4,
                     ),
                 ],
                 result: TypeId(
-                    4,
+                    5,
                 ),
             },
             FunctionRecord {
@@ -168,7 +175,7 @@ Program {
         },
         AllocRecord {
             type_id: TypeId(
-                4,
+                5,
             ),
             size: 0,
         },
@@ -276,7 +283,7 @@ Program {
         },
         AllocRecord {
             type_id: TypeId(
-                4,
+                5,
             ),
             size: 0,
         },
@@ -322,7 +329,7 @@ Program {
         },
         AllocArrayDynamic {
             type_id: TypeId(
-                4,
+                5,
             ),
         },
         IntConst {
@@ -552,7 +559,7 @@ Program {
         },
         AllocArray {
             type_id: TypeId(
-                6,
+                7,
             ),
             size: 3,
         },
@@ -628,7 +635,7 @@ Program {
         },
         AllocArray {
             type_id: TypeId(
-                6,
+                7,
             ),
             size: 3,
         },
@@ -695,7 +702,7 @@ Program {
         StoreAddress,
         AllocArray {
             type_id: TypeId(
-                6,
+                7,
             ),
             size: 3,
         },

@@ -72,20 +72,13 @@ Program {
                     ],
                 },
             ),
-            ArrayRepresentation(
-                ArrayRepresentation {
-                    element: TypeId(
-                        6,
-                    ),
-                },
-            ),
             RecordRepresentation(
                 RecordRepresentation {
                     fields: [
                         (
                             r"pixels",
                             TypeId(
-                                7,
+                                8,
                             ),
                         ),
                         (
@@ -101,6 +94,13 @@ Program {
                             ),
                         ),
                     ],
+                },
+            ),
+            ArrayRepresentation(
+                ArrayRepresentation {
+                    element: TypeId(
+                        6,
+                    ),
                 },
             ),
             RecordRepresentation(
@@ -122,6 +122,30 @@ Program {
                             r"colour",
                             TypeId(
                                 6,
+                            ),
+                        ),
+                    ],
+                },
+            ),
+            RecordRepresentation(
+                RecordRepresentation {
+                    fields: [
+                        (
+                            r"kind",
+                            TypeId(
+                                1,
+                            ),
+                        ),
+                        (
+                            r"s",
+                            TypeId(
+                                9,
+                            ),
+                        ),
+                        (
+                            r"p",
+                            TypeId(
+                                11,
                             ),
                         ),
                     ],
@@ -155,30 +179,6 @@ Program {
                 RecordRepresentation {
                     fields: [
                         (
-                            r"kind",
-                            TypeId(
-                                1,
-                            ),
-                        ),
-                        (
-                            r"s",
-                            TypeId(
-                                9,
-                            ),
-                        ),
-                        (
-                            r"p",
-                            TypeId(
-                                10,
-                            ),
-                        ),
-                    ],
-                },
-            ),
-            RecordRepresentation(
-                RecordRepresentation {
-                    fields: [
-                        (
                             r"t",
                             TypeId(
                                 3,
@@ -187,7 +187,7 @@ Program {
                         (
                             r"object",
                             TypeId(
-                                11,
+                                10,
                             ),
                         ),
                     ],
@@ -196,7 +196,14 @@ Program {
             ArrayRepresentation(
                 ArrayRepresentation {
                     element: TypeId(
-                        11,
+                        10,
+                    ),
+                },
+            ),
+            ArrayRepresentation(
+                ArrayRepresentation {
+                    element: TypeId(
+                        10,
                     ),
                 },
             ),
@@ -488,7 +495,7 @@ Program {
                 label_id: 20,
                 args: [
                     TypeId(
-                        8,
+                        7,
                     ),
                     TypeId(
                         1,
@@ -506,7 +513,7 @@ Program {
                 label_id: 21,
                 args: [
                     TypeId(
-                        8,
+                        7,
                     ),
                     TypeId(
                         1,
@@ -537,7 +544,7 @@ Program {
                     ),
                 ],
                 result: TypeId(
-                    8,
+                    7,
                 ),
             },
             FunctionRecord {
@@ -545,7 +552,7 @@ Program {
                 label_id: 23,
                 args: [
                     TypeId(
-                        8,
+                        7,
                     ),
                 ],
                 result: TypeId(
@@ -561,7 +568,7 @@ Program {
                     ),
                 ],
                 result: TypeId(
-                    11,
+                    10,
                 ),
             },
             FunctionRecord {
@@ -569,11 +576,11 @@ Program {
                 label_id: 25,
                 args: [
                     TypeId(
-                        10,
+                        11,
                     ),
                 ],
                 result: TypeId(
-                    11,
+                    10,
                 ),
             },
             FunctionRecord {
@@ -596,7 +603,7 @@ Program {
                 label_id: 27,
                 args: [
                     TypeId(
-                        10,
+                        11,
                     ),
                     TypeId(
                         5,
@@ -611,7 +618,7 @@ Program {
                 label_id: 28,
                 args: [
                     TypeId(
-                        11,
+                        10,
                     ),
                     TypeId(
                         5,
@@ -641,7 +648,7 @@ Program {
                 label_id: 30,
                 args: [
                     TypeId(
-                        10,
+                        11,
                     ),
                     TypeId(
                         4,
@@ -656,7 +663,7 @@ Program {
                 label_id: 31,
                 args: [
                     TypeId(
-                        11,
+                        10,
                     ),
                     TypeId(
                         4,
@@ -671,7 +678,7 @@ Program {
                 label_id: 32,
                 args: [
                     TypeId(
-                        11,
+                        10,
                     ),
                     TypeId(
                         4,
@@ -719,7 +726,7 @@ Program {
                     ),
                 ],
                 result: TypeId(
-                    8,
+                    7,
                 ),
             },
             FunctionRecord {
@@ -2203,7 +2210,7 @@ Program {
         },
         AllocRecord {
             type_id: TypeId(
-                8,
+                7,
             ),
             size: 3,
         },
@@ -2607,7 +2614,7 @@ Program {
         },
         AllocRecord {
             type_id: TypeId(
-                11,
+                10,
             ),
             size: 3,
         },
@@ -2641,7 +2648,7 @@ Program {
         },
         AllocRecord {
             type_id: TypeId(
-                11,
+                10,
             ),
             size: 3,
         },
@@ -4430,7 +4437,7 @@ Program {
         StoreAddress,
         AllocRecord {
             type_id: TypeId(
-                10,
+                11,
             ),
             size: 3,
         },
@@ -4483,7 +4490,7 @@ Program {
         StoreAddress,
         AllocArray {
             type_id: TypeId(
-                13,
+                14,
             ),
             size: 3,
         },

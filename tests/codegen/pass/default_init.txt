@@ -1,0 +1,363 @@
+Program {
+    global_count: 0,
+    rtti: RTTI(
+        [
+            NullRepresentation,
+            IntegerRepresentation,
+            BooleanRepresentation,
+            RealRepresentation,
+            RecordRepresentation(
+                RecordRepresentation {
+                    fields: [
+                        (
+                            r"next",
+                            TypeId(
+                                4,
+                            ),
+                        ),
+                    ],
+                },
+            ),
+        ],
+    ),
+    function_table: FunctionTable(
+        [
+            FunctionRecord {
+                name: "unit",
+                label_id: 1,
+                args: [],
+                result: TypeId(
+                    0,
+                ),
+            },
+            FunctionRecord {
+                name: "main",
+                label_id: 2,
+                args: [],
+                result: TypeId(
+                    0,
+                ),
+            },
+        ],
+    ),
+    code: [
+        Label {
+            id: 0,
+        },
+        Call {
+            function_label: 2,
+        },
+        Drop,
+        NullConst,
+        Ret,
+        Label {
+            id: 1,
+        },
+        DropMany(
+            0,
+        ),
+        NullConst,
+        Ret,
+        Label {
+            id: 2,
+        },
+        IntConst {
+            value: 0,
+        },
+        Load {
+            loc: Local(
+                0,
+            ),
+        },
+        IntConst {
+            value: 0,
+        },
+        BinOp {
+            op: Eq(
+                Eq,
+            ),
+        },
+        UnOp {
+            op: BoolNeg,
+        },
+        JumpZero {
+            label: 3,
+        },
+        Panic {
+            code: 1,
+            line: 10,
+            column: 4,
+        },
+        DropMany(
+            0,
+        ),
+        Label {
+            id: 3,
+        },
+        RealConst {
+            value: 0.0,
+        },
+        Load {
+            loc: Local(
+                1,
+            ),
+        },
+        RealConst {
+            value: 0.0,
+        },
+        BinOp {
+            op: Eq(
+                Eq,
+            ),
+        },
+        UnOp {
+            op: BoolNeg,
+        },
+        JumpZero {
+            label: 4,
+        },
+        Panic {
+            code: 1,
+            line: 13,
+            column: 4,
+        },
+        DropMany(
+            0,
+        ),
+        Label {
+            id: 4,
+        },
+        IntConst {
+            value: 0,
+        },
+        Load {
+            loc: Local(
+                2,
+            ),
+        },
+        IntConst {
+            value: 0,
+        },
+        BinOp {
+            op: Eq(
+                Eq,
+            ),
+        },
+        UnOp {
+            op: BoolNeg,
+        },
+        JumpZero {
+            label: 5,
+        },
+        Panic {
+            code: 1,
+            line: 16,
+            column: 4,
+        },
+        DropMany(
+            0,
+        ),
+        Label {
+            id: 5,
+        },
+        NullConst,
+        Load {
+            loc: Local(
+                3,
+            ),
+        },
+        NullConst,
+        BinOp {
+            op: Eq(
+                Eq,
+            ),
+        },
+        UnOp {
+            op: BoolNeg,
+        },
+        JumpZero {
+            label: 6,
+        },
+        Panic {
+            code: 1,
+            line: 19,
+            column: 4,
+        },
+        DropMany(
+            0,
+        ),
+        Label {
+            id: 6,
+        },
+        NullConst,
+        Load {
+            loc: Local(
+                4,
+            ),
+        },
+        NullConst,
+        BinOp {
+            op: Eq(
+                Eq,
+            ),
+        },
+        UnOp {
+            op: BoolNeg,
+        },
+        JumpZero {
+            label: 7,
+        },
+        Panic {
+            code: 1,
+            line: 22,
+            column: 4,
+        },
+        DropMany(
+            0,
+        ),
+        Label {
+            id: 7,
+        },
+        IntConst {
+            value: 0,
+        },
+        Load {
+            loc: Local(
+                5,
+            ),
+        },
+        IntConst {
+            value: 0,
+        },
+        BinOp {
+            op: Eq(
+                Eq,
+            ),
+        },
+        UnOp {
+            op: BoolNeg,
+        },
+        JumpZero {
+            label: 8,
+        },
+        Panic {
+            code: 1,
+            line: 25,
+            column: 4,
+        },
+        DropMany(
+            0,
+        ),
+        Label {
+            id: 8,
+        },
+        NullConst,
+        Load {
+            loc: Local(
+                6,
+            ),
+        },
+        NullConst,
+        BinOp {
+            op: Eq(
+                Eq,
+            ),
+        },
+        UnOp {
+            op: BoolNeg,
+        },
+        JumpZero {
+            label: 9,
+        },
+        Panic {
+            code: 1,
+            line: 28,
+            column: 4,
+        },
+        DropMany(
+            0,
+        ),
+        Label {
+            id: 9,
+        },
+        AllocRecord {
+            type_id: TypeId(
+                4,
+            ),
+            size: 1,
+        },
+        Store {
+            loc: Local(
+                6,
+            ),
+        },
+        AddressOf {
+            loc: Local(
+                6,
+            ),
+        },
+        FieldAddress {
+            field_offset: 0,
+        },
+        LoadAddress,
+        NullConst,
+        BinOp {
+            op: Eq(
+                Eq,
+            ),
+        },
+        UnOp {
+            op: BoolNeg,
+        },
+        JumpZero {
+            label: 10,
+        },
+        Panic {
+            code: 1,
+            line: 31,
+            column: 4,
+        },
+        DropMany(
+            0,
+        ),
+        Label {
+            id: 10,
+        },
+        Call {
+            function_label: 1,
+        },
+        Load {
+            loc: Local(
+                7,
+            ),
+        },
+        NullConst,
+        BinOp {
+            op: Eq(
+                Eq,
+            ),
+        },
+        UnOp {
+            op: BoolNeg,
+        },
+        JumpZero {
+            label: 11,
+        },
+        Panic {
+            code: 1,
+            line: 34,
+            column: 4,
+        },
+        DropMany(
+            0,
+        ),
+        Label {
+            id: 11,
+        },
+        DropMany(
+            8,
+        ),
+        NullConst,
+        Ret,
+    ],
+}

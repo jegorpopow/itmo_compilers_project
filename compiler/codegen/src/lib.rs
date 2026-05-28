@@ -4,17 +4,15 @@ use std::{
 };
 
 use ast::{
-    ArrayDescription, BinaryOperator, Binding, Bindings, Block, Decl, Expression, FieldDescription,
-    Literal, LvalueExpression, Program as AST, RecordDescription, Routine, RoutineBody,
-    RoutineDecl, Statement, Type, UnaryOperator, VarDecl,
+    BinaryOperator, Binding, Bindings, Block, Decl, Expression, Literal, LvalueExpression,
+    Program as AST, Routine, RoutineBody, RoutineDecl, Statement, Type, TypeDecl, UnaryOperator,
+    VarDecl,
 };
 use common::{Identifier, Integer, Location, Position, RawIdentifier, Real, VarLoc};
 
 use crate::rtti::Interner;
 
-pub use crate::rtti::{
-    ArrayRepresentation, RecordRepresentation, Representation, TypeId,
-};
+pub use crate::rtti::{ArrayRepresentation, RecordRepresentation, Representation, TypeId};
 
 mod rtti;
 #[cfg(test)]
@@ -672,43 +670,14 @@ impl<'a> Compiler<'a> {
 
     #[must_use]
     fn get_type_representation(&mut self, t: &Rc<Type>) -> TypeId {
-        let representation = match self.unwrap_effective_type(t).as_ref() {
-            Type::Int => Representation::IntegerRepresentation,
-            Type::Real => Representation::RealRepresentation,
-            Type::Bool => Representation::BooleanRepresentation,
-            Type::Null => Representation::NullRepresentation,
-            Type::Alias(_) => {
-                unreachable!("Effective type can not be alias")
-            }
-            record @ Type::Record(RecordDescription { fields }) => {
-                let representation_fields: Vec<_> = fields
-                    .iter()
-                    .map(|FieldDescription { name, t }| {
-                        debug_assert_ne!(
-                            self.unwrap_effective_type(t).as_ref(),
-                            record,
-                            "Recursive types are not yet supported" // FIXME
-                        );
-                        (name.clone(), self.get_type_representation(t))
-                    })
-                    .collect();
-                Representation::RecordRepresentation(RecordRepresentation {
-                    fields: representation_fields,
-                })
-            }
-            array @ Type::Array(ArrayDescription { t, length: _ }) => {
-                debug_assert_ne!(
-                    self.unwrap_effective_type(t).as_ref(),
-                    array,
-                    "Recursive arrays are not supported (yet?)"
-                );
-                Representation::ArrayRepresentation(ArrayRepresentation {
-                    element: self.get_type_representation(t),
-                })
-            }
-        };
-
-        self.interner.intern(representation)
+        self.interner.intern(t, &|identifier| {
+            self.bindings[identifier]
+                .ensure_is_type()
+                .map(TypeDecl::get_effective)
+                .expect(
+                    "Internal compiler error: trying to get an effective type of a non-type alias",
+                )
+        })
     }
 }
 
