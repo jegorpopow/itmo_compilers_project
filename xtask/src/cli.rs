@@ -44,6 +44,7 @@ pub(crate) enum Stage {
     AST,
     Interpreter,
     Codegen,
+    Bytecode,
 }
 
 impl Stage {

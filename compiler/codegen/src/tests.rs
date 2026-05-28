@@ -1,36 +1,10 @@
 use ast::AnalysisResult;
 
-use crate::bytecode::Serialize;
-
 fn compile(src: &str) -> AnalysisResult<String> {
-    use core::fmt::Write;
-
     let program = parser::parse_program(lexer::Lexer::from(src)).expect("Failed to parse");
     let program = ast::convert(&program).expect("Failed to typecheck");
-    let code = crate::codegen(&program)?;
-    let mut result = String::new();
-    writeln!(result, "{code:#?}")
-        .and_then(|()| {
-            const COLUMNS: usize = 8;
-            let mut column = 0;
-            code.serialize::<core::fmt::Error>(&mut |bytes| {
-                for byte in bytes {
-                    if column == COLUMNS {
-                        writeln!(result)?;
-                        column = 0
-                    }
-                    if column != 0 {
-                        write!(result, " ")?
-                    }
-                    column += 1;
-                    write!(result, "{byte:02X}")?
-                }
-                Ok(())
-            })
-        })
-        .expect("Formatting should not fail");
-    result.push('\n');
-    Ok(result)
+    let program = crate::compile(&program)?;
+    Ok(format!("{program:#?}\n"))
 }
 
 testing::tests! {

@@ -1,9 +1,13 @@
+#[cfg(test)]
+mod tests;
+
 use ast::{
     ArrayRepresentation, BinaryOperator, BoolBinOp, EqBinOp, IntBinOp, RealBinOp,
-    RecordRepresentation, Representation, TypeId, UnaryOperator,
+    RecordRepresentation, Representation, TypeId,
 };
 
-use common::{Integer, Location, RawIdentifier, Real, VarLoc};
+use codegen::{FunctionRecord, FunctionTable, Instruction, Program, RTTI};
+use common::{Location, RawIdentifier};
 
 trait ToByteCode {
     type Output: Copy;
@@ -20,109 +24,6 @@ impl ToByteCode for Location {
             Self::Argument(v) => (2, v.to_le_bytes()),
         }
     }
-}
-
-#[derive(Debug, Clone, Copy)]
-pub enum Instruction {
-    /// push int / bool onto stack
-    IntConst {
-        value: Integer,
-    },
-    /// push real onto stack
-    RealConst {
-        value: Real,
-    },
-    /// push null onto stack
-    NullConst,
-    /// push to stack
-    Load {
-        loc: Location,
-    },
-    /// pop from stack
-    Store {
-        loc: Location,
-    },
-    /// push address of variable to stack
-    AddressOf {
-        loc: Location,
-    },
-    /// duplicate stack top
-    Dup,
-    /// drop stack top
-    Drop,
-    // drop n elements from stack
-    DropMany(VarLoc),
-    /// swaps top and second elements of stack
-    Swap,
-    /// apply binary operator to stack top
-    BinOp {
-        op: BinaryOperator,
-    },
-    UnOp {
-        op: UnaryOperator,
-    },
-    /// pop value and address from stack, write referenced value
-    /// FIXME(Andrew Vlasenkov): ensure pop's order is correct in VM:
-    /// value should be on top of a stack and address just below value
-    StoreAddress,
-    /// pop address from stack, read and push referenced value
-    LoadAddress,
-    /// allocate a record, push a reference to stack
-    AllocRecord {
-        type_id: TypeId,
-        size: u64,
-    },
-    /// allocate an array, push a reference to stack
-    AllocArray {
-        type_id: TypeId,
-        size: u64,
-    }, // TODO: add TypeId ?
-    AllocArrayDynamic {
-        type_id: TypeId,
-    },
-    /// pop array ref from stack, push its size
-    ArraySize, // TODO: add built-in function call
-    /// pop element index and array ref from stack, push address of array[index]
-    ElementAddress,
-    /// pop record ref from stack, push its field address
-    FieldAddress {
-        field_offset: u64,
-    },
-    /// no-op
-    Label {
-        id: u64,
-    },
-    /// non-conditional jump
-    Jump {
-        label: u64,
-    },
-    /// conditional jump
-    JumpZero {
-        label: u64,
-    },
-    /// conditional jump
-    JumpNotZero {
-        label: u64,
-    },
-    /// leave function, the stack top is a return value
-    Ret,
-    /// call specified function
-    Call {
-        function_label: u64,
-    },
-    /// Print a stack top and drop it
-    Print {
-        type_id: TypeId,
-    },
-    /// Terminate program
-    Panic {
-        code: u64,
-        line: u32,
-        column: u16,
-    },
-    IntToBool, // All of it may be just a built-in call
-    RealToInt, // All of it may be just a built-in call
-    IntToReal, // All of it may be just a built-in call
 }
 
 impl ToByteCode for BinaryOperator {
@@ -168,7 +69,7 @@ impl ToByteCode for BinaryOperator {
     }
 }
 
-#[expect(clippy::too_many_lines, reason = "Cause that lint is really stupid")]
+#[expect(clippy::too_many_lines, reason = "giant switch")]
 impl ToByteCode for Instruction {
     type Output = Bytecode;
     fn to_bytecode(&self) -> Bytecode {
@@ -354,28 +255,6 @@ impl Bytecode {
     }
 }
 
-#[derive(Debug)]
-pub(crate) struct RTTI(pub Vec<Representation>);
-
-#[derive(Debug)]
-pub struct FunctionRecord {
-    pub name: String,
-    pub label_id: u64,
-    pub args: Vec<TypeId>,
-    pub result: TypeId,
-}
-
-#[derive(Debug)]
-pub(crate) struct FunctionTable(pub Vec<FunctionRecord>);
-
-#[derive(Debug)]
-pub struct BytecodeFile {
-    pub(crate) global_count: usize,
-    pub(crate) rtti: RTTI,
-    pub(crate) function_table: FunctionTable,
-    pub(crate) code: Vec<Instruction>,
-}
-
 pub trait Serialize {
     fn serialize<E>(&self, sink: &mut impl FnMut(&[u8]) -> Result<(), E>) -> Result<(), E>;
 }
@@ -463,7 +342,7 @@ serialize_fields! {
     },
 }
 
-impl Serialize for BytecodeFile {
+impl Serialize for Program {
     fn serialize<E>(&self, sink: &mut impl FnMut(&[u8]) -> Result<(), E>) -> Result<(), E> {
         const MAGIC: u32 = 0x494D_564D;
         const VERSION: u32 = 3;

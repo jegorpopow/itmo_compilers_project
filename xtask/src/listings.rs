@@ -61,6 +61,7 @@ impl Stage {
             Self::AST => "ast",
             Self::Interpreter => "interpreter",
             Self::Codegen => "codegen",
+            Self::Bytecode => "bytecode",
         }
     }
 

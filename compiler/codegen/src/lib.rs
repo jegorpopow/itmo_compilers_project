@@ -4,21 +4,142 @@ use std::{
 };
 
 use ast::{
-    AnalysisError, AnalysisResult, Binding, Bindings, Block, Decl, Expression, Interner, Literal,
-    LvalueExpression, Program, Routine, RoutineBody, RoutineDecl, Statement, Type, TypeId, VarDecl,
+    AnalysisError, AnalysisResult, BinaryOperator, Binding, Bindings, Block, Decl, Expression,
+    Interner, Literal, LvalueExpression, Program as AST, Representation, Routine, RoutineBody,
+    RoutineDecl, Statement, Type, TypeId, UnaryOperator, VarDecl,
 };
-use common::{Identifier, Position, RawIdentifier};
+use common::{Identifier, Integer, Location, Position, RawIdentifier, Real, VarLoc};
 
-pub mod bytecode;
 #[cfg(test)]
 mod tests;
 
-use bytecode::Instruction;
-
-use crate::bytecode::{BytecodeFile, FunctionRecord, FunctionTable, RTTI};
+#[derive(Debug, Clone, Copy)]
+pub enum Instruction {
+    /// push int / bool onto stack
+    IntConst {
+        value: Integer,
+    },
+    /// push real onto stack
+    RealConst {
+        value: Real,
+    },
+    /// push null onto stack
+    NullConst,
+    /// push to stack
+    Load {
+        loc: Location,
+    },
+    /// pop from stack
+    Store {
+        loc: Location,
+    },
+    /// push address of variable to stack
+    AddressOf {
+        loc: Location,
+    },
+    /// duplicate stack top
+    Dup,
+    /// drop stack top
+    Drop,
+    // drop n elements from stack
+    DropMany(VarLoc),
+    /// swaps top and second elements of stack
+    Swap,
+    /// apply binary operator to stack top
+    BinOp {
+        op: BinaryOperator,
+    },
+    UnOp {
+        op: UnaryOperator,
+    },
+    /// pop value and address from stack, write referenced value
+    /// FIXME(Andrew Vlasenkov): ensure pop's order is correct in VM:
+    /// value should be on top of a stack and address just below value
+    StoreAddress,
+    /// pop address from stack, read and push referenced value
+    LoadAddress,
+    /// allocate a record, push a reference to stack
+    AllocRecord {
+        type_id: TypeId,
+        size: u64,
+    },
+    /// allocate an array, push a reference to stack
+    AllocArray {
+        type_id: TypeId,
+        size: u64,
+    }, // TODO: add TypeId ?
+    AllocArrayDynamic {
+        type_id: TypeId,
+    },
+    /// pop array ref from stack, push its size
+    ArraySize, // TODO: add built-in function call
+    /// pop element index and array ref from stack, push address of array[index]
+    ElementAddress,
+    /// pop record ref from stack, push its field address
+    FieldAddress {
+        field_offset: u64,
+    },
+    /// no-op
+    Label {
+        id: u64,
+    },
+    /// non-conditional jump
+    Jump {
+        label: u64,
+    },
+    /// conditional jump
+    JumpZero {
+        label: u64,
+    },
+    /// conditional jump
+    JumpNotZero {
+        label: u64,
+    },
+    /// leave function, the stack top is a return value
+    Ret,
+    /// call specified function
+    Call {
+        function_label: u64,
+    },
+    /// Print a stack top and drop it
+    Print {
+        type_id: TypeId,
+    },
+    /// Terminate program
+    Panic {
+        code: u64,
+        line: u32,
+        column: u16,
+    },
+    IntToBool, // All of it may be just a built-in call
+    RealToInt, // All of it may be just a built-in call
+    IntToReal, // All of it may be just a built-in call
+}
 
 #[derive(Debug)]
-pub struct Compiler<'a> {
+pub struct RTTI(pub Vec<Representation>);
+
+#[derive(Debug)]
+pub struct FunctionRecord {
+    pub name: String,
+    pub label_id: u64,
+    pub args: Vec<TypeId>,
+    pub result: TypeId,
+}
+
+#[derive(Debug)]
+pub struct FunctionTable(pub Vec<FunctionRecord>);
+
+#[derive(Debug)]
+pub struct Program {
+    pub global_count: usize,
+    pub rtti: RTTI,
+    pub function_table: FunctionTable,
+    pub code: Vec<Instruction>,
+}
+
+#[derive(Debug)]
+struct Compiler<'a> {
     bindings: &'a Bindings,
     interner: Interner,
     bytecode: Vec<Instruction>,
@@ -31,7 +152,7 @@ pub struct Compiler<'a> {
 
 impl<'a> Compiler<'a> {
     #[must_use]
-    pub fn new(table: &'a Bindings) -> Self {
+    fn new(table: &'a Bindings) -> Self {
         let mut result = Compiler {
             bindings: table,
             interner: Interner::new(),
@@ -327,8 +448,8 @@ impl<'a> Compiler<'a> {
                 self.compile_block(body)?;
 
                 let operator = match order {
-                    common::LoopOrder::Direct => ast::BinaryOperator::Int(ast::IntBinOp::Add),
-                    common::LoopOrder::Reversed => ast::BinaryOperator::Int(ast::IntBinOp::Sub),
+                    common::LoopOrder::Direct => BinaryOperator::Int(ast::IntBinOp::Add),
+                    common::LoopOrder::Reversed => BinaryOperator::Int(ast::IntBinOp::Sub),
                 };
 
                 let counter_expr = Rc::new(LvalueExpression::Identifier(counter.clone()));
@@ -358,10 +479,10 @@ impl<'a> Compiler<'a> {
 
                 match order {
                     common::LoopOrder::Direct => self.bytecode.push(Instruction::BinOp {
-                        op: ast::BinaryOperator::Int(ast::IntBinOp::Le),
+                        op: BinaryOperator::Int(ast::IntBinOp::Le),
                     }),
                     common::LoopOrder::Reversed => self.bytecode.push(Instruction::BinOp {
-                        op: ast::BinaryOperator::Int(ast::IntBinOp::Ge),
+                        op: BinaryOperator::Int(ast::IntBinOp::Ge),
                     }),
                 }
                 self.bytecode
@@ -407,7 +528,7 @@ impl<'a> Compiler<'a> {
                 self.compile_statement(&Statement::Assignment {
                     lhs: Rc::clone(&index_expr),
                     rhs: Expression::BinOp {
-                        op: ast::BinaryOperator::Int(ast::IntBinOp::Add),
+                        op: BinaryOperator::Int(ast::IntBinOp::Add),
                         lhs: Expression::LvalueToRvalue(Rc::clone(&index_expr)).into(),
                         rhs: Expression::Literal(Literal::Integer {
                             repr: "1".to_string(),
@@ -423,7 +544,7 @@ impl<'a> Compiler<'a> {
                 });
 
                 self.compile_expr(&Expression::BinOp {
-                    op: ast::BinaryOperator::Int(ast::IntBinOp::Le),
+                    op: BinaryOperator::Int(ast::IntBinOp::Le),
                     lhs: Expression::LvalueToRvalue(index_expr).into(),
                     rhs: Expression::LengthOf {
                         arr: Expression::LvalueToRvalue(Rc::clone(collection)).into(),
@@ -471,7 +592,7 @@ impl<'a> Compiler<'a> {
         Ok(())
     }
 
-    pub fn collect_routines(&mut self, program: &Program) {
+    fn collect_routines(&mut self, program: &AST) {
         for binding in &program.globals {
             if let Decl::Routine(_) = &binding.decl {
                 let fresh = self.get_fresh_label();
@@ -480,7 +601,7 @@ impl<'a> Compiler<'a> {
         }
     }
 
-    pub fn compile(&mut self, program: &Program) -> AnalysisResult<()> {
+    fn compile(&mut self, program: &AST) -> AnalysisResult<()> {
         self.global_count = program
             .globals
             .iter()
@@ -554,54 +675,64 @@ impl<'a> Compiler<'a> {
         }
         Ok(())
     }
+}
 
-    #[expect(clippy::wrong_self_convention, reason = "The convention is stupid")]
-    fn to_bytecode_file(mut self) -> BytecodeFile {
-        if let Some(&main_label) = self
-            .routines_labels
+impl From<Compiler<'_>> for Program {
+    fn from(value: Compiler<'_>) -> Self {
+        let Compiler {
+            bindings: _,
+            interner,
+            bytecode,
+            global_init,
+            fresh_label_counter: _,
+            routines_labels,
+            routine_meta,
+            global_count,
+        } = value;
+        let mut code = global_init;
+        if let Some(&main_label) = routines_labels
             .iter()
             .find(|(ident, _)| ident.raw.name == "main")
             .map(|(_, label)| label)
         {
-            self.global_init.push(Instruction::Call {
+            code.push(Instruction::Call {
                 function_label: main_label,
             });
-            self.global_init.push(Instruction::Drop);
+            code.push(Instruction::Drop);
         }
-        self.global_init.push(Instruction::NullConst);
-        self.global_init.push(Instruction::Ret);
+        code.push(Instruction::NullConst);
+        code.push(Instruction::Ret);
 
-        let instructions = [self.global_init, self.bytecode].concat();
+        code.extend(bytecode);
         let function_table = FunctionTable(
-            self.routines_labels
-                .iter()
-                .map(|(name, label)| {
-                    let (args, result) = self
-                        .routine_meta
-                        .get(label)
+            routines_labels
+                .into_iter()
+                .map(|(name, label_id)| {
+                    let (args, result) = routine_meta
+                        .get(&label_id)
                         .cloned()
                         .unwrap_or_else(|| (Vec::new(), TypeId(0)));
                     FunctionRecord {
                         name: name.raw.name.clone(),
-                        label_id: *label,
+                        label_id,
                         args,
                         result,
                     }
                 })
                 .collect(),
         );
-        BytecodeFile {
-            code: instructions,
-            rtti: RTTI(self.interner.to_table()),
+        Program {
+            code,
+            rtti: RTTI(interner.to_table()),
             function_table,
-            global_count: self.global_count,
+            global_count,
         }
     }
 }
 
-pub fn codegen(program: &Program) -> AnalysisResult<BytecodeFile> {
+pub fn compile(program: &AST) -> AnalysisResult<Program> {
     let mut compiler = Compiler::new(&program.bindings);
     compiler.collect_routines(program);
     compiler.compile(program)?;
-    Ok(compiler.to_bytecode_file())
+    Ok(compiler.into())
 }
