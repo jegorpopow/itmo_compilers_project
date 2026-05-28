@@ -8,7 +8,7 @@ use common::{
 pub use parser::Literal;
 
 use crate::{
-    AnalysisError, AnalysisResult, Typed,
+    AnalysisError, AnalysisResult,
     data_representation::{
         ArrayRepresentation, Interner, RecordRepresentation, Representation, TypeId,
     },
@@ -16,23 +16,24 @@ use crate::{
     types::{ArrayDescription, Type},
 };
 
-#[derive(Debug, Hash, PartialEq, Eq)]
-pub enum LvalueExpression {
-    Identifier(Identifier),
-    Member {
-        lhs: Rc<LvalueExpression>,
-        member_name: RawIdentifier,
-        member_offset: u64, // This should be calculated from type of lhs and field name, but we do not store type in ast
-    },
-    Index {
-        lhs: Rc<LvalueExpression>,
-        index: Rc<Expression>,
-    },
+#[derive(Debug, PartialEq, Eq, Clone, Copy, Hash)]
+pub enum ValueCategory {
+    Lvalue,
+    Rvalue,
 }
 
-#[derive(Debug, Hash, PartialEq, Eq)]
-pub enum Expression {
-    LvalueToRvalue(Rc<LvalueExpression>),
+#[derive(Debug, Hash, PartialEq, Eq, Clone)]
+pub enum ExpressionShape {
+    Identifier(Identifier),
+    Member {
+        lhs: Rc<Expression>,
+        member_name: RawIdentifier,
+    },
+    Index {
+        lhs: Rc<Expression>,
+        index: Rc<Expression>,
+    },
+    LvalueToRvalue(Rc<Expression>),
     Literal(Literal),
     Call {
         callee: Identifier,
@@ -53,7 +54,7 @@ pub enum Expression {
     },
     New {
         t: Rc<Type>,
-        fields: Option<Vec<(RawIdentifier, Rc<Expression>)>>,
+        fields: Vec<(RawIdentifier, Rc<Expression>)>,
     },
     NewArray {
         elements: Rc<Type>,
@@ -69,15 +70,23 @@ pub enum Expression {
     IntToReal(Rc<Expression>),
 }
 
-impl From<Literal> for Typed<Expression> {
+#[derive(Debug, Hash, PartialEq, Eq, Clone)]
+pub struct Expression {
+    pub shape: ExpressionShape,
+    pub ty: Rc<Type>,
+    pub value_category: ValueCategory,
+}
+
+impl From<Literal> for Expression {
     fn from(literal: Literal) -> Self {
-        Typed {
+        Expression {
             ty: match literal {
                 Literal::Bool { .. } => Type::bool(),
                 Literal::Integer { .. } => Type::int(),
                 Literal::Real { .. } => Type::real(),
             },
-            value: Rc::new(Expression::Literal(literal)),
+            shape: ExpressionShape::Literal(literal),
+            value_category: ValueCategory::Rvalue,
         }
     }
 }
@@ -200,36 +209,92 @@ impl BinOp<EvaluatedValue> for EqBinOp {
 }
 
 impl Expression {
-    pub fn ensure_is_lvalue(&self) -> AnalysisResult<Rc<LvalueExpression>> {
-        match self {
-            Expression::LvalueToRvalue(lvalue_expression) => Ok(Rc::clone(lvalue_expression)),
-            Expression::Literal(_)
-            | Expression::Call { .. }
-            | Expression::BinOp { .. }
-            | Expression::UnOp { .. }
-            | Expression::Cast { .. }
-            | Expression::New { .. }
-            | Expression::NewArray { .. }
-            | Expression::LengthOf { .. }
-            | Expression::Null
-            | Expression::IntToBool(_)
-            | Expression::BoolToInt(_)
-            | Expression::RealToInt(_)
-            | Expression::IntToReal(_) => Err(AnalysisError {
-                what: format!("Expression {self:?} expected to be lvalue"),
-            }),
+    pub fn int_to_bool(expr: &Rc<Expression>) -> Rc<Expression> {
+        assert_eq!(expr.ty, Type::int(), "Int -> Bool cast");
+        assert_eq!(
+            expr.value_category,
+            ValueCategory::Rvalue,
+            "Type coersion is for rvalue only"
+        );
+        Rc::new(Expression {
+            shape: ExpressionShape::IntToBool(Rc::clone(expr)),
+            ty: Type::bool(),
+            value_category: ValueCategory::Rvalue,
+        })
+    }
+
+    pub fn lvalue_to_rvalue(expr: &Rc<Expression>) -> Rc<Expression> {
+        assert_eq!(
+            expr.value_category,
+            ValueCategory::Lvalue,
+            "Lvalue -> Rvalue cast"
+        );
+
+        Rc::new(Expression {
+            shape: ExpressionShape::LvalueToRvalue(Rc::clone(expr)),
+            ty: Rc::clone(&expr.ty),
+            value_category: ValueCategory::Rvalue,
+        })
+    }
+
+    pub fn to_rvalue(expr: &Rc<Expression>) -> Rc<Expression> {
+        match expr.value_category {
+            ValueCategory::Lvalue => Rc::clone(expr),
+            ValueCategory::Rvalue => Expression::lvalue_to_rvalue(&expr),
         }
     }
 
+    pub fn int_to_real(expr: &Rc<Expression>) -> Rc<Expression> {
+        assert_eq!(expr.ty, Type::int(), "Int -> Real cast");
+        assert_eq!(
+            expr.value_category,
+            ValueCategory::Rvalue,
+            "Type coersion is for rvalue only"
+        );
+        Rc::new(Expression {
+            shape: ExpressionShape::IntToReal(Rc::clone(expr)),
+            ty: Type::real(),
+            value_category: ValueCategory::Rvalue,
+        })
+    }
+
+    pub fn bool_to_int(expr: &Rc<Expression>) -> Rc<Expression> {
+        assert_eq!(expr.ty, Type::bool(), "Int -> bool cast");
+        assert_eq!(
+            expr.value_category,
+            ValueCategory::Rvalue,
+            "Type coersion is for rvalue only"
+        );
+        Rc::new(Expression {
+            shape: ExpressionShape::BoolToInt(Rc::clone(expr)),
+            ty: Type::int(),
+            value_category: ValueCategory::Rvalue,
+        })
+    }
+
+    pub fn real_to_int(expr: &Rc<Expression>) -> Rc<Expression> {
+        assert_eq!(expr.ty, Type::real(), "Int -> bool cast");
+        assert_eq!(
+            expr.value_category,
+            ValueCategory::Rvalue,
+            "Type coersion is for rvalue only"
+        );
+        Rc::new(Expression {
+            shape: ExpressionShape::RealToInt(Rc::clone(expr)),
+            ty: Type::int(),
+            value_category: ValueCategory::Rvalue,
+        })
+    }
+
     pub(crate) fn try_constexpr_evaluate(&self) -> AnalysisResult<EvaluatedValue> {
-        Ok(match self {
-            Expression::Literal(lit) => match *lit {
+        Ok(match &self.shape {
+            ExpressionShape::Literal(lit) => match *lit {
                 Literal::Bool { value } => EvaluatedValue::Bool(value),
                 Literal::Integer { repr: _, value } => EvaluatedValue::Int(value),
                 Literal::Real { repr: _, value } => EvaluatedValue::Real(value),
             },
 
-            Expression::BinOp { op, lhs, rhs } => {
+            ExpressionShape::BinOp { op, lhs, rhs } => {
                 let lhs = lhs.try_constexpr_evaluate()?;
                 let rhs = rhs.try_constexpr_evaluate()?;
                 match op {
@@ -240,7 +305,7 @@ impl Expression {
                 }
             }
 
-            Expression::UnOp { op, operand } => {
+            ExpressionShape::UnOp { op, operand } => {
                 let operand = operand.try_constexpr_evaluate()?;
                 match op {
                     UnaryOperator::IntNeg => EvaluatedValue::Int(-operand.as_int()?),
@@ -249,28 +314,31 @@ impl Expression {
                 }
             }
 
-            Expression::IntToBool(expression) => {
+            ExpressionShape::IntToBool(expression) => {
                 EvaluatedValue::Bool(expression.try_constexpr_evaluate()?.as_int()? != 0)
             }
-            Expression::BoolToInt(expression) => {
+            ExpressionShape::BoolToInt(expression) => {
                 EvaluatedValue::Int(expression.try_constexpr_evaluate()?.as_bool()?.into())
             }
 
-            Expression::RealToInt(expression) => EvaluatedValue::Int(real_to_integer(
+            ExpressionShape::RealToInt(expression) => EvaluatedValue::Int(real_to_integer(
                 expression.try_constexpr_evaluate()?.as_real()?,
             )),
 
-            Expression::IntToReal(expression) => EvaluatedValue::Real(integer_to_real(
+            ExpressionShape::IntToReal(expression) => EvaluatedValue::Real(integer_to_real(
                 expression.try_constexpr_evaluate()?.as_int()?,
             )),
 
-            Expression::Call { .. }
-            | Expression::Cast { .. }
-            | Expression::New { .. }
-            | Expression::NewArray { .. }
-            | Expression::LengthOf { .. }
-            | Expression::Null
-            | Expression::LvalueToRvalue(_) => Err(AnalysisError {
+            ExpressionShape::Call { .. }
+            | ExpressionShape::Cast { .. }
+            | ExpressionShape::New { .. }
+            | ExpressionShape::NewArray { .. }
+            | ExpressionShape::LengthOf { .. }
+            | ExpressionShape::Null
+            | ExpressionShape::Identifier(_)
+            | ExpressionShape::Member { .. }
+            | ExpressionShape::Index { .. }
+            | ExpressionShape::LvalueToRvalue(_) => Err(AnalysisError {
                 what: format!(
                     "Non constexpr expression {self:?} in compile-time computation context"
                 ),
@@ -382,7 +450,7 @@ pub struct Block {
 pub enum Statement {
     Declaration(LocalBinding),
     Assignment {
-        lhs: Rc<LvalueExpression>,
+        lhs: Rc<Expression>,
         rhs: Rc<Expression>,
     },
     While {
@@ -405,13 +473,12 @@ pub enum Statement {
     ForEach {
         counter: Identifier,
         index: Identifier,
-        collection: Rc<LvalueExpression>,
+        collection: Rc<Expression>,
         order: LoopOrder,
         body: Block,
     },
     Print {
         value: Rc<Expression>,
-        t: Rc<Type>,
     },
     Return {
         value: Rc<Expression>,
@@ -500,19 +567,35 @@ impl Bindings {
 
     pub fn get_default_initialiser(&self, ty: &Rc<Type>) -> AnalysisResult<Expression> {
         Ok(match self.get_effective_type(ty)?.as_ref() {
-            Type::Int => Expression::Literal(Literal::Integer {
-                repr: "0".to_string(),
-                value: 0,
-            }),
-            Type::Real => Expression::Literal(Literal::Real {
-                repr: "0.0".to_string(),
-                value: 0.0,
-            }),
-            Type::Bool => Expression::Literal(Literal::Bool { value: false }),
+            Type::Int => Expression {
+                shape: ExpressionShape::Literal(Literal::Integer {
+                    repr: "0".to_string(),
+                    value: 0,
+                }),
+                ty: Type::int(),
+                value_category: ValueCategory::Rvalue,
+            },
+            Type::Real => Expression {
+                shape: ExpressionShape::Literal(Literal::Real {
+                    repr: "0.0".to_string(),
+                    value: 0.0,
+                }),
+                ty: Type::real(),
+                value_category: ValueCategory::Rvalue,
+            },
+            Type::Bool => Expression {
+                shape: ExpressionShape::Literal(Literal::Bool { value: false }),
+                ty: Type::int(),
+                value_category: ValueCategory::Rvalue,
+            },
             Type::Alias(_) => Err(AnalysisError {
                 what: "Effective type cannot be alias".to_string(),
             })?,
-            Type::Record(_) | Type::Array(_) | Type::Null => Expression::Null,
+            Type::Record(_) | Type::Array(_) | Type::Null => Expression {
+                shape: ExpressionShape::Null,
+                ty: Rc::clone(ty),
+                value_category: ValueCategory::Rvalue,
+            },
         })
     }
 
@@ -531,11 +614,17 @@ impl Bindings {
         }
     }
 
+    // TODO: handle recursive types
     pub fn get_type_representation<'a>(
         &'a self,
         t: &'a Rc<Type>,
         interner: &mut Interner,
     ) -> AnalysisResult<TypeId> {
+        let type_id = match interner.register_type(&**t) {
+            Ok(id) => return Ok(id),
+            Err(id) => id,
+        };
+
         let effective = self.get_effective_type(t)?;
         let representation = match &**effective {
             Type::Int => Representation::IntegerRepresentation,
@@ -567,7 +656,8 @@ impl Bindings {
             }
         };
 
-        Ok(interner.intern(representation))
+        interner.intern_with_id(representation, type_id);
+        Ok(type_id)
     }
 }
 
@@ -591,41 +681,28 @@ impl Index<&Identifier> for Bindings {
 impl Bindings {
     pub(crate) fn coerce(
         &self,
-        expr: Typed<Expression>,
+        expr: &Rc<Expression>,
         target_type: &Type,
     ) -> AnalysisResult<Rc<Expression>> {
-        let Typed {
-            value: expr,
-            ty: own_type,
-        } = expr;
-
+        let own_type = Rc::clone(&expr.ty);
         let source_type = own_type.as_ref();
 
         match [source_type, target_type] {
             [Type::Int, Type::Int]
             | [Type::Bool, Type::Bool]
             | [Type::Real, Type::Real]
-            | [Type::Null, Type::Null | Type::Record(_) | Type::Array(_)] => Ok(expr),
+            | [Type::Null, Type::Null | Type::Record(_) | Type::Array(_)] => Ok(Rc::clone(expr)),
 
-            [Type::Null, &Type::Alias(Identifier { raw: _, id })] => self.coerce(
-                Typed {
-                    value: expr,
-                    ty: own_type,
-                },
-                self[id].ensure_is_type()?.get_effective(),
-            ),
+            [Type::Null, &Type::Alias(Identifier { raw: _, id })] => {
+                self.coerce(expr, self[id].ensure_is_type()?.get_effective())
+            }
 
-            [Type::Bool, Type::Real] => Ok(Rc::new(Expression::IntToReal(Rc::new(
-                Expression::BoolToInt(expr),
-            )))),
-            [Type::Bool, Type::Int] => Ok(Rc::new(Expression::BoolToInt(expr))),
-            [Type::Int, Type::Real] => Ok(Rc::new(Expression::IntToReal(expr))),
-
-            [Type::Real, Type::Bool] => Ok(Rc::new(Expression::RealToInt(Rc::new(
-                Expression::IntToBool(expr),
-            )))),
-            [Type::Real, Type::Int] => Ok(Rc::new(Expression::RealToInt(expr))),
-            [Type::Int, Type::Bool] => Ok(Rc::new(Expression::IntToBool(expr))),
+            [Type::Bool, Type::Real] => Ok(Expression::int_to_real(&Expression::bool_to_int(expr))),
+            [Type::Bool, Type::Int] => Ok(Expression::bool_to_int(expr)),
+            [Type::Int, Type::Real] => Ok(Expression::int_to_real(expr)),
+            [Type::Real, Type::Bool] => Ok(Expression::int_to_bool(&Expression::real_to_int(expr))),
+            [Type::Real, Type::Int] => Ok(Expression::real_to_int(expr)),
+            [Type::Int, Type::Bool] => Ok(Expression::int_to_bool(expr)),
 
             [
                 Type::Int
@@ -657,8 +734,8 @@ impl Bindings {
                 ),
             }),
 
-            [Type::Alias(from), Type::Alias(to)] if from == to => Ok(expr),
-            [Type::Record(r1), Type::Record(r2)] if r1 == r2 => Ok(expr),
+            [Type::Alias(from), Type::Alias(to)] if from == to => Ok(Rc::clone(expr)),
+            [Type::Record(r1), Type::Record(r2)] if r1 == r2 => Ok(Rc::clone(expr)),
             [
                 Type::Array(ArrayDescription {
                     t: from_t,
@@ -668,8 +745,26 @@ impl Bindings {
                     t: to_t,
                     length: to_length,
                 }),
-            ] if from_t == to_t && (from_length == to_length || to_length.is_none()) => Ok(expr),
-
+            ] if from_t == to_t && from_length == to_length => Ok(Rc::clone(expr)),
+            [
+                Type::Array(ArrayDescription {
+                    t: from_t,
+                    length: from_length,
+                }),
+                Type::Array(ArrayDescription {
+                    t: to_t,
+                    length: to_length,
+                }),
+            ] if from_t == to_t && to_length.is_none() => match expr.value_category {
+                ValueCategory::Lvalue => Err(AnalysisError {
+                    what: "Can not discard length for lvalue array".to_string(),
+                }),
+                ValueCategory::Rvalue => Ok(Rc::new(Expression {
+                    shape: expr.shape.clone(),
+                    ty: Rc::new(target_type.clone()),
+                    value_category: ValueCategory::Rvalue,
+                })),
+            },
             [
                 Type::Array(_) | Type::Record(_),
                 Type::Array(_) | Type::Record(_),
