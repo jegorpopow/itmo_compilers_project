@@ -4,12 +4,19 @@ use std::{
 };
 
 use ast::{
-    BinaryOperator, Binding, Bindings, Block, Decl, Expression, Interner, Literal,
-    LvalueExpression, Program as AST, Representation, Routine, RoutineBody, RoutineDecl, Statement,
-    Type, TypeId, UnaryOperator, VarDecl,
+    ArrayDescription, BinaryOperator, Binding, Bindings, Block, Decl, Expression, FieldDescription,
+    Literal, LvalueExpression, Program as AST, RecordDescription, Routine, RoutineBody,
+    RoutineDecl, Statement, Type, UnaryOperator, VarDecl,
 };
 use common::{Identifier, Integer, Location, Position, RawIdentifier, Real, VarLoc};
 
+use crate::data_representation::Interner;
+
+pub use crate::data_representation::{
+    ArrayRepresentation, RecordRepresentation, Representation, TypeId,
+};
+
+mod data_representation;
 #[cfg(test)]
 mod tests;
 
@@ -210,7 +217,7 @@ impl<'a> Compiler<'a> {
     }
 
     fn compile_new(&mut self, t: &Rc<Type>, fields: &[(RawIdentifier, Rc<Expression>)]) {
-        let effective_type = self.bindings.unwrap_effective_type(t);
+        let effective_type = self.unwrap_effective_type(t);
 
         match effective_type.as_ref() {
             Type::Int | Type::Real | Type::Bool | Type::Null => {
@@ -220,8 +227,9 @@ impl<'a> Compiler<'a> {
                 unreachable!("Effective type can not be alias")
             }
             Type::Record(record_description) => {
+                let type_id = self.get_type_representation(t);
                 self.bytecode.push(Instruction::AllocRecord {
-                    type_id: self.bindings.get_type_representation(t, &mut self.interner),
+                    type_id,
                     size: record_description.fields.len() as u64,
                 });
 
@@ -240,8 +248,9 @@ impl<'a> Compiler<'a> {
                 let Some(length) = array_description.length else {
                     unreachable!()
                 };
+                let type_id = self.get_type_representation(t);
                 self.bytecode.push(Instruction::AllocArray {
-                    type_id: self.bindings.get_type_representation(t, &mut self.interner),
+                    type_id,
                     size: length
                         .try_into()
                         .expect("Internal compiler error, too long array"),
@@ -252,11 +261,9 @@ impl<'a> Compiler<'a> {
 
     fn compile_new_array(&mut self, element_type: &Rc<Type>, length: &Rc<Expression>) {
         self.compile_expr(length);
-        self.bytecode.push(Instruction::AllocArrayDynamic {
-            type_id: self
-                .bindings
-                .get_type_representation(element_type, &mut self.interner),
-        });
+        let type_id = self.get_type_representation(element_type);
+        self.bytecode
+            .push(Instruction::AllocArrayDynamic { type_id });
     }
 
     fn compile_expr(&mut self, expr: &Expression) {
@@ -540,10 +547,9 @@ impl<'a> Compiler<'a> {
                 self.bytecode.push(Instruction::DropMany(2));
             }
             Statement::Print { value, t } => {
+                let type_id = self.get_type_representation(t);
                 self.compile_expr(value);
-                self.bytecode.push(Instruction::Print {
-                    type_id: self.bindings.get_type_representation(t, &mut self.interner),
-                });
+                self.bytecode.push(Instruction::Print { type_id });
             }
             Statement::Return { value } => {
                 self.compile_expr(value);
@@ -627,13 +633,9 @@ impl<'a> Compiler<'a> {
                         let arg_type_ids: Vec<TypeId> = signature
                             .args
                             .iter()
-                            .map(|(_, t)| {
-                                self.bindings.get_type_representation(t, &mut self.interner)
-                            })
+                            .map(|(_, t)| self.get_type_representation(t))
                             .collect();
-                        let return_type_id = self
-                            .bindings
-                            .get_type_representation(&signature.return_type, &mut self.interner);
+                        let return_type_id = self.get_type_representation(&signature.return_type);
                         let prev = self
                             .routine_meta
                             .insert(label_id, (arg_type_ids, return_type_id));
@@ -658,6 +660,55 @@ impl<'a> Compiler<'a> {
                 Decl::Const(_) | Decl::Type(_) => {}
             }
         }
+    }
+
+    #[must_use]
+    fn unwrap_effective_type(&'a self, t: &'a Rc<Type>) -> Rc<Type> {
+        self.bindings
+            .get_effective_type(t)
+            .expect("Internal compiler error: trying to get an effective type of a non-type alias")
+            .to_owned()
+    }
+
+    #[must_use]
+    fn get_type_representation(&mut self, t: &Rc<Type>) -> TypeId {
+        let representation = match self.unwrap_effective_type(t).as_ref() {
+            Type::Int => Representation::IntegerRepresentation,
+            Type::Real => Representation::RealRepresentation,
+            Type::Bool => Representation::BooleanRepresentation,
+            Type::Null => Representation::NullRepresentation,
+            Type::Alias(_) => {
+                unreachable!("Effective type can not be alias")
+            }
+            record @ Type::Record(RecordDescription { fields }) => {
+                let representation_fields: Vec<_> = fields
+                    .iter()
+                    .map(|FieldDescription { name, t }| {
+                        debug_assert_ne!(
+                            self.unwrap_effective_type(t).as_ref(),
+                            record,
+                            "Recursive types are not yet supported" // FIXME
+                        );
+                        (name.clone(), self.get_type_representation(t))
+                    })
+                    .collect();
+                Representation::RecordRepresentation(RecordRepresentation {
+                    fields: representation_fields,
+                })
+            }
+            array @ Type::Array(ArrayDescription { t, length: _ }) => {
+                debug_assert_ne!(
+                    self.unwrap_effective_type(t).as_ref(),
+                    array,
+                    "Recursive arrays are not supported (yet?)"
+                );
+                Representation::ArrayRepresentation(ArrayRepresentation {
+                    element: self.get_type_representation(t),
+                })
+            }
+        };
+
+        self.interner.intern(representation)
     }
 }
 

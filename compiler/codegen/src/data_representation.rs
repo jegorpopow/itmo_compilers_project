@@ -27,7 +27,7 @@ pub struct ArrayRepresentation {
 }
 
 #[derive(Debug, Default)]
-pub struct Interner {
+pub(crate) struct Interner {
     // representations : Vec<Representation>,
     representation_to_id: HashMap<Representation, TypeId>,
     current: u32,
@@ -35,7 +35,7 @@ pub struct Interner {
 
 impl Interner {
     #[must_use]
-    pub fn new() -> Self {
+    pub(crate) fn new() -> Self {
         let mut interner = Interner {
             representation_to_id: HashMap::new(),
             current: 0,
@@ -65,7 +65,7 @@ impl Interner {
         interner
     }
 
-    pub fn intern(&mut self, rep: Representation) -> TypeId {
+    pub(crate) fn intern(&mut self, rep: Representation) -> TypeId {
         *match self.representation_to_id.entry(rep) {
             Entry::Occupied(e) => e.into_mut(),
             Entry::Vacant(e) => {
@@ -77,7 +77,7 @@ impl Interner {
     }
 
     #[must_use]
-    pub fn into_table(self) -> Vec<Representation> {
+    pub(crate) fn into_table(self) -> Vec<Representation> {
         let mut result = vec![Representation::NullRepresentation; self.representation_to_id.len()];
         #[expect(
             clippy::iter_over_hash_type,

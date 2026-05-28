@@ -1,12 +1,12 @@
 #[cfg(test)]
 mod tests;
 
-use ast::{
-    ArrayRepresentation, BinaryOperator, BoolBinOp, EqBinOp, IntBinOp, RealBinOp,
+use ast::{BinaryOperator, BoolBinOp, EqBinOp, IntBinOp, RealBinOp};
+
+use codegen::{
+    ArrayRepresentation, FunctionRecord, FunctionTable, Instruction, Program, RTTI,
     RecordRepresentation, Representation, TypeId,
 };
-
-use codegen::{FunctionRecord, FunctionTable, Instruction, Program, RTTI};
 use common::{Location, RawIdentifier};
 
 trait ToByteCode {

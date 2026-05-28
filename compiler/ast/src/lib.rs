@@ -2,7 +2,6 @@ use core::fmt;
 use std::rc::Rc;
 
 mod convert;
-mod data_representation;
 mod operators;
 mod tree;
 mod types;
@@ -12,9 +11,6 @@ mod tests;
 
 pub use crate::{
     convert::convert,
-    data_representation::{
-        ArrayRepresentation, Interner, RecordRepresentation, Representation, TypeId,
-    },
     operators::{BinaryOperator, BoolBinOp, EqBinOp, IntBinOp, RealBinOp, UnaryOperator},
     tree::{
         Binding, Bindings, Block, ConstDecl, Decl, EvaluatedValue, Expression, Literal,
