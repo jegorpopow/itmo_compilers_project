@@ -89,9 +89,6 @@ class Vm {
   const Program&           program()     { return program_; }
 
  private:
-  // Grows locals vector in the current frame to cover `index` if needed.
-  void EnsureLocal(uint16_t index);
-
   Program             program_;
   std::vector<Value>  eval_stack_;
   std::vector<Value>  globals_;

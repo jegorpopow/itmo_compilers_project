@@ -87,8 +87,8 @@ PrimitiveKind RttiTable::GetPrimitiveKind(uint32_t type_id) const {
 
 void RttiTable::RegisterBuiltinPrimitives() {
   Register(PrimitiveRtti{kIntegerTypeId, PrimitiveKind::kInteger});
-  Register(PrimitiveRtti{kRealTypeId,    PrimitiveKind::kReal});
   Register(PrimitiveRtti{kBooleanTypeId, PrimitiveKind::kBoolean});
+  Register(PrimitiveRtti{kRealTypeId,    PrimitiveKind::kReal});
 }
 
 // ---- Value ------------------------------------------------------------------
@@ -135,12 +135,6 @@ const Value& Vm::Top() const {
 
 // ---- Variable access --------------------------------------------------------
 
-void Vm::EnsureLocal(uint16_t index) {
-  auto& locals = call_stack_.back().locals;
-  if (locals.size() <= index)
-    locals.resize(static_cast<std::size_t>(index) + 1);
-}
-
 Value& Vm::GetGlobal(uint16_t index) {
   if (index >= globals_.size())
     throw RuntimeError(
@@ -150,10 +144,11 @@ Value& Vm::GetGlobal(uint16_t index) {
 }
 
 Value& Vm::GetLocal(uint16_t index) {
-  auto& locals = call_stack_.back().locals;
-  if (index >= locals.size())
-    locals.resize(static_cast<std::size_t>(index) + 1);
-  return locals[index];
+  std::size_t base = call_stack_.back().eval_stack_base;
+  std::size_t abs  = base + static_cast<std::size_t>(index);
+  if (abs >= eval_stack_.size())
+    eval_stack_.resize(abs + 1);
+  return eval_stack_[abs];
 }
 
 Value& Vm::GetArgument(uint16_t index) {
@@ -233,8 +228,6 @@ void Vm::Jump(uint64_t label_id) {
 void Vm::Call(uint64_t function_label_id) {
   const FunctionRecord& fn = program_.FunctionByLabel(function_label_id);
 
-  // Pop arguments from eval stack (they were pushed left-to-right, so
-  // the last argument is on top; pop in reverse to get correct order).
   std::size_t argc = fn.arg_type_ids.size();
   if (eval_stack_.size() < argc)
     throw RuntimeError(
@@ -242,13 +235,14 @@ void Vm::Call(uint64_t function_label_id) {
                     fn.name, argc, eval_stack_.size()));
 
   CallFrame frame;
-  frame.function_name   = fn.name;
-  frame.return_pc       = pc_;
-  frame.return_type_id  = fn.return_type_id;
+  frame.function_name  = fn.name;
+  frame.return_pc      = pc_;
+  frame.return_type_id = fn.return_type_id;
   frame.arguments.resize(argc);
   for (std::size_t i = argc; i-- > 0;)
     frame.arguments[i] = Pop();
 
+  frame.eval_stack_base = eval_stack_.size();
   call_stack_.push_back(std::move(frame));
   pc_ = program_.ResolveLabel(function_label_id);
 }
@@ -260,12 +254,14 @@ void Vm::Return() {
   CallFrame frame = std::move(call_stack_.back());
   call_stack_.pop_back();
 
+  Value ret = Pop();
+  eval_stack_.resize(frame.eval_stack_base);
+  Push(ret);
+
   pc_ = frame.return_pc;
 
-  // If this was the outermost call (main), halt.
-  if (call_stack_.empty()) {
+  if (call_stack_.empty())
     halted_ = true;
-  }
 }
 
 void Vm::Halt() {
@@ -289,16 +285,14 @@ HeapObject* Vm::AllocArray(uint32_t type_id, uint64_t num_elements) {
 // ---- Run --------------------------------------------------------------------
 
 void Vm::Run() {
-  const FunctionRecord& main_fn = program_.FunctionByName("main");
-
-  // Push initial call frame for main.
   CallFrame frame;
-  frame.function_name  = "main";
-  frame.return_pc      = program_.instructions.size();  // sentinel: past end
-  frame.return_type_id = main_fn.return_type_id;
+  frame.function_name   = "<global_init>";
+  frame.return_pc       = program_.instructions.size();
+  frame.return_type_id  = kVoidTypeId;
+  frame.eval_stack_base = 0;
   call_stack_.push_back(std::move(frame));
 
-  pc_ = program_.ResolveLabel(main_fn.label_id);
+  pc_ = program_.ResolveLabel(0);
 
   const auto& table = GetDispatchTable();
   while (!halted_ && pc_ < program_.instructions.size()) {

@@ -160,9 +160,12 @@ Program Loader::LoadFromFile(const std::filesystem::path& path) {
       RecordRtti rec;
       rec.id = type_id;
       uint32_t fc = ReadLE<uint32_t>(buf, pos);
+      rec.field_names.resize(fc);
       rec.field_type_ids.resize(fc);
-      for (uint32_t j = 0; j < fc; ++j)
+      for (uint32_t j = 0; j < fc; ++j) {
+        rec.field_names[j]    = ReadString(buf, pos);
         rec.field_type_ids[j] = ReadLE<uint32_t>(buf, pos);
+      }
       prog.rtti.Register(std::move(rec));
     } else if (kind == 2) {
       ArrayRtti arr;
