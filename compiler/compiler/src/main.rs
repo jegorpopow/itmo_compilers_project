@@ -6,7 +6,7 @@ use std::path::Path;
 
 use anyhow::Context;
 use ast::convert;
-use bytecode::Serialize;
+use bytecode::serialize;
 use codegen::compile;
 use lexer::Lexer;
 use parser::parse_program;
@@ -27,7 +27,7 @@ fn main() -> anyhow::Result<()> {
     let program = convert(&program).context("Typecheck error")?;
     let program = compile(&program);
     File::create(out)
-        .and_then(|mut out| program.serialize(&mut |bytes| out.write_all(bytes)))
+        .and_then(|mut out| serialize(&program, &mut |bytes| out.write_all(bytes)))
         .context("IO error: cannot write output file")?;
     Ok(())
 }

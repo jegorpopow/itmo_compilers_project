@@ -1,5 +1,3 @@
-use crate::Serialize;
-
 fn compile(src: &str) -> Result<String, core::fmt::Error> {
     use core::fmt::Write;
 
@@ -9,7 +7,7 @@ fn compile(src: &str) -> Result<String, core::fmt::Error> {
     let mut result = String::new();
 
     let mut column = 0;
-    program.serialize::<core::fmt::Error>(&mut |bytes| {
+    crate::serialize(&program, &mut |bytes| {
         const COLUMNS: usize = 8;
         for byte in bytes {
             if column == COLUMNS {

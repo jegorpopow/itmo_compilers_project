@@ -255,7 +255,7 @@ impl Bytecode {
     }
 }
 
-pub trait Serialize {
+trait Serialize {
     fn serialize<E>(&self, sink: &mut impl FnMut(&[u8]) -> Result<(), E>) -> Result<(), E>;
 }
 
@@ -340,28 +340,12 @@ serialize_fields! {
         args,
         result,
     },
-}
-
-impl Serialize for Program {
-    fn serialize<E>(&self, sink: &mut impl FnMut(&[u8]) -> Result<(), E>) -> Result<(), E> {
-        const MAGIC: u32 = 0x494D_564D;
-        const VERSION: u32 = 3;
-
-        MAGIC.serialize(sink)?;
-        VERSION.serialize(sink)?;
-
-        let Self {
-            global_count,
-            rtti,
-            function_table,
-            code,
-        } = self;
-        global_count.serialize(sink)?;
-        rtti.serialize(sink)?;
-        function_table.serialize(sink)?;
-        code.serialize(sink)?;
-        Ok(())
-    }
+    Program {
+        global_count,
+        rtti,
+        function_table,
+        code,
+    },
 }
 
 impl Serialize for Instruction {
@@ -393,4 +377,17 @@ impl Serialize for Representation {
             }
         }
     }
+}
+
+pub fn serialize<E>(
+    program: &Program,
+    sink: &mut impl FnMut(&[u8]) -> Result<(), E>,
+) -> Result<(), E> {
+    const MAGIC: u32 = 0x494D_564D;
+    const VERSION: u32 = 3;
+
+    MAGIC.serialize(sink)?;
+    VERSION.serialize(sink)?;
+
+    program.serialize(sink)
 }
