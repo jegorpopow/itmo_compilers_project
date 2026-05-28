@@ -36,14 +36,6 @@ BytecodeFile {
     function_table: FunctionTable(
         [
             FunctionRecord {
-                name: "main",
-                label_id: 4,
-                args: [],
-                result: TypeId(
-                    3,
-                ),
-            },
-            FunctionRecord {
                 name: "approximately_eq",
                 label_id: 1,
                 args: [
@@ -55,18 +47,6 @@ BytecodeFile {
                     ),
                     TypeId(
                         2,
-                    ),
-                ],
-                result: TypeId(
-                    1,
-                ),
-            },
-            FunctionRecord {
-                name: "is_right",
-                label_id: 3,
-                args: [
-                    TypeId(
-                        5,
                     ),
                 ],
                 result: TypeId(
@@ -86,6 +66,26 @@ BytecodeFile {
                 ],
                 result: TypeId(
                     2,
+                ),
+            },
+            FunctionRecord {
+                name: "is_right",
+                label_id: 3,
+                args: [
+                    TypeId(
+                        5,
+                    ),
+                ],
+                result: TypeId(
+                    1,
+                ),
+            },
+            FunctionRecord {
+                name: "main",
+                label_id: 4,
+                args: [],
+                result: TypeId(
+                    3,
                 ),
             },
         ],
@@ -723,25 +723,25 @@ BytecodeFile {
 00 78 02 00 00 00 01 00
 00 00 79 02 00 00 00 02
 04 00 00 00 04 00 00 00
-04 00 00 00 6D 61 69 6E
-04 00 00 00 00 00 00 00
-00 00 00 00 03 00 00 00
 10 00 00 00 61 70 70 72
 6F 78 69 6D 61 74 65 6C
 79 5F 65 71 01 00 00 00
 00 00 00 00 03 00 00 00
 02 00 00 00 02 00 00 00
 02 00 00 00 01 00 00 00
-08 00 00 00 69 73 5F 72
-69 67 68 74 03 00 00 00
-00 00 00 00 01 00 00 00
-05 00 00 00 01 00 00 00
 10 00 00 00 73 71 75 61
 72 65 64 5F 64 69 73 74
 61 6E 63 65 02 00 00 00
 00 00 00 00 02 00 00 00
 04 00 00 00 04 00 00 00
-02 00 00 00 D1 00 00 00
+02 00 00 00 08 00 00 00
+69 73 5F 72 69 67 68 74
+03 00 00 00 00 00 00 00
+01 00 00 00 05 00 00 00
+01 00 00 00 04 00 00 00
+6D 61 69 6E 04 00 00 00
+00 00 00 00 00 00 00 00
+03 00 00 00 D1 00 00 00
 15 00 00 00 00 00 00 00
 00 00 00 00 00 00 00 00
 0A 00 00 00 00 00 00 00

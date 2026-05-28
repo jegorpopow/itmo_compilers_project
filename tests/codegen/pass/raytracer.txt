@@ -205,87 +205,54 @@ BytecodeFile {
     function_table: FunctionTable(
         [
             FunctionRecord {
-                name: "get_canvas_at",
-                label_id: 20,
+                name: "real_min",
+                label_id: 1,
                 args: [
                     TypeId(
-                        8,
+                        2,
                     ),
-                    TypeId(
-                        0,
-                    ),
-                    TypeId(
-                        0,
-                    ),
-                ],
-                result: TypeId(
-                    6,
-                ),
-            },
-            FunctionRecord {
-                name: "intersect_plane",
-                label_id: 27,
-                args: [
-                    TypeId(
-                        10,
-                    ),
-                    TypeId(
-                        5,
-                    ),
-                ],
-                result: TypeId(
-                    2,
-                ),
-            },
-            FunctionRecord {
-                name: "intersect_object",
-                label_id: 28,
-                args: [
-                    TypeId(
-                        11,
-                    ),
-                    TypeId(
-                        5,
-                    ),
-                ],
-                result: TypeId(
-                    2,
-                ),
-            },
-            FunctionRecord {
-                name: "colour_of",
-                label_id: 18,
-                args: [
-                    TypeId(
-                        0,
-                    ),
-                    TypeId(
-                        0,
-                    ),
-                    TypeId(
-                        0,
-                    ),
-                ],
-                result: TypeId(
-                    6,
-                ),
-            },
-            FunctionRecord {
-                name: "round",
-                label_id: 6,
-                args: [
                     TypeId(
                         2,
                     ),
                 ],
                 result: TypeId(
-                    0,
+                    2,
+                ),
+            },
+            FunctionRecord {
+                name: "real_max",
+                label_id: 2,
+                args: [
+                    TypeId(
+                        2,
+                    ),
+                    TypeId(
+                        2,
+                    ),
+                ],
+                result: TypeId(
+                    2,
                 ),
             },
             FunctionRecord {
                 name: "is_nan",
                 label_id: 3,
                 args: [
+                    TypeId(
+                        2,
+                    ),
+                ],
+                result: TypeId(
+                    1,
+                ),
+            },
+            FunctionRecord {
+                name: "approx_eq",
+                label_id: 4,
+                args: [
+                    TypeId(
+                        2,
+                    ),
                     TypeId(
                         2,
                     ),
@@ -313,53 +280,11 @@ BytecodeFile {
                 ),
             },
             FunctionRecord {
-                name: "intersect_sphere",
-                label_id: 26,
+                name: "round",
+                label_id: 6,
                 args: [
                     TypeId(
-                        9,
-                    ),
-                    TypeId(
-                        5,
-                    ),
-                ],
-                result: TypeId(
-                    2,
-                ),
-            },
-            FunctionRecord {
-                name: "ray_from_to",
-                label_id: 15,
-                args: [
-                    TypeId(
-                        4,
-                    ),
-                    TypeId(
-                        4,
-                    ),
-                ],
-                result: TypeId(
-                    5,
-                ),
-            },
-            FunctionRecord {
-                name: "render_canvas",
-                label_id: 23,
-                args: [
-                    TypeId(
-                        8,
-                    ),
-                ],
-                result: TypeId(
-                    3,
-                ),
-            },
-            FunctionRecord {
-                name: "int_to_byte",
-                label_id: 17,
-                args: [
-                    TypeId(
-                        0,
+                        2,
                     ),
                 ],
                 result: TypeId(
@@ -367,307 +292,15 @@ BytecodeFile {
                 ),
             },
             FunctionRecord {
-                name: "vector_mul",
-                label_id: 11,
+                name: "sqrt",
+                label_id: 7,
                 args: [
-                    TypeId(
-                        2,
-                    ),
-                    TypeId(
-                        4,
-                    ),
-                ],
-                result: TypeId(
-                    4,
-                ),
-            },
-            FunctionRecord {
-                name: "vector_normalised",
-                label_id: 14,
-                args: [
-                    TypeId(
-                        4,
-                    ),
-                ],
-                result: TypeId(
-                    4,
-                ),
-            },
-            FunctionRecord {
-                name: "plane_to_object",
-                label_id: 25,
-                args: [
-                    TypeId(
-                        10,
-                    ),
-                ],
-                result: TypeId(
-                    11,
-                ),
-            },
-            FunctionRecord {
-                name: "vector_sub",
-                label_id: 10,
-                args: [
-                    TypeId(
-                        4,
-                    ),
-                    TypeId(
-                        4,
-                    ),
-                ],
-                result: TypeId(
-                    4,
-                ),
-            },
-            FunctionRecord {
-                name: "set_canvas_at",
-                label_id: 21,
-                args: [
-                    TypeId(
-                        8,
-                    ),
-                    TypeId(
-                        0,
-                    ),
-                    TypeId(
-                        0,
-                    ),
-                    TypeId(
-                        6,
-                    ),
-                ],
-                result: TypeId(
-                    3,
-                ),
-            },
-            FunctionRecord {
-                name: "vector_norm",
-                label_id: 13,
-                args: [
-                    TypeId(
-                        4,
-                    ),
-                ],
-                result: TypeId(
-                    2,
-                ),
-            },
-            FunctionRecord {
-                name: "normal_at_sphere",
-                label_id: 29,
-                args: [
-                    TypeId(
-                        9,
-                    ),
-                    TypeId(
-                        4,
-                    ),
-                ],
-                result: TypeId(
-                    4,
-                ),
-            },
-            FunctionRecord {
-                name: "ray_cut",
-                label_id: 16,
-                args: [
-                    TypeId(
-                        5,
-                    ),
-                    TypeId(
-                        2,
-                    ),
-                ],
-                result: TypeId(
-                    4,
-                ),
-            },
-            FunctionRecord {
-                name: "colour_at_object",
-                label_id: 32,
-                args: [
-                    TypeId(
-                        11,
-                    ),
-                    TypeId(
-                        4,
-                    ),
-                ],
-                result: TypeId(
-                    6,
-                ),
-            },
-            FunctionRecord {
-                name: "real_min",
-                label_id: 1,
-                args: [
-                    TypeId(
-                        2,
-                    ),
                     TypeId(
                         2,
                     ),
                 ],
                 result: TypeId(
                     2,
-                ),
-            },
-            FunctionRecord {
-                name: "normal_at_plane",
-                label_id: 30,
-                args: [
-                    TypeId(
-                        10,
-                    ),
-                    TypeId(
-                        4,
-                    ),
-                ],
-                result: TypeId(
-                    4,
-                ),
-            },
-            FunctionRecord {
-                name: "main",
-                label_id: 36,
-                args: [],
-                result: TypeId(
-                    3,
-                ),
-            },
-            FunctionRecord {
-                name: "real_max",
-                label_id: 2,
-                args: [
-                    TypeId(
-                        2,
-                    ),
-                    TypeId(
-                        2,
-                    ),
-                ],
-                result: TypeId(
-                    2,
-                ),
-            },
-            FunctionRecord {
-                name: "normal_at_object",
-                label_id: 31,
-                args: [
-                    TypeId(
-                        11,
-                    ),
-                    TypeId(
-                        4,
-                    ),
-                ],
-                result: TypeId(
-                    4,
-                ),
-            },
-            FunctionRecord {
-                name: "approx_eq",
-                label_id: 4,
-                args: [
-                    TypeId(
-                        2,
-                    ),
-                    TypeId(
-                        2,
-                    ),
-                ],
-                result: TypeId(
-                    1,
-                ),
-            },
-            FunctionRecord {
-                name: "sphere_to_object",
-                label_id: 24,
-                args: [
-                    TypeId(
-                        9,
-                    ),
-                ],
-                result: TypeId(
-                    11,
-                ),
-            },
-            FunctionRecord {
-                name: "trace_rays",
-                label_id: 35,
-                args: [
-                    TypeId(
-                        0,
-                    ),
-                    TypeId(
-                        0,
-                    ),
-                    TypeId(
-                        13,
-                    ),
-                ],
-                result: TypeId(
-                    8,
-                ),
-            },
-            FunctionRecord {
-                name: "vector_dot",
-                label_id: 12,
-                args: [
-                    TypeId(
-                        4,
-                    ),
-                    TypeId(
-                        4,
-                    ),
-                ],
-                result: TypeId(
-                    2,
-                ),
-            },
-            FunctionRecord {
-                name: "new_canvas",
-                label_id: 22,
-                args: [
-                    TypeId(
-                        0,
-                    ),
-                    TypeId(
-                        0,
-                    ),
-                    TypeId(
-                        6,
-                    ),
-                ],
-                result: TypeId(
-                    8,
-                ),
-            },
-            FunctionRecord {
-                name: "colour_mix_with_ratio",
-                label_id: 19,
-                args: [
-                    TypeId(
-                        6,
-                    ),
-                    TypeId(
-                        6,
-                    ),
-                    TypeId(
-                        2,
-                    ),
-                ],
-                result: TypeId(
-                    6,
-                ),
-            },
-            FunctionRecord {
-                name: "empty_intersection_desc",
-                label_id: 33,
-                args: [],
-                result: TypeId(
-                    12,
                 ),
             },
             FunctionRecord {
@@ -704,15 +337,356 @@ BytecodeFile {
                 ),
             },
             FunctionRecord {
-                name: "sqrt",
-                label_id: 7,
+                name: "vector_sub",
+                label_id: 10,
                 args: [
+                    TypeId(
+                        4,
+                    ),
+                    TypeId(
+                        4,
+                    ),
+                ],
+                result: TypeId(
+                    4,
+                ),
+            },
+            FunctionRecord {
+                name: "vector_mul",
+                label_id: 11,
+                args: [
+                    TypeId(
+                        2,
+                    ),
+                    TypeId(
+                        4,
+                    ),
+                ],
+                result: TypeId(
+                    4,
+                ),
+            },
+            FunctionRecord {
+                name: "vector_dot",
+                label_id: 12,
+                args: [
+                    TypeId(
+                        4,
+                    ),
+                    TypeId(
+                        4,
+                    ),
+                ],
+                result: TypeId(
+                    2,
+                ),
+            },
+            FunctionRecord {
+                name: "vector_norm",
+                label_id: 13,
+                args: [
+                    TypeId(
+                        4,
+                    ),
+                ],
+                result: TypeId(
+                    2,
+                ),
+            },
+            FunctionRecord {
+                name: "vector_normalised",
+                label_id: 14,
+                args: [
+                    TypeId(
+                        4,
+                    ),
+                ],
+                result: TypeId(
+                    4,
+                ),
+            },
+            FunctionRecord {
+                name: "ray_from_to",
+                label_id: 15,
+                args: [
+                    TypeId(
+                        4,
+                    ),
+                    TypeId(
+                        4,
+                    ),
+                ],
+                result: TypeId(
+                    5,
+                ),
+            },
+            FunctionRecord {
+                name: "ray_cut",
+                label_id: 16,
+                args: [
+                    TypeId(
+                        5,
+                    ),
                     TypeId(
                         2,
                     ),
                 ],
                 result: TypeId(
+                    4,
+                ),
+            },
+            FunctionRecord {
+                name: "int_to_byte",
+                label_id: 17,
+                args: [
+                    TypeId(
+                        0,
+                    ),
+                ],
+                result: TypeId(
+                    0,
+                ),
+            },
+            FunctionRecord {
+                name: "colour_of",
+                label_id: 18,
+                args: [
+                    TypeId(
+                        0,
+                    ),
+                    TypeId(
+                        0,
+                    ),
+                    TypeId(
+                        0,
+                    ),
+                ],
+                result: TypeId(
+                    6,
+                ),
+            },
+            FunctionRecord {
+                name: "colour_mix_with_ratio",
+                label_id: 19,
+                args: [
+                    TypeId(
+                        6,
+                    ),
+                    TypeId(
+                        6,
+                    ),
+                    TypeId(
+                        2,
+                    ),
+                ],
+                result: TypeId(
+                    6,
+                ),
+            },
+            FunctionRecord {
+                name: "get_canvas_at",
+                label_id: 20,
+                args: [
+                    TypeId(
+                        8,
+                    ),
+                    TypeId(
+                        0,
+                    ),
+                    TypeId(
+                        0,
+                    ),
+                ],
+                result: TypeId(
+                    6,
+                ),
+            },
+            FunctionRecord {
+                name: "set_canvas_at",
+                label_id: 21,
+                args: [
+                    TypeId(
+                        8,
+                    ),
+                    TypeId(
+                        0,
+                    ),
+                    TypeId(
+                        0,
+                    ),
+                    TypeId(
+                        6,
+                    ),
+                ],
+                result: TypeId(
+                    3,
+                ),
+            },
+            FunctionRecord {
+                name: "new_canvas",
+                label_id: 22,
+                args: [
+                    TypeId(
+                        0,
+                    ),
+                    TypeId(
+                        0,
+                    ),
+                    TypeId(
+                        6,
+                    ),
+                ],
+                result: TypeId(
+                    8,
+                ),
+            },
+            FunctionRecord {
+                name: "render_canvas",
+                label_id: 23,
+                args: [
+                    TypeId(
+                        8,
+                    ),
+                ],
+                result: TypeId(
+                    3,
+                ),
+            },
+            FunctionRecord {
+                name: "sphere_to_object",
+                label_id: 24,
+                args: [
+                    TypeId(
+                        9,
+                    ),
+                ],
+                result: TypeId(
+                    11,
+                ),
+            },
+            FunctionRecord {
+                name: "plane_to_object",
+                label_id: 25,
+                args: [
+                    TypeId(
+                        10,
+                    ),
+                ],
+                result: TypeId(
+                    11,
+                ),
+            },
+            FunctionRecord {
+                name: "intersect_sphere",
+                label_id: 26,
+                args: [
+                    TypeId(
+                        9,
+                    ),
+                    TypeId(
+                        5,
+                    ),
+                ],
+                result: TypeId(
                     2,
+                ),
+            },
+            FunctionRecord {
+                name: "intersect_plane",
+                label_id: 27,
+                args: [
+                    TypeId(
+                        10,
+                    ),
+                    TypeId(
+                        5,
+                    ),
+                ],
+                result: TypeId(
+                    2,
+                ),
+            },
+            FunctionRecord {
+                name: "intersect_object",
+                label_id: 28,
+                args: [
+                    TypeId(
+                        11,
+                    ),
+                    TypeId(
+                        5,
+                    ),
+                ],
+                result: TypeId(
+                    2,
+                ),
+            },
+            FunctionRecord {
+                name: "normal_at_sphere",
+                label_id: 29,
+                args: [
+                    TypeId(
+                        9,
+                    ),
+                    TypeId(
+                        4,
+                    ),
+                ],
+                result: TypeId(
+                    4,
+                ),
+            },
+            FunctionRecord {
+                name: "normal_at_plane",
+                label_id: 30,
+                args: [
+                    TypeId(
+                        10,
+                    ),
+                    TypeId(
+                        4,
+                    ),
+                ],
+                result: TypeId(
+                    4,
+                ),
+            },
+            FunctionRecord {
+                name: "normal_at_object",
+                label_id: 31,
+                args: [
+                    TypeId(
+                        11,
+                    ),
+                    TypeId(
+                        4,
+                    ),
+                ],
+                result: TypeId(
+                    4,
+                ),
+            },
+            FunctionRecord {
+                name: "colour_at_object",
+                label_id: 32,
+                args: [
+                    TypeId(
+                        11,
+                    ),
+                    TypeId(
+                        4,
+                    ),
+                ],
+                result: TypeId(
+                    6,
+                ),
+            },
+            FunctionRecord {
+                name: "empty_intersection_desc",
+                label_id: 33,
+                args: [],
+                result: TypeId(
+                    12,
                 ),
             },
             FunctionRecord {
@@ -728,6 +702,32 @@ BytecodeFile {
                 ],
                 result: TypeId(
                     12,
+                ),
+            },
+            FunctionRecord {
+                name: "trace_rays",
+                label_id: 35,
+                args: [
+                    TypeId(
+                        0,
+                    ),
+                    TypeId(
+                        0,
+                    ),
+                    TypeId(
+                        13,
+                    ),
+                ],
+                result: TypeId(
+                    8,
+                ),
+            },
+            FunctionRecord {
+                name: "main",
+                label_id: 36,
+                args: [],
+                result: TypeId(
+                    3,
                 ),
             },
         ],
@@ -4608,166 +4608,37 @@ BytecodeFile {
 00 00 74 02 00 00 00 06
 00 00 00 6F 62 6A 65 63
 74 0B 00 00 00 02 0B 00
-00 00 24 00 00 00 0D 00
-00 00 67 65 74 5F 63 61
-6E 76 61 73 5F 61 74 14
-00 00 00 00 00 00 00 03
-00 00 00 08 00 00 00 00
-00 00 00 00 00 00 00 06
-00 00 00 0F 00 00 00 69
-6E 74 65 72 73 65 63 74
-5F 70 6C 61 6E 65 1B 00
-00 00 00 00 00 00 02 00
-00 00 0A 00 00 00 05 00
-00 00 02 00 00 00 10 00
-00 00 69 6E 74 65 72 73
-65 63 74 5F 6F 62 6A 65
-63 74 1C 00 00 00 00 00
-00 00 02 00 00 00 0B 00
-00 00 05 00 00 00 02 00
-00 00 09 00 00 00 63 6F
-6C 6F 75 72 5F 6F 66 12
-00 00 00 00 00 00 00 03
-00 00 00 00 00 00 00 00
-00 00 00 00 00 00 00 06
-00 00 00 05 00 00 00 72
-6F 75 6E 64 06 00 00 00
-00 00 00 00 01 00 00 00
-02 00 00 00 00 00 00 00
-06 00 00 00 69 73 5F 6E
-61 6E 03 00 00 00 00 00
-00 00 01 00 00 00 02 00
-00 00 01 00 00 00 10 00
-00 00 72 65 61 6C 5F 69
-6E 74 65 72 70 6F 6C 61
-74 65 05 00 00 00 00 00
-00 00 03 00 00 00 02 00
+00 00 24 00 00 00 08 00
+00 00 72 65 61 6C 5F 6D
+69 6E 01 00 00 00 00 00
 00 00 02 00 00 00 02 00
-00 00 02 00 00 00 10 00
-00 00 69 6E 74 65 72 73
-65 63 74 5F 73 70 68 65
-72 65 1A 00 00 00 00 00
-00 00 02 00 00 00 09 00
-00 00 05 00 00 00 02 00
-00 00 0B 00 00 00 72 61
-79 5F 66 72 6F 6D 5F 74
-6F 0F 00 00 00 00 00 00
-00 02 00 00 00 04 00 00
-00 04 00 00 00 05 00 00
-00 0D 00 00 00 72 65 6E
-64 65 72 5F 63 61 6E 76
-61 73 17 00 00 00 00 00
-00 00 01 00 00 00 08 00
-00 00 03 00 00 00 0B 00
-00 00 69 6E 74 5F 74 6F
-5F 62 79 74 65 11 00 00
-00 00 00 00 00 01 00 00
-00 00 00 00 00 00 00 00
-00 0A 00 00 00 76 65 63
-74 6F 72 5F 6D 75 6C 0B
-00 00 00 00 00 00 00 02
-00 00 00 02 00 00 00 04
-00 00 00 04 00 00 00 11
-00 00 00 76 65 63 74 6F
-72 5F 6E 6F 72 6D 61 6C
-69 73 65 64 0E 00 00 00
-00 00 00 00 01 00 00 00
-04 00 00 00 04 00 00 00
-0F 00 00 00 70 6C 61 6E
-65 5F 74 6F 5F 6F 62 6A
-65 63 74 19 00 00 00 00
-00 00 00 01 00 00 00 0A
-00 00 00 0B 00 00 00 0A
-00 00 00 76 65 63 74 6F
-72 5F 73 75 62 0A 00 00
-00 00 00 00 00 02 00 00
-00 04 00 00 00 04 00 00
-00 04 00 00 00 0D 00 00
-00 73 65 74 5F 63 61 6E
-76 61 73 5F 61 74 15 00
+00 00 02 00 00 00 02 00
+00 00 08 00 00 00 72 65
+61 6C 5F 6D 61 78 02 00
+00 00 00 00 00 00 02 00
+00 00 02 00 00 00 02 00
+00 00 02 00 00 00 06 00
+00 00 69 73 5F 6E 61 6E
+03 00 00 00 00 00 00 00
+01 00 00 00 02 00 00 00
+01 00 00 00 09 00 00 00
+61 70 70 72 6F 78 5F 65
+71 04 00 00 00 00 00 00
+00 02 00 00 00 02 00 00
+00 02 00 00 00 01 00 00
+00 10 00 00 00 72 65 61
+6C 5F 69 6E 74 65 72 70
+6F 6C 61 74 65 05 00 00
+00 00 00 00 00 03 00 00
+00 02 00 00 00 02 00 00
+00 02 00 00 00 02 00 00
+00 05 00 00 00 72 6F 75
+6E 64 06 00 00 00 00 00
+00 00 01 00 00 00 02 00
 00 00 00 00 00 00 04 00
-00 00 08 00 00 00 00 00
-00 00 00 00 00 00 06 00
-00 00 03 00 00 00 0B 00
-00 00 76 65 63 74 6F 72
-5F 6E 6F 72 6D 0D 00 00
-00 00 00 00 00 01 00 00
-00 04 00 00 00 02 00 00
-00 10 00 00 00 6E 6F 72
-6D 61 6C 5F 61 74 5F 73
-70 68 65 72 65 1D 00 00
-00 00 00 00 00 02 00 00
-00 09 00 00 00 04 00 00
-00 04 00 00 00 07 00 00
-00 72 61 79 5F 63 75 74
-10 00 00 00 00 00 00 00
-02 00 00 00 05 00 00 00
-02 00 00 00 04 00 00 00
-10 00 00 00 63 6F 6C 6F
-75 72 5F 61 74 5F 6F 62
-6A 65 63 74 20 00 00 00
-00 00 00 00 02 00 00 00
-0B 00 00 00 04 00 00 00
-06 00 00 00 08 00 00 00
-72 65 61 6C 5F 6D 69 6E
-01 00 00 00 00 00 00 00
-02 00 00 00 02 00 00 00
-02 00 00 00 02 00 00 00
-0F 00 00 00 6E 6F 72 6D
-61 6C 5F 61 74 5F 70 6C
-61 6E 65 1E 00 00 00 00
-00 00 00 02 00 00 00 0A
-00 00 00 04 00 00 00 04
-00 00 00 04 00 00 00 6D
-61 69 6E 24 00 00 00 00
-00 00 00 00 00 00 00 03
-00 00 00 08 00 00 00 72
-65 61 6C 5F 6D 61 78 02
-00 00 00 00 00 00 00 02
-00 00 00 02 00 00 00 02
-00 00 00 02 00 00 00 10
-00 00 00 6E 6F 72 6D 61
-6C 5F 61 74 5F 6F 62 6A
-65 63 74 1F 00 00 00 00
-00 00 00 02 00 00 00 0B
-00 00 00 04 00 00 00 04
-00 00 00 09 00 00 00 61
-70 70 72 6F 78 5F 65 71
-04 00 00 00 00 00 00 00
-02 00 00 00 02 00 00 00
-02 00 00 00 01 00 00 00
-10 00 00 00 73 70 68 65
-72 65 5F 74 6F 5F 6F 62
-6A 65 63 74 18 00 00 00
-00 00 00 00 01 00 00 00
-09 00 00 00 0B 00 00 00
-0A 00 00 00 74 72 61 63
-65 5F 72 61 79 73 23 00
-00 00 00 00 00 00 03 00
-00 00 00 00 00 00 00 00
-00 00 0D 00 00 00 08 00
-00 00 0A 00 00 00 76 65
-63 74 6F 72 5F 64 6F 74
-0C 00 00 00 00 00 00 00
-02 00 00 00 04 00 00 00
-04 00 00 00 02 00 00 00
-0A 00 00 00 6E 65 77 5F
-63 61 6E 76 61 73 16 00
-00 00 00 00 00 00 03 00
-00 00 00 00 00 00 00 00
-00 00 06 00 00 00 08 00
-00 00 15 00 00 00 63 6F
-6C 6F 75 72 5F 6D 69 78
-5F 77 69 74 68 5F 72 61
-74 69 6F 13 00 00 00 00
-00 00 00 03 00 00 00 06
-00 00 00 06 00 00 00 02
-00 00 00 06 00 00 00 17
-00 00 00 65 6D 70 74 79
-5F 69 6E 74 65 72 73 65
-63 74 69 6F 6E 5F 64 65
-73 63 21 00 00 00 00 00
-00 00 00 00 00 00 0C 00
+00 00 73 71 72 74 07 00
+00 00 00 00 00 00 01 00
+00 00 02 00 00 00 02 00
 00 00 09 00 00 00 76 65
 63 74 6F 72 5F 6F 66 08
 00 00 00 00 00 00 00 03
@@ -4778,14 +4649,143 @@ BytecodeFile {
 64 09 00 00 00 00 00 00
 00 02 00 00 00 04 00 00
 00 04 00 00 00 04 00 00
-00 04 00 00 00 73 71 72
-74 07 00 00 00 00 00 00
-00 01 00 00 00 02 00 00
-00 02 00 00 00 09 00 00
-00 74 72 61 63 65 5F 72
-61 79 22 00 00 00 00 00
-00 00 02 00 00 00 05 00
-00 00 0D 00 00 00 0C 00
+00 0A 00 00 00 76 65 63
+74 6F 72 5F 73 75 62 0A
+00 00 00 00 00 00 00 02
+00 00 00 04 00 00 00 04
+00 00 00 04 00 00 00 0A
+00 00 00 76 65 63 74 6F
+72 5F 6D 75 6C 0B 00 00
+00 00 00 00 00 02 00 00
+00 02 00 00 00 04 00 00
+00 04 00 00 00 0A 00 00
+00 76 65 63 74 6F 72 5F
+64 6F 74 0C 00 00 00 00
+00 00 00 02 00 00 00 04
+00 00 00 04 00 00 00 02
+00 00 00 0B 00 00 00 76
+65 63 74 6F 72 5F 6E 6F
+72 6D 0D 00 00 00 00 00
+00 00 01 00 00 00 04 00
+00 00 02 00 00 00 11 00
+00 00 76 65 63 74 6F 72
+5F 6E 6F 72 6D 61 6C 69
+73 65 64 0E 00 00 00 00
+00 00 00 01 00 00 00 04
+00 00 00 04 00 00 00 0B
+00 00 00 72 61 79 5F 66
+72 6F 6D 5F 74 6F 0F 00
+00 00 00 00 00 00 02 00
+00 00 04 00 00 00 04 00
+00 00 05 00 00 00 07 00
+00 00 72 61 79 5F 63 75
+74 10 00 00 00 00 00 00
+00 02 00 00 00 05 00 00
+00 02 00 00 00 04 00 00
+00 0B 00 00 00 69 6E 74
+5F 74 6F 5F 62 79 74 65
+11 00 00 00 00 00 00 00
+01 00 00 00 00 00 00 00
+00 00 00 00 09 00 00 00
+63 6F 6C 6F 75 72 5F 6F
+66 12 00 00 00 00 00 00
+00 03 00 00 00 00 00 00
+00 00 00 00 00 00 00 00
+00 06 00 00 00 15 00 00
+00 63 6F 6C 6F 75 72 5F
+6D 69 78 5F 77 69 74 68
+5F 72 61 74 69 6F 13 00
+00 00 00 00 00 00 03 00
+00 00 06 00 00 00 06 00
+00 00 02 00 00 00 06 00
+00 00 0D 00 00 00 67 65
+74 5F 63 61 6E 76 61 73
+5F 61 74 14 00 00 00 00
+00 00 00 03 00 00 00 08
+00 00 00 00 00 00 00 00
+00 00 00 06 00 00 00 0D
+00 00 00 73 65 74 5F 63
+61 6E 76 61 73 5F 61 74
+15 00 00 00 00 00 00 00
+04 00 00 00 08 00 00 00
+00 00 00 00 00 00 00 00
+06 00 00 00 03 00 00 00
+0A 00 00 00 6E 65 77 5F
+63 61 6E 76 61 73 16 00
+00 00 00 00 00 00 03 00
+00 00 00 00 00 00 00 00
+00 00 06 00 00 00 08 00
+00 00 0D 00 00 00 72 65
+6E 64 65 72 5F 63 61 6E
+76 61 73 17 00 00 00 00
+00 00 00 01 00 00 00 08
+00 00 00 03 00 00 00 10
+00 00 00 73 70 68 65 72
+65 5F 74 6F 5F 6F 62 6A
+65 63 74 18 00 00 00 00
+00 00 00 01 00 00 00 09
+00 00 00 0B 00 00 00 0F
+00 00 00 70 6C 61 6E 65
+5F 74 6F 5F 6F 62 6A 65
+63 74 19 00 00 00 00 00
+00 00 01 00 00 00 0A 00
+00 00 0B 00 00 00 10 00
+00 00 69 6E 74 65 72 73
+65 63 74 5F 73 70 68 65
+72 65 1A 00 00 00 00 00
+00 00 02 00 00 00 09 00
+00 00 05 00 00 00 02 00
+00 00 0F 00 00 00 69 6E
+74 65 72 73 65 63 74 5F
+70 6C 61 6E 65 1B 00 00
+00 00 00 00 00 02 00 00
+00 0A 00 00 00 05 00 00
+00 02 00 00 00 10 00 00
+00 69 6E 74 65 72 73 65
+63 74 5F 6F 62 6A 65 63
+74 1C 00 00 00 00 00 00
+00 02 00 00 00 0B 00 00
+00 05 00 00 00 02 00 00
+00 10 00 00 00 6E 6F 72
+6D 61 6C 5F 61 74 5F 73
+70 68 65 72 65 1D 00 00
+00 00 00 00 00 02 00 00
+00 09 00 00 00 04 00 00
+00 04 00 00 00 0F 00 00
+00 6E 6F 72 6D 61 6C 5F
+61 74 5F 70 6C 61 6E 65
+1E 00 00 00 00 00 00 00
+02 00 00 00 0A 00 00 00
+04 00 00 00 04 00 00 00
+10 00 00 00 6E 6F 72 6D
+61 6C 5F 61 74 5F 6F 62
+6A 65 63 74 1F 00 00 00
+00 00 00 00 02 00 00 00
+0B 00 00 00 04 00 00 00
+04 00 00 00 10 00 00 00
+63 6F 6C 6F 75 72 5F 61
+74 5F 6F 62 6A 65 63 74
+20 00 00 00 00 00 00 00
+02 00 00 00 0B 00 00 00
+04 00 00 00 06 00 00 00
+17 00 00 00 65 6D 70 74
+79 5F 69 6E 74 65 72 73
+65 63 74 69 6F 6E 5F 64
+65 73 63 21 00 00 00 00
+00 00 00 00 00 00 00 0C
+00 00 00 09 00 00 00 74
+72 61 63 65 5F 72 61 79
+22 00 00 00 00 00 00 00
+02 00 00 00 05 00 00 00
+0D 00 00 00 0C 00 00 00
+0A 00 00 00 74 72 61 63
+65 5F 72 61 79 73 23 00
+00 00 00 00 00 00 03 00
+00 00 00 00 00 00 00 00
+00 00 0D 00 00 00 08 00
+00 00 04 00 00 00 6D 61
+69 6E 24 00 00 00 00 00
+00 00 00 00 00 00 03 00
 00 00 BE 04 00 00 15 00
 00 00 00 00 00 00 00 00
 00 00 00 00 00 00 0A 00

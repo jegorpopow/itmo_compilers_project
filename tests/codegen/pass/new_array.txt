@@ -18,6 +18,18 @@ BytecodeFile {
     function_table: FunctionTable(
         [
             FunctionRecord {
+                name: "print_len",
+                label_id: 1,
+                args: [
+                    TypeId(
+                        4,
+                    ),
+                ],
+                result: TypeId(
+                    3,
+                ),
+            },
+            FunctionRecord {
                 name: "factorial",
                 label_id: 2,
                 args: [
@@ -33,18 +45,6 @@ BytecodeFile {
                 name: "main",
                 label_id: 3,
                 args: [],
-                result: TypeId(
-                    3,
-                ),
-            },
-            FunctionRecord {
-                name: "print_len",
-                label_id: 1,
-                args: [
-                    TypeId(
-                        4,
-                    ),
-                ],
                 result: TypeId(
                     3,
                 ),
@@ -215,17 +215,17 @@ BytecodeFile {
 00 00 00 00 05 00 00 00
 00 00 00 01 00 02 00 03
 02 00 00 00 00 03 00 00
-00 09 00 00 00 66 61 63
-74 6F 72 69 61 6C 02 00
+00 09 00 00 00 70 72 69
+6E 74 5F 6C 65 6E 01 00
 00 00 00 00 00 00 01 00
-00 00 00 00 00 00 00 00
-00 00 04 00 00 00 6D 61
-69 6E 03 00 00 00 00 00
-00 00 00 00 00 00 03 00
-00 00 09 00 00 00 70 72
-69 6E 74 5F 6C 65 6E 01
+00 00 04 00 00 00 03 00
+00 00 09 00 00 00 66 61
+63 74 6F 72 69 61 6C 02
 00 00 00 00 00 00 00 01
-00 00 00 04 00 00 00 03
+00 00 00 00 00 00 00 00
+00 00 00 04 00 00 00 6D
+61 69 6E 03 00 00 00 00
+00 00 00 00 00 00 00 03
 00 00 00 35 00 00 00 15
 00 00 00 00 00 00 00 00
 00 00 00 00 00 00 00 18

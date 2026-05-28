@@ -11,14 +11,6 @@ BytecodeFile {
     function_table: FunctionTable(
         [
             FunctionRecord {
-                name: "main",
-                label_id: 2,
-                args: [],
-                result: TypeId(
-                    3,
-                ),
-            },
-            FunctionRecord {
                 name: "fibonacci",
                 label_id: 1,
                 args: [
@@ -28,6 +20,14 @@ BytecodeFile {
                 ],
                 result: TypeId(
                     0,
+                ),
+            },
+            FunctionRecord {
+                name: "main",
+                label_id: 2,
+                args: [],
+                result: TypeId(
+                    3,
                 ),
             },
         ],
@@ -141,14 +141,14 @@ BytecodeFile {
 4D 56 4D 49 03 00 00 00
 00 00 00 00 04 00 00 00
 00 00 00 01 00 02 00 03
-02 00 00 00 04 00 00 00
-6D 61 69 6E 02 00 00 00
-00 00 00 00 00 00 00 00
-03 00 00 00 09 00 00 00
+02 00 00 00 09 00 00 00
 66 69 62 6F 6E 61 63 63
 69 01 00 00 00 00 00 00
 00 01 00 00 00 00 00 00
-00 00 00 00 00 23 00 00
+00 00 00 00 00 04 00 00
+00 6D 61 69 6E 02 00 00
+00 00 00 00 00 00 00 00
+00 03 00 00 00 23 00 00
 00 15 00 00 00 00 00 00
 00 00 00 00 00 00 00 00
 00 18 00 00 00 00 00 00

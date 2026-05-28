@@ -81,10 +81,10 @@ impl Interner {
     }
 
     #[must_use]
-    #[expect(clippy::iter_over_hash_type, reason = "Why no?")]
     pub fn to_table(self) -> Vec<Representation> {
         let mut result = vec![Representation::NullRepresentation; self.representation_to_id.len()];
 
+        #[expect(clippy::iter_over_hash_type, reason = "The result is still deterministic")]
         for (rep, id) in self.representation_to_id {
             result[id.0 as usize] = rep
         }

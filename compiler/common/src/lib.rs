@@ -33,7 +33,11 @@ impl Display for BindingId {
     }
 }
 
-#[derive(Hash, PartialEq, Eq, Clone)]
+#[expect(
+    clippy::derived_hash_with_manual_eq,
+    reason = "Extra debug checks in comparisons"
+)]
+#[derive(Hash, Clone)]
 pub struct Identifier {
     pub raw: RawIdentifier,
     pub id: BindingId,
@@ -48,6 +52,33 @@ impl Debug for Identifier {
 impl Display for Identifier {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "{}", self.raw.name)
+    }
+}
+
+impl Ord for Identifier {
+    fn cmp(&self, other: &Self) -> std::cmp::Ordering {
+        let result = self.id.0.cmp(&other.id.0);
+        if let std::cmp::Ordering::Equal = result {
+            debug_assert_eq!(
+                self.raw, other.raw,
+                "Different raw identifiers for the same binding?"
+            )
+        }
+        result
+    }
+}
+
+impl PartialOrd for Identifier {
+    #[inline]
+    fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
+        Some(self.cmp(other))
+    }
+}
+impl Eq for Identifier {}
+impl PartialEq for Identifier {
+    #[inline]
+    fn eq(&self, other: &Self) -> bool {
+        self.cmp(other).is_eq()
     }
 }
 

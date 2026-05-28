@@ -1,4 +1,7 @@
-use std::{collections::HashMap, rc::Rc};
+use std::{
+    collections::{BTreeMap, HashMap},
+    rc::Rc,
+};
 
 use ast::{
     AnalysisError, AnalysisResult, Binding, Bindings, Block, Decl, Expression, Interner, Literal,
@@ -21,7 +24,7 @@ pub struct Compiler<'a> {
     bytecode: Vec<Instruction>,
     global_init: Vec<Instruction>,
     fresh_label_counter: u64,
-    routines_labels: HashMap<Identifier, u64>,
+    routines_labels: BTreeMap<Identifier, u64>,
     routine_meta: HashMap<u64, (Vec<TypeId>, TypeId)>,
     global_count: usize,
 }
@@ -35,7 +38,7 @@ impl<'a> Compiler<'a> {
             bytecode: Vec::new(),
             global_init: Vec::new(),
             fresh_label_counter: 0,
-            routines_labels: HashMap::new(),
+            routines_labels: BTreeMap::new(),
             routine_meta: HashMap::new(),
             global_count: 0,
         };
