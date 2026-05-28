@@ -4,9 +4,9 @@ use std::{
 };
 
 use ast::{
-    AnalysisError, AnalysisResult, BinaryOperator, Binding, Bindings, Block, Decl, Expression,
-    Interner, Literal, LvalueExpression, Program as AST, Representation, Routine, RoutineBody,
-    RoutineDecl, Statement, Type, TypeId, UnaryOperator, VarDecl,
+    BinaryOperator, Binding, Bindings, Block, Decl, Expression, Interner, Literal,
+    LvalueExpression, Program as AST, Representation, Routine, RoutineBody, RoutineDecl, Statement,
+    Type, TypeId, UnaryOperator, VarDecl,
 };
 use common::{Identifier, Integer, Location, Position, RawIdentifier, Real, VarLoc};
 
@@ -183,64 +183,56 @@ impl<'a> Compiler<'a> {
         result
     }
 
-    fn compile_lvalue_expr(&mut self, expr: &LvalueExpression) -> AnalysisResult<()> {
+    fn compile_lvalue_expr(&mut self, expr: &LvalueExpression) {
         match expr {
             LvalueExpression::Identifier(identifier) => {
                 self.bytecode.push(Instruction::AddressOf {
-                    loc: self.bindings[identifier].ensure_is_var()?.relative_location,
+                    loc: self.bindings[identifier]
+                        .ensure_is_var()
+                        .expect("Shouldn't pass typecheck otherwise")
+                        .relative_location,
                 });
-                Ok(())
             }
             LvalueExpression::Member {
                 lhs, member_offset, ..
             } => {
-                self.compile_lvalue_expr(lhs)?;
+                self.compile_lvalue_expr(lhs);
                 self.bytecode.push(Instruction::FieldAddress {
                     field_offset: *member_offset,
                 });
-                Ok(())
             }
             LvalueExpression::Index { lhs, index } => {
-                self.compile_expr(index)?;
-                self.compile_lvalue_expr(lhs)?;
+                self.compile_expr(index);
+                self.compile_lvalue_expr(lhs);
                 self.bytecode.push(Instruction::ElementAddress);
-                Ok(())
             }
         }
     }
 
-    fn compile_new(
-        &mut self,
-        t: &Rc<Type>,
-        fields: &[(RawIdentifier, Rc<Expression>)],
-    ) -> AnalysisResult<()> {
-        let effective_type = self.bindings.get_effective_type(t)?;
+    fn compile_new(&mut self, t: &Rc<Type>, fields: &[(RawIdentifier, Rc<Expression>)]) {
+        let effective_type = self.bindings.unwrap_effective_type(t);
 
         match effective_type.as_ref() {
             Type::Int | Type::Real | Type::Bool | Type::Null => {
-                return Err(AnalysisError {
-                    what: "Unboxed types can not be new-constructed".to_string(),
-                });
+                unreachable!("Unboxed types can not be new-constructed")
             }
             Type::Alias(_) => {
-                return Err(AnalysisError {
-                    what: "Effective type can not be alias".to_string(),
-                });
+                unreachable!("Effective type can not be alias")
             }
             Type::Record(record_description) => {
                 self.bytecode.push(Instruction::AllocRecord {
-                    type_id: self
-                        .bindings
-                        .get_type_representation(t, &mut self.interner)?,
+                    type_id: self.bindings.get_type_representation(t, &mut self.interner),
                     size: record_description.fields.len() as u64,
                 });
 
                 for (name, expr) in fields {
-                    let field_offset = record_description.get_field_index(name)?;
+                    let field_offset = record_description
+                        .get_field_index(name)
+                        .expect("Wouldn't pass typecheck");
                     self.bytecode.push(Instruction::Dup);
                     self.bytecode
                         .push(Instruction::FieldAddress { field_offset });
-                    self.compile_expr(expr)?;
+                    self.compile_expr(expr);
                     self.bytecode.push(Instruction::StoreAddress);
                 }
             }
@@ -249,42 +241,37 @@ impl<'a> Compiler<'a> {
                     unreachable!()
                 };
                 self.bytecode.push(Instruction::AllocArray {
-                    type_id: self
-                        .bindings
-                        .get_type_representation(t, &mut self.interner)?,
+                    type_id: self.bindings.get_type_representation(t, &mut self.interner),
                     size: length
                         .try_into()
                         .expect("Internal compiler error, too long array"),
                 })
             }
         }
-        Ok(())
     }
 
-    fn compile_new_array(
-        &mut self,
-        element_type: &Rc<Type>,
-        length: &Rc<Expression>,
-    ) -> AnalysisResult<()> {
-        self.compile_expr(length)?;
+    fn compile_new_array(&mut self, element_type: &Rc<Type>, length: &Rc<Expression>) {
+        self.compile_expr(length);
         self.bytecode.push(Instruction::AllocArrayDynamic {
             type_id: self
                 .bindings
-                .get_type_representation(element_type, &mut self.interner)?,
+                .get_type_representation(element_type, &mut self.interner),
         });
-        Ok(())
     }
 
-    fn compile_expr(&mut self, expr: &Expression) -> AnalysisResult<()> {
+    fn compile_expr(&mut self, expr: &Expression) {
         match expr {
             Expression::LvalueToRvalue(lvalue_expression) => match lvalue_expression.as_ref() {
                 LvalueExpression::Identifier(identifier) => {
                     self.bytecode.push(Instruction::Load {
-                        loc: self.bindings[identifier].ensure_is_var()?.relative_location,
+                        loc: self.bindings[identifier]
+                            .ensure_is_var()
+                            .expect("Wouldn't pass typecheck otherwise")
+                            .relative_location,
                     });
                 }
                 LvalueExpression::Member { .. } | LvalueExpression::Index { .. } => {
-                    self.compile_lvalue_expr(lvalue_expression)?;
+                    self.compile_lvalue_expr(lvalue_expression);
                     self.bytecode.push(Instruction::LoadAddress);
                 }
             },
@@ -299,74 +286,63 @@ impl<'a> Compiler<'a> {
             }
             Expression::Call { callee, args } => {
                 for arg in args {
-                    self.compile_expr(arg)?;
+                    self.compile_expr(arg);
                 }
-                let function_label = self.routines_labels.get(callee).ok_or(AnalysisError {
-                    what: format!("Unknown function {callee}"),
-                })?;
                 self.bytecode.push(Instruction::Call {
-                    function_label: *function_label,
+                    function_label: self.routines_labels[callee],
                 });
             }
             Expression::BinOp { op, lhs, rhs } => {
-                self.compile_expr(lhs)?;
-                self.compile_expr(rhs)?;
+                self.compile_expr(lhs);
+                self.compile_expr(rhs);
                 self.bytecode.push(Instruction::BinOp { op: *op });
             }
             Expression::UnOp { op, operand } => {
-                self.compile_expr(operand)?;
+                self.compile_expr(operand);
                 self.bytecode.push(Instruction::UnOp { op: *op });
             }
-            Expression::Cast { operand, target: _ } => {
-                self.compile_expr(operand)?;
-            }
+            Expression::Cast { operand, target: _ } => self.compile_expr(operand),
             Expression::New { t, fields } => {
-                self.compile_new(t, fields.as_deref().unwrap_or_default())?
+                self.compile_new(t, fields.as_deref().unwrap_or_default())
             }
-            Expression::NewArray { elements, length } => {
-                self.compile_new_array(elements, length)?;
-            }
+            Expression::NewArray { elements, length } => self.compile_new_array(elements, length),
             Expression::LengthOf { arr } => {
-                self.compile_expr(arr)?;
+                self.compile_expr(arr);
                 self.bytecode.push(Instruction::ArraySize);
             }
             Expression::Null => {
                 self.bytecode.push(Instruction::NullConst);
             }
             Expression::IntToBool(expression) => {
-                self.compile_expr(expression)?;
+                self.compile_expr(expression);
                 self.bytecode.push(Instruction::IntToBool);
             }
             Expression::BoolToInt(expression) => {
-                self.compile_expr(expression)?;
+                self.compile_expr(expression);
             }
             Expression::RealToInt(expression) => {
-                self.compile_expr(expression)?;
+                self.compile_expr(expression);
                 self.bytecode.push(Instruction::RealToInt);
             }
             Expression::IntToReal(expression) => {
-                self.compile_expr(expression)?;
+                self.compile_expr(expression);
                 self.bytecode.push(Instruction::IntToReal);
             }
         }
-
-        Ok(())
     }
 
-    fn compile_block(&mut self, block: &Block) -> AnalysisResult<()> {
+    fn compile_block(&mut self, block: &Block) {
         for statement in &block.stmts {
-            self.compile_statement(statement)?
+            self.compile_statement(statement)
         }
 
         // Discard local variables
         self.bytecode
             .push(Instruction::DropMany(block.locals_count));
-
-        Ok(())
     }
 
-    #[expect(clippy::too_many_lines, reason = "This lint is useless")]
-    fn compile_statement(&mut self, stmt: &Statement) -> AnalysisResult<()> {
+    #[expect(clippy::too_many_lines, reason = "giant switch")]
+    fn compile_statement(&mut self, stmt: &Statement) {
         match stmt {
             &Statement::Panic {
                 pos: Position { line, column },
@@ -381,14 +357,17 @@ impl<'a> Compiler<'a> {
             Statement::Assignment { lhs, rhs } => match lhs.as_ref() {
                 LvalueExpression::Identifier(identifier) => {
                     // Microoptimisation: use direct Store instruction instead of calculating address
-                    self.compile_expr(rhs)?;
+                    self.compile_expr(rhs);
                     self.bytecode.push(Instruction::Store {
-                        loc: self.bindings[identifier].ensure_is_var()?.relative_location,
+                        loc: self.bindings[identifier]
+                            .ensure_is_var()
+                            .expect("Assignment to a non-variable?")
+                            .relative_location,
                     });
                 }
                 LvalueExpression::Index { .. } | LvalueExpression::Member { .. } => {
-                    self.compile_lvalue_expr(lhs)?;
-                    self.compile_expr(rhs)?;
+                    self.compile_lvalue_expr(lhs);
+                    self.compile_expr(rhs);
                     self.bytecode.push(Instruction::StoreAddress);
                 }
             },
@@ -400,16 +379,16 @@ impl<'a> Compiler<'a> {
                     label: condition_label,
                 });
                 self.bytecode.push(Instruction::Label { id: body_label });
-                self.compile_block(body)?;
+                self.compile_block(body);
                 self.bytecode.push(Instruction::Label {
                     id: condition_label,
                 });
-                self.compile_expr(condition)?;
+                self.compile_expr(condition);
                 self.bytecode
                     .push(Instruction::JumpNotZero { label: body_label });
             }
             Statement::Expr(expression) => {
-                self.compile_expr(expression)?;
+                self.compile_expr(expression);
                 self.bytecode.push(Instruction::Drop);
             }
             Statement::If {
@@ -418,15 +397,15 @@ impl<'a> Compiler<'a> {
                 on_false,
             } => {
                 let on_false_label = self.get_fresh_label();
-                self.compile_expr(condition)?;
+                self.compile_expr(condition);
                 self.bytecode.push(Instruction::JumpZero {
                     label: on_false_label,
                 });
-                self.compile_block(on_true)?;
+                self.compile_block(on_true);
                 self.bytecode
                     .push(Instruction::Label { id: on_false_label });
                 if let Some(on_false) = on_false {
-                    self.compile_block(on_false)?;
+                    self.compile_block(on_false);
                 }
             }
             Statement::For {
@@ -439,13 +418,13 @@ impl<'a> Compiler<'a> {
                 let body_label = self.get_fresh_label();
                 let condition_label = self.get_fresh_label();
 
-                self.compile_expr(lower_bound)?; // the current stack top is a counter location, so that line initialises the counter
+                self.compile_expr(lower_bound); // the current stack top is a counter location, so that line initialises the counter
 
                 self.bytecode.push(Instruction::Jump {
                     label: condition_label,
                 });
                 self.bytecode.push(Instruction::Label { id: body_label });
-                self.compile_block(body)?;
+                self.compile_block(body);
 
                 let operator = match order {
                     common::LoopOrder::Direct => BinaryOperator::Int(ast::IntBinOp::Add),
@@ -466,16 +445,19 @@ impl<'a> Compiler<'a> {
                         .into(),
                     }
                     .into(),
-                })?;
+                });
 
                 self.bytecode.push(Instruction::Label {
                     id: condition_label,
                 });
 
                 self.bytecode.push(Instruction::Load {
-                    loc: self.bindings[counter].ensure_is_var()?.relative_location,
+                    loc: self.bindings[counter]
+                        .ensure_is_var()
+                        .expect("Counter isn't a variable?")
+                        .relative_location,
                 });
-                self.compile_expr(upper_bound)?;
+                self.compile_expr(upper_bound);
 
                 match order {
                     common::LoopOrder::Direct => self.bytecode.push(Instruction::BinOp {
@@ -521,9 +503,9 @@ impl<'a> Compiler<'a> {
                         .into(),
                     )
                     .into(),
-                })?;
+                });
 
-                self.compile_block(body)?;
+                self.compile_block(body);
 
                 self.compile_statement(&Statement::Assignment {
                     lhs: Rc::clone(&index_expr),
@@ -537,7 +519,7 @@ impl<'a> Compiler<'a> {
                         .into(),
                     }
                     .into(),
-                })?;
+                });
 
                 self.bytecode.push(Instruction::Label {
                     id: condition_label,
@@ -550,7 +532,7 @@ impl<'a> Compiler<'a> {
                         arr: Expression::LvalueToRvalue(Rc::clone(collection)).into(),
                     }
                     .into(),
-                })?;
+                });
 
                 self.bytecode
                     .push(Instruction::JumpNotZero { label: body_label });
@@ -558,15 +540,13 @@ impl<'a> Compiler<'a> {
                 self.bytecode.push(Instruction::DropMany(2));
             }
             Statement::Print { value, t } => {
-                self.compile_expr(value)?;
+                self.compile_expr(value);
                 self.bytecode.push(Instruction::Print {
-                    type_id: self
-                        .bindings
-                        .get_type_representation(t, &mut self.interner)?,
+                    type_id: self.bindings.get_type_representation(t, &mut self.interner),
                 });
             }
             Statement::Return { value } => {
-                self.compile_expr(value)?;
+                self.compile_expr(value);
                 self.bytecode.push(Instruction::Ret);
             }
 
@@ -578,18 +558,19 @@ impl<'a> Compiler<'a> {
                 }) => {
                     let initialiser = match initialiser {
                         Some(initialiser) => initialiser.as_ref(),
-                        None => &self.bindings.get_default_initialiser(t)?,
+                        None => &self
+                            .bindings
+                            .get_default_initialiser(t)
+                            .expect("Shouldn't have any invalid aliases at this point"),
                     };
 
                     // Local variable initialisation is just a `push`
-                    self.compile_expr(initialiser)?;
+                    self.compile_expr(initialiser);
                 }
 
                 ast::LocalDecl::Type(_) | ast::LocalDecl::Const(_) => (),
             },
         }
-
-        Ok(())
     }
 
     fn collect_routines(&mut self, program: &AST) {
@@ -601,7 +582,7 @@ impl<'a> Compiler<'a> {
         }
     }
 
-    fn compile(&mut self, program: &AST) -> AnalysisResult<()> {
+    fn compile(&mut self, program: &AST) {
         self.global_count = program
             .globals
             .iter()
@@ -616,13 +597,17 @@ impl<'a> Compiler<'a> {
 
                     let initialiser = match &v.initialiser {
                         Some(expr) => Rc::clone(expr),
-                        None => Rc::new(self.bindings.get_default_initialiser(&v.t)?),
+                        None => Rc::new(
+                            self.bindings
+                                .get_default_initialiser(&v.t)
+                                .expect("Shouldn't have any invalid aliases at this point"),
+                        ),
                     };
 
                     self.compile_statement(&Statement::Assignment {
                         lhs: LvalueExpression::Identifier(name.clone()).into(),
                         rhs: initialiser,
-                    })?;
+                    });
 
                     let mut global_init = std::mem::take(&mut self.bytecode);
                     self.bytecode = bytecode;
@@ -645,10 +630,10 @@ impl<'a> Compiler<'a> {
                             .map(|(_, t)| {
                                 self.bindings.get_type_representation(t, &mut self.interner)
                             })
-                            .collect::<Result<_, _>>()?;
+                            .collect();
                         let return_type_id = self
                             .bindings
-                            .get_type_representation(&signature.return_type, &mut self.interner)?;
+                            .get_type_representation(&signature.return_type, &mut self.interner);
                         let prev = self
                             .routine_meta
                             .insert(label_id, (arg_type_ids, return_type_id));
@@ -659,12 +644,12 @@ impl<'a> Compiler<'a> {
 
                         match body {
                             RoutineBody::Block(block) => {
-                                self.compile_block(block)?;
+                                self.compile_block(block);
                                 self.bytecode.push(Instruction::NullConst);
                                 self.bytecode.push(Instruction::Ret);
                             }
                             RoutineBody::Expression(expression) => {
-                                self.compile_expr(expression)?;
+                                self.compile_expr(expression);
                                 self.bytecode.push(Instruction::Ret);
                             }
                         }
@@ -673,7 +658,6 @@ impl<'a> Compiler<'a> {
                 Decl::Const(_) | Decl::Type(_) => {}
             }
         }
-        Ok(())
     }
 }
 
@@ -730,9 +714,10 @@ impl From<Compiler<'_>> for Program {
     }
 }
 
-pub fn compile(program: &AST) -> AnalysisResult<Program> {
+#[must_use]
+pub fn compile(program: &AST) -> Program {
     let mut compiler = Compiler::new(&program.bindings);
     compiler.collect_routines(program);
-    compiler.compile(program)?;
-    Ok(compiler.into())
+    compiler.compile(program);
+    compiler.into()
 }

@@ -5,7 +5,7 @@ fn compile(src: &str) -> Result<String, core::fmt::Error> {
 
     let program = parser::parse_program(lexer::Lexer::from(src)).expect("Failed to parse");
     let program = ast::convert(&program).expect("Failed to typecheck");
-    let program = codegen::compile(&program).expect("Failed to compiler");
+    let program = codegen::compile(&program);
     let mut result = String::new();
 
     let mut column = 0;

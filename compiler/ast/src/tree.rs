@@ -531,51 +531,54 @@ impl Bindings {
         }
     }
 
+    #[must_use]
+    pub fn unwrap_effective_type<'a>(&'a self, t: &'a Rc<Type>) -> &'a Rc<Type> {
+        self.get_effective_type(t)
+            .expect("Internal compiler error: trying to get an effective type of a non-type alias")
+    }
+
     pub fn get_type_representation<'a>(
         &'a self,
         t: &'a Rc<Type>,
         interner: &mut Interner,
-    ) -> AnalysisResult<TypeId> {
-        let representation = match self.get_effective_type(t)?.as_ref() {
+    ) -> TypeId {
+        let representation = match self.unwrap_effective_type(t).as_ref() {
             Type::Int => Representation::IntegerRepresentation,
             Type::Real => Representation::RealRepresentation,
             Type::Bool => Representation::BooleanRepresentation,
             Type::Null => Representation::NullRepresentation,
             Type::Alias(_) => {
-                return Err(AnalysisError {
-                    what: "Effective type can not be alias".to_string(),
-                });
+                unreachable!("Effective type can not be alias")
             }
             record @ Type::Record(RecordDescription { fields }) => {
                 let representation_fields: Vec<_> = fields
                     .iter()
                     .map(|FieldDescription { name, t }| {
                         debug_assert_ne!(
-                            self.get_effective_type(t)?.as_ref(),
+                            self.unwrap_effective_type(t).as_ref(),
                             record,
                             "Recursive types are not yet supported" // FIXME
                         );
-                        self.get_type_representation(t, interner)
-                            .map(|type_id| (name.clone(), type_id))
+                        (name.clone(), self.get_type_representation(t, interner))
                     })
-                    .collect::<AnalysisResult<_>>()?;
+                    .collect();
                 Representation::RecordRepresentation(RecordRepresentation {
                     fields: representation_fields,
                 })
             }
             array @ Type::Array(ArrayDescription { t, length: _ }) => {
                 debug_assert_ne!(
-                    self.get_effective_type(t)?.as_ref(),
+                    self.unwrap_effective_type(t).as_ref(),
                     array,
                     "Recursive arrays are not supported (yet?)"
                 );
                 Representation::ArrayRepresentation(ArrayRepresentation {
-                    element: self.get_type_representation(t, interner)?,
+                    element: self.get_type_representation(t, interner),
                 })
             }
         };
 
-        Ok(interner.intern(representation))
+        interner.intern(representation)
     }
 }
 

@@ -1,9 +1,10 @@
-use ast::AnalysisResult;
+use core::convert::Infallible;
 
-fn compile(src: &str) -> AnalysisResult<String> {
+#[expect(clippy::unnecessary_wraps, reason = "uniformity in the testing infra")]
+fn compile(src: &str) -> Result<String, Infallible> {
     let program = parser::parse_program(lexer::Lexer::from(src)).expect("Failed to parse");
     let program = ast::convert(&program).expect("Failed to typecheck");
-    let program = crate::compile(&program)?;
+    let program = crate::compile(&program);
     Ok(format!("{program:#?}\n"))
 }
 

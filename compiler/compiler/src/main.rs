@@ -25,7 +25,7 @@ fn main() -> anyhow::Result<()> {
     let tokens: Vec<_> = Lexer::from(source.as_str()).collect();
     let program = parse_program(tokens).context("Parsing error")?;
     let program = convert(&program).context("Typecheck error")?;
-    let program = compile(&program).context("Codegen error")?;
+    let program = compile(&program);
     File::create(out)
         .and_then(|mut out| program.serialize(&mut |bytes| out.write_all(bytes)))
         .context("IO error: cannot write output file")?;
