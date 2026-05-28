@@ -34,7 +34,7 @@ jobs:
           tool: cargo-llvm-cov
 
       - name: Gather data
-        run: cargo llvm-cov test --workspace --all-targets --lcov --output-path coverage.lcov
+        run: cargo llvm-cov test --workspace --lcov --output-path coverage.lcov
 
       - name: Upload report
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
@@ -82,7 +82,7 @@ jobs:
           tool: cargo-llvm-cov
 
       - name: Gather data
-        run: cargo llvm-cov test --workspace --all-targets --lcov --output-path baseline.lcov
+        run: cargo llvm-cov test --workspace --lcov --output-path baseline.lcov
 
       - name: Upload report
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
