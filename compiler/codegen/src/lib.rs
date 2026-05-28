@@ -10,13 +10,13 @@ use ast::{
 };
 use common::{Identifier, Integer, Location, Position, RawIdentifier, Real, VarLoc};
 
-use crate::data_representation::Interner;
+use crate::rtti::Interner;
 
-pub use crate::data_representation::{
+pub use crate::rtti::{
     ArrayRepresentation, RecordRepresentation, Representation, TypeId,
 };
 
-mod data_representation;
+mod rtti;
 #[cfg(test)]
 mod tests;
 

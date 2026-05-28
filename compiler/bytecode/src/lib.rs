@@ -69,6 +69,15 @@ impl ToByteCode for BinaryOperator {
     }
 }
 
+impl ToByteCode for TypeId {
+    type Output = [u8; 4];
+
+    fn to_bytecode(&self) -> Self::Output {
+        let Self(inner) = *self;
+        u32::try_from(inner).expect("Too many types").to_le_bytes()
+    }
+}
+
 #[expect(clippy::too_many_lines, reason = "giant switch")]
 impl ToByteCode for Instruction {
     type Output = Bytecode;
@@ -142,29 +151,21 @@ impl ToByteCode for Instruction {
             }
             Instruction::StoreAddress => Bytecode { opcode: 14, ..zero },
             Instruction::LoadAddress => Bytecode { opcode: 15, ..zero },
-            Instruction::AllocRecord {
-                type_id: TypeId(type_id),
-                size,
-            } => Bytecode {
+            Instruction::AllocRecord { type_id, size } => Bytecode {
                 opcode: 16,
-                arg32: type_id.to_le_bytes(),
+                arg32: type_id.to_bytecode(),
                 arg64: size.to_le_bytes(),
                 ..zero
             },
-            Instruction::AllocArray {
-                type_id: TypeId(type_id),
-                size,
-            } => Bytecode {
+            Instruction::AllocArray { type_id, size } => Bytecode {
                 opcode: 17,
-                arg32: type_id.to_le_bytes(),
+                arg32: type_id.to_bytecode(),
                 arg64: size.to_le_bytes(),
                 ..zero
             },
-            Instruction::AllocArrayDynamic {
-                type_id: TypeId(type_id),
-            } => Bytecode {
+            Instruction::AllocArrayDynamic { type_id } => Bytecode {
                 opcode: 30,
-                arg32: type_id.to_le_bytes(),
+                arg32: type_id.to_bytecode(),
                 ..zero
             },
             Instruction::ArraySize => Bytecode { opcode: 18, ..zero },
@@ -205,11 +206,9 @@ impl ToByteCode for Instruction {
             },
             Instruction::Ret => Bytecode { opcode: 25, ..zero },
 
-            Instruction::Print {
-                type_id: TypeId(type_id),
-            } => Bytecode {
+            Instruction::Print { type_id } => Bytecode {
                 opcode: 26,
-                arg32: type_id.to_le_bytes(),
+                arg32: type_id.to_bytecode(),
                 ..zero
             },
             Instruction::Panic { code, line, column } => Bytecode {

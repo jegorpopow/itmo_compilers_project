@@ -4,7 +4,17 @@ use std::collections::hash_map::Entry;
 use std::hash::Hash;
 
 #[derive(Debug, PartialEq, Eq, Hash, Clone, Copy)]
-pub struct TypeId(pub u32);
+pub struct TypeId(pub usize);
+
+impl TypeId {
+    #[must_use]
+    fn bump(&mut self) -> Self {
+        let result = *self;
+        let Self(inner) = self;
+        *inner += 1;
+        result
+    }
+}
 
 #[derive(Debug, Eq, PartialEq, Hash, Clone)]
 pub enum Representation {
@@ -26,11 +36,10 @@ pub struct ArrayRepresentation {
     pub element: TypeId,
 }
 
-#[derive(Debug, Default)]
+#[derive(Debug)]
 pub(crate) struct Interner {
-    // representations : Vec<Representation>,
     representation_to_id: HashMap<Representation, TypeId>,
-    current: u32,
+    next: TypeId,
 }
 
 impl Interner {
@@ -38,7 +47,7 @@ impl Interner {
     pub(crate) fn new() -> Self {
         let mut interner = Interner {
             representation_to_id: HashMap::new(),
-            current: 0,
+            next: TypeId(0),
         };
 
         assert_eq!(
@@ -68,11 +77,7 @@ impl Interner {
     pub(crate) fn intern(&mut self, rep: Representation) -> TypeId {
         *match self.representation_to_id.entry(rep) {
             Entry::Occupied(e) => e.into_mut(),
-            Entry::Vacant(e) => {
-                let id = TypeId(self.current);
-                self.current += 1;
-                e.insert(id)
-            }
+            Entry::Vacant(e) => e.insert(self.next.bump()),
         }
     }
 
@@ -84,7 +89,7 @@ impl Interner {
             reason = "The result is still deterministic"
         )]
         for (rep, id) in self.representation_to_id {
-            result[id.0 as usize] = rep
+            result[id.0] = rep
         }
 
         result
