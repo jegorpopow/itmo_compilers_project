@@ -8,7 +8,7 @@ use common::{
 pub use parser::Literal;
 
 use crate::{
-    AnalysisError, AnalysisResult, Typed,
+    AnalysisError, AnalysisResult, FieldDescription, RecordDescription, Typed,
     data_representation::{
         ArrayRepresentation, Interner, RecordRepresentation, Representation, TypeId,
     },
@@ -536,8 +536,7 @@ impl Bindings {
         t: &'a Rc<Type>,
         interner: &mut Interner,
     ) -> AnalysisResult<TypeId> {
-        let effective = self.get_effective_type(t)?;
-        let representation = match &**effective {
+        let representation = match self.get_effective_type(t)?.as_ref() {
             Type::Int => Representation::IntegerRepresentation,
             Type::Real => Representation::RealRepresentation,
             Type::Bool => Representation::BooleanRepresentation,
@@ -547,23 +546,31 @@ impl Bindings {
                     what: "Effective type can not be alias".to_string(),
                 });
             }
-            Type::Record(record_description) => {
-                // FIXME: handle recursive types
-                let representation_fields = record_description
-                    .fields
+            record @ Type::Record(RecordDescription { fields }) => {
+                let representation_fields: Vec<_> = fields
                     .iter()
-                    .map(|field| {
-                        self.get_type_representation(&field.t, interner)
-                            .map(|type_id| (field.name.clone(), type_id))
+                    .map(|FieldDescription { name, t }| {
+                        debug_assert_ne!(
+                            self.get_effective_type(t)?.as_ref(),
+                            record,
+                            "Recursive types are not yet supported" // FIXME
+                        );
+                        self.get_type_representation(t, interner)
+                            .map(|type_id| (name.clone(), type_id))
                     })
-                    .collect::<AnalysisResult<Vec<(RawIdentifier, TypeId)>>>()?;
+                    .collect::<AnalysisResult<_>>()?;
                 Representation::RecordRepresentation(RecordRepresentation {
                     fields: representation_fields,
                 })
             }
-            Type::Array(array_description) => {
+            array @ Type::Array(ArrayDescription { t, length: _ }) => {
+                debug_assert_ne!(
+                    self.get_effective_type(t)?.as_ref(),
+                    array,
+                    "Recursive arrays are not supported (yet?)"
+                );
                 Representation::ArrayRepresentation(ArrayRepresentation {
-                    element: self.get_type_representation(&array_description.t, interner)?,
+                    element: self.get_type_representation(t, interner)?,
                 })
             }
         };

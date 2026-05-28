@@ -723,7 +723,7 @@ impl From<Compiler<'_>> for Program {
         );
         Program {
             code,
-            rtti: RTTI(interner.to_table()),
+            rtti: RTTI(interner.into_table()),
             function_table,
             global_count,
         }

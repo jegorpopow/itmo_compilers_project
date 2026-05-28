@@ -1,5 +1,6 @@
 use common::RawIdentifier;
 use std::collections::HashMap;
+use std::collections::hash_map::Entry;
 use std::hash::Hash;
 
 #[derive(Debug, PartialEq, Eq, Hash, Clone, Copy)]
@@ -64,27 +65,24 @@ impl Interner {
         interner
     }
 
-    fn next_id(&mut self) -> TypeId {
-        self.current += 1;
-        TypeId(self.current - 1)
-    }
-
     pub fn intern(&mut self, rep: Representation) -> TypeId {
-        match self.representation_to_id.get(&rep) {
-            Some(id) => *id,
-            None => {
-                let fresh = self.next_id();
-                let _: Option<TypeId> = self.representation_to_id.insert(rep, fresh);
-                fresh
+        *match self.representation_to_id.entry(rep) {
+            Entry::Occupied(e) => e.into_mut(),
+            Entry::Vacant(e) => {
+                let id = TypeId(self.current);
+                self.current += 1;
+                e.insert(id)
             }
         }
     }
 
     #[must_use]
-    pub fn to_table(self) -> Vec<Representation> {
+    pub fn into_table(self) -> Vec<Representation> {
         let mut result = vec![Representation::NullRepresentation; self.representation_to_id.len()];
-
-        #[expect(clippy::iter_over_hash_type, reason = "The result is still deterministic")]
+        #[expect(
+            clippy::iter_over_hash_type,
+            reason = "The result is still deterministic"
+        )]
         for (rep, id) in self.representation_to_id {
             result[id.0 as usize] = rep
         }
