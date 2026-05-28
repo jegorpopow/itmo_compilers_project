@@ -1,0 +1,41 @@
+All numbers are encoded in little-endian.
+
+Format:
+
+Program:
+u32 magic = 0x494D_564D
+u32 version = 4
+u32 global_count
+u32 rtti_table_size
+`rtti_table_size` type descriptions (variable size, see below)
+u32 function_table_size
+`function_table_size` Function Records (variable size, see below)
+u32 instruction_count
+`instruction_count` 128-bit instructions (see compiler/bytecode/src/lib.rs)
+
+type description:
+[0u8, 0u8] null
+[0u8, 1u8] 64-bit int
+[0u8, 2u8] bool (for values: 1=true, 0=false)
+[0u8, 3u8] 64-bit float
+[1u8, RecordDescription] this is a record, see `RecordDescription` below
+[2u8, u32 type_id] this type is an array with element type described by `type_id`th RTTI table entry
+
+
+RecordDescription:
+u32 number_of_fields
+`number_of_fields` field description (variable size, see below)
+
+Field Description:
+u32 name_length
+`name_length` bytes of UTF-8 encoded field name (not NUL-terminated)
+u32 type_id
+
+Function Record:
+u32 name_length
+`name_length` bytes of UTF-8 encoded function name (not NUL-terminated)
+u64 label_id
+u32 arg_count
+`arg_count` type_id's (each is a `u32`) (types of arguments)
+u32 return_type_id
+

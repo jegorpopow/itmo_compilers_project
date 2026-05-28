@@ -18,15 +18,12 @@ struct CallFrame {
   // Arguments passed to this function (copied from eval stack before call).
   std::vector<Value> arguments;
 
-  // Local variables declared inside this function.
-  // Accessed by index via Location::Local.
-  std::vector<Value> locals;
+  // Index into Vm::eval_stack_ where this frame's locals begin.
+  // Locals live on the eval stack at eval_stack_[eval_stack_base + local_index].
+  std::size_t eval_stack_base = 0;
 
   // TypeId of the return value (kVoidTypeId for procedures).
   uint32_t return_type_id;
-
-  // True if this frame expects a return value to be left on eval stack.
-  bool has_return_value() const { return return_type_id != kVoidTypeId; }
 };
 
 }  // namespace vm

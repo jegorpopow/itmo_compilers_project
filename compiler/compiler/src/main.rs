@@ -1,37 +1,33 @@
 use std::env;
 use std::fs;
-use std::io;
+use std::fs::File;
+use std::io::Write;
+use std::path::Path;
 
 use anyhow::Context;
 use ast::convert;
-use interpreter::interpret;
+use bytecode::serialize;
+use codegen::compile;
 use lexer::Lexer;
 use parser::parse_program;
 
-// TODO: create a Driver module
-
 fn main() -> anyhow::Result<()> {
-    let file = env::args().nth(1).context("No file provided")?;
-    let source = fs::read_to_string(file).context("IO error: cannot read from input file")?;
+    let mut args = env::args().skip(1);
+    let file = args.next().context("No file provided")?;
+    let out = match args.next() {
+        None => Path::new(&file).with_extension("obj"),
+        Some(out) => out.into(),
+    };
+    drop(args);
+
+    let source = fs::read_to_string(&file).context("IO error: cannot read from input file")?;
 
     let tokens: Vec<_> = Lexer::from(source.as_str()).collect();
-    for token in &tokens {
-        eprintln!("{token}")
-    }
-
     let program = parse_program(tokens).context("Parsing error")?;
-
-    for decl in &program.0 {
-        eprintln!("{decl:?}");
-    }
-
     let program = convert(&program).context("Typecheck error")?;
-
-    for decl in &program.globals {
-        eprintln!("{decl:?}");
-    }
-
-    interpret(io::stdout(), &program).expect("Interpretation failed");
-
+    let program = compile(&program);
+    File::create(out)
+        .and_then(|mut out| serialize(&program, &mut |bytes| out.write_all(bytes)))
+        .context("IO error: cannot write output file")?;
     Ok(())
 }

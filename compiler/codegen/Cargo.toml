@@ -1,8 +1,10 @@
 [package]
 name = "codegen"
-description = "Definitions useful for other crates"
+description = "AST -> Instruction conversion"
 authors = [
   "Jegor Popow <juicedogegor@gmail.com>",
+  "Andrew Vlasenkov <andrew.vlasenkov70@gmail.com>",
+  "Pavel Grigorenko <GrigorenkoPV@niuitmo.ru>",
 ]
 version.workspace = true
 edition.workspace = true
@@ -15,3 +17,9 @@ workspace = true
 [dependencies]
 ast.path = "../ast"
 common.path = "../common"
+indexmap = "2.14.0"
+
+[dev-dependencies]
+lexer.path = "../lexer"
+parser.path = "../parser"
+testing.path = "../testing"

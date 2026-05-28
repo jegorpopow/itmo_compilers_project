@@ -1,0 +1,1015 @@
+Program {
+    global_count: 0,
+    rtti: RTTI(
+        [
+            NullRepresentation,
+            IntegerRepresentation,
+            BooleanRepresentation,
+            RealRepresentation,
+            ArrayRepresentation(
+                ArrayRepresentation {
+                    element: TypeId(
+                        5,
+                    ),
+                },
+            ),
+            RecordRepresentation(
+                RecordRepresentation {
+                    fields: [],
+                },
+            ),
+            ArrayRepresentation(
+                ArrayRepresentation {
+                    element: TypeId(
+                        1,
+                    ),
+                },
+            ),
+            ArrayRepresentation(
+                ArrayRepresentation {
+                    element: TypeId(
+                        1,
+                    ),
+                },
+            ),
+        ],
+    ),
+    function_table: FunctionTable(
+        [
+            FunctionRecord {
+                name: "get_first",
+                label_id: 1,
+                args: [
+                    TypeId(
+                        4,
+                    ),
+                ],
+                result: TypeId(
+                    5,
+                ),
+            },
+            FunctionRecord {
+                name: "get_second",
+                label_id: 2,
+                args: [
+                    TypeId(
+                        4,
+                    ),
+                ],
+                result: TypeId(
+                    5,
+                ),
+            },
+            FunctionRecord {
+                name: "objects",
+                label_id: 3,
+                args: [],
+                result: TypeId(
+                    0,
+                ),
+            },
+            FunctionRecord {
+                name: "forget_length",
+                label_id: 4,
+                args: [
+                    TypeId(
+                        6,
+                    ),
+                ],
+                result: TypeId(
+                    6,
+                ),
+            },
+            FunctionRecord {
+                name: "arrays",
+                label_id: 5,
+                args: [],
+                result: TypeId(
+                    0,
+                ),
+            },
+            FunctionRecord {
+                name: "main",
+                label_id: 6,
+                args: [],
+                result: TypeId(
+                    0,
+                ),
+            },
+        ],
+    ),
+    code: [
+        Label {
+            id: 0,
+        },
+        Call {
+            function_label: 6,
+        },
+        Drop,
+        NullConst,
+        Ret,
+        Label {
+            id: 1,
+        },
+        IntConst {
+            value: 1,
+        },
+        AddressOf {
+            loc: Argument(
+                0,
+            ),
+        },
+        ElementAddress,
+        LoadAddress,
+        Ret,
+        Label {
+            id: 2,
+        },
+        IntConst {
+            value: 2,
+        },
+        AddressOf {
+            loc: Argument(
+                0,
+            ),
+        },
+        ElementAddress,
+        LoadAddress,
+        Ret,
+        DropMany(
+            0,
+        ),
+        NullConst,
+        Ret,
+        Label {
+            id: 3,
+        },
+        NullConst,
+        Load {
+            loc: Local(
+                0,
+            ),
+        },
+        NullConst,
+        BinOp {
+            op: Eq(
+                Eq,
+            ),
+        },
+        UnOp {
+            op: BoolNeg,
+        },
+        JumpZero {
+            label: 7,
+        },
+        Panic {
+            code: 1,
+            line: 12,
+            column: 1,
+        },
+        DropMany(
+            0,
+        ),
+        Label {
+            id: 7,
+        },
+        AllocRecord {
+            type_id: TypeId(
+                5,
+            ),
+            size: 0,
+        },
+        Load {
+            loc: Local(
+                1,
+            ),
+        },
+        NullConst,
+        BinOp {
+            op: Eq(
+                Ne,
+            ),
+        },
+        UnOp {
+            op: BoolNeg,
+        },
+        JumpZero {
+            label: 8,
+        },
+        Panic {
+            code: 1,
+            line: 15,
+            column: 1,
+        },
+        DropMany(
+            0,
+        ),
+        Label {
+            id: 8,
+        },
+        Load {
+            loc: Local(
+                0,
+            ),
+        },
+        Load {
+            loc: Local(
+                1,
+            ),
+        },
+        BinOp {
+            op: Eq(
+                Ne,
+            ),
+        },
+        UnOp {
+            op: BoolNeg,
+        },
+        JumpZero {
+            label: 9,
+        },
+        Panic {
+            code: 1,
+            line: 16,
+            column: 1,
+        },
+        DropMany(
+            0,
+        ),
+        Label {
+            id: 9,
+        },
+        Load {
+            loc: Local(
+                1,
+            ),
+        },
+        Store {
+            loc: Local(
+                0,
+            ),
+        },
+        Load {
+            loc: Local(
+                0,
+            ),
+        },
+        Load {
+            loc: Local(
+                1,
+            ),
+        },
+        BinOp {
+            op: Eq(
+                Eq,
+            ),
+        },
+        UnOp {
+            op: BoolNeg,
+        },
+        JumpZero {
+            label: 10,
+        },
+        Panic {
+            code: 1,
+            line: 19,
+            column: 1,
+        },
+        DropMany(
+            0,
+        ),
+        Label {
+            id: 10,
+        },
+        AllocRecord {
+            type_id: TypeId(
+                5,
+            ),
+            size: 0,
+        },
+        Store {
+            loc: Local(
+                0,
+            ),
+        },
+        Load {
+            loc: Local(
+                0,
+            ),
+        },
+        Load {
+            loc: Local(
+                1,
+            ),
+        },
+        BinOp {
+            op: Eq(
+                Ne,
+            ),
+        },
+        UnOp {
+            op: BoolNeg,
+        },
+        JumpZero {
+            label: 11,
+        },
+        Panic {
+            code: 1,
+            line: 22,
+            column: 1,
+        },
+        DropMany(
+            0,
+        ),
+        Label {
+            id: 11,
+        },
+        IntConst {
+            value: 2,
+        },
+        AllocArrayDynamic {
+            type_id: TypeId(
+                5,
+            ),
+        },
+        IntConst {
+            value: 1,
+        },
+        AddressOf {
+            loc: Local(
+                2,
+            ),
+        },
+        ElementAddress,
+        Load {
+            loc: Local(
+                0,
+            ),
+        },
+        StoreAddress,
+        IntConst {
+            value: 2,
+        },
+        AddressOf {
+            loc: Local(
+                2,
+            ),
+        },
+        ElementAddress,
+        Load {
+            loc: Local(
+                1,
+            ),
+        },
+        StoreAddress,
+        IntConst {
+            value: 1,
+        },
+        AddressOf {
+            loc: Local(
+                2,
+            ),
+        },
+        ElementAddress,
+        LoadAddress,
+        Load {
+            loc: Local(
+                0,
+            ),
+        },
+        BinOp {
+            op: Eq(
+                Eq,
+            ),
+        },
+        UnOp {
+            op: BoolNeg,
+        },
+        JumpZero {
+            label: 12,
+        },
+        Panic {
+            code: 1,
+            line: 28,
+            column: 1,
+        },
+        DropMany(
+            0,
+        ),
+        Label {
+            id: 12,
+        },
+        IntConst {
+            value: 2,
+        },
+        AddressOf {
+            loc: Local(
+                2,
+            ),
+        },
+        ElementAddress,
+        LoadAddress,
+        Load {
+            loc: Local(
+                1,
+            ),
+        },
+        BinOp {
+            op: Eq(
+                Eq,
+            ),
+        },
+        UnOp {
+            op: BoolNeg,
+        },
+        JumpZero {
+            label: 13,
+        },
+        Panic {
+            code: 1,
+            line: 29,
+            column: 1,
+        },
+        DropMany(
+            0,
+        ),
+        Label {
+            id: 13,
+        },
+        Load {
+            loc: Local(
+                2,
+            ),
+        },
+        Call {
+            function_label: 1,
+        },
+        Load {
+            loc: Local(
+                0,
+            ),
+        },
+        BinOp {
+            op: Eq(
+                Eq,
+            ),
+        },
+        UnOp {
+            op: BoolNeg,
+        },
+        JumpZero {
+            label: 14,
+        },
+        Panic {
+            code: 1,
+            line: 31,
+            column: 1,
+        },
+        DropMany(
+            0,
+        ),
+        Label {
+            id: 14,
+        },
+        Load {
+            loc: Local(
+                2,
+            ),
+        },
+        Call {
+            function_label: 2,
+        },
+        Load {
+            loc: Local(
+                1,
+            ),
+        },
+        BinOp {
+            op: Eq(
+                Eq,
+            ),
+        },
+        UnOp {
+            op: BoolNeg,
+        },
+        JumpZero {
+            label: 15,
+        },
+        Panic {
+            code: 1,
+            line: 32,
+            column: 1,
+        },
+        DropMany(
+            0,
+        ),
+        Label {
+            id: 15,
+        },
+        DropMany(
+            3,
+        ),
+        NullConst,
+        Ret,
+        Label {
+            id: 4,
+        },
+        Load {
+            loc: Argument(
+                0,
+            ),
+        },
+        Ret,
+        DropMany(
+            0,
+        ),
+        NullConst,
+        Ret,
+        Label {
+            id: 5,
+        },
+        NullConst,
+        Load {
+            loc: Local(
+                0,
+            ),
+        },
+        NullConst,
+        BinOp {
+            op: Eq(
+                Eq,
+            ),
+        },
+        UnOp {
+            op: BoolNeg,
+        },
+        JumpZero {
+            label: 16,
+        },
+        Panic {
+            code: 1,
+            line: 41,
+            column: 1,
+        },
+        DropMany(
+            0,
+        ),
+        Label {
+            id: 16,
+        },
+        AllocArray {
+            type_id: TypeId(
+                7,
+            ),
+            size: 3,
+        },
+        Store {
+            loc: Local(
+                0,
+            ),
+        },
+        Load {
+            loc: Local(
+                0,
+            ),
+        },
+        NullConst,
+        BinOp {
+            op: Eq(
+                Ne,
+            ),
+        },
+        UnOp {
+            op: BoolNeg,
+        },
+        JumpZero {
+            label: 17,
+        },
+        Panic {
+            code: 1,
+            line: 44,
+            column: 1,
+        },
+        DropMany(
+            0,
+        ),
+        Label {
+            id: 17,
+        },
+        Load {
+            loc: Local(
+                0,
+            ),
+        },
+        Load {
+            loc: Local(
+                0,
+            ),
+        },
+        BinOp {
+            op: Eq(
+                Eq,
+            ),
+        },
+        UnOp {
+            op: BoolNeg,
+        },
+        JumpZero {
+            label: 18,
+        },
+        Panic {
+            code: 1,
+            line: 45,
+            column: 1,
+        },
+        DropMany(
+            0,
+        ),
+        Label {
+            id: 18,
+        },
+        Load {
+            loc: Local(
+                0,
+            ),
+        },
+        AllocArray {
+            type_id: TypeId(
+                7,
+            ),
+            size: 3,
+        },
+        BinOp {
+            op: Eq(
+                Ne,
+            ),
+        },
+        UnOp {
+            op: BoolNeg,
+        },
+        JumpZero {
+            label: 19,
+        },
+        Panic {
+            code: 1,
+            line: 46,
+            column: 1,
+        },
+        DropMany(
+            0,
+        ),
+        Label {
+            id: 19,
+        },
+        IntConst {
+            value: 1,
+        },
+        AddressOf {
+            loc: Local(
+                0,
+            ),
+        },
+        ElementAddress,
+        IntConst {
+            value: 10,
+        },
+        StoreAddress,
+        IntConst {
+            value: 2,
+        },
+        AddressOf {
+            loc: Local(
+                0,
+            ),
+        },
+        ElementAddress,
+        IntConst {
+            value: 20,
+        },
+        StoreAddress,
+        IntConst {
+            value: 3,
+        },
+        AddressOf {
+            loc: Local(
+                0,
+            ),
+        },
+        ElementAddress,
+        IntConst {
+            value: 30,
+        },
+        StoreAddress,
+        AllocArray {
+            type_id: TypeId(
+                7,
+            ),
+            size: 3,
+        },
+        Load {
+            loc: Local(
+                0,
+            ),
+        },
+        Load {
+            loc: Local(
+                1,
+            ),
+        },
+        BinOp {
+            op: Eq(
+                Ne,
+            ),
+        },
+        UnOp {
+            op: BoolNeg,
+        },
+        JumpZero {
+            label: 20,
+        },
+        Panic {
+            code: 1,
+            line: 55,
+            column: 1,
+        },
+        DropMany(
+            0,
+        ),
+        Label {
+            id: 20,
+        },
+        IntConst {
+            value: 1,
+        },
+        AddressOf {
+            loc: Local(
+                1,
+            ),
+        },
+        ElementAddress,
+        IntConst {
+            value: 1,
+        },
+        AddressOf {
+            loc: Local(
+                0,
+            ),
+        },
+        ElementAddress,
+        LoadAddress,
+        StoreAddress,
+        IntConst {
+            value: 2,
+        },
+        AddressOf {
+            loc: Local(
+                1,
+            ),
+        },
+        ElementAddress,
+        IntConst {
+            value: 2,
+        },
+        AddressOf {
+            loc: Local(
+                0,
+            ),
+        },
+        ElementAddress,
+        LoadAddress,
+        StoreAddress,
+        IntConst {
+            value: 3,
+        },
+        AddressOf {
+            loc: Local(
+                1,
+            ),
+        },
+        ElementAddress,
+        IntConst {
+            value: 3,
+        },
+        AddressOf {
+            loc: Local(
+                0,
+            ),
+        },
+        ElementAddress,
+        LoadAddress,
+        StoreAddress,
+        Load {
+            loc: Local(
+                0,
+            ),
+        },
+        ArraySize,
+        Load {
+            loc: Local(
+                1,
+            ),
+        },
+        ArraySize,
+        BinOp {
+            op: Eq(
+                Eq,
+            ),
+        },
+        UnOp {
+            op: BoolNeg,
+        },
+        JumpZero {
+            label: 21,
+        },
+        Panic {
+            code: 1,
+            line: 60,
+            column: 1,
+        },
+        DropMany(
+            0,
+        ),
+        Label {
+            id: 21,
+        },
+        IntConst {
+            value: 1,
+        },
+        AddressOf {
+            loc: Local(
+                0,
+            ),
+        },
+        ElementAddress,
+        LoadAddress,
+        IntConst {
+            value: 1,
+        },
+        AddressOf {
+            loc: Local(
+                1,
+            ),
+        },
+        ElementAddress,
+        LoadAddress,
+        BinOp {
+            op: Eq(
+                Eq,
+            ),
+        },
+        UnOp {
+            op: BoolNeg,
+        },
+        JumpZero {
+            label: 22,
+        },
+        Panic {
+            code: 1,
+            line: 61,
+            column: 1,
+        },
+        DropMany(
+            0,
+        ),
+        Label {
+            id: 22,
+        },
+        IntConst {
+            value: 2,
+        },
+        AddressOf {
+            loc: Local(
+                0,
+            ),
+        },
+        ElementAddress,
+        LoadAddress,
+        IntConst {
+            value: 2,
+        },
+        AddressOf {
+            loc: Local(
+                1,
+            ),
+        },
+        ElementAddress,
+        LoadAddress,
+        BinOp {
+            op: Eq(
+                Eq,
+            ),
+        },
+        UnOp {
+            op: BoolNeg,
+        },
+        JumpZero {
+            label: 23,
+        },
+        Panic {
+            code: 1,
+            line: 62,
+            column: 1,
+        },
+        DropMany(
+            0,
+        ),
+        Label {
+            id: 23,
+        },
+        IntConst {
+            value: 3,
+        },
+        AddressOf {
+            loc: Local(
+                0,
+            ),
+        },
+        ElementAddress,
+        LoadAddress,
+        IntConst {
+            value: 3,
+        },
+        AddressOf {
+            loc: Local(
+                1,
+            ),
+        },
+        ElementAddress,
+        LoadAddress,
+        BinOp {
+            op: Eq(
+                Eq,
+            ),
+        },
+        UnOp {
+            op: BoolNeg,
+        },
+        JumpZero {
+            label: 24,
+        },
+        Panic {
+            code: 1,
+            line: 63,
+            column: 1,
+        },
+        DropMany(
+            0,
+        ),
+        Label {
+            id: 24,
+        },
+        Load {
+            loc: Local(
+                0,
+            ),
+        },
+        Load {
+            loc: Local(
+                1,
+            ),
+        },
+        BinOp {
+            op: Eq(
+                Ne,
+            ),
+        },
+        UnOp {
+            op: BoolNeg,
+        },
+        JumpZero {
+            label: 25,
+        },
+        Panic {
+            code: 1,
+            line: 64,
+            column: 1,
+        },
+        DropMany(
+            0,
+        ),
+        Label {
+            id: 25,
+        },
+        DropMany(
+            2,
+        ),
+        NullConst,
+        Ret,
+        Label {
+            id: 6,
+        },
+        Call {
+            function_label: 3,
+        },
+        Drop,
+        Call {
+            function_label: 5,
+        },
+        Drop,
+        DropMany(
+            0,
+        ),
+        NullConst,
+        Ret,
+    ],
+}

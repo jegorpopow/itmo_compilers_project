@@ -1,0 +1,224 @@
+Program {
+    global_count: 0,
+    rtti: RTTI(
+        [
+            NullRepresentation,
+            IntegerRepresentation,
+            BooleanRepresentation,
+            RealRepresentation,
+        ],
+    ),
+    function_table: FunctionTable(
+        [
+            FunctionRecord {
+                name: "main",
+                label_id: 1,
+                args: [],
+                result: TypeId(
+                    0,
+                ),
+            },
+        ],
+    ),
+    code: [
+        Label {
+            id: 0,
+        },
+        Call {
+            function_label: 1,
+        },
+        Drop,
+        NullConst,
+        Ret,
+        Label {
+            id: 1,
+        },
+        RealConst {
+            value: NaN,
+        },
+        RealConst {
+            value: NaN,
+        },
+        BinOp {
+            op: Eq(
+                Eq,
+            ),
+        },
+        Print {
+            type_id: TypeId(
+                2,
+            ),
+        },
+        RealConst {
+            value: NaN,
+        },
+        RealConst {
+            value: NaN,
+        },
+        BinOp {
+            op: Eq(
+                Ne,
+            ),
+        },
+        Print {
+            type_id: TypeId(
+                2,
+            ),
+        },
+        RealConst {
+            value: NaN,
+        },
+        RealConst {
+            value: NaN,
+        },
+        BinOp {
+            op: Real(
+                Lt,
+            ),
+        },
+        Print {
+            type_id: TypeId(
+                2,
+            ),
+        },
+        RealConst {
+            value: NaN,
+        },
+        RealConst {
+            value: NaN,
+        },
+        BinOp {
+            op: Real(
+                Le,
+            ),
+        },
+        Print {
+            type_id: TypeId(
+                2,
+            ),
+        },
+        RealConst {
+            value: NaN,
+        },
+        RealConst {
+            value: NaN,
+        },
+        BinOp {
+            op: Real(
+                Gt,
+            ),
+        },
+        Print {
+            type_id: TypeId(
+                2,
+            ),
+        },
+        RealConst {
+            value: NaN,
+        },
+        RealConst {
+            value: NaN,
+        },
+        BinOp {
+            op: Real(
+                Ge,
+            ),
+        },
+        Print {
+            type_id: TypeId(
+                2,
+            ),
+        },
+        RealConst {
+            value: 0.1,
+        },
+        RealConst {
+            value: 0.1,
+        },
+        BinOp {
+            op: Real(
+                Add,
+            ),
+        },
+        RealConst {
+            value: 0.1,
+        },
+        BinOp {
+            op: Real(
+                Add,
+            ),
+        },
+        Load {
+            loc: Local(
+                0,
+            ),
+        },
+        Print {
+            type_id: TypeId(
+                3,
+            ),
+        },
+        Load {
+            loc: Local(
+                0,
+            ),
+        },
+        RealConst {
+            value: 0.3,
+        },
+        BinOp {
+            op: Eq(
+                Eq,
+            ),
+        },
+        Print {
+            type_id: TypeId(
+                2,
+            ),
+        },
+        RealConst {
+            value: 0.1,
+        },
+        RealConst {
+            value: 0.2,
+        },
+        BinOp {
+            op: Real(
+                Add,
+            ),
+        },
+        Load {
+            loc: Local(
+                1,
+            ),
+        },
+        Print {
+            type_id: TypeId(
+                3,
+            ),
+        },
+        Load {
+            loc: Local(
+                1,
+            ),
+        },
+        RealConst {
+            value: 0.3,
+        },
+        BinOp {
+            op: Eq(
+                Eq,
+            ),
+        },
+        Print {
+            type_id: TypeId(
+                2,
+            ),
+        },
+        DropMany(
+            2,
+        ),
+        NullConst,
+        Ret,
+    ],
+}

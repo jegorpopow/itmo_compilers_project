@@ -26,7 +26,8 @@ impl Stage {
             Self::Lexer => None,
             Self::Parser => Some(Self::Lexer),
             Self::AST => Some(Self::Parser),
-            Self::Run => Some(Self::AST),
+            Self::Interpreter | Self::Codegen => Some(Self::AST),
+            Self::Bytecode => Some(Self::Codegen),
         }
     }
 }

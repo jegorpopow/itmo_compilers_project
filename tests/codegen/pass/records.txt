@@ -1,0 +1,371 @@
+Program {
+    global_count: 0,
+    rtti: RTTI(
+        [
+            NullRepresentation,
+            IntegerRepresentation,
+            BooleanRepresentation,
+            RealRepresentation,
+            RecordRepresentation(
+                RecordRepresentation {
+                    fields: [
+                        (
+                            r"x",
+                            TypeId(
+                                3,
+                            ),
+                        ),
+                        (
+                            r"y",
+                            TypeId(
+                                3,
+                            ),
+                        ),
+                    ],
+                },
+            ),
+        ],
+    ),
+    function_table: FunctionTable(
+        [
+            FunctionRecord {
+                name: "point_of",
+                label_id: 1,
+                args: [
+                    TypeId(
+                        3,
+                    ),
+                    TypeId(
+                        3,
+                    ),
+                ],
+                result: TypeId(
+                    4,
+                ),
+            },
+            FunctionRecord {
+                name: "squared_distance",
+                label_id: 2,
+                args: [
+                    TypeId(
+                        4,
+                    ),
+                    TypeId(
+                        4,
+                    ),
+                ],
+                result: TypeId(
+                    3,
+                ),
+            },
+            FunctionRecord {
+                name: "middle",
+                label_id: 3,
+                args: [
+                    TypeId(
+                        4,
+                    ),
+                    TypeId(
+                        4,
+                    ),
+                ],
+                result: TypeId(
+                    4,
+                ),
+            },
+            FunctionRecord {
+                name: "main",
+                label_id: 4,
+                args: [],
+                result: TypeId(
+                    0,
+                ),
+            },
+        ],
+    ),
+    code: [
+        Label {
+            id: 0,
+        },
+        Call {
+            function_label: 4,
+        },
+        Drop,
+        NullConst,
+        Ret,
+        Label {
+            id: 1,
+        },
+        AllocRecord {
+            type_id: TypeId(
+                4,
+            ),
+            size: 2,
+        },
+        Dup,
+        FieldAddress {
+            field_offset: 0,
+        },
+        Load {
+            loc: Argument(
+                0,
+            ),
+        },
+        StoreAddress,
+        Dup,
+        FieldAddress {
+            field_offset: 1,
+        },
+        Load {
+            loc: Argument(
+                1,
+            ),
+        },
+        StoreAddress,
+        Ret,
+        Label {
+            id: 2,
+        },
+        AddressOf {
+            loc: Argument(
+                0,
+            ),
+        },
+        FieldAddress {
+            field_offset: 0,
+        },
+        LoadAddress,
+        AddressOf {
+            loc: Argument(
+                1,
+            ),
+        },
+        FieldAddress {
+            field_offset: 0,
+        },
+        LoadAddress,
+        BinOp {
+            op: Real(
+                Sub,
+            ),
+        },
+        AddressOf {
+            loc: Argument(
+                0,
+            ),
+        },
+        FieldAddress {
+            field_offset: 0,
+        },
+        LoadAddress,
+        AddressOf {
+            loc: Argument(
+                1,
+            ),
+        },
+        FieldAddress {
+            field_offset: 0,
+        },
+        LoadAddress,
+        BinOp {
+            op: Real(
+                Sub,
+            ),
+        },
+        BinOp {
+            op: Real(
+                Mul,
+            ),
+        },
+        AddressOf {
+            loc: Argument(
+                0,
+            ),
+        },
+        FieldAddress {
+            field_offset: 1,
+        },
+        LoadAddress,
+        AddressOf {
+            loc: Argument(
+                1,
+            ),
+        },
+        FieldAddress {
+            field_offset: 1,
+        },
+        LoadAddress,
+        BinOp {
+            op: Real(
+                Sub,
+            ),
+        },
+        AddressOf {
+            loc: Argument(
+                0,
+            ),
+        },
+        FieldAddress {
+            field_offset: 1,
+        },
+        LoadAddress,
+        AddressOf {
+            loc: Argument(
+                1,
+            ),
+        },
+        FieldAddress {
+            field_offset: 1,
+        },
+        LoadAddress,
+        BinOp {
+            op: Real(
+                Sub,
+            ),
+        },
+        BinOp {
+            op: Real(
+                Mul,
+            ),
+        },
+        BinOp {
+            op: Real(
+                Add,
+            ),
+        },
+        Ret,
+        DropMany(
+            0,
+        ),
+        NullConst,
+        Ret,
+        Label {
+            id: 3,
+        },
+        AddressOf {
+            loc: Argument(
+                0,
+            ),
+        },
+        FieldAddress {
+            field_offset: 0,
+        },
+        LoadAddress,
+        AddressOf {
+            loc: Argument(
+                1,
+            ),
+        },
+        FieldAddress {
+            field_offset: 0,
+        },
+        LoadAddress,
+        BinOp {
+            op: Real(
+                Add,
+            ),
+        },
+        IntConst {
+            value: 2,
+        },
+        IntToReal,
+        BinOp {
+            op: Real(
+                Div,
+            ),
+        },
+        AddressOf {
+            loc: Argument(
+                0,
+            ),
+        },
+        FieldAddress {
+            field_offset: 1,
+        },
+        LoadAddress,
+        AddressOf {
+            loc: Argument(
+                1,
+            ),
+        },
+        FieldAddress {
+            field_offset: 1,
+        },
+        LoadAddress,
+        BinOp {
+            op: Real(
+                Add,
+            ),
+        },
+        IntConst {
+            value: 2,
+        },
+        IntToReal,
+        BinOp {
+            op: Real(
+                Div,
+            ),
+        },
+        Call {
+            function_label: 1,
+        },
+        Ret,
+        Label {
+            id: 4,
+        },
+        RealConst {
+            value: 0.0,
+        },
+        RealConst {
+            value: 0.0,
+        },
+        Call {
+            function_label: 1,
+        },
+        RealConst {
+            value: 3.0,
+        },
+        RealConst {
+            value: 4.0,
+        },
+        Call {
+            function_label: 1,
+        },
+        Load {
+            loc: Local(
+                0,
+            ),
+        },
+        Load {
+            loc: Local(
+                1,
+            ),
+        },
+        Call {
+            function_label: 3,
+        },
+        Load {
+            loc: Local(
+                0,
+            ),
+        },
+        Load {
+            loc: Local(
+                1,
+            ),
+        },
+        Call {
+            function_label: 2,
+        },
+        Print {
+            type_id: TypeId(
+                3,
+            ),
+        },
+        DropMany(
+            3,
+        ),
+        NullConst,
+        Ret,
+    ],
+}

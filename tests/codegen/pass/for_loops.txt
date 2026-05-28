@@ -1,0 +1,794 @@
+Program {
+    global_count: 0,
+    rtti: RTTI(
+        [
+            NullRepresentation,
+            IntegerRepresentation,
+            BooleanRepresentation,
+            RealRepresentation,
+            ArrayRepresentation(
+                ArrayRepresentation {
+                    element: TypeId(
+                        1,
+                    ),
+                },
+            ),
+            ArrayRepresentation(
+                ArrayRepresentation {
+                    element: TypeId(
+                        1,
+                    ),
+                },
+            ),
+        ],
+    ),
+    function_table: FunctionTable(
+        [
+            FunctionRecord {
+                name: "array_length",
+                label_id: 4,
+                args: [
+                    TypeId(
+                        4,
+                    ),
+                ],
+                result: TypeId(
+                    1,
+                ),
+            },
+            FunctionRecord {
+                name: "bubble_sort",
+                label_id: 5,
+                args: [
+                    TypeId(
+                        4,
+                    ),
+                    TypeId(
+                        1,
+                    ),
+                ],
+                result: TypeId(
+                    0,
+                ),
+            },
+            FunctionRecord {
+                name: "sort_and_print_reversed_array",
+                label_id: 3,
+                args: [
+                    TypeId(
+                        4,
+                    ),
+                ],
+                result: TypeId(
+                    0,
+                ),
+            },
+            FunctionRecord {
+                name: "countdown",
+                label_id: 6,
+                args: [
+                    TypeId(
+                        1,
+                    ),
+                ],
+                result: TypeId(
+                    0,
+                ),
+            },
+            FunctionRecord {
+                name: "count",
+                label_id: 7,
+                args: [
+                    TypeId(
+                        1,
+                    ),
+                ],
+                result: TypeId(
+                    0,
+                ),
+            },
+            FunctionRecord {
+                name: "main",
+                label_id: 8,
+                args: [],
+                result: TypeId(
+                    0,
+                ),
+            },
+        ],
+    ),
+    code: [
+        Label {
+            id: 0,
+        },
+        Call {
+            function_label: 8,
+        },
+        Drop,
+        NullConst,
+        Ret,
+        Label {
+            id: 3,
+        },
+        Load {
+            loc: Argument(
+                0,
+            ),
+        },
+        Load {
+            loc: Argument(
+                0,
+            ),
+        },
+        ArraySize,
+        Call {
+            function_label: 5,
+        },
+        Drop,
+        IntConst {
+            value: 1,
+        },
+        NullConst,
+        Jump {
+            label: 10,
+        },
+        Label {
+            id: 9,
+        },
+        Load {
+            loc: Local(
+                0,
+            ),
+        },
+        AddressOf {
+            loc: Argument(
+                0,
+            ),
+        },
+        ElementAddress,
+        LoadAddress,
+        Store {
+            loc: Local(
+                1,
+            ),
+        },
+        Load {
+            loc: Local(
+                1,
+            ),
+        },
+        Print {
+            type_id: TypeId(
+                1,
+            ),
+        },
+        DropMany(
+            0,
+        ),
+        Load {
+            loc: Local(
+                0,
+            ),
+        },
+        IntConst {
+            value: 1,
+        },
+        BinOp {
+            op: Int(
+                Add,
+            ),
+        },
+        Store {
+            loc: Local(
+                0,
+            ),
+        },
+        Label {
+            id: 10,
+        },
+        Load {
+            loc: Local(
+                0,
+            ),
+        },
+        Load {
+            loc: Argument(
+                0,
+            ),
+        },
+        ArraySize,
+        BinOp {
+            op: Int(
+                Le,
+            ),
+        },
+        JumpNotZero {
+            label: 9,
+        },
+        DropMany(
+            2,
+        ),
+        DropMany(
+            0,
+        ),
+        NullConst,
+        Ret,
+        Label {
+            id: 4,
+        },
+        IntConst {
+            value: 0,
+        },
+        IntConst {
+            value: 1,
+        },
+        NullConst,
+        Jump {
+            label: 12,
+        },
+        Label {
+            id: 11,
+        },
+        Load {
+            loc: Local(
+                1,
+            ),
+        },
+        AddressOf {
+            loc: Argument(
+                0,
+            ),
+        },
+        ElementAddress,
+        LoadAddress,
+        Store {
+            loc: Local(
+                2,
+            ),
+        },
+        Load {
+            loc: Local(
+                0,
+            ),
+        },
+        IntConst {
+            value: 1,
+        },
+        BinOp {
+            op: Int(
+                Add,
+            ),
+        },
+        Store {
+            loc: Local(
+                0,
+            ),
+        },
+        DropMany(
+            0,
+        ),
+        Load {
+            loc: Local(
+                1,
+            ),
+        },
+        IntConst {
+            value: 1,
+        },
+        BinOp {
+            op: Int(
+                Add,
+            ),
+        },
+        Store {
+            loc: Local(
+                1,
+            ),
+        },
+        Label {
+            id: 12,
+        },
+        Load {
+            loc: Local(
+                1,
+            ),
+        },
+        Load {
+            loc: Argument(
+                0,
+            ),
+        },
+        ArraySize,
+        BinOp {
+            op: Int(
+                Le,
+            ),
+        },
+        JumpNotZero {
+            label: 11,
+        },
+        DropMany(
+            2,
+        ),
+        Load {
+            loc: Local(
+                0,
+            ),
+        },
+        Ret,
+        DropMany(
+            1,
+        ),
+        NullConst,
+        Ret,
+        Label {
+            id: 5,
+        },
+        IntConst {
+            value: 1,
+        },
+        Jump {
+            label: 14,
+        },
+        Label {
+            id: 13,
+        },
+        IntConst {
+            value: 2,
+        },
+        Jump {
+            label: 16,
+        },
+        Label {
+            id: 15,
+        },
+        Load {
+            loc: Local(
+                1,
+            ),
+        },
+        IntConst {
+            value: 1,
+        },
+        BinOp {
+            op: Int(
+                Sub,
+            ),
+        },
+        AddressOf {
+            loc: Argument(
+                0,
+            ),
+        },
+        ElementAddress,
+        LoadAddress,
+        Load {
+            loc: Local(
+                1,
+            ),
+        },
+        AddressOf {
+            loc: Argument(
+                0,
+            ),
+        },
+        ElementAddress,
+        LoadAddress,
+        BinOp {
+            op: Int(
+                Gt,
+            ),
+        },
+        JumpZero {
+            label: 17,
+        },
+        Load {
+            loc: Local(
+                1,
+            ),
+        },
+        AddressOf {
+            loc: Argument(
+                0,
+            ),
+        },
+        ElementAddress,
+        LoadAddress,
+        Load {
+            loc: Local(
+                1,
+            ),
+        },
+        AddressOf {
+            loc: Argument(
+                0,
+            ),
+        },
+        ElementAddress,
+        Load {
+            loc: Local(
+                1,
+            ),
+        },
+        IntConst {
+            value: 1,
+        },
+        BinOp {
+            op: Int(
+                Sub,
+            ),
+        },
+        AddressOf {
+            loc: Argument(
+                0,
+            ),
+        },
+        ElementAddress,
+        LoadAddress,
+        StoreAddress,
+        Load {
+            loc: Local(
+                1,
+            ),
+        },
+        IntConst {
+            value: 1,
+        },
+        BinOp {
+            op: Int(
+                Sub,
+            ),
+        },
+        AddressOf {
+            loc: Argument(
+                0,
+            ),
+        },
+        ElementAddress,
+        Load {
+            loc: Local(
+                2,
+            ),
+        },
+        StoreAddress,
+        DropMany(
+            1,
+        ),
+        Label {
+            id: 17,
+        },
+        DropMany(
+            0,
+        ),
+        Load {
+            loc: Local(
+                1,
+            ),
+        },
+        IntConst {
+            value: 1,
+        },
+        BinOp {
+            op: Int(
+                Add,
+            ),
+        },
+        Store {
+            loc: Local(
+                1,
+            ),
+        },
+        Label {
+            id: 16,
+        },
+        Load {
+            loc: Local(
+                1,
+            ),
+        },
+        Load {
+            loc: Local(
+                0,
+            ),
+        },
+        BinOp {
+            op: Int(
+                Le,
+            ),
+        },
+        JumpNotZero {
+            label: 15,
+        },
+        Drop,
+        DropMany(
+            0,
+        ),
+        Load {
+            loc: Local(
+                0,
+            ),
+        },
+        IntConst {
+            value: 1,
+        },
+        BinOp {
+            op: Int(
+                Add,
+            ),
+        },
+        Store {
+            loc: Local(
+                0,
+            ),
+        },
+        Label {
+            id: 14,
+        },
+        Load {
+            loc: Local(
+                0,
+            ),
+        },
+        Load {
+            loc: Argument(
+                1,
+            ),
+        },
+        BinOp {
+            op: Int(
+                Le,
+            ),
+        },
+        JumpNotZero {
+            label: 13,
+        },
+        Drop,
+        DropMany(
+            0,
+        ),
+        NullConst,
+        Ret,
+        Label {
+            id: 6,
+        },
+        Load {
+            loc: Argument(
+                0,
+            ),
+        },
+        Jump {
+            label: 19,
+        },
+        Label {
+            id: 18,
+        },
+        Load {
+            loc: Local(
+                0,
+            ),
+        },
+        Print {
+            type_id: TypeId(
+                1,
+            ),
+        },
+        DropMany(
+            0,
+        ),
+        Load {
+            loc: Local(
+                0,
+            ),
+        },
+        IntConst {
+            value: 1,
+        },
+        BinOp {
+            op: Int(
+                Sub,
+            ),
+        },
+        Store {
+            loc: Local(
+                0,
+            ),
+        },
+        Label {
+            id: 19,
+        },
+        Load {
+            loc: Local(
+                0,
+            ),
+        },
+        IntConst {
+            value: 0,
+        },
+        BinOp {
+            op: Int(
+                Ge,
+            ),
+        },
+        JumpNotZero {
+            label: 18,
+        },
+        Drop,
+        DropMany(
+            0,
+        ),
+        NullConst,
+        Ret,
+        Label {
+            id: 7,
+        },
+        IntConst {
+            value: 0,
+        },
+        Jump {
+            label: 21,
+        },
+        Label {
+            id: 20,
+        },
+        Load {
+            loc: Local(
+                0,
+            ),
+        },
+        Print {
+            type_id: TypeId(
+                1,
+            ),
+        },
+        DropMany(
+            0,
+        ),
+        Load {
+            loc: Local(
+                0,
+            ),
+        },
+        IntConst {
+            value: 1,
+        },
+        BinOp {
+            op: Int(
+                Add,
+            ),
+        },
+        Store {
+            loc: Local(
+                0,
+            ),
+        },
+        Label {
+            id: 21,
+        },
+        Load {
+            loc: Local(
+                0,
+            ),
+        },
+        Load {
+            loc: Argument(
+                0,
+            ),
+        },
+        BinOp {
+            op: Int(
+                Le,
+            ),
+        },
+        JumpNotZero {
+            label: 20,
+        },
+        Drop,
+        DropMany(
+            0,
+        ),
+        NullConst,
+        Ret,
+        Label {
+            id: 8,
+        },
+        AllocArray {
+            type_id: TypeId(
+                5,
+            ),
+            size: 5,
+        },
+        IntConst {
+            value: 1,
+        },
+        AddressOf {
+            loc: Local(
+                0,
+            ),
+        },
+        ElementAddress,
+        IntConst {
+            value: 3,
+        },
+        StoreAddress,
+        IntConst {
+            value: 2,
+        },
+        AddressOf {
+            loc: Local(
+                0,
+            ),
+        },
+        ElementAddress,
+        IntConst {
+            value: 5,
+        },
+        StoreAddress,
+        IntConst {
+            value: 3,
+        },
+        AddressOf {
+            loc: Local(
+                0,
+            ),
+        },
+        ElementAddress,
+        IntConst {
+            value: 1,
+        },
+        StoreAddress,
+        IntConst {
+            value: 4,
+        },
+        AddressOf {
+            loc: Local(
+                0,
+            ),
+        },
+        ElementAddress,
+        IntConst {
+            value: 2,
+        },
+        StoreAddress,
+        IntConst {
+            value: 5,
+        },
+        AddressOf {
+            loc: Local(
+                0,
+            ),
+        },
+        ElementAddress,
+        IntConst {
+            value: 4,
+        },
+        StoreAddress,
+        Load {
+            loc: Local(
+                0,
+            ),
+        },
+        Call {
+            function_label: 3,
+        },
+        Drop,
+        IntConst {
+            value: 3,
+        },
+        Call {
+            function_label: 7,
+        },
+        Drop,
+        IntConst {
+            value: 5,
+        },
+        Call {
+            function_label: 6,
+        },
+        Drop,
+        DropMany(
+            1,
+        ),
+        NullConst,
+        Ret,
+    ],
+}

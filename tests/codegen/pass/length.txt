@@ -1,0 +1,151 @@
+Program {
+    global_count: 0,
+    rtti: RTTI(
+        [
+            NullRepresentation,
+            IntegerRepresentation,
+            BooleanRepresentation,
+            RealRepresentation,
+            ArrayRepresentation(
+                ArrayRepresentation {
+                    element: TypeId(
+                        1,
+                    ),
+                },
+            ),
+            RecordRepresentation(
+                RecordRepresentation {
+                    fields: [
+                        (
+                            r"length",
+                            TypeId(
+                                3,
+                            ),
+                        ),
+                    ],
+                },
+            ),
+            ArrayRepresentation(
+                ArrayRepresentation {
+                    element: TypeId(
+                        1,
+                    ),
+                },
+            ),
+        ],
+    ),
+    function_table: FunctionTable(
+        [
+            FunctionRecord {
+                name: "print_length",
+                label_id: 1,
+                args: [
+                    TypeId(
+                        4,
+                    ),
+                    TypeId(
+                        5,
+                    ),
+                ],
+                result: TypeId(
+                    0,
+                ),
+            },
+            FunctionRecord {
+                name: "main",
+                label_id: 2,
+                args: [],
+                result: TypeId(
+                    0,
+                ),
+            },
+        ],
+    ),
+    code: [
+        Label {
+            id: 0,
+        },
+        Call {
+            function_label: 2,
+        },
+        Drop,
+        NullConst,
+        Ret,
+        Label {
+            id: 1,
+        },
+        Load {
+            loc: Argument(
+                0,
+            ),
+        },
+        ArraySize,
+        Print {
+            type_id: TypeId(
+                1,
+            ),
+        },
+        AddressOf {
+            loc: Argument(
+                1,
+            ),
+        },
+        FieldAddress {
+            field_offset: 0,
+        },
+        LoadAddress,
+        Print {
+            type_id: TypeId(
+                3,
+            ),
+        },
+        DropMany(
+            0,
+        ),
+        NullConst,
+        Ret,
+        Label {
+            id: 2,
+        },
+        AllocArray {
+            type_id: TypeId(
+                6,
+            ),
+            size: 5,
+        },
+        AllocRecord {
+            type_id: TypeId(
+                5,
+            ),
+            size: 1,
+        },
+        Dup,
+        FieldAddress {
+            field_offset: 0,
+        },
+        IntConst {
+            value: 10,
+        },
+        IntToReal,
+        StoreAddress,
+        Load {
+            loc: Local(
+                0,
+            ),
+        },
+        Load {
+            loc: Local(
+                1,
+            ),
+        },
+        Call {
+            function_label: 1,
+        },
+        Drop,
+        DropMany(
+            2,
+        ),
+        NullConst,
+        Ret,
+    ],
+}

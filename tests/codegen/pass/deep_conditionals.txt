@@ -1,0 +1,537 @@
+Program {
+    global_count: 0,
+    rtti: RTTI(
+        [
+            NullRepresentation,
+            IntegerRepresentation,
+            BooleanRepresentation,
+            RealRepresentation,
+        ],
+    ),
+    function_table: FunctionTable(
+        [
+            FunctionRecord {
+                name: "main",
+                label_id: 1,
+                args: [],
+                result: TypeId(
+                    0,
+                ),
+            },
+        ],
+    ),
+    code: [
+        Label {
+            id: 0,
+        },
+        Call {
+            function_label: 1,
+        },
+        Drop,
+        NullConst,
+        Ret,
+        Label {
+            id: 1,
+        },
+        IntConst {
+            value: 1,
+        },
+        IntConst {
+            value: 1,
+        },
+        IntConst {
+            value: 1,
+        },
+        IntConst {
+            value: 1,
+        },
+        IntConst {
+            value: 1,
+        },
+        IntConst {
+            value: 1,
+        },
+        IntConst {
+            value: 1,
+        },
+        Load {
+            loc: Local(
+                0,
+            ),
+        },
+        IntConst {
+            value: 1,
+        },
+        BinOp {
+            op: Eq(
+                Eq,
+            ),
+        },
+        JumpZero {
+            label: 2,
+        },
+        IntConst {
+            value: 1,
+        },
+        Print {
+            type_id: TypeId(
+                1,
+            ),
+        },
+        Load {
+            loc: Local(
+                1,
+            ),
+        },
+        IntConst {
+            value: 1,
+        },
+        BinOp {
+            op: Eq(
+                Eq,
+            ),
+        },
+        JumpZero {
+            label: 3,
+        },
+        IntConst {
+            value: 2,
+        },
+        Print {
+            type_id: TypeId(
+                1,
+            ),
+        },
+        Load {
+            loc: Local(
+                2,
+            ),
+        },
+        IntConst {
+            value: 1,
+        },
+        BinOp {
+            op: Eq(
+                Eq,
+            ),
+        },
+        JumpZero {
+            label: 4,
+        },
+        IntConst {
+            value: 3,
+        },
+        Print {
+            type_id: TypeId(
+                1,
+            ),
+        },
+        DropMany(
+            0,
+        ),
+        Label {
+            id: 4,
+        },
+        Load {
+            loc: Local(
+                3,
+            ),
+        },
+        IntConst {
+            value: 1,
+        },
+        BinOp {
+            op: Eq(
+                Eq,
+            ),
+        },
+        JumpZero {
+            label: 5,
+        },
+        IntConst {
+            value: 0,
+        },
+        Print {
+            type_id: TypeId(
+                1,
+            ),
+        },
+        DropMany(
+            0,
+        ),
+        Label {
+            id: 5,
+        },
+        DropMany(
+            0,
+        ),
+        DropMany(
+            0,
+        ),
+        Label {
+            id: 3,
+        },
+        Load {
+            loc: Local(
+                4,
+            ),
+        },
+        IntConst {
+            value: 1,
+        },
+        BinOp {
+            op: Eq(
+                Eq,
+            ),
+        },
+        JumpZero {
+            label: 6,
+        },
+        IntConst {
+            value: 0,
+        },
+        Print {
+            type_id: TypeId(
+                1,
+            ),
+        },
+        DropMany(
+            0,
+        ),
+        Label {
+            id: 6,
+        },
+        Load {
+            loc: Local(
+                5,
+            ),
+        },
+        IntConst {
+            value: 1,
+        },
+        BinOp {
+            op: Eq(
+                Eq,
+            ),
+        },
+        JumpZero {
+            label: 7,
+        },
+        IntConst {
+            value: 0,
+        },
+        Print {
+            type_id: TypeId(
+                1,
+            ),
+        },
+        DropMany(
+            0,
+        ),
+        Label {
+            id: 7,
+        },
+        DropMany(
+            0,
+        ),
+        DropMany(
+            0,
+        ),
+        Load {
+            loc: Local(
+                3,
+            ),
+        },
+        IntConst {
+            value: 1,
+        },
+        BinOp {
+            op: Eq(
+                Eq,
+            ),
+        },
+        JumpZero {
+            label: 8,
+        },
+        IntConst {
+            value: 4,
+        },
+        Print {
+            type_id: TypeId(
+                1,
+            ),
+        },
+        Load {
+            loc: Local(
+                4,
+            ),
+        },
+        IntConst {
+            value: 1,
+        },
+        BinOp {
+            op: Eq(
+                Eq,
+            ),
+        },
+        JumpZero {
+            label: 9,
+        },
+        IntConst {
+            value: 5,
+        },
+        Print {
+            type_id: TypeId(
+                1,
+            ),
+        },
+        Load {
+            loc: Local(
+                5,
+            ),
+        },
+        IntConst {
+            value: 1,
+        },
+        BinOp {
+            op: Eq(
+                Eq,
+            ),
+        },
+        JumpZero {
+            label: 10,
+        },
+        IntConst {
+            value: 6,
+        },
+        Print {
+            type_id: TypeId(
+                1,
+            ),
+        },
+        Load {
+            loc: Local(
+                6,
+            ),
+        },
+        IntConst {
+            value: 1,
+        },
+        BinOp {
+            op: Eq(
+                Eq,
+            ),
+        },
+        JumpZero {
+            label: 11,
+        },
+        IntConst {
+            value: 7,
+        },
+        Print {
+            type_id: TypeId(
+                1,
+            ),
+        },
+        DropMany(
+            0,
+        ),
+        Label {
+            id: 11,
+        },
+        IntConst {
+            value: 0,
+        },
+        Print {
+            type_id: TypeId(
+                1,
+            ),
+        },
+        DropMany(
+            0,
+        ),
+        DropMany(
+            0,
+        ),
+        Label {
+            id: 10,
+        },
+        IntConst {
+            value: 0,
+        },
+        Print {
+            type_id: TypeId(
+                1,
+            ),
+        },
+        DropMany(
+            0,
+        ),
+        DropMany(
+            0,
+        ),
+        Label {
+            id: 9,
+        },
+        IntConst {
+            value: 0,
+        },
+        Print {
+            type_id: TypeId(
+                1,
+            ),
+        },
+        DropMany(
+            0,
+        ),
+        DropMany(
+            0,
+        ),
+        Label {
+            id: 8,
+        },
+        Load {
+            loc: Local(
+                1,
+            ),
+        },
+        IntConst {
+            value: 1,
+        },
+        BinOp {
+            op: Eq(
+                Eq,
+            ),
+        },
+        JumpZero {
+            label: 12,
+        },
+        IntConst {
+            value: 0,
+        },
+        Print {
+            type_id: TypeId(
+                1,
+            ),
+        },
+        DropMany(
+            0,
+        ),
+        Label {
+            id: 12,
+        },
+        Load {
+            loc: Local(
+                2,
+            ),
+        },
+        IntConst {
+            value: 1,
+        },
+        BinOp {
+            op: Eq(
+                Eq,
+            ),
+        },
+        JumpZero {
+            label: 13,
+        },
+        IntConst {
+            value: 0,
+        },
+        Print {
+            type_id: TypeId(
+                1,
+            ),
+        },
+        DropMany(
+            0,
+        ),
+        Label {
+            id: 13,
+        },
+        DropMany(
+            0,
+        ),
+        DropMany(
+            0,
+        ),
+        DropMany(
+            0,
+        ),
+        Label {
+            id: 2,
+        },
+        Load {
+            loc: Local(
+                4,
+            ),
+        },
+        IntConst {
+            value: 1,
+        },
+        BinOp {
+            op: Eq(
+                Eq,
+            ),
+        },
+        JumpZero {
+            label: 14,
+        },
+        IntConst {
+            value: 0,
+        },
+        Print {
+            type_id: TypeId(
+                1,
+            ),
+        },
+        DropMany(
+            0,
+        ),
+        Label {
+            id: 14,
+        },
+        Load {
+            loc: Local(
+                6,
+            ),
+        },
+        IntConst {
+            value: 1,
+        },
+        BinOp {
+            op: Eq(
+                Eq,
+            ),
+        },
+        JumpZero {
+            label: 15,
+        },
+        IntConst {
+            value: 0,
+        },
+        Print {
+            type_id: TypeId(
+                1,
+            ),
+        },
+        DropMany(
+            0,
+        ),
+        Label {
+            id: 15,
+        },
+        DropMany(
+            0,
+        ),
+        DropMany(
+            0,
+        ),
+        DropMany(
+            7,
+        ),
+        NullConst,
+        Ret,
+    ],
+}

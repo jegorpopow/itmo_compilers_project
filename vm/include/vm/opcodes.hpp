@@ -32,10 +32,11 @@ enum class Opcode : uint8_t {
   kJumpCond      = 23,  // subopcode: 0=JumpZero, 1=JumpNotZero
   kCall          = 24,
   kRet           = 25,
-  kPrint         = 26,
-  kPanic         = 27,
-  // TODO: NullConst
-  // TODO: DropMany
+  kPrint              = 26,
+  kPanic              = 27,
+  kNullConst          = 28,
+  kDropMany           = 29,
+  kAllocArrayDynamic  = 30,
 };
 
 // Location kind for Load/Store/AddressOf subopcode.

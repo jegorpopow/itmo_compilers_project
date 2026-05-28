@@ -1,0 +1,224 @@
+Program {
+    global_count: 0,
+    rtti: RTTI(
+        [
+            NullRepresentation,
+            IntegerRepresentation,
+            BooleanRepresentation,
+            RealRepresentation,
+            ArrayRepresentation(
+                ArrayRepresentation {
+                    element: TypeId(
+                        3,
+                    ),
+                },
+            ),
+            ArrayRepresentation(
+                ArrayRepresentation {
+                    element: TypeId(
+                        1,
+                    ),
+                },
+            ),
+        ],
+    ),
+    function_table: FunctionTable(
+        [
+            FunctionRecord {
+                name: "meow",
+                label_id: 1,
+                args: [
+                    TypeId(
+                        4,
+                    ),
+                ],
+                result: TypeId(
+                    3,
+                ),
+            },
+            FunctionRecord {
+                name: "table_receiver",
+                label_id: 2,
+                args: [
+                    TypeId(
+                        5,
+                    ),
+                ],
+                result: TypeId(
+                    1,
+                ),
+            },
+            FunctionRecord {
+                name: "main",
+                label_id: 3,
+                args: [],
+                result: TypeId(
+                    1,
+                ),
+            },
+        ],
+    ),
+    code: [
+        Label {
+            id: 0,
+        },
+        Call {
+            function_label: 3,
+        },
+        Drop,
+        NullConst,
+        Ret,
+        Label {
+            id: 1,
+        },
+        IntConst {
+            value: 1,
+        },
+        AddressOf {
+            loc: Argument(
+                0,
+            ),
+        },
+        ElementAddress,
+        LoadAddress,
+        Ret,
+        DropMany(
+            0,
+        ),
+        NullConst,
+        Ret,
+        Label {
+            id: 2,
+        },
+        IntConst {
+            value: 100,
+        },
+        IntConst {
+            value: 2,
+        },
+        BinOp {
+            op: Int(
+                Mul,
+            ),
+        },
+        AddressOf {
+            loc: Argument(
+                0,
+            ),
+        },
+        ElementAddress,
+        LoadAddress,
+        Print {
+            type_id: TypeId(
+                1,
+            ),
+        },
+        IntConst {
+            value: 200,
+        },
+        IntConst {
+            value: 100,
+        },
+        BinOp {
+            op: Int(
+                Sub,
+            ),
+        },
+        AddressOf {
+            loc: Argument(
+                0,
+            ),
+        },
+        ElementAddress,
+        LoadAddress,
+        Ret,
+        DropMany(
+            0,
+        ),
+        NullConst,
+        Ret,
+        Label {
+            id: 3,
+        },
+        AllocArray {
+            type_id: TypeId(
+                5,
+            ),
+            size: 20000,
+        },
+        AllocArray {
+            type_id: TypeId(
+                5,
+            ),
+            size: 20000,
+        },
+        Call {
+            function_label: 2,
+        },
+        Drop,
+        IntConst {
+            value: 1,
+        },
+        AddressOf {
+            loc: Local(
+                0,
+            ),
+        },
+        ElementAddress,
+        LoadAddress,
+        Print {
+            type_id: TypeId(
+                1,
+            ),
+        },
+        IntConst {
+            value: 300,
+        },
+        IntConst {
+            value: 200,
+        },
+        BinOp {
+            op: Int(
+                Gt,
+            ),
+        },
+        JumpZero {
+            label: 4,
+        },
+        IntConst {
+            value: 300,
+        },
+        Print {
+            type_id: TypeId(
+                1,
+            ),
+        },
+        IntConst {
+            value: 400,
+        },
+        Print {
+            type_id: TypeId(
+                1,
+            ),
+        },
+        DropMany(
+            0,
+        ),
+        Label {
+            id: 4,
+        },
+        IntConst {
+            value: 300,
+        },
+        Print {
+            type_id: TypeId(
+                1,
+            ),
+        },
+        DropMany(
+            1,
+        ),
+        NullConst,
+        Ret,
+    ],
+}

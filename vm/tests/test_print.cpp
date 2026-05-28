@@ -169,7 +169,7 @@ TEST(Print, EmptyRecord) {
     instrs = {alloc, PrintInstr(kTypeId)};
   }
   auto out = RunAndCapture(std::move(instrs));
-  EXPECT_EQ(out, "record<10>{}\n");
+  EXPECT_EQ(out, "{ }\n");
 }
 
 TEST(Print, RecordWithPrimitiveFields) {
@@ -217,7 +217,7 @@ TEST(Print, RecordWithPrimitiveFields) {
   }
 
   auto out = RunAndCapture(std::move(instrs));
-  EXPECT_EQ(out, "record<11>{field_0=42, field_1=3.14, field_2=true}\n");
+  EXPECT_EQ(out, "{ field_0: 42, field_1: 3.14, field_2: true, }\n");
 }
 
 // ---- Array Print tests ------------------------------------------------------
@@ -250,7 +250,7 @@ TEST(Print, ArrayOfIntegers) {
   };
 
   auto out = RunAndCapture(std::move(instrs));
-  EXPECT_EQ(out, "array<20>[10, 20, 30]\n");
+  EXPECT_EQ(out, "[ 10, 20, 30, ]\n");
 }
 
 TEST(Print, NullReference) {
@@ -290,7 +290,7 @@ TEST(Print, NullReference) {
       PrintInstr(kOuterTypeId),
   };
   auto out = RunAndCapture(std::move(instrs2));
-  EXPECT_EQ(out, "record<31>{}\n");
+  EXPECT_EQ(out, "{ }\n");
 
   // Verify null ref formatting via direct FormatValue call in a helper
   // (avoids complex instruction sequences for a simple check).
