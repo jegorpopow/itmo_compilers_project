@@ -520,7 +520,11 @@ impl<'src, I: Iterator<Item = Lexeme<'src>>> Parser<'src, I> {
     }
 }
 
-#[expect(single_use_lifetimes, reason = "Cannot use `'_` in impl Trait")]
+#[expect(
+    clippy::allow_attributes,
+    reason = "`single_use_lifetimes` false positive fixed in 1.97: https://github.com/rust-lang/rust/pull/155346"
+)]
+#[allow(single_use_lifetimes, reason = "Cannot use `'_` in impl Trait")]
 pub fn parse_program<'src>(tokens: impl IntoIterator<Item = Lexeme<'src>>) -> FinalResult<Program> {
     let mut parser = Parser::new(tokens.into_iter());
     let program = parser.parse_program();
