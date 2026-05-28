@@ -42,24 +42,24 @@ impl Interner {
         };
 
         assert_eq!(
-            interner.intern(Representation::IntegerRepresentation),
+            interner.intern(Representation::NullRepresentation),
             TypeId(0),
-            "Integer type_id is 0"
+            "Null type_id is 0"
+        );
+        assert_eq!(
+            interner.intern(Representation::IntegerRepresentation),
+            TypeId(1),
+            "Integer type_id is 1"
         );
         assert_eq!(
             interner.intern(Representation::BooleanRepresentation),
-            TypeId(1),
-            "Boolean type_id is 1"
+            TypeId(2),
+            "Boolean type_id is 2"
         );
         assert_eq!(
             interner.intern(Representation::RealRepresentation),
-            TypeId(2),
-            "Real type_id is 2"
-        );
-        assert_eq!(
-            interner.intern(Representation::NullRepresentation),
             TypeId(3),
-            "Null type_id is 3"
+            "Real type_id is 3"
         );
 
         interner

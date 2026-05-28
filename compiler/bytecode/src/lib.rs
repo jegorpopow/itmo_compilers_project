@@ -363,10 +363,10 @@ impl Serialize for Bytecode {
 impl Serialize for Representation {
     fn serialize<E>(&self, sink: &mut impl FnMut(&[u8]) -> Result<(), E>) -> Result<(), E> {
         match self {
-            Self::IntegerRepresentation => sink(&[0, 0]),
-            Self::BooleanRepresentation => sink(&[0, 1]),
-            Self::RealRepresentation => sink(&[0, 2]),
-            Self::NullRepresentation => sink(&[0, 3]),
+            Self::NullRepresentation => sink(&[0, 0]),
+            Self::IntegerRepresentation => sink(&[0, 1]),
+            Self::BooleanRepresentation => sink(&[0, 2]),
+            Self::RealRepresentation => sink(&[0, 3]),
             Self::RecordRepresentation(repr) => {
                 sink(&[1])?;
                 repr.serialize(sink)
@@ -384,7 +384,7 @@ pub fn serialize<E>(
     sink: &mut impl FnMut(&[u8]) -> Result<(), E>,
 ) -> Result<(), E> {
     const MAGIC: u32 = 0x494D_564D;
-    const VERSION: u32 = 3;
+    const VERSION: u32 = 4;
 
     MAGIC.serialize(sink)?;
     VERSION.serialize(sink)?;

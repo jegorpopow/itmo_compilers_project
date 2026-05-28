@@ -2,10 +2,10 @@ Program {
     global_count: 0,
     rtti: RTTI(
         [
+            NullRepresentation,
             IntegerRepresentation,
             BooleanRepresentation,
             RealRepresentation,
-            NullRepresentation,
             RecordRepresentation(
                 RecordRepresentation {
                     fields: [],
@@ -21,7 +21,7 @@ Program {
             ArrayRepresentation(
                 ArrayRepresentation {
                     element: TypeId(
-                        0,
+                        1,
                     ),
                 },
             ),
@@ -58,7 +58,7 @@ Program {
                 label_id: 3,
                 args: [],
                 result: TypeId(
-                    3,
+                    0,
                 ),
             },
             FunctionRecord {
@@ -78,7 +78,7 @@ Program {
                 label_id: 5,
                 args: [],
                 result: TypeId(
-                    3,
+                    0,
                 ),
             },
             FunctionRecord {
@@ -86,7 +86,7 @@ Program {
                 label_id: 6,
                 args: [],
                 result: TypeId(
-                    3,
+                    0,
                 ),
             },
         ],

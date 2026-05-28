@@ -2,10 +2,10 @@ Program {
     global_count: 0,
     rtti: RTTI(
         [
+            NullRepresentation,
             IntegerRepresentation,
             BooleanRepresentation,
             RealRepresentation,
-            NullRepresentation,
         ],
     ),
     function_table: FunctionTable(
@@ -15,7 +15,7 @@ Program {
                 label_id: 1,
                 args: [],
                 result: TypeId(
-                    3,
+                    0,
                 ),
             },
         ],
@@ -90,7 +90,7 @@ Program {
         },
         Print {
             type_id: TypeId(
-                0,
+                1,
             ),
         },
         Load {
@@ -100,7 +100,7 @@ Program {
         },
         Print {
             type_id: TypeId(
-                0,
+                1,
             ),
         },
         Load {
@@ -110,7 +110,7 @@ Program {
         },
         Print {
             type_id: TypeId(
-                0,
+                1,
             ),
         },
         Load {
@@ -120,7 +120,7 @@ Program {
         },
         Print {
             type_id: TypeId(
-                0,
+                1,
             ),
         },
         Load {
@@ -130,7 +130,7 @@ Program {
         },
         Print {
             type_id: TypeId(
-                0,
+                1,
             ),
         },
         Load {
@@ -140,7 +140,7 @@ Program {
         },
         Print {
             type_id: TypeId(
-                0,
+                1,
             ),
         },
         Load {
@@ -150,7 +150,7 @@ Program {
         },
         Print {
             type_id: TypeId(
-                0,
+                1,
             ),
         },
         DropMany(

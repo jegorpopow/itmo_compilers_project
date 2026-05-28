@@ -2,29 +2,29 @@ Program {
     global_count: 6,
     rtti: RTTI(
         [
+            NullRepresentation,
             IntegerRepresentation,
             BooleanRepresentation,
             RealRepresentation,
-            NullRepresentation,
             RecordRepresentation(
                 RecordRepresentation {
                     fields: [
                         (
                             r"x",
                             TypeId(
-                                2,
+                                3,
                             ),
                         ),
                         (
                             r"y",
                             TypeId(
-                                2,
+                                3,
                             ),
                         ),
                         (
                             r"z",
                             TypeId(
-                                2,
+                                3,
                             ),
                         ),
                     ],
@@ -54,19 +54,19 @@ Program {
                         (
                             r"red",
                             TypeId(
-                                0,
+                                1,
                             ),
                         ),
                         (
                             r"green",
                             TypeId(
-                                0,
+                                1,
                             ),
                         ),
                         (
                             r"blue",
                             TypeId(
-                                0,
+                                1,
                             ),
                         ),
                     ],
@@ -91,13 +91,13 @@ Program {
                         (
                             r"height",
                             TypeId(
-                                0,
+                                1,
                             ),
                         ),
                         (
                             r"width",
                             TypeId(
-                                0,
+                                1,
                             ),
                         ),
                     ],
@@ -115,7 +115,7 @@ Program {
                         (
                             r"radius",
                             TypeId(
-                                2,
+                                3,
                             ),
                         ),
                         (
@@ -157,7 +157,7 @@ Program {
                         (
                             r"kind",
                             TypeId(
-                                0,
+                                1,
                             ),
                         ),
                         (
@@ -181,7 +181,7 @@ Program {
                         (
                             r"t",
                             TypeId(
-                                2,
+                                3,
                             ),
                         ),
                         (
@@ -209,14 +209,14 @@ Program {
                 label_id: 1,
                 args: [
                     TypeId(
-                        2,
+                        3,
                     ),
                     TypeId(
-                        2,
+                        3,
                     ),
                 ],
                 result: TypeId(
-                    2,
+                    3,
                 ),
             },
             FunctionRecord {
@@ -224,14 +224,14 @@ Program {
                 label_id: 2,
                 args: [
                     TypeId(
-                        2,
+                        3,
                     ),
                     TypeId(
-                        2,
+                        3,
                     ),
                 ],
                 result: TypeId(
-                    2,
+                    3,
                 ),
             },
             FunctionRecord {
@@ -239,11 +239,11 @@ Program {
                 label_id: 3,
                 args: [
                     TypeId(
-                        2,
+                        3,
                     ),
                 ],
                 result: TypeId(
-                    1,
+                    2,
                 ),
             },
             FunctionRecord {
@@ -251,14 +251,14 @@ Program {
                 label_id: 4,
                 args: [
                     TypeId(
-                        2,
+                        3,
                     ),
                     TypeId(
-                        2,
+                        3,
                     ),
                 ],
                 result: TypeId(
-                    1,
+                    2,
                 ),
             },
             FunctionRecord {
@@ -266,17 +266,17 @@ Program {
                 label_id: 5,
                 args: [
                     TypeId(
-                        2,
+                        3,
                     ),
                     TypeId(
-                        2,
+                        3,
                     ),
                     TypeId(
-                        2,
+                        3,
                     ),
                 ],
                 result: TypeId(
-                    2,
+                    3,
                 ),
             },
             FunctionRecord {
@@ -284,11 +284,11 @@ Program {
                 label_id: 6,
                 args: [
                     TypeId(
-                        2,
+                        3,
                     ),
                 ],
                 result: TypeId(
-                    0,
+                    1,
                 ),
             },
             FunctionRecord {
@@ -296,11 +296,11 @@ Program {
                 label_id: 7,
                 args: [
                     TypeId(
-                        2,
+                        3,
                     ),
                 ],
                 result: TypeId(
-                    2,
+                    3,
                 ),
             },
             FunctionRecord {
@@ -308,13 +308,13 @@ Program {
                 label_id: 8,
                 args: [
                     TypeId(
-                        2,
+                        3,
                     ),
                     TypeId(
-                        2,
+                        3,
                     ),
                     TypeId(
-                        2,
+                        3,
                     ),
                 ],
                 result: TypeId(
@@ -356,7 +356,7 @@ Program {
                 label_id: 11,
                 args: [
                     TypeId(
-                        2,
+                        3,
                     ),
                     TypeId(
                         4,
@@ -378,7 +378,7 @@ Program {
                     ),
                 ],
                 result: TypeId(
-                    2,
+                    3,
                 ),
             },
             FunctionRecord {
@@ -390,7 +390,7 @@ Program {
                     ),
                 ],
                 result: TypeId(
-                    2,
+                    3,
                 ),
             },
             FunctionRecord {
@@ -428,7 +428,7 @@ Program {
                         5,
                     ),
                     TypeId(
-                        2,
+                        3,
                     ),
                 ],
                 result: TypeId(
@@ -440,11 +440,11 @@ Program {
                 label_id: 17,
                 args: [
                     TypeId(
-                        0,
+                        1,
                     ),
                 ],
                 result: TypeId(
-                    0,
+                    1,
                 ),
             },
             FunctionRecord {
@@ -452,13 +452,13 @@ Program {
                 label_id: 18,
                 args: [
                     TypeId(
-                        0,
+                        1,
                     ),
                     TypeId(
-                        0,
+                        1,
                     ),
                     TypeId(
-                        0,
+                        1,
                     ),
                 ],
                 result: TypeId(
@@ -476,7 +476,7 @@ Program {
                         6,
                     ),
                     TypeId(
-                        2,
+                        3,
                     ),
                 ],
                 result: TypeId(
@@ -491,10 +491,10 @@ Program {
                         8,
                     ),
                     TypeId(
-                        0,
+                        1,
                     ),
                     TypeId(
-                        0,
+                        1,
                     ),
                 ],
                 result: TypeId(
@@ -509,17 +509,17 @@ Program {
                         8,
                     ),
                     TypeId(
-                        0,
+                        1,
                     ),
                     TypeId(
-                        0,
+                        1,
                     ),
                     TypeId(
                         6,
                     ),
                 ],
                 result: TypeId(
-                    3,
+                    0,
                 ),
             },
             FunctionRecord {
@@ -527,10 +527,10 @@ Program {
                 label_id: 22,
                 args: [
                     TypeId(
-                        0,
+                        1,
                     ),
                     TypeId(
-                        0,
+                        1,
                     ),
                     TypeId(
                         6,
@@ -549,7 +549,7 @@ Program {
                     ),
                 ],
                 result: TypeId(
-                    3,
+                    0,
                 ),
             },
             FunctionRecord {
@@ -588,7 +588,7 @@ Program {
                     ),
                 ],
                 result: TypeId(
-                    2,
+                    3,
                 ),
             },
             FunctionRecord {
@@ -603,7 +603,7 @@ Program {
                     ),
                 ],
                 result: TypeId(
-                    2,
+                    3,
                 ),
             },
             FunctionRecord {
@@ -618,7 +618,7 @@ Program {
                     ),
                 ],
                 result: TypeId(
-                    2,
+                    3,
                 ),
             },
             FunctionRecord {
@@ -709,10 +709,10 @@ Program {
                 label_id: 35,
                 args: [
                     TypeId(
-                        0,
+                        1,
                     ),
                     TypeId(
-                        0,
+                        1,
                     ),
                     TypeId(
                         13,
@@ -727,7 +727,7 @@ Program {
                 label_id: 36,
                 args: [],
                 result: TypeId(
-                    3,
+                    0,
                 ),
             },
         ],
@@ -2429,7 +2429,7 @@ Program {
         LoadAddress,
         Print {
             type_id: TypeId(
-                0,
+                1,
             ),
         },
         AddressOf {
@@ -2443,7 +2443,7 @@ Program {
         LoadAddress,
         Print {
             type_id: TypeId(
-                0,
+                1,
             ),
         },
         AddressOf {

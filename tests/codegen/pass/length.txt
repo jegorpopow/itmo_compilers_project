@@ -2,14 +2,14 @@ Program {
     global_count: 0,
     rtti: RTTI(
         [
+            NullRepresentation,
             IntegerRepresentation,
             BooleanRepresentation,
             RealRepresentation,
-            NullRepresentation,
             ArrayRepresentation(
                 ArrayRepresentation {
                     element: TypeId(
-                        0,
+                        1,
                     ),
                 },
             ),
@@ -19,7 +19,7 @@ Program {
                         (
                             r"length",
                             TypeId(
-                                2,
+                                3,
                             ),
                         ),
                     ],
@@ -41,7 +41,7 @@ Program {
                     ),
                 ],
                 result: TypeId(
-                    3,
+                    0,
                 ),
             },
             FunctionRecord {
@@ -49,7 +49,7 @@ Program {
                 label_id: 2,
                 args: [],
                 result: TypeId(
-                    3,
+                    0,
                 ),
             },
         ],
@@ -75,7 +75,7 @@ Program {
         ArraySize,
         Print {
             type_id: TypeId(
-                0,
+                1,
             ),
         },
         AddressOf {
@@ -89,7 +89,7 @@ Program {
         LoadAddress,
         Print {
             type_id: TypeId(
-                2,
+                3,
             ),
         },
         DropMany(

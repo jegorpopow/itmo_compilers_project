@@ -2,21 +2,21 @@ Program {
     global_count: 0,
     rtti: RTTI(
         [
+            NullRepresentation,
             IntegerRepresentation,
             BooleanRepresentation,
             RealRepresentation,
-            NullRepresentation,
             ArrayRepresentation(
                 ArrayRepresentation {
                     element: TypeId(
-                        2,
+                        3,
                     ),
                 },
             ),
             ArrayRepresentation(
                 ArrayRepresentation {
                     element: TypeId(
-                        0,
+                        1,
                     ),
                 },
             ),
@@ -33,7 +33,7 @@ Program {
                     ),
                 ],
                 result: TypeId(
-                    2,
+                    3,
                 ),
             },
             FunctionRecord {
@@ -45,7 +45,7 @@ Program {
                     ),
                 ],
                 result: TypeId(
-                    0,
+                    1,
                 ),
             },
             FunctionRecord {
@@ -53,7 +53,7 @@ Program {
                 label_id: 3,
                 args: [],
                 result: TypeId(
-                    0,
+                    1,
                 ),
             },
         ],
@@ -110,7 +110,7 @@ Program {
         LoadAddress,
         Print {
             type_id: TypeId(
-                0,
+                1,
             ),
         },
         IntConst {
@@ -168,7 +168,7 @@ Program {
         LoadAddress,
         Print {
             type_id: TypeId(
-                0,
+                1,
             ),
         },
         IntConst {
@@ -190,7 +190,7 @@ Program {
         },
         Print {
             type_id: TypeId(
-                0,
+                1,
             ),
         },
         IntConst {
@@ -198,7 +198,7 @@ Program {
         },
         Print {
             type_id: TypeId(
-                0,
+                1,
             ),
         },
         DropMany(
@@ -212,7 +212,7 @@ Program {
         },
         Print {
             type_id: TypeId(
-                0,
+                1,
             ),
         },
         DropMany(

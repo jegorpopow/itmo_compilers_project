@@ -2,23 +2,23 @@ Program {
     global_count: 0,
     rtti: RTTI(
         [
+            NullRepresentation,
             IntegerRepresentation,
             BooleanRepresentation,
             RealRepresentation,
-            NullRepresentation,
             RecordRepresentation(
                 RecordRepresentation {
                     fields: [
                         (
                             r"x",
                             TypeId(
-                                2,
+                                3,
                             ),
                         ),
                         (
                             r"y",
                             TypeId(
-                                2,
+                                3,
                             ),
                         ),
                     ],
@@ -33,10 +33,10 @@ Program {
                 label_id: 1,
                 args: [
                     TypeId(
-                        2,
+                        3,
                     ),
                     TypeId(
-                        2,
+                        3,
                     ),
                 ],
                 result: TypeId(
@@ -55,7 +55,7 @@ Program {
                     ),
                 ],
                 result: TypeId(
-                    2,
+                    3,
                 ),
             },
             FunctionRecord {
@@ -78,7 +78,7 @@ Program {
                 label_id: 4,
                 args: [],
                 result: TypeId(
-                    3,
+                    0,
                 ),
             },
         ],
@@ -359,7 +359,7 @@ Program {
         },
         Print {
             type_id: TypeId(
-                2,
+                3,
             ),
         },
         DropMany(
