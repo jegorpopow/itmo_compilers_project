@@ -7,6 +7,8 @@ use ast::{
 use common::{Identifier, Position, RawIdentifier};
 
 pub mod bytecode;
+#[cfg(test)]
+mod tests;
 
 use bytecode::Instruction;
 

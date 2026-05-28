@@ -548,6 +548,7 @@ impl Bindings {
                 });
             }
             Type::Record(record_description) => {
+                // FIXME: handle recursive types
                 let representation_fields = record_description
                     .fields
                     .iter()

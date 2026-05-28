@@ -1,0 +1,221 @@
+BytecodeFile {
+    global_count: 0,
+    rtti: RTTI(
+        [
+            IntegerRepresentation,
+            BooleanRepresentation,
+            RealRepresentation,
+            NullRepresentation,
+            ArrayRepresentation(
+                ArrayRepresentation {
+                    element: TypeId(
+                        0,
+                    ),
+                },
+            ),
+            RecordRepresentation(
+                RecordRepresentation {
+                    fields: [
+                        (
+                            r"length",
+                            TypeId(
+                                2,
+                            ),
+                        ),
+                    ],
+                },
+            ),
+        ],
+    ),
+    function_table: FunctionTable(
+        [
+            FunctionRecord {
+                name: "print_length",
+                label_id: 1,
+                args: [
+                    TypeId(
+                        4,
+                    ),
+                    TypeId(
+                        5,
+                    ),
+                ],
+                result: TypeId(
+                    3,
+                ),
+            },
+            FunctionRecord {
+                name: "main",
+                label_id: 2,
+                args: [],
+                result: TypeId(
+                    3,
+                ),
+            },
+        ],
+    ),
+    code: [
+        Label {
+            id: 0,
+        },
+        Call {
+            function_label: 2,
+        },
+        Drop,
+        NullConst,
+        Ret,
+        Label {
+            id: 1,
+        },
+        Load {
+            loc: Argument(
+                0,
+            ),
+        },
+        ArraySize,
+        Print {
+            type_id: TypeId(
+                0,
+            ),
+        },
+        AddressOf {
+            loc: Argument(
+                1,
+            ),
+        },
+        FieldAddress {
+            field_offset: 0,
+        },
+        LoadAddress,
+        Print {
+            type_id: TypeId(
+                2,
+            ),
+        },
+        DropMany(
+            0,
+        ),
+        NullConst,
+        Ret,
+        Label {
+            id: 2,
+        },
+        AllocArray {
+            type_id: TypeId(
+                4,
+            ),
+            size: 5,
+        },
+        AllocRecord {
+            type_id: TypeId(
+                5,
+            ),
+            size: 1,
+        },
+        Dup,
+        FieldAddress {
+            field_offset: 0,
+        },
+        IntConst {
+            value: 10,
+        },
+        IntToReal,
+        StoreAddress,
+        Load {
+            loc: Local(
+                0,
+            ),
+        },
+        Load {
+            loc: Local(
+                1,
+            ),
+        },
+        Call {
+            function_label: 1,
+        },
+        Drop,
+        DropMany(
+            2,
+        ),
+        NullConst,
+        Ret,
+    ],
+}
+4D 56 4D 49 03 00 00 00
+00 00 00 00 06 00 00 00
+00 00 00 01 00 02 00 03
+02 00 00 00 00 01 01 00
+00 00 06 00 00 00 6C 65
+6E 67 74 68 02 00 00 00
+02 00 00 00 0C 00 00 00
+70 72 69 6E 74 5F 6C 65
+6E 67 74 68 01 00 00 00
+00 00 00 00 02 00 00 00
+04 00 00 00 05 00 00 00
+03 00 00 00 04 00 00 00
+6D 61 69 6E 02 00 00 00
+00 00 00 00 00 00 00 00
+03 00 00 00 1F 00 00 00
+15 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00
+18 00 00 00 00 00 00 00
+02 00 00 00 00 00 00 00
+01 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00
+1C 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00
+19 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00
+15 00 00 00 00 00 00 00
+01 00 00 00 00 00 00 00
+0B 02 00 00 00 00 00 00
+00 00 00 00 00 00 00 00
+12 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00
+1A 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00
+0D 02 01 00 00 00 00 00
+00 00 00 00 00 00 00 00
+14 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00
+0F 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00
+1A 00 00 00 02 00 00 00
+00 00 00 00 00 00 00 00
+1D 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00
+1C 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00
+19 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00
+15 00 00 00 00 00 00 00
+02 00 00 00 00 00 00 00
+11 00 00 00 04 00 00 00
+05 00 00 00 00 00 00 00
+10 00 00 00 05 00 00 00
+01 00 00 00 00 00 00 00
+02 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00
+14 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00
+09 00 00 00 00 00 00 00
+0A 00 00 00 00 00 00 00
+08 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00
+0E 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00
+0B 01 00 00 00 00 00 00
+00 00 00 00 00 00 00 00
+0B 01 01 00 00 00 00 00
+00 00 00 00 00 00 00 00
+18 00 00 00 00 00 00 00
+01 00 00 00 00 00 00 00
+01 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00
+1D 00 02 00 00 00 00 00
+00 00 00 00 00 00 00 00
+1C 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00
+19 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00

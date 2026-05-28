@@ -42,7 +42,8 @@ pub(crate) enum Stage {
     Lexer,
     Parser,
     AST,
-    Run,
+    Interpreter,
+    Codegen,
 }
 
 impl Stage {

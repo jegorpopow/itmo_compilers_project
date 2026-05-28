@@ -370,10 +370,10 @@ pub(crate) struct FunctionTable(pub Vec<FunctionRecord>);
 
 #[derive(Debug)]
 pub struct BytecodeFile {
-    pub(crate) code: Vec<Instruction>,
+    pub(crate) global_count: usize,
     pub(crate) rtti: RTTI,
     pub(crate) function_table: FunctionTable,
-    pub(crate) global_count: usize,
+    pub(crate) code: Vec<Instruction>,
 }
 
 pub trait Serialize {
@@ -466,21 +466,21 @@ serialize_fields! {
 impl Serialize for BytecodeFile {
     fn serialize<E>(&self, sink: &mut impl FnMut(&[u8]) -> Result<(), E>) -> Result<(), E> {
         const MAGIC: u32 = 0x494D_564D;
-        const VERSION: u32 = 2;
+        const VERSION: u32 = 3;
 
         MAGIC.serialize(sink)?;
         VERSION.serialize(sink)?;
 
         let Self {
-            code,
+            global_count,
             rtti,
             function_table,
-            global_count,
+            code,
         } = self;
-        code.serialize(sink)?;
+        global_count.serialize(sink)?;
         rtti.serialize(sink)?;
         function_table.serialize(sink)?;
-        global_count.serialize(sink)?;
+        code.serialize(sink)?;
         Ok(())
     }
 }

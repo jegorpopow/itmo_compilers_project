@@ -135,7 +135,8 @@ impl Stage {
             Self::Lexer => "lexer",
             Self::Parser => "parser",
             Self::AST => "ast",
-            Self::Run => "run",
+            Self::Interpreter => "run",
+            Self::Codegen => "codegen",
         }
     }
 
