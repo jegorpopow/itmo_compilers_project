@@ -872,6 +872,9 @@ Program {
         DropMany(
             0,
         ),
+        Jump {
+            label: 38,
+        },
         Label {
             id: 37,
         },
@@ -884,6 +887,9 @@ Program {
         DropMany(
             0,
         ),
+        Label {
+            id: 38,
+        },
         DropMany(
             0,
         ),
@@ -908,7 +914,7 @@ Program {
             ),
         },
         JumpZero {
-            label: 38,
+            label: 39,
         },
         Load {
             loc: Argument(
@@ -919,8 +925,11 @@ Program {
         DropMany(
             0,
         ),
+        Jump {
+            label: 40,
+        },
         Label {
-            id: 38,
+            id: 39,
         },
         Load {
             loc: Argument(
@@ -931,6 +940,9 @@ Program {
         DropMany(
             0,
         ),
+        Label {
+            id: 40,
+        },
         DropMany(
             0,
         ),
@@ -1096,7 +1108,7 @@ Program {
             ),
         },
         JumpZero {
-            label: 39,
+            label: 41,
         },
         Load {
             loc: Local(
@@ -1120,7 +1132,7 @@ Program {
             0,
         ),
         Label {
-            id: 39,
+            id: 41,
         },
         Load {
             loc: Local(
@@ -1150,7 +1162,7 @@ Program {
             ),
         },
         JumpZero {
-            label: 40,
+            label: 42,
         },
         RealConst {
             value: NaN,
@@ -1160,7 +1172,7 @@ Program {
             0,
         ),
         Label {
-            id: 40,
+            id: 42,
         },
         RealConst {
             value: 1.0,
@@ -1179,7 +1191,7 @@ Program {
             ),
         },
         JumpZero {
-            label: 41,
+            label: 43,
         },
         Load {
             loc: Argument(
@@ -1204,16 +1216,16 @@ Program {
             0,
         ),
         Label {
-            id: 41,
+            id: 43,
         },
         IntConst {
             value: 0,
         },
         Jump {
-            label: 43,
+            label: 45,
         },
         Label {
-            id: 42,
+            id: 44,
         },
         Load {
             loc: Local(
@@ -1272,6 +1284,11 @@ Program {
         Call {
             function_label: 4,
         },
+        Dup,
+        JumpNotZero {
+            label: 47,
+        },
+        Drop,
         Load {
             loc: Local(
                 0,
@@ -1295,13 +1312,11 @@ Program {
         Call {
             function_label: 4,
         },
-        BinOp {
-            op: Bool(
-                Or,
-            ),
+        Label {
+            id: 47,
         },
         JumpZero {
-            label: 44,
+            label: 46,
         },
         Load {
             loc: Local(
@@ -1313,7 +1328,7 @@ Program {
             0,
         ),
         Label {
-            id: 44,
+            id: 46,
         },
         DropMany(
             1,
@@ -1337,7 +1352,7 @@ Program {
             ),
         },
         Label {
-            id: 43,
+            id: 45,
         },
         Load {
             loc: Local(
@@ -1353,7 +1368,7 @@ Program {
             ),
         },
         JumpNotZero {
-            label: 42,
+            label: 44,
         },
         Drop,
         Load {
@@ -1899,6 +1914,11 @@ Program {
                 Ge,
             ),
         },
+        Dup,
+        JumpZero {
+            label: 49,
+        },
+        Drop,
         Load {
             loc: Argument(
                 0,
@@ -1912,16 +1932,14 @@ Program {
                 Lt,
             ),
         },
-        BinOp {
-            op: Bool(
-                And,
-            ),
+        Label {
+            id: 49,
         },
         UnOp {
             op: BoolNeg,
         },
         JumpZero {
-            label: 45,
+            label: 48,
         },
         Panic {
             code: 1,
@@ -1932,7 +1950,7 @@ Program {
             0,
         ),
         Label {
-            id: 45,
+            id: 48,
         },
         Load {
             loc: Argument(
@@ -2263,19 +2281,19 @@ Program {
             value: 0,
         },
         Jump {
-            label: 47,
+            label: 51,
         },
         Label {
-            id: 46,
+            id: 50,
         },
         IntConst {
             value: 0,
         },
         Jump {
-            label: 49,
+            label: 53,
         },
         Label {
-            id: 48,
+            id: 52,
         },
         Load {
             loc: Local(
@@ -2323,7 +2341,7 @@ Program {
             ),
         },
         Label {
-            id: 49,
+            id: 53,
         },
         Load {
             loc: Local(
@@ -2353,7 +2371,7 @@ Program {
             ),
         },
         JumpNotZero {
-            label: 48,
+            label: 52,
         },
         Drop,
         DropMany(
@@ -2378,7 +2396,7 @@ Program {
             ),
         },
         Label {
-            id: 47,
+            id: 51,
         },
         Load {
             loc: Local(
@@ -2408,7 +2426,7 @@ Program {
             ),
         },
         JumpNotZero {
-            label: 46,
+            label: 50,
         },
         Drop,
         Load {
@@ -2471,19 +2489,19 @@ Program {
             ),
         },
         Jump {
-            label: 51,
+            label: 55,
         },
         Label {
-            id: 50,
+            id: 54,
         },
         IntConst {
             value: 0,
         },
         Jump {
-            label: 53,
+            label: 57,
         },
         Label {
-            id: 52,
+            id: 56,
         },
         Load {
             loc: Argument(
@@ -2530,7 +2548,7 @@ Program {
             ),
         },
         Label {
-            id: 53,
+            id: 57,
         },
         Load {
             loc: Local(
@@ -2560,7 +2578,7 @@ Program {
             ),
         },
         JumpNotZero {
-            label: 52,
+            label: 56,
         },
         Drop,
         DropMany(
@@ -2585,7 +2603,7 @@ Program {
             ),
         },
         Label {
-            id: 51,
+            id: 55,
         },
         Load {
             loc: Local(
@@ -2601,7 +2619,7 @@ Program {
             ),
         },
         JumpNotZero {
-            label: 50,
+            label: 54,
         },
         Drop,
         DropMany(
@@ -2874,7 +2892,7 @@ Program {
             ),
         },
         JumpZero {
-            label: 54,
+            label: 58,
         },
         RealConst {
             value: NaN,
@@ -2884,7 +2902,7 @@ Program {
             0,
         ),
         Label {
-            id: 54,
+            id: 58,
         },
         Load {
             loc: Local(
@@ -2989,7 +3007,7 @@ Program {
             ),
         },
         JumpZero {
-            label: 55,
+            label: 59,
         },
         Load {
             loc: Local(
@@ -3008,8 +3026,11 @@ Program {
         DropMany(
             0,
         ),
+        Jump {
+            label: 60,
+        },
         Label {
-            id: 55,
+            id: 59,
         },
         Load {
             loc: Local(
@@ -3034,7 +3055,7 @@ Program {
             ),
         },
         JumpZero {
-            label: 56,
+            label: 61,
         },
         Load {
             loc: Local(
@@ -3053,8 +3074,11 @@ Program {
         DropMany(
             0,
         ),
+        Jump {
+            label: 62,
+        },
         Label {
-            id: 56,
+            id: 61,
         },
         RealConst {
             value: NaN,
@@ -3063,9 +3087,15 @@ Program {
         DropMany(
             0,
         ),
+        Label {
+            id: 62,
+        },
         DropMany(
             0,
         ),
+        Label {
+            id: 60,
+        },
         DropMany(
             6,
         ),
@@ -3103,7 +3133,7 @@ Program {
             function_label: 4,
         },
         JumpZero {
-            label: 57,
+            label: 63,
         },
         RealConst {
             value: NaN,
@@ -3113,7 +3143,7 @@ Program {
             0,
         ),
         Label {
-            id: 57,
+            id: 63,
         },
         AddressOf {
             loc: Argument(
@@ -3190,7 +3220,7 @@ Program {
             ),
         },
         JumpZero {
-            label: 58,
+            label: 64,
         },
         Load {
             loc: Local(
@@ -3201,8 +3231,11 @@ Program {
         DropMany(
             0,
         ),
+        Jump {
+            label: 65,
+        },
         Label {
-            id: 58,
+            id: 64,
         },
         RealConst {
             value: NaN,
@@ -3211,6 +3244,9 @@ Program {
         DropMany(
             0,
         ),
+        Label {
+            id: 65,
+        },
         DropMany(
             1,
         ),
@@ -3237,7 +3273,7 @@ Program {
             ),
         },
         JumpZero {
-            label: 59,
+            label: 66,
         },
         AddressOf {
             loc: Argument(
@@ -3261,7 +3297,7 @@ Program {
             0,
         ),
         Label {
-            id: 59,
+            id: 66,
         },
         AddressOf {
             loc: Argument(
@@ -3281,7 +3317,7 @@ Program {
             ),
         },
         JumpZero {
-            label: 60,
+            label: 67,
         },
         AddressOf {
             loc: Argument(
@@ -3305,7 +3341,7 @@ Program {
             0,
         ),
         Label {
-            id: 60,
+            id: 67,
         },
         RealConst {
             value: NaN,
@@ -3374,7 +3410,7 @@ Program {
             ),
         },
         JumpZero {
-            label: 61,
+            label: 68,
         },
         AddressOf {
             loc: Argument(
@@ -3398,7 +3434,7 @@ Program {
             0,
         ),
         Label {
-            id: 61,
+            id: 68,
         },
         AddressOf {
             loc: Argument(
@@ -3418,7 +3454,7 @@ Program {
             ),
         },
         JumpZero {
-            label: 62,
+            label: 69,
         },
         AddressOf {
             loc: Argument(
@@ -3442,7 +3478,7 @@ Program {
             0,
         ),
         Label {
-            id: 62,
+            id: 69,
         },
         NullConst,
         Ret,
@@ -3472,7 +3508,7 @@ Program {
             ),
         },
         JumpZero {
-            label: 63,
+            label: 70,
         },
         AddressOf {
             loc: Argument(
@@ -3491,7 +3527,7 @@ Program {
             0,
         ),
         Label {
-            id: 63,
+            id: 70,
         },
         AddressOf {
             loc: Argument(
@@ -3511,7 +3547,7 @@ Program {
             ),
         },
         JumpZero {
-            label: 64,
+            label: 71,
         },
         AddressOf {
             loc: Argument(
@@ -3530,7 +3566,7 @@ Program {
             0,
         ),
         Label {
-            id: 64,
+            id: 71,
         },
         NullConst,
         Ret,
@@ -3574,10 +3610,10 @@ Program {
         },
         NullConst,
         Jump {
-            label: 66,
+            label: 73,
         },
         Label {
-            id: 65,
+            id: 72,
         },
         Load {
             loc: Local(
@@ -3620,6 +3656,11 @@ Program {
         UnOp {
             op: BoolNeg,
         },
+        Dup,
+        JumpZero {
+            label: 75,
+        },
+        Drop,
         AddressOf {
             loc: Local(
                 0,
@@ -3632,6 +3673,11 @@ Program {
         Call {
             function_label: 3,
         },
+        Dup,
+        JumpNotZero {
+            label: 76,
+        },
+        Drop,
         AddressOf {
             loc: Local(
                 0,
@@ -3661,18 +3707,14 @@ Program {
                 Gt,
             ),
         },
-        BinOp {
-            op: Bool(
-                Or,
-            ),
+        Label {
+            id: 76,
         },
-        BinOp {
-            op: Bool(
-                And,
-            ),
+        Label {
+            id: 75,
         },
         JumpZero {
-            label: 67,
+            label: 74,
         },
         AllocRecord {
             type_id: TypeId(
@@ -3709,7 +3751,7 @@ Program {
             0,
         ),
         Label {
-            id: 67,
+            id: 74,
         },
         DropMany(
             1,
@@ -3733,7 +3775,7 @@ Program {
             ),
         },
         Label {
-            id: 66,
+            id: 73,
         },
         Load {
             loc: Local(
@@ -3752,7 +3794,7 @@ Program {
             ),
         },
         JumpNotZero {
-            label: 65,
+            label: 72,
         },
         DropMany(
             2,
@@ -3910,19 +3952,19 @@ Program {
             value: 0,
         },
         Jump {
-            label: 69,
+            label: 78,
         },
         Label {
-            id: 68,
+            id: 77,
         },
         IntConst {
             value: 0,
         },
         Jump {
-            label: 71,
+            label: 80,
         },
         Label {
-            id: 70,
+            id: 79,
         },
         Load {
             loc: Local(
@@ -4071,7 +4113,7 @@ Program {
             op: BoolNeg,
         },
         JumpZero {
-            label: 72,
+            label: 81,
         },
         AddressOf {
             loc: Local(
@@ -4136,7 +4178,7 @@ Program {
             ),
         },
         JumpZero {
-            label: 73,
+            label: 82,
         },
         IntConst {
             value: 1,
@@ -4151,7 +4193,7 @@ Program {
             0,
         ),
         Label {
-            id: 73,
+            id: 82,
         },
         AddressOf {
             loc: Local(
@@ -4223,7 +4265,7 @@ Program {
             2,
         ),
         Label {
-            id: 72,
+            id: 81,
         },
         DropMany(
             3,
@@ -4247,7 +4289,7 @@ Program {
             ),
         },
         Label {
-            id: 71,
+            id: 80,
         },
         Load {
             loc: Local(
@@ -4277,7 +4319,7 @@ Program {
             ),
         },
         JumpNotZero {
-            label: 70,
+            label: 79,
         },
         Drop,
         DropMany(
@@ -4302,7 +4344,7 @@ Program {
             ),
         },
         Label {
-            id: 69,
+            id: 78,
         },
         Load {
             loc: Local(
@@ -4332,7 +4374,7 @@ Program {
             ),
         },
         JumpNotZero {
-            label: 68,
+            label: 77,
         },
         Drop,
         Load {

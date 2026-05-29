@@ -5,8 +5,8 @@ use std::{
 
 use ast::{
     BinaryOperator, Binding, Bindings, Block, BoolBinOp, Decl, Expression, Literal,
-    LvalueExpression, Program as AST, Routine, RoutineBody, RoutineDecl, Statement, Type,
-    TypeDecl, UnaryOperator, VarDecl,
+    LvalueExpression, Program as AST, Routine, RoutineBody, RoutineDecl, Statement, Type, TypeDecl,
+    UnaryOperator, VarDecl,
 };
 use common::{Identifier, Integer, Location, Position, RawIdentifier, Real, VarLoc};
 
@@ -302,7 +302,8 @@ impl<'a> Compiler<'a> {
                     let end_label = self.get_fresh_label();
                     self.compile_expr(lhs);
                     self.bytecode.push(Instruction::Dup);
-                    self.bytecode.push(Instruction::JumpZero { label: end_label });
+                    self.bytecode
+                        .push(Instruction::JumpZero { label: end_label });
                     self.bytecode.push(Instruction::Drop);
                     self.compile_expr(rhs);
                     self.bytecode.push(Instruction::Label { id: end_label });
@@ -311,12 +312,16 @@ impl<'a> Compiler<'a> {
                     let end_label = self.get_fresh_label();
                     self.compile_expr(lhs);
                     self.bytecode.push(Instruction::Dup);
-                    self.bytecode.push(Instruction::JumpNotZero { label: end_label });
+                    self.bytecode
+                        .push(Instruction::JumpNotZero { label: end_label });
                     self.bytecode.push(Instruction::Drop);
                     self.compile_expr(rhs);
                     self.bytecode.push(Instruction::Label { id: end_label });
                 }
-                _ => {
+                BinaryOperator::Bool(BoolBinOp::Xor)
+                | BinaryOperator::Eq(_)
+                | BinaryOperator::Real(_)
+                | BinaryOperator::Int(_) => {
                     self.compile_expr(lhs);
                     self.compile_expr(rhs);
                     self.bytecode.push(Instruction::BinOp { op: *op });
@@ -429,12 +434,18 @@ impl<'a> Compiler<'a> {
                 self.compile_block(on_true);
                 if let Some(on_false) = on_false {
                     let after_else_label = self.get_fresh_label();
-                    self.bytecode.push(Instruction::Jump { label: after_else_label });
-                    self.bytecode.push(Instruction::Label { id: on_false_label });
+                    self.bytecode.push(Instruction::Jump {
+                        label: after_else_label,
+                    });
+                    self.bytecode
+                        .push(Instruction::Label { id: on_false_label });
                     self.compile_block(on_false);
-                    self.bytecode.push(Instruction::Label { id: after_else_label });
+                    self.bytecode.push(Instruction::Label {
+                        id: after_else_label,
+                    });
                 } else {
-                    self.bytecode.push(Instruction::Label { id: on_false_label });
+                    self.bytecode
+                        .push(Instruction::Label { id: on_false_label });
                 }
             }
             Statement::For {

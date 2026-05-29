@@ -368,6 +368,11 @@ Program {
         Call {
             function_label: 1,
         },
+        Dup,
+        JumpNotZero {
+            label: 6,
+        },
+        Drop,
         IntConst {
             value: 1,
         },
@@ -450,11 +455,14 @@ Program {
         Call {
             function_label: 1,
         },
-        BinOp {
-            op: Bool(
-                Or,
-            ),
+        Label {
+            id: 6,
         },
+        Dup,
+        JumpNotZero {
+            label: 5,
+        },
+        Drop,
         IntConst {
             value: 3,
         },
@@ -537,10 +545,8 @@ Program {
         Call {
             function_label: 1,
         },
-        BinOp {
-            op: Bool(
-                Or,
-            ),
+        Label {
+            id: 5,
         },
         Ret,
         Label {

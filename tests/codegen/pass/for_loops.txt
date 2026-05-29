@@ -125,9 +125,12 @@ Program {
             function_label: 5,
         },
         Drop,
-        IntConst {
-            value: 1,
+        Load {
+            loc: Argument(
+                0,
+            ),
         },
+        ArraySize,
         NullConst,
         Jump {
             label: 10,
@@ -175,7 +178,7 @@ Program {
         },
         BinOp {
             op: Int(
-                Add,
+                Sub,
             ),
         },
         Store {
@@ -191,15 +194,12 @@ Program {
                 0,
             ),
         },
-        Load {
-            loc: Argument(
-                0,
-            ),
+        IntConst {
+            value: 1,
         },
-        ArraySize,
         BinOp {
             op: Int(
-                Le,
+                Ge,
             ),
         },
         JumpNotZero {

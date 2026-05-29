@@ -50,15 +50,18 @@ Program {
                 0,
             ),
         },
+        Dup,
+        JumpZero {
+            label: 2,
+        },
+        Drop,
         Load {
             loc: Local(
                 1,
             ),
         },
-        BinOp {
-            op: Bool(
-                And,
-            ),
+        Label {
+            id: 2,
         },
         Print {
             type_id: TypeId(
@@ -70,13 +73,16 @@ Program {
                 0,
             ),
         },
+        Dup,
+        JumpZero {
+            label: 3,
+        },
+        Drop,
         IntConst {
             value: 1,
         },
-        BinOp {
-            op: Bool(
-                And,
-            ),
+        Label {
+            id: 3,
         },
         Print {
             type_id: TypeId(
@@ -88,15 +94,18 @@ Program {
                 0,
             ),
         },
+        Dup,
+        JumpNotZero {
+            label: 4,
+        },
+        Drop,
         Load {
             loc: Local(
                 1,
             ),
         },
-        BinOp {
-            op: Bool(
-                Or,
-            ),
+        Label {
+            id: 4,
         },
         Print {
             type_id: TypeId(
@@ -106,15 +115,18 @@ Program {
         IntConst {
             value: 0,
         },
+        Dup,
+        JumpNotZero {
+            label: 5,
+        },
+        Drop,
         Load {
             loc: Local(
                 1,
             ),
         },
-        BinOp {
-            op: Bool(
-                Or,
-            ),
+        Label {
+            id: 5,
         },
         Print {
             type_id: TypeId(

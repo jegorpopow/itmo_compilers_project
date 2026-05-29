@@ -150,6 +150,9 @@ Program {
         DropMany(
             1,
         ),
+        Jump {
+            label: 5,
+        },
         Label {
             id: 4,
         },
@@ -164,6 +167,9 @@ Program {
         DropMany(
             0,
         ),
+        Label {
+            id: 5,
+        },
         DropMany(
             1,
         ),

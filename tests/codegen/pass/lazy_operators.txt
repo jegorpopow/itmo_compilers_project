@@ -114,13 +114,16 @@ Program {
         Call {
             function_label: 2,
         },
+        Dup,
+        JumpZero {
+            label: 4,
+        },
+        Drop,
         Call {
             function_label: 1,
         },
-        BinOp {
-            op: Bool(
-                And,
-            ),
+        Label {
+            id: 4,
         },
         Print {
             type_id: TypeId(
@@ -138,13 +141,16 @@ Program {
         Call {
             function_label: 1,
         },
+        Dup,
+        JumpZero {
+            label: 5,
+        },
+        Drop,
         Call {
             function_label: 2,
         },
-        BinOp {
-            op: Bool(
-                And,
-            ),
+        Label {
+            id: 5,
         },
         Print {
             type_id: TypeId(
@@ -162,13 +168,16 @@ Program {
         Call {
             function_label: 2,
         },
+        Dup,
+        JumpNotZero {
+            label: 6,
+        },
+        Drop,
         Call {
             function_label: 1,
         },
-        BinOp {
-            op: Bool(
-                Or,
-            ),
+        Label {
+            id: 6,
         },
         Print {
             type_id: TypeId(
@@ -186,13 +195,16 @@ Program {
         Call {
             function_label: 1,
         },
+        Dup,
+        JumpNotZero {
+            label: 7,
+        },
+        Drop,
         Call {
             function_label: 2,
         },
-        BinOp {
-            op: Bool(
-                Or,
-            ),
+        Label {
+            id: 7,
         },
         Print {
             type_id: TypeId(
