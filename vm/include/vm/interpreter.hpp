@@ -4,38 +4,30 @@
 #include <cstdint>
 #include <utility>
 
+#include "vm/opcodes.hpp"
 #include "vm/program.hpp"
 
 namespace vm {
 
 class Vm;
 
-// Signature for opcode handler functions.
 using HandlerFn = void (*)(Vm&, const Instruction&);
 
-// Primary template: called for unknown opcodes.
-// Specialise this struct for each handled opcode.
-template <uint8_t kOpcode>
+template <Opcode kOpcode>
 struct OpcodeHandler {
-  static void Execute(Vm& vm, const Instruction& instr);
+  static void execute(Vm& vm, const Instruction& instr);
 };
 
 namespace detail {
 
-// Builds the 256-entry dispatch table by instantiating OpcodeHandler<N>
-// for every N in [0, 256).  All specialisations must be visible before
-// this function is called (i.e. handlers.hpp must be included first in
-// the .cpp that defines the dispatch table).
 template <std::size_t... Is>
-constexpr std::array<HandlerFn, 256> BuildDispatchTable(
+constexpr std::array<HandlerFn, 256> buildDispatchTable(
     std::index_sequence<Is...>) {
-  return {&OpcodeHandler<static_cast<uint8_t>(Is)>::Execute...};
+  return {&OpcodeHandler<static_cast<Opcode>(Is)>::execute...};
 }
 
-}  // namespace detail
+}
 
-// Returns the singleton dispatch table.
-// Defined in vm.cpp after including handlers.hpp.
-const std::array<HandlerFn, 256>& GetDispatchTable();
+const std::array<HandlerFn, 256>& getDispatchTable();
 
-}  // namespace vm
+}

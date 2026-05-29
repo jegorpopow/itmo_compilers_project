@@ -13,21 +13,19 @@ namespace vm {
 
 namespace {
 
-// ---- Binary format helpers --------------------------------------------------
-
-constexpr uint32_t kMagic   = 0x494D564Du;  // "IMVM"
-constexpr uint32_t kVersion = 1;
+constexpr uint32_t kMagic   = 0x494D564Du;
+constexpr uint32_t kVersion = 4;
 
 struct RawInstruction {
-  uint8_t  opcode;
-  uint8_t  subopcode;
-  uint8_t  arg16[2];
-  uint8_t  arg32[4];
-  uint8_t  arg64[8];
+  uint8_t opcode;
+  uint8_t subopcode;
+  uint8_t arg16[2];
+  uint8_t arg32[4];
+  uint8_t arg64[8];
 };
 static_assert(sizeof(RawInstruction) == 16);
 
-Instruction DecodeInstruction(const RawInstruction& raw) {
+Instruction decodeInstruction(const RawInstruction& raw) {
   Instruction instr;
   instr.opcode    = raw.opcode;
   instr.subopcode = raw.subopcode;
@@ -37,62 +35,44 @@ Instruction DecodeInstruction(const RawInstruction& raw) {
   return instr;
 }
 
-struct FileHeader {
-  uint32_t magic;
-  uint32_t version;
-  uint32_t code_offset;
-  uint32_t code_length;      // number of instructions
-  uint32_t fn_table_offset;
-  uint32_t fn_table_length;  // number of function records
-  uint32_t rtti_offset;
-  uint32_t rtti_length;      // number of RTTI entries
-  uint32_t global_count;
-};
-
-void BuildLabelMap(Program& prog) {
+void buildLabelMap(Program& prog) {
   for (std::size_t i = 0; i < prog.instructions.size(); ++i) {
-    if (prog.instructions[i].opcode ==
-        static_cast<uint8_t>(Opcode::kLabel)) {
+    if (prog.instructions[i].opcode == static_cast<uint8_t>(Opcode::kLabel)) {
       uint64_t id = prog.instructions[i].arg64;
       prog.label_map[id] = i;
     }
   }
 }
 
-void BuildFunctionMaps(Program& prog) {
+void buildFunctionMaps(Program& prog) {
   for (std::size_t i = 0; i < prog.functions.size(); ++i) {
-    prog.function_name_map[prog.functions[i].name]              = i;
-    prog.function_label_map[prog.functions[i].label_id]        = i;
+    prog.function_name_map[prog.functions[i].name]       = i;
+    prog.function_label_map[prog.functions[i].label_id] = i;
   }
 }
 
-// ---- Read helpers -----------------------------------------------------------
-
 template <typename T>
-T ReadLE(const std::vector<uint8_t>& buf, std::size_t& pos) {
+T readLE(const std::vector<uint8_t>& buf, std::size_t& pos) {
+  if (pos + sizeof(T) > buf.size())
+    throw LoadError("File truncated");
   T val{};
   std::memcpy(&val, buf.data() + pos, sizeof(T));
   pos += sizeof(T);
   return val;
 }
 
-std::string ReadString(const std::vector<uint8_t>& buf, std::size_t& pos) {
-  uint32_t len = ReadLE<uint32_t>(buf, pos);
+std::string readString(const std::vector<uint8_t>& buf, std::size_t& pos) {
+  uint32_t len = readLE<uint32_t>(buf, pos);
+  if (pos + len > buf.size())
+    throw LoadError("File truncated in string");
   std::string s(reinterpret_cast<const char*>(buf.data() + pos), len);
   pos += len;
   return s;
 }
 
-}  // namespace
+}
 
-// ---- Loader::LoadFromFile ---------------------------------------------------
-//
-// TODO: This is a stub implementation.  It reads the binary format described
-// in loader.hpp but has not been tested against real compiler output since the
-// compiler is not yet complete.  Extend / fix once the compiler emits .obj
-// files.
-
-Program Loader::LoadFromFile(const std::filesystem::path& path) {
+Program Loader::loadFromFile(const std::filesystem::path& path) {
   std::ifstream file(path, std::ios::binary | std::ios::ate);
   if (!file)
     throw LoadError("Cannot open file: " + path.string());
@@ -103,105 +83,104 @@ Program Loader::LoadFromFile(const std::filesystem::path& path) {
   if (!file.read(reinterpret_cast<char*>(buf.data()), size))
     throw LoadError("Failed to read file: " + path.string());
 
-  if (buf.size() < sizeof(FileHeader))
-    throw LoadError("File too small to contain a valid header");
-
   std::size_t pos = 0;
-  FileHeader hdr{};
-  std::memcpy(&hdr, buf.data(), sizeof(hdr));
-  pos = sizeof(hdr);
 
-  if (hdr.magic != kMagic)
+  uint32_t magic   = readLE<uint32_t>(buf, pos);
+  uint32_t version = readLE<uint32_t>(buf, pos);
+
+  if (magic != kMagic)
     throw LoadError(fmt::format("Bad magic: expected 0x{:08X}, got 0x{:08X}",
-                                kMagic, hdr.magic));
-  if (hdr.version != kVersion)
-    throw LoadError(
-        fmt::format("Unsupported version: {}", hdr.version));
+                                kMagic, magic));
+  if (version != kVersion)
+    throw LoadError(fmt::format("Unsupported version: {}", version));
 
   Program prog;
-  prog.global_count = hdr.global_count;
-  prog.rtti.RegisterBuiltinPrimitives();
+  prog.global_count = readLE<uint32_t>(buf, pos);
 
-  // ---- Instructions --------------------------------------------------------
-  pos = hdr.code_offset;
-  prog.instructions.reserve(hdr.code_length);
-  for (uint32_t i = 0; i < hdr.code_length; ++i) {
-    RawInstruction raw{};
-    std::memcpy(&raw, buf.data() + pos, sizeof(RawInstruction));
-    pos += sizeof(RawInstruction);
-    prog.instructions.push_back(DecodeInstruction(raw));
-  }
-
-  // ---- Function table ------------------------------------------------------
-  pos = hdr.fn_table_offset;
-  prog.functions.reserve(hdr.fn_table_length);
-  for (uint32_t i = 0; i < hdr.fn_table_length; ++i) {
-    FunctionRecord fn;
-    fn.name           = ReadString(buf, pos);
-    fn.label_id       = ReadLE<uint64_t>(buf, pos);
-    uint32_t argc     = ReadLE<uint32_t>(buf, pos);
-    fn.arg_type_ids.resize(argc);
-    for (uint32_t j = 0; j < argc; ++j)
-      fn.arg_type_ids[j] = ReadLE<uint32_t>(buf, pos);
-    fn.return_type_id = ReadLE<uint32_t>(buf, pos);
-    prog.functions.push_back(std::move(fn));
-  }
-
-  // ---- RTTI ----------------------------------------------------------------
-  // kind: 0=Primitive, 1=Record, 2=Array
-  pos = hdr.rtti_offset;
-  for (uint32_t i = 0; i < hdr.rtti_length; ++i) {
-    uint8_t  kind    = ReadLE<uint8_t>(buf, pos);
-    uint32_t type_id = ReadLE<uint32_t>(buf, pos);
+  uint32_t rtti_count = readLE<uint32_t>(buf, pos);
+  for (uint32_t i = 0; i < rtti_count; ++i) {
+    uint8_t kind = readLE<uint8_t>(buf, pos);
     if (kind == 0) {
-      // Primitive: already registered via RegisterBuiltinPrimitives.
-      // Just skip; the compiler assigns the well-known IDs.
+      uint8_t type_byte = readLE<uint8_t>(buf, pos);
+      switch (type_byte) {
+        case 1:
+          prog.rtti.registerEntry(PrimitiveRtti{i, PrimitiveKind::kInteger});
+          break;
+        case 2:
+          prog.rtti.registerEntry(PrimitiveRtti{i, PrimitiveKind::kBoolean});
+          break;
+        case 3:
+          prog.rtti.registerEntry(PrimitiveRtti{i, PrimitiveKind::kReal});
+          break;
+        default:
+          break;
+      }
     } else if (kind == 1) {
       RecordRtti rec;
-      rec.id = type_id;
-      uint32_t fc = ReadLE<uint32_t>(buf, pos);
+      rec.id = i;
+      uint32_t fc = readLE<uint32_t>(buf, pos);
       rec.field_names.resize(fc);
       rec.field_type_ids.resize(fc);
       for (uint32_t j = 0; j < fc; ++j) {
-        rec.field_names[j]    = ReadString(buf, pos);
-        rec.field_type_ids[j] = ReadLE<uint32_t>(buf, pos);
+        rec.field_names[j]    = readString(buf, pos);
+        rec.field_type_ids[j] = readLE<uint32_t>(buf, pos);
       }
-      prog.rtti.Register(std::move(rec));
+      prog.rtti.registerEntry(std::move(rec));
     } else if (kind == 2) {
       ArrayRtti arr;
-      arr.id              = type_id;
-      arr.element_type_id = ReadLE<uint32_t>(buf, pos);
-      prog.rtti.Register(std::move(arr));
+      arr.id              = i;
+      arr.element_type_id = readLE<uint32_t>(buf, pos);
+      prog.rtti.registerEntry(std::move(arr));
     } else {
       throw LoadError(fmt::format("Unknown RTTI kind: {}", kind));
     }
   }
 
-  BuildLabelMap(prog);
-  BuildFunctionMaps(prog);
+  uint32_t fn_count = readLE<uint32_t>(buf, pos);
+  prog.functions.reserve(fn_count);
+  for (uint32_t i = 0; i < fn_count; ++i) {
+    FunctionRecord fn;
+    fn.name           = readString(buf, pos);
+    fn.label_id       = readLE<uint64_t>(buf, pos);
+    uint32_t argc     = readLE<uint32_t>(buf, pos);
+    fn.arg_type_ids.resize(argc);
+    for (uint32_t j = 0; j < argc; ++j)
+      fn.arg_type_ids[j] = readLE<uint32_t>(buf, pos);
+    fn.return_type_id = readLE<uint32_t>(buf, pos);
+    prog.functions.push_back(std::move(fn));
+  }
+
+  uint32_t instr_count = readLE<uint32_t>(buf, pos);
+  prog.instructions.reserve(instr_count);
+  for (uint32_t i = 0; i < instr_count; ++i) {
+    RawInstruction raw{};
+    std::memcpy(&raw, buf.data() + pos, sizeof(RawInstruction));
+    pos += sizeof(RawInstruction);
+    prog.instructions.push_back(decodeInstruction(raw));
+  }
+
+  buildLabelMap(prog);
+  buildFunctionMaps(prog);
   return prog;
 }
 
-// ---- Loader::MakeTestProgram ------------------------------------------------
-
-Program Loader::MakeTestProgram(std::vector<Instruction> instructions,
+Program Loader::makeTestProgram(std::vector<Instruction> instructions,
                                 uint32_t global_count) {
   Program prog;
-  prog.instructions  = std::move(instructions);
-  prog.global_count  = global_count;
-  prog.rtti.RegisterBuiltinPrimitives();
+  prog.instructions = std::move(instructions);
+  prog.global_count = global_count;
+  prog.rtti.registerBuiltinPrimitives();
 
-  BuildLabelMap(prog);
+  buildLabelMap(prog);
 
-  // Create a synthetic "main" function starting at label 0.
   FunctionRecord fn;
   fn.name           = "main";
   fn.label_id       = 0;
   fn.return_type_id = kVoidTypeId;
   prog.functions.push_back(fn);
-  BuildFunctionMaps(prog);
+  buildFunctionMaps(prog);
 
   return prog;
 }
 
-}  // namespace vm
+}

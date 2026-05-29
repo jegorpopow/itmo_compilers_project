@@ -22,9 +22,9 @@ int main(int argc, char** argv) {
   std::filesystem::path path(FLAGS_i);
 
   try {
-    vm::Program prog = vm::Loader::LoadFromFile(path);
+    vm::Program prog = vm::Loader::loadFromFile(path);
     vm::Vm      machine(std::move(prog));
-    machine.Run();
+    machine.run();
   } catch (const vm::LoadError& e) {
     std::cerr << "Load error: " << e.what() << '\n';
     return 1;

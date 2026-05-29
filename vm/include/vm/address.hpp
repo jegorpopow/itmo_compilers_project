@@ -1,67 +1,51 @@
 #pragma once
 
+#include <bit>
 #include <cstdint>
-#include <vector>
-#include <memory>
 
 #include "vm/opcodes.hpp"
+#include "vm/value.hpp"
 
 namespace vm {
 
 struct HeapObject;
-struct Value;
 
-// Describes the target of an address value on the evaluation stack.
-// Used by AddressOf, StoreAddress, LoadAddress, ElementAddress, FieldAddress.
-struct AddressDescriptor {
-  enum class Kind : uint8_t {
-    kVariable,  // global / local / argument
-    kHeapField, // field or element inside a HeapObject
-  };
+inline constexpr uint32_t kHeapFieldAddrFlag = 1u;
 
-  Kind kind;
+inline Value makeVariableAddressValue(LocationKind kind, uint16_t index) {
+  Value v;
+  v.type_id = kAddressTypeId;
+  v.data    = (static_cast<uint64_t>(kind) << 16) | index;
+  v.aux     = 0;
+  return v;
+}
 
-  // For kVariable:
-  LocationKind loc_kind;
-  uint16_t     var_index;
+inline Value makeHeapFieldAddressValue(HeapObject* obj, uint64_t field_idx) {
+  Value v;
+  v.type_id = kAddressTypeId;
+  v.data    = std::bit_cast<uint64_t>(obj);
+  v.aux     = static_cast<uint32_t>((field_idx << 1) | kHeapFieldAddrFlag);
+  return v;
+}
 
-  // For kHeapField:
-  HeapObject* object    = nullptr;
-  uint64_t    field_idx = 0;
+inline bool isHeapFieldAddress(const Value& v) {
+  return (v.aux & kHeapFieldAddrFlag) != 0;
+}
 
-  // Factory helpers.
-  static AddressDescriptor Variable(LocationKind lk, uint16_t idx) {
-    AddressDescriptor d;
-    d.kind     = Kind::kVariable;
-    d.loc_kind = lk;
-    d.var_index = idx;
-    return d;
-  }
+inline HeapObject* heapFieldObject(const Value& v) {
+  return std::bit_cast<HeapObject*>(v.data);
+}
 
-  static AddressDescriptor HeapField(HeapObject* obj, uint64_t idx) {
-    AddressDescriptor d;
-    d.kind      = Kind::kHeapField;
-    d.object    = obj;
-    d.field_idx = idx;
-    return d;
-  }
-};
+inline uint64_t heapFieldIndex(const Value& v) {
+  return v.aux >> 1;
+}
 
-// Append-only pool that owns AddressDescriptor objects.
-// Lifetime: tied to the VM execution (never freed until VM is destroyed).
-// This is intentional — addresses are small and programs are short-lived.
-class AddressPool {
- public:
-  // Allocates a descriptor and returns a stable pointer.
-  AddressDescriptor* Intern(AddressDescriptor desc) {
-    storage_.push_back(std::make_unique<AddressDescriptor>(std::move(desc)));
-    return storage_.back().get();
-  }
+inline LocationKind variableAddressKind(const Value& v) {
+  return static_cast<LocationKind>((v.data >> 16) & 0xFF);
+}
 
-  void Clear() { storage_.clear(); }
+inline uint16_t variableAddressIndex(const Value& v) {
+  return static_cast<uint16_t>(v.data & 0xFFFF);
+}
 
- private:
-  std::vector<std::unique_ptr<AddressDescriptor>> storage_;
-};
-
-}  // namespace vm
+}

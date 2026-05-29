@@ -95,33 +95,88 @@ done
 
 ## Binary File Format (`.obj`)
 
-All integers are little-endian.
+All integers are little-endian. See also [doc/binary_format.tex](doc/binary_format.tex) for a TikZ diagram.
 
-### Header (36 bytes)
+The format is **sequential** — no offsets or seek table. Sections follow one after another.
 
-| Offset | Size | Field            | Description                              |
-|--------|------|------------------|------------------------------------------|
-| 0      | 4    | `magic`          | `0x494D564D` ("MVMI" in LE)              |
-| 4      | 4    | `version`        | Must be `1`                              |
-| 8      | 4    | `code_offset`    | Byte offset of the instruction stream    |
-| 12     | 4    | `code_length`    | Number of instructions                   |
-| 16     | 4    | `fn_table_offset`| Byte offset of the function table        |
-| 20     | 4    | `fn_table_length`| Number of function records               |
-| 24     | 4    | `rtti_offset`    | Byte offset of the RTTI section          |
-| 28     | 4    | `rtti_length`    | Number of RTTI entries                   |
-| 32     | 4    | `global_count`   | Number of global variables               |
+### Top-level layout
 
-### Instruction Stream
+```
+u32  magic          = 0x494D564D  ("MVMI" in little-endian)
+u32  version        = 4
+u32  global_count
+─── RTTI section ──────────────────────────────────────────
+u32  rtti_count
+     rtti_count × Representation  (variable size each)
+─── Function table ─────────────────────────────────────────
+u32  function_count
+     function_count × FunctionRecord  (variable size each)
+─── Code section ───────────────────────────────────────────
+u32  instruction_count
+     instruction_count × Instruction  (16 bytes each)
+```
 
-Each instruction is exactly **16 bytes**:
+### Representation (RTTI entry)
 
-| Offset | Size | Field       |
-|--------|------|-------------|
-| 0      | 1    | `opcode`    |
-| 1      | 1    | `subopcode` |
-| 2      | 2    | `arg16`     |
-| 4      | 4    | `arg32`     |
-| 8      | 8    | `arg64`     |
+Each entry begins with a 1-byte kind tag:
+
+**Primitive — kind = 0**
+```
+u8   0
+u8   type_byte      (0=null, 1=integer, 2=boolean, 3=real)
+```
+Total: 2 bytes.
+
+**Record — kind = 1**
+```
+u8   1
+u32  field_count
+  × field_count:
+    u32  name_len
+    u8[name_len]    UTF-8 field name (no NUL terminator)
+    u32  type_id    index into RTTI table
+```
+
+**Array — kind = 2**
+```
+u8   2
+u32  element_type_id   index into RTTI table
+```
+Total: 5 bytes.
+
+### Built-in RTTI indices (always 0–3)
+
+The interner pre-allocates four primitive types at fixed positions:
+
+| Index | Type    |
+|-------|---------|
+| 0     | null    |
+| 1     | integer |
+| 2     | boolean |
+| 3     | real    |
+
+User-defined record and array types are appended starting at index 4, in the order the compiler first encounters them.  All `type_id` fields throughout the file are 0-based indices into the RTTI table.
+
+### FunctionRecord
+
+```
+u32  name_len
+u8[name_len]        UTF-8 function name
+u64  label_id
+u32  arg_count
+u32[arg_count]      argument type_ids (RTTI indices)
+u32  return_type_id (RTTI index; index 0 = null = void)
+```
+
+### Instruction (16 bytes, little-endian fields)
+
+```
+byte  0      opcode    (u8)
+byte  1      subopcode (u8)
+bytes 2–3    arg16     (u16)
+bytes 4–7    arg32     (u32)
+bytes 8–15   arg64     (u64)
+```
 
 ### Opcode Table
 
@@ -130,103 +185,50 @@ Each instruction is exactly **16 bytes**:
 | 1      | Drop              | —                                        |
 | 2      | Dup               | —                                        |
 | 3      | Swap              | —                                        |
-| 4      | BinOp             | subopcode = operator (see below)         |
-| 5      | UnOp              | subopcode = operator                     |
+| 4      | BinOp             | sub = operator code (see below)          |
+| 5      | UnOp              | sub = operator code                      |
 | 6      | IntToBool         | —                                        |
 | 7      | RealToInt         | —                                        |
 | 8      | IntToReal         | —                                        |
-| 9      | IntConst          | arg64 = value (i64 as u64)               |
+| 9      | IntConst          | arg64 = value (i64 LE)                   |
 | 10     | RealConst         | arg64 = value (f64 bit-pattern)          |
-| 11     | Load              | subopcode = location kind; arg16 = index |
-| 12     | Store             | subopcode = location kind; arg16 = index |
-| 13     | AddressOf         | subopcode = location kind; arg16 = index |
+| 11     | Load              | sub = loc-kind; arg16 = index            |
+| 12     | Store             | sub = loc-kind; arg16 = index            |
+| 13     | AddressOf         | sub = loc-kind; arg16 = index            |
 | 14     | StoreAddress      | —                                        |
 | 15     | LoadAddress       | —                                        |
 | 16     | AllocRecord       | arg32 = type_id; arg64 = num_fields      |
-| 17     | AllocArray        | arg32 = type_id; arg64 = num_elements    |
+| 17     | AllocArray        | arg32 = type_id; arg64 = count           |
 | 18     | ArraySize         | —                                        |
-| 19     | ElementAddress    | —  (pops idx on top, then array ref)     |
+| 19     | ElementAddress    | pops index (top), then array ref         |
 | 20     | FieldAddress      | arg64 = field index (0-based)            |
 | 21     | Label             | arg64 = label id (no-op at runtime)      |
 | 22     | Jump              | arg64 = target label id                  |
-| 23     | JumpCond          | subopcode 0=JumpZero, 1=JumpNotZero; arg64 = target label id |
+| 23     | JumpCond          | sub: 0=JumpZero, 1=JumpNotZero; arg64 = label |
 | 24     | Call              | arg64 = function label id                |
 | 25     | Ret               | —                                        |
-| 26     | Print             | arg32 = type_id (informational)          |
+| 26     | Print             | arg32 = type_id                          |
 | 27     | Panic             | arg64 = code; arg32 = line; arg16 = col  |
-| 28     | NullConst         | —  (pushes null value)                   |
+| 28     | NullConst         | — (pushes null)                          |
 | 29     | DropMany          | arg16 = count                            |
-| 30     | AllocArrayDynamic | arg32 = type_id (pops count from stack)  |
+| 30     | AllocArrayDynamic | arg32 = type_id; pops count from stack   |
 
-**Location kinds** (subopcode for Load/Store/AddressOf):
+**Location kinds** (sub for opcodes 11–13):
 
-| Value | Kind     |
-|-------|----------|
-| 0     | Global   |
-| 1     | Local    |
-| 2     | Argument |
+| sub | Location |
+|-----|----------|
+| 0   | Global   |
+| 1   | Local    |
+| 2   | Argument |
 
-**BinOp subcodes** (subopcode for opcode 4):
+**BinOp sub codes** (sub for opcode 4):
 
-| Range  | Operators                                         |
-|--------|---------------------------------------------------|
-| 0x00–0x01 | Eq/Ne (any type)                               |
-| 0x10–0x17 | Real: Le, Lt, Gt, Ge, Add, Sub, Mul, Div       |
-| 0x20–0x28 | Int: Le, Lt, Gt, Ge, Add, Sub, Mul, Div, Mod  |
-| 0x30–0x32 | Bool: And, Or, Xor                              |
-
-### Function Table
-
-Immediately follows the instruction stream. Each record:
-
-```
-u32  name_length
-u8[] name (UTF-8)
-u64  label_id
-u32  arg_count
-u32  arg_type_id[arg_count]
-u32  return_type_id
-```
-
-### RTTI Section
-
-Each entry starts with a `kind` byte:
-
-**kind = 0 — Primitive**
-```
-u8   kind = 0
-u32  type_id
-```
-(Type IDs 0–3 are reserved for builtins; only skipped at load time.)
-
-**kind = 1 — Record**
-```
-u8   kind = 1
-u32  type_id
-u32  field_count
-  [for each field:]
-  u32  name_length
-  u8[] name (UTF-8)
-  u32  field_type_id
-```
-
-**kind = 2 — Array**
-```
-u8   kind = 2
-u32  type_id
-u32  element_type_id
-```
-
-### Built-in Type IDs
-
-| ID | Type    |
-|----|---------|
-| 0  | Integer |
-| 1  | Boolean |
-| 2  | Real    |
-| 3  | Null    |
-
-User-defined types start at ID 4 and are assigned sequentially by the compiler's interner.
+| Range       | Operators                                       |
+|-------------|-------------------------------------------------|
+| 0x00–0x01   | Eq, Ne (any type)                               |
+| 0x10–0x17   | Real: Le, Lt, Gt, Ge, Add, Sub, Mul, Div        |
+| 0x20–0x28   | Int: Le, Lt, Gt, Ge, Add, Sub, Mul, Div, Mod    |
+| 0x30–0x32   | Bool: And, Or, Xor                              |
 
 ---
 

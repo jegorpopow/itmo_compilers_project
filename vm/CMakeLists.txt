@@ -39,11 +39,6 @@ int main() { std::cout << \"Hello, world!\" << std::endl; }
     endif ()
 endif ()
 
-# Enable sanitizers for Debug builds
-include(cmake/sanitizers.cmake)
-if (CMAKE_BUILD_TYPE STREQUAL "Debug")
-    add_sanitizers()
-endif ()
 
 # Enable LTO for non-Debug builds (if supported)
 include(CheckIPOSupported)
@@ -62,10 +57,6 @@ include(GoogleTest)
 
 find_package(gflags 2.2.2 REQUIRED)
 find_package(fmt 9 REQUIRED)
-
-set(COMPILER_SRC_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../compiler")
-set(TESTS_SRC_DIR    "${CMAKE_CURRENT_SOURCE_DIR}/../tests/src")
-set(TESTS_PASS_DIR   "${CMAKE_CURRENT_SOURCE_DIR}/../tests/run/pass")
 
 add_subdirectory(src)
 enable_testing()

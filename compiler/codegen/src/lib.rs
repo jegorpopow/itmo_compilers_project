@@ -4,9 +4,9 @@ use std::{
 };
 
 use ast::{
-    BinaryOperator, Binding, Bindings, Block, Decl, Expression, Literal, LvalueExpression,
-    Program as AST, Routine, RoutineBody, RoutineDecl, Statement, Type, TypeDecl, UnaryOperator,
-    VarDecl,
+    BinaryOperator, Binding, Bindings, Block, BoolBinOp, Decl, Expression, Literal,
+    LvalueExpression, Program as AST, Routine, RoutineBody, RoutineDecl, Statement, Type,
+    TypeDecl, UnaryOperator, VarDecl,
 };
 use common::{Identifier, Integer, Location, Position, RawIdentifier, Real, VarLoc};
 
@@ -297,11 +297,31 @@ impl<'a> Compiler<'a> {
                     function_label: self.routines_labels[callee],
                 });
             }
-            Expression::BinOp { op, lhs, rhs } => {
-                self.compile_expr(lhs);
-                self.compile_expr(rhs);
-                self.bytecode.push(Instruction::BinOp { op: *op });
-            }
+            Expression::BinOp { op, lhs, rhs } => match op {
+                BinaryOperator::Bool(BoolBinOp::And) => {
+                    let end_label = self.get_fresh_label();
+                    self.compile_expr(lhs);
+                    self.bytecode.push(Instruction::Dup);
+                    self.bytecode.push(Instruction::JumpZero { label: end_label });
+                    self.bytecode.push(Instruction::Drop);
+                    self.compile_expr(rhs);
+                    self.bytecode.push(Instruction::Label { id: end_label });
+                }
+                BinaryOperator::Bool(BoolBinOp::Or) => {
+                    let end_label = self.get_fresh_label();
+                    self.compile_expr(lhs);
+                    self.bytecode.push(Instruction::Dup);
+                    self.bytecode.push(Instruction::JumpNotZero { label: end_label });
+                    self.bytecode.push(Instruction::Drop);
+                    self.compile_expr(rhs);
+                    self.bytecode.push(Instruction::Label { id: end_label });
+                }
+                _ => {
+                    self.compile_expr(lhs);
+                    self.compile_expr(rhs);
+                    self.bytecode.push(Instruction::BinOp { op: *op });
+                }
+            },
             Expression::UnOp { op, operand } => {
                 self.compile_expr(operand);
                 self.bytecode.push(Instruction::UnOp { op: *op });
@@ -407,10 +427,14 @@ impl<'a> Compiler<'a> {
                     label: on_false_label,
                 });
                 self.compile_block(on_true);
-                self.bytecode
-                    .push(Instruction::Label { id: on_false_label });
                 if let Some(on_false) = on_false {
+                    let after_else_label = self.get_fresh_label();
+                    self.bytecode.push(Instruction::Jump { label: after_else_label });
+                    self.bytecode.push(Instruction::Label { id: on_false_label });
                     self.compile_block(on_false);
+                    self.bytecode.push(Instruction::Label { id: after_else_label });
+                } else {
+                    self.bytecode.push(Instruction::Label { id: on_false_label });
                 }
             }
             Statement::For {
@@ -481,8 +505,8 @@ impl<'a> Compiler<'a> {
                 counter,
                 index,
                 collection,
+                order,
                 body,
-                ..
             } => {
                 let body_label = self.get_fresh_label();
                 let condition_label = self.get_fresh_label();
@@ -490,7 +514,17 @@ impl<'a> Compiler<'a> {
                 let counter_expr = Rc::new(LvalueExpression::Identifier(counter.clone()));
                 let index_expr = Rc::new(LvalueExpression::Identifier(index.clone()));
 
-                self.bytecode.push(Instruction::IntConst { value: 1 });
+                // Initialize index: 1 for direct, arr.length for reversed
+                match order {
+                    common::LoopOrder::Direct => {
+                        self.bytecode.push(Instruction::IntConst { value: 1 });
+                    }
+                    common::LoopOrder::Reversed => {
+                        self.compile_expr(&Expression::LengthOf {
+                            arr: Expression::LvalueToRvalue(Rc::clone(collection)).into(),
+                        });
+                    }
+                }
                 self.bytecode.push(Instruction::NullConst);
 
                 self.bytecode.push(Instruction::Jump {
@@ -512,10 +546,14 @@ impl<'a> Compiler<'a> {
 
                 self.compile_block(body);
 
+                let step_op = match order {
+                    common::LoopOrder::Direct => BinaryOperator::Int(ast::IntBinOp::Add),
+                    common::LoopOrder::Reversed => BinaryOperator::Int(ast::IntBinOp::Sub),
+                };
                 self.compile_statement(&Statement::Assignment {
                     lhs: Rc::clone(&index_expr),
                     rhs: Expression::BinOp {
-                        op: BinaryOperator::Int(ast::IntBinOp::Add),
+                        op: step_op,
                         lhs: Expression::LvalueToRvalue(Rc::clone(&index_expr)).into(),
                         rhs: Expression::Literal(Literal::Integer {
                             repr: "1".to_string(),
@@ -530,14 +568,29 @@ impl<'a> Compiler<'a> {
                     id: condition_label,
                 });
 
-                self.compile_expr(&Expression::BinOp {
-                    op: BinaryOperator::Int(ast::IntBinOp::Le),
-                    lhs: Expression::LvalueToRvalue(index_expr).into(),
-                    rhs: Expression::LengthOf {
-                        arr: Expression::LvalueToRvalue(Rc::clone(collection)).into(),
+                match order {
+                    common::LoopOrder::Direct => {
+                        self.compile_expr(&Expression::BinOp {
+                            op: BinaryOperator::Int(ast::IntBinOp::Le),
+                            lhs: Expression::LvalueToRvalue(Rc::clone(&index_expr)).into(),
+                            rhs: Expression::LengthOf {
+                                arr: Expression::LvalueToRvalue(Rc::clone(collection)).into(),
+                            }
+                            .into(),
+                        });
                     }
-                    .into(),
-                });
+                    common::LoopOrder::Reversed => {
+                        self.compile_expr(&Expression::BinOp {
+                            op: BinaryOperator::Int(ast::IntBinOp::Ge),
+                            lhs: Expression::LvalueToRvalue(Rc::clone(&index_expr)).into(),
+                            rhs: Expression::Literal(Literal::Integer {
+                                repr: "1".to_string(),
+                                value: 1,
+                            })
+                            .into(),
+                        });
+                    }
+                }
 
                 self.bytecode
                     .push(Instruction::JumpNotZero { label: body_label });
