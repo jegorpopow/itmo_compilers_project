@@ -12,3 +12,5 @@ target_link_libraries(vm_lib PUBLIC fmt)
 
 add_executable(vm main.cpp)
 target_link_libraries(vm PRIVATE vm_lib gflags)
+
+install(TARGETS vm)

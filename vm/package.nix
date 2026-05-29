@@ -16,7 +16,15 @@ in
 stdenv.mkDerivation {
   inherit pname version;
 
-  src = ./.;
+  src = lib.fileset.toSource {
+    root = ./.;
+    fileset = lib.fileset.unions [
+      ./CMakeLists.txt
+      ./include
+      ./src
+      ./tests
+    ];
+  };
 
   nativeBuildInputs = [ cmake ];
   cmakeFlags = [ "-DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}" ];
