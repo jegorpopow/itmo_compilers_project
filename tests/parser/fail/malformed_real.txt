@@ -1,0 +1,22 @@
+Parsing error at 1:16: malformed real literal: precision loss in a real literal: requested fractional part .123456789012345678901234567890123456789 gets truncated to .12345678901234569.
+However, managed to parse:
+Program(
+    [
+        Var(
+            VarDecl {
+                name: r"a",
+                t: Some(
+                    Real,
+                ),
+                initialiser: Some(
+                    Literal(
+                        Real {
+                            repr: "1.1234567890123456789012345678901234567890",
+                            value: NaN,
+                        },
+                    ),
+                ),
+            },
+        ),
+    ],
+)

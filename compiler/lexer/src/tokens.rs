@@ -1,5 +1,5 @@
-use core::fmt;
-use core::num::{ParseFloatError, ParseIntError};
+use core::{error, fmt, num::ParseIntError};
+use std::borrow::Cow;
 
 use common::{Extent, Integer, Real};
 
@@ -37,9 +37,48 @@ pub struct Identifier<'a> {
     pub name: &'a str,
 }
 
+#[derive(PartialEq, Eq, fmt::Debug, Clone)]
+pub enum ParseFloatError<'a> {
+    PrecisionLoss {
+        expected_fractional_part: Cow<'a, str>,
+        actual_fractional_part: Cow<'static, str>,
+    },
+}
+
+impl ParseFloatError<'_> {
+    #[must_use]
+    pub fn to_static(self) -> ParseFloatError<'static> {
+        match self {
+            Self::PrecisionLoss {
+                expected_fractional_part,
+                actual_fractional_part,
+            } => ParseFloatError::PrecisionLoss {
+                expected_fractional_part: Cow::Owned(expected_fractional_part.into_owned()),
+                actual_fractional_part,
+            },
+        }
+    }
+}
+
+impl fmt::Display for ParseFloatError<'_> {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Self::PrecisionLoss {
+                expected_fractional_part,
+                actual_fractional_part,
+            } => write!(
+                f,
+                "precision loss in a real literal: requested fractional part .{expected_fractional_part} gets truncated to .{actual_fractional_part}"
+            ),
+        }
+    }
+}
+
+impl error::Error for ParseFloatError<'_> {}
+
 #[derive(PartialEq, fmt::Debug, Clone)]
-pub enum Literal {
-    Real(Result<Real, ParseFloatError>),
+pub enum Literal<'a> {
+    Real(Result<Real, ParseFloatError<'a>>),
     Integer(Result<Integer, ParseIntError>),
     Bool(bool),
 }
@@ -74,7 +113,7 @@ impl fmt::Display for Comment<'_> {
 pub enum Token<'a> {
     Identifier(Identifier<'a>),
     Keyword(Keyword),
-    Literal(Literal),
+    Literal(Literal<'a>),
     BuiltinTypename(BuiltinTypename),
     Operator(Operator),
     Comment(Comment<'a>),
